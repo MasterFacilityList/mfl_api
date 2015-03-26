@@ -1,0 +1,16 @@
+machine:
+  environment:
+    DB_NAME: circle_test
+    DB_USER: ubuntu
+    DJANGO_SETTINGS_MODULE: config.settings.test
+    DEBUG: 'True'
+  python:
+    version: 2.7.6
+
+dependencies:
+  post:
+    - pip install fabric
+
+test:
+  override:
+    - fab test
