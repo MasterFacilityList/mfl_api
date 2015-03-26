@@ -1,4 +1,3 @@
-import os
 from os.path import dirname, abspath
 
 from fabric.api import local
@@ -15,5 +14,4 @@ def test():
 
 
 def run():
-    local('{}/manage.py runserver 8000'.format(BACKEND_PROJECT_ROOT))
-
+    local('{}/manage.py runserver 8000'.format(BASE_DIR))
