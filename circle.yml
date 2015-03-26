@@ -4,8 +4,6 @@ machine:
     DB_USER: ubuntu
     DJANGO_SETTINGS_MODULE: config.settings.test
     DEBUG: 'True'
-  python:
-    version: 2.7.6
 
 dependencies:
   post:
