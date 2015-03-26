@@ -9,11 +9,5 @@ setup(
     author_email='',
     url='',
     packages=find_packages(),
-    install_requires=[
-        'Django==1.7.5',
-        'psycopg2',
-        'django-filter',
-        'djangorestframework',
-        'djangorestframework-camel-case',
-    ],
+    install_requires=[],
 )
