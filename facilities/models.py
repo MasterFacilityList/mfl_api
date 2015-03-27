@@ -38,8 +38,9 @@ class Facility(AbstractBase):
     longitude = models.CharField(max_length=255)
     is_classified = models.BooleanField(default=False)
     description = models.TextField()
-    facility_type = models.CharField(choices=FACILITY_TYPES)
-    services = models.ManyToMany(Service)
+    facility_type = models.CharField(
+        max_length=100, choices=FACILITY_TYPES)
+    services = models.ManyToManyField(Service)
     number_of_beds = models.PositiveIntegerField(default=0)
     number_of_cots = models.PositiveIntegerField(default=0)
     open_whole_day =  models.BooleanField(default=False)

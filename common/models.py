@@ -1,17 +1,17 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
-from djano.contrib.auth import get_user_model
 
-USER_MODEL = get_user_model()
+
+USER_MODEL = settings.AUTH_USER_MODEL
 
 
 class AbstractBase(models.Model):
     created = models.DateTimeField(default=timezone.now)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    created_by = models.ForeignKey(USER_MODEL)
 
     class Meta:
-        abtract = True
+        abstract = True
 
 
 class RegionAbstractBase(AbstractBase):
@@ -19,7 +19,7 @@ class RegionAbstractBase(AbstractBase):
     code = models.CharField(max_length=100, unique=True)
 
     class Meta:
-        abtract = True
+        abstract = True
 
 
 class Contact(AbstractBase):
@@ -30,7 +30,7 @@ class Contact(AbstractBase):
     nearest_town = models.CharField(max_length=100)
     landline = models.CharField(max_length=100)
     fax = models.CharField(max_length=100)
-    mobile =  mobile.CharField(max_length=100)
+    mobile =  models.CharField(max_length=100)
   
     def __unicode__(self):
         return self.email
@@ -67,7 +67,7 @@ class District(RegionAbstractBase):
 
 
 class Division(RegionAbstractBase):
-    district = models.ForeignKey(District):
+    district = models.ForeignKey(District)
 
     
     def __unicode__(self):
@@ -81,7 +81,7 @@ class Location(RegionAbstractBase):
         return self.name
 
 
-class Sublocation(RegionAbstractBase):
+class SubLocation(RegionAbstractBase):
     location = models.ForeignKey(Location)
 
     def __unicode__(self):
@@ -99,10 +99,6 @@ class Sublocation(RegionAbstractBase):
     def county():
         return self.district.county
 
-    @property
-    def constituency(self):
-        return ""
-        
     @property
     def province(self):
         return self.county.province

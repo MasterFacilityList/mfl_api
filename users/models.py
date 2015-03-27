@@ -3,11 +3,12 @@ from django.utils import timezone
 from django.core.validators import validate_email, RegexValidator
 from django.contrib.auth.models import make_password
 from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin)
+    AbstractBaseUser, BaseUserManager, PermissionsMixin)
+from django.conf import settings
 
-from common.models import AbstractBase, Contact, Sublocation
+from common.models import AbstractBase, Contact, SubLocation
+
+USER_MODEL = settings.AUTH_USER_MODEL
 
 
 class MflUserManager(BaseUserManager):
@@ -61,7 +62,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
-    objects = EmployeeManager()
+    objects = MflUserManager()
 
     def get_short_name(self):
         return self.first_name
@@ -75,9 +76,9 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
 
 class UserDetail(models.Model):
-    user =  models.ForeignKey()
+    user =  models.ForeignKey(USER_MODEL)
     contact = models.ForeignKey(Contact)
-    sub_location = models.ForeignKey(Sublocation)    
+    sub_location = models.ForeignKey(SubLocation)    
     id_number = models.CharField(max_length=100, unique=True)
     dob = models.DateTimeField(
         default=timezone.now, null=True, blank=True)

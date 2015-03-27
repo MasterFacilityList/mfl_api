@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings
 
 from common.models import AbstractBase
 
 
-USER_MODEL = get_user_model()
+USER_MODEL = settings.AUTH_USER_MODEL
 
 
 INITIAL_ROLES = (

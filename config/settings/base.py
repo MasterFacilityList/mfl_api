@@ -28,14 +28,13 @@ INSTALLED_APPS = (
 )
 
 LOCAL_APPS = (
-    'facility',
+    'facilities',
     'common',
     'roles',
-    'user',
 )
-AUTH_USER_MODEL = 'users.MflUser'
 INSTALLED_APPS += LOCAL_APPS
 
+AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
