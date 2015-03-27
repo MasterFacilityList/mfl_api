@@ -24,10 +24,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 )
 
 LOCAL_APPS = (
-    'minion',
+    'facility',
+    'common',
+    'roles',
+    'user',
 )
 AUTH_USER_MODEL = 'users.MflUser'
 INSTALLED_APPS += LOCAL_APPS
