@@ -1,0 +1,8 @@
+[run]
+branch=True
+source=minion
+omit=
+    *migrations*
+    
+[report]
+show_missing=True
