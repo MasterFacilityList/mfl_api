@@ -39,7 +39,7 @@ class Contact(AbstractBase):
         07xxabcdef
         """
         if len(self.mobile) > 10 or len(self.mobile) < 10:
-            error = "The mobile number format is wrong. Use 07XXABCEF"
+            error = "The mobile number format is wrong. Use 07XXABCDEF"
             raise ValidationError(error)
         
     def clean(self, *args, **kwargs):
@@ -57,7 +57,7 @@ class Province(RegionAbstractBase):
 
 
 class County(RegionAbstractBase):
-    Province = models.ForeignKey(Province)
+    Province = models.ForeignKey(Province, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
