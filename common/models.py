@@ -1,10 +1,35 @@
+import logging
+
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.conf import settings
+
+LOGGER = logging.getLogger(__file__)
 
 
 class AbstractBase(models.Model):
     created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(default=timezone.now)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='+')
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='+')
+
+    def preserve_created_and_created_by(self):
+        try:
+            original = self.__class__.objects.get(pk=self.pk)
+            self.created = original.created
+            self.created_by = original.created_by
+        except self.__class__.DoesNotExist:
+            LOGGER.info(
+                'preserve_created_and_created_by '
+                'Could not find an instance of {} with pk {} hence treating '
+                'this as a new record.'.format(self.__class__, self.pk))
+
+    def save(self, *args, **kwargs):
+        self.preserve_created_and_created_by()
+        super(AbstractBase, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True

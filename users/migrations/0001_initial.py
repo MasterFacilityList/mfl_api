@@ -3,14 +3,12 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import django.utils.timezone
-from django.conf import settings
 import django.core.validators
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0001_initial'),
         ('auth', '0006_require_contenttypes_0002'),
     ]
 
@@ -36,16 +34,5 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-        ),
-        migrations.CreateModel(
-            name='UserDetail',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('id_number', models.CharField(unique=True, max_length=100)),
-                ('dob', models.DateTimeField(default=django.utils.timezone.now, null=True, blank=True)),
-                ('contact', models.ForeignKey(to='common.Contact')),
-                ('sub_location', models.ForeignKey(default=1, to='common.SubLocation')),
-                ('user', models.ForeignKey(related_name='user_detail', default=1, to=settings.AUTH_USER_MODEL)),
-            ],
         ),
     ]

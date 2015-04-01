@@ -18,9 +18,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.TextField()),
                 ('code', models.CharField(max_length=100, null=True, blank=True)),
+                ('created_by', models.ForeignKey(related_name='+', to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -31,7 +34,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('created_by', models.ForeignKey(related_name='+', to=settings.AUTH_USER_MODEL)),
                 ('role', models.ForeignKey(to='roles.Role')),
+                ('updated_by', models.ForeignKey(related_name='+', to=settings.AUTH_USER_MODEL)),
                 ('user', models.ForeignKey(related_name='user_roles', to=settings.AUTH_USER_MODEL)),
             ],
             options={

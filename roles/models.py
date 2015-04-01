@@ -24,7 +24,7 @@ class Role(AbstractBase):
 
 
 class UserRoles(AbstractBase):
-    user =  models.ForeignKey(USER_MODEL, related_name='user_roles')
+    user = models.ForeignKey(USER_MODEL, related_name='user_roles')
     role = models.ForeignKey(Role)
 
     def __unicode__(self):

@@ -6,9 +6,9 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from django.conf import settings
 
-from common.models import AbstractBase, Contact, SubLocation
 
 USER_MODEL = settings.AUTH_USER_MODEL
+
 
 class MflUserManager(BaseUserManager):
     def create_user(self, email, first_name,
@@ -18,8 +18,8 @@ class MflUserManager(BaseUserManager):
             raise ValueError('The email must be set')
         validate_email(email)
         p = make_password(password)
-        email = EmployeeManager.normalize_email(email)
-        user = self.model(email=email, first_name=first_name,password=p,
+        email = MflUserManager.normalize_email(email)
+        user = self.model(email=email, first_name=first_name, password=p,
                           username=username,
                           is_staff=False, is_active=True, is_superuser=False,
                           last_login=now, date_joined=now, **extra_fields)
@@ -56,7 +56,6 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
@@ -71,16 +70,4 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
             self.first_name, self.last_name, self.other_names)
 
     def save(self, *args, **kwargs):
-        super(Employee, self).save(*args, **kwargs)
-
-
-class UserDetail(models.Model):
-    user =  models.ForeignKey(USER_MODEL, related_name='user_detail', default=1)
-    contact = models.ForeignKey(Contact)
-    sub_location = models.ForeignKey(SubLocation, default=1)    
-    id_number = models.CharField(max_length=100, unique=True)
-    dob = models.DateTimeField(
-        default=timezone.now, null=True, blank=True)
-
-    def __unicode__(self):
-        return self.user.email
+        super(MflUser, self).save(*args, **kwargs)
