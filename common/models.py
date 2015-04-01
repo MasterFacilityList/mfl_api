@@ -74,6 +74,7 @@ class Constituency(RegionAbstractBase):
 
 
 class District(RegionAbstractBase):
+    province = models.ForeignKey(Province, null=True, blank=True)
     county = models.ForeignKey(County)
 
     def __unicode__(self):
@@ -82,6 +83,7 @@ class District(RegionAbstractBase):
 
 class Division(RegionAbstractBase):
     district = models.ForeignKey(District)
+    constituency = models.ForeignKey(Constituency, null=True, blank=True)
 
     
     def __unicode__(self):
@@ -110,12 +112,16 @@ class SubLocation(RegionAbstractBase):
         return self.division.district
     
     @property
-    def county():
+    def county(self):
         return self.district.county
 
     @property
     def province(self):
-        return self.county.province
+        return self.district.province
+
+    @property
+    def constituency(self):
+        return self.division.constituency
 
 
 class Feedback(models.Model):
