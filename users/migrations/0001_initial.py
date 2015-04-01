@@ -10,7 +10,7 @@ import django.core.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '__first__'),
+        ('common', '0001_initial'),
         ('auth', '0006_require_contenttypes_0002'),
     ]
 
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('id_number', models.CharField(unique=True, max_length=100)),
                 ('dob', models.DateTimeField(default=django.utils.timezone.now, null=True, blank=True)),
                 ('contact', models.ForeignKey(to='common.Contact')),
-                ('sub_location', models.ForeignKey(to='common.SubLocation')),
+                ('sub_location', models.ForeignKey(default=1, to='common.SubLocation')),
                 ('user', models.ForeignKey(related_name='user_detail', default=1, to=settings.AUTH_USER_MODEL)),
             ],
         ),

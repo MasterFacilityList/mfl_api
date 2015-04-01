@@ -1,15 +1,10 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils import timezone
-from django.conf import settings
-
-
-
 
 
 class AbstractBase(models.Model):
-    USER_MODEL = settings.AUTH_USER_MODEL
     created = models.DateTimeField(default=timezone.now)
-    created_by = models.ForeignKey(USER_MODEL, default=1)
 
     class Meta:
         abstract = True
@@ -24,17 +19,35 @@ class RegionAbstractBase(AbstractBase):
 
 
 class Contact(AbstractBase):
-    email = models.EmailField()
+    email = models.EmailField(null=True, blank=True)
     town = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     nearest_town = models.CharField(max_length=100)
     landline = models.CharField(max_length=100)
-    fax = models.CharField(max_length=100)
     mobile =  models.CharField(max_length=100)
   
     def __unicode__(self):
-        return self.email
+        if self.email:        
+            return self.email
+        else:
+            return self.id
+
+    def validate_mobile(self):
+        """
+        Ensures that a mobile phone number takes the Kenyan format
+        07xxabcdef
+        """
+        if len(self.mobile) > 10 or len(self.mobile) < 10:
+            error = "The mobile number format is wrong. Use 07XXABCEF"
+            raise ValidationError(error)
+        
+    def clean(self, *args, **kwargs):
+        self.validate_mobile()
+
+    def save(self, *args, **kwargs):
+        self.full_clean(exclude=None)
+        super(Contact, self).save(*args, **kwargs)        
         
 
 class Province(RegionAbstractBase):    
