@@ -1,6 +1,6 @@
 [run]
 branch=True
-source=minion
+source=minion, common
 omit=
     *migrations*
     

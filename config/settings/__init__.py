@@ -16,5 +16,5 @@ def setup():
 
     configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
     apps.populate(settings.INSTALLED_APPS)
-    
-from .base import *  # noqa
+
+from .base import * # noqa

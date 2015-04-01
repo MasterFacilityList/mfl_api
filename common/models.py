@@ -25,13 +25,13 @@ class Contact(AbstractBase):
     address = models.CharField(max_length=100)
     nearest_town = models.CharField(max_length=100)
     landline = models.CharField(max_length=100)
-    mobile =  models.CharField(max_length=100)
-  
+    mobile = models.CharField(max_length=10)
+
     def __unicode__(self):
-        if self.email:        
+        if self.email:
             return self.email
         else:
-            return self.id
+            return str(self.id)
 
     def validate_mobile(self):
         """
@@ -41,19 +41,19 @@ class Contact(AbstractBase):
         if len(self.mobile) > 10 or len(self.mobile) < 10:
             error = "The mobile number format is wrong. Use 07XXABCDEF"
             raise ValidationError(error)
-        
+
     def clean(self, *args, **kwargs):
         self.validate_mobile()
 
     def save(self, *args, **kwargs):
         self.full_clean(exclude=None)
-        super(Contact, self).save(*args, **kwargs)        
-        
+        super(Contact, self).save(*args, **kwargs)
 
-class Province(RegionAbstractBase):    
+
+class Province(RegionAbstractBase):
 
     def __unicode__(self):
-        return  self.name
+        return self.name
 
 
 class County(RegionAbstractBase):
@@ -67,7 +67,7 @@ class County(RegionAbstractBase):
 
 
 class Constituency(RegionAbstractBase):
-    county  = models.ForeignKey(County)
+    county = models.ForeignKey(County)
 
     def __unicode__(self):
         return self.name
@@ -85,13 +85,12 @@ class Division(RegionAbstractBase):
     district = models.ForeignKey(District)
     constituency = models.ForeignKey(Constituency, null=True, blank=True)
 
-    
     def __unicode__(self):
         return self.name
 
 
 class Location(RegionAbstractBase):
-    division =  models.ForeignKey(Division)
+    division = models.ForeignKey(Division)
 
     def __unicode__(self):
         return self.name
@@ -103,14 +102,14 @@ class SubLocation(RegionAbstractBase):
     def __unicode__(self):
         return self.name
 
-    @property   
+    @property
     def division(self):
         return self.location.division
 
     @property
     def district(self):
         return self.division.district
-    
+
     @property
     def county(self):
         return self.district.county

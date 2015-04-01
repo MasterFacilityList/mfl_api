@@ -3,9 +3,8 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from ..models import (
-    Contact, Province, County, Location, District,
-     Division, Location, SubLocation, Constituency
-    )
+    Contact, Province, County, District,
+    Division, Location, SubLocation, Constituency)
 
 
 class TestContactModel(TestCase):
@@ -13,7 +12,7 @@ class TestContactModel(TestCase):
         contact_data = {
             "email": "test@mail.com",
             "town": "Ughaibuni",
-            "postal_code":"00900",
+            "postal_code": "00900",
             "address": "189",
             "nearest_town": "Uyoma",
             "landline": "020-83573295",
@@ -21,12 +20,12 @@ class TestContactModel(TestCase):
         }
         Contact.objects.create(**contact_data)
         self.assertEquals(1, Contact.objects.count())
-  
+
     def test_contact_phone_number_validation(self):
         contact_data = {
             "email": "test@mail.com",
             "town": "Ughaibuni",
-            "postal_code":"00900",
+            "postal_code": "00900",
             "address": "189",
             "nearest_town": "Uyoma",
             "landline": "020-83573295",
@@ -42,7 +41,7 @@ class TestContactModel(TestCase):
         contact_data = {
             "email": "test@mail.com",
             "town": "Ughaibuni",
-            "postal_code":"00900",
+            "postal_code": "00900",
             "address": "189",
             "nearest_town": "Uyoma",
             "landline": "020-83573295",
@@ -55,7 +54,7 @@ class TestContactModel(TestCase):
         contact_data = {
             "email": "test@mail.com",
             "town": "Ughaibuni",
-            "postal_code":"00900",
+            "postal_code": "00900",
             "address": "189",
             "nearest_town": "Uyoma",
             "landline": "020-83573295",
@@ -94,7 +93,7 @@ class TestProvinceModel(TestCase):
         # try creating a province with the name again
         with self.assertRaises(IntegrityError):
             p = Province(**data)
-            p.save()  
+            p.save()
 
 
 class TestCountyModel(TestCase):
@@ -126,16 +125,16 @@ class TestConstituencyModel(TestCase):
             "county": self.county
 
         }
-        const =  Constituency.objects.create(**constituency_data)
+        Constituency.objects.create(**constituency_data)
         self.assertEquals(1, Constituency.objects.count())
 
     def test_unicode(self):
         const = Constituency.objects.create(
             name="jina", code='some code', county=self.county)
-        self.assertEquals("jina",const.__unicode__())
+        self.assertEquals("jina", const.__unicode__())
 
 
-class  TestDistrictModel(TestCase):
+class TestDistrictModel(TestCase):
     def test_save_district(self):
         county = County.objects.create(name="county x", code="XCounty")
         data = {
@@ -159,7 +158,7 @@ class  TestDistrictModel(TestCase):
 
 class TestDivisionModel(TestCase):
     def test_save_division(self):
-        county =  County.objects.create(name="countyy", code="asf")
+        county = County.objects.create(name="countyy", code="asf")
         district = District.objects.create(
             name="Baringo", code="BA", county=county)
         data = {
@@ -171,7 +170,7 @@ class TestDivisionModel(TestCase):
         self.assertEquals(1, Division.objects.count())
 
     def test_unicode(self):
-        county =  County.objects.create(name="countyy", code="asf")
+        county = County.objects.create(name="countyy", code="asf")
         district = District.objects.create(
             name="Baringo", code="BA", county=county)
         data = {
@@ -185,7 +184,7 @@ class TestDivisionModel(TestCase):
 
 class TestLocationModel(TestCase):
     def test_save_location(self):
-        county =  County.objects.create(name="countyy", code="asf")
+        county = County.objects.create(name="countyy", code="asf")
         district = District.objects.create(
             name="Baringo", code="BA", county=county)
         division = Division.objects.create(
@@ -205,7 +204,7 @@ class TestLocationModel(TestCase):
 class TestSublocationModel(TestCase):
     def test_save_sublocation(self):
         province = Province.objects.create(name="Rift Valley", code="RV")
-        county =  County.objects.create(
+        county = County.objects.create(
             name="county", code="asf")
         district = District.objects.create(
             name="Baringo", code="BA", county=county, province=province)
@@ -215,13 +214,13 @@ class TestSublocationModel(TestCase):
             name="Tenwek", code="TEN", district=district,
             constituency=constituency)
         location = Location.objects.create(
-            name="Mogogosiek",code="MOG", division=division)
+            name="Mogogosiek", code="MOG", division=division)
         sub_location_data = {
             "name": "emurwa",
             "code": "EMU",
             "location": location
         }
-        sub_location =  SubLocation.objects.create(**sub_location_data)
+        sub_location = SubLocation.objects.create(**sub_location_data)
         self.assertEquals(1, SubLocation.objects.count())
 
         # test location

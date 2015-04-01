@@ -40,5 +40,4 @@ def setup(*args, **kwargs):
     psql("CREATE USER mfl WITH SUPERUSER CREATEDB "
          "CREATEROLE LOGIN PASSWORD 'mfl'", no_sudo)
     psql('CREATE DATABASE mfl', no_sudo)
-    manage('migrate users')
     manage('migrate')
