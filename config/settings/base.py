@@ -18,18 +18,23 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'django.contrib.admin',
+    'users',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 )
 
 LOCAL_APPS = (
-    'minion',
+    'facilities',
+    'common',
+    'roles',
 )
 INSTALLED_APPS += LOCAL_APPS
 
+AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

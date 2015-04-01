@@ -1,0 +1,86 @@
+from django.db import models
+from django.utils import timezone
+from django.core.validators import validate_email, RegexValidator
+from django.contrib.auth.models import make_password
+from django.contrib.auth.models import (
+    AbstractBaseUser, BaseUserManager, PermissionsMixin)
+from django.conf import settings
+
+from common.models import AbstractBase, Contact, SubLocation
+
+USER_MODEL = settings.AUTH_USER_MODEL
+
+class MflUserManager(BaseUserManager):
+    def create_user(self, email, first_name,
+                    username, password=None, **extra_fields):
+        now = timezone.now()
+        if not email:
+            raise ValueError('The email must be set')
+        validate_email(email)
+        p = make_password(password)
+        email = EmployeeManager.normalize_email(email)
+        user = self.model(email=email, first_name=first_name,password=p,
+                          username=username,
+                          is_staff=False, is_active=True, is_superuser=False,
+                          last_login=now, date_joined=now, **extra_fields)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, first_name, username,
+                         password, **extra_fields):
+        user = self.create_user(email, first_name,
+                                username, password, **extra_fields)
+        user.is_staff = True
+        user.is_active = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
+
+class MflUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(null=False, blank=False, unique=True)
+    first_name = models.CharField(max_length=60, null=False, blank=False)
+    last_name = models.CharField(max_length=60, blank=True)
+    other_names = models.CharField(max_length=80, null=False, blank=True,
+                                   default="")
+    username = models.CharField(
+        max_length=60, null=False,
+        blank=False, unique=True,
+        validators=[RegexValidator(
+            regex=r'^\w+$',
+            message='Preferred name contain only '
+                    'letters numbers or underscores'
+        )
+        ])
+
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+    
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    objects = MflUserManager()
+
+    def get_short_name(self):
+        return self.first_name
+
+    def get_full_name(self):
+        return "{0} {1} {2}".format(
+            self.first_name, self.last_name, self.other_names)
+
+    def save(self, *args, **kwargs):
+        super(Employee, self).save(*args, **kwargs)
+
+
+class UserDetail(models.Model):
+    user =  models.ForeignKey(USER_MODEL, related_name='user_detail', default=1)
+    contact = models.ForeignKey(Contact)
+    sub_location = models.ForeignKey(SubLocation, default=1)    
+    id_number = models.CharField(max_length=100, unique=True)
+    dob = models.DateTimeField(
+        default=timezone.now, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.user.email
