@@ -10,7 +10,6 @@ from common.models import AbstractBase, Contact, SubLocation
 
 USER_MODEL = settings.AUTH_USER_MODEL
 
-
 class MflUserManager(BaseUserManager):
     def create_user(self, email, first_name,
                     username, password=None, **extra_fields):
@@ -76,22 +75,12 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
 
 class UserDetail(models.Model):
-    user =  models.ForeignKey(USER_MODEL)
+    user =  models.ForeignKey(USER_MODEL, related_name='user_detail', default=1)
     contact = models.ForeignKey(Contact)
-    sub_location = models.ForeignKey(SubLocation)    
+    sub_location = models.ForeignKey(SubLocation, default=1)    
     id_number = models.CharField(max_length=100, unique=True)
     dob = models.DateTimeField(
         default=timezone.now, null=True, blank=True)
 
     def __unicode__(self):
         return self.user.email
-
-
-def create_users_first_email():
-    """
-    Creates the users first contact given that the user 
-    model has an email already.
-
-    """
-    # will be completed in due time
-    return True

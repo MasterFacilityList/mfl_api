@@ -3,12 +3,13 @@ from django.utils import timezone
 from django.conf import settings
 
 
-USER_MODEL = settings.AUTH_USER_MODEL
+
 
 
 class AbstractBase(models.Model):
+    # USER_MODEL = settings.AUTH_USER_MODEL
     created = models.DateTimeField(default=timezone.now)
-    created_by = models.ForeignKey(USER_MODEL)
+    # created_by = models.ForeignKey(USER_MODEL, default=1)
 
     class Meta:
         abstract = True

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import django.utils.timezone
+from django.conf import settings
 import django.core.validators
 
 
@@ -44,6 +45,7 @@ class Migration(migrations.Migration):
                 ('dob', models.DateTimeField(default=django.utils.timezone.now, null=True, blank=True)),
                 ('contact', models.ForeignKey(to='common.Contact')),
                 ('sub_location', models.ForeignKey(to='common.SubLocation')),
+                ('user', models.ForeignKey(related_name='user_detail', default=1, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]
