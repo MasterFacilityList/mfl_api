@@ -243,3 +243,5 @@ class TestSublocationModel(TestCase):
         self.assertEquals(
             constituency, sub_location.constituency)
 
+        # test sublocations _unicode
+        self.assertEquals("emurwa", sub_location.__unicode__())
