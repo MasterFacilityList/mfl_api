@@ -6,6 +6,8 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from django.conf import settings
 
+from common.models import Contact, County, AbstractBase
+
 
 USER_MODEL = settings.AUTH_USER_MODEL
 
@@ -56,6 +58,10 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    is_incharge = models.BooleanField(default=False)
+    contact = models.ForeignKey(Contact, null=True, blank=True)
+    county = models.ForeignKey(County, null=True, blank=True)
+    is_national = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
@@ -71,3 +77,22 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
+
+
+class InchargeCounties(AbstractBase):
+    """
+    Will store a record of the counties that a user has been incharge of
+    """
+    user = models.ForeignKey(MflUser, related_name='counties')
+    county = models.ForeignKey(County)
+    is_active = models.BooleanField(default=True)
+
+    def __unicode___(self):
+        return "{}: {}".format(self.user.email, self.county.name)
+
+    def current_active_counties(self):
+        """
+        A user can be incharge of several counties at the same time.
+        """
+        return self.__class___.objects.filter(
+            user=self.user, is_active=True)

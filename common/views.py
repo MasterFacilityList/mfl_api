@@ -1,3 +1,5 @@
+from django.contrib.auth.models import AnonymousUser
+
 from rest_framework import generics
 
 from .models import (
@@ -11,6 +13,21 @@ from .serializers import (
     SubLocationSerializer, ConstituencySerializer)
 
 
+class FilterViewMixin(object):
+    def get_queryset(self):
+        user = self.request.user
+        if not isinstance(user, AnonymousUser):
+            if user.is_national:
+                return self.queryset
+            else:
+                if user.is_incharge:
+                    return self.queryset.filter(county=user.county)
+                else:
+                    return []
+        else:
+            return self.queryset
+
+
 class ContactView(generics.ListCreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
@@ -19,7 +36,7 @@ class ContactView(generics.ListCreateAPIView):
 class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'
 
 
 class ProvinceView(generics.ListCreateAPIView):
@@ -30,7 +47,7 @@ class ProvinceView(generics.ListCreateAPIView):
 class ProvinceDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Province.objects.all()
     serializer_class = ProvinceSerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'
 
 
 class DisctrictView(generics.ListCreateAPIView):
@@ -42,7 +59,7 @@ class DisctrictView(generics.ListCreateAPIView):
 class DistrictDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = District.objects.all()
     serializer_class = DistrictSerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'
 
 
 class DivisionView(generics.ListCreateAPIView):
@@ -54,7 +71,7 @@ class DivisionView(generics.ListCreateAPIView):
 class DivisionDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Division.objects.all()
     serializer_class = DivisionSerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'
 
 
 class LocationView(generics.ListCreateAPIView):
@@ -66,7 +83,7 @@ class LocationView(generics.ListCreateAPIView):
 class LocationDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'
 
 
 class SubLocationView(generics.ListCreateAPIView):
@@ -78,7 +95,7 @@ class SubLocationView(generics.ListCreateAPIView):
 class SubLocationDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SubLocation.objects.all()
     serializer_class = SubLocationSerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'
 
 
 class CountyView(generics.ListCreateAPIView):
@@ -89,7 +106,7 @@ class CountyView(generics.ListCreateAPIView):
 class CountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = County.objects.all()
     serializer_class = CountySerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'
 
 
 class ConstituencyView(generics.ListCreateAPIView):
@@ -101,4 +118,4 @@ class ConstituencyView(generics.ListCreateAPIView):
 class ConstituentcyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Constituency.objects.all()
     serializer_class = ConstituencySerializer
-    lookup_id = 'pk'
+    lookup_field = 'id'

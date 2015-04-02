@@ -41,7 +41,7 @@ class Facility(AbstractBase):
     description = models.TextField()
     facility_type = models.CharField(
         max_length=100, choices=FACILITY_TYPES)
-    services = models.ManyToManyField(Service)
+    services = models.ManyToManyField(Service, blank=True, null=True)
     number_of_beds = models.PositiveIntegerField(default=0)
     number_of_cots = models.PositiveIntegerField(default=0)
     open_whole_day = models.BooleanField(default=False)
@@ -56,7 +56,3 @@ class Facility(AbstractBase):
 
     class Meta:
         verbose_name_plural = 'Facilities'
-
-
-class CommunityUnits(models.Model):
-    pass

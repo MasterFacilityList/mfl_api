@@ -25,11 +25,14 @@ class Permission(AbstractBase):
 
 
 class RolePermissions(AbstractBase):
-    role = models.ForeignKey(Role)
+    role = models.ForeignKey(Role, related_name='role_permissions')
     permission = models.ForeignKey(Permission)
 
     def __unicode__(self):
         return "{}: {}".format(self.role.name, self.permission.name)
+
+    class Meta:
+        unique_together = ('role', 'permission',)
 
 
 class UserRoles(AbstractBase):
