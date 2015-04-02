@@ -7,13 +7,6 @@ from common.models import AbstractBase
 USER_MODEL = settings.AUTH_USER_MODEL
 
 
-INITIAL_ROLES = (
-    ('REGULATOR', ''),
-    ('SCHMT', ''),
-    ('APPROVER', ''),
-)
-
-
 class Role(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -23,11 +16,27 @@ class Role(AbstractBase):
         return self.name
 
 
+class Permission(AbstractBase):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.name
+
+
+class RolePermissions(AbstractBase):
+    role = models.ForeignKey(Role)
+    permission = models.ForeignKey(Permission)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.role.name, self.permission.name)
+
+
 class UserRoles(AbstractBase):
     user = models.ForeignKey(USER_MODEL, related_name='user_roles')
     role = models.ForeignKey(Role)
 
     def __unicode__(self):
-        custom_string = "{} {}".format(
+        custom_string = "{}: {}".format(
             self.user.email, self.role.name)
         return custom_string

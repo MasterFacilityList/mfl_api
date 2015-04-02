@@ -36,7 +36,10 @@ class ProvinceSerializer(
 
 class CountySerializer(
         AbastractFieldsMixin, serializers.ModelSerializer):
+            "constituency": "Limuru",
 
+            "constituency": "Limuru",
+            "constituency": "Limuru",
     class Meta:
         model = County
 
