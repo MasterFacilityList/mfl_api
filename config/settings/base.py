@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
 )
 
 LOCAL_APPS = (
@@ -34,9 +35,12 @@ LOCAL_APPS = (
 )
 INSTALLED_APPS += LOCAL_APPS
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -78,7 +82,9 @@ REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS':
         'rest_framework.serializers.ModelSerializer',
     'DEFAULT_PERMISSION_CLASSES': (
-        'roles.permissions.MFLPermission',
+        # 'roles.permissions.MFLPermission',
+        'rest_framework.permissions.AllowAny',
+
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
