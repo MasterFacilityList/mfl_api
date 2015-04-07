@@ -1,7 +1,7 @@
 ==========
 Master Facility List API
 ==========
-.. image:: https://circleci.com/gh/MasterFacilityList/mfl_api.svg?style=svg
+.. image:: https://circleci.com/gh/MasterFacilityList/mfl_api.svg?style=shield
     :target: https://circleci.com/gh/MasterFacilityList/mfl_api
 
 This is the backend for the Master Facility list. 
@@ -43,13 +43,13 @@ a. Through ``swagger``.
 
 b. Through accessing the urls directly
 
-Below is a listing of the urls in the project:
+Below is a listing of the major urls in the project:
 
 **Counties**
 ``api/common/counties/``
 
 **Constituencies**
-``api/common/constituencies``
+``api/common/constituencies/``
 
 **Contacts**
 ``api/common/contacts/``
