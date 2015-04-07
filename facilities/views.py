@@ -10,7 +10,6 @@ from .serializers import (
 class OwnerListView(generics.ListCreateAPIView):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
-    filter_fields = ()
 
 
 class OwnerDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -22,7 +21,6 @@ class OwnerDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ServiceListView(generics.ListCreateAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
-    filter_fields = ()
 
 
 class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -35,6 +33,7 @@ class FacilityListView(generics.ListCreateAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
     filter_fields = ('owner',)
+    ordering_fields = ('name', )
 
 
 class FaciltyDetailView(generics.RetrieveUpdateDestroyAPIView):

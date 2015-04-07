@@ -82,21 +82,20 @@ REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS':
         'rest_framework.serializers.ModelSerializer',
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'roles.permissions.MFLPermission',
-        'rest_framework.permissions.AllowAny',
-
+        'roles.permissions.MFLPermission',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
     ),
     'DEFAULT_PARSER_CLASSES': (
-        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
         'rest_framework.parsers.JSONParser',
+        'rest_framework_xml.parsers.XMLParser',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.BrowsableAPIRenderer',
-        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
         'rest_framework.renderers.JSONRenderer',
+        'rest_framework_xml.renderers.XMLRenderer',
+        'rest_framework_csv.renderers.CSVRenderer',
     ),
     'PAGINATE_BY': 25,
     'PAGINATE_BY_PARAM': 'page_size',

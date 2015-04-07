@@ -48,6 +48,7 @@ class UserList(FilterViewMixin, generics.ListCreateAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
     filter_fields = ('is_active', 'is_incharge', 'is_superuser', 'is_staff')
+    ordering_fields = ('first_name', )
 
 
 class UserDetailView(FilterViewMixin, generics.RetrieveUpdateDestroyAPIView):
@@ -60,6 +61,7 @@ class UserCountiesView(FilterViewMixin, generics.ListCreateAPIView):
     queryset = InchargeCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
     filter_fields = ('user', 'county', )
+    ordering_fields = ('user', )
 
 
 class UserCountyDetailView(

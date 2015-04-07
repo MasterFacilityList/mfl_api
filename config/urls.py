@@ -1,6 +1,4 @@
 from django.conf.urls import url, patterns, include
-from django.contrib import admin
-admin.autodiscover()
 
 
 apipatterns = patterns(
@@ -13,7 +11,6 @@ apipatterns = patterns(
 
 urlpatterns = patterns(
     '',
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(apipatterns, namespace='api')),
     url(r'^api/auth/',
         include('rest_framework.urls', namespace='rest_framework')),

@@ -1,14 +1,26 @@
 import logging
 
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.conf import settings
 
 LOGGER = logging.getLogger(__file__)
 
+CONTACT_TYPES = (
+    ('EMAIL', 'email'),
+    ('LANDLINE', 'landline'),
+    ('MOBILE', 'Mobile Phone number'),
+
+)
+
 
 class AbstractBase(models.Model):
+    """
+    Provides auditing attributes to a model.
+    It will provide audit fields that will keep track of when a model
+    is created or updated and by who.
+    """
+
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(
@@ -17,6 +29,11 @@ class AbstractBase(models.Model):
         settings.AUTH_USER_MODEL, related_name='+')
 
     def preserve_created_and_created_by(self):
+        """
+        Ensures that in subsequent times created and created_by fields
+        values are not overriden.
+        """
+
         try:
             original = self.__class__.objects.get(pk=self.pk)
             self.created = original.created
@@ -36,6 +53,9 @@ class AbstractBase(models.Model):
 
 
 class RegionAbstractBase(AbstractBase):
+    """
+    Model to hold the common attributes of a region
+    """
     name = models.CharField(max_length=100, unique=True)
     code = models.CharField(max_length=100, unique=True)
 
@@ -44,51 +64,40 @@ class RegionAbstractBase(AbstractBase):
 
 
 class Contact(AbstractBase):
-    email = models.EmailField(null=True, blank=True)
+    """
+    Holds contacts such as email and phone number.
+    """
+    contact = models.CharField(max_length=100)
+    contact_type = models.CharField(choices=CONTACT_TYPES, max_length=100)
+
+    def __unicode__(self):
+        return str(self.id)
+
+
+class PhysicalAddress(AbstractBase):
+    """
+    Details partaining the physical location of a facility
+    """
     town = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     nearest_town = models.CharField(max_length=100)
-    landline = models.CharField(max_length=100)
-    mobile = models.CharField(max_length=10)
+    plot_number = models.CharField(max_length=100)
 
     def __unicode__(self):
-        if self.email:
-            return self.email
-        else:
-            return str(self.id)
-
-    def validate_mobile(self):
-        """
-        Ensures that a mobile phone number takes the Kenyan format
-        07xxabcdef
-        """
-        if len(self.mobile) > 10 or len(self.mobile) < 10:
-            error = "The mobile number format is wrong. Use 07XXABCDEF"
-            raise ValidationError(error)
-
-    def clean(self, *args, **kwargs):
-        self.validate_mobile()
-
-    def save(self, *args, **kwargs):
-        self.full_clean(exclude=None)
-        super(Contact, self).save(*args, **kwargs)
-
-
-class Province(RegionAbstractBase):
-
-    def __unicode__(self):
-        return self.name
+        return str(self.id)
 
 
 class County(RegionAbstractBase):
-    Province = models.ForeignKey(Province, null=True, blank=True)
-
     def __unicode__(self):
         return self.name
 
-    class Meta:
-        pass
+
+class SubCounty(RegionAbstractBase):
+    county = models.ForeignKey(County)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Constituency(RegionAbstractBase):
@@ -96,68 +105,3 @@ class Constituency(RegionAbstractBase):
 
     def __unicode__(self):
         return self.name
-
-
-class District(RegionAbstractBase):
-    province = models.ForeignKey(Province, null=True, blank=True)
-    county = models.ForeignKey(County)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Division(RegionAbstractBase):
-    district = models.ForeignKey(District)
-    constituency = models.ForeignKey(Constituency, null=True, blank=True)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Location(RegionAbstractBase):
-    division = models.ForeignKey(Division)
-
-    def __unicode__(self):
-        return self.name
-
-
-class SubLocation(RegionAbstractBase):
-    location = models.ForeignKey(Location)
-
-    def __unicode__(self):
-        return self.name
-
-    @property
-    def division(self):
-        return self.location.division
-
-    @property
-    def district(self):
-        return self.division.district
-
-    @property
-    def county(self):
-        return self.district.county
-
-    @property
-    def province(self):
-        return self.district.province
-
-    @property
-    def constituency(self):
-        return self.division.constituency
-
-
-class Feedback(models.Model):
-    name = models.CharField(max_length=255)
-    job = models.CharField(max_length=255)
-    email = models.EmailField()
-    subjet = models.CharField(max_length=255)
-    comment = models.TextField()
-
-    def __unicode__(self):
-        return self.email
-
-    class Meta:
-        verbose_name = 'Feedback from users'
-        verbose_name_plural = 'Feedback from users'

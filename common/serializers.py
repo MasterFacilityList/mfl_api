@@ -2,9 +2,8 @@ from django.utils import timezone
 
 from rest_framework import serializers
 
-from .models import (
-    Contact, Province, County, District,
-    Division, Location, SubLocation, Constituency)
+
+from .models import Contact, County, SubCounty, Constituency
 
 
 class AbstractFieldsMixin(object):
@@ -36,13 +35,6 @@ class ContactSerializer(
         model = Contact
 
 
-class ProvinceSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-
-    class Meta:
-        model = Province
-
-
 class CountySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
@@ -50,34 +42,11 @@ class CountySerializer(
         model = County
 
 
-class DistrictSerializer(
+class SubCountySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
-        model = District
-
-
-class DivisionSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
-        model = Division
-
-
-class LocationSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
-        model = Location
-
-
-class SubLocationSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    division = serializers.CharField(required=False)
-    district = serializers.CharField(required=False)
-    county = serializers.CharField(required=False)
-    province = serializers.CharField(required=False)
-    constituency = serializers.CharField(required=False)
 
     class Meta:
-        model = SubLocation
+        model = SubCounty
 
 
 class ConstituencySerializer(

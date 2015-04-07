@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from django.conf import settings
 
-from common.models import Contact, County, AbstractBase
+from common.models import County, AbstractBase
 
 
 USER_MODEL = settings.AUTH_USER_MODEL
@@ -59,7 +59,6 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_incharge = models.BooleanField(default=False)
-    contact = models.ForeignKey(Contact, null=True, blank=True)
     county = models.ForeignKey(County, null=True, blank=True)
     is_national = models.BooleanField(default=False)
 
@@ -79,7 +78,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         super(MflUser, self).save(*args, **kwargs)
 
 
-class InchargeCounties(AbstractBase):
+class UserInchargeCounties(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of
     """

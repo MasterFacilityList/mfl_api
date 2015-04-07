@@ -3,14 +3,11 @@ from django.contrib.auth.models import AnonymousUser
 from rest_framework import generics
 
 from .models import (
-    Contact, Province, County, District,
-    Division, Location, SubLocation, Constituency)
+    Contact, County, SubCounty, Constituency)
 
 from .serializers import (
-    ContactSerializer, ProvinceSerializer,
-    CountySerializer, DistrictSerializer,
-    DivisionSerializer, LocationSerializer,
-    SubLocationSerializer, ConstituencySerializer)
+    ContactSerializer, CountySerializer, SubCountySerializer,
+    ConstituencySerializer)
 
 
 class FilterViewMixin(object):
@@ -39,65 +36,6 @@ class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
-class ProvinceView(generics.ListCreateAPIView):
-    queryset = Province.objects.all()
-    serializer_class = ProvinceSerializer
-
-
-class ProvinceDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Province.objects.all()
-    serializer_class = ProvinceSerializer
-    lookup_field = 'id'
-
-
-class DisctrictView(generics.ListCreateAPIView):
-    queryset = Contact.objects.all()
-    serializer_class = DistrictSerializer
-    filter_fields = ('county', 'province')
-
-
-class DistrictDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = District.objects.all()
-    serializer_class = DistrictSerializer
-    lookup_field = 'id'
-
-
-class DivisionView(generics.ListCreateAPIView):
-    queryset = Division.objects.all()
-    serializer_class = DivisionSerializer
-    filter_fields = ('district', )
-
-
-class DivisionDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Division.objects.all()
-    serializer_class = DivisionSerializer
-    lookup_field = 'id'
-
-
-class LocationView(generics.ListCreateAPIView):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
-    filter_fields = ('division', )
-
-
-class LocationDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
-    lookup_field = 'id'
-
-
-class SubLocationView(generics.ListCreateAPIView):
-    queryset = SubLocation.objects.all()
-    serializer_class = SubLocationSerializer
-    filter_fields = ('location', )
-
-
-class SubLocationDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SubLocation.objects.all()
-    serializer_class = SubLocationSerializer
-    lookup_field = 'id'
-
-
 class CountyView(generics.ListCreateAPIView):
     queryset = County.objects.all()
     serializer_class = CountySerializer
@@ -109,10 +47,24 @@ class CountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
+class SubCountyView(generics.ListCreateAPIView):
+    queryset = SubCounty.objects.all()
+    serializer_class = SubCountySerializer
+    filter_fields = ('county', )
+    ordering_fields = ('name', )
+
+
+class SubCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Constituency.objects.all()
+    serializer_class = SubCountySerializer
+    lookup_field = 'id'
+
+
 class ConstituencyView(generics.ListCreateAPIView):
     queryset = Constituency.objects.all()
     serializer_class = ConstituencySerializer
     filter_fields = ('county', )
+    ordering_fields = ('name', )
 
 
 class ConstituentcyDetailView(generics.RetrieveUpdateDestroyAPIView):

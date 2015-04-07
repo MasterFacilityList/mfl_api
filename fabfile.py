@@ -1,5 +1,5 @@
 from os.path import dirname, abspath
-
+from config.settings import base
 from fabric.api import local
 from fabric.api import lcd
 
@@ -34,11 +34,15 @@ def psql(query, no_sudo=False, is_file=False):
 
 def setup(*args, **kwargs):
     no_sudo = True if 'no-sudo' in args else False
-    bootstrap_sql = kwargs['sql'] if 'sql' in kwargs else None
-    psql("DROP DATABASE IF EXISTS mfl", no_sudo)
-    psql("DROP USER IF EXISTS mfl", no_sudo)
+    kwargs['sql'] if 'sql' in kwargs else None
+    db_name = base.DATABASES.get('default').get('NAME')
+    db_user = base.DATABASES.get('default').get('USER')
+    db_pass = base.DATABASES.get('default').get("PASSWORD")
+
+    psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
+    psql("DROP USER IF EXISTS {}".format(db_user), no_sudo)
     psql("CREATE USER mfl WITH SUPERUSER CREATEDB "
-         "CREATEROLE LOGIN PASSWORD 'mfl'", no_sudo)
+         "CREATEROLE LOGIN PASSWORD '{}'".format(db_pass), no_sudo)
     psql('CREATE DATABASE mfl', no_sudo)
     manage('migrate users')
     manage('migrate')
