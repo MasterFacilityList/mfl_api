@@ -32,6 +32,7 @@ LOCAL_APPS = (
     'facilities',
     'common',
     'roles',
+    'data_bootstrap',
 )
 INSTALLED_APPS += LOCAL_APPS
 
