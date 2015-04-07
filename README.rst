@@ -36,7 +36,7 @@ Once all the steps above have been carried out, the system is ready to run and o
 
 There are two ways to explore the api:
 
-a. Through swagger. 
+a. Through ``swagger``. 
    This is the recommended way as one can easily try  ``GET``, ``POST``, ```PUT``,  ``PATCH``, ```DELETE``, ``OPTIONS`` on an endpoint if they are allowed.
 
    To explore the endpoint throught swagger visit the url ``api/explore/``. 
