@@ -34,9 +34,12 @@ B: Installing the system
 
 Once all the steps above have been carried out, the system is ready to run and one can explore the api. 
 
-There are two ways once can explore the api:
+There are two ways to explore the api:
 
-a. Through swagger, the url is ``api/explore``
+a. Through swagger. 
+   This is the recommended way as one can easily try  ``GET``, ``POST``, ```PUT``,  ``PATCH``, ```DELETE``, ``OPTIONS`` on an endpoint if they are allowed.
+
+   To explore the endpoint throught swagger visit the url ``api/explore/``. 
 
 b. Through accessing the urls directly
 
@@ -45,7 +48,7 @@ Below is a listing of the urls in the project:
 **Counties**
 ``api/common/counties/``
 
-**Constituncies**
+**Constituencies**
 ``api/common/constituencies``
 
 **Contacts**
@@ -74,3 +77,9 @@ Below is a listing of the urls in the project:
 
 **Services**
 ``api/facilities/services/``
+
+
+Data Formats Supported
+----------------------
+The formats supported are xml, json, csv and xlsx.
+The default data format is json. To access xml append ?format=xml to an endpoint. To access data in csv append ?format=csv and similarly to access xlsx append ?format=xlsx. 
