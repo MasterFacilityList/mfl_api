@@ -35,6 +35,7 @@ B: Installing the system
 Once all the steps above have been carried out, the system is ready to run and one can explore the api. 
 
 There are two ways once can explore the api:
+
 a. Through swagger, the url is ``api/explore``
 
 b. Through accessing the urls directly
