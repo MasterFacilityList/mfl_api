@@ -20,7 +20,6 @@ setup(
         "psycopg2==2.5.4",
         "djangorestframework==3.1.0",
         "django-filter==0.9.2",
-        "model-mommy==1.2.2",
         "markdown==2.5.1",
         "python-dateutil==2.4.0",
         "flake8==2.3.0",
