@@ -7,7 +7,7 @@ Master Facility List API
 This is the backend for the Master Facility list. 
 It provides an api through which one is able to access various resources provided by master facility list; Including facilities and their services.
 
-
+Read more at http://ehealth.or.ke/facilities/
 
 Getting started
 ----------------
