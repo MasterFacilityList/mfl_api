@@ -11,8 +11,8 @@ Read more at http://ehealth.or.ke/facilities/
 
 Getting started
 ----------------
-A: Running the system from source code
------------------------------------
+**A: Running the system from source code**
+
 1. Create a virtualenv
 
 2. Activate the created vitualenv and run ``pip install -r requirements.``
@@ -26,22 +26,22 @@ A: Running the system from source code
 
     * Load demo data if the project is in development mode.
 
-B: Installing the system
--------------------------
+**B: Installing the system**
 1. Create a virtaulenv.
 2. Activate the virtualenv and run ``python setup.py install`` while in the project folder.
 
-
+Explore the api
+---------------
 Once all the steps above have been carried out, the system is ready to run and one can explore the api. 
 
 There are two ways to explore the api:
 
-a. Through ``swagger``. 
+**a. Through ``swagger``**
    This is the recommended way as one can easily try  ``GET``, ``POST``, ``PUT``,  ``PATCH``, ``DELETE``, ``OPTIONS`` on an endpoint if they are allowed.
 
    To explore the endpoint throught swagger visit the url ``api/explore/``. 
 
-b. Through accessing the urls directly
+**b. Through accessing the urls directly**
 
 Below is a listing of the major urls in the project:
 
