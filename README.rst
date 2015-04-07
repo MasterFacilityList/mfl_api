@@ -19,8 +19,11 @@ A: Running the system from source code
 
 3. Run ``fab setup``
     Running this command will do the following:
+
     * Create the database.
+
     * Run migrations.
+
     * Load demo data if the project is in development mode.
 
 B: Installing the system
@@ -30,8 +33,10 @@ B: Installing the system
 
 
 Once all the steps above have been carried out, the system is ready to run and one can explore the api. 
+
 There are two ways once can explore the api:
-a. Through swagger, the url is `api/explore`
+a. Through swagger, the url is ``api/explore``
+
 b. Through accessing the urls directly
 
 Below is a listing of the urls in the project:
@@ -43,10 +48,10 @@ Below is a listing of the urls in the project:
 ``api/common/constituencies``
 
 **Contacts**
-``api/common/contacts``
+``api/common/contacts/``
 
 **Physical address**
-``api/common/address``
+``api/common/address/``
 
 **Sub counties**
 ``api/common/sub_counties/``
@@ -55,7 +60,7 @@ Below is a listing of the urls in the project:
 ``api/common/users/``
 
 **Roles**
-``api/roles``
+``api/roles/``
 
 **Permissions**
 ``api/roles/permissions/``
