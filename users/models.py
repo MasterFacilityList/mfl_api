@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import validate_email, RegexValidator
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import make_password
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
@@ -92,9 +93,16 @@ class UserCounties(AbstractBase):
     def __unicode___(self):
         return "{}: {}".format(self.user.email, self.county.name)
 
-    def current_active_counties(self):
+    def validate_only_one_county_active(self):
         """
-        A user can be incharge of several counties at the same time.
+        A user can be incharge of one county at the a time.
         """
-        return self.__class___.objects.filter(
+        counties = self.__class___.objects.filter(
             user=self.user, is_active=True)
+        if counties.count() > 0:
+            raise ValidationError(
+                "A user can only be active in one county at a time")
+
+    def save(self, *args, **kwargs):
+        self.validate_only_one_county_active()
+        super(UserCounties, self).save(*args, **kwargs)
