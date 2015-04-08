@@ -81,11 +81,11 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         super(MflUser, self).save(*args, **kwargs)
 
 
-class UserInchargeCounties(AbstractBase):
+class UserCounties(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of
     """
-    user = models.ForeignKey(MflUser, related_name='counties')
+    user = models.ForeignKey(MflUser, related_name='user_counties')
     county = models.ForeignKey(County)
     is_active = models.BooleanField(default=True)
 
