@@ -79,9 +79,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    # Use hyperlinked styles by default.
-    'DEFAULT_MODEL_SERIALIZER_CLASS':
-        'rest_framework.serializers.ModelSerializer',
+    #  No need to specitfy default serializer classes as the
+    #  serializers are declared in views
     'DEFAULT_PERMISSION_CLASSES': (
         'roles.permissions.MFLPermission',
     ),
