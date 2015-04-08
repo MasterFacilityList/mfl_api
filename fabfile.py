@@ -41,8 +41,8 @@ def setup(*args, **kwargs):
 
     psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
     psql("DROP USER IF EXISTS {}".format(db_user), no_sudo)
-    psql("CREATE USER mfl WITH SUPERUSER CREATEDB "
-         "CREATEROLE LOGIN PASSWORD '{}'".format(db_pass), no_sudo)
-    psql('CREATE DATABASE mfl', no_sudo)
+    psql("CREATE USER {0} WITH SUPERUSER CREATEDB "
+         "CREATEROLE LOGIN PASSWORD '{1}'".format(db_user, db_pass), no_sudo)
+    psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     manage('migrate users')
     manage('migrate')

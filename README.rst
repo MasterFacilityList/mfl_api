@@ -31,13 +31,13 @@ Getting started
 
 2. Activate the virtualenv and run ``python setup.py install`` while in the project folder.
 
-Explore the api
+Explore the API
 ---------------
 Once all the steps above have been carried out, the system is ready to run and one can explore the api. 
 
-There are two ways to explore the api:
+There are two ways to explore the API:
 
-**a. Through swagger**
+**a. Through Swagger**
    This is the recommended way as one can easily try  ``GET``, ``POST``, ``PUT``,  ``PATCH``, ``DELETE``, ``OPTIONS`` on an endpoint if they are allowed.
 
    To explore the endpoint throught swagger visit the url ``api/explore/``. 
