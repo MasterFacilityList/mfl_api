@@ -59,7 +59,6 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    is_incharge = models.BooleanField(default=False)
     county = models.ForeignKey(County, null=True, blank=True)
     is_national = models.BooleanField(default=False)
 
@@ -95,7 +94,7 @@ class UserCounties(AbstractBase):
 
     def validate_only_one_county_active(self):
         """
-        A user can be incharge of one county at the a time.
+        A user can be incharge of only one county at the a time.
         """
         counties = self.__class___.objects.filter(
             user=self.user, is_active=True)

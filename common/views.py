@@ -1,5 +1,3 @@
-from django.contrib.auth.models import AnonymousUser
-
 from rest_framework import generics
 
 from .models import (
@@ -8,21 +6,6 @@ from .models import (
 from .serializers import (
     ContactSerializer, CountySerializer, SubCountySerializer,
     ConstituencySerializer, ContactTypeSerializer)
-
-
-class FilterViewMixin(object):
-    def get_queryset(self):
-        user = self.request.user
-        if not isinstance(user, AnonymousUser):
-            if user.is_national:
-                return self.queryset
-            else:
-                if user.is_incharge:
-                    return self.queryset.filter(county=user.county)
-                else:
-                    return []
-        else:
-            return self.queryset
 
 
 class ContactView(generics.ListCreateAPIView):
