@@ -17,4 +17,4 @@ class Command(BaseCommand):
                 # check if it's a glob
                 for filename in glob.glob(suggestion):
                     process_json_file(filename)
-        print "Done loading"
+        self.stdout.write("Done loading")
