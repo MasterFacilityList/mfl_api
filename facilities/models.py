@@ -1,6 +1,6 @@
 import random
 from django.db import models
-from common.models import AbstractBase, SubCounty
+from common.models import AbstractBase, SubCounty, Contact
 
 
 class Owner(AbstractBase):
@@ -18,7 +18,7 @@ class Owner(AbstractBase):
 
 
 class Service(AbstractBase):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
     code = models.CharField(max_length=100, unique=True)
 
@@ -35,11 +35,11 @@ class Service(AbstractBase):
 
 
 class FacilityStatus(AbstractBase):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
 
 class FacilityType(AbstractBase):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
 
 class Facility(AbstractBase):
@@ -47,7 +47,6 @@ class Facility(AbstractBase):
     code = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     facility_type = models.OneToOneField(FacilityType)
-    services = models.ManyToManyField(Service)
     number_of_beds = models.PositiveIntegerField(default=0)
     number_of_cots = models.PositiveIntegerField(default=0)
     open_whole_day = models.BooleanField(default=False)
@@ -81,3 +80,24 @@ class FacitlityGIS(AbstractBase):
     latitude = models.CharField(max_length=255)
     longitude = models.CharField(max_length=255)
     is_classified = models.BooleanField(default=False)
+
+    def __unicode___(self):
+        return self.facility.name
+
+
+class FacilityService(AbstractBase):
+    facility = models.ForeignKey(Facility, related_name='facility_services')
+    service = models.ForeignKey(Service)
+
+    def __unicode__(self):
+        return "{}::{}".format(self.facility.name, self.service.name)
+
+
+class FacilityContact(AbstractBase):
+    facility = models.ForeignKey(Facility)
+    contact = models.ForeignKey(Contact)
+
+    def __unicode__(self):
+        return "{}::{}::{}".format(
+            self.facility.name, self.contact.contact_type,
+            str(self.contact.id))
