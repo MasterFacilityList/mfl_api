@@ -14,8 +14,8 @@ urlpatterns = patterns(
 
 
     url(r'^counties/$', CountyView.as_view(), name='counties_list'),
-    url(r'^counties/(?P<id>\w+)/$', CountyDetailView.as_view(),
-        name='county_detail'),
+    # url(r'^counties/(?P<id>\w+)/$', CountyDetailView.as_view(),
+    #     name='county_detail'),
 
     url(r'^subcounties/$', SubCountyView.as_view(), name='sub_counties_list'),
     url(r'^subcounties/(?P<id>\w+)/$', SubCountyDetailView.as_view(),
