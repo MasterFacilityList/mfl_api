@@ -8,6 +8,9 @@ class Owner(AbstractBase):
     description = models.TextField(null=True, blank=True)
     code = models.CharField(max_length=100, unique=True)
 
+    def __unicode__(self):
+        return self.name
+
     def generate_code(self):
         return "{}{}".format("OWNER", str(self.id))
 
@@ -37,9 +40,15 @@ class Service(AbstractBase):
 class FacilityStatus(AbstractBase):
     name = models.CharField(max_length=100, unique=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class FacilityType(AbstractBase):
     name = models.CharField(max_length=100, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Facility(AbstractBase):
