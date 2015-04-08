@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 from django.db import models
 from django.utils import timezone
@@ -6,12 +7,7 @@ from django.conf import settings
 
 LOGGER = logging.getLogger(__file__)
 
-CONTACT_TYPES = (
-    ('EMAIL', 'email'),
-    ('LANDLINE', 'landline'),
-    ('MOBILE', 'Mobile Phone number'),
-
-)
+# TODO ensure model update_by and udpated are not overwritten
 
 
 class AbstractBase(models.Model):
@@ -20,7 +16,7 @@ class AbstractBase(models.Model):
     It will provide audit fields that will keep track of when a model
     is created or updated and by who.
     """
-
+    id = models.UUIDFIeld(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(
@@ -64,12 +60,20 @@ class RegionAbstractBase(AbstractBase):
         abstract = True
 
 
+class ContactType(AbstractBase):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.name
+
+
 class Contact(AbstractBase):
     """
     Holds contacts such as email and phone number.
     """
     contact = models.CharField(max_length=100)
-    contact_type = models.CharField(choices=CONTACT_TYPES, max_length=100)
+    contact_type = models.ForeignKey(ContactType)
 
     def __unicode__(self):
         return str(self.id)

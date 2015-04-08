@@ -3,11 +3,11 @@ from django.contrib.auth.models import AnonymousUser
 from rest_framework import generics
 
 from .models import (
-    Contact, County, SubCounty, Constituency)
+    Contact, County, SubCounty, Constituency, ContactType)
 
 from .serializers import (
     ContactSerializer, CountySerializer, SubCountySerializer,
-    ConstituencySerializer)
+    ConstituencySerializer, ContactTypeSerializer)
 
 
 class FilterViewMixin(object):
@@ -28,23 +28,24 @@ class FilterViewMixin(object):
 class ContactView(generics.ListCreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
+    ordering_fields = ('contact_type', )
+    filter_fields = ('contact_type', )
 
 
 class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
-    lookup_field = 'id'
 
 
 class CountyView(generics.ListCreateAPIView):
     queryset = County.objects.all()
     serializer_class = CountySerializer
+    ordering_fields = ('name', )
 
 
 class CountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = County.objects.all()
     serializer_class = CountySerializer
-    lookup_field = 'id'
 
 
 class SubCountyView(generics.ListCreateAPIView):
@@ -57,7 +58,6 @@ class SubCountyView(generics.ListCreateAPIView):
 class SubCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Constituency.objects.all()
     serializer_class = SubCountySerializer
-    lookup_field = 'id'
 
 
 class ConstituencyView(generics.ListCreateAPIView):
@@ -67,7 +67,12 @@ class ConstituencyView(generics.ListCreateAPIView):
     ordering_fields = ('name', )
 
 
-class ConstituentcyDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ConstituencyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Constituency.objects.all()
     serializer_class = ConstituencySerializer
-    lookup_field = 'id'
+
+
+class ContactTypeListView(generics.ListCreateAPIView):
+    queryset = ContactType.objects.all()
+    serializer_class = ContactTypeSerializer
+    ordering_fields = ('name', )

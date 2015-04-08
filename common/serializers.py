@@ -3,7 +3,7 @@ from django.utils import timezone
 from rest_framework import serializers
 
 
-from .models import Contact, County, SubCounty, Constituency
+from .models import Contact, County, SubCounty, Constituency, ContactType
 
 
 class AbstractFieldsMixin(object):
@@ -26,6 +26,13 @@ class AbstractFieldsMixin(object):
         validated_data['updated_by'] = self.context['request'].user
 
         return self.Meta.model.objects.create(**validated_data)
+
+
+class ContactTypeSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = ContactType
 
 
 class ContactSerializer(
