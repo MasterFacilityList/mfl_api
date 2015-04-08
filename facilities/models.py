@@ -77,7 +77,7 @@ class Facility(AbstractBase):
 
 
 class FacitlityGIS(AbstractBase):
-    gis = models.OneToOneField(Facility)
+    facility = models.OneToOneField(Facility)
     latitude = models.CharField(max_length=255)
     longitude = models.CharField(max_length=255)
     is_classified = models.BooleanField(default=False)
