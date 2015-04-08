@@ -19,7 +19,7 @@ urlpatterns = patterns(
 
     url(r'^subcounties/$', SubCountyView.as_view(), name='sub_counties_list'),
     url(r'^subcounties/(?P<id>\w+)/$', SubCountyDetailView.as_view(),
-        name='county_detail'),
+        name='sub_county_detail'),
 
     url(r'^constituencies/$', ConstituencyView.as_view(),
         name='constituencies_list'),

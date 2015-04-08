@@ -55,6 +55,7 @@ class AbstractBase(models.Model):
 class RegionAbstractBase(AbstractBase):
     """
     Model to hold the common attributes of a region
+    All regios
     """
     name = models.CharField(max_length=100, unique=True)
     code = models.CharField(max_length=100, unique=True)

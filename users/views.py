@@ -6,7 +6,7 @@ from rest_framework.views import APIView, Response
 
 from common.views import FilterViewMixin
 
-from .models import MflUser, InchargeCounties
+from .models import MflUser, UserInchargeCounties
 from .serializers import InchargeCountiesSerializer, UserSerializer
 
 
@@ -58,7 +58,7 @@ class UserDetailView(FilterViewMixin, generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserCountiesView(FilterViewMixin, generics.ListCreateAPIView):
-    queryset = InchargeCounties.objects.all()
+    queryset = UserInchargeCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
     filter_fields = ('user', 'county', )
     ordering_fields = ('user', )
@@ -66,6 +66,6 @@ class UserCountiesView(FilterViewMixin, generics.ListCreateAPIView):
 
 class UserCountyDetailView(
         FilterViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = InchargeCounties.objects.all()
+    queryset = UserInchargeCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
     lookup_field = 'id'
