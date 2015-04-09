@@ -421,6 +421,10 @@ class FacitlityGPS(AbstractBase):
     source_of_geo = models.ForeignKey(
         GeoCodeSource,
         help_text="where the geo code came from")
+    methof = models.ForeignKey(
+        GeoCodeMethod,
+        help_text="Method used to obtain the geo codes. e.g"
+        " taken with GPS device")
 
     def __unicode___(self):
         return self.facility.name
