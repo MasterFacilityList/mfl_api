@@ -7,12 +7,14 @@ from .serializers import (
     ContactSerializer, CountySerializer, SubCountySerializer,
     ConstituencySerializer, ContactTypeSerializer)
 
+from .filters import ContactFilter, ConstituencyFilter, SubCountyFilter
+
 
 class ContactView(generics.ListCreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
     ordering_fields = ('contact_type', )
-    filter_fields = ('contact_type', )
+    filter_class = ContactFilter
 
 
 class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -34,7 +36,7 @@ class CountyDetailView(generics.RetrieveUpdateDestroyAPIView):
 class SubCountyView(generics.ListCreateAPIView):
     queryset = SubCounty.objects.all()
     serializer_class = SubCountySerializer
-    filter_fields = ('county', )
+    filter_class = SubCountyFilter
     ordering_fields = ('name', )
 
 
@@ -46,7 +48,7 @@ class SubCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ConstituencyView(generics.ListCreateAPIView):
     queryset = Constituency.objects.all()
     serializer_class = ConstituencySerializer
-    filter_fields = ('county', )
+    filter_class = ConstituencyFilter
     ordering_fields = ('name', )
 
 

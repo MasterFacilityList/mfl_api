@@ -6,8 +6,9 @@ from rest_framework.views import APIView, Response
 
 from common.views import FilterViewMixin
 
-from .models import MflUser, UserInchargeCounties
+from .models import MflUser, UserCounties
 from .serializers import InchargeCountiesSerializer, UserSerializer
+from .filters import MFLUserFilter, UserCountiesFilter
 
 
 class APILogin(APIView):
@@ -47,7 +48,7 @@ class APILogout(APIView):
 class UserList(FilterViewMixin, generics.ListCreateAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
-    filter_fields = ('is_active', 'is_incharge', 'is_superuser', 'is_staff')
+    filter_class = MFLUserFilter
     ordering_fields = ('first_name', )
 
 
@@ -58,14 +59,14 @@ class UserDetailView(FilterViewMixin, generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserCountiesView(FilterViewMixin, generics.ListCreateAPIView):
-    queryset = UserInchargeCounties.objects.all()
+    queryset = UserCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
-    filter_fields = ('user', 'county', )
+    filter_class = UserCountiesFilter
     ordering_fields = ('user', )
 
 
 class UserCountyDetailView(
         FilterViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserInchargeCounties.objects.all()
+    queryset = UserCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
     lookup_field = 'id'

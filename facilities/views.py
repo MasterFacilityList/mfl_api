@@ -1,34 +1,21 @@
-import django_filters
-
 from rest_framework import generics
 from .models import (
-    Owner, Facility, Service, FacilityService, FacilityContact, FacilityGIS)
+    Owner, Facility, Service, FacilityService, FacilityContact, FacilityGPS)
 
 
 from .serializers import (
     OwnerSerializer, ServiceSerializer, FacilitySerializer,
-    FacilityGISSerializer, FacilityContactSerializer, FacilityServiceSerializer
+    FacilityGPSSerializer, FacilityContactSerializer, FacilityServiceSerializer
 )
 
-
-class FacilityFilter(django_filters.FilterSet):
-    beds = django_filters.NumberFilter(name='number_of_beds')
-    cots = django_filters.NumberFilter(name='number_of_cots')
-    open_whole_day = django_filters.BooleanFilter(name='open_whole_day')
-    open_whole_week = django_filters.BooleanFilter(name='open_whole_week')
-    county = django_filters.CharFilter(name='sub_county__county')
-
-    class Meta:
-        model = Facility
-        fields = [
-            'beds', 'cots', 'open_whole_week', 'open_whole_day', 'sub_county',
-            'county', 'facility_type', 'owner', 'status', 'name', 'services'
-        ]
+from .filters import (
+    FacilityFilter, ServiceFilter, FacilityGPSFilter, OwnerFilter)
 
 
 class OwnerListView(generics.ListCreateAPIView):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
+    filter_class = OwnerFilter
 
 
 class OwnerDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -39,6 +26,7 @@ class OwnerDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ServiceListView(generics.ListCreateAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+    filter_class = ServiceFilter
 
 
 class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -80,12 +68,13 @@ class FacilityContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FacilityContactSerializer
 
 
-class FacilityGISListView(generics.ListCreateAPIView):
-    queryset = FacilityGIS.objects.all()
-    serializer_class = FacilityGISSerializer
+class FacilityGPSListView(generics.ListCreateAPIView):
+    queryset = FacilityGPS.objects.all()
+    serializer_class = FacilityGPSSerializer
     filter_fields = ('facility', )
+    filter_class = FacilityGPSFilter
 
 
-class FacilityGISDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityGIS.objects.all()
-    serializer_class = FacilityGISSerializer
+class FacilityGPSDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityGPS.objects.all()
+    serializer_class = FacilityGPSSerializer

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import (Owner, Facility, Service, FacilityService,
-    FacilityContact, FacilityGIS)
+    FacilityContact, FacilityGPS)
 
 from common.serializers import AbstractFieldsMixin
 
@@ -39,7 +39,7 @@ class FacilityContactSerializer(
         model = FacilityContact
 
 
-class FacilityGISService(
+class FacilityGPSService(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = FacilityGIS
+        model = FacilityGPS
