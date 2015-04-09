@@ -41,6 +41,14 @@ class MflUserManager(BaseUserManager):
 
 
 class MflUser(AbstractBaseUser, PermissionsMixin):
+    """
+    Add custom behaviour to the user model.
+
+    Purpose of the custom model:
+        1. Make email the username field.
+        2. Add additional fields to the user such as county and is_national
+    """
+
     email = models.EmailField(null=False, blank=False, unique=True)
     first_name = models.CharField(max_length=60, null=False, blank=False)
     last_name = models.CharField(max_length=60, blank=True)
@@ -83,11 +91,16 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
 class UserCounties(AbstractBase):
     """
-    Will store a record of the counties that a user has been incharge of
+    Will store a record of the counties that a user has been incharge of.
+
+    A user can only be incharge of only one county at a time.
     """
+
     user = models.ForeignKey(MflUser, related_name='user_counties')
     county = models.ForeignKey(County)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Is the user currently incharge of the county?")
 
     def __unicode___(self):
         return "{}: {}".format(self.user.email, self.county.name)

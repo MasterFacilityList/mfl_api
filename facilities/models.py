@@ -63,8 +63,97 @@ class Owner(AbstractBase):
         super(Owner, self).save(*args, **kwargs)
 
 
+class JobTitle(AbstractBase):
+    """
+    This is the job title names of the officers incharge of facilities.
+
+    This is the title given to the in-charge within the facility, for
+    example, Nursing Officer In-Charge, Medical Superintendent, and
+    Hospital Director. This should not be confused with the professional
+     (Nursing Officer I) or Job Group title.
+    """
+
+    name = models.CharField(
+        max_length=100,
+        help_text="A short name for the job title")
+    description = models.TextField(
+        help_text="A short summary of the job title")
+
+
+class OfficerIncharge(AbstractBase):
+    """
+     Identify the officer in-charge of a facility.
+    """
+
+    name = models.CharField(
+        max_length=150,
+        help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
+    job_title = models.ForeignKey(JobTitle)
+    registration_number = models.CharField(
+        max_length=100,
+        help_text="This is the licence number of the officer. e.g for a nurse"
+        " user the NCK registration number.")
+
+
+class OfficerIchargeContact(AbstractBase):
+    """
+    The contact details of the offier incharge.
+
+    The officer incharge may have as many mobile number as possible.
+    Also the number of email addresses is not limited.
+    """
+
+    officer = models.ForeignKey(
+        OfficerIncharge,
+        help_text="This is the officer in charge")
+    contact = models.ForeignKey(
+        Contact,
+        help_text="The contact of the officer incharge may it be email or"
+        " mobile number.")
+
+
+class ServiceCategory(AbstractBase):
+    """
+    Categorisation of health services.
+
+    The categorisation of services could either be:
+        Given in terms of KEPH levels:
+            An example is the laboratory service, where a
+            laboratory – in a facility or stand-alone lab – can offer
+            services deemed appropriate for a level 6 facility, a level
+            5 facility, etc
+
+        Similar services are offered in the different KEPH levels:
+            For example, Environmental Health Services offered in KEPH level
+            2 are similar to those offered in KEPH level 3. If the KEPH level
+            of the facility is known, the corresponding KEPH level of the
+            service should apply. If it is not known, write the higher KEPH
+            level.
+
+        Given through a choice of service level:
+            For example, Oral Health Services are either Basic or Comprehensive
+
+        A combination of choices and KEPH levels:
+            For example, Mental Health
+            Services are either Integrated or Specialised (and the Specialised
+            Services are split into KEPH level).
+    """
+
+
 class Service(AbstractBase):
     """
+    A health service.
+
+    The definition of services has attempted to describe the actual components
+    of the services provided, the basic infrastructure required to effectively
+    provide the service, and human resource required. For example,
+    Comprehensive Dental Services cannot be said to be provided unless there is
+    a dental chair with its accessories and a dentist. If any of this is
+    missing then the service is not provided. However, some services
+    definitions are quite complex and will require involvement of the technical
+    person attached to the district to work with the DHRIO in order to collect
+    the data. For example, the laboratory equipment may require the presence
+    of a District Laboratory Technologist
     """
 
     name = models.CharField(max_length=255, unique=True)
@@ -93,7 +182,12 @@ class FacilityStatus(AbstractBase):
         4. is closed down.
     """
 
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(
+        max_length=100, unique=True,
+        help_text="A short name respresenting the operanation status"
+        " e.g OPERATIONAL")
+    description = models.TextField(
+        help_text="A short explanation of what the status entails.")
 
     def __unicode__(self):
         return self.name
@@ -234,6 +328,11 @@ class Facility(AbstractBase):
         " respective National Regulatory Body.")
     sub_county = models.ForeignKey(SubCounty)
     owner = models.ForeignKey(Owner)
+    location_desc = models.TextField(
+        help_text="This field allows a more detailed description of how"
+        " to locate the facility – use this field as if you were giving"
+        " directions to the facility e.g Joy Medical Clinic is in "
+        "Jubilee Plaza 7th Floor")
 
     def generate_code(self):
         random_number = random.randint(10000, 1000000)
@@ -255,14 +354,73 @@ class Facility(AbstractBase):
         super(Service, self).save(*args, **kwargs)
 
 
-class FacitlityGIS(AbstractBase):
+class GeoCodeSource(AbstractBase):
     """
+    Where the geo-code came from.
+
+    This is the collecting organizatoin‟ of the code.
+    For example, DHMT, the Service Availability Mapping survey (SAM),
+    Kenya Medical Research Institute (KEMRI), the Regional Center for
+    Mapping of Resources for Development (RCMRD), the AIDS, Population
+    and Health Integrated Assistance (APHIA) II, or another source.
+    It is not the individual who collected the code
+    """
+
+    name = models.CharField(
+        max_length=100,
+        help_text="The name of the collecting organization")
+    description = models.TextField(
+        help_text="A short summary of the collecting organization",
+        null=True, blank=True)
+    abbreviation = models.CharField(
+        max_length=10, help_text="An acronym of the collecting or e.g SAM")
+
+
+class GeoCodeMethod(AbstractBase):
+    """
+    Method used to capture the geo-code
+
+    Examples:
+        1= Taken with GPS device,
+        2= Calculated from proximity to school, village, markets
+        3= Calculated from 1:50,000 scale topographic maps,
+        4= Scanned from hand-drawn maps,
+        5= Centroid calculation from sub-location
+        8= No geo-code
+        9= Other
+    """
+
+    name = models.CharField(
+        max_length=100, help_text="The name of the method.")
+    description = models.TextField(
+        help_text="A short description of the method",
+        null=True, blank=True)
+
+
+class FacitlityGPS(AbstractBase):
+    """
+    Location derived by the use of GPS satellites and GPS device or receivers.
+
+    It it three dimensional.
+    The three-dimensional readings from a GPS device are latitude, longitude,
+    and attitude. The date/time the reading is done is also important, as
+    is the source and method of the reading.
     """
 
     facility = models.OneToOneField(Facility)
-    latitude = models.CharField(max_length=255)
-    longitude = models.CharField(max_length=255)
-    is_classified = models.BooleanField(default=False)
+    latitude = models.CharField(
+        max_length=255,
+        help_text="How far north or south a facility is from the equator")
+    longitude = models.CharField(
+        max_length=255,
+        help_text="How far east or west one a facility is from the Greenwich"
+        " Meridian")
+    is_classified = models.BooleanField(
+        default=False,
+        help_text="Should the facility be visible to the public?")
+    source_of_geo = models.ForeignKey(
+        GeoCodeSource,
+        help_text="where the geo code came from")
 
     def __unicode___(self):
         return self.facility.name
@@ -270,10 +428,16 @@ class FacitlityGIS(AbstractBase):
 
 class FacilityService(AbstractBase):
     """
+    Service offered in a facility.
+
+    Service is eithe offered all or none, i.e. they exist or do not exist.
+    (YES/NO)
     """
 
     facility = models.ForeignKey(Facility, related_name='facility_services')
     service = models.ForeignKey(Service)
+    active = models.BooleanField(
+        default=True, help_text="Is the offered ot not.")
 
     def __unicode__(self):
         return "{}::{}".format(self.facility.name, self.service.name)
@@ -281,6 +445,11 @@ class FacilityService(AbstractBase):
 
 class FacilityContact(AbstractBase):
     """
+    The facility contact.
+
+    The facility contacts could be as many as the facility has.
+    They also could be of as many different types as the facility has;
+    they could be emails, phone numbers, land lines etc.
     """
 
     facility = models.ForeignKey(Facility)

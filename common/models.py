@@ -115,9 +115,11 @@ class Contact(AbstractBase):
 
 class PhysicalAddress(AbstractBase):
     """
-    Details partaining the physical location of an entity.
+    The physical properties of a facility.
 
-    The entity could be a facility a person or a system.
+    These are physical properties of the facility and included is the
+    plot number and nearest landmark. This information in conjunction with
+     GPS codes is useful in locating the facility.
     """
 
     town = models.CharField(
@@ -130,14 +132,14 @@ class PhysicalAddress(AbstractBase):
         max_length=100,
         help_text="This is the actual post office number of the entity. "
         "e.g 6790")
-    nearest_town = models.CharField(
+    nearest_landmark = models.CharField(
         max_length=100, null=True, blank=True,
-        help_text="Provided in cases where the entity is not situated/residing"
-        " in a town. e.g Kericho")
+        help_text="well-known physical features /structure that can be used to"
+        " simplify directions to a given place. e.g town market or village ")
     plot_number = models.CharField(
         max_length=100, null=True, blank=True,
-        help_text="The plot number of the plot land the entity is "
-        "situated/resides as it is in the title deed.")
+        help_text="This is the same number found on the title deeds of the"
+        "piece of land on which this facility is located")
 
     def __unicode__(self):
         return str(self.id)
