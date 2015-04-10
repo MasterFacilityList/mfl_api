@@ -19,7 +19,7 @@ class AbstractBase(models.Model):
     It will provide audit fields that will keep track of when a model
     is created or updated and by who.
     """
-    id = models.UUIDFIeld(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(
@@ -119,7 +119,7 @@ class PhysicalAddress(AbstractBase):
 
     These are physical properties of the facility and included is the
     plot number and nearest landmark. This information in conjunction with
-     GPS codes is useful in locating the facility.
+    GPS codes is useful in locating the facility.
     """
 
     town = models.CharField(

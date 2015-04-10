@@ -120,7 +120,7 @@ class ServiceCategory(AbstractBase):
         Given in terms of KEPH levels:
             An example is the laboratory service, where a
             laboratory – in a facility or stand-alone lab – can offer
-            services deemed appropriate for a level 6 facility, a level
+            services
             5 facility, etc
 
         Similar services are offered in the different KEPH levels:
