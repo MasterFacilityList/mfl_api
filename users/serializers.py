@@ -2,13 +2,13 @@ from rest_framework import serializers
 
 from common.serializers import AbstractFieldsMixin
 
-from .models import MflUser, UserInchargeCounties
+from .models import MflUser, UserCounties
 
 
 class InchargeCountiesSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = UserInchargeCounties
+        model = UserCounties
 
 
 class UserSerializer(serializers.ModelSerializer):

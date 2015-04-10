@@ -3,7 +3,6 @@ import uuid
 
 from django.db import models
 from django.utils import timezone
-from django.conf import settings
 
 LOGGER = logging.getLogger(__file__)
 
@@ -22,10 +21,8 @@ class AbstractBase(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='+')
-    updated_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='+')
+    created_by = models.CharField(max_length=128,)
+    updated_by = models.CharField(max_length=128,)
 
     def preserve_created_and_created_by(self):
         """
@@ -110,7 +107,7 @@ class Contact(AbstractBase):
         " or phone number")
 
     def __unicode__(self):
-        return str(self.id)
+        return "{}::{}".format(self.contact_type.name, self.contact)
 
 
 class PhysicalAddress(AbstractBase):
@@ -142,7 +139,7 @@ class PhysicalAddress(AbstractBase):
         "piece of land on which this facility is located")
 
     def __unicode__(self):
-        return str(self.id)
+        return "{}: {}".format(self.postal_code, self.address)
 
 
 class County(RegionAbstractBase):

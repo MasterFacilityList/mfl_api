@@ -40,7 +40,7 @@ class MflUserManager(BaseUserManager):
         return user
 
 
-class MflUser(AbstractBaseUser, PermissionsMixin):
+class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
     """
     Add custom behaviour to the user model.
 

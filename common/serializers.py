@@ -22,8 +22,8 @@ class AbstractFieldsMixin(object):
     def create(self, validated_data):
         validated_data['created'] = timezone.now()
         validated_data['updated'] = timezone.now()
-        validated_data['created_by'] = self.context['request'].user
-        validated_data['updated_by'] = self.context['request'].user
+        validated_data['created_by'] = self.context['request'].user.id
+        validated_data['updated_by'] = self.context['request'].user.id
 
         return self.Meta.model.objects.create(**validated_data)
 

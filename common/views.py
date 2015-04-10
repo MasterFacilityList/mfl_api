@@ -41,7 +41,7 @@ class SubCountyView(generics.ListCreateAPIView):
 
 
 class SubCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Constituency.objects.all()
+    queryset = SubCounty.objects.all()
     serializer_class = SubCountySerializer
 
 
@@ -61,3 +61,8 @@ class ContactTypeListView(generics.ListCreateAPIView):
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
     ordering_fields = ('name', )
+
+
+class ContactTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ContactType.objects.all()
+    serializer_class = ContactTypeSerializer

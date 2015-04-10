@@ -1,12 +1,12 @@
 import django_filters
-from .models import MFLUser, UserCounties
+from .models import MflUser, UserCounties
 
 
 class MFLUserFilter(django_filters.FilterSet):
     class Meta:
-        model = MFLUser
+        model = MflUser
 
 
-class UserCountyFilter(django_filters):
+class UserCountiesFilter(django_filters.FilterSet):
     class Meta:
         model = UserCounties

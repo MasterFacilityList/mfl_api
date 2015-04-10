@@ -5,7 +5,6 @@ apipatterns = patterns(
     '',
     url(r'^common/', include('common.urls', namespace='common')),
     url(r'^users/', include('users.urls', namespace='users')),
-    url(r'^roles/', include('roles.urls', namespace='roles')),
     url(r'^facilities/', include('facilities.urls', namespace='facilities')),
 )
 

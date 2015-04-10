@@ -29,5 +29,5 @@ class FacilityFilter(django_filters.FilterSet):
         model = Facility
         fields = [
             'beds', 'cots', 'open_whole_week', 'open_whole_day', 'sub_county',
-            'county', 'facility_type', 'owner', 'status', 'name', 'services'
+            'county', 'facility_type', 'owner', 'operation_status', 'name'
         ]

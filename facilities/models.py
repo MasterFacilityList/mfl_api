@@ -118,10 +118,7 @@ class ServiceCategory(AbstractBase):
 
     The categorisation of services could either be:
         Given in terms of KEPH levels:
-            An example is the laboratory service, where a
-            laboratory – in a facility or stand-alone lab – can offer
-            services
-            5 facility, etc
+
 
         Similar services are offered in the different KEPH levels:
             For example, Environmental Health Services offered in KEPH level
@@ -262,7 +259,7 @@ class RegulationStatus(AbstractBase):
             (or District Development Committee [DDC] or presidential mandate)
             for gazettement as a MOH facility, but has not yet been officially
             gazetted. The facility is awaiting official gazettement and is
-            known as „pending gazettement‟.
+            known as 'pending gazettement'.
         8. Gazetted:
             A facility that has been gazetted and the notice published in the
             Kenya Gazette.
@@ -329,10 +326,9 @@ class Facility(AbstractBase):
     sub_county = models.ForeignKey(SubCounty)
     owner = models.ForeignKey(Owner)
     location_desc = models.TextField(
-        help_text="This field allows a more detailed description of how"
-        " to locate the facility – use this field as if you were giving"
-        " directions to the facility e.g Joy Medical Clinic is in "
-        "Jubilee Plaza 7th Floor")
+        help_text="This field allows a more detailed description of how to"
+        "locate the facility e.g Joy medical clinic is in Jubilee Plaza"
+        "7th Floor")
 
     def generate_code(self):
         random_number = random.randint(10000, 1000000)
@@ -358,7 +354,7 @@ class GeoCodeSource(AbstractBase):
     """
     Where the geo-code came from.
 
-    This is the collecting organizatoin‟ of the code.
+    This is the organization collecting the code.
     For example, DHMT, the Service Availability Mapping survey (SAM),
     Kenya Medical Research Institute (KEMRI), the Regional Center for
     Mapping of Resources for Development (RCMRD), the AIDS, Population
@@ -397,7 +393,7 @@ class GeoCodeMethod(AbstractBase):
         null=True, blank=True)
 
 
-class FacitlityGPS(AbstractBase):
+class FacilityGPS(AbstractBase):
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
 

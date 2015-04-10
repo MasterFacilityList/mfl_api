@@ -4,8 +4,6 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.views import APIView, Response
 
-from common.views import FilterViewMixin
-
 from .models import MflUser, UserCounties
 from .serializers import InchargeCountiesSerializer, UserSerializer
 from .filters import MFLUserFilter, UserCountiesFilter
@@ -45,28 +43,27 @@ class APILogout(APIView):
         return Response(status=401, data='User logged out')
 
 
-class UserList(FilterViewMixin, generics.ListCreateAPIView):
+class UserList(generics.ListCreateAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
     filter_class = MFLUserFilter
     ordering_fields = ('first_name', )
 
 
-class UserDetailView(FilterViewMixin, generics.RetrieveUpdateDestroyAPIView):
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'id'
 
 
-class UserCountiesView(FilterViewMixin, generics.ListCreateAPIView):
+class UserCountiesView(generics.ListCreateAPIView):
     queryset = UserCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
     filter_class = UserCountiesFilter
     ordering_fields = ('user', )
 
 
-class UserCountyDetailView(
-        FilterViewMixin, generics.RetrieveUpdateDestroyAPIView):
+class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
     lookup_field = 'id'
