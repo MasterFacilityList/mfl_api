@@ -156,6 +156,12 @@ class TestWardModel(BaseTestCase):
         sub_county_2_code = int(sub_county_1.code) + 1
         self.assertEquals(sub_county_2_code, int(sub_county_2.code))
 
+    def test_get_county(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        self.assertEquals(county, ward.county)
+
 
 class TestContactType(BaseTestCase):
     def test_unicode_(self):
