@@ -2,8 +2,8 @@ from django.conf.urls import url, patterns
 
 from .views import (
     ContactView, ContactDetailView, CountyView, CountyDetailView,
-    ConstituencyView, ConstituencyDetailView, SubCountyView,
-    SubCountyDetailView, ContactTypeListView, ContactTypeDetailView,
+    ConstituencyView, ConstituencyDetailView, WardView,
+    WardDetailView, ContactTypeListView, ContactTypeDetailView,
     api_root)
 
 urlpatterns = patterns(
@@ -22,9 +22,9 @@ urlpatterns = patterns(
     url(r'^counties/(?P<pk>[^/]+)/$', CountyDetailView.as_view(),
         name='county_detail'),
 
-    url(r'^subcounties/$', SubCountyView.as_view(), name='sub_counties_list'),
-    url(r'^subcounties/(?P<pk>[^/]+)/$', SubCountyDetailView.as_view(),
-        name='sub_county_detail'),
+    url(r'^wards/$', WardView.as_view(), name='wards_list'),
+    url(r'^wards/(?P<pk>[^/]+)/$', WardDetailView.as_view(),
+        name='ward_detail'),
 
     url(r'^constituencies/$', ConstituencyView.as_view(),
         name='constituencies_list'),

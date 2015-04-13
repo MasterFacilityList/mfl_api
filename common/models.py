@@ -55,6 +55,7 @@ class AbstractBase(models.Model):
     It will provide audit fields that will keep track of when a model
     is created or updated and by who.
     """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
@@ -223,33 +224,6 @@ class County(RegionAbstractBase):
         return self.name
 
 
-class SubCounty(RegionAbstractBase):
-    """
-    The Kenyan counties are sub divided into sub counties.
-
-    This is administrative sub-division of the counties.
-    A county can have one or more sub counties.
-    In most cases the sub county is also the constituency.
-    """
-
-    county = models.ForeignKey(
-        County,
-        help_text="The county where the sub county is located.",
-        on_delete=models.PROTECT)
-
-    def get_code_value(self):
-        value = next_value_in_sequence("ward_code_seq")
-        return value
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.get_code_value()
-        super(SubCounty, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.name
-
-
 class Constituency(RegionAbstractBase):
     """
     Counties in Kenya are divided into constituencies.
@@ -275,6 +249,36 @@ class Constituency(RegionAbstractBase):
 
     def __unicode__(self):
         return self.name
+
+
+class Ward(RegionAbstractBase):
+    """
+    The Kenyan counties are sub divided into wards.
+
+    This is an administrative sub-division of the counties.
+    A constituency can have one or more wards.
+    In most cases the sub county is also the constituency.
+    """
+    constituency = models.ForeignKey(
+        Constituency,
+        help_text="The constituency where the ward is located.",
+        on_delete=models.PROTECT)
+
+    @property
+    def county(self):
+        return self.constituency.county
+
+    def get_code_value(self):
+        value = next_value_in_sequence("ward_code_seq")
+        return value
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.get_code_value()
+        super(Ward, self).save(*args, **kwargs)
 
 
 class UserCounties(AbstractBase):

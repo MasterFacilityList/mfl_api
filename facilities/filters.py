@@ -29,7 +29,7 @@ class FacilityFilter(django_filters.FilterSet):
     class Meta:
         model = Facility
         fields = [
-            'beds', 'cots', 'open_whole_week', 'open_whole_day', 'sub_county',
+            'beds', 'cots', 'open_whole_week', 'open_whole_day', 'ward',
             'county', 'facility_type', 'owner', 'operation_status', 'name',
             'is_classified'
         ]

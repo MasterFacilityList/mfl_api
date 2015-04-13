@@ -4,13 +4,13 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from .models import (
-    Contact, County, SubCounty, Constituency, ContactType)
+    Contact, County, Ward, Constituency, ContactType)
 
 from .serializers import (
-    ContactSerializer, CountySerializer, SubCountySerializer,
+    ContactSerializer, CountySerializer, WardSerializer,
     ConstituencySerializer, ContactTypeSerializer)
 
-from .filters import ContactFilter, ConstituencyFilter, SubCountyFilter
+from .filters import ContactFilter, ConstituencyFilter, WardFilter
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -36,16 +36,16 @@ class CountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CountySerializer
 
 
-class SubCountyView(generics.ListCreateAPIView):
-    queryset = SubCounty.objects.all()
-    serializer_class = SubCountySerializer
-    filter_class = SubCountyFilter
+class WardView(generics.ListCreateAPIView):
+    queryset = Ward.objects.all()
+    serializer_class = WardSerializer
+    filter_class = WardFilter
     ordering_fields = ('name', )
 
 
-class SubCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SubCounty.objects.all()
-    serializer_class = SubCountySerializer
+class WardDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Ward.objects.all()
+    serializer_class = WardSerializer
 
 
 class ConstituencyView(generics.ListCreateAPIView):
@@ -84,8 +84,8 @@ def api_root(request, format=None):
             'api:common:contacts_list', request=request, format=format),
         'contact_types': reverse(
             'api:common:contact_types_list', request=request, format=format),
-        'sub_counties': reverse(
-            'api:common:sub_counties_list', request=request, format=format),
+        'ward': reverse(
+            'api:common:wards_list', request=request, format=format),
         'constituencies': reverse(
             'api:common:constituencies_list', request=request, format=format),
         'owners': reverse(
