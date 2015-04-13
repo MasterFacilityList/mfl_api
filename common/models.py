@@ -105,7 +105,8 @@ class Contact(AbstractBase):
     contact_type = models.ForeignKey(
         ContactType,
         help_text="The type of contact that the given contact is e.g email"
-        " or phone number")
+        " or phone number",
+        on_delete=models.PROTECT)
 
     def __unicode__(self):
         return "{}::{}".format(self.contact_type.name, self.contact)
@@ -174,7 +175,8 @@ class SubCounty(RegionAbstractBase):
 
     county = models.ForeignKey(
         County,
-        help_text="The county where the sub county is located.")
+        help_text="The county where the sub county is located.",
+        on_delete=models.PROTECT)
 
     def get_code_value(self):
         value = next_value_in_sequence("ward_code_seq")
@@ -200,7 +202,8 @@ class Constituency(RegionAbstractBase):
 
     county = models.ForeignKey(
         County,
-        help_text="Name of the county where the constituency is located")
+        help_text="Name of the county where the constituency is located",
+        on_delete=models.PROTECT)
 
     def get_code_value(self):
         value = next_value_in_sequence("consituency_code_seq")
