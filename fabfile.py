@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 from os.path import dirname, abspath
 
 from fabric.api import local

@@ -1,11 +1,16 @@
 from __future__ import print_function
 
 import io
+import os
+import sys
 
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 
 with open('README.rst') as readme:
     description = readme.read()
+
+here = os.path.abspath(os.path.dirname(__file__))
 
 
 def read(*filenames, **kwargs):
@@ -18,6 +23,18 @@ def read(*filenames, **kwargs):
     return sep.join(buf)
 
 long_description = read('README.rst')
+
+
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest
+        errcode = pytest.main(self.test_args)
+        sys.exit(errcode)
 
 
 setup(
@@ -49,5 +66,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
         ],
+    tests_require=['pytest'],
+    cmdclass={'test': PyTest},
     install_requires=[],
 )
