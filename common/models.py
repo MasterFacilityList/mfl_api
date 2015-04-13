@@ -122,8 +122,8 @@ class RegionAbstractBase(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True,
         help_text="Name og the region may it be e.g Nairobi")
-    code = models.CharField(
-        max_length=100, unique=True,
+    code = models.IntegerField(
+        unique=True,
         help_text="A unique_code 4 digit number representing the region.")
 
     class Meta:
@@ -136,7 +136,6 @@ class ContactType(AbstractBase):
 
     The most common contacts are email, phone numbers, landline etc.
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short name, preferrably 6 characters long, representing a"
@@ -306,4 +305,3 @@ class UserCounties(AbstractBase):
     def save(self, *args, **kwargs):
         self.validate_only_one_county_active()
         super(UserCounties, self).save(*args, **kwargs)
-

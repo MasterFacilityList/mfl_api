@@ -55,11 +55,13 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
                     "id": county.id,
                     "name": county.name,
                     "code": county.code,
+                    "deleted": False
                 },
                 {
                     "id": county_2.id,
                     "name": county_2.name,
-                    "code": county_2.code
+                    "code": county_2.code,
+                    "deleted": False
                 }
             ]
         }
@@ -78,8 +80,8 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
         expected_data = {
             "id": county.id,
             "name": county.name,
-            "code": county.code
-
+            "code": county.code,
+            "deleted": False
         }
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -113,13 +115,15 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
                     "id": constituency.id,
                     "name": constituency.name,
                     "code": constituency.code,
-                    "county": constituency.county.id
+                    "county": constituency.county.id,
+                    "deleted": False
                 },
                 {
                     "id": constituency_2.id,
                     "name": constituency_2.name,
                     "code": constituency_2.code,
-                    "county": constituency_2.county.id
+                    "county": constituency_2.county.id,
+                    "deleted": False
                 }
             ]
         }
@@ -146,7 +150,8 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
             "id": constituency.id,
             "name": constituency.name,
             "code": constituency.code,
-            "county": constituency.county.id
+            "county": constituency.county.id,
+            "deleted": False
         }
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -180,13 +185,15 @@ class TestViewSubCounties(LogginMixin, BaseTestCase, APITestCase):
                     "id": sub_county_1.id,
                     "name": sub_county_1.name,
                     "code": sub_county_1.code,
-                    "county": sub_county_1.county.id
+                    "county": sub_county_1.county.id,
+                    "deleted": False
                 },
                 {
                     "id": sub_county_2.id,
                     "name": sub_county_2.name,
                     "code": sub_county_2.code,
-                    "county": sub_county_2.county.id
+                    "county": sub_county_2.county.id,
+                    "deleted": False
                 }
             ]
         }
@@ -211,7 +218,8 @@ class TestViewSubCounties(LogginMixin, BaseTestCase, APITestCase):
             "id": sub_county.id,
             "name": sub_county.name,
             "code": sub_county.code,
-            "county": sub_county.county.id
+            "county": sub_county.county.id,
+            "deleted": False
         }
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -242,13 +250,14 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
                 {
                     "id": contact.id,
                     "contact": contact.contact,
-                    "contact_type": contact.contact_type.id
-
+                    "contact_type": contact.contact_type.id,
+                    "deleted": False
                 },
                 {
                     "id": contact_1.id,
                     "contact": contact_1.contact,
-                    "contact_type": contact_1.contact_type.id
+                    "contact_type": contact_1.contact_type.id,
+                    "deleted": False
                 }
             ]
         }
@@ -290,9 +299,7 @@ class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
     def test_post_contact_types(self):
         data = {
             "created": "2015-04-10T08:41:05.169411Z",
-            "created_by": "00bdbd66-c4b3-4b1a-a5ac-04ab1c6ab4d3",
             "updated": "2015-04-10T08:41:05.169411Z",
-            "updated_by": "00bdbd66-c4b3-4b1a-a5ac-04ab1c6ab4d3",
             "name": "EMAIL",
             "description": "This is an email contact typ"
         }

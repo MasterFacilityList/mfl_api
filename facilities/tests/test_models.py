@@ -15,7 +15,7 @@ from ..models import (
 )
 
 
-class TetOwnwerTypes(BaseTestCase):
+class TetsOwnerTypes(BaseTestCase):
     def test_save(self):
         data = {
             "name": "FBO",

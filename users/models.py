@@ -1,13 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import validate_email, RegexValidator
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import make_password
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from django.conf import settings
-
-from common.models import County, AbstractBase
 
 
 USER_MODEL = settings.AUTH_USER_MODEL

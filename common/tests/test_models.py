@@ -6,8 +6,11 @@ from django.conf import settings
 from django.utils import timezone
 from model_mommy import mommy
 
+
 from ..models import (
-    Contact, County, SubCounty, Constituency, ContactType, PhysicalAddress)
+    Contact, County, SubCounty, Constituency,
+    ContactType, PhysicalAddress, UserCounties)
+from ..models import get_default_system_user_id
 
 
 class AbstractBaseModelTest(TestCase):
@@ -80,13 +83,12 @@ class AbstractBaseModelTest(TestCase):
 class BaseTestCase(TestCase):
 
     def setUp(self):
-        self.user = get_user_model().objects.create(
-            "test@gmail.com", "test", "test", "test")
+        self.user = get_user_model().objects.get(pk=get_default_system_user_id)
         super(BaseTestCase, self).setUp()
 
     def inject_audit_fields(self, data):
-        data["created_by"] = self.user.id
-        data["updated_by"] = self.user.id
+        data["created_by"] = self.user
+        data["updated_by"] = self.user
         data["created"] = timezone.now()
         data["updated"] = timezone.now()
         return data
@@ -115,28 +117,11 @@ class TestContactModel(BaseTestCase):
 
     def test_save_model_with_id(self):
         contact_type = mommy.make(ContactType)
-        contact = Contact.objects.create(
+        Contact.objects.create(
             pk='1a049a8a-6e1f-4427-9098-a779cf9f63fa',
             contact='375818195',
             contact_type=contact_type)
         self.assertEquals(1, Contact.objects.count())
-
-        # try recreate the model again to confirm that created
-        # by and created are preserved
-        contact_refetched = Contact.objects.get(
-            id='1a049a8a-6e1f-4427-9098-a779cf9f63fa')
-        contact_refetched.created = "2015-04-10T08:41:05.169411Z"
-        contact_refetched.save()
-        self.assertNotEquals(
-            contact_refetched.created, "2015-04-10T08:41:05.169411Z")
-        self.assertEquals(contact.created, contact_refetched.created)
-
-        contact_refetched.created_by = "1a049a8a-6e1f-4427-9098-a779cf9f63fa"
-        contact_refetched.save()
-        self.assertNotEquals(
-            contact_refetched.created_by,
-            "1a049a8a-6e1f-4427-9098-a779cf9f63fa")
-        self.assertEquals(contact.created_by, contact_refetched.created_by)
 
 
 class TestCountyModel(BaseTestCase):
@@ -154,7 +139,7 @@ class TestCountyModel(BaseTestCase):
         county_name = "Texas"
         county = County.objects.create(
             created_by=self.user, updated_by=self.user,
-            name=county_name, code='some code')
+            name=county_name, code=234)
         self.assertEquals(county_name, county.__unicode__())
 
     def test_county_code_seq(self):
@@ -186,7 +171,7 @@ class TestConstituencyModel(BaseTestCase):
     def test_unicode(self):
         const = Constituency.objects.create(
             created_by=self.user, updated_by=self.user,
-            name="jina", code='some code', county=self.county)
+            name="jina", code=687, county=self.county)
         self.assertEquals("jina", const.__unicode__())
 
     def test_constituency_code_sequence(self):
@@ -216,7 +201,7 @@ class TestSubCountyModel(BaseTestCase):
     def test_unicode(self):
         const = SubCounty.objects.create(
             updated_by=self.user, created_by=self.user,
-            name="jina", code='some code', county=self.county)
+            name="jina", code=879, county=self.county)
         self.assertEquals("jina", const.__unicode__())
 
     def test_sub_county_code_seq(self):
@@ -245,3 +230,32 @@ class TestPhysicalAddress(BaseTestCase):
         phy = PhysicalAddress.objects.create(**data)
         self.assertEquals(1, PhysicalAddress.objects.count())
         self.assertEquals("00200: 356", phy.__unicode__())
+
+
+class TestUserCountiesModel(BaseTestCase):
+    def test_save(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        data = {
+            "user": user,
+            "county": county
+
+        }
+        user_county = UserCounties.objects.create(**data)
+        self.assertEquals(1, UserCounties.objects.count())
+        expected_unicode = "{}: {}".format(user.email, county.name)
+        self.assertEquals(expected_unicode, user_county.__unicode__())
+
+    def test_user_is_only_active_in_one_count(self):
+        user = mommy.make(get_user_model())
+        county_1 = mommy.make(County)
+        county_2 = mommy.make(County)
+        UserCounties.objects.create(
+            user=user,
+            county=county_1
+        )
+        with self.assertRaises(ValidationError):
+            UserCounties.objects.create(
+                user=user,
+                county=county_2
+            )
