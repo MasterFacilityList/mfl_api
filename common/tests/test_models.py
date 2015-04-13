@@ -4,7 +4,7 @@ from django.utils import timezone
 from model_mommy import mommy
 
 from ..models import (
-    Contact, County, SubCounty, Constituency, ContactType, PhysicalAddress)
+    Contact, County, Ward, Constituency, ContactType, PhysicalAddress)
 
 
 class BaseTestCase(TestCase):
@@ -126,32 +126,33 @@ class TestConstituencyModel(BaseTestCase):
         self.assertEquals(constituency_2_code, int(constituency_2.code))
 
 
-class TestSubCountyModel(BaseTestCase):
+class TestWardModel(BaseTestCase):
     def setUp(self):
-        super(TestSubCountyModel, self).setUp()
-        self.county = County.objects.create(
+        super(TestWardModel, self).setUp()
+        county = mommy.make(County)
+        self.constituency = Constituency.objects.create(
             created_by=self.user, updated_by=self.user,
-            name='county')
+            name='constituency', county=county)
 
-    def test_save_sub_county(self):
+    def test_save_ward(self):
         data = {
             "name": "KAPSA",
-            "county": self.county
+            "constituency": self.constituency
         }
         data = self.inject_audit_fields(data)
-        sub_county = SubCounty.objects.create(**data)
-        self.assertEquals(1, SubCounty.objects.count())
-        self.assertIsNotNone(sub_county.code)
+        ward = Ward.objects.create(**data)
+        self.assertEquals(1, Ward.objects.count())
+        self.assertIsNotNone(ward.code)
 
     def test_unicode(self):
-        const = SubCounty.objects.create(
+        const = Ward.objects.create(
             updated_by=self.user, created_by=self.user,
-            name="jina", code='some code', county=self.county)
+            name="jina", constituency=self.constituency)
         self.assertEquals("jina", const.__unicode__())
 
     def test_sub_county_code_seq(self):
-        sub_county_1 = mommy.make(SubCounty, code=None)
-        sub_county_2 = mommy.make(SubCounty, code=None)
+        sub_county_1 = mommy.make(Ward, code=None)
+        sub_county_2 = mommy.make(Ward, code=None)
         sub_county_2_code = int(sub_county_1.code) + 1
         self.assertEquals(sub_county_2_code, int(sub_county_2.code))
 

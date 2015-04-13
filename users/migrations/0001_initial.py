@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import django.utils.timezone
+import django.db.models.deletion
 from django.conf import settings
 import django.core.validators
 import uuid
@@ -11,7 +12,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '__first__'),
+        ('common', '0001_initial'),
         ('auth', '0006_require_contenttypes_0002'),
     ]
 
@@ -27,6 +28,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('email', models.EmailField(unique=True, max_length=254)),
                 ('first_name', models.CharField(max_length=60)),
                 ('last_name', models.CharField(max_length=60, blank=True)),
@@ -36,7 +38,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True)),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now)),
                 ('is_national', models.BooleanField(default=False)),
-                ('county', models.ForeignKey(blank=True, to='common.County', null=True)),
+                ('county', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='common.County', null=True)),
                 ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],
@@ -52,9 +54,10 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('is_active', models.BooleanField(default=True, help_text=b'Is the user currently incharge of the county?')),
-                ('county', models.ForeignKey(to='common.County')),
-                ('user', models.ForeignKey(related_name='user_counties', to=settings.AUTH_USER_MODEL)),
+                ('county', models.ForeignKey(to='common.County', on_delete=django.db.models.deletion.PROTECT)),
+                ('user', models.ForeignKey(related_name='user_counties', on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,

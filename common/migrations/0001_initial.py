@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.db.models.deletion
 import django.utils.timezone
 import uuid
 
@@ -20,8 +21,9 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
-                ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100)),
+                ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100, editable=False)),
             ],
             options={
                 'abstract': False,
@@ -35,6 +37,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('contact', models.CharField(help_text=b'The actual contact of the person e.g test@mail.com, 07XXYYYZZZ', max_length=100)),
             ],
             options={
@@ -49,6 +52,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'A short name, preferrably 6 characters long, representing acertain type of contact e.g EMAIL', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A brief desx')),
             ],
@@ -64,8 +68,9 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
-                ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100)),
+                ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100, editable=False)),
             ],
             options={
                 'abstract': False,
@@ -79,6 +84,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('town', models.CharField(help_text=b'The town where the entity is located e.g Nakuru', max_length=100, null=True, blank=True)),
                 ('postal_code', models.CharField(help_text=b'The 5 digit number for the post office address. e.g 00900', max_length=100)),
                 ('address', models.CharField(help_text=b'This is the actual post office number of the entity. e.g 6790', max_length=100)),
@@ -90,16 +96,17 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='SubCounty',
+            name='Ward',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_by', models.CharField(max_length=128)),
                 ('updated_by', models.CharField(max_length=128)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
-                ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100)),
-                ('county', models.ForeignKey(help_text=b'The county where the sub county is located.', to='common.County')),
+                ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100, editable=False)),
+                ('constituency', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Constituency', help_text=b'The constituency where the ward is located.')),
             ],
             options={
                 'abstract': False,
@@ -108,11 +115,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contact',
             name='contact_type',
-            field=models.ForeignKey(help_text=b'The type of contact that the given contact is e.g email or phone number', to='common.ContactType'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.ContactType', help_text=b'The type of contact that the given contact is e.g email or phone number'),
         ),
         migrations.AddField(
             model_name='constituency',
             name='county',
-            field=models.ForeignKey(help_text=b'Name of the county where the constituency is located', to='common.County'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.County', help_text=b'Name of the county where the constituency is located'),
         ),
     ]

@@ -1,5 +1,5 @@
 from django.db import models
-from common.models import AbstractBase, SubCounty, Contact
+from common.models import AbstractBase, Ward, Contact
 from common.sequence_helper import next_value_in_sequence
 
 
@@ -345,7 +345,7 @@ class Facility(AbstractBase):
         RegulationStatus, null=True, blank=True,
         help_text="Indicates whether the facility has been approved by the"
         " respective National Regulatory Body.", on_delete=models.PROTECT)
-    sub_county = models.ForeignKey(SubCounty, on_delete=models.PROTECT)
+    ward = models.ForeignKey(Ward, on_delete=models.PROTECT)
     owner = models.ForeignKey(Owner)
     location_desc = models.TextField(
         help_text="This field allows a more detailed description of how to"

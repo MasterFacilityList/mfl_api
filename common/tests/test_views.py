@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 from model_mommy import mommy
 
-from ..models import County, Contact, ContactType, Constituency, SubCounty
+from ..models import County, Contact, ContactType, Constituency, Ward
 from .test_models import BaseTestCase
 
 
@@ -160,22 +160,23 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
         self.assertEquals(200, response.status_code)
 
 
-class TestViewSubCounties(LogginMixin, BaseTestCase, APITestCase):
+class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
     def setUp(self):
-        super(TestViewSubCounties, self).setUp()
+        super(TestViewWards, self).setUp()
 
-    def test_list_sub_counties(self):
-        county = County.objects.create(
+    def test_list_sub_wards(self):
+        county = mommy.make(County)
+        constituency = Constituency.objects.create(
             created_by=self.user, updated_by=self.user,
-            name='county 1', code='100')
-        sub_county_1 = SubCounty.objects.create(
-            created_by=self.user, updated_by=self.user, county=county,
-            name='sub county 1',
+            name='county 1', code='100', county=county)
+        ward_1 = Ward.objects.create(
+            created_by=self.user, updated_by=self.user,
+            constituency=constituency, name='ward 1',
             code='335')
-        sub_county_2 = SubCounty.objects.create(
-            created_by=self.user, updated_by=self.user, name='sub county 2',
-            code='337', county=county)
-        url = reverse('api:common:sub_counties_list')
+        ward_2 = Ward.objects.create(
+            created_by=self.user, updated_by=self.user, name='ward 2',
+            code='337', constituency=constituency)
+        url = reverse('api:common:wards_list')
         response = self.client.get(url)
         expected_data = {
             "count": 2,
@@ -183,17 +184,17 @@ class TestViewSubCounties(LogginMixin, BaseTestCase, APITestCase):
             "previous": None,
             "results": [
                 {
-                    "id": sub_county_1.id,
-                    "name": sub_county_1.name,
-                    "code": sub_county_1.code,
-                    "county": sub_county_1.county.id,
+                    "id": ward_1.id,
+                    "name": ward_1.name,
+                    "code": ward_1.code,
+                    "constituency": ward_1.constituency.id,
                     "active": True
                 },
                 {
-                    "id": sub_county_2.id,
-                    "name": sub_county_2.name,
-                    "code": sub_county_2.code,
-                    "county": sub_county_2.county.id,
+                    "id": ward_2.id,
+                    "name": ward_2.name,
+                    "code": ward_2.code,
+                    "constituency": ward_2.constituency.id,
                     "active": True
                 }
             ]
@@ -205,21 +206,24 @@ class TestViewSubCounties(LogginMixin, BaseTestCase, APITestCase):
         self.assertEquals(2, response.data.get('count'))
 
     def test_retrive_single_sub_county(self):
+
         county = County.objects.create(
             created_by=self.user, updated_by=self.user,
             name='county 1', code='100')
-        sub_county = SubCounty.objects.create(
-            created_by=self.user, updated_by=self.user, county=county,
+        constituency = mommy.make(Constituency, county=county)
+        ward = Ward.objects.create(
+            created_by=self.user, updated_by=self.user,
+            constituency=constituency,
             name='sub county',
             code='335')
-        url = reverse('api:common:sub_counties_list')
-        url += "{}/".format(sub_county.id)
+        url = reverse('api:common:wards_list')
+        url += "{}/".format(ward.id)
         response = self.client.get(url)
         expected_data = {
-            "id": sub_county.id,
-            "name": sub_county.name,
-            "code": sub_county.code,
-            "county": sub_county.county.id,
+            "id": ward.id,
+            "name": ward.name,
+            "code": ward.code,
+            "constituency": ward.constituency.id,
             "active": True
         }
         self.assertEquals(

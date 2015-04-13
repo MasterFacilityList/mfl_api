@@ -1,7 +1,7 @@
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
-from common.models import Contact, SubCounty
+from common.models import Contact, Ward
 
 from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
@@ -187,7 +187,7 @@ class TestFacility(BaseTestCase):
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
         regulation_status = mommy.make(RegulationStatus, name="REGISTERED")
         owner = mommy.make(Owner, name="MOH")
-        sub_county = mommy.make(SubCounty)
+        ward = mommy.make(Ward)
         data = {
             "name": "Forces Memorial",
             "description": "Hospital for the armed forces",
@@ -199,7 +199,7 @@ class TestFacility(BaseTestCase):
             "open_whole_week": True,
             "operation_status": operation_status,
             "regulation_status": regulation_status,
-            "sub_county": sub_county,
+            "ward": ward,
             "owner": owner,
             "location_desc": "it is located along Moi Avenue Nairobi"
         }
