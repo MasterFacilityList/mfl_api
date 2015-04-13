@@ -3,6 +3,7 @@ from __future__ import print_function
 import io
 import os
 import sys
+import config
 
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
@@ -23,6 +24,7 @@ def read(*filenames, **kwargs):
     return sep.join(buf)
 
 long_description = read('README.rst')
+version = config.__version__
 
 
 class PyTest(TestCommand):
@@ -39,7 +41,7 @@ class PyTest(TestCommand):
 
 setup(
     name='mfl',
-    version='2.0.0',
+    version=version,
     license='MIT License',
     description='Master falicity list',
     long_description=(description),
