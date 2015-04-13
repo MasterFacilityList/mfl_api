@@ -1,4 +1,3 @@
-import random
 from django.db import models
 from common.models import AbstractBase, SubCounty, Contact
 
@@ -19,6 +18,9 @@ class OwnerType(AbstractBase):
     description = models.TextField(
         null=True, blank=True,
         help_text="A brief summary of the particular type of owner.")
+
+    def __unicode__(self):
+        return self.name
 
 
 class Owner(AbstractBase):
@@ -88,7 +90,7 @@ class OfficerIncharge(AbstractBase):
         help_text="This is the licence number of the officer. e.g for a nurse"
         " use the NCK registration number.")
 
-    def __unicode(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -136,6 +138,13 @@ class ServiceCategory(AbstractBase):
             level).
     """
 
+    name = models.CharField(
+        max_length=100,
+        help_text="What is the name of the category? ")
+
+    def __unicode__(self):
+        return self.name
+
 
 class Service(AbstractBase):
     """
@@ -159,14 +168,6 @@ class Service(AbstractBase):
 
     def __unicode__(self):
         return self.name
-
-    def generate_code(self):
-        return "{}{}".format(self.name, str(self.id))
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_code()
-        super(Service, self).save(*args, **kwargs)
 
 
 class FacilityStatus(AbstractBase):
@@ -221,7 +222,7 @@ class RegulatingBody(AbstractBase):
 
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="The name of the regulatin body")
+        help_text="The name of the regulating body")
     abbreviation = models.CharField(
         max_length=10, null=True, blank=True,
         help_text="A shortform of the name of the regulating body e.g Nursing"
@@ -330,32 +331,30 @@ class Facility(AbstractBase):
         "locate the facility e.g Joy medical clinic is in Jubilee Plaza"
         "7th Floor")
 
-    def generate_code(self):
-        random_number = random.randint(10000, 1000000)
-        try:
-            self.__class__.objects.get(code=random_number)
-            self.generate_code()
-        except:
-            return random_number
-
     def __unicode__(self):
         return self.name
 
     class Meta:
         verbose_name_plural = 'Facilities'
 
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_code()
-        super(Service, self).save(*args, **kwargs)
-
 
 class FacilityRegulationStatus(AbstractBase):
     """
+    Shows the regulation status of facility.
+
+    It adds the extra reason field that makes it possible to give
+    an explanation as to why a facility is in a certain regulation status.
     """
+
     facility = models.ForeignKey(Facility)
     regulation_status = models.ForeignKey(RegulationStatus)
-    reason = models.TextField()
+    reason = models.TextField(
+        null=True, blank=True,
+        help_text="e.g Why has a facility been suspended")
+
+    def __unicode__(self):
+        return "{}: {}".format(
+            self.facility.name, self.regulation_status.name)
 
 
 class GeoCodeSource(AbstractBase):
@@ -379,6 +378,9 @@ class GeoCodeSource(AbstractBase):
     abbreviation = models.CharField(
         max_length=10, help_text="An acronym of the collecting or e.g SAM")
 
+    def __unicode__(self):
+        return self.name
+
 
 class GeoCodeMethod(AbstractBase):
     """
@@ -399,6 +401,9 @@ class GeoCodeMethod(AbstractBase):
     description = models.TextField(
         help_text="A short description of the method",
         null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class FacilityGPS(AbstractBase):
@@ -422,15 +427,15 @@ class FacilityGPS(AbstractBase):
     is_classified = models.BooleanField(
         default=False,
         help_text="Should the facility be visible to the public?")
-    source_of_geo = models.ForeignKey(
+    source = models.ForeignKey(
         GeoCodeSource,
         help_text="where the geo code came from")
-    methof = models.ForeignKey(
+    method = models.ForeignKey(
         GeoCodeMethod,
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
 
-    def __unicode___(self):
+    def __unicode__(self):
         return self.facility.name
 
 
@@ -438,17 +443,17 @@ class FacilityService(AbstractBase):
     """
     Service offered in a facility.
 
-    Service is eithe offered all or none, i.e. they exist or do not exist.
+    Service is either offered all or none, i.e. they exist or do not exist.
     (YES/NO)
     """
 
     facility = models.ForeignKey(Facility, related_name='facility_services')
     service = models.ForeignKey(Service)
     active = models.BooleanField(
-        default=True, help_text="Is the offered ot not.")
+        default=True, help_text="Is the offered or not.")
 
     def __unicode__(self):
-        return "{}::{}".format(self.facility.name, self.service.name)
+        return "{}: {}".format(self.facility.name, self.service.name)
 
 
 class FacilityContact(AbstractBase):
@@ -464,6 +469,5 @@ class FacilityContact(AbstractBase):
     contact = models.ForeignKey(Contact)
 
     def __unicode__(self):
-        return "{}::{}::{}".format(
-            self.facility.name, self.contact.contact_type,
-            str(self.contact.id))
+        return "{}: {}".format(
+            self.facility.name, self.contact.contact)

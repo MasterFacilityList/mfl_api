@@ -1,9 +1,8 @@
 from django.core.urlresolvers import reverse
-from common.tests.test_views import LogginMixin
 from rest_framework.test import APITestCase
 from model_mommy import mommy
 
-from ..models import MflUser, UserCounties
+from ..models import MflUser
 
 
 class TestLogin(APITestCase):
