@@ -275,7 +275,6 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
     def test_retrieve_contact(self):
         contact = mommy.make(Contact)
         url = self.url + "{}/".format(contact.id)
-        print url
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
 
