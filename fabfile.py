@@ -1,7 +1,7 @@
+#! /usr/bin/env python
 from os.path import dirname, abspath
 from config.settings import base
 from fabric.api import local
-from fabric.api import lcd
 
 
 BASE_DIR = dirname(abspath(__file__))
@@ -12,13 +12,20 @@ def manage(command, args=''):
 
 
 def test():
-    with lcd(BASE_DIR):
-        local('pip install tox')
-        local('tox')
+    local('python setup.py check')
+    local('pip install tox')
+    local('tox -r -c tox.ini')
 
 
 def run():
     local('{}/manage.py runserver 8000'.format(BASE_DIR))
+
+
+def deploy():
+    """
+    Should be run only by the release manager
+    """
+    local('python setup.py sdist upload -r slade')
 
 
 def psql(query, no_sudo=False, is_file=False):
@@ -37,7 +44,7 @@ def setup(*args, **kwargs):
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
     db_user = base.DATABASES.get('default').get('USER')
-    db_pass = base.DATABASES.get('default').get("PASSWORD")
+    db_pass = base.DATABASES.get('default').get('PASSWORD')
 
     psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
     psql("DROP USER IF EXISTS {}".format(db_user), no_sudo)

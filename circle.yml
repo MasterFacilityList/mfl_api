@@ -1,9 +1,6 @@
 machine:
   environment:
-    DB_NAME: circle_test
-    DB_USER: ubuntu
-    DJANGO_SETTINGS_MODULE: config.settings.test
-    DEBUG: 'True'
+    DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
 
 dependencies:
   post:
@@ -12,3 +9,7 @@ dependencies:
 test:
   override:
     - fab test
+
+general:
+  artifacts:
+    - "htmlcov"
