@@ -351,6 +351,9 @@ class Facility(AbstractBase):
         help_text="This field allows a more detailed description of how to"
         "locate the facility e.g Joy medical clinic is in Jubilee Plaza"
         "7th Floor")
+    is_classified = models.BooleanField(
+        default=False,
+        help_text="Should the facility be visible to the public?")
 
     def get_code_value(self):
         value = next_value_in_sequence("facility_code_seq")
@@ -455,9 +458,6 @@ class FacilityGPS(AbstractBase):
         max_length=255,
         help_text="How far east or west one a facility is from the Greenwich"
         " Meridian")
-    is_classified = models.BooleanField(
-        default=False,
-        help_text="Should the facility be visible to the public?")
     source = models.ForeignKey(
         GeoCodeSource,
         help_text="where the geo code came from", on_delete=models.PROTECT)
