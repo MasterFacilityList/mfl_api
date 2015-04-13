@@ -3,7 +3,7 @@ from django.db import models
 from common.models import AbstractBase, SubCounty, Contact
 
 
-class OwnerTypes(AbstractBase):
+class OwnerType(AbstractBase):
     """
     Sub divisions of owners of facilities.
 
@@ -48,19 +48,11 @@ class Owner(AbstractBase):
         help_text="Short form of the name of the owner e.g Ministry of health"
         " could be shortened as MOH")
     owner_type = models.ForeignKey(
-        OwnerTypes,
+        OwnerType,
         help_text="The classification of the owner e.g INDIVIDUAL")
 
     def __unicode__(self):
         return self.name
-
-    def generate_code(self):
-        return "{}{}".format("OWNER", str(self.id))
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_code()
-        super(Owner, self).save(*args, **kwargs)
 
 
 class JobTitle(AbstractBase):
@@ -78,6 +70,9 @@ class JobTitle(AbstractBase):
     description = models.TextField(
         help_text="A short summary of the job title")
 
+    def __unicode__(self):
+        return self.name
+
 
 class OfficerIncharge(AbstractBase):
     """
@@ -92,6 +87,9 @@ class OfficerIncharge(AbstractBase):
         max_length=100,
         help_text="This is the licence number of the officer. e.g for a nurse"
         " use the NCK registration number.")
+
+    def __unicode(self):
+        return self.name
 
 
 class OfficerIchargeContact(AbstractBase):
@@ -109,6 +107,9 @@ class OfficerIchargeContact(AbstractBase):
         Contact,
         help_text="The contact of the officer incharge may it be email, "
         " mobile number etc")
+
+    def __unicode__(self):
+        return "{}: {}".format(self.officer.name, self.contact.contact)
 
 
 class ServiceCategory(AbstractBase):
