@@ -311,3 +311,10 @@ class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
         obj_2 = ""
         result = default(obj_2)
         self.assertIsNone(result)
+
+
+class TestAPIRootView(APITestCase):
+    def test_list_endpoints(self):
+        url = reverse('api:common:url_listing')
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)

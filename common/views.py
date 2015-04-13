@@ -1,4 +1,7 @@
 from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from .models import (
     Contact, County, SubCounty, Constituency, ContactType)
@@ -66,3 +69,29 @@ class ContactTypeListView(generics.ListCreateAPIView):
 class ContactTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
+
+
+@api_view(('GET',))
+def api_root(request, format=None):
+    return Response({
+        'counties': reverse(
+            'api:common:counties_list', request=request, format=format),
+        'users': reverse(
+            'api:users:users_list', request=request, format=format),
+        'facilities': reverse(
+            'api:facilities:facility_list', request=request, format=format),
+        'contacts': reverse(
+            'api:common:contacts_list', request=request, format=format),
+        'contact_types': reverse(
+            'api:common:contact_types_list', request=request, format=format),
+        'sub_counties': reverse(
+            'api:common:sub_counties_list', request=request, format=format),
+        'constituencies': reverse(
+            'api:common:constituencies_list', request=request, format=format),
+        'owners': reverse(
+            'api:facilities:owners_list', request=request, format=format),
+        'owner_types': reverse(
+            'api:facilities:facility_list', request=request, format=format),
+        'services': reverse(
+            'api:facilities:services_list', request=request, format=format)
+    })
