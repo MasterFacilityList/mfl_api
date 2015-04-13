@@ -8,7 +8,7 @@ class OwnerTypes(AbstractBase):
     Sub divisions of owners of facilities.
 
     Owners of facilities could be classified into several categories.
-    E.g we could have individual owners, corporate owners, faith based owners
+    E.g we could have government, corporate owners, faith based owners
     private owners.
     """
 
@@ -26,7 +26,7 @@ class Owner(AbstractBase):
     Entity that has exclusive legal rights to the facility.
 
     For the master facility list, ownership especially for the faith-based
-    facilities will be broadened to also include the body that coordinates
+    facilities is broadened to also include the body that coordinates
     service delivery and health programmes. Therefore, the Christian Health
     Association of Kenya (CHAK), Kenya Episcopal Conference (KEC), or
     Supreme Council of Kenya Muslim (SUPKEM) will be termed as owners though
@@ -67,10 +67,9 @@ class JobTitle(AbstractBase):
     """
     This is the job title names of the officers incharge of facilities.
 
-    This is the title given to the in-charge within the facility, for
-    example, Nursing Officer In-Charge, Medical Superintendent, and
+    For example, Nursing Officer In-Charge, Medical Superintendent, and
     Hospital Director. This should not be confused with the professional
-     (Nursing Officer I) or Job Group title.
+     (Nursing Officer I) or Job Group title.Officer
     """
 
     name = models.CharField(
@@ -92,24 +91,24 @@ class OfficerIncharge(AbstractBase):
     registration_number = models.CharField(
         max_length=100,
         help_text="This is the licence number of the officer. e.g for a nurse"
-        " user the NCK registration number.")
+        " use the NCK registration number.")
 
 
 class OfficerIchargeContact(AbstractBase):
     """
-    The contact details of the offier incharge.
+    The contact details of the officer incharge.
 
-    The officer incharge may have as many mobile number as possible.
+    The officer incharge may have as many mobile numbers as possible.
     Also the number of email addresses is not limited.
     """
 
     officer = models.ForeignKey(
         OfficerIncharge,
-        help_text="This is the officer in charge")
+        help_text="The is the officer in charge")
     contact = models.ForeignKey(
         Contact,
-        help_text="The contact of the officer incharge may it be email or"
-        " mobile number.")
+        help_text="The contact of the officer incharge may it be email, "
+        " mobile number etc")
 
 
 class ServiceCategory(AbstractBase):
@@ -131,9 +130,9 @@ class ServiceCategory(AbstractBase):
             For example, Oral Health Services are either Basic or Comprehensive
 
         A combination of choices and KEPH levels:
-            For example, Mental Health
-            Services are either Integrated or Specialised (and the Specialised
-            Services are split into KEPH level).
+            For example, Mental Health Services are either Integrated or
+            Specialised (and the Specialised Services are split into KEPH
+            level).
     """
 
 
@@ -235,7 +234,7 @@ class RegulationStatus(AbstractBase):
     """
     Indicates whether the facililty has been approved.
 
-    The rulation states could be
+    The regulation states could be
             A facility that has been recommended by the DHMT but is
             waiting for the license from the National Regulatory Body.
 
@@ -350,6 +349,14 @@ class Facility(AbstractBase):
         super(Service, self).save(*args, **kwargs)
 
 
+class FacilityRegulationStatus(AbstractBase):
+    """
+    """
+    facility = models.ForeignKey(Facility)
+    regulation_status = models.ForeignKey(RegulationStatus)
+    reason = models.TextField()
+
+
 class GeoCodeSource(AbstractBase):
     """
     Where the geo-code came from.
@@ -374,7 +381,7 @@ class GeoCodeSource(AbstractBase):
 
 class GeoCodeMethod(AbstractBase):
     """
-    Method used to capture the geo-code
+    Method used to capture the geo-code.
 
     Examples:
         1= Taken with GPS device,

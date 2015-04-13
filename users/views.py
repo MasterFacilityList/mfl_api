@@ -38,7 +38,7 @@ class APILogout(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     @staticmethod
-    def get(request):
+    def get(request, *args, **kwargs):
         logout(request)
         return Response(status=401, data='User logged out')
 
@@ -53,7 +53,6 @@ class UserList(generics.ListCreateAPIView):
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'id'
 
 
 class UserCountiesView(generics.ListCreateAPIView):
@@ -66,4 +65,3 @@ class UserCountiesView(generics.ListCreateAPIView):
 class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
-    lookup_field = 'id'

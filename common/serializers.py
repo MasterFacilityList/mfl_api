@@ -16,8 +16,7 @@ class AbstractFieldsMixin(object):
         super(AbstractFieldsMixin, self).__init__(*args, **kwargs)
         exclude_fields = ['created', 'created_by', 'updated', 'updated_by']
         for i in exclude_fields:
-            if i in self.fields:
-                self.fields.pop(i)
+            self.fields.pop(i) if i in self.fields else None
 
     def create(self, validated_data):
         validated_data['created'] = timezone.now()

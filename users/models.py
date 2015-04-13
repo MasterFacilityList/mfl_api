@@ -17,8 +17,6 @@ class MflUserManager(BaseUserManager):
     def create_user(self, email, first_name,
                     username, password=None, **extra_fields):
         now = timezone.now()
-        if not email:
-            raise ValueError('The email must be set')
         validate_email(email)
         p = make_password(password)
         email = MflUserManager.normalize_email(email)
@@ -78,9 +76,11 @@ class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
     def __unicode__(self):
         return self.email
 
+    @property
     def get_short_name(self):
         return self.first_name
 
+    @property
     def get_full_name(self):
         return "{0} {1} {2}".format(
             self.first_name, self.last_name, self.other_names)
@@ -102,14 +102,14 @@ class UserCounties(AbstractBase):
         default=True,
         help_text="Is the user currently incharge of the county?")
 
-    def __unicode___(self):
+    def __unicode__(self):
         return "{}: {}".format(self.user.email, self.county.name)
 
     def validate_only_one_county_active(self):
         """
         A user can be incharge of only one county at the a time.
         """
-        counties = self.__class___.objects.filter(
+        counties = self.__class__.objects.filter(
             user=self.user, is_active=True)
         if counties.count() > 0:
             raise ValidationError(

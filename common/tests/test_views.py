@@ -301,3 +301,13 @@ class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
         self.assertIn("id", response.data)
         self.assertIn("name", response.data)
         self.assertIn("description", response.data)
+
+        #  run the other side of the default method
+
+    def test_default_method(self):
+        obj = uuid.uuid4()
+        result = default(obj)
+        self.assertIsInstance(result, str)
+        obj_2 = ""
+        result = default(obj_2)
+        self.assertIsNone(result)
