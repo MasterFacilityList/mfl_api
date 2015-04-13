@@ -44,7 +44,7 @@ setup(
     name='mfl',
     version=version,
     license='MIT License',
-    author='Savannah Informatics Limitee Developers',
+    author='Savannah Informatics Limited Developers',
     author_email='developers@savannahinformatics.com',
     description='Core APIs for the Kenyan Ministry of Health '
                 'Master Facility List',
