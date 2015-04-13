@@ -87,34 +87,3 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
-
-
-class UserCounties(AbstractBase):
-    """
-    Will store a record of the counties that a user has been incharge of.
-
-    A user can only be incharge of only one county at a time.
-    """
-    user = models.ForeignKey(
-        MflUser, related_name='user_counties', on_delete=models.PROTECT)
-    county = models.ForeignKey(County, on_delete=models.PROTECT)
-    is_active = models.BooleanField(
-        default=True,
-        help_text="Is the user currently incharge of the county?")
-
-    def __unicode__(self):
-        return "{}: {}".format(self.user.email, self.county.name)
-
-    def validate_only_one_county_active(self):
-        """
-        A user can be incharge of only one county at the a time.
-        """
-        counties = self.__class__.objects.filter(
-            user=self.user, is_active=True)
-        if counties.count() > 0:
-            raise ValidationError(
-                "A user can only be active in one county at a time")
-
-    def save(self, *args, **kwargs):
-        self.validate_only_one_county_active()
-        super(UserCounties, self).save(*args, **kwargs)

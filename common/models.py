@@ -24,7 +24,7 @@ def get_utc_localized_datetime(datetime_instance):
     return localized_datetime.astimezone(pytz.utc)
 
 
-def get_default_system_user():
+def get_default_system_user_id():
     """
     Ensure that there is a default system user, unknown password
     """
@@ -33,13 +33,13 @@ def get_default_system_user():
             email='system@ehealth.or.ke',
             first_name='System',
             username='system'
-        )
+        ).pk
     except get_user_model().DoesNotExist:
         return get_user_model().objects.create(
             email='system@ehealth.or.ke',
             first_name='System',
             username='system'
-        )
+        ).pk
 
 
 class CustomDefaultManager(models.Manager):
@@ -59,10 +59,10 @@ class AbstractBase(models.Model):
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, default=get_default_system_user,
+        settings.AUTH_USER_MODEL, default=get_default_system_user_id,
         on_delete=models.PROTECT, related_name='+')
     updated_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, default=get_default_system_user,
+        settings.AUTH_USER_MODEL, default=get_default_system_user_id,
         on_delete=models.PROTECT, related_name='+')
     deleted = models.BooleanField(default=False)
 
@@ -274,3 +274,36 @@ class Constituency(RegionAbstractBase):
 
     def __unicode__(self):
         return self.name
+
+
+class UserCounties(AbstractBase):
+    """
+    Will store a record of the counties that a user has been incharge of.
+
+    A user can only be incharge of only one county at a time.
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='user_counties',
+        on_delete=models.PROTECT)
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Is the user currently incharge of the county?")
+
+    def __unicode__(self):
+        return "{}: {}".format(self.user.email, self.county.name)
+
+    def validate_only_one_county_active(self):
+        """
+        A user can be incharge of only one county at the a time.
+        """
+        counties = self.__class__.objects.filter(
+            user=self.user, is_active=True)
+        if counties.count() > 0:
+            raise ValidationError(
+                "A user can only be active in one county at a time")
+
+    def save(self, *args, **kwargs):
+        self.validate_only_one_county_active()
+        super(UserCounties, self).save(*args, **kwargs)
+

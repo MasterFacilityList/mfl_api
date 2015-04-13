@@ -2,18 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django.db.models.deletion
 import django.utils.timezone
-from django.conf import settings
-import common.models
 import django.core.validators
-import uuid
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0001_initial'),
         ('auth', '0006_require_contenttypes_0002'),
     ]
 
@@ -36,23 +31,6 @@ class Migration(migrations.Migration):
                 ('is_national', models.BooleanField(default=False)),
                 ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='UserCounties',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('deleted', models.BooleanField(default=False)),
-                ('is_active', models.BooleanField(default=True, help_text=b'Is the user currently incharge of the county?')),
-                ('county', models.ForeignKey(to='common.County', on_delete=django.db.models.deletion.PROTECT)),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(related_name='user_counties', on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,

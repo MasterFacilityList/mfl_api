@@ -2,14 +2,17 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django.db.models.deletion
 import django.utils.timezone
+import django.db.models.deletion
+from django.conf import settings
+import common.models
 import uuid
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
@@ -49,6 +52,8 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('name', models.CharField(help_text=b'A short name, preferrably 6 characters long, representing acertain type of contact e.g EMAIL', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A brief desx')),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -63,6 +68,8 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
                 ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -80,6 +87,8 @@ class Migration(migrations.Migration):
                 ('address', models.CharField(help_text=b'This is the actual post office number of the entity. e.g 6790', max_length=100)),
                 ('nearest_landmark', models.CharField(help_text=b'well-known physical features /structure that can be used to simplify directions to a given place. e.g town market or village ', max_length=100, null=True, blank=True)),
                 ('plot_number', models.CharField(help_text=b'This is the same number found on the title deeds of thepiece of land on which this facility is located', max_length=100, null=True, blank=True)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -95,9 +104,58 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
                 ('code', models.CharField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, max_length=100)),
                 ('county', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.County', help_text=b'The county where the sub county is located.')),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
             },
+        ),
+        migrations.CreateModel(
+            name='UserCounties',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('is_active', models.BooleanField(default=True, help_text=b'Is the user currently incharge of the county?')),
+                ('county', models.ForeignKey(to='common.County', on_delete=django.db.models.deletion.PROTECT)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='user_counties', on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.AddField(
+            model_name='contact',
+            name='contact_type',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.ContactType', help_text=b'The type of contact that the given contact is e.g email or phone number'),
+        ),
+        migrations.AddField(
+            model_name='contact',
+            name='created_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='contact',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='constituency',
+            name='county',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.County', help_text=b'Name of the county where the constituency is located'),
+        ),
+        migrations.AddField(
+            model_name='constituency',
+            name='created_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='constituency',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
     ]
