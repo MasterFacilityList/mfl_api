@@ -27,6 +27,7 @@ setup(
         "tox>=1.9",
         "djangorestframework-xml>=1.0",
         "djangorestframework-csv>=1.3",
+        "django-rest-swagger>=0.2",
         "django>=1.8",
     ],
 )
