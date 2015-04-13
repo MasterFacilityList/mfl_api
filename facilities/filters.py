@@ -23,11 +23,13 @@ class FacilityFilter(django_filters.FilterSet):
     cots = django_filters.NumberFilter(name='number_of_cots')
     open_whole_day = django_filters.BooleanFilter(name='open_whole_day')
     open_whole_week = django_filters.BooleanFilter(name='open_whole_week')
+    is_classified = django_filters.BooleanFilter(name='is_classified')
     county = django_filters.CharFilter(name='sub_county__county')
 
     class Meta:
         model = Facility
         fields = [
             'beds', 'cots', 'open_whole_week', 'open_whole_day', 'sub_county',
-            'county', 'facility_type', 'owner', 'operation_status', 'name'
+            'county', 'facility_type', 'owner', 'operation_status', 'name',
+            'is_classified'
         ]

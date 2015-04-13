@@ -306,7 +306,6 @@ class Facility(AbstractBase):
     The health institution considered as facilities include:
     Health Centres, Dispensaries, Hospitals etc.
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text='This is the official name of the facility')
