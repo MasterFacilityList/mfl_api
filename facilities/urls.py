@@ -14,7 +14,7 @@ urlpatterns = patterns(
     url(r'^owners/(?P<pk>[^/]+)/$', OwnerDetailView.as_view(),
         name='owner_detail'),
 
-    url(r'^services/$', ServiceListView.as_view(), name='servicess_list'),
+    url(r'^services/$', ServiceListView.as_view(), name='services_list'),
     url(r'^services/(?P<pk>[^/]+)/$', ServiceDetailView.as_view(),
         name='service_detail'),
 

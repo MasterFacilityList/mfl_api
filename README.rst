@@ -24,7 +24,7 @@ Getting started
 
     * Run migrations.
 
-    * Load demo data if the project is in development mode.
+    * Load demo data if the project DEBUG is set to true in settings.
 
 **B: Installing the system**
 
@@ -33,54 +33,30 @@ Getting started
 
 Explore the API
 ---------------
-Once all the steps above have been carried out, the system is ready to run and one can explore the api. 
+Once all the steps above have been carried out, the system is ready to run and one can explore the API. 
 
 There are two ways to explore the API:
 
 **a. Through Swagger**
-   This is the recommended way as one can easily try  ``GET``, ``POST``, ``PUT``,  ``PATCH``, ``DELETE``, ``OPTIONS`` on an endpoint if they are allowed.
+   This is the recommended way as one can easily try  ``GET``, ``POST``, ``PUT``,  ``PATCH``, ``DELETE`` and ``OPTIONS`` on an endpoint if they are allowed.
 
    To explore the endpoint throught swagger visit the url ``api/explore/``. 
 
 **b. Through accessing the urls directly**
-
-Below is a listing of the major urls in the project:
-
-**Counties**
-``api/common/counties/``
-
-**Constituencies**
-``api/common/constituencies/``
-
-**Contacts**
-``api/common/contacts/``
-
-**Physical address**
-``api/common/address/``
-
-**Sub counties**
-``api/common/sub_counties/``
-
-**Users**
-``api/common/users/``
-
-**Roles**
-``api/roles/``
-
-**Permissions**
-``api/roles/permissions/``
-
-**Owners**
-``api/facitilies/owners/``
-
-**Facitlities**
-``api/facilities/``
-
-**Services**
-``api/facilities/services/``
-
+The list of the endpoints availble is located at ``api/common/api_root/``.
 
 Data Formats Supported
 ----------------------
 The formats supported are xml, json, csv and xlsx.
 The default data format is json. To access xml append ``?format=xml`` to an endpoint. To access data in csv append ``?format=csv`` and similarly to access xlsx append ``?format=xlsx``. 
+The different data formats can also be accessed through content negotiation.
+    to access csv
+    to access xml
+    to access xlsx
+
+Authentication 
+TODO
+
+Running tests
+------------
+TODO
