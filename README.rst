@@ -45,14 +45,14 @@ There are two ways to explore the API:
 **b. Through accessing the urls directly**
 The list of the endpoints availble is located at ``api/common/api_root/``.
 
-Data Formats Supported
+Resource Formats Supported
 ----------------------
 The formats supported are xml, json, csv and xlsx.
 The default data format is json. To access xml append ``?format=xml`` to an endpoint. To access data in csv append ``?format=csv`` and similarly to access xlsx append ``?format=xlsx``.
 
 The different resource formats can also be accessed through **HTTP content negotiation**. 
 
-For example if there is a resource called user, it can be accessed in the three different formats as shown below:
+For example if there is a resource called user, it can be accessed in the four different formats as shown below:
 
 **To get json**
   
