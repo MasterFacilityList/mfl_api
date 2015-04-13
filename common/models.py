@@ -24,6 +24,9 @@ class AbstractBase(models.Model):
     updated = models.DateTimeField(default=timezone.now)
     created_by = models.CharField(max_length=128,)
     updated_by = models.CharField(max_length=128,)
+    active = models.BooleanField(
+        default=True,
+        help_text="Indicates whether the record has been retired?")
 
     def preserve_created_and_created_by(self):
         """
@@ -66,7 +69,8 @@ class RegionAbstractBase(AbstractBase):
         help_text="Name og the region may it be e.g Nairobi")
     code = models.CharField(
         max_length=100, unique=True,
-        help_text="A unique_code 4 digit number representing the region.")
+        help_text="A unique_code 4 digit number representing the region.",
+        editable=False)
 
     class Meta:
         abstract = True
