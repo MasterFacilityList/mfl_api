@@ -19,6 +19,7 @@ class AbstractBase(models.Model):
     It will provide audit fields that will keep track of when a model
     is created or updated and by who.
     """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
