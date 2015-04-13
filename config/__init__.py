@@ -22,3 +22,5 @@ def get_version(v):
 VERSION = (2, 0, 0, 'alpha', 1)
 
 __version__ = get_version(VERSION)
+
+from settings import *  # noqa

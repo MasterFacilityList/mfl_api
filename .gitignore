@@ -19,6 +19,7 @@ parts/
 sdist/
 var/
 *.egg-info/
+<<<<<<< HEAD
 .installed.cfg
 *.egg
 
@@ -66,3 +67,8 @@ clonedigger.html
 # Ignore files that contain secrets that should not be on git
 .pypirc
 
+.tox/*
+.coverage
+build/
+dist/
+htmlcov/
