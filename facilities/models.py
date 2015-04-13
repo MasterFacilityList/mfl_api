@@ -51,7 +51,8 @@ class Owner(AbstractBase):
         " could be shortened as MOH")
     owner_type = models.ForeignKey(
         OwnerType,
-        help_text="The classification of the owner e.g INDIVIDUAL")
+        help_text="The classification of the owner e.g INDIVIDUAL",
+        on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.name
@@ -84,7 +85,7 @@ class OfficerIncharge(AbstractBase):
     name = models.CharField(
         max_length=150,
         help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
-    job_title = models.ForeignKey(JobTitle)
+    job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
     registration_number = models.CharField(
         max_length=100,
         help_text="This is the licence number of the officer. e.g for a nurse"
@@ -104,11 +105,11 @@ class OfficerIchargeContact(AbstractBase):
 
     officer = models.ForeignKey(
         OfficerIncharge,
-        help_text="The is the officer in charge")
+        help_text="The is the officer in charge", on_delete=models.PROTECT)
     contact = models.ForeignKey(
         Contact,
         help_text="The contact of the officer incharge may it be email, "
-        " mobile number etc")
+        " mobile number etc", on_delete=models.PROTECT)
 
     def __unicode__(self):
         return "{}: {}".format(self.officer.name, self.contact.contact)
@@ -297,12 +298,13 @@ class Facility(AbstractBase):
     regulating_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True,
         help_text="The National Regulatory Body responsible for licensing"
-        " or gazettement of the facility")
+        " or gazettement of the facility", on_delete=models.PROTECT)
     facility_type = models.OneToOneField(
         FacilityType,
         help_text="This depends on who owns the facilty. For MOH facilities,"
         "type is the gazetted classification of the facilty."
-        "For Non-MOH check under the respective owners.")
+        "For Non-MOH check under the respective owners.",
+        on_delete=models.PROTECT)
     number_of_beds = models.PositiveIntegerField(
         default=0,
         help_text="The number of beds that a facilty has. e.g 0")
@@ -323,8 +325,8 @@ class Facility(AbstractBase):
     regulation_status = models.ForeignKey(
         RegulationStatus, null=True, blank=True,
         help_text="Indicates whether the facility has been approved by the"
-        " respective National Regulatory Body.")
-    sub_county = models.ForeignKey(SubCounty)
+        " respective National Regulatory Body.", on_delete=models.PROTECT)
+    sub_county = models.ForeignKey(SubCounty, on_delete=models.PROTECT)
     owner = models.ForeignKey(Owner)
     location_desc = models.TextField(
         help_text="This field allows a more detailed description of how to"
@@ -346,8 +348,9 @@ class FacilityRegulationStatus(AbstractBase):
     an explanation as to why a facility is in a certain regulation status.
     """
 
-    facility = models.ForeignKey(Facility)
-    regulation_status = models.ForeignKey(RegulationStatus)
+    facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
+    regulation_status = models.ForeignKey(
+        RegulationStatus, on_delete=models.PROTECT)
     reason = models.TextField(
         null=True, blank=True,
         help_text="e.g Why has a facility been suspended")
@@ -429,7 +432,7 @@ class FacilityGPS(AbstractBase):
         help_text="Should the facility be visible to the public?")
     source = models.ForeignKey(
         GeoCodeSource,
-        help_text="where the geo code came from")
+        help_text="where the geo code came from", on_delete=models.PROTECT)
     method = models.ForeignKey(
         GeoCodeMethod,
         help_text="Method used to obtain the geo codes. e.g"
@@ -447,8 +450,9 @@ class FacilityService(AbstractBase):
     (YES/NO)
     """
 
-    facility = models.ForeignKey(Facility, related_name='facility_services')
-    service = models.ForeignKey(Service)
+    facility = models.ForeignKey(
+        Facility, related_name='facility_services', on_delete=models.PROTECT)
+    service = models.ForeignKey(Service, on_delete=models.PROTECT)
     active = models.BooleanField(
         default=True, help_text="Is the offered or not.")
 
@@ -465,8 +469,8 @@ class FacilityContact(AbstractBase):
     they could be emails, phone numbers, land lines etc.
     """
 
-    facility = models.ForeignKey(Facility)
-    contact = models.ForeignKey(Contact)
+    facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT)
 
     def __unicode__(self):
         return "{}: {}".format(

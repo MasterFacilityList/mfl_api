@@ -65,7 +65,8 @@ class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    county = models.ForeignKey(County, null=True, blank=True)
+    county = models.ForeignKey(
+        County, null=True, blank=True, on_delete=models.PROTECT)
     is_national = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -96,8 +97,9 @@ class UserCounties(AbstractBase):
     A user can only be incharge of only one county at a time.
     """
 
-    user = models.ForeignKey(MflUser, related_name='user_counties')
-    county = models.ForeignKey(County)
+    user = models.ForeignKey(
+        MflUser, related_name='user_counties', on_delete=models.PROTECT)
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
     is_active = models.BooleanField(
         default=True,
         help_text="Is the user currently incharge of the county?")
