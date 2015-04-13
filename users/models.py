@@ -14,8 +14,8 @@ USER_MODEL = settings.AUTH_USER_MODEL
 
 
 class MflUserManager(BaseUserManager):
-    def create_user(self, email, first_name,
-                    username, password=None, **extra_fields):
+    def create(self, email, first_name,
+               username, password=None, **extra_fields):
         now = timezone.now()
         validate_email(email)
         p = make_password(password)
@@ -29,8 +29,8 @@ class MflUserManager(BaseUserManager):
 
     def create_superuser(self, email, first_name, username,
                          password, **extra_fields):
-        user = self.create_user(email, first_name,
-                                username, password, **extra_fields)
+        user = self.create(email, first_name,
+                           username, password, **extra_fields)
         user.is_staff = True
         user.is_active = True
         user.is_superuser = True

@@ -10,7 +10,7 @@ from ..models import (
 class BaseTestCase(TestCase):
 
     def setUp(self):
-        self.user = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create(
             "test@gmail.com", "test", "test", "test")
         super(BaseTestCase, self).setUp()
 

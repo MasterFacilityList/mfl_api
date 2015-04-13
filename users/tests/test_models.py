@@ -17,7 +17,7 @@ class TestMflUserModel(BaseTestCase):
             "other_names": "jm",
             "password": "pass",
         }
-        user = MflUser.objects.create_user(**data)
+        user = MflUser.objects.create(**data)
 
         # the base  test case class comes with another user
         self.assertEquals(2, MflUser.objects.count())

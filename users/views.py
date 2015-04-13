@@ -29,12 +29,12 @@ class APILogin(APIView):
             return Response(data=data, status=200)
         else:
             return Response(
-                {'message': 'Invalid username/password Combination'},
+                "Invalid username/password Combination",
                 status=401)
 
 
 class APILogout(APIView):
-    """Logs out a user request."""
+    """Logs out a user."""
     permission_classes = (permissions.IsAuthenticated,)
 
     @staticmethod

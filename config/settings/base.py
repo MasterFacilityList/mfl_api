@@ -81,7 +81,7 @@ REST_FRAMEWORK = {
     #  No need to specitfy default serializer classes as the
     #  serializers are declared in views
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',

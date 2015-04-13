@@ -11,12 +11,12 @@ urlpatterns = patterns(
     url(r'^logout/$', APILogout.as_view(), name='user_logout'),
 
     url(r'^counties/$', UserCountiesView.as_view(), name='users_county_list'),
-    url(r'^counties/(?P<id>[^/]+)/$', UserCountyDetailView.as_view(),
+    url(r'^counties/(?P<pk>[^/]+)/$', UserCountyDetailView.as_view(),
         name='user_county_detail'),
 
 
     url(r'^$', UserList.as_view(), name='users_list'),
-    url(r'^(?P<id>[^/]+)/$', UserDetailView.as_view(),
+    url(r'^(?P<pk>[^/]+)/$', UserDetailView.as_view(),
         name='user_detail'),
 
 )
