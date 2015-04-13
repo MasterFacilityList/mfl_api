@@ -5,7 +5,7 @@ Master Facility List API
     :target: https://circleci.com/gh/MasterFacilityList/mfl_api
 
 This is the backend for the Master Facility list. 
-It provides an api through which one is able to access various resources provided by master facility list; Including facilities and their services.
+It provides an API through which one is able to access various resources provided by master facility list; Including facilities and their services.
 
 Read more at http://ehealth.or.ke/facilities/
 
@@ -24,7 +24,7 @@ Getting started
 
     * Run migrations.
 
-    * Load demo data if the project DEBUG is set to true in settings.
+    * Load demo data if the project **DEBUG** attribute in settings is set to true .
 
 **B: Installing the system**
 
@@ -48,14 +48,34 @@ The list of the endpoints availble is located at ``api/common/api_root/``.
 Data Formats Supported
 ----------------------
 The formats supported are xml, json, csv and xlsx.
-The default data format is json. To access xml append ``?format=xml`` to an endpoint. To access data in csv append ``?format=csv`` and similarly to access xlsx append ``?format=xlsx``. 
-The different data formats can also be accessed through content negotiation.
-    to access csv
-    to access xml
-    to access xlsx
+The default data format is json. To access xml append ``?format=xml`` to an endpoint. To access data in csv append ``?format=csv`` and similarly to access xlsx append ``?format=xlsx``.
 
-Authentication 
+The different resource formats can also be accessed through **HTTP content negotiation**. 
+
+For example if there is a resource called user, it can be accessed in the three different formats as shown below:
+
+**To get json**
+  
+     curl -i -H "Accept: application/json" -H "Content-Type: application/json" http://localhost:8000/api/user
+
+**To get csv**
+
+     curl -i -H "Accept: application/csv" -H "Content-Type: application/csv" http://localhost:8000/api/user
+
+**To get xml**
+
+    curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" http://localhost:8000/api/user
+
+**To get resource in Microsoft Excel format**
+
+    curl -i -H "Accept: application/xlsx" -H "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" http://localhost:8000/api/user
+
+
+
+Authentication
+--------------
 TODO
+
 
 Running tests
 ------------
