@@ -10,7 +10,7 @@ import common.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0002_auto_20150413_1556'),
+        ('common', '0002_auto_20150413_1627'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('facilities', '0001_initial'),
     ]
@@ -19,57 +19,57 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='servicecategory',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='servicecategory',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='service',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='service',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='regulationstatus',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='regulationstatus',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='regulatingbody',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='regulatingbody',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='ownertype',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='ownertype',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='owner',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='owner',
@@ -79,12 +79,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='owner',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='officerincharge',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='officerincharge',
@@ -94,7 +94,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='officerincharge',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='officerichargecontact',
@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='officerichargecontact',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='officerichargecontact',
@@ -114,62 +114,62 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='officerichargecontact',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='jobtitle',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='jobtitle',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='geocodesource',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='geocodesource',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='geocodemethod',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='geocodemethod',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitytype',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitytype',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitystatus',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitystatus',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilityservice',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilityservice',
@@ -184,12 +184,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facilityservice',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilityregulationstatus',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilityregulationstatus',
@@ -204,12 +204,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facilityregulationstatus',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitygps',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitygps',
@@ -229,7 +229,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facilitygps',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitycontact',
@@ -239,7 +239,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facilitycontact',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facilitycontact',
@@ -249,12 +249,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facilitycontact',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facility',
             name='created_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='facility',
@@ -289,7 +289,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterUniqueTogether(
             name='facilitytype',

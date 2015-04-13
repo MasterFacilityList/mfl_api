@@ -38,13 +38,15 @@ class MflUserManager(BaseUserManager):
         return user
 
 
-class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
+class MflUser(AbstractBaseUser, PermissionsMixin):
     """
     Add custom behaviour to the user model.
 
     Purpose of the custom model:
         1. Make email the username field.
         2. Add additional fields to the user such as county and is_national
+
+    ``User`` is the one model that cannot descend from AbstractBase.
     """
     email = models.EmailField(null=False, blank=False, unique=True)
     first_name = models.CharField(max_length=60, null=False, blank=False)
@@ -64,8 +66,6 @@ class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    county = models.ForeignKey(
-        County, null=True, blank=True, on_delete=models.PROTECT)
     is_national = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -95,7 +95,6 @@ class UserCounties(AbstractBase):
 
     A user can only be incharge of only one county at a time.
     """
-
     user = models.ForeignKey(
         MflUser, related_name='user_counties', on_delete=models.PROTECT)
     county = models.ForeignKey(County, on_delete=models.PROTECT)

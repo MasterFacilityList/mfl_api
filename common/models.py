@@ -5,6 +5,7 @@ import pytz
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 from django.conf import settings
 
 from .sequence_helper import next_value_in_sequence
@@ -27,15 +28,14 @@ def get_default_system_user():
     """
     Ensure that there is a default system user, unknown password
     """
-    from users import MflUserManager
     try:
-        return settings.AUTH_USER_MODEL.objects.get(
+        return get_user_model().objects.get(
             email='system@ehealth.or.ke',
             first_name='System',
             username='system'
         )
-    except settings.AUTH_USER_MODEL.DoesNotExist:
-        return MflUserManager().create(
+    except get_user_model().DoesNotExist:
+        return get_user_model().objects.create(
             email='system@ehealth.or.ke',
             first_name='System',
             username='system'
@@ -60,10 +60,10 @@ class AbstractBase(models.Model):
     updated = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=get_default_system_user,
-        related_name='+')
+        on_delete=models.PROTECT, related_name='+')
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=get_default_system_user,
-        related_name='+')
+        on_delete=models.PROTECT, related_name='+')
     deleted = models.BooleanField(default=False)
 
     objects = CustomDefaultManager()
@@ -82,7 +82,6 @@ class AbstractBase(models.Model):
         Ensures that in subsequent times created and created_by fields
         values are not overriden.
         """
-
         try:
             original = self.__class__.objects.get(pk=self.pk)
             self.created = original.created
