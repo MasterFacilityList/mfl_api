@@ -27,15 +27,16 @@ long_description = read('README.rst')
 version = config.__version__
 
 
-class PyTest(TestCommand):
+class Tox(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []
         self.test_suite = True
 
     def run_tests(self):
-        import pytest
-        errcode = pytest.main(self.test_args)
+        # import here, cause outside the eggs aren't loaded
+        import tox
+        errcode = tox.cmdline(self.test_args)
         sys.exit(errcode)
 
 
@@ -43,8 +44,6 @@ setup(
     name='mfl',
     version=version,
     license='MIT License',
-    description='Master falicity list',
-    long_description=(description),
     author='Savannah Informatics Limitee Developers',
     author_email='developers@savannahinformatics.com',
     description='Core APIs for the Kenyan Ministry of Health '
@@ -68,7 +67,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
         ],
-    tests_require=['pytest'],
-    cmdclass={'test': PyTest},
+    tests_require=['tox'],
+    cmdclass={'test': Tox},
     install_requires=[],
 )
