@@ -14,7 +14,7 @@ setup(
     url='',
     packages=find_packages(),
     install_requires=[
-        "model_mommy>=1.2",
+        "model_mommy==1.2.4",
         "Fabric>=1.10",
         "coverage>=3.7",
         "psycopg2>=2.5",
