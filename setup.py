@@ -88,6 +88,7 @@ setup(
         "django>=1.8",
         'sqlparse>=0.1',
         "pytest>=2.7",
-        "pytest-django>=2.8"
+        "pytest-django>=2.8",
+        "pytz",
     ],
 )

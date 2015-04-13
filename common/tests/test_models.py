@@ -1,10 +1,80 @@
+from datetime import timedelta, datetime
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.utils import timezone
 from model_mommy import mommy
 
 from ..models import (
     Contact, County, SubCounty, Constituency, ContactType, PhysicalAddress)
+
+
+class AbstractBaseModelTest(TestCase):
+
+    def setUp(self):
+        self.leo = timezone.now()
+        self.jana = timezone.now() - timedelta(days=1)
+        self.juzi = timezone.now() - timedelta(days=2)
+        self.user_1 = mommy.make(settings.AUTH_USER_MODEL)
+        self.user_2 = mommy.make(settings.AUTH_USER_MODEL)
+
+    def test_validate_updated_date_greater_than_created(self):
+        fake = ContactType(created=self.leo, updated=self.jana)
+
+        with self.assertRaises(ValidationError) as ve:
+            fake.validate_updated_date_greater_than_created()
+        self.assertTrue(
+            'The updated date cannot be less than the created date'
+            in ve.exception.messages)
+
+    def test_preserve_created_and_created_by(self):
+        # Create  a new instance
+        fake = mommy.make(ContactType, created=self.jana, updated=self.leo,
+                          created_by=self.user_1, updated_by=self.user_1)
+        # Switch the create
+        fake.created = self.juzi
+        fake.save()
+
+        self.assertEqual(self.jana, fake.created)
+
+        # Switch created_by
+        fake.created_by = self.user_2
+        fake.updated_by = self.user_2
+        fake.save()
+
+        self.assertEqual(self.user_1.id, fake.created_by.id)
+        self.assertEqual(self.user_2.id, fake.updated_by.id)
+
+    def test_delete_override(self):
+        bp_type = mommy.make(ContactType, created=timezone.now(),
+                             updated=timezone.now())
+        bp_type.delete()
+        with self.assertRaises(ContactType.DoesNotExist):
+            self.assertTrue(ContactType.objects.get(
+                pk=bp_type.id))
+
+        assert ContactType.everything.get(pk=bp_type.id)
+
+    def test_timezone(self):
+        naive_datetime = datetime.now()
+        instance = mommy.make(ContactType)
+        instance.updated = naive_datetime
+        with self.assertRaises(ValidationError):
+            instance.save()
+
+        naive_after_object_is_saved = datetime.now()
+        instance.updated = naive_after_object_is_saved
+        instance.save()
+        self.assertTrue(timezone.is_aware(instance.updated))
+
+        # Test that we don't need to make created timezone aware
+        # It is already tizezone aware
+        self.assertTrue(timezone.is_aware(instance.created))
+        created_naive_datetime = datetime.now()
+        instance.create = created_naive_datetime  # This should not even update
+        instance.save()
+        self.assertTrue(timezone.is_aware(instance.created))
 
 
 class BaseTestCase(TestCase):

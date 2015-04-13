@@ -46,7 +46,6 @@ class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
         1. Make email the username field.
         2. Add additional fields to the user such as county and is_national
     """
-
     email = models.EmailField(null=False, blank=False, unique=True)
     first_name = models.CharField(max_length=60, null=False, blank=False)
     last_name = models.CharField(max_length=60, blank=True)
