@@ -65,6 +65,9 @@ class AbstractBase(models.Model):
         settings.AUTH_USER_MODEL, default=get_default_system_user_id,
         on_delete=models.PROTECT, related_name='+')
     deleted = models.BooleanField(default=False)
+    active = models.BooleanField(
+        default=True,
+        help_text="Indicates whether the record has been retired?")
 
     objects = CustomDefaultManager()
     everything = models.Manager()
@@ -118,7 +121,6 @@ class RegionAbstractBase(AbstractBase):
         3. sub-county,
         4. ward
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="Name og the region may it be e.g Nairobi")

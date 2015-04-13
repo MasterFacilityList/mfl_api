@@ -45,7 +45,7 @@ class Owner(AbstractBase):
     code = models.IntegerField(
         unique=True,
         help_text="A unique number to identify the owner."
-        "Could be up to 7 characteres long.")
+        "Could be up to 7 characteres long.", editable=False)
     abbreviation = models.CharField(
         max_length=10, null=True, blank=True,
         help_text="Short form of the name of the owner e.g Ministry of health"
@@ -175,7 +175,7 @@ class Service(AbstractBase):
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    code = models.IntegerField(unique=True)
+    code = models.IntegerField(unique=True, editable=False)
 
     def get_code_value(self):
         value = next_value_in_sequence("service_code_seq")
@@ -310,7 +310,7 @@ class Facility(AbstractBase):
         max_length=100, unique=True,
         help_text='This is the official name of the facility')
     code = models.IntegerField(
-        unique=True,
+        unique=True, editable=False,
         help_text='A sequential number allocated to each facility')
     description = models.TextField(help_text="A brief summary of the Facility")
     regulating_body = models.ForeignKey(
@@ -480,8 +480,8 @@ class FacilityService(AbstractBase):
     facility = models.ForeignKey(
         Facility, related_name='facility_services', on_delete=models.PROTECT)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
-    active = models.BooleanField(
-        default=True, help_text="Is the offered or not.")
+    service_active = models.BooleanField(
+        default=True, help_text="Is the service still being offered or not.")
 
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)

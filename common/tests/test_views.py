@@ -55,13 +55,15 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
                     "id": county.id,
                     "name": county.name,
                     "code": county.code,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 },
                 {
                     "id": county_2.id,
                     "name": county_2.name,
                     "code": county_2.code,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 }
             ]
         }
@@ -81,7 +83,8 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
             "id": county.id,
             "name": county.name,
             "code": county.code,
-            "deleted": False
+            "deleted": False,
+            "active": True
         }
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -116,14 +119,16 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
                     "name": constituency.name,
                     "code": constituency.code,
                     "county": constituency.county.id,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 },
                 {
                     "id": constituency_2.id,
                     "name": constituency_2.name,
                     "code": constituency_2.code,
                     "county": constituency_2.county.id,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 }
             ]
         }
@@ -151,7 +156,8 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
             "name": constituency.name,
             "code": constituency.code,
             "county": constituency.county.id,
-            "deleted": False
+            "deleted": False,
+            "active": True
         }
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -186,14 +192,16 @@ class TestViewSubCounties(LogginMixin, BaseTestCase, APITestCase):
                     "name": sub_county_1.name,
                     "code": sub_county_1.code,
                     "county": sub_county_1.county.id,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 },
                 {
                     "id": sub_county_2.id,
                     "name": sub_county_2.name,
                     "code": sub_county_2.code,
                     "county": sub_county_2.county.id,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 }
             ]
         }
@@ -219,7 +227,8 @@ class TestViewSubCounties(LogginMixin, BaseTestCase, APITestCase):
             "name": sub_county.name,
             "code": sub_county.code,
             "county": sub_county.county.id,
-            "deleted": False
+            "deleted": False,
+            "active": True
         }
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -251,13 +260,15 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
                     "id": contact.id,
                     "contact": contact.contact,
                     "contact_type": contact.contact_type.id,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 },
                 {
                     "id": contact_1.id,
                     "contact": contact_1.contact,
                     "contact_type": contact_1.contact_type.id,
-                    "deleted": False
+                    "deleted": False,
+                    "active": True
                 }
             ]
         }
