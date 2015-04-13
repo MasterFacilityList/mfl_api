@@ -36,7 +36,6 @@ class TestOwnerModel(BaseTestCase):
             "owner_type": owner_type,
             "name": "CHAK",
             "description": "this is some description",
-            "code": "HJUAFHJA",
             "abbreviation": "CHAK"
         }
         data = self.inject_audit_fields(data)
@@ -45,6 +44,14 @@ class TestOwnerModel(BaseTestCase):
 
         # test unicode
         self.assertEquals("CHAK", owner.__unicode__())
+        self.assertIsNotNone(owner.code)
+
+    def test_owner_code_sequence(self):
+        # make code none so that mommy does not supply it
+        owner_1 = mommy.make(Owner, code=None)
+        owner_2 = mommy.make(Owner, code=None)
+        owner_2_code = int(owner_1.code) + 1
+        self.assertEquals(owner_2.code, owner_2_code)
 
 
 class TestJobTitleModel(BaseTestCase):
@@ -112,8 +119,7 @@ class TestServiceModel(BaseTestCase):
     def test_save(self):
         data = {
             "name": "Diabetes screening",
-            "description": "This is some description",
-            "code": "qqui"
+            "description": "This is some description"
         }
         data = self.inject_audit_fields(data)
 
@@ -121,6 +127,14 @@ class TestServiceModel(BaseTestCase):
         # test unicode
 
         self.assertEquals('Diabetes screening', service.__unicode__())
+        self.assertIsNotNone(service.code)
+
+    def test_working_of_service_code_sequence(self):
+        # make code none so that it is not supplied by mommy
+        service_1 = mommy.make(Service, code=None)
+        service_2 = mommy.make(Service, code=None)
+        service_2_code = int(service_1.code) + 1
+        self.assertEquals(service_2.code, service_2_code)
 
 
 class TestFacilityStatusModel(BaseTestCase):
@@ -176,7 +190,6 @@ class TestFacility(BaseTestCase):
         sub_county = mommy.make(SubCounty)
         data = {
             "name": "Forces Memorial",
-            "code": "909000",
             "description": "Hospital for the armed forces",
             "regulating_body": regulating_body,
             "facility_type": facility_type,
@@ -196,6 +209,14 @@ class TestFacility(BaseTestCase):
 
         #  test unicode
         self.assertEquals("Forces Memorial", facility.__unicode__())
+        self.assertIsNotNone(facility.code)
+
+    def test_working_of_facility_code_sequence(self):
+        # make code none so that mommy does not supply it
+        facility_1 = mommy.make(Facility, code=None)
+        facility_2 = mommy.make(Facility, code=None)
+        facility_2_code = int(facility_1.code) + 1
+        self.assertEquals(int(facility_2.code), facility_2_code)
 
 
 class TestGeoCodeSourceModel(BaseTestCase):

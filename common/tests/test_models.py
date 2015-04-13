@@ -73,12 +73,12 @@ class TestCountyModel(BaseTestCase):
 
     def test_save_county(self):
         county_data = {
-            "name": "WAJIR",
-            "code": "WA1"
+            "name": "WAJIR"
         }
         county_data = self.inject_audit_fields(county_data)
-        County.objects.create(**county_data)
+        county = County.objects.create(**county_data)
         self.assertEquals(1, County.objects.count())
+        self.assertIsNotNone(county.code)
 
     def test_unicode(self):
         county_name = "Texas"
@@ -87,24 +87,31 @@ class TestCountyModel(BaseTestCase):
             name=county_name, code='some code')
         self.assertEquals(county_name, county.__unicode__())
 
+    def test_county_code_seq(self):
+        # make code None so that model mommy does not supply it
+        county = mommy.make(County, code=None)
+        county_2 = mommy.make(County, code=None)
+        county_2_code = int(county.code) + 1
+        self.assertEquals(county_2_code, county_2.code)
+
 
 class TestConstituencyModel(BaseTestCase):
     def setUp(self):
         super(TestConstituencyModel, self).setUp()
         self.county = County.objects.create(
             updated_by=self.user, created_by=self.user,
-            name='county', code='county code')
+            name='county')
 
     def test_save_constituency(self):
         constituency_data = {
             "name": "KAPSA",
-            "code": "1125",
             "county": self.county
 
         }
         constituency_data = self.inject_audit_fields(constituency_data)
-        Constituency.objects.create(**constituency_data)
+        constituency = Constituency.objects.create(**constituency_data)
         self.assertEquals(1, Constituency.objects.count())
+        self.assertIsNotNone(constituency.code)
 
     def test_unicode(self):
         const = Constituency.objects.create(
@@ -112,29 +119,41 @@ class TestConstituencyModel(BaseTestCase):
             name="jina", code='some code', county=self.county)
         self.assertEquals("jina", const.__unicode__())
 
+    def test_constituency_code_sequence(self):
+        constituency_1 = mommy.make(Constituency, code=None)
+        constituency_2 = mommy.make(Constituency, code=None)
+        constituency_2_code = int(constituency_1.code) + 1
+        self.assertEquals(constituency_2_code, int(constituency_2.code))
+
 
 class TestSubCountyModel(BaseTestCase):
     def setUp(self):
         super(TestSubCountyModel, self).setUp()
         self.county = County.objects.create(
             created_by=self.user, updated_by=self.user,
-            name='county', code='county code')
+            name='county')
 
-    def test_save_constituency(self):
+    def test_save_sub_county(self):
         data = {
             "name": "KAPSA",
-            "code": "1125",
             "county": self.county
         }
         data = self.inject_audit_fields(data)
-        SubCounty.objects.create(**data)
+        sub_county = SubCounty.objects.create(**data)
         self.assertEquals(1, SubCounty.objects.count())
+        self.assertIsNotNone(sub_county.code)
 
     def test_unicode(self):
         const = SubCounty.objects.create(
             updated_by=self.user, created_by=self.user,
             name="jina", code='some code', county=self.county)
         self.assertEquals("jina", const.__unicode__())
+
+    def test_sub_county_code_seq(self):
+        sub_county_1 = mommy.make(SubCounty, code=None)
+        sub_county_2 = mommy.make(SubCounty, code=None)
+        sub_county_2_code = int(sub_county_1.code) + 1
+        self.assertEquals(sub_county_2_code, int(sub_county_2.code))
 
 
 class TestContactType(BaseTestCase):
