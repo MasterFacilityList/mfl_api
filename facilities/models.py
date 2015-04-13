@@ -1,5 +1,6 @@
 from django.db import models
 from common.models import AbstractBase, SubCounty, Contact
+from common.sequence_helper import next_value_in_sequence
 
 
 class OwnerType(AbstractBase):
@@ -52,6 +53,15 @@ class Owner(AbstractBase):
     owner_type = models.ForeignKey(
         OwnerType,
         help_text="The classification of the owner e.g INDIVIDUAL")
+
+    def get_code_value(self):
+        value = next_value_in_sequence("owner_code_seq")
+        return value
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.get_code_value()
+        super(Owner, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -165,6 +175,15 @@ class Service(AbstractBase):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
     code = models.CharField(max_length=100, unique=True)
+
+    def get_code_value(self):
+        value = next_value_in_sequence("service_code_seq")
+        return value
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.get_code_value()
+        super(Service, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -330,6 +349,15 @@ class Facility(AbstractBase):
         help_text="This field allows a more detailed description of how to"
         "locate the facility e.g Joy medical clinic is in Jubilee Plaza"
         "7th Floor")
+
+    def get_code_value(self):
+        value = next_value_in_sequence("facility_code_seq")
+        return value
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.get_code_value()
+        super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name

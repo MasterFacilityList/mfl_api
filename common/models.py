@@ -3,6 +3,7 @@ import uuid
 
 from django.db import models
 from django.utils import timezone
+from .sequence_helper import next_value_in_sequence
 
 LOGGER = logging.getLogger(__file__)
 
@@ -149,6 +150,15 @@ class County(RegionAbstractBase):
     Kenya is divided in 47 different counties.
     """
 
+    def get_code_value(self):
+        value = next_value_in_sequence("county_code_seq")
+        return value
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.get_code_value()
+        super(County, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return self.name
 
@@ -166,6 +176,15 @@ class SubCounty(RegionAbstractBase):
         County,
         help_text="The county where the sub county is located.")
 
+    def get_code_value(self):
+        value = next_value_in_sequence("ward_code_seq")
+        return value
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.get_code_value()
+        super(SubCounty, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return self.name
 
@@ -182,6 +201,15 @@ class Constituency(RegionAbstractBase):
     county = models.ForeignKey(
         County,
         help_text="Name of the county where the constituency is located")
+
+    def get_code_value(self):
+        value = next_value_in_sequence("consituency_code_seq")
+        return value
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.get_code_value()
+        super(Constituency, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
