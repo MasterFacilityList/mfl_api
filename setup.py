@@ -14,7 +14,7 @@ setup(
     url='',
     packages=find_packages(),
     install_requires=[
-        "django>=1.8",
+        "model_mommy>=1.2",
         "Fabric>=1.10",
         "coverage>=3.7",
         "psycopg2>=2.5",
@@ -27,6 +27,6 @@ setup(
         "tox>=1.9",
         "djangorestframework-xml>=1.0",
         "djangorestframework-csv>=1.3",
-        "model_mommy>=1.2"
+        "django>=1.8",
     ],
 )
