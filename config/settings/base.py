@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 
 BASE_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -6,6 +7,7 @@ BASE_DIR = os.path.join(
 SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+SEND_BROKEN_LINK_EMAILS = not DEBUG
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke']
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -41,14 +43,9 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'mfl',
-        'USER': 'mfl',
-        'PASSWORD': 'mfl',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgres://mfl:mfl@localhost:5432/mfl'
+    )
 }
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'

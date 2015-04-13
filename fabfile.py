@@ -44,7 +44,7 @@ def setup(*args, **kwargs):
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
     db_user = base.DATABASES.get('default').get('USER')
-    db_pass = base.DATABASES.get('default').get("PASSWORD")
+    db_pass = base.DATABASES.get('default').get('PASSWORD')
 
     psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
     psql("DROP USER IF EXISTS {}".format(db_user), no_sudo)

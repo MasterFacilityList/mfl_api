@@ -76,6 +76,7 @@ setup(
         "psycopg2>=2.5",
         "djangorestframework>=3.1",
         "django-filter>=0.9",
+        'dj_database_url>=0.3.0,<=0.4.0',
         "flake8>=2.3",
         "django-cors-headers>=1.0",
         "virtualenv>=12.0",

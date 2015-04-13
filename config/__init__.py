@@ -23,4 +23,7 @@ VERSION = (2, 0, 0, 'alpha', 1)
 
 __version__ = get_version(VERSION)
 
-from settings import *  # noqa
+try:
+    from settings import *  # noqa
+except ImportError:  # Will occur on first install
+    pass  # NOQA
