@@ -3,6 +3,6 @@ branch=True
 source=common,users,facilities
 omit=
     *migrations*
-    
+
 [report]
 show_missing=True

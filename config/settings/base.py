@@ -1,21 +1,14 @@
 import os
+import dj_database_url
 
 BASE_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "..", "..")
-
 SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
-
+TEMPLATE_DEBUG = DEBUG
+SEND_BROKEN_LINK_EMAILS = not DEBUG
+ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke']
 INSTALLED_APPS = (
     'django.contrib.admin',
     'users',
@@ -29,16 +22,13 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django.contrib.gis',
 )
-
 LOCAL_APPS = (
     'facilities',
     'common',
     'data_bootstrap',
 )
 INSTALLED_APPS += LOCAL_APPS
-
 CORS_ORIGIN_ALLOW_ALL = True
-
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -48,45 +38,36 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 )
-
 ROOT_URLCONF = 'config.urls'
-
 WSGI_APPLICATION = 'config.wsgi.application'
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'mfl',
-        'USER': 'mfl',
-        'PASSWORD': 'mfl',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgres://mfl:mfl@localhost:5432/mfl'
+    )
 }
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
-
 STATIC_URL = '/static/'
-
+SESSION_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False  # Turn on in production
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+APPEND_SLASH = False
 REST_FRAMEWORK = {
-    #  No need to specitfy default serializer classes as the
-    #  serializers are declared in views
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
     ),
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
