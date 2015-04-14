@@ -4,10 +4,9 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.views import APIView, Response
 
-from common.models import UserCounties
 from .models import MflUser
-from .serializers import InchargeCountiesSerializer, UserSerializer
-from .filters import MFLUserFilter, UserCountiesFilter
+from .serializers import UserSerializer
+from .filters import MFLUserFilter
 
 
 class APILogin(APIView):
@@ -54,15 +53,3 @@ class UserList(generics.ListCreateAPIView):
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
-
-
-class UserCountiesView(generics.ListCreateAPIView):
-    queryset = UserCounties.objects.all()
-    serializer_class = InchargeCountiesSerializer
-    filter_class = UserCountiesFilter
-    ordering_fields = ('user', )
-
-
-class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserCounties.objects.all()
-    serializer_class = InchargeCountiesSerializer

@@ -1,15 +1,7 @@
 from rest_framework import serializers
 
-from common.serializers import AbstractFieldsMixin
-
-from common.models import UserCounties
+from common.serializers import InchargeCountiesSerializer
 from .models import MflUser
-
-
-class InchargeCountiesSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
-        model = UserCounties
 
 
 class UserSerializer(serializers.ModelSerializer):

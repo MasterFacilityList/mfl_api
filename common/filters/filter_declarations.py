@@ -1,4 +1,4 @@
-from ..models import ContactType, Contact, Constituency, Ward
+from ..models import ContactType, Contact, Constituency, Ward, UserCounties
 from .filter_shared import CommonFieldsFilterset
 
 
@@ -24,3 +24,8 @@ class WardFilter(CommonFieldsFilterset):
 
     class Meta:
         model = Ward
+
+
+class UserCountiesFilter(CommonFieldsFilterset):
+    class Meta:
+        model = UserCounties
