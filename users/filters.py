@@ -1,5 +1,7 @@
 import django_filters
-from .models import MflUser, UserCounties
+
+from common.models import UserCounties
+from .models import MflUser
 
 
 class MFLUserFilter(django_filters.FilterSet):

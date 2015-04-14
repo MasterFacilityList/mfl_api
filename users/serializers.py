@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from common.serializers import AbstractFieldsMixin
 
-from .models import MflUser, UserCounties
+from common.models import UserCounties
+from .models import MflUser
 
 
 class InchargeCountiesSerializer(

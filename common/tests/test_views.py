@@ -55,12 +55,14 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
                     "id": county.id,
                     "name": county.name,
                     "code": county.code,
+                    "deleted": False,
                     "active": True
                 },
                 {
                     "id": county_2.id,
                     "name": county_2.name,
                     "code": county_2.code,
+                    "deleted": False,
                     "active": True
                 }
             ]
@@ -81,8 +83,8 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
             "id": county.id,
             "name": county.name,
             "code": county.code,
+            "deleted": False,
             "active": True
-
         }
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -117,6 +119,7 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
                     "name": constituency.name,
                     "code": constituency.code,
                     "county": constituency.county.id,
+                    "deleted": False,
                     "active": True
                 },
                 {
@@ -124,6 +127,7 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
                     "name": constituency_2.name,
                     "code": constituency_2.code,
                     "county": constituency_2.county.id,
+                    "deleted": False,
                     "active": True
                 }
             ]
@@ -152,6 +156,7 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
             "name": constituency.name,
             "code": constituency.code,
             "county": constituency.county.id,
+            "deleted": False,
             "active": True
         }
         self.assertEquals(
@@ -164,7 +169,7 @@ class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
     def setUp(self):
         super(TestViewWards, self).setUp()
 
-    def test_list_sub_wards(self):
+    def test_list_wards(self):
         county = mommy.make(County)
         constituency = Constituency.objects.create(
             created_by=self.user, updated_by=self.user,
@@ -188,6 +193,7 @@ class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
                     "name": ward_1.name,
                     "code": ward_1.code,
                     "constituency": ward_1.constituency.id,
+                    "deleted": False,
                     "active": True
                 },
                 {
@@ -195,6 +201,7 @@ class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
                     "name": ward_2.name,
                     "code": ward_2.code,
                     "constituency": ward_2.constituency.id,
+                    "deleted": False,
                     "active": True
                 }
             ]
@@ -224,6 +231,7 @@ class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
             "name": ward.name,
             "code": ward.code,
             "constituency": ward.constituency.id,
+            "deleted": False,
             "active": True
         }
         self.assertEquals(
@@ -256,13 +264,14 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
                     "id": contact.id,
                     "contact": contact.contact,
                     "contact_type": contact.contact_type.id,
+                    "deleted": False,
                     "active": True
-
                 },
                 {
                     "id": contact_1.id,
                     "contact": contact_1.contact,
                     "contact_type": contact_1.contact_type.id,
+                    "deleted": False,
                     "active": True
                 }
             ]
@@ -305,9 +314,7 @@ class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
     def test_post_contact_types(self):
         data = {
             "created": "2015-04-10T08:41:05.169411Z",
-            "created_by": "00bdbd66-c4b3-4b1a-a5ac-04ab1c6ab4d3",
             "updated": "2015-04-10T08:41:05.169411Z",
-            "updated_by": "00bdbd66-c4b3-4b1a-a5ac-04ab1c6ab4d3",
             "name": "EMAIL",
             "description": "This is an email contact typ"
         }

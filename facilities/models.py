@@ -42,8 +42,8 @@ class Owner(AbstractBase):
         help_text="The name of owner e.g Ministry of Health.")
     description = models.TextField(
         null=True, blank=True, help_text="A brief summary of the owner.")
-    code = models.CharField(
-        max_length=100, unique=True,
+    code = models.IntegerField(
+        unique=True,
         help_text="A unique number to identify the owner."
         "Could be up to 7 characteres long.", editable=False)
     abbreviation = models.CharField(
@@ -175,7 +175,7 @@ class Service(AbstractBase):
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    code = models.CharField(max_length=100, unique=True, editable=False)
+    code = models.IntegerField(unique=True, editable=False)
 
     def get_code_value(self):
         value = next_value_in_sequence("service_code_seq")
@@ -309,10 +309,9 @@ class Facility(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True,
         help_text='This is the official name of the facility')
-    code = models.CharField(
-        max_length=100, unique=True,
-        help_text='A sequential number allocated to each facility',
-        editable=False)
+    code = models.IntegerField(
+        unique=True, editable=False,
+        help_text='A sequential number allocated to each facility')
     description = models.TextField(help_text="A brief summary of the Facility")
     regulating_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True,

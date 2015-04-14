@@ -4,7 +4,8 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.views import APIView, Response
 
-from .models import MflUser, UserCounties
+from common.models import UserCounties
+from .models import MflUser
 from .serializers import InchargeCountiesSerializer, UserSerializer
 from .filters import MFLUserFilter, UserCountiesFilter
 
