@@ -304,7 +304,9 @@ class FacilityRegulationStatus(AbstractBase):
     It adds the extra reason field that makes it possible to give
     an explanation as to why a facility is in a certain regulation status.
     """
-    facility = models.ForeignKey('Facility', on_delete=models.PROTECT)
+    facility = models.ForeignKey(
+        'Facility', on_delete=models.PROTECT,
+        related_name='regulatory_details')
     regulating_body = models.ForeignKey(
         RegulatingBody, on_delete=models.PROTECT)
     regulation_status = models.ForeignKey(
@@ -316,6 +318,9 @@ class FacilityRegulationStatus(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(
             self.facility.name, self.regulation_status.name)
+
+    class Meta:
+        ordering = ('-created', )
 
 
 class FacilityService(AbstractBase):
@@ -389,11 +394,6 @@ class Facility(AbstractBase):
         default=False,
         help_text="Should be True if the facility is to be seen on the "
         "public MFL site")
-
-    regulation_status = models.ForeignKey(
-        RegulationStatus, null=True, blank=True,
-        help_text="Indicates whether the facility has been approved by the"
-        " respective National Regulatory Body.", on_delete=models.PROTECT)
     facility_type = models.OneToOneField(
         FacilityType,
         help_text="This depends on who owns the facilty. For MOH facilities,"
@@ -419,9 +419,13 @@ class Facility(AbstractBase):
     services = models.ManyToManyField(
         Service, through=FacilityService,
         help_text='Services offered at the facility')
-    regulatory_details = models.ManyToManyField(
-        RegulatingBody, through=FacilityRegulationStatus,
-        help_text='Regulatory bodies with interest in the facility')
+    parent = models.ForeignKey(
+        'self', help_text='Indicates the umbrella facility of a facility',
+        null=True, blank=True)
+
+    @property
+    def current_regulatory_status(self):
+        return self.regulatory_details.all()[0].regulation_status
 
     def get_code_value(self):
         value = next_value_in_sequence("facility_code_seq")
@@ -514,3 +518,35 @@ class FacilityGPS(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name
+
+
+class FacilityUnit(AbstractBase):
+    """
+    Autonomous units within a facility that are regulated differently from the
+    facility.
+
+    For example AKUH  is a facility and licenced by KMPDB.
+    In AKUH there are other units such as its pharmacy which is licensed by
+    PPB.
+    The pharmacy will in this case be treated as a facilty unit.
+    """
+
+    facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
+    name = models.CharField(max_length=100)
+    description = models.TextField(
+        help_text='A short summary of the facility unit.')
+    regulating_body = models.ForeignKey(
+        RegulatingBody, null=True, blank=True, on_delete=models.PROTECT)
+    is_approved = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.facility.name + ": " + self.name
+
+    @property
+    def unit_regulating_body(self):
+        if self.regulating_body:
+            return self.regulating_body
+        else:
+            #  pick the lastest regulation body from the
+            #  facility regulation status model
+            return self.facility.regulatory_details.all()[0].regulating_body
