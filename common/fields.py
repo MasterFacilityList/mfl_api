@@ -1,5 +1,4 @@
 from django.db.models import Field
-from django.core import exceptions
 
 
 class SequenceField(Field):
@@ -16,14 +15,7 @@ class SequenceField(Field):
         return "SequenceField"
 
     def to_python(self, value):
-        try:
-            return int(value)
-        except (TypeError, ValueError):
-            raise exceptions.ValidationError(
-                message='Invalid',
-                code='invalid',
-                params={'value': value},
-            )
+        return int(value)
 
     def db_type(self, connection):
         return 'serial'
