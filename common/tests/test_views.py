@@ -286,6 +286,22 @@ class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
         self.assertIsNone(result)
 
 
+class TestTownView(LogginMixin, BaseTestCase, APITestCase):
+    def setUp(self):
+        super(TestTownView, self).setUp()
+        self.url = reverse("api:common:towns_list")
+
+    def test_post_contact_types(self):
+        data = {
+            "name": "Kiamaiko Taon"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertIn("id", response.data)
+        self.assertIn("name", response.data)
+        self.assertEqual("Kiamaiko Taon", response.data['name'])
+
+
 class TestAPIRootView(APITestCase):
     def test_list_endpoints(self):
         url = reverse('api:common:url_listing')

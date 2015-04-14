@@ -40,6 +40,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Facilities',
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='FacilityContact',
@@ -240,6 +241,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='OwnerType',
@@ -307,6 +309,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='ServiceCategory',
