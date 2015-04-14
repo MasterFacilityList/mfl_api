@@ -1,6 +1,6 @@
 import django_filters
 
-from .models import Contact, Constituency, Ward
+from .models import Contact, Constituency, Ward, UserCounties
 
 
 class ContactFilter(django_filters.FilterSet):
@@ -16,3 +16,8 @@ class ConstituencyFilter(django_filters.FilterSet):
 class WardFilter(django_filters.FilterSet):
     class Meta:
         model = Ward
+
+
+class UserCountiesFilter(django_filters.FilterSet):
+    class Meta:
+        model = UserCounties

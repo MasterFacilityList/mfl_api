@@ -4,7 +4,7 @@ from .views import (
     ContactView, ContactDetailView, CountyView, CountyDetailView,
     ConstituencyView, ConstituencyDetailView, WardView,
     WardDetailView, ContactTypeListView, ContactTypeDetailView,
-    api_root)
+    UserCountiesView, UserCountyDetailView, api_root)
 
 urlpatterns = patterns(
     '',
@@ -21,6 +21,10 @@ urlpatterns = patterns(
     url(r'^counties/$', CountyView.as_view(), name='counties_list'),
     url(r'^counties/(?P<pk>[^/]+)/$', CountyDetailView.as_view(),
         name='county_detail'),
+
+    url(r'^counties/$', UserCountiesView.as_view(), name='users_county_list'),
+    url(r'^counties/(?P<pk>[^/]+)/$', UserCountyDetailView.as_view(),
+        name='user_county_detail'),
 
     url(r'^wards/$', WardView.as_view(), name='wards_list'),
     url(r'^wards/(?P<pk>[^/]+)/$', WardDetailView.as_view(),
