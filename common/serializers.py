@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from .models import (
     Contact, PhysicalAddress, County, Ward, Constituency,
-    ContactType, UserCounties, UserResidence, )
+    ContactType, UserCounties, UserResidence, UserContact)
 
 
 class AbstractFieldsMixin(object):
@@ -29,6 +29,12 @@ class AbstractFieldsMixin(object):
         validated_data['updated_by'] = self.context['request'].user
 
         return self.Meta.model.objects.create(**validated_data)
+
+
+class UserContactSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = UserContact
 
 
 class UserResidenceSerializer(

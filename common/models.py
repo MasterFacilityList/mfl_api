@@ -314,7 +314,7 @@ class UserCounties(AbstractBase):
 class UserResidence(AbstractBase):
     """
     Stores the wards in which the user resides in.
-    If a user moves to another ward the currenct ward is deactivated by setting
+    If a user moves to another ward the current ward is deactivated by setting
     active to False
     """
 
@@ -334,3 +334,17 @@ class UserResidence(AbstractBase):
     def save(self, *args, **kwargs):
         self.validate_user_residing_in_one_place_at_a_time()
         super(UserResidence, self).save(*args, **kwargs)
+
+
+class UserContact(AbstractBase):
+    """
+    Stores a user's contacts.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='user_contacts', on_delete=models.PROTECT)
+    contact = models.ForeignKey(Contact)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.user.get_full_name, self.contact.contact)

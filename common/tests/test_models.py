@@ -9,7 +9,7 @@ from model_mommy import mommy
 
 from ..models import (
     Contact, County, Ward, Constituency,
-    ContactType, PhysicalAddress, UserCounties, UserResidence)
+    ContactType, PhysicalAddress, UserCounties, UserResidence, UserContact)
 from ..models import get_default_system_user_id
 
 
@@ -305,3 +305,20 @@ class TestUserResidenceModel(BaseTestCase):
 
         with self.assertRaises(ValidationError):
             UserResidence.objects.create(**data_2)
+
+
+class TestUserContactModel(BaseTestCase):
+    def test_save(self):
+        user = mommy.make(get_user_model())
+        contact = mommy.make(Contact)
+        data = {
+            "user": user,
+            "contact": contact
+        }
+        data = self.inject_audit_fields(data)
+        user_contact = UserContact.objects.create(**data)
+        self.assertEquals(1, UserContact.objects.count())
+
+        # test unicode
+        expected_unicode = "{}: {}".format(user.get_full_name, contact.contact)
+        self.assertEquals(expected_unicode, user_contact.__unicode__())
