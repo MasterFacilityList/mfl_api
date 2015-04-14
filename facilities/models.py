@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import AbstractBase, Ward, Contact
-from common.sequence_helper import next_value_in_sequence
+from common.fields import SequenceField
+from common.utilities.sequence_helper import SequenceGenerator
 
 
 class OwnerType(AbstractBase):
@@ -40,7 +41,7 @@ class Owner(AbstractBase):
         help_text="The name of owner e.g Ministry of Health.")
     description = models.TextField(
         null=True, blank=True, help_text="A brief summary of the owner.")
-    code = models.IntegerField(
+    code = SequenceField(
         unique=True,
         help_text="A unique number to identify the owner."
         "Could be up to 7 characteres long.", editable=False)
@@ -53,13 +54,9 @@ class Owner(AbstractBase):
         help_text="The classification of the owner e.g INDIVIDUAL",
         on_delete=models.PROTECT)
 
-    def get_code_value(self):
-        value = next_value_in_sequence("owner_code_seq")
-        return value
-
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = self.get_code_value()
+            self.code = SequenceGenerator(self).next()
         super(Owner, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -176,15 +173,11 @@ class Service(AbstractBase):
         ServiceCategory,
         help_text="The classification that the service lies in.")
 
-    code = models.IntegerField(unique=True, editable=False)
-
-    def get_code_value(self):
-        value = next_value_in_sequence("service_code_seq")
-        return value
+    code = SequenceField(unique=True, editable=False)
 
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = self.get_code_value()
+            self.code = SequenceGenerator(self).next()
         super(Service, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -361,7 +354,7 @@ class Facility(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True,
         help_text='This is the official name of the facility')
-    code = models.IntegerField(
+    code = SequenceField(
         unique=True, editable=False,
         help_text='A sequential number allocated to each facility')
     description = models.TextField(help_text="A brief summary of the Facility")
@@ -423,13 +416,9 @@ class Facility(AbstractBase):
         RegulatingBody, through=FacilityRegulationStatus,
         help_text='Regulatory bodies with interest in the facility')
 
-    def get_code_value(self):
-        value = next_value_in_sequence("facility_code_seq")
-        return value
-
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = self.get_code_value()
+            self.code = SequenceGenerator(self).next()
         super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):
