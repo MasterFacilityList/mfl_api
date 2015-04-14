@@ -213,11 +213,29 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
 
-    def test_post(self):
+    def test_post_created_by_not_supplied(self):
+        # Special case, to test AbstractFieldsMixin
         contact_type = mommy.make(ContactType)
         data = {
             "contact": "072578980",
             "contact_type": str(contact_type.id)
+        }
+        response = self.client.post(self.url, data)
+
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, Contact.objects.count())
+        self.assertIn('id', json.dumps(response.data, default=default))
+        self.assertIn('contact', json.dumps(response.data, default=default))
+        self.assertIn(
+            'contact_type', json.dumps(response.data, default=default))
+
+    def test_post_created_by_supplied(self):
+        # Special case, to test AbstractFieldsMixin
+        contact_type = mommy.make(ContactType)
+        data = {
+            "contact": "072578980",
+            "contact_type": str(contact_type.id),
+            "created_by": str(self.user.id)
         }
         response = self.client.post(self.url, data)
 
