@@ -52,27 +52,6 @@ class TestCommonFieldsFilterset(LogginMixin, BaseTestCase, APITestCase):
         self.date_before = self.boundary_date - timedelta(days=7)
         self.maxDiff = None
 
-    def test_updated_before_filter(self):
-        pass
-
-    def test_created_before_filter(self):
-        pass
-
-    def test_updated_after_filter(self):
-        pass
-
-    def test_created_after_filter(self):
-        pass
-
-    def test_updated_on_filter(self):
-        pass
-
-    def test_created_on_filter(self):
-        pass
-
-    def test_is_deleted_filter(self):
-        pass
-
     def test_is_active_filter(self):
         active_county = mommy.make(County, active=True)
         inactive_county = mommy.make(County, active=False)
@@ -113,6 +92,43 @@ class TestCommonFieldsFilterset(LogginMixin, BaseTestCase, APITestCase):
                 "previous": None,
                 "results": [
                     CountySerializer(inactive_county).data
+                ]
+            })
+        )
+
+    def test_updated_before_filter(self):
+        pass
+
+    def test_created_before_filter(self):
+        pass
+
+    def test_updated_after_filter(self):
+        pass
+
+    def test_created_after_filter(self):
+        pass
+
+    def test_updated_on_filter(self):
+        pass
+
+    def test_created_on_filter(self):
+        pass
+
+    def test_is_deleted_filter(self):
+        # Deleted is a special cookie;
+        # AbstractBase overrides the default manager and filters out deleted
+        # This covers overrides of the queryset ( using .everything )
+        not_deleted_county = mommy.make(County, deleted=False)
+
+        url_with_inactive_filter = self.url + '?is_deleted=False'
+        self.assertEquals(
+            _dict(self.client.get(url_with_inactive_filter).data),
+            _dict({
+                "count": 1,
+                "next": None,
+                "previous": None,
+                "results": [
+                    CountySerializer(not_deleted_county).data
                 ]
             })
         )
