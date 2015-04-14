@@ -5,7 +5,7 @@ from common.models import Contact, Ward
 
 from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
-    OfficerIchargeContact, ServiceCategory,
+    OfficerInchargeContact, ServiceCategory,
     Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
@@ -93,8 +93,8 @@ class TestOfficerInchargeContactModel(BaseTestCase):
             "contact": contact
         }
         data = self.inject_audit_fields(data)
-        contact = OfficerIchargeContact.objects.create(**data)
-        self.assertEquals(1, OfficerIchargeContact.objects.count())
+        contact = OfficerInchargeContact.objects.create(**data)
+        self.assertEquals(1, OfficerInchargeContact.objects.count())
 
         # test unicode
         expected = "Maruge: maruge@gmail.com"
@@ -117,9 +117,11 @@ class TestServiceCategory(BaseTestCase):
 
 class TestServiceModel(BaseTestCase):
     def test_save(self):
+        service_cat = mommy.make(ServiceCategory)
         data = {
             "name": "Diabetes screening",
-            "description": "This is some description"
+            "description": "This is some description",
+            "category": service_cat
         }
         data = self.inject_audit_fields(data)
 
