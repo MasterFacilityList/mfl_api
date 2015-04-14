@@ -3,7 +3,7 @@ from django.utils import timezone
 from rest_framework import serializers
 
 
-from .models import (
+from ..models import (
     Contact, PhysicalAddress, County, Ward, Constituency,
     ContactType, UserCounties, UserResidence, UserContact, Town)
 
