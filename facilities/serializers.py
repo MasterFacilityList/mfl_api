@@ -1,9 +1,84 @@
 from rest_framework import serializers
-from .models import (
-    Owner, Facility, Service, FacilityService,
-    FacilityContact, FacilityGPS)
 
+from ..models import (
+    OwnerType, Owner, JobTitle, OfficerIncharge,
+    OfficerInchargeContact, ServiceCategory,
+    Service, FacilityStatus, FacilityType,
+    RegulatingBody, RegulationStatus, Facility,
+    FacilityRegulationStatus, GeoCodeSource,
+    GeoCodeMethod, FacilityGPS,
+    FacilityService, FacilityContact
+)
 from common.serializers import AbstractFieldsMixin
+
+
+class FacilityStatusSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = FacilityStatus
+
+
+class RegulatingBodySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = RegulatingBody
+
+
+class GeoCodeSourceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = GeoCodeSource
+
+
+class GeoCodeMethod(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = GeoCodeMethod
+
+
+class ServiceCategorySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ServiceCategory
+
+
+class OwnerTypeSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = OwnerType
+
+
+class FacilityRegulationStatusSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = FacilityRegulationStatus
+
+
+class FacilityTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FacilityType
+
+
+class OfficerInchargeContactSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = OfficerInchargeContact
+
+
+class JobTitleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = JobTitle
+
+
+class RegulationStatusSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = RegulationStatus
+
+
+class OfficerInchargerSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = OfficerIncharge
 
 
 class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):

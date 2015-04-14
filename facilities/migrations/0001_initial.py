@@ -10,7 +10,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0001_initial'),
+        ('common', 'custom_common_sequences'),
     ]
 
     operations = [
@@ -309,6 +309,11 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+        ),
+        migrations.AddField(
+            model_name='service',
+            name='category',
+            field=models.ForeignKey(help_text=b'The classification that the service lies in.', to='facilities.ServiceCategory'),
         ),
         migrations.AddField(
             model_name='owner',

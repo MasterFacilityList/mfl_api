@@ -6,11 +6,17 @@ from .models import Owner, Service, Facility, FacilityGPS
 class OwnerFilter(django_filters.FilterSet):
     class Meta:
         model = Owner
+        fields = [
+            'owner_type',
+        ]
 
 
 class ServiceFilter(django_filters.FilterSet):
     class Meta:
         model = Service
+        fields = [
+            'category',
+        ]
 
 
 class FacilityGPSFilter(django_filters.FilterSet):

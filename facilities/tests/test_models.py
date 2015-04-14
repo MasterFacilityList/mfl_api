@@ -117,9 +117,11 @@ class TestServiceCategory(BaseTestCase):
 
 class TestServiceModel(BaseTestCase):
     def test_save(self):
+        service_cat = mommy.make(ServiceCategory)
         data = {
             "name": "Diabetes screening",
-            "description": "This is some description"
+            "description": "This is some description",
+            "category": service_cat
         }
         data = self.inject_audit_fields(data)
 
