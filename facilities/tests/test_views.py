@@ -9,13 +9,13 @@ from common.tests.test_views import LogginMixin, default
 
 from ..serializers import (
     OwnerSerializer, ServiceSerializer, FacilitySerializer,
-    FacilityStatusSerializer,
+    FacilityStatusSerializer, FacilityUnitSerializer
 )
 
 from ..models import (
     OwnerType, Owner, ServiceCategory,
     Service, FacilityStatus,
-    Facility,
+    Facility, FacilityUnit
 )
 
 
@@ -278,3 +278,37 @@ class TestFacilityStatusView(LogginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.data, FacilityStatusSerializer(status).data)
+
+
+class TestFacilityUnitView(LogginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityUnitView)
+        self.url = reverse("api:facilities:facility_units_list")
+
+    def test_list_facility_units(self):
+        unit_1 = mommy.make(FacilityUnit)
+        unit_2 = mommy.make(FacilityUnit)
+        response = self.client.get(self.url)
+        expected_data = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityUnitSerializer(unit_1).data,
+                FacilityUnitSerializer(unit_2).data
+            ]
+        }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_retrive_facility_unit(self):
+        unit = mommy.make(FacilityUnit)
+        expected_data = FacilityUnitSerializer(unit).data
+        url = self.url + "{}/".format(unit.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
