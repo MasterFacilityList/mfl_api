@@ -179,7 +179,6 @@ class PhysicalAddress(AbstractBase):
     plot number and nearest landmark. This information in conjunction with
     GPS codes is useful in locating the facility.
     """
-
     town = models.CharField(
         max_length=100, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")
