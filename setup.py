@@ -66,7 +66,7 @@ setup(
         'Framework :: Django :: 1.8',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
-        ],
+    ],
     tests_require=['tox'],
     cmdclass={'test': Tox},
     install_requires=[
@@ -92,5 +92,6 @@ setup(
         "pytest>=2.7",
         "pytest-django>=2.8",
         "pytz",
+        "six>=1.9"
     ],
 )
