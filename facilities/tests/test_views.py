@@ -19,9 +19,9 @@ from ..models import (
 )
 
 
-class TestOnwersView(LogginMixin, APITestCase):
+class TestOwnersView(LogginMixin, APITestCase):
     def setUp(self):
-        super(TestOnwersView, self).setUp()
+        super(TestOwnersView, self).setUp()
         self.url = reverse('api:facilities:owners_list')
 
     def test_list_owners(self):
