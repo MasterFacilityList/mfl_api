@@ -8,7 +8,7 @@ from model_mommy import mommy
 
 
 from ..models import (
-    Contact, County, Ward, Constituency,
+    Contact, County, Ward, Constituency, Town,
     ContactType, PhysicalAddress, UserCounties, UserResidence, UserContact)
 from ..models import get_default_system_user_id
 
@@ -224,10 +224,16 @@ class TestContactType(BaseTestCase):
         self.assertEquals('EMAIL', ct.__unicode__())
 
 
+class TestTown(BaseTestCase):
+    def test_unicode_(self):
+        town = mommy.make(Town, name='Nyairofi')
+        self.assertEquals('Nyairofi', str(town))
+
+
 class TestPhysicalAddress(BaseTestCase):
     def test_save(self):
         data = {
-            "town": "Nairobi",
+            "town": mommy.make(Town, name="Nairobi"),
             "postal_code": "00200",
             "address": "356",
             "nearest_landmark": "",

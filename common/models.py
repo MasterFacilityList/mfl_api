@@ -166,6 +166,15 @@ class Contact(AbstractBase):
         return "{}::{}".format(self.contact_type.name, self.contact)
 
 
+class Town(AbstractBase):
+    name = models.CharField(
+        max_length=100, unique=True,
+        help_text="Name of the town")
+
+    def __unicode__(self):
+        return self.name
+
+
 class PhysicalAddress(AbstractBase):
     """
     The physical properties of a facility.
@@ -174,18 +183,17 @@ class PhysicalAddress(AbstractBase):
     plot number and nearest landmark. This information in conjunction with
     GPS codes is useful in locating the facility.
     """
-    town = models.CharField(
-        max_length=100, null=True, blank=True,
+    town = models.ForeignKey(
+        Town, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")
     postal_code = models.CharField(
         max_length=100,
         help_text="The 5 digit number for the post office address. e.g 00900")
-    address = models.CharField(
-        max_length=100,
+    address = models.TextField(
         help_text="This is the actual post office number of the entity. "
         "e.g 6790")
-    nearest_landmark = models.CharField(
-        max_length=100, null=True, blank=True,
+    nearest_landmark = models.TextField(
+        null=True, blank=True,
         help_text="well-known physical features /structure that can be used to"
         " simplify directions to a given place. e.g town market or village ")
     plot_number = models.CharField(

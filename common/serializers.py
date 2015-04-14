@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from .models import (
     Contact, PhysicalAddress, County, Ward, Constituency,
-    ContactType, UserCounties, UserResidence, UserContact)
+    ContactType, UserCounties, UserResidence, UserContact, Town)
 
 
 class AbstractFieldsMixin(object):
@@ -69,6 +69,13 @@ class CountySerializer(
 
     class Meta:
         model = County
+
+
+class TownSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = Town
 
 
 class WardSerializer(
