@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import (
+from .models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
     OfficerInchargeContact, ServiceCategory,
     Service, FacilityStatus, FacilityType,
@@ -30,7 +30,8 @@ class GeoCodeSourceSerializer(
         model = GeoCodeSource
 
 
-class GeoCodeMethod(AbstractFieldsMixin, serializers.ModelSerializer):
+class GeoCodeMethodSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = GeoCodeMethod
 
@@ -75,7 +76,7 @@ class RegulationStatusSerializer(
         model = RegulationStatus
 
 
-class OfficerInchargerSerializer(
+class OfficerInchargeSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = OfficerIncharge

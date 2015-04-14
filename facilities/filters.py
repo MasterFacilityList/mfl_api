@@ -1,22 +1,21 @@
 import django_filters
 
-from .models import Owner, Service, Facility, FacilityGPS
+from .models import Owner, Service, Facility, FacilityGPS, JobTitle
+
+
+class JobTitleFilter(django_filters.FilterSet):
+    class Meta:
+        model = JobTitle
 
 
 class OwnerFilter(django_filters.FilterSet):
     class Meta:
         model = Owner
-        fields = [
-            'owner_type',
-        ]
 
 
 class ServiceFilter(django_filters.FilterSet):
     class Meta:
         model = Service
-        fields = [
-            'category',
-        ]
 
 
 class FacilityGPSFilter(django_filters.FilterSet):

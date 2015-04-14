@@ -298,5 +298,3 @@ class TestServiceView(LogginMixin, APITestCase):
         self.assertEquals(
             json.loads(json.dumps(expected_data_2, default=default)),
             json.loads(json.dumps(response_2.data, default=default)))
-
-class 
