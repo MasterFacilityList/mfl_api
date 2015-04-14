@@ -10,7 +10,8 @@ from .serializers import (
     ContactSerializer, CountySerializer, WardSerializer,
     ConstituencySerializer, ContactTypeSerializer)
 
-from .filters import ContactFilter, ConstituencyFilter, WardFilter
+from .filters import (
+    ContactTypeFilter, ContactFilter, ConstituencyFilter, WardFilter)
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -64,6 +65,7 @@ class ContactTypeListView(generics.ListCreateAPIView):
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
     ordering_fields = ('name', )
+    filter_class = ContactTypeFilter
 
 
 class ContactTypeDetailView(generics.RetrieveUpdateDestroyAPIView):

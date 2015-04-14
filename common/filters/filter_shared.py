@@ -1,7 +1,5 @@
 import django_filters
 
-from .models import Contact, Constituency, Ward
-
 from django import forms
 from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
@@ -25,24 +23,22 @@ class IsoDateTimeField(forms.DateTimeField):
         return super(IsoDateTimeField, self).strptime(value, format)
 
 
-class PreciseDateTimeField(IsoDateTimeField):
-    """ Only support ISO 8601 """
-    def __init__(self, *args, **kwargs):
-        kwargs['input_formats'] = (ISO_8601, )
-        super(PreciseDateTimeField, self).__init__(*args, **kwargs)
-
-
 class IsoDateTimeFilter(django_filters.DateTimeFilter):
     """ Extend ``DateTimeFilter`` to filter by ISO 8601 formated dates too"""
     field_class = IsoDateTimeField
 
 
-class PreciseDateTimeFilter(django_filters.DateTimeFilter):
-    """ Extend ``DateTimeFilter`` to filter only by ISO 8601 formated dates """
-    field_class = PreciseDateTimeField
+class CommonFieldsFilterset(django_filters.FilterSet):
+    """Every model that descends from AbstractBase should have this
 
+    The usage pattern for this is presently simplistic; mix it in, then add to
+    the `fields` in the filter's `Meta` `'updated', 'created',
+    updated_before', 'created_before', 'updated_after', 'created_after'' and
+    any other applicable / extra fields.
 
-class ContactFilter(django_filters.FilterSet):
+    When you inherit this, DO NOT add a `fields` declaration. Let the implicit
+    filter fields ( every model field gets one ) stay in place.
+    """
     updated_before = IsoDateTimeFilter(
         name='updated', lookup_type='lte',
         input_formats=(ISO_8601, '%m/%d/%Y %H:%M:%S'))
@@ -57,27 +53,12 @@ class ContactFilter(django_filters.FilterSet):
         name='created', lookup_type='gte',
         input_formats=(ISO_8601, '%m/%d/%Y %H:%M:%S'))
 
-    updated = IsoDateTimeFilter(
+    updated_on = IsoDateTimeFilter(
         name='updated', lookup_type='eq',
         input_formats=(ISO_8601, '%m/%d/%Y %H:%M:%S'))
-    created = IsoDateTimeFilter(
+    created_on = IsoDateTimeFilter(
         name='created', lookup_type='eq',
         input_formats=(ISO_8601, '%m/%d/%Y %H:%M:%S'))
 
-    class Meta:
-        model = Contact
-        fields = (
-            'updated', 'created',
-            'updated_before', 'created_before',
-            'updated_after', 'created_after',
-        )
-
-
-class ConstituencyFilter(django_filters.FilterSet):
-    class Meta:
-        model = Constituency
-
-
-class WardFilter(django_filters.FilterSet):
-    class Meta:
-        model = Ward
+    is_deleted = django_filters.BooleanFilter(name='deleted', lookup_type='eq')
+    is_active = django_filters.BooleanFilter(name='active', lookup_type='eq')
