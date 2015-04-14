@@ -9,3 +9,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MflUser
+        exclude = ('password',)
