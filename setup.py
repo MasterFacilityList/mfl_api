@@ -49,7 +49,7 @@ setup(
     description='Core APIs for the Kenyan Ministry of Health '
                 'Master Facility List',
     long_description=long_description,
-    url='',
+    url='https://github.com/MasterFacilityList/mfl_api',
     packages=find_packages(),
     include_package_data=True,
     platforms='any',

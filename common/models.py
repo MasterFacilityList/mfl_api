@@ -157,7 +157,6 @@ class Contact(AbstractBase):
     willing to communicate will be able to do so. The commucation
     ways may include emails, phone numbers, landlines etc.
     """
-
     contact = models.CharField(
         max_length=100,
         help_text="The actual contact of the person e.g test@mail.com,"
@@ -180,7 +179,6 @@ class PhysicalAddress(AbstractBase):
     plot number and nearest landmark. This information in conjunction with
     GPS codes is useful in locating the facility.
     """
-
     town = models.CharField(
         max_length=100, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")

@@ -79,18 +79,40 @@ REST_FRAMEWORK = {
         'rest_framework_xml.renderers.XMLRenderer',
         'rest_framework_csv.renderers.CSVRenderer',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
     'PAGINATE_BY': 25,
     'PAGINATE_BY_PARAM': 'page_size',
     'MAX_PAGINATE_BY': 100,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.MultiPartRenderer',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
     ),
     'DATETIME_FORMAT': 'iso-8601',
     'DATE_FORMAT': 'iso-8601',
     'TIME_FORMAT': 'iso-8601'
+}
+SWAGGER_SETTINGS = {
+    'exclude_namespaces': [],
+    'api_version': '2.0',
+    'api_path': '/',
+    'enabled_methods': [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'api_key': '',
+    'is_authenticated': False,
+    'is_superuser': False,
+    'info': {
+        'contact': 'developers@savannahinformatics.com',
+        'description': 'Explore the MFL v2 API',
+        'license': 'MIT License',
+        'licenseUrl': 'http://choosealicense.com/licenses/mit/',
+        'title': 'MFL v2 API',
+    },
+    'doc_expansion': 'full',
 }
