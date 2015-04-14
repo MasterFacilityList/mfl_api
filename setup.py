@@ -90,5 +90,6 @@ setup(
         "pytest>=2.7",
         "pytest-django>=2.8",
         "pytz",
+        "djangorestframework-filters>0.2.2",
     ],
 )

@@ -157,7 +157,6 @@ class Contact(AbstractBase):
     willing to communicate will be able to do so. The commucation
     ways may include emails, phone numbers, landlines etc.
     """
-
     contact = models.CharField(
         max_length=100,
         help_text="The actual contact of the person e.g test@mail.com,"

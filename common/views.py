@@ -84,7 +84,7 @@ def api_root(request, format=None):
             'api:common:contacts_list', request=request, format=format),
         'contact_types': reverse(
             'api:common:contact_types_list', request=request, format=format),
-        'ward': reverse(
+        'wards': reverse(
             'api:common:wards_list', request=request, format=format),
         'constituencies': reverse(
             'api:common:constituencies_list', request=request, format=format),

@@ -10,18 +10,17 @@ class AbstractFieldsMixin(object):
     """
     Injects the fields in the abstract base model as a model
     instance is being saved.
-
     """
     def __init__(self, *args, **kwargs):
         super(AbstractFieldsMixin, self).__init__(*args, **kwargs)
-        exclude_fields = ['created', 'created_by', 'updated', 'updated_by']
-        for i in exclude_fields:
-            self.fields.pop(i) if i in self.fields else None
 
     def create(self, validated_data):
-        validated_data['created'] = timezone.now()
+        if not validated_data['created']:
+            validated_data['created'] = timezone.now()
         validated_data['updated'] = timezone.now()
-        validated_data['created_by'] = self.context['request'].user
+
+        if not validated_data['updated_by']:
+            validated_data['created_by'] = self.context['request'].user
         validated_data['updated_by'] = self.context['request'].user
 
         return self.Meta.model.objects.create(**validated_data)
