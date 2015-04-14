@@ -401,7 +401,6 @@ class GeoCodeSource(AbstractBase):
     and Health Integrated Assistance (APHIA) II, or another source.
     It is not the individual who collected the code
     """
-
     name = models.CharField(
         max_length=100,
         help_text="The name of the collecting organization")
@@ -428,7 +427,6 @@ class GeoCodeMethod(AbstractBase):
         8= No geo-code
         9= Other
     """
-
     name = models.CharField(
         max_length=100, help_text="The name of the method.")
     description = models.TextField(
@@ -448,7 +446,6 @@ class FacilityGPS(AbstractBase):
     and attitude. The date/time the reading is done is also important, as
     is the source and method of the reading.
     """
-
     facility = models.OneToOneField(Facility)
     latitude = models.CharField(
         max_length=255,
@@ -464,6 +461,7 @@ class FacilityGPS(AbstractBase):
         GeoCodeMethod,
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
+    collection_date = models.DateTimeField()
 
     def __unicode__(self):
         return self.facility.name
