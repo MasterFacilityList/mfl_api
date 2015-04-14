@@ -3,7 +3,8 @@ from django.utils import timezone
 from rest_framework import serializers
 
 
-from .models import Contact, County, Ward, Constituency, ContactType
+from .models import (
+    Contact, County, Ward, Constituency, ContactType, UserCounties)
 
 
 class AbstractFieldsMixin(object):
@@ -59,3 +60,9 @@ class ConstituencySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = Constituency
+
+
+class InchargeCountiesSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = UserCounties
