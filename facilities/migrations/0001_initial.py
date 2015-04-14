@@ -13,7 +13,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0001_initial'),
+        ('common', '__first__'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -40,6 +40,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Facilities',
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='FacilityContact',
@@ -86,10 +87,10 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('reason', models.TextField(help_text=b'e.g Why has a facility been suspended', null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('facility', models.ForeignKey(to='facilities.Facility', on_delete=django.db.models.deletion.PROTECT)),
+                ('facility', models.ForeignKey(related_name='regulatory_details', on_delete=django.db.models.deletion.PROTECT, to='facilities.Facility')),
             ],
             options={
-                'abstract': False,
+                'ordering': ('-created',),
             },
         ),
         migrations.CreateModel(
@@ -138,6 +139,24 @@ class Migration(migrations.Migration):
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
+        ),
+        migrations.CreateModel(
+            name='FacilityUnit',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('name', models.CharField(max_length=100)),
+                ('description', models.TextField(help_text=b'A short summary of the facility unit.')),
+                ('is_approved', models.BooleanField(default=False)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('facility', models.ForeignKey(to='facilities.Facility', on_delete=django.db.models.deletion.PROTECT)),
+            ],
+            options={
+                'abstract': False,
+            },
         ),
         migrations.CreateModel(
             name='GeoCodeMethod',
@@ -240,6 +259,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='OwnerType',
@@ -307,6 +327,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='ServiceCategory',
@@ -366,6 +387,16 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='officerincharge',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='facilityunit',
+            name='regulating_body',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='facilities.RegulatingBody', null=True),
+        ),
+        migrations.AddField(
+            model_name='facilityunit',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
@@ -441,13 +472,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facility',
-            name='regulation_status',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='facilities.RegulationStatus', help_text=b'Indicates whether the facility has been approved by the respective National Regulatory Body.', null=True),
-        ),
-        migrations.AddField(
-            model_name='facility',
-            name='regulatory_details',
-            field=models.ManyToManyField(help_text=b'Regulatory bodies with interest in the facility', to='facilities.RegulatingBody', through='facilities.FacilityRegulationStatus'),
+            name='parent',
+            field=models.ForeignKey(blank=True, to='facilities.Facility', help_text=b'Indicates the umbrella facility of a facility', null=True),
         ),
         migrations.AddField(
             model_name='facility',
