@@ -32,7 +32,7 @@ class FacilityFilter(CommonFieldsFilterset):
     open_whole_day = django_filters.BooleanFilter(name='open_whole_day')
     open_whole_week = django_filters.BooleanFilter(name='open_whole_week')
     is_classified = django_filters.BooleanFilter(name='is_classified')
-    county = django_filters.CharFilter(name='sub_county__county')
+    is_published = django_filters.BooleanFilter(name='is_published')
 
     class Meta:
         model = Facility
