@@ -8,10 +8,11 @@ from rest_framework.test import APITestCase
 from model_mommy import mommy
 
 from ..models import (
-    County, Contact, ContactType, Constituency, Ward)
+    County, Contact, ContactType, Constituency, Ward, UserResidence,
+    UserContact)
 from ..serializers import (
     ContactSerializer, WardSerializer, CountySerializer,
-    ConstituencySerializer)
+    ConstituencySerializer, UserResidenceSerializer, UserContactSerializer)
 from .test_models import BaseTestCase
 
 
@@ -290,3 +291,73 @@ class TestAPIRootView(APITestCase):
         url = reverse('api:common:url_listing')
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+
+class TestUserResidenceView(LogginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:common:user_wards_list")
+        super(TestUserResidenceView, self).setUp()
+
+    def test_list_user_wards(self):
+        user_ward = mommy.make(UserResidence)
+        user_ward_2 = mommy.make(UserResidence)
+        expected_data = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                UserResidenceSerializer(user_ward).data,
+                UserResidenceSerializer(user_ward_2).data
+            ]
+
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_retrieve_user_ward(self):
+        user_ward = mommy.make(UserResidence)
+        url = self.url + "{}/".format(user_ward.id)
+        response = self.client.get(url)
+        expected_data = UserResidenceSerializer(user_ward).data
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+
+class TestUserContactView(LogginMixin, APITestCase):
+    def setUp(self):
+        super(TestUserContactView, self).setUp()
+        self.url = reverse("api:common:user_contacts_list")
+
+    def test_save(self):
+        user_contact_1 = mommy.make(UserContact)
+        user_contact_2 = mommy.make(UserContact)
+        response = self.client.get(self.url)
+        expected_data = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                UserContactSerializer(user_contact_1).data,
+                UserContactSerializer(user_contact_2).data
+            ]
+
+        }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_retrieve_user_contact(self):
+        user_contact = mommy.make(UserContact)
+        url = self.url + "{}/".format(user_contact.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = UserContactSerializer(user_contact).data
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
