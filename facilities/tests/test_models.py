@@ -11,7 +11,6 @@ from ..models import (
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
     FacilityService, FacilityContact
-
 )
 
 
@@ -184,16 +183,15 @@ class TestRegulatingBodyModel(BaseTestCase):
 
 class TestFacility(BaseTestCase):
     def test_save(self):
-        regulating_body = mommy.make(RegulatingBody)
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
         regulation_status = mommy.make(RegulationStatus, name="REGISTERED")
+        officer_in_charge = mommy.make(OfficerIncharge)
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
         data = {
             "name": "Forces Memorial",
             "description": "Hospital for the armed forces",
-            "regulating_body": regulating_body,
             "facility_type": facility_type,
             "number_of_beds": 100,
             "number_of_cots": 1,
@@ -203,7 +201,8 @@ class TestFacility(BaseTestCase):
             "regulation_status": regulation_status,
             "ward": ward,
             "owner": owner,
-            "location_desc": "it is located along Moi Avenue Nairobi"
+            "location_desc": "it is located along Moi Avenue Nairobi",
+            "officer_in_charge": officer_in_charge
         }
         data = self.inject_audit_fields(data)
         facility = Facility.objects.create(**data)
@@ -324,10 +323,12 @@ class TestFacilityRegulationStatus(BaseTestCase):
     def test_save(self):
         facility = mommy.make(Facility, name="Nairobi Hospital")
         status = mommy.make(RegulationStatus, name="SUSPENDED")
+        regulator = mommy.make(RegulatingBody)
         data = {
             "facility": facility,
             "regulation_status": status,
-            "reason": "Reports of misconduct by the doctor"
+            "reason": "Reports of misconduct by the doctor",
+            "regulating_body": regulator
         }
         data = self.inject_audit_fields(data)
         facility_reg_status = FacilityRegulationStatus.objects.create(**data)
