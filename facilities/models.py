@@ -518,7 +518,6 @@ class FacilityUnit(AbstractBase):
     PPB.
     The pharmacy will in this case be treated as a facilty unit.
     """
-
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
     name = models.CharField(max_length=100)
     description = models.TextField(
