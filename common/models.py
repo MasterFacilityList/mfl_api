@@ -8,7 +8,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.conf import settings
 
-from .sequence_helper import next_value_in_sequence
+from .fields import SequenceField
+from .utilities.sequence_helper import SequenceGenerator
 
 LOGGER = logging.getLogger(__file__)
 
@@ -111,26 +112,20 @@ class AbstractBase(models.Model):
         abstract = True
 
 
-class RegionAbstractBase(AbstractBase):
+class SequenceMixin(object):
     """
-    Model to supply the common attributes of a region.
-
-    A  region is an Administrative/political hierarchy and includes the
-    following levels:
-        1. county,
-        2. Constituency,
-        3. sub-county,
-        4. ward
+    Intended to be mixed into models with a `code` `SequenceField`
     """
-    name = models.CharField(
-        max_length=100, unique=True,
-        help_text="Name og the region may it be e.g Nairobi")
-    code = models.IntegerField(
-        unique=True,
-        help_text="A unique_code 4 digit number representing the region.")
 
-    class Meta:
-        abstract = True
+    def generate_next_code_sequence(self):
+        """
+        Relies upon the predictability of Django sequence naming
+        ( convention )
+        """
+        return SequenceGenerator(
+            app_label=self._meta.app_label,
+            model_name=self._meta.model_name
+        ).next()
 
 
 class ContactType(AbstractBase):
@@ -202,24 +197,45 @@ class PhysicalAddress(AbstractBase):
         return "{}: {}".format(self.postal_code, self.address)
 
 
+class RegionAbstractBase(AbstractBase, SequenceMixin):
+    """
+    Model to supply the common attributes of a region.
+
+    A  region is an Administrative/political hierarchy and includes the
+    following levels:
+        1. County,
+        2. Constituency,
+        3. Sub-county,
+        4. ward
+    """
+    name = models.CharField(
+        max_length=100, unique=True,
+        help_text="Name og the region may it be e.g Nairobi")
+    code = SequenceField(
+        unique=True,
+        help_text="A unique_code 4 digit number representing the region.")
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(RegionAbstractBase, self).save(*args, **kwargs)
+
+    class Meta:
+        abstract = True
+
+
 class County(RegionAbstractBase):
     """
     This is the largest administrative/political division in Kenya.
 
     Kenya is divided in 47 different counties.
+
+    Code generation is handled by the custom save method in RegionAbstractBase
     """
-
-    def get_code_value(self):
-        value = next_value_in_sequence("county_code_seq")
-        return value
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.get_code_value()
-        super(County, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.name
+    pass  # Everything, including __unicode__ is handled by the abstract model
 
 
 class Constituency(RegionAbstractBase):
@@ -229,24 +245,14 @@ class Constituency(RegionAbstractBase):
     A Constituency is a political sub division of a county.
     There are 290 constituencies in total.
     In most cases they coincide with sub counties.
+
+    Code generation is handled by the custom save method in RegionAbstractBase
     """
 
     county = models.ForeignKey(
         County,
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
-
-    def get_code_value(self):
-        value = next_value_in_sequence("consituency_code_seq")
-        return value
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.get_code_value()
-        super(Constituency, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.name
 
 
 class Ward(RegionAbstractBase):
@@ -256,6 +262,8 @@ class Ward(RegionAbstractBase):
     This is an administrative sub-division of the counties.
     A constituency can have one or more wards.
     In most cases the sub county is also the constituency.
+
+    Code generation is handled by the custom save method in RegionAbstractBase
     """
     constituency = models.ForeignKey(
         Constituency,
@@ -265,18 +273,6 @@ class Ward(RegionAbstractBase):
     @property
     def county(self):
         return self.constituency.county
-
-    def get_code_value(self):
-        value = next_value_in_sequence("ward_code_seq")
-        return value
-
-    def __unicode__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.get_code_value()
-        super(Ward, self).save(*args, **kwargs)
 
 
 class UserCounties(AbstractBase):

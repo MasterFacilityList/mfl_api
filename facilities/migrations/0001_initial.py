@@ -6,13 +6,14 @@ import django.db.models.deletion
 import django.utils.timezone
 from django.conf import settings
 import common.models
+import common.fields
 import uuid
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', 'custom_common_model_sequences'),
+        ('common', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -26,15 +27,15 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'This is the official name of the facility', unique=True, max_length=100)),
-                ('code', models.IntegerField(help_text=b'A sequential number allocated to each facility', unique=True, editable=False)),
+                ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each facility', unique=True, editable=False, blank=True)),
                 ('description', models.TextField(help_text=b'A brief summary of the Facility')),
+                ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of how tolocate the facility e.g Joy medical clinic is in Jubilee Plaza7th Floor')),
                 ('number_of_beds', models.PositiveIntegerField(default=0, help_text=b'The number of beds that a facilty has. e.g 0')),
                 ('number_of_cots', models.PositiveIntegerField(default=0, help_text=b'The number of cots that a facility has e.g 0')),
                 ('open_whole_day', models.BooleanField(default=False, help_text=b'Is the facility open 24 hours a day?')),
                 ('open_whole_week', models.BooleanField(default=False, help_text=b'Is the facility open the entire week?')),
-                ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of how tolocate the facility e.g Joy medical clinic is in Jubilee Plaza7th Floor')),
-                ('is_classified', models.BooleanField(default=False, help_text=b'Should the facility be visible to the public?')),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('is_classified', models.BooleanField(default=False, help_text=b"Should the facility geo-codes be visible to the public?Certain facilities are kept 'off-the-map'")),
+                ('is_published', models.BooleanField(default=False, help_text=b'Should be True if the facility is to be seen on the public MFL site')),
             ],
             options={
                 'verbose_name_plural': 'Facilities',
@@ -67,6 +68,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('latitude', models.CharField(help_text=b'How far north or south a facility is from the equator', max_length=255)),
                 ('longitude', models.CharField(help_text=b'How far east or west one a facility is from the Greenwich Meridian', max_length=255)),
+                ('collection_date', models.DateTimeField()),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.OneToOneField(to='facilities.Facility')),
             ],
@@ -199,9 +201,6 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'the name of the officer in-charge e.g Roselyne Wiyanga ', max_length=150)),
                 ('registration_number', models.CharField(help_text=b'This is the licence number of the officer. e.g for a nurse use the NCK registration number.', max_length=100)),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('job_title', models.ForeignKey(to='facilities.JobTitle', on_delete=django.db.models.deletion.PROTECT)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -234,7 +233,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'The name of owner e.g Ministry of Health.', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A brief summary of the owner.', null=True, blank=True)),
-                ('code', models.IntegerField(help_text=b'A unique number to identify the owner.Could be up to 7 characteres long.', unique=True, editable=False)),
+                ('code', common.fields.SequenceField(help_text=b'A unique number to identify the owner.Could be up to 7 characteres long.', unique=True, editable=False, blank=True)),
                 ('abbreviation', models.CharField(help_text=b'Short form of the name of the owner e.g Ministry of health could be shortened as MOH', max_length=10, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
@@ -303,7 +302,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(unique=True, max_length=255)),
                 ('description', models.TextField(null=True, blank=True)),
-                ('code', models.IntegerField(unique=True, editable=False)),
+                ('code', common.fields.SequenceField(unique=True, editable=False, blank=True)),
             ],
             options={
                 'abstract': False,
@@ -351,6 +350,26 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
+            model_name='officerincharge',
+            name='contacts',
+            field=models.ManyToManyField(help_text=b'Personal contacts of the officer in charge', to='common.Contact', through='facilities.OfficerInchargeContact'),
+        ),
+        migrations.AddField(
+            model_name='officerincharge',
+            name='created_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='officerincharge',
+            name='job_title',
+            field=models.ForeignKey(to='facilities.JobTitle', on_delete=django.db.models.deletion.PROTECT),
+        ),
+        migrations.AddField(
+            model_name='officerincharge',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
             model_name='facilityservice',
             name='service',
             field=models.ForeignKey(to='facilities.Service', on_delete=django.db.models.deletion.PROTECT),
@@ -359,6 +378,11 @@ class Migration(migrations.Migration):
             model_name='facilityservice',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='facilityregulationstatus',
+            name='regulating_body',
+            field=models.ForeignKey(to='facilities.RegulatingBody', on_delete=django.db.models.deletion.PROTECT),
         ),
         migrations.AddField(
             model_name='facilityregulationstatus',
@@ -387,8 +411,23 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facility',
+            name='contacts',
+            field=models.ManyToManyField(help_text=b'Facility contacts - email, phone, fax, postal etc', to='common.Contact', through='facilities.FacilityContact'),
+        ),
+        migrations.AddField(
+            model_name='facility',
+            name='created_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='facility',
             name='facility_type',
             field=models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='facilities.FacilityType', help_text=b'This depends on who owns the facilty. For MOH facilities,type is the gazetted classification of the facilty.For Non-MOH check under the respective owners.'),
+        ),
+        migrations.AddField(
+            model_name='facility',
+            name='officer_in_charge',
+            field=models.ForeignKey(help_text=b'The officer in charge of the facility', to='facilities.OfficerIncharge'),
         ),
         migrations.AddField(
             model_name='facility',
@@ -398,17 +437,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='owner',
-            field=models.ForeignKey(to='facilities.Owner'),
-        ),
-        migrations.AddField(
-            model_name='facility',
-            name='regulating_body',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='facilities.RegulatingBody', help_text=b'The National Regulatory Body responsible for licensing or gazettement of the facility', null=True),
+            field=models.ForeignKey(help_text=b'A link to the organization that owns the facility', to='facilities.Owner'),
         ),
         migrations.AddField(
             model_name='facility',
             name='regulation_status',
             field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='facilities.RegulationStatus', help_text=b'Indicates whether the facility has been approved by the respective National Regulatory Body.', null=True),
+        ),
+        migrations.AddField(
+            model_name='facility',
+            name='regulatory_details',
+            field=models.ManyToManyField(help_text=b'Regulatory bodies with interest in the facility', to='facilities.RegulatingBody', through='facilities.FacilityRegulationStatus'),
+        ),
+        migrations.AddField(
+            model_name='facility',
+            name='services',
+            field=models.ManyToManyField(help_text=b'Services offered at the facility', to='facilities.Service', through='facilities.FacilityService'),
         ),
         migrations.AddField(
             model_name='facility',
@@ -418,7 +462,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='ward',
-            field=models.ForeignKey(to='common.Ward', on_delete=django.db.models.deletion.PROTECT),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Ward', help_text=b'County ward in which the facility is located'),
         ),
         migrations.AlterUniqueTogether(
             name='facilitytype',

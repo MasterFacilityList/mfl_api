@@ -41,6 +41,12 @@ class TestOwnerModel(BaseTestCase):
         owner = Owner.objects.create(**data)
         self.assertEquals(1, Owner.objects.count())
 
+        owner_with_no_code = mommy.make(Owner, code=None)
+        self.assertTrue(owner_with_no_code.code >= 1)
+
+        owner_with_code = mommy.make(Owner, code=679879)
+        self.assertTrue(owner_with_code.code >= 1)
+
         # test unicode
         self.assertEquals("CHAK", owner.__unicode__())
         self.assertIsNotNone(owner.code)
@@ -125,8 +131,12 @@ class TestServiceModel(BaseTestCase):
         data = self.inject_audit_fields(data)
 
         service = Service.objects.create(**data)
-        # test unicode
 
+        # Damned branch misses
+        mommy.make(Service, code=None)
+        mommy.make(Service, code=85865)
+
+        # test unicode
         self.assertEquals('Diabetes screening', service.__unicode__())
         self.assertIsNotNone(service.code)
 
@@ -207,6 +217,10 @@ class TestFacility(BaseTestCase):
         data = self.inject_audit_fields(data)
         facility = Facility.objects.create(**data)
         self.assertEquals(1, Facility.objects.count())
+
+        # Bloody branch misses
+        mommy.make(Facility, code=89778)
+        mommy.make(Facility, code=None)
 
         #  test unicode
         self.assertEquals("Forces Memorial", facility.__unicode__())
