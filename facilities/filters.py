@@ -1,7 +1,14 @@
 import django_filters
 
+from .models import Owner, Service, Facility, FacilityGPS, JobTitle
+
+
 from common.filters.filter_shared import CommonFieldsFilterset
-from .models import Owner, Service, Facility, FacilityGPS
+
+
+class JobTitleFilter(CommonFieldsFilterset):
+    class Meta:
+        model = JobTitle
 
 
 class OwnerFilter(CommonFieldsFilterset):

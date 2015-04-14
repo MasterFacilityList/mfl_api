@@ -105,7 +105,7 @@ class OfficerIncharge(AbstractBase):
         return self.name
 
 
-class OfficerIchargeContact(AbstractBase):
+class OfficerInchargeContact(AbstractBase):
     """
     The contact details of the officer incharge.
 
@@ -175,6 +175,10 @@ class Service(AbstractBase):
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(
+        ServiceCategory,
+        help_text="The classification that the service lies in.")
+
     code = models.IntegerField(unique=True, editable=False)
 
     def get_code_value(self):
