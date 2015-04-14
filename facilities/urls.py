@@ -62,7 +62,7 @@ urlpatterns = patterns(
         name='facility_regulation_status_detail'),
 
     url(r'^regulation_status/$', RegulationStatusListView.as_view(),
-        name='owners_list'),
+        name='regulation_list'),
 
     url(r'^regulation_status/(?P<pk>[^/]+)/$',
         RegulationStatusDetailView.as_view(),

@@ -1,15 +1,51 @@
 import logging
 import uuid
+import pytz
 
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
+from django.conf import settings
+
 from .sequence_helper import next_value_in_sequence
 
 LOGGER = logging.getLogger(__file__)
 
-# TODO ensure model update_by and udpated are not overwritten
-# TODO check updated is greater then created
-# TODO check deativate on delete
+
+def get_utc_localized_datetime(datetime_instance):
+    """
+    Converts a naive datetime to a UTC localized datetime.
+
+    :datetime_instance datetime A naive datetime instance.
+    """
+    current_timezone = pytz.timezone(settings.TIME_ZONE)
+    localized_datetime = current_timezone.localize(datetime_instance)
+    return localized_datetime.astimezone(pytz.utc)
+
+
+def get_default_system_user_id():
+    """
+    Ensure that there is a default system user, unknown password
+    """
+    try:
+        return get_user_model().objects.get(
+            email='system@ehealth.or.ke',
+            first_name='System',
+            username='system'
+        ).pk
+    except get_user_model().DoesNotExist:
+        return get_user_model().objects.create(
+            email='system@ehealth.or.ke',
+            first_name='System',
+            username='system'
+        ).pk
+
+
+class CustomDefaultManager(models.Manager):
+    def get_queryset(self):
+        return super(
+            CustomDefaultManager, self).get_queryset().filter(deleted=False)
 
 
 class AbstractBase(models.Model):
@@ -23,18 +59,33 @@ class AbstractBase(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
-    created_by = models.CharField(max_length=128,)
-    updated_by = models.CharField(max_length=128,)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, default=get_default_system_user_id,
+        on_delete=models.PROTECT, related_name='+')
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, default=get_default_system_user_id,
+        on_delete=models.PROTECT, related_name='+')
+    deleted = models.BooleanField(default=False)
     active = models.BooleanField(
         default=True,
         help_text="Indicates whether the record has been retired?")
+
+    objects = CustomDefaultManager()
+    everything = models.Manager()
+
+    def validate_updated_date_greater_than_created(self):
+        if timezone.is_naive(self.updated):
+            self.updated = get_utc_localized_datetime(self.updated)
+
+        if self.updated < self.created:
+            raise ValidationError(
+                'The updated date cannot be less than the created date')
 
     def preserve_created_and_created_by(self):
         """
         Ensures that in subsequent times created and created_by fields
         values are not overriden.
         """
-
         try:
             original = self.__class__.objects.get(pk=self.pk)
             self.created = original.created
@@ -46,8 +97,15 @@ class AbstractBase(models.Model):
                 'this as a new record.'.format(self.__class__, self.pk))
 
     def save(self, *args, **kwargs):
+        self.full_clean(exclude=None)
         self.preserve_created_and_created_by()
+        self.validate_updated_date_greater_than_created()
         super(AbstractBase, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        # Mark the field model deleted
+        self.deleted = True
+        self.save()
 
     class Meta:
         abstract = True
@@ -64,14 +122,12 @@ class RegionAbstractBase(AbstractBase):
         3. sub-county,
         4. ward
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="Name og the region may it be e.g Nairobi")
-    code = models.CharField(
-        max_length=100, unique=True,
-        help_text="A unique_code 4 digit number representing the region.",
-        editable=False)
+    code = models.IntegerField(
+        unique=True,
+        help_text="A unique_code 4 digit number representing the region.")
 
     class Meta:
         abstract = True
@@ -83,7 +139,6 @@ class ContactType(AbstractBase):
 
     The most common contacts are email, phone numbers, landline etc.
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short name, preferrably 6 characters long, representing a"
@@ -102,7 +157,6 @@ class Contact(AbstractBase):
     willing to communicate will be able to do so. The commucation
     ways may include emails, phone numbers, landlines etc.
     """
-
     contact = models.CharField(
         max_length=100,
         help_text="The actual contact of the person e.g test@mail.com,"
@@ -125,7 +179,6 @@ class PhysicalAddress(AbstractBase):
     plot number and nearest landmark. This information in conjunction with
     GPS codes is useful in locating the facility.
     """
-
     town = models.CharField(
         max_length=100, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")
@@ -204,7 +257,6 @@ class Ward(RegionAbstractBase):
     A constituency can have one or more wards.
     In most cases the sub county is also the constituency.
     """
-
     constituency = models.ForeignKey(
         Constituency,
         help_text="The constituency where the ward is located.",
@@ -225,3 +277,35 @@ class Ward(RegionAbstractBase):
         if not self.code:
             self.code = self.get_code_value()
         super(Ward, self).save(*args, **kwargs)
+
+
+class UserCounties(AbstractBase):
+    """
+    Will store a record of the counties that a user has been incharge of.
+
+    A user can only be incharge of only one county at a time.
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='user_counties',
+        on_delete=models.PROTECT)
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Is the user currently incharge of the county?")
+
+    def __unicode__(self):
+        return "{}: {}".format(self.user.email, self.county.name)
+
+    def validate_only_one_county_active(self):
+        """
+        A user can be incharge of only one county at the a time.
+        """
+        counties = self.__class__.objects.filter(
+            user=self.user, is_active=True)
+        if counties.count() > 0:
+            raise ValidationError(
+                "A user can only be active in one county at a time")
+
+    def save(self, *args, **kwargs):
+        self.validate_only_one_county_active()
+        super(UserCounties, self).save(*args, **kwargs)

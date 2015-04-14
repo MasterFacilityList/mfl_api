@@ -7,14 +7,15 @@ from model_mommy import mommy
 
 from common.tests.test_views import LogginMixin, default
 
+from ..serializers import (
+    OwnerSerializer, ServiceSerializer, FacilitySerializer,
+    FacilityStatusSerializer,
+)
+
 from ..models import (
-    OwnerType, Owner, JobTitle, OfficerIncharge,
-    OfficerInchargeContact, ServiceCategory,
-    Service, FacilityStatus, FacilityType,
-    RegulatingBody, RegulationStatus, Facility,
-    FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact
+    OwnerType, Owner, ServiceCategory,
+    Service, FacilityStatus,
+    Facility,
 )
 
 
@@ -33,24 +34,8 @@ class TestOnwersView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                {
-                    "id": owner_1.id,
-                    "name": owner_1.name,
-                    "code": owner_1.code,
-                    "description": owner_1.description,
-                    "abbreviation": owner_1.abbreviation,
-                    "owner_type": owner_1.owner_type.id,
-                    "active": True
-                },
-                {
-                    "id": owner_2.id,
-                    "name": owner_2.name,
-                    "code": owner_2.code,
-                    "description": owner_2.description,
-                    "abbreviation": owner_2.abbreviation,
-                    "owner_type": owner_2.owner_type.id,
-                    "active": True
-                }
+                OwnerSerializer(owner_1).data,
+                OwnerSerializer(owner_2).data
             ]
         }
         self.assertEquals(200, response.status_code)
@@ -84,16 +69,7 @@ class TestOnwersView(LogginMixin, APITestCase):
         owner = mommy.make(Owner, owner_type=owner_type)
         url = self.url + "{}/".format(owner.id)
         response = self.client.get(url)
-        expected_data = {
-            "id": owner.id,
-            "name": owner.name,
-            "code": owner.code,
-            "description": owner.description,
-            "abbreviation": owner.abbreviation,
-            "owner_type": owner.owner_type.id,
-            "active": True
-
-        }
+        expected_data = OwnerSerializer(owner).data
         self.assertEquals(200, response.status_code)
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -111,24 +87,8 @@ class TestOnwersView(LogginMixin, APITestCase):
             "previous": None,
             "results": [
                 # Due to ordering in view CHAK will always be first
-                {
-                    "id": owner_2.id,
-                    "name": owner_2.name,
-                    "code": owner_2.code,
-                    "description": owner_2.description,
-                    "abbreviation": owner_2.abbreviation,
-                    "owner_type": owner_2.owner_type.id,
-                    "active": True
-                },
-                {
-                    "id": owner_1.id,
-                    "name": owner_1.name,
-                    "code": owner_1.code,
-                    "description": owner_1.description,
-                    "abbreviation": owner_1.abbreviation,
-                    "owner_type": owner_1.owner_type.id,
-                    "active": True
-                }
+                OwnerSerializer(owner_2).data,
+                OwnerSerializer(owner_1).data
             ]
         }
         expected_data_2 = {
@@ -136,15 +96,7 @@ class TestOnwersView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                {
-                    "id": owner_3.id,
-                    "name": owner_3.name,
-                    "code": owner_3.code,
-                    "description": owner_3.description,
-                    "abbreviation": owner_3.abbreviation,
-                    "owner_type": owner_3.owner_type.id,
-                    "active": True
-                }
+                OwnerSerializer(owner_3).data
             ]
         }
         self.maxDiff = None
@@ -179,22 +131,8 @@ class TestServiceView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                {
-                    "id": service_1.id,
-                    "name": service_1.name,
-                    "code": service_1.code,
-                    "description": service_1.description,
-                    "category": service_1.category.id,
-                    "active": True
-                },
-                {
-                    "id": service_2.id,
-                    "name": service_2.name,
-                    "code": service_2.code,
-                    "description": service_2.description,
-                    "category": service_2.category.id,
-                    "active": True
-                }
+                ServiceSerializer(service_1).data,
+                ServiceSerializer(service_2).data
             ]
         }
         self.maxDiff = None
@@ -226,14 +164,7 @@ class TestServiceView(LogginMixin, APITestCase):
         service = mommy.make(Service)
         url = self.url + "{}/".format(service.id)
         response = self.client.get(url)
-        expected_data = {
-            "id": service.id,
-            "name": service.name,
-            "code": service.code,
-            "description": service.description,
-            "category": service.category.id,
-            "active": True
-        }
+        expected_data = ServiceSerializer(service).data
         self.assertEquals(200, response.status_code)
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
@@ -253,22 +184,8 @@ class TestServiceView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                {
-                    "id": service_2.id,
-                    "name": service_2.name,
-                    "code": service_2.code,
-                    "description": service_2.description,
-                    "category": service_2.category.id,
-                    "active": True
-                },
-                {
-                    "id": service_1.id,
-                    "name": service_1.name,
-                    "code": service_1.code,
-                    "description": service_1.description,
-                    "category": service_1.category.id,
-                    "active": True
-                }
+                ServiceSerializer(service_2).data,
+                ServiceSerializer(service_1).data
             ]
         }
         url = self.url + "?category={}".format(service_cat.id)
@@ -282,14 +199,7 @@ class TestServiceView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                {
-                    "id": service_3.id,
-                    "name": service_3.name,
-                    "code": service_3.code,
-                    "description": service_3.description,
-                    "category": service_3.category.id,
-                    "active": True
-                }
+                ServiceSerializer(service_3).data
             ]
         }
         url = self.url + "?category={}".format(service_cat_2.id)
@@ -298,3 +208,73 @@ class TestServiceView(LogginMixin, APITestCase):
         self.assertEquals(
             json.loads(json.dumps(expected_data_2, default=default)),
             json.loads(json.dumps(response_2.data, default=default)))
+
+
+class TestFacilityView(LogginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityView, self).setUp()
+        self.url = reverse('api:facilities:facility_list')
+
+    def test_facility_listing(self):
+        facility_1 = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        facility_3 = mommy.make(Facility)
+
+        response = self.client.get(self.url)
+        expected_data = {
+            "count": 3,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility_1).data,
+                FacilitySerializer(facility_2).data,
+                FacilitySerializer(facility_3).data
+            ]
+        }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_retrieve_facility(self):
+        facility = mommy.make(Facility)
+        url = self.url + "{}/".format(facility.id)
+        response = self.client.get(url)
+        expected_data = FacilitySerializer(facility).data
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+
+class TestFacilityStatusView(LogginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityStatusView, self).setUp()
+        self.url = reverse("api:facilities:facility_status_list")
+
+    def test_list_facility_status(self):
+        status_1 = mommy.make(FacilityStatus)
+        status_2 = mommy.make(FacilityStatus)
+        status_3 = mommy.make(FacilityStatus)
+        response = self.client.get(self.url)
+        expected_data = {
+            "count": 3,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityStatusSerializer(status_1).data,
+                FacilityStatusSerializer(status_2).data,
+                FacilityStatusSerializer(status_3).data
+            ]
+        }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_retrive_facility_status(self):
+        status = mommy.make(FacilityStatus)
+        url = self.url + "{}/".format(status.id)
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, FacilityStatusSerializer(status).data)

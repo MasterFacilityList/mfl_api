@@ -4,13 +4,17 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from .models import (
-    Contact, County, Ward, Constituency, ContactType)
+    Contact, PhysicalAddress, County, Ward, Constituency, ContactType,
+    UserCounties)
 
 from .serializers import (
     ContactSerializer, CountySerializer, WardSerializer,
-    ConstituencySerializer, ContactTypeSerializer)
+    PhysicalAddressSerializer, ConstituencySerializer,
+    ContactTypeSerializer, InchargeCountiesSerializer)
 
-from .filters import ContactFilter, ConstituencyFilter, WardFilter
+from .filters import (
+    ContactTypeFilter, ContactFilter, PhysicalAddressFilter,
+    CountyFilter, ConstituencyFilter, WardFilter, UserCountiesFilter)
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -25,10 +29,23 @@ class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ContactSerializer
 
 
+class PhysicalAddressView(generics.ListCreateAPIView):
+    queryset = PhysicalAddress.objects.all()
+    serializer_class = PhysicalAddressSerializer
+    ordering_fields = ('town', )
+    filter_class = PhysicalAddressFilter
+
+
+class PhysicalAddressDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PhysicalAddress.objects.all()
+    serializer_class = PhysicalAddressSerializer
+
+
 class CountyView(generics.ListCreateAPIView):
     queryset = County.objects.all()
     serializer_class = CountySerializer
     ordering_fields = ('name', )
+    filter_class = CountyFilter
 
 
 class CountyDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -64,11 +81,24 @@ class ContactTypeListView(generics.ListCreateAPIView):
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
     ordering_fields = ('name', )
+    filter_class = ContactTypeFilter
 
 
 class ContactTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
+
+
+class UserCountiesView(generics.ListCreateAPIView):
+    queryset = UserCounties.objects.all()
+    serializer_class = InchargeCountiesSerializer
+    filter_class = UserCountiesFilter
+    ordering_fields = ('user', )
+
+
+class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserCounties.objects.all()
+    serializer_class = InchargeCountiesSerializer
 
 
 @api_view(('GET',))
@@ -84,7 +114,7 @@ def api_root(request, format=None):
             'api:common:contacts_list', request=request, format=format),
         'contact_types': reverse(
             'api:common:contact_types_list', request=request, format=format),
-        'ward': reverse(
+        'wards': reverse(
             'api:common:wards_list', request=request, format=format),
         'constituencies': reverse(
             'api:common:constituencies_list', request=request, format=format),

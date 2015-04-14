@@ -1,13 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import validate_email, RegexValidator
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import make_password
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from django.conf import settings
-
-from common.models import County, AbstractBase
 
 
 USER_MODEL = settings.AUTH_USER_MODEL
@@ -38,15 +35,16 @@ class MflUserManager(BaseUserManager):
         return user
 
 
-class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
+class MflUser(AbstractBaseUser, PermissionsMixin):
     """
     Add custom behaviour to the user model.
 
     Purpose of the custom model:
         1. Make email the username field.
         2. Add additional fields to the user such as county and is_national
-    """
 
+    ``User`` is the one model that cannot descend from AbstractBase.
+    """
     email = models.EmailField(null=False, blank=False, unique=True)
     first_name = models.CharField(max_length=60, null=False, blank=False)
     last_name = models.CharField(max_length=60, blank=True)
@@ -65,8 +63,6 @@ class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    county = models.ForeignKey(
-        County, null=True, blank=True, on_delete=models.PROTECT)
     is_national = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -88,35 +84,3 @@ class MflUser(AbstractBaseUser, AbstractBase, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
-
-
-class UserCounties(AbstractBase):
-    """
-    Will store a record of the counties that a user has been incharge of.
-
-    A user can only be incharge of only one county at a time.
-    """
-
-    user = models.ForeignKey(
-        MflUser, related_name='user_counties', on_delete=models.PROTECT)
-    county = models.ForeignKey(County, on_delete=models.PROTECT)
-    is_active = models.BooleanField(
-        default=True,
-        help_text="Is the user currently incharge of the county?")
-
-    def __unicode__(self):
-        return "{}: {}".format(self.user.email, self.county.name)
-
-    def validate_only_one_county_active(self):
-        """
-        A user can be incharge of only one county at the a time.
-        """
-        counties = self.__class__.objects.filter(
-            user=self.user, is_active=True)
-        if counties.count() > 0:
-            raise ValidationError(
-                "A user can only be active in one county at a time")
-
-    def save(self, *args, **kwargs):
-        self.validate_only_one_county_active()
-        super(UserCounties, self).save(*args, **kwargs)

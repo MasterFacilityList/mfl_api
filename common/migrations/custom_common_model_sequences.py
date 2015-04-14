@@ -5,7 +5,7 @@ import os
 from django.db import migrations
 
 
-SQL = open(os.path.dirname(__file__) + '/sequencies.sql').read()
+SQL = open(os.path.dirname(__file__) + '/sequences.sql').read()
 
 
 class Migration(migrations.Migration):

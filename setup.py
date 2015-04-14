@@ -49,7 +49,7 @@ setup(
     description='Core APIs for the Kenyan Ministry of Health '
                 'Master Facility List',
     long_description=long_description,
-    url='',
+    url='https://github.com/MasterFacilityList/mfl_api',
     packages=find_packages(),
     include_package_data=True,
     platforms='any',
@@ -88,6 +88,7 @@ setup(
         "django>=1.8",
         'sqlparse>=0.1',
         "pytest>=2.7",
-        "pytest-django>=2.8"
+        "pytest-django>=2.8",
+        "pytz",
     ],
 )
