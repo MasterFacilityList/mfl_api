@@ -11,7 +11,6 @@ class OwnerType(AbstractBase):
     E.g we could have government, corporate owners, faith based owners
     private owners.
     """
-
     name = models.CharField(
         max_length=100,
         help_text="Short unique name for a particular type of owners. "
@@ -36,7 +35,6 @@ class Owner(AbstractBase):
     in fact the facilities under them are owned by the individual churches,
     mosques, or communities affiliated with the faith.
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="The name of owner e.g Ministry of Health.")
@@ -76,7 +74,6 @@ class JobTitle(AbstractBase):
     Hospital Director. This should not be confused with the professional
      (Nursing Officer I) or Job Group title.Officer
     """
-
     name = models.CharField(
         max_length=100,
         help_text="A short name for the job title")
@@ -91,7 +88,6 @@ class OfficerIncharge(AbstractBase):
     """
      Identify the officer in-charge of a facility.
     """
-
     name = models.CharField(
         max_length=150,
         help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
@@ -112,7 +108,6 @@ class OfficerInchargeContact(AbstractBase):
     The officer incharge may have as many mobile numbers as possible.
     Also the number of email addresses is not limited.
     """
-
     officer = models.ForeignKey(
         OfficerIncharge,
         help_text="The is the officer in charge", on_delete=models.PROTECT)
@@ -148,7 +143,6 @@ class ServiceCategory(AbstractBase):
             Specialised (and the Specialised Services are split into KEPH
             level).
     """
-
     name = models.CharField(
         max_length=100,
         help_text="What is the name of the category? ")
@@ -172,7 +166,6 @@ class Service(AbstractBase):
     the data. For example, the laboratory equipment may require the presence
     of a District Laboratory Technologist
     """
-
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(
@@ -203,7 +196,6 @@ class FacilityStatus(AbstractBase):
         3. is temporarily non-operational
         4. is closed down.
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short name respresenting the operanation status"
@@ -243,7 +235,6 @@ class RegulatingBody(AbstractBase):
     In some cases this may not hold e.g a KMPDB and not NCK will licence a
     nursing home owned by a nurse
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="The name of the regulating body")
@@ -289,7 +280,6 @@ class RegulationStatus(AbstractBase):
             A facility that has been gazetted and the notice published in the
             Kenya Gazette.
     """
-
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name representing a state/stage of "
@@ -356,7 +346,12 @@ class Facility(AbstractBase):
         "7th Floor")
     is_classified = models.BooleanField(
         default=False,
-        help_text="Should the facility be visible to the public?")
+        help_text="Should the facility geo-codes be visible to the public?"
+        "Certain facilities are kept 'off-the-map'")
+    is_published = models.BooleanField(
+        default=False,
+        help_text="Should be True if the facility is to be seen on the "
+        "public MFL site")
 
     def get_code_value(self):
         value = next_value_in_sequence("facility_code_seq")
@@ -381,7 +376,6 @@ class FacilityRegulationStatus(AbstractBase):
     It adds the extra reason field that makes it possible to give
     an explanation as to why a facility is in a certain regulation status.
     """
-
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
     regulation_status = models.ForeignKey(
         RegulationStatus, on_delete=models.PROTECT)
@@ -478,7 +472,6 @@ class FacilityService(AbstractBase):
     Service is either offered all or none, i.e. they exist or do not exist.
     (YES/NO)
     """
-
     facility = models.ForeignKey(
         Facility, related_name='facility_services', on_delete=models.PROTECT)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
@@ -497,7 +490,6 @@ class FacilityContact(AbstractBase):
     They also could be of as many different types as the facility has;
     they could be emails, phone numbers, land lines etc.
     """
-
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT)
 
