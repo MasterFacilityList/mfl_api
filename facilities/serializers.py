@@ -7,7 +7,7 @@ from .models import (
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact
+    FacilityService, FacilityContact, FacilityUnit
 )
 from common.serializers import AbstractFieldsMixin
 
@@ -120,3 +120,9 @@ class FacilityGPSSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = FacilityGPS
+
+
+class FacilityUnitSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = FacilityUnit

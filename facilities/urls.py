@@ -14,11 +14,16 @@ from .views import (
     FacilityGPSDetailView, FacilityRegulationStatusListView,
     FacilityRegulationStatusDetailView, FacilityTypeListView,
     FacilityTypeDetailView, RegulationStatusListView,
-    RegulationStatusDetailView)
+    RegulationStatusDetailView, FacilityUnitsListView, FacilityUnitDetailView)
 
 
 urlpatterns = patterns(
     '',
+    url(r'^facility_units/$', FacilityUnitsListView.as_view(),
+        name='facility_units_list'),
+    url(r'^facility_units/(?P<pk>[^/]+)/$', FacilityUnitDetailView.as_view(),
+        name='facility_unit_detail'),
+
     url(r'^regulating_bodies/$', RegulatingBodyListView.as_view(),
         name='regulating_bodies_list'),
     url(r'^regulating_bodies/(?P<pk>[^/]+)/$',

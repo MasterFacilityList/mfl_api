@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django.utils.timezone
 import django.db.models.deletion
+import django.utils.timezone
 from django.conf import settings
 import common.models
 import common.fields
@@ -31,6 +31,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='Contact',
@@ -79,6 +80,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.CreateModel(
             name='PhysicalAddress',
@@ -168,6 +170,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+            bases=(models.Model, common.models.SequenceMixin),
         ),
         migrations.AddField(
             model_name='userresidence',

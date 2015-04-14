@@ -7,7 +7,7 @@ from .models import (
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact
+    FacilityService, FacilityContact, FacilityUnit
 )
 
 
@@ -19,12 +19,25 @@ from .serializers import (
     OfficerInchargeSerializer, RegulatingBodySerializer,
     GeoCodeMethodSerializer, GeoCodeSourceSerializer,
     ServiceCategorySerializer, OwnerTypeSerializer,
-    OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer
+    OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
+    FacilityUnitSerializer
 )
 
 from .filters import (
     FacilityFilter, ServiceFilter, FacilityGPSFilter,
-    OwnerFilter, JobTitleFilter)
+    OwnerFilter, JobTitleFilter, FacilityUnitFilter)
+
+
+class FacilityUnitsListView(generics.ListCreateAPIView):
+    queryset = FacilityUnit.objects.all()
+    serializer_class = FacilityUnitSerializer
+    ordering_fields = ('name', )
+    filter_class = FacilityUnitFilter
+
+
+class FacilityUnitDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityUnit.objects.all()
+    serializer_class = FacilityUnitSerializer
 
 
 class FacilityStatusListView(generics.ListCreateAPIView):

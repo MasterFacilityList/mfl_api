@@ -10,7 +10,7 @@ from ..models import (
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact
+    FacilityService, FacilityContact, FacilityUnit
 )
 
 
@@ -195,8 +195,8 @@ class TestFacility(BaseTestCase):
     def test_save(self):
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
-        regulation_status = mommy.make(RegulationStatus, name="REGISTERED")
         officer_in_charge = mommy.make(OfficerIncharge)
+        regulating_body = mommy.make(RegulatingBody)
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
         data = {
@@ -208,7 +208,6 @@ class TestFacility(BaseTestCase):
             "open_whole_day": True,
             "open_whole_week": True,
             "operation_status": operation_status,
-            "regulation_status": regulation_status,
             "ward": ward,
             "owner": owner,
             "location_desc": "it is located along Moi Avenue Nairobi",
@@ -216,6 +215,9 @@ class TestFacility(BaseTestCase):
         }
         data = self.inject_audit_fields(data)
         facility = Facility.objects.create(**data)
+        facility_reg_status = mommy.make(
+            FacilityRegulationStatus, facility=facility,
+            regulating_body=regulating_body)
         self.assertEquals(1, Facility.objects.count())
 
         # Bloody branch misses
@@ -225,6 +227,9 @@ class TestFacility(BaseTestCase):
         #  test unicode
         self.assertEquals("Forces Memorial", facility.__unicode__())
         self.assertIsNotNone(facility.code)
+        self.assertEquals(
+            facility_reg_status.regulation_status,
+            facility.current_regulatory_status)
 
     def test_working_of_facility_code_sequence(self):
         # make code none so that mommy does not supply it
@@ -351,3 +356,39 @@ class TestFacilityRegulationStatus(BaseTestCase):
         #  test unicode
         expected = "Nairobi Hospital: SUSPENDED"
         self.assertEquals(expected, facility_reg_status.__unicode__())
+
+
+class TestFacilityUnitModel(BaseTestCase):
+    def test_save_with_regulating_body(self):
+        facility = mommy.make(Facility, name='AKUH')
+        regulating_body = mommy.make(RegulatingBody, name='PPB')
+        data = {
+            "facility": facility,
+            "name": "AKUH Pharmacy",
+            "description": "This is the AKUH Pharmacy section.",
+            "regulating_body": regulating_body
+        }
+        data = self.inject_audit_fields(data)
+        facility_unit = FacilityUnit.objects.create(**data)
+        self.assertEquals(1, FacilityUnit.objects.count())
+
+        expected_unicode = 'AKUH: AKUH Pharmacy'
+        self.assertEquals(expected_unicode, facility_unit.__unicode__())
+        self.assertEquals(facility_unit.unit_regulating_body, regulating_body)
+
+    def test_save_without_regulating_body(self):
+        regulating_body = mommy.make(RegulatingBody)
+        facility = mommy.make(Facility)
+        mommy.make(
+            FacilityRegulationStatus, facility=facility,
+            regulating_body=regulating_body)
+
+        data = {
+            "facility": facility,
+            "name": "AKUH Pharmacy",
+            "description": "This is the AKUH Pharmacy section."
+        }
+        data = self.inject_audit_fields(data)
+        facility_unit = FacilityUnit.objects.create(**data)
+        self.assertEquals(1, FacilityUnit.objects.count())
+        self.assertEquals(regulating_body, facility_unit.unit_regulating_body)

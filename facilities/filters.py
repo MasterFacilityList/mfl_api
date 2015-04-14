@@ -1,6 +1,7 @@
 import django_filters
 
-from .models import Owner, Service, Facility, FacilityGPS, JobTitle
+from .models import (
+    Owner, Service, Facility, FacilityGPS, JobTitle, FacilityUnit)
 
 
 from common.filters.filter_shared import CommonFieldsFilterset
@@ -36,3 +37,8 @@ class FacilityFilter(CommonFieldsFilterset):
 
     class Meta:
         model = Facility
+
+
+class FacilityUnitFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityUnit
