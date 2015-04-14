@@ -1,5 +1,5 @@
 from model_mommy import mommy
-
+from django.utils import timezone
 from common.tests.test_models import BaseTestCase
 from common.models import Contact, Ward
 
@@ -262,7 +262,8 @@ class TestFacilityGPSModel(BaseTestCase):
             "latitude": "78.99",
             "longitude": "67.54",
             "method": method,
-            "source": source
+            "source": source,
+            "collection_date": timezone.now()
         }
         data = self.inject_audit_fields(data)
         facility_gps = FacilityGPS.objects.create(**data)
