@@ -112,6 +112,22 @@ class AbstractBase(models.Model):
         abstract = True
 
 
+class SequenceMixin(object):
+    """
+    Intended to be mixed into models with a `code` `SequenceField`
+    """
+
+    def generate_next_code_sequence(self):
+        """
+        Relies upon the predictability of Django sequence naming
+        ( convention )
+        """
+        return SequenceGenerator(
+            app_label=self._meta.app_label,
+            model_name=self._meta.model_name
+        ).next()
+
+
 class ContactType(AbstractBase):
     """
     Captures the different types of contacts that we have in the real world.
@@ -181,7 +197,7 @@ class PhysicalAddress(AbstractBase):
         return "{}: {}".format(self.postal_code, self.address)
 
 
-class RegionAbstractBase(AbstractBase):
+class RegionAbstractBase(AbstractBase, SequenceMixin):
     """
     Model to supply the common attributes of a region.
 
@@ -204,8 +220,8 @@ class RegionAbstractBase(AbstractBase):
 
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = SequenceGenerator(self).next()
-        super(County, self).save(*args, **kwargs)
+            self.code = self.generate_next_code_sequence()
+        super(RegionAbstractBase, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True

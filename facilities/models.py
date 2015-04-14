@@ -1,7 +1,6 @@
 from django.db import models
-from common.models import AbstractBase, Ward, Contact
+from common.models import AbstractBase, Ward, Contact, SequenceMixin
 from common.fields import SequenceField
-from common.utilities.sequence_helper import SequenceGenerator
 
 
 class OwnerType(AbstractBase):
@@ -24,7 +23,7 @@ class OwnerType(AbstractBase):
         return self.name
 
 
-class Owner(AbstractBase):
+class Owner(AbstractBase, SequenceMixin):
     """
     Entity that has exclusive legal rights to the facility.
 
@@ -56,7 +55,7 @@ class Owner(AbstractBase):
 
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = SequenceGenerator(self).next()
+            self.code = self.generate_next_code_sequence()
         super(Owner, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -152,7 +151,7 @@ class ServiceCategory(AbstractBase):
         return self.name
 
 
-class Service(AbstractBase):
+class Service(AbstractBase, SequenceMixin):
     """
     A health service.
 
@@ -177,7 +176,7 @@ class Service(AbstractBase):
 
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = SequenceGenerator(self).next()
+            self.code = self.generate_next_code_sequence()
         super(Service, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -344,7 +343,7 @@ class FacilityContact(AbstractBase):
             self.facility.name, self.contact.contact)
 
 
-class Facility(AbstractBase):
+class Facility(AbstractBase, SequenceMixin):
     """
     A health institution in Kenya.
 
@@ -418,7 +417,7 @@ class Facility(AbstractBase):
 
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = SequenceGenerator(self).next()
+            self.code = self.generate_next_code_sequence()
         super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):

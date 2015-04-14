@@ -7,10 +7,8 @@ LOGGER = logging.getLogger(__name__)
 
 class SequenceGenerator(object):
 
-    def __init__(self, model):
-        options = model._meta
-        self.sequence_name = options.app_label + "_" + options.model_name \
-            + "_document_code_seq"
+    def __init__(self, app_label, model_name):
+        self.sequence_name = app_label + "_" + model_name + "_code_seq"
 
     def next(self):
         query = "SELECT nextval('%s')" % self.sequence_name
