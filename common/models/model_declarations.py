@@ -1,4 +1,5 @@
 import logging
+import reversion
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -10,6 +11,7 @@ from .base import AbstractBase, SequenceMixin
 LOGGER = logging.getLogger(__file__)
 
 
+@reversion.register
 class ContactType(AbstractBase):
     """
     Captures the different types of contacts that we have in the real world.
@@ -26,6 +28,7 @@ class ContactType(AbstractBase):
         return self.name
 
 
+@reversion.register
 class Contact(AbstractBase):
     """
     Holds ways in which entities can communicate.
@@ -57,6 +60,7 @@ class Town(AbstractBase):
         return self.name
 
 
+@reversion.register
 class PhysicalAddress(AbstractBase):
     """
     The physical properties of a facility.
@@ -87,6 +91,7 @@ class PhysicalAddress(AbstractBase):
         return "{}: {}".format(self.postal_code, self.address)
 
 
+@reversion.register
 class RegionAbstractBase(AbstractBase, SequenceMixin):
     """
     Model to supply the common attributes of a region.
@@ -117,6 +122,7 @@ class RegionAbstractBase(AbstractBase, SequenceMixin):
         abstract = True
 
 
+@reversion.register
 class County(RegionAbstractBase):
     """
     This is the largest administrative/political division in Kenya.
@@ -128,6 +134,7 @@ class County(RegionAbstractBase):
     pass  # Everything, including __unicode__ is handled by the abstract model
 
 
+@reversion.register
 class Constituency(RegionAbstractBase):
     """
     Counties in Kenya are divided into constituencies.
@@ -145,6 +152,7 @@ class Constituency(RegionAbstractBase):
         on_delete=models.PROTECT)
 
 
+@reversion.register
 class Ward(RegionAbstractBase):
     """
     The Kenyan counties are sub divided into wards.
@@ -165,6 +173,7 @@ class Ward(RegionAbstractBase):
         return self.constituency.county
 
 
+@reversion.register
 class UserCounties(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of.
@@ -197,6 +206,7 @@ class UserCounties(AbstractBase):
         super(UserCounties, self).save(*args, **kwargs)
 
 
+@reversion.register
 class UserResidence(AbstractBase):
     """
     Stores the wards in which the user resides in.
@@ -222,6 +232,7 @@ class UserResidence(AbstractBase):
         super(UserResidence, self).save(*args, **kwargs)
 
 
+@reversion.register
 class UserContact(AbstractBase):
     """
     Stores a user's contacts.
