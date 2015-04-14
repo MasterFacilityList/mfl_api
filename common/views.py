@@ -5,16 +5,17 @@ from rest_framework.reverse import reverse
 
 from .models import (
     Contact, PhysicalAddress, County, Ward, Constituency, ContactType,
-    UserCounties)
+    UserCounties, UserResidence)
 
 from .serializers import (
     ContactSerializer, CountySerializer, WardSerializer,
     PhysicalAddressSerializer, ConstituencySerializer,
-    ContactTypeSerializer, InchargeCountiesSerializer)
+    ContactTypeSerializer, InchargeCountiesSerializer, UserResidenceSerializer)
 
 from .filters import (
     ContactTypeFilter, ContactFilter, PhysicalAddressFilter,
-    CountyFilter, ConstituencyFilter, WardFilter, UserCountiesFilter)
+    CountyFilter, ConstituencyFilter, WardFilter, UserCountiesFilter,
+    UserResidenceFilter)
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -99,6 +100,18 @@ class UserCountiesView(generics.ListCreateAPIView):
 class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserCounties.objects.all()
     serializer_class = InchargeCountiesSerializer
+
+
+class UserResidenceListView(generics.ListCreateAPIView):
+    queryset = UserResidence.objects.all()
+    serializer_class = UserResidenceSerializer
+    filter_class = UserResidenceFilter
+    ordering_fields = ('user',)
+
+
+class UserResidenceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserResidence.objects.all()
+    serializer_class = UserResidenceSerializer
 
 
 @api_view(('GET',))

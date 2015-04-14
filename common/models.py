@@ -309,3 +309,28 @@ class UserCounties(AbstractBase):
     def save(self, *args, **kwargs):
         self.validate_only_one_county_active()
         super(UserCounties, self).save(*args, **kwargs)
+
+
+class UserResidence(AbstractBase):
+    """
+    Stores the wards in which the user resides in.
+    If a user moves to another ward the currenct ward is deactivated by setting
+    active to False
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='user_residence')
+    ward = models.ForeignKey(Ward, on_delete=models.PROTECT)
+
+    def __unicode__(self):
+        return self.user.email + ": " + self.ward.name
+
+    def validate_user_residing_in_one_place_at_a_time(self):
+        user_wards = self.__class__.objects.filter(user=self.user, active=True)
+        if user_wards.count() > 0:
+            raise ValidationError(
+                "User can only reside in one ward at a a time")
+
+    def save(self, *args, **kwargs):
+        self.validate_user_residing_in_one_place_at_a_time()
+        super(UserResidence, self).save(*args, **kwargs)
