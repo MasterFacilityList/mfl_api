@@ -1,8 +1,8 @@
 [run]
 branch=True
-source=minion
+source=common,users,facilities
 omit=
     *migrations*
-    
+
 [report]
 show_missing=True
