@@ -9,17 +9,38 @@ from rest_framework.reverse import reverse
 
 from ..metadata import CustomMetadata
 
+METADATA_CLASS = CustomMetadata()
 
-# TODO Get the list of all models and generate URLs from it; share the dict
-# TODO Fix metadata with no object ( detail view )
 
 def _create_model_view_dict():
+    """
+    This reads the models in settings.LOCAL_APPS and "generates" ( more like
+    imagines ) the applicable detail and list URLs.
+
+    It is a tough task master; it assumes that the URLs are named following a
+    strict convention:
+
+        * detail views -> 'api:<app_name>:<applicable_model_verbose_name>'
+        * list views -> 'api:<app_name>:<applicable_model_verbose_name_plural>'
+
+    It will **blow up** under two circumstances:
+
+        * you have a concrete model that does not have views and URLs
+        ( your bad, a spectacular test failure will let you know about it )
+        * you violate naming conventions
+        ( if you use the provided helpers - with examples in the URLs - this
+            should be a non issue)
+
+    A future version of this might introspect the registered views / URLs and
+    create the metadata and API root listing in a more forgiving manner. At
+    the time of writing this, the author was too pressed for time.
+    """
     return_dict = defaultdict(dict)
     for app_name in settings.LOCAL_APPS:  # We must keep our apps in LOCAL_APPS
         app_models = apps.get_app_config(app_name).get_models()
 
         for app_model in app_models:
-            return_dict[app_model._meta.verbose_name] = {
+            return_dict[app_model] = {
                 'list_url': 'api:{}:{}_list'.format(
                     app_name,
                     str(app_model._meta.verbose_name_plural).replace(' ', '_')
@@ -33,16 +54,13 @@ def _create_model_view_dict():
     # This must stay as the sole exit path
     return return_dict
 
-
+# When things are flaming out, examine this
 MODEL_VIEW_DICT = _create_model_view_dict()
-METADATA_CLASS = CustomMetadata()
 
 
 def _reverse(request, url_name):
-    return reverse(
-        url_name,
-        request=request
-    )
+    """Extracted for space saving reasons and nothing more"""
+    return reverse(url_name, request=request)
 
 
 def _resolve_list_metadata(request, url_name):
@@ -52,14 +70,37 @@ def _resolve_list_metadata(request, url_name):
     return METADATA_CLASS.determine_metadata(request, view)
 
 
-def _resolve_detail_metadata(request, url_name):
-    url_path = django_reverse(url_name, kwargs={'pk': None})
-    view = resolve(url_path).func.cls(kwargs={'pk': None})
+def _get_metadata_from_detail_url(url_name, obj, request):
+    url_path = django_reverse(url_name, kwargs={'pk': obj.pk})
+    view = resolve(url_path).func.cls(kwargs={'pk': obj.pk})
     view.initial(request)
     return METADATA_CLASS.determine_metadata(request, view)
 
 
-def _lookup_metadata(url_name_dict, request):
+def _resolve_detail_metadata(request, url_name, model_cls):
+    """I am not proud of this"""
+    # This is diabolically evil; I am sorry
+    # We need to guarantee that a detail object exists for each detail endpoint
+    # The default metadata API will not resolve the actions otherwise
+    # If called on a live system, it may cause sequence fields to "skip"
+    # There is a plan to do our own metadata implementation; it will be cleaner
+    from model_mommy import mommy  # Late import because of embarassment
+
+    if not model_cls.objects.count():
+        obj = mommy.make(model_cls)
+        metadata = _get_metadata_from_detail_url(url_name, obj, request)
+        obj.delete()
+    else:
+        obj = model_cls.objects.all()[:1][0]
+        metadata = _get_metadata_from_detail_url(url_name, obj, request)
+
+    return metadata
+
+
+def _lookup_metadata(url_name_dict, request, model_cls):
+    """
+    This is what composes the payload that goes to the client
+    """
     return {
         'list_endpoint':
             _reverse(request, url_name_dict['list_url']),
@@ -71,18 +112,21 @@ def _lookup_metadata(url_name_dict, request):
         'detail_metadata':
             _resolve_detail_metadata(
                 request,
-                url_name_dict['detail_url']
+                url_name_dict['detail_url'],
+                model_cls
             )
     }
 
 
 class APIRoot(APIView):
     """
-    This view serves as the entry point to the entire API
-    """
+    This view serves as the entry point to the entire API.
 
+    It also hosts all the metadata.
+    """
     def get(self, request, format=None):
         return Response({
-            model_type_name: _lookup_metadata(url_name_dict, request)
-            for model_type_name, url_name_dict in MODEL_VIEW_DICT.iteritems()
+            model_cls._meta.verbose_name:
+                _lookup_metadata(url_name_dict, request, model_cls)
+            for model_cls, url_name_dict in MODEL_VIEW_DICT.iteritems()
         })
