@@ -96,8 +96,5 @@ setup(
         "shapely>=1.5.7",
         "wheel>=0.24.0",
         "pytz>=2015.2",
-        "sphinx",
-        "sphinxcontrib-napoleon",
-        "sphinx-rtd-theme",
     ],
 )
