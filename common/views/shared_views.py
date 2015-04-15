@@ -8,36 +8,94 @@ from rest_framework.reverse import reverse
 from ..metadata import CustomMetadata
 
 
+# The current dict is hand rolled; a future version could be generated
 MODEL_VIEW_DICT = {
+    'contact_types': {
+        'list_url_name': 'api:common:contact_types_list'
+    },
+    'user_residence': {
+        'list_url_name': 'api:common:user_wards_list'
+    },
+    'user_contacts': {
+        'list_url_name': 'api:common:user_contacts_list'
+    },
+    'contacts': {
+        'list_url_name': 'api:common:user_contacts_list'
+    },
     'counties': {
         'list_url_name': 'api:common:counties_list'
     },
-    'users': {
-        'list_url_name': 'api:users:users_list'
-    },
-    'facilities': {
-        'list_url_name': 'api:facilities:facility_list'
-    },
-    'contacts': {
-        'list_url_name': 'api:common:contacts_list'
-    },
-    'contact_types': {
-        'list_url_name': 'api:common:contact_types_list'
+    'user_counties': {
+        'list_url_name': 'api:common:user_counties_list'
     },
     'wards': {
         'list_url_name': 'api:common:wards_list'
     },
+    'towns': {
+        'list_url_name': 'api:common:towns_list'
+    },
     'constituencies': {
         'list_url_name': 'api:common:constituencies_list'
     },
-    'owners': {
-        'list_url_name': 'api:facilities:owners_list'
+    'users': {
+        'list_url_name': 'api:users:users_list'
+    },
+    'facility_units': {
+        'list_url_name': 'api:facilities:facility_units_list'
+    },
+    'regulating_bodies': {
+        'list_url_name': 'api:facilities:regulating_bodies_list'
+    },
+    'facility_types': {
+        'list_url_name': 'api:facilities:facility_types_list'
+    },
+    'facility_status': {
+        'list_url_name': 'api:facilities:facility_status_list'
+    },
+    'facilities': {
+        'list_url_name': 'api:facilities:facility_list'
+    },
+    'officer_in_charge_contacts': {
+        'list_url_name': 'api:facilities:officer_incharge_contacts_list'
+    },
+    'job_titles': {
+        'list_url_name': 'api:facilities:job_titles_list'
+    },
+    'geo_code_sources': {
+        'list_url_name': 'api:facilities:geo_code_sources_list'
+    },
+    'facility_regulation_status': {
+        'list_url_name': 'api:facilities:facility_regulation_status_list'
+    },
+    'regulation_status': {
+        'list_url_name': 'api:facilities:regulation_status_list'
+    },
+    'geo_code_methods': {
+        'list_url_name': 'api:facilities:geo_code_methods_list'
+    },
+    'officers_in_charge': {
+        'list_url_name': 'api:facilities:officers_incharge_list'
+    },
+    'service_categories': {
+        'list_url_name': 'api:facilities:service_categories_list'
     },
     'owner_types': {
         'list_url_name': 'api:facilities:facility_list'
     },
+    'owners': {
+        'list_url_name': 'api:facilities:owners_list'
+    },
     'services': {
         'list_url_name': 'api:facilities:services_list'
+    },
+    'contacts': {
+        'list_url_name': 'api:common:contacts_list'
+    },
+    'facility_services': {
+        'list_url_name': 'api:facilities:facility_services_list'
+    },
+    'facility_gis': {
+        'list_url_name': 'api:facilities:facility_gis_list'
     }
 }
 METADATA_CLASS = CustomMetadata()
