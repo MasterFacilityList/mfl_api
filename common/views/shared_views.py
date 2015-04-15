@@ -1,6 +1,8 @@
 from django.core.urlresolvers import resolve
 from django.core.urlresolvers import reverse as django_reverse
-
+from django.conf import settings
+from collections import defaultdict
+from django.apps import apps
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -8,7 +10,30 @@ from rest_framework.reverse import reverse
 from ..metadata import CustomMetadata
 
 
-# The current dict is hand rolled; a future version could be generated
+# TODO Get the list of all models and generate URLs from it; share the dict
+# TODO Fix metadata with no object ( detail view )
+
+def _create_model_view_dict():
+    return_dict = defaultdict(dict)
+    for app_name in settings.LOCAL_APPS:  # We must keep our apps in LOCAL_APPS
+        app_models = apps.get_app_config(app_name).get_models()
+
+        for app_model in app_models:
+            return_dict[app_model._meta.verbose_name] = {
+                'list_url': 'api:{}:{}_list'.format(
+                    app_name,
+                    str(app_model._meta.verbose_name_plural).replace(' ', '_')
+                ),
+                'detail_url': 'api:{}:{}_detail'.format(
+                    app_name,
+                    app_model._meta.verbose_name.replace(' ', '_')
+                )
+            }
+
+    # This must stay as the sole exit path
+    return return_dict
+
+
 MODEL_VIEW_DICT = {
     'contact_types': {
         'list_url': 'api:common:contact_types_list',
@@ -174,10 +199,3 @@ class APIRoot(APIView):
             model_type_name: _lookup_metadata(url_name_dict, request)
             for model_type_name, url_name_dict in MODEL_VIEW_DICT.iteritems()
         })
-
-# TODO Introspect and reverse all list URLs
-#    ( should be easy to introspect views from all apps )
-# TODO Retrieve metadata for each of those URLs and inline it for lists
-# TODO Retrieve metadata and inline it for detail URLs
-# ( what can a detail URL do? )
-# TODO Add audit URls for every model; override render?
