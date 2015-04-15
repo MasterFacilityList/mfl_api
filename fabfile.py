@@ -51,5 +51,7 @@ def setup(*args, **kwargs):
     psql("CREATE USER {0} WITH SUPERUSER CREATEDB "
          "CREATEROLE LOGIN PASSWORD '{1}'".format(db_user, db_pass), no_sudo)
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
+    psql('CREATE EXTENSION postgis')
+    psql('CREATE EXTENSION postgis_topology')
     manage('migrate users')
     manage('migrate')
