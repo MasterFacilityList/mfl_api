@@ -123,7 +123,7 @@ class TestServiceView(LogginMixin, APITestCase):
         self.url = reverse("api:facilities:services_list")
 
     def test_list_services(self):
-        service_cat = mommy.make(ServiceCategory)
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
         service_1 = mommy.make(Service, category=service_cat)
         service_2 = mommy.make(Service, category=service_cat)
         expected_data = {
@@ -143,7 +143,7 @@ class TestServiceView(LogginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
     def test_post(self):
-        service_cat = mommy.make(ServiceCategory)
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
         data = {
             "name": "Diabetes screening",
             "description": "This is a description of the service",
@@ -161,7 +161,8 @@ class TestServiceView(LogginMixin, APITestCase):
         self.assertEquals(1, Service.objects.count())
 
     def test_retrive_single_service(self):
-        service = mommy.make(Service)
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
+        service = mommy.make(Service, category=service_cat)
         url = self.url + "{}/".format(service.id)
         response = self.client.get(url)
         expected_data = ServiceSerializer(service).data
@@ -171,8 +172,8 @@ class TestServiceView(LogginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
     def test_filtering(self):
-        service_cat = mommy.make(ServiceCategory)
-        service_cat_2 = mommy.make(ServiceCategory)
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
+        service_cat_2 = mommy.make(ServiceCategory, b_c_service=True)
         service_1 = mommy.make(
             Service, name='Cancer screening', category=service_cat)
         service_2 = mommy.make(

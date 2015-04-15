@@ -136,6 +136,9 @@ class ChoiceService(AbstractBase):
     name = models.CharField(max_length=30)
     description = models.TextField()
 
+    def __unicode__(self):
+        return self.name
+
 
 class KEHPLevelService(AbstractBase):
     """
@@ -145,6 +148,9 @@ class KEHPLevelService(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField()
 
+    def __unicode__(self):
+        return self.name
+
 
 class BasicComprehensiveSevice(AbstractBase):
     """
@@ -152,6 +158,9 @@ class BasicComprehensiveSevice(AbstractBase):
     """
     name = models.CharField(max_length=100)
     description = models.TextField()
+
+    def __unicode__(self):
+        return self.name
 
 
 @reversion.register
@@ -186,7 +195,8 @@ class ServiceCategory(AbstractBase):
     keph_level_service = models.BooleanField(default=False)
 
     def validate_service_offer_types(self):
-        offers = [self.b_c_service, self.choice_service, self.level_service]
+        offers = [
+            self.b_c_service, self.choice_service, self.keph_level_service]
         truths_count = offers.count(True)
         if truths_count > 1:
             raise ValidationError(
@@ -196,7 +206,7 @@ class ServiceCategory(AbstractBase):
                 "Indicate the type of choices for the service")
 
     def clean(self, *args, **kwargs):
-        self.validate_service_offer_types
+        self.validate_service_offer_types()
         super(ServiceCategory, self).clean(*args, **kwargs)
 
     def __unicode__(self):
