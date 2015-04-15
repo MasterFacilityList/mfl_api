@@ -10,6 +10,13 @@ test:
   override:
     - fab test
 
+deployment:
+    production:
+        branch: master
+        commands:
+            - fab deploy:
+                parallel: true
+
 general:
   artifacts:
     - "htmlcov"
