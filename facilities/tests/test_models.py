@@ -10,8 +10,8 @@ from ..models import (
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact, FacilityUnit
-)
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEHPLevelService, BasicComprehensiveSevice)
 
 
 class TetsOwnerTypes(BaseTestCase):
@@ -293,11 +293,15 @@ class TestFacilityGPSModel(BaseTestCase):
 
 class TestFacilityService(BaseTestCase):
     def test_save(self):
+        bc_service = mommy.make(BasicComprehensiveSevice)
+        category = mommy.make(ServiceCategory, b_c_service=True)
         facility = mommy.make(Facility, name='Coptic Hospital')
-        service = mommy.make(Service, name='Diabetes Screening')
+        service = mommy.make(
+            Service, category=category, name='Diabetes Screening')
         data = {
             "facility": facility,
-            'service': service
+            'service': service,
+            "b_c_service": bc_service
         }
         data = self.inject_audit_fields(data)
         facility_service = FacilityService.objects.create(**data)

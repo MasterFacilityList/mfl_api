@@ -8,7 +8,9 @@ from facilities.models import Facility, FacilityService
 
 from ..models import(
     RatingScale, Rating, FacilityRatingScale, FacilityServiceRatingScale,
-    UserFacilityRating, UserFacilityServiceRating)
+    UserFacilityRating, UserFacilityServiceRating, ServiceCategory,
+    Service, BasicComprehensiveSevice
+)
 
 
 class TestRatingScale(TestCase):
@@ -61,7 +63,15 @@ class TestsFacilityRatingScale(BaseTestCase):
 
 class TestFacilityServiceRating(BaseTestCase):
     def test_save(self):
-        facility_service_rating_scale = mommy.make(FacilityServiceRatingScale)
+        bc_service = mommy.make(BasicComprehensiveSevice)
+        category = mommy.make(ServiceCategory, b_c_service=True)
+        facility = mommy.make(Facility, name='Coptic Hospital')
+        service = mommy.make(Service, category=category)
+        facility_service = mommy.make(
+            FacilityService, service=service, facility=facility,
+            b_c_service=bc_service)
+        facility_service_rating_scale = mommy.make(
+            FacilityServiceRatingScale, facility_service=facility_service)
         self.assertEquals(1, FacilityServiceRatingScale.objects.count())
 
         # test unicode
@@ -73,7 +83,13 @@ class TestFacilityServiceRating(BaseTestCase):
             expected_unicode, facility_service_rating_scale.__unicode__())
 
     def test_only_one_active(self):
-        facility_service = mommy.make(FacilityService)
+        bc_service = mommy.make(BasicComprehensiveSevice)
+        category = mommy.make(ServiceCategory, b_c_service=True)
+        facility = mommy.make(Facility, name='Coptic Hospital')
+        service = mommy.make(Service, category=category)
+        facility_service = mommy.make(
+            FacilityService, service=service, facility=facility,
+            b_c_service=bc_service)
         scale = mommy.make(RatingScale)
 
         mommy.make(
@@ -125,7 +141,13 @@ class TestUserFacilityRating(BaseTestCase):
 
 class TestUserFacilityServiceRating(BaseTestCase):
     def test_save(self):
-        facility_service = mommy.make(FacilityService)
+        bc_service = mommy.make(BasicComprehensiveSevice)
+        category = mommy.make(ServiceCategory, b_c_service=True)
+        facility = mommy.make(Facility, name='Coptic Hospital')
+        service = mommy.make(Service, category=category)
+        facility_service = mommy.make(
+            FacilityService, service=service, facility=facility,
+            b_c_service=bc_service)
         scale = mommy.make(RatingScale)
         rating = mommy.make(Rating, scale=scale)
         mommy.make(
@@ -148,7 +170,13 @@ class TestUserFacilityServiceRating(BaseTestCase):
         scale = mommy.make(RatingScale)
         scale_2 = mommy.make(RatingScale)
         rating = mommy.make(Rating, scale=scale_2)
-        facility_service = mommy.make(FacilityService)
+        bc_service = mommy.make(BasicComprehensiveSevice)
+        category = mommy.make(ServiceCategory, b_c_service=True)
+        facility = mommy.make(Facility, name='Coptic Hospital')
+        service = mommy.make(Service, category=category)
+        facility_service = mommy.make(
+            FacilityService, service=service, facility=facility,
+            b_c_service=bc_service)
         mommy.make(
             FacilityServiceRatingScale, facility_service=facility_service,
             scale=scale)

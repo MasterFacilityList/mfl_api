@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+
 import reversion
 
 from django.db import models
@@ -127,6 +129,31 @@ class OfficerIncharge(AbstractBase):
         return self.name
 
 
+class ChoiceService(AbstractBase):
+    """
+    Service cateories that only allow for a YES/NO
+    """
+    name = models.CharField(max_length=30)
+    description = models.TextField()
+
+
+class KEHPLevelService(AbstractBase):
+    """
+    Service Categories that are offered based on levels
+    from level 1-6
+    """
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+
+class BasicComprehensiveSevice(AbstractBase):
+    """
+    Services that are offered as either basic or Comprehensive.
+    """
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+
 @reversion.register
 class ServiceCategory(AbstractBase):
     """
@@ -154,6 +181,23 @@ class ServiceCategory(AbstractBase):
     name = models.CharField(
         max_length=100,
         help_text="What is the name of the category? ")
+    b_c_service = models.BooleanField(default=False)
+    choice_service = models.BooleanField(default=False)
+    keph_level_service = models.BooleanField(default=False)
+
+    def validate_service_offer_types(self):
+        offers = [self.b_c_service, self.choice_service, self.level_service]
+        truths_count = offers.count(True)
+        if truths_count > 1:
+            raise ValidationError(
+                "A service category can only be of one choice type")
+        if truths_count < 1:
+            raise ValidationError(
+                "Indicate the type of choices for the service")
+
+    def clean(self, *args, **kwargs):
+        self.validate_service_offer_types
+        super(ServiceCategory, self).clean(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -336,10 +380,46 @@ class FacilityService(AbstractBase):
 
     Service is either offered all or none, i.e. they exist or do not exist.
     (YES/NO)
+    Could also be offered according to KEPH level 1-6,
+    It could also be offered as either basic or Comprehensive.
     """
     facility = models.ForeignKey(
         'Facility', related_name='facility_services', on_delete=models.PROTECT)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
+    choice_service = models.ForeignKey(
+        ChoiceService, null=True, blank=True, on_delete=models.PROTECT)
+    keph_level_service = models.ForeignKey(
+        KEHPLevelService, null=True, blank=True, on_delete=models.PROTECT)
+    b_c_service = models.ForeignKey(
+        BasicComprehensiveSevice, null=True, blank=True,
+        on_delete=models.PROTECT)
+
+    def validate_only_one_service_level_chosen(self):
+        service_choices = [
+            self.choice_service, self.keph_level_service, self.b_c_service]
+        services_choices_nulls_count = service_choices.count(None)
+        if services_choices_nulls_count != 2:
+            raise ValidationError("One service level choice is required.")
+
+    def validate_service_offer_choices(self):
+        if self.service.category.b_c_service and not self.b_c_service:
+            raise ValidationError(
+                "Basic or Comprehensive choice is required for the service"
+            )
+        if self.service.category.keph_level_service and not \
+                self.keph_level_service:
+            raise ValidationError(
+                "KEPH level is required for the service."
+            )
+        if self.service.category.choice_service and not self.choice_service:
+            raise ValidationError(
+                "A YES/NO choice is required for the service."
+            )
+
+    def clean(self, *args, **kwargs):
+        self.validate_only_one_service_level_chosen()
+        self.validate_service_offer_choices()
+        super(FacilityService, self).clean(*args, **kwargs)
 
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)
@@ -376,6 +456,9 @@ class Facility(AbstractBase, SequenceMixin):
     code = SequenceField(
         unique=True, editable=False,
         help_text='A sequential number allocated to each facility')
+    abbreviation = models.CharField(
+        max_length=30, null=True, blank=True,
+        help_text='A short name for the facility.')
     description = models.TextField(help_text="A brief summary of the Facility")
     location_desc = models.TextField(
         help_text="This field allows a more detailed description of how to"
