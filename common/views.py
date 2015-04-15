@@ -22,7 +22,7 @@ from .filters import (
 class ContactView(generics.ListCreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
-    ordering_fields = ('contact_type', )
+    ordering_fields = ('contact_type',)
     filter_class = ContactFilter
 
 

@@ -34,8 +34,8 @@ class TestOwnersView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                OwnerSerializer(owner_1).data,
-                OwnerSerializer(owner_2).data
+                OwnerSerializer(owner_2).data,
+                OwnerSerializer(owner_1).data
             ]
         }
         self.assertEquals(200, response.status_code)
@@ -131,8 +131,8 @@ class TestServiceView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                ServiceSerializer(service_1).data,
-                ServiceSerializer(service_2).data
+                ServiceSerializer(service_2).data,
+                ServiceSerializer(service_1).data
             ]
         }
         self.maxDiff = None
@@ -262,9 +262,9 @@ class TestFacilityStatusView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                FacilityStatusSerializer(status_1).data,
+                FacilityStatusSerializer(status_3).data,
                 FacilityStatusSerializer(status_2).data,
-                FacilityStatusSerializer(status_3).data
+                FacilityStatusSerializer(status_1).data
             ]
         }
         self.assertEquals(200, response.status_code)
@@ -294,8 +294,8 @@ class TestFacilityUnitView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                FacilityUnitSerializer(unit_1).data,
-                FacilityUnitSerializer(unit_2).data
+                FacilityUnitSerializer(unit_2).data,
+                FacilityUnitSerializer(unit_1).data
             ]
         }
         self.assertEquals(200, response.status_code)

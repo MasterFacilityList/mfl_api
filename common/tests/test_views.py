@@ -205,8 +205,8 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                ContactSerializer(contact).data,
-                ContactSerializer(contact_1).data
+                ContactSerializer(contact_1).data,
+                ContactSerializer(contact).data
             ]
         }
         response = self.client.get(self.url)
@@ -322,8 +322,8 @@ class TestUserResidenceView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                UserResidenceSerializer(user_ward).data,
-                UserResidenceSerializer(user_ward_2).data
+                UserResidenceSerializer(user_ward_2).data,
+                UserResidenceSerializer(user_ward).data
             ]
 
         }
@@ -358,8 +358,8 @@ class TestUserContactView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                UserContactSerializer(user_contact_1).data,
-                UserContactSerializer(user_contact_2).data
+                UserContactSerializer(user_contact_2).data,
+                UserContactSerializer(user_contact_1).data
             ]
 
         }

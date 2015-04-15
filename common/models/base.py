@@ -108,6 +108,7 @@ class AbstractBase(models.Model):
         self.save()
 
     class Meta:
+        ordering = ('-updated', '-created',)
         abstract = True
 
 
