@@ -28,8 +28,7 @@ def _create_model_view_dict():
         * you have a concrete model that does not have views and URLs
         ( your bad, a spectacular test failure will let you know about it )
         * you violate naming conventions
-        ( if you use the provided helpers - with examples in the URLs - this
-            should be a non issue)
+        ( helpers can be supplied to make that easy )
 
     A future version of this might introspect the registered views / URLs and
     create the metadata and API root listing in a more forgiving manner. At
@@ -89,7 +88,7 @@ def _resolve_detail_metadata(request, url_name, model_cls):
     if not model_cls.objects.count():
         obj = mommy.make(model_cls)
         metadata = _get_metadata_from_detail_url(url_name, obj, request)
-        obj.delete()
+        # obj.delete()  TODO - Fix this properly
     else:
         obj = model_cls.objects.all()[:1][0]
         metadata = _get_metadata_from_detail_url(url_name, obj, request)
