@@ -24,7 +24,7 @@ from .filters import (
     OwnerFilter, JobTitleFilter, FacilityUnitFilter, OfficerInchargeFilter,
     RegulatingBodyFilter, GeoCodeSourceFilter, ServiceCategoryFilter,
     OwnerTypeFilter, OfficerInchargeContactFilter, GeoCodeMethodFilter,
-    FacilityServiceFilter, FacilityContactFilter,
+    FacilityServiceFilter, FacilityContactFilter, FacilityTypeFilter,
     FacilityRegulationStatusFilter, RegulationStatusFilter
 )
 
@@ -242,7 +242,7 @@ class FacilityRegulationStatusDetailView(
 class FacilityTypeListView(generics.ListCreateAPIView):
     queryset = FacilityType.objects.all()
     serializer_class = FacilityTypeSerializer
-    filter_class = FacilityType
+    filter_class = FacilityTypeFilter
     ordering_fields = ('name', )
 
 
