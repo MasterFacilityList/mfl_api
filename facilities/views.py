@@ -32,7 +32,7 @@ from .filters import (
 class FacilityUnitsListView(generics.ListCreateAPIView):
     queryset = FacilityUnit.objects.all()
     serializer_class = FacilityUnitSerializer
-    ordering_fields = ('name', )
+    ordering_fields = ('name', 'facility', 'regulating_body',)
     filter_class = FacilityUnitFilter
 
 
@@ -68,7 +68,7 @@ class JobTitleDetailView(generics.RetrieveUpdateDestroyAPIView):
 class OfficerInchargeListView(generics.ListCreateAPIView):
     queryset = OfficerIncharge.objects.all()
     serializer_class = OfficerInchargeSerializer
-    ordering_fields = ('name',)
+    ordering_fields = ('name', 'job_title', 'registration_number',)
     filter_class = OfficerInchargeFilter
 
 
@@ -80,7 +80,7 @@ class OfficerInchargeDetailView(generics.RetrieveUpdateDestroyAPIView):
 class RegulatingBodyListView(generics.ListCreateAPIView):
     queryset = RegulatingBody.objects.all()
     serializer_class = RegulatingBodySerializer
-    ordering_fields = ('name', )
+    ordering_fields = ('name', 'abbreviation',)
     filter_class = RegulatingBodyFilter
 
 
@@ -92,7 +92,7 @@ class RegulatingBodyDetailView(generics.RetrieveUpdateDestroyAPIView):
 class GeoCodeSourceListView(generics.ListCreateAPIView):
     queryset = GeoCodeSource.objects.all()
     serializer_class = GeoCodeSourceSerializer
-    ordering_fields = ('name',)
+    ordering_fields = ('name', 'abbreviation',)
     filter_class = GeoCodeSourceFilter
 
 
@@ -128,7 +128,7 @@ class OwnerTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
 class OfficerInchargeContactListView(generics.ListCreateAPIView):
     queryset = OfficerInchargeContact.objects.all()
     serializer_class = OfficerInchargeContactSerializer
-    ordering_fields = ('name', 'job_title',)
+    ordering_fields = ('officer', 'contact',)
     filter_class = OfficerInchargeContactFilter
 
 
@@ -153,7 +153,7 @@ class OwnerListView(generics.ListCreateAPIView):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
     filter_class = OwnerFilter
-    ordering_fields = ('name',)
+    ordering_fields = ('name', 'code', 'owner_type',)
 
 
 class OwnerDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -165,7 +165,7 @@ class ServiceListView(generics.ListCreateAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
     filter_class = ServiceFilter
-    ordering_fields = ('name', )
+    ordering_fields = ('name', 'category', 'code',)
 
 
 class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -177,7 +177,10 @@ class FacilityListView(generics.ListCreateAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
     filter_class = FacilityFilter
-    ordering_fields = ('name', )
+    ordering_fields = (
+        'name', 'code', 'number_of_beds', 'number_of_cots', 'operation_status',
+        'ward', 'owner',
+    )
 
 
 class FaciltyDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -189,7 +192,7 @@ class FacilityServiceListView(generics.ListCreateAPIView):
     queryset = FacilityService.objects.all()
     serializer_class = FacilityServiceSerializer
     filter_class = FacilityServiceFilter
-    ordering_fields = None
+    ordering_fields = ('facility', 'service',)
 
 
 class FacilityServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -201,7 +204,7 @@ class FacilityContactListView(generics.ListCreateAPIView):
     queryset = FacilityContact.objects.all()
     serializer_class = FacilityContactSerializer
     filter_class = FacilityContactFilter
-    ordering_fields = None
+    ordering_fields = ('facility', 'contact',)
 
 
 class FacilityContactDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -213,7 +216,8 @@ class FacilityGPSListView(generics.ListCreateAPIView):
     queryset = FacilityGPS.objects.all()
     serializer_class = FacilityGPSSerializer
     filter_class = FacilityGPSFilter
-    ordering_fields = None
+    ordering_fields = (
+        'facility', 'latitude', 'longitude', 'source', 'method',)
 
 
 class FacilityGPSDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -225,7 +229,8 @@ class FacilityRegulationStatusListView(generics.ListCreateAPIView):
     queryset = FacilityRegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer
     filter_class = FacilityRegulationStatusFilter
-    ordering_fields = None
+    ordering_fields = (
+        'facility', 'regulating_body', 'regulation_status',)
 
 
 class FacilityRegulationStatusDetailView(

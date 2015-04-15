@@ -340,8 +340,6 @@ class FacilityService(AbstractBase):
     facility = models.ForeignKey(
         'Facility', related_name='facility_services', on_delete=models.PROTECT)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
-    service_active = models.BooleanField(
-        default=True, help_text="Is the service still being offered or not.")
 
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)
