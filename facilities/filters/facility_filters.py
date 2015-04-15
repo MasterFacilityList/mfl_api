@@ -1,11 +1,12 @@
 import django_filters
 
-from .models import (
+from ..models import (
     Owner, Service, Facility, FacilityCoordinates, JobTitle, FacilityUnit,
     FacilityStatus, OfficerIncharge, RegulatingBody, GeoCodeSource,
     ServiceCategory, OwnerType, OfficerInchargeContact, GeoCodeMethod,
     FacilityService, FacilityContact, FacilityRegulationStatus,
-    FacilityType, RegulationStatus
+    FacilityType, RegulationStatus, ChoiceService,
+    KEHPLevelService, BasicComprehensiveService
 )
 from common.filters.filter_shared import CommonFieldsFilterset
 
@@ -189,3 +190,27 @@ class FacilityUnitFilter(CommonFieldsFilterset):
 
     class Meta:
         model = FacilityUnit
+
+
+class ChoiceServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = ChoiceService
+
+
+class KEHPLevelServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = KEHPLevelService
+
+
+class BasicComprehensiveServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = BasicComprehensiveService

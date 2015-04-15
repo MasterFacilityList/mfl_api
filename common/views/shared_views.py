@@ -27,7 +27,7 @@ def _create_model_view_dict():
 
         * you have a concrete model that does not have views and URLs
         ( your bad, a spectacular test failure will let you know about it )
-        * you violate naming conventions
+        * you violated naming conventions
         ( helpers can be supplied to make that easy )
 
     A future version of this might introspect the registered views / URLs and
@@ -72,7 +72,7 @@ def _resolve_list_metadata(request, url_name):
 def _get_metadata_from_detail_url(url_name, obj, request):
     url_path = django_reverse(url_name, kwargs={'pk': obj.pk})
     view = resolve(url_path).func.cls(kwargs={'pk': obj.pk})
-    view.initial(request)
+    view.initial(request, kwargs={'pk': obj.pk})
     return METADATA_CLASS.determine_metadata(request, view)
 
 
@@ -86,13 +86,16 @@ def _resolve_detail_metadata(request, url_name, model_cls):
     from model_mommy import mommy  # Late import because of embarassment
 
     if not model_cls.objects.count():
-        obj = mommy.make(model_cls)
-        metadata = _get_metadata_from_detail_url(url_name, obj, request)
+        if model_cls._meta.model_name == 'servicecategory':
+            obj = mommy.make(model_cls, keph_level_service=True)
+        else:
+            obj = mommy.make(model_cls)
+
         # obj.delete()  TODO - Fix this properly
     else:
         obj = model_cls.objects.all()[:1][0]
-        metadata = _get_metadata_from_detail_url(url_name, obj, request)
 
+    metadata = _get_metadata_from_detail_url(url_name, obj, request)
     return metadata
 
 

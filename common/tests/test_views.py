@@ -305,6 +305,31 @@ class TestTownView(LogginMixin, BaseTestCase, APITestCase):
 
 class TestAPIRootView(APITestCase):
     def test_list_endpoints(self):
+        """
+        So, you've landed here, presumably after an exasperating test failure
+        ( probably cursing under your breath ).
+
+        There's a high chance that one of two things is wrong:
+
+            * you have a concrete model in an app that is in
+            `settings.LOCAL_APPS` that has no list & detail views and URLs OR
+            * you violated the URL naming conventions (for the `name` param )
+
+        What are these naming conventions, I hear you ask...
+
+            * detail views -> 'api:<app_name>:<applicable_model_verbose_name>'
+            * list views ->
+                'api:<app_name>:<applicable_model_verbose_name_plural>'
+
+        If Django gives your model a funny `verbose_name_plural` ( because
+        it ends with a 'y' or 's' and silly Django just appends an 's' ),
+        set a better `verbose_name_plural` in the model's `Meta`. Once in
+        a while, Django will also pick a `verbose_name` that is not to your
+        liking; you can override that too.
+
+        PS: Yes, this is a bitch. It is also a good discipline master.
+        And - it is stupid, only assembling metadata for CRUD views.
+        """
         url = reverse('api:root_listing')
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)

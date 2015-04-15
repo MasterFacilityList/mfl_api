@@ -1,5 +1,8 @@
-from model_mommy import mommy
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+
+from model_mommy import mommy
+
 from common.tests.test_models import BaseTestCase
 from common.models import Contact, Ward
 
@@ -10,8 +13,8 @@ from ..models import (
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityCoordinates,
-    FacilityService, FacilityContact, FacilityUnit
-)
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEHPLevelService, BasicComprehensiveService)
 
 
 class TestOwnerTypes(BaseTestCase):
@@ -109,7 +112,8 @@ class TestOfficerInchargeContactModel(BaseTestCase):
 class TestServiceCategory(BaseTestCase):
     def test_save(self):
         data = {
-            "name": "Some name"
+            "name": "Some name",
+            "b_c_service": True
         }
         data = self.inject_audit_fields(data)
         service_cat = ServiceCategory.objects.create(**data)
@@ -119,10 +123,24 @@ class TestServiceCategory(BaseTestCase):
         expected = "Some name"
         self.assertEquals(expected, service_cat.__unicode__())
 
+    def test_save_with_more_than_one_service_choices(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                ServiceCategory,
+                b_c_service=True, choice_service=True,
+                keph_level_service=True)
+
+    def test_no_service_choice(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                ServiceCategory,
+                b_c_service=False, choice_service=False,
+                keph_level_service=False)
+
 
 class TestServiceModel(BaseTestCase):
     def test_save(self):
-        service_cat = mommy.make(ServiceCategory)
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
         data = {
             "name": "Diabetes screening",
             "description": "This is some description",
@@ -133,8 +151,9 @@ class TestServiceModel(BaseTestCase):
         service = Service.objects.create(**data)
 
         # Damned branch misses
-        mommy.make(Service, code=None)
-        mommy.make(Service, code=85865)
+
+        mommy.make(Service, code=None, category=service_cat)
+        mommy.make(Service, code=85865, category=service_cat)
 
         # test unicode
         self.assertEquals('Diabetes screening', service.__unicode__())
@@ -142,8 +161,9 @@ class TestServiceModel(BaseTestCase):
 
     def test_working_of_service_code_sequence(self):
         # make code none so that it is not supplied by mommy
-        service_1 = mommy.make(Service, code=None)
-        service_2 = mommy.make(Service, code=None)
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
+        service_1 = mommy.make(Service, category=service_cat, code=None)
+        service_2 = mommy.make(Service, category=service_cat, code=None)
         service_2_code = int(service_1.code) + 1
         self.assertEquals(service_2.code, service_2_code)
 
@@ -291,13 +311,47 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         self.assertEquals("Nairobi Hospital", facility_gps.__unicode__())
 
 
-class TestFacilityService(BaseTestCase):
+class TestChoiceService(BaseTestCase):
     def test_save(self):
-        facility = mommy.make(Facility, name='Coptic Hospital')
-        service = mommy.make(Service, name='Diabetes Screening')
+        service_choice = mommy.make(ChoiceService)
+        self.assertEquals(1, ChoiceService.objects.count())
+
+        # test unicode
+        self.assertEquals(service_choice.name, service_choice.__unicode__())
+
+
+class TestBasicComprehensiveService(BaseTestCase):
+    def test_save(self):
+        bc_service = mommy.make(BasicComprehensiveService)
+        self.assertEquals(1, BasicComprehensiveService.objects.count())
+
+        # test unicode
+        self.assertEquals(bc_service.name, bc_service.__unicode__())
+
+
+class TestKEHPLevelService(BaseTestCase):
+    def test_save(self):
+        keph_service = mommy.make(KEHPLevelService)
+        self.assertEquals(1, KEHPLevelService.objects.count())
+
+        # test unicode
+        self.assertEquals(keph_service.name, keph_service.__unicode__())
+
+
+class TestFacilityService(BaseTestCase):
+    def setUp(self):
+        self.bc_service = mommy.make(BasicComprehensiveService)
+        self.category = mommy.make(ServiceCategory, b_c_service=True)
+        self.facility = mommy.make(Facility, name='Coptic Hospital')
+        self.service = mommy.make(
+            Service, category=self.category, name='Diabetes Screening')
+        super(TestFacilityService, self).setUp()
+
+    def test_save(self):
         data = {
-            "facility": facility,
-            'service': service
+            "facility": self.facility,
+            'service': self.service,
+            "b_c_service": self.bc_service
         }
         data = self.inject_audit_fields(data)
         facility_service = FacilityService.objects.create(**data)
@@ -306,6 +360,60 @@ class TestFacilityService(BaseTestCase):
         # test unicode
         expected = "Coptic Hospital: Diabetes Screening"
         self.assertEquals(expected, facility_service.__unicode__())
+
+    def test_validate_only_one_service_level_chosen(self):
+        keph_service = mommy.make(KEHPLevelService)
+        data = {
+            "facility": self.facility,
+            'service': self.service,
+            "b_c_service": self.bc_service,
+            "keph_level_service": keph_service
+        }
+        data = self.inject_audit_fields(data)
+        with self.assertRaises(ValidationError):
+            FacilityService.objects.create(**data)
+
+    def test_service_category_with_basic_comprehensive_choices(self):
+        keph_service = mommy.make(KEHPLevelService)
+        category = mommy.make(ServiceCategory, b_c_service=True)
+        facility = mommy.make(Facility, name='Nairobi hosi')
+        service = mommy.make(
+            Service, category=category, name='HIV Screening')
+        data = {
+            "facility": facility,
+            'service': service,
+            "keph_level_service": keph_service
+        }
+        with self.assertRaises(ValidationError):
+            FacilityService.objects.create(**data)
+
+    def test_service_category_with_keph_level_choices(self):
+        bc_service = mommy.make(BasicComprehensiveService)
+        category = mommy.make(ServiceCategory, keph_level_service=True)
+        facility = mommy.make(Facility, name='GGGH')
+        service = mommy.make(
+            Service, category=category, name='Malaria Screening')
+        data = {
+            "facility": facility,
+            'service': service,
+            "b_c_service": bc_service
+        }
+        with self.assertRaises(ValidationError):
+            FacilityService.objects.create(**data)
+
+    def test_service_category_with_choices_types(self):
+        bc_service = mommy.make(BasicComprehensiveService)
+        category = mommy.make(ServiceCategory, choice_service=True)
+        facility = mommy.make(Facility, name='GNRSH')
+        service = mommy.make(
+            Service, category=category, name='Pneumonia Screening')
+        data = {
+            "facility": facility,
+            'service': service,
+            "b_c_service": bc_service
+        }
+        with self.assertRaises(ValidationError):
+            FacilityService.objects.create(**data)
 
 
 class TestFacilityContact(BaseTestCase):

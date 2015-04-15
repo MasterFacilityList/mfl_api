@@ -7,12 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('facilities', '0002_auto_20150415_0714'),
+        ('facilities', '0001_initial'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='facilityservice',
-            name='service_active',
+        migrations.AlterField(
+            model_name='servicecategory',
+            name='keph_level_service',
+            field=models.BooleanField(default=True),
         ),
     ]

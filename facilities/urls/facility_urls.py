@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 
-from .views import (
+from ..views import (
     FacilityStatusListView, FacilityStatusDetailView, JobTitleListView,
     JobTitleDetailView, OfficerInchargeListView, OfficerInchargeDetailView,
     RegulatingBodyListView, RegulatingBodyDetailView, GeoCodeSourceListView,
@@ -9,17 +9,38 @@ from .views import (
     OfficerInchargeContactListView, OfficerInchargeContactDetailView,
     GeoCodeMethodListView, GeoCodeMethodDetailView, OwnerListView,
     OwnerDetailView, ServiceListView, ServiceDetailView, FacilityListView,
-    FaciltyDetailView, FacilityServiceListView, FacilityServiceDetailView,
+    FacilityDetailView, FacilityServiceListView, FacilityServiceDetailView,
     FacilityContactListView, FacilityContactDetailView,
     FacilityCoordinatesListView,
     FacilityCoordinatesDetailView, FacilityRegulationStatusListView,
     FacilityRegulationStatusDetailView, FacilityTypeListView,
     FacilityTypeDetailView, RegulationStatusListView,
-    RegulationStatusDetailView, FacilityUnitsListView, FacilityUnitDetailView)
+    RegulationStatusDetailView, FacilityUnitsListView, FacilityUnitDetailView,
+    ChoiceServiceListView, ChoiceServiceDetailView, KEPHLevelServiceListView,
+    KEPHLevelServiceDetailView, BasicComprehensiveSeviceListView,
+    BasicComprehensiveServiceDetailView)
 
 
 urlpatterns = patterns(
     '',
+    url(r'^choice_service/$', ChoiceServiceListView.as_view(),
+        name='choice_services_list'),
+    url(r'^choice_service/(?P<pk>[^/]+)/$', ChoiceServiceDetailView.as_view(),
+        name='choice_service_detail'),
+
+    url(r'^keph_level_service/$', KEPHLevelServiceListView.as_view(),
+        name='keph_level_services_list'),
+    url(r'^keph_level_service/(?P<pk>[^/]+)/$',
+        KEPHLevelServiceDetailView.as_view(),
+        name='keph_level_service_detail'),
+
+    url(r'^basic_comprehensive_service/$',
+        BasicComprehensiveSeviceListView.as_view(),
+        name='basic_comprehensive_services_list'),
+    url(r'^basic_comprehensive_service/(?P<pk>[^/]+)/$',
+        BasicComprehensiveServiceDetailView.as_view(),
+        name='basic_comprehensive_service_detail'),
+
     url(r'^facility_units/$', FacilityUnitsListView.as_view(),
         name='facility_units_list'),
     url(r'^facility_units/(?P<pk>[^/]+)/$', FacilityUnitDetailView.as_view(),
@@ -121,6 +142,6 @@ urlpatterns = patterns(
         name='facility_coordinates_detail'),
 
     url(r'^$', FacilityListView.as_view(), name='facilities_list'),
-    url(r'^(?P<pk>[^/]+)/$', FaciltyDetailView.as_view(),
+    url(r'^(?P<pk>[^/]+)/$', FacilityDetailView.as_view(),
         name='facility_detail'),
 )

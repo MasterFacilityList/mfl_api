@@ -1,15 +1,17 @@
 from rest_framework import serializers
 
-from .models import (
+from common.serializers import AbstractFieldsMixin
+
+from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
     OfficerInchargeContact, ServiceCategory,
     Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityCoordinates,
-    FacilityService, FacilityContact, FacilityUnit
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEHPLevelService, BasicComprehensiveService
 )
-from common.serializers import AbstractFieldsMixin
 
 
 class FacilityStatusSerializer(
@@ -126,3 +128,22 @@ class FacilityUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = FacilityUnit
+
+
+class ChoiceServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ChoiceService
+
+
+class KEHPLevelServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = KEHPLevelService
+
+
+class BasicComprehensiveServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = BasicComprehensiveService

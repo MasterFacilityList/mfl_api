@@ -121,3 +121,8 @@ TODO
 Credits
 --------
 Developed and maintained by Savannah Informatics Limited | info@savannahinformatics.com
+
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :alt: Join the chat at https://gitter.im/MasterFacilityList/mfl_api
+   :target: https://gitter.im/MasterFacilityList/mfl_api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+>>>>>>> develop

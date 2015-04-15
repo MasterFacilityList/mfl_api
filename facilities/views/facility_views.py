@@ -1,14 +1,17 @@
 from rest_framework import generics
-from .models import (
+
+from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
     OfficerInchargeContact, ServiceCategory,
     Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityCoordinates,
-    FacilityService, FacilityContact, FacilityUnit
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEHPLevelService, BasicComprehensiveService
 )
-from .serializers import (
+
+from ..serializers import (
     OwnerSerializer, ServiceSerializer, FacilitySerializer,
     FacilityCoordinatesSerializer, FacilityContactSerializer,
     FacilityServiceSerializer, FacilityStatusSerializer,
@@ -17,17 +20,58 @@ from .serializers import (
     GeoCodeMethodSerializer, GeoCodeSourceSerializer,
     ServiceCategorySerializer, OwnerTypeSerializer,
     OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
-    FacilityUnitSerializer
+    FacilityUnitSerializer, ChoiceServiceSerializer,
+    KEHPLevelServiceSerializer, BasicComprehensiveServiceSerializer
 )
-from .filters import (
+from ..filters import (
     FacilityFilter, ServiceFilter, FacilityCoordinatesFilter,
     FacilityStatusFilter,
     OwnerFilter, JobTitleFilter, FacilityUnitFilter, OfficerInchargeFilter,
     RegulatingBodyFilter, GeoCodeSourceFilter, ServiceCategoryFilter,
     OwnerTypeFilter, OfficerInchargeContactFilter, GeoCodeMethodFilter,
     FacilityServiceFilter, FacilityContactFilter, FacilityTypeFilter,
-    FacilityRegulationStatusFilter, RegulationStatusFilter
+    FacilityRegulationStatusFilter, RegulationStatusFilter,
+    ChoiceServiceFilter,
+    KEHPLevelServiceFilter, BasicComprehensiveServiceFilter
+
 )
+
+
+class ChoiceServiceListView(generics.ListCreateAPIView):
+    queryset = ChoiceService.objects.all()
+    serializer_class = ChoiceServiceSerializer
+    filter_class = ChoiceServiceFilter
+    ordering_fields = ('name', )
+
+
+class ChoiceServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ChoiceService.objects.all()
+    serializer_class = ChoiceServiceSerializer
+
+
+class KEPHLevelServiceListView(generics.ListCreateAPIView):
+    queryset = KEHPLevelService.objects.all()
+    serializer_class = KEHPLevelServiceSerializer
+    filter_class = KEHPLevelServiceFilter
+    ordering_fields = ('name', )
+
+
+class KEPHLevelServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = KEHPLevelService.objects.all()
+    serializer_class = KEHPLevelServiceSerializer
+
+
+class BasicComprehensiveSeviceListView(generics.ListCreateAPIView):
+    queryset = BasicComprehensiveService.objects.all()
+    serializer_class = BasicComprehensiveServiceSerializer
+    filter_class = BasicComprehensiveServiceFilter
+    ordering_fields = ('name', )
+
+
+class BasicComprehensiveServiceDetailView(
+        generics.RetrieveUpdateDestroyAPIView):
+    queryset = BasicComprehensiveService.objects.all()
+    serializer_class = BasicComprehensiveServiceSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
@@ -184,7 +228,7 @@ class FacilityListView(generics.ListCreateAPIView):
     )
 
 
-class FaciltyDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
 
