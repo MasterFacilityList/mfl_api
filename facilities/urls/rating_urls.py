@@ -22,9 +22,9 @@ urlpatterns = patterns(
     url(r'^ratings/(?P<pk>[^/]+)/$', RatingDetailView.as_view(),
         name='rating_detail'),
 
-    url(r'^faility_ratings/$', FacilityRatingScaleListView.as_view(),
+    url(r'^facility_ratings/$', FacilityRatingScaleListView.as_view(),
         name='facility_rating_scale_list'),
-    url(r'^faciity_ratings/(?P<pk>[^/]+)/$',
+    url(r'^facility_ratings/(?P<pk>[^/]+)/$',
         FacilityRatingScaleDetailView.as_view(),
         name='faciity_rating_scale_detail'),
 

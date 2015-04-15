@@ -75,9 +75,9 @@ class FacilityRatingScale(AbstractBase):
             raise ValidationError(
                 "Only one type scale can be active for a facility at a time")
 
-    def save(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
         self.validate_only_one_active()
-        super(FacilityRatingScale, self).save(*args, **kwargs)
+        super(FacilityRatingScale, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility', 'scale', )
@@ -110,9 +110,9 @@ class FacilityServiceRatingScale(AbstractBase):
             raise ValidationError(
                 "Only one type of scale can be active for a facility service")
 
-    def save(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
         self.validate_only_one_active()
-        super(FacilityServiceRatingScale, self).save(*args, **kwargs)
+        super(FacilityServiceRatingScale, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility_service', 'scale', )
@@ -136,6 +136,7 @@ class UserFacilityRating(RatingAbstractBase):
     """
     User rating of a facility.
     """
+
     user = models.ForeignKey(
         MflUser, on_delete=models.PROTECT, related_name='user_facility_rating')
     facility = models.ForeignKey(
@@ -157,9 +158,9 @@ class UserFacilityRating(RatingAbstractBase):
             self.user.email, self.facility.name, self.rating)
         return unicode_string
 
-    def save(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
         self.validate_user_rating_scale_matches_facility_scale()
-        super(UserFacilityRating, self).save(*args, **kwargs)
+        super(UserFacilityRating, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility', 'user', )
@@ -169,6 +170,7 @@ class UserFacilityServiceRating(RatingAbstractBase):
     """
     User rating of a facility service.
     """
+
     user = models.ForeignKey(
         MflUser, on_delete=models.PROTECT, related_name='user_service_rating')
     facility_service = models.ForeignKey(
@@ -183,6 +185,7 @@ class UserFacilityServiceRating(RatingAbstractBase):
         """
         Ensure the scale used by the user is that used by the facility.
         """
+
         try:
             FacilityServiceRatingScale.objects.get(
                 facility_service=self.facility_service,
@@ -192,9 +195,9 @@ class UserFacilityServiceRating(RatingAbstractBase):
                 "The rating scale used is not allowed for the facility service"
             )
 
-    def save(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
         self.validate_user_rating_scale_matches_service_scale()
-        super(UserFacilityServiceRating, self).save(*args, **kwargs)
+        super(UserFacilityServiceRating, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility_service', 'user', )
