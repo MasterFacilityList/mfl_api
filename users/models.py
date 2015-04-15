@@ -1,3 +1,5 @@
+import reversion
+
 from django.db import models
 from django.utils import timezone
 from django.core.validators import validate_email, RegexValidator
@@ -35,6 +37,7 @@ class MflUserManager(BaseUserManager):
         return user
 
 
+@reversion.register
 class MflUser(AbstractBaseUser, PermissionsMixin):
     """
     Add custom behaviour to the user model.
