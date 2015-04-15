@@ -94,5 +94,6 @@ setup(
         "pytz",
         "six>=1.9",
         "django-reversion>=1.8.6",
+        "shapely>=1.5.7",
     ],
 )
