@@ -3,17 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
-from .models import (
+from ..models import (
     Contact, PhysicalAddress, County, Ward, Constituency, ContactType,
     UserCounties, UserResidence, UserContact, Town)
 
-from .serializers import (
+from ..serializers import (
     ContactSerializer, CountySerializer, WardSerializer,
     PhysicalAddressSerializer, ConstituencySerializer,
     ContactTypeSerializer, InchargeCountiesSerializer,
     UserResidenceSerializer, UserContactSerializer, TownSerializer)
 
-from .filters import (
+from ..filters import (
     ContactTypeFilter, ContactFilter, PhysicalAddressFilter,
     CountyFilter, ConstituencyFilter, WardFilter, UserCountiesFilter,
     UserResidenceFilter, UserContactFilter, TownFilter)

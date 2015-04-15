@@ -117,3 +117,7 @@ TODO
 Running tests
 ------------
 TODO
+
+Credits
+--------
+Developed and maintained by Savannah Informatics Limited | info@savannahinformatics.com
