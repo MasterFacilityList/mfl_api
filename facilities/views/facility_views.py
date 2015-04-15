@@ -7,7 +7,8 @@ from ..models import (
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact, FacilityUnit
+    FacilityService, FacilityContact, FacilityUnit, ChoiceService,
+    KEHPLevelService, BasicComprehensiveService
 )
 
 from ..serializers import (
@@ -19,7 +20,8 @@ from ..serializers import (
     GeoCodeMethodSerializer, GeoCodeSourceSerializer,
     ServiceCategorySerializer, OwnerTypeSerializer,
     OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
-    FacilityUnitSerializer
+    FacilityUnitSerializer, ChoiceServiceSerializer,
+    KEHPLevelServiceSerializer, BasicComprehensiveServiceSerializer
 )
 
 from ..filters import (
@@ -29,8 +31,48 @@ from ..filters import (
     RegulatingBodyFilter, GeoCodeSourceFilter, ServiceCategoryFilter,
     OwnerTypeFilter, OfficerInchargeContactFilter, GeoCodeMethodFilter,
     FacilityServiceFilter, FacilityContactFilter, FacilityTypeFilter,
-    FacilityRegulationStatusFilter, RegulationStatusFilter
+    FacilityRegulationStatusFilter, RegulationStatusFilter,
+    ChoiceServiceFilter,
+    KEHPLevelServiceFilter, BasicComprehensiveServiceFilter
+
 )
+
+
+class ChoiceServiceListView(generics.ListCreateAPIView):
+    queryset = ChoiceService.objects.all()
+    serializer_class = ChoiceServiceSerializer
+    filter_class = ChoiceServiceFilter
+    ordering_fields = ('name', )
+
+
+class ChoiceServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ChoiceService.objects.all()
+    serializer_class = ChoiceServiceSerializer
+
+
+class KEPHLevelServiceListView(generics.ListCreateAPIView):
+    queryset = KEHPLevelService.objects.all()
+    serializer_class = KEHPLevelServiceSerializer
+    filter_class = KEHPLevelServiceFilter
+    ordering_fields = ('name', )
+
+
+class KEPHLevelServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = KEHPLevelService.objects.all()
+    serializer_class = KEHPLevelServiceSerializer
+
+
+class BasicComprehensiveSeviceListView(generics.ListCreateAPIView):
+    queryset = BasicComprehensiveService.objects.all()
+    serializer_class = BasicComprehensiveServiceSerializer
+    filter_class = BasicComprehensiveServiceFilter
+    ordering_fields = ('name', )
+
+
+class BasicComprehensiveServiceDetailView(
+        generics.RetrieveUpdateDestroyAPIView):
+    queryset = BasicComprehensiveService.objects.all()
+    serializer_class = BasicComprehensiveServiceSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):

@@ -14,7 +14,7 @@ from ..models import (
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
     FacilityService, FacilityContact, FacilityUnit,
-    ChoiceService, KEHPLevelService, BasicComprehensiveSevice)
+    ChoiceService, KEHPLevelService, BasicComprehensiveService)
 
 
 class TetsOwnerTypes(BaseTestCase):
@@ -322,8 +322,8 @@ class TestChoiceService(BaseTestCase):
 
 class TestBasicComprehensiveService(BaseTestCase):
     def test_save(self):
-        bc_service = mommy.make(BasicComprehensiveSevice)
-        self.assertEquals(1, BasicComprehensiveSevice.objects.count())
+        bc_service = mommy.make(BasicComprehensiveService)
+        self.assertEquals(1, BasicComprehensiveService.objects.count())
 
         # test unicode
         self.assertEquals(bc_service.name, bc_service.__unicode__())
@@ -340,7 +340,7 @@ class TestKEHPLevelService(BaseTestCase):
 
 class TestFacilityService(BaseTestCase):
     def setUp(self):
-        self.bc_service = mommy.make(BasicComprehensiveSevice)
+        self.bc_service = mommy.make(BasicComprehensiveService)
         self.category = mommy.make(ServiceCategory, b_c_service=True)
         self.facility = mommy.make(Facility, name='Coptic Hospital')
         self.service = mommy.make(
@@ -388,7 +388,7 @@ class TestFacilityService(BaseTestCase):
             FacilityService.objects.create(**data)
 
     def test_service_category_with_keph_level_choices(self):
-        bc_service = mommy.make(BasicComprehensiveSevice)
+        bc_service = mommy.make(BasicComprehensiveService)
         category = mommy.make(ServiceCategory, keph_level_service=True)
         facility = mommy.make(Facility, name='GGGH')
         service = mommy.make(
@@ -402,7 +402,7 @@ class TestFacilityService(BaseTestCase):
             FacilityService.objects.create(**data)
 
     def test_service_category_with_choices_types(self):
-        bc_service = mommy.make(BasicComprehensiveSevice)
+        bc_service = mommy.make(BasicComprehensiveService)
         category = mommy.make(ServiceCategory, choice_service=True)
         facility = mommy.make(Facility, name='GNRSH')
         service = mommy.make(

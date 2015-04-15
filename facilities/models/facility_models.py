@@ -152,7 +152,7 @@ class KEHPLevelService(AbstractBase):
         return self.name
 
 
-class BasicComprehensiveSevice(AbstractBase):
+class BasicComprehensiveService(AbstractBase):
     """
     Services that are offered as either basic or Comprehensive.
     """
@@ -401,7 +401,7 @@ class FacilityService(AbstractBase):
     keph_level_service = models.ForeignKey(
         KEHPLevelService, null=True, blank=True, on_delete=models.PROTECT)
     b_c_service = models.ForeignKey(
-        BasicComprehensiveSevice, null=True, blank=True,
+        BasicComprehensiveService, null=True, blank=True,
         on_delete=models.PROTECT)
 
     def validate_only_one_service_level_chosen(self):

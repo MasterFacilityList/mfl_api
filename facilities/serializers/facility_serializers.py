@@ -9,7 +9,8 @@ from ..models import (
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact, FacilityUnit
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEHPLevelService, BasicComprehensiveService
 )
 
 
@@ -127,3 +128,22 @@ class FacilityUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = FacilityUnit
+
+
+class ChoiceServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ChoiceService
+
+
+class KEHPLevelServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = KEHPLevelService
+
+
+class BasicComprehensiveServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = BasicComprehensiveService

@@ -9,7 +9,7 @@ from facilities.models import Facility, FacilityService
 from ..models import(
     RatingScale, Rating, FacilityRatingScale, FacilityServiceRatingScale,
     UserFacilityRating, UserFacilityServiceRating, ServiceCategory,
-    Service, BasicComprehensiveSevice
+    Service, BasicComprehensiveService
 )
 
 
@@ -63,7 +63,7 @@ class TestsFacilityRatingScale(BaseTestCase):
 
 class TestFacilityServiceRating(BaseTestCase):
     def test_save(self):
-        bc_service = mommy.make(BasicComprehensiveSevice)
+        bc_service = mommy.make(BasicComprehensiveService)
         category = mommy.make(ServiceCategory, b_c_service=True)
         facility = mommy.make(Facility, name='Coptic Hospital')
         service = mommy.make(Service, category=category)
@@ -83,7 +83,7 @@ class TestFacilityServiceRating(BaseTestCase):
             expected_unicode, facility_service_rating_scale.__unicode__())
 
     def test_only_one_active(self):
-        bc_service = mommy.make(BasicComprehensiveSevice)
+        bc_service = mommy.make(BasicComprehensiveService)
         category = mommy.make(ServiceCategory, b_c_service=True)
         facility = mommy.make(Facility, name='Coptic Hospital')
         service = mommy.make(Service, category=category)
@@ -141,7 +141,7 @@ class TestUserFacilityRating(BaseTestCase):
 
 class TestUserFacilityServiceRating(BaseTestCase):
     def test_save(self):
-        bc_service = mommy.make(BasicComprehensiveSevice)
+        bc_service = mommy.make(BasicComprehensiveService)
         category = mommy.make(ServiceCategory, b_c_service=True)
         facility = mommy.make(Facility, name='Coptic Hospital')
         service = mommy.make(Service, category=category)
@@ -170,7 +170,7 @@ class TestUserFacilityServiceRating(BaseTestCase):
         scale = mommy.make(RatingScale)
         scale_2 = mommy.make(RatingScale)
         rating = mommy.make(Rating, scale=scale_2)
-        bc_service = mommy.make(BasicComprehensiveSevice)
+        bc_service = mommy.make(BasicComprehensiveService)
         category = mommy.make(ServiceCategory, b_c_service=True)
         facility = mommy.make(Facility, name='Coptic Hospital')
         service = mommy.make(Service, category=category)
