@@ -26,6 +26,7 @@ class LogginMixin(object):
     def setUp(self):
         self.user = mommy.make(get_user_model())
         self.client.force_authenticate(user=self.user)
+        self.maxDiff = None
         super(LogginMixin, self).setUp()
 
 
@@ -56,8 +57,8 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                CountySerializer(county).data,
-                CountySerializer(county_2).data
+                CountySerializer(county_2).data,
+                CountySerializer(county).data
             ]
         }
         self.assertEquals(
@@ -101,8 +102,8 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                ConstituencySerializer(constituency).data,
-                ConstituencySerializer(constituency_2).data
+                ConstituencySerializer(constituency_2).data,
+                ConstituencySerializer(constituency).data
             ]
         }
         # some weird ordering the dumps string
@@ -154,8 +155,8 @@ class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                WardSerializer(ward_1).data,
-                WardSerializer(ward_2).data
+                WardSerializer(ward_2).data,
+                WardSerializer(ward_1).data
             ]
         }
         self.assertEquals(
@@ -311,7 +312,7 @@ class TestAPIRootView(APITestCase):
 
 class TestUserResidenceView(LogginMixin, APITestCase):
     def setUp(self):
-        self.url = reverse("api:common:user_wards_list")
+        self.url = reverse("api:common:user_residences_list")
         super(TestUserResidenceView, self).setUp()
 
     def test_list_user_wards(self):

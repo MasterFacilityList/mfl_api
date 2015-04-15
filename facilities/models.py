@@ -126,7 +126,7 @@ class OfficerIncharge(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'officer in charge'
         verbose_name_plural = 'officers in charge'
 
@@ -162,7 +162,7 @@ class ServiceCategory(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'service categories'
 
 
@@ -198,7 +198,7 @@ class Service(AbstractBase, SequenceMixin):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'services'
 
 
@@ -222,7 +222,7 @@ class FacilityStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility statuses'
 
 
@@ -240,7 +240,7 @@ class FacilityType(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         unique_together = ('name', 'sub_division', )
 
 
@@ -267,7 +267,7 @@ class RegulatingBody(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulating bodies'
 
 
@@ -317,7 +317,7 @@ class RegulationStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulation_statuses'
 
 
@@ -344,7 +344,7 @@ class FacilityRegulationStatus(AbstractBase):
         return "{}: {}".format(
             self.facility.name, self.regulation_status.name)
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility regulation statuses'
 
 
@@ -363,7 +363,7 @@ class FacilityService(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility services'
 
 
@@ -464,7 +464,7 @@ class Facility(AbstractBase, SequenceMixin):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'
 
 
@@ -547,7 +547,7 @@ class FacilityCoordinates(AbstractBase):
     def __unicode__(self):
         return self.facility.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility coordinates'
         verbose_name = 'facility coordinates'
 
