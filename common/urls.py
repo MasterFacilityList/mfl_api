@@ -6,12 +6,10 @@ from .views import (
     WardDetailView, ContactTypeListView, ContactTypeDetailView,
     UserCountiesView, UserCountyDetailView, UserResidenceListView,
     UserResidenceDetailView, UserContactListView, UserContactDetailView,
-    TownListView, TownDetailView, api_root)
+    TownListView, TownDetailView)
 
 urlpatterns = patterns(
     '',
-    url(r'^api_root/$', api_root, name='url_listing'),
-
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),
     url(r'^contact_types/(?P<pk>[^/]+)/$', ContactTypeDetailView.as_view(),
