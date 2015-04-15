@@ -84,7 +84,10 @@ For example if there is a resource called user, it can be accessed in the four d
 
     curl -i -H "Accept: application/xlsx" -H "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" http://localhost:8000/api/user
 
-
+Deployment notes
+-----------------
+Because this server uses ``GDAL``, which is not threadsafe, it should not be
+deployed behind a threaded server / WSGI server.
 
 Authentication
 --------------
