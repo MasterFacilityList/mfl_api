@@ -1,3 +1,5 @@
+import uuid
+
 from datetime import timedelta, datetime
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -8,7 +10,7 @@ from model_mommy import mommy
 
 
 from ..models import (
-    Contact, County, Ward, Constituency,
+    Contact, County, Ward, Constituency, Town,
     ContactType, PhysicalAddress, UserCounties, UserResidence, UserContact)
 from ..models import get_default_system_user_id
 
@@ -21,6 +23,15 @@ class AbstractBaseModelTest(TestCase):
         self.juzi = timezone.now() - timedelta(days=2)
         self.user_1 = mommy.make(settings.AUTH_USER_MODEL)
         self.user_2 = mommy.make(settings.AUTH_USER_MODEL)
+
+    def test_unicode(self):
+        from ..models import AbstractBase
+
+        class TestModel(AbstractBase):
+            pass
+
+        ct = TestModel(id=uuid.uuid4())
+        self.assertEqual(str(ct), 'test model ' + str(ct.pk))
 
     def test_validate_updated_date_greater_than_created(self):
         fake = ContactType(created=self.leo, updated=self.jana)
@@ -224,10 +235,16 @@ class TestContactType(BaseTestCase):
         self.assertEquals('EMAIL', ct.__unicode__())
 
 
+class TestTown(BaseTestCase):
+    def test_unicode_(self):
+        town = mommy.make(Town, name='Nyairofi')
+        self.assertEquals('Nyairofi', str(town))
+
+
 class TestPhysicalAddress(BaseTestCase):
     def test_save(self):
         data = {
-            "town": "Nairobi",
+            "town": mommy.make(Town, name="Nairobi"),
             "postal_code": "00200",
             "address": "356",
             "nearest_landmark": "",
@@ -246,7 +263,6 @@ class TestUserCountiesModel(BaseTestCase):
         data = {
             "user": user,
             "county": county
-
         }
         user_county = UserCounties.objects.create(**data)
         self.assertEquals(1, UserCounties.objects.count())

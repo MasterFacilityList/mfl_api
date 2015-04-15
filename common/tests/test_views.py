@@ -205,8 +205,8 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                ContactSerializer(contact).data,
-                ContactSerializer(contact_1).data
+                ContactSerializer(contact_1).data,
+                ContactSerializer(contact).data
             ]
         }
         response = self.client.get(self.url)
@@ -286,6 +286,22 @@ class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
         self.assertIsNone(result)
 
 
+class TestTownView(LogginMixin, BaseTestCase, APITestCase):
+    def setUp(self):
+        super(TestTownView, self).setUp()
+        self.url = reverse("api:common:towns_list")
+
+    def test_post_contact_types(self):
+        data = {
+            "name": "Kiamaiko Taon"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertIn("id", response.data)
+        self.assertIn("name", response.data)
+        self.assertEqual("Kiamaiko Taon", response.data['name'])
+
+
 class TestAPIRootView(APITestCase):
     def test_list_endpoints(self):
         url = reverse('api:common:url_listing')
@@ -306,8 +322,8 @@ class TestUserResidenceView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                UserResidenceSerializer(user_ward).data,
-                UserResidenceSerializer(user_ward_2).data
+                UserResidenceSerializer(user_ward_2).data,
+                UserResidenceSerializer(user_ward).data
             ]
 
         }
@@ -342,8 +358,8 @@ class TestUserContactView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                UserContactSerializer(user_contact_1).data,
-                UserContactSerializer(user_contact_2).data
+                UserContactSerializer(user_contact_2).data,
+                UserContactSerializer(user_contact_1).data
             ]
 
         }

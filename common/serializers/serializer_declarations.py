@@ -1,34 +1,9 @@
-from django.utils import timezone
-
 from rest_framework import serializers
 
-
-from .models import (
+from ..models import (
     Contact, PhysicalAddress, County, Ward, Constituency,
-    ContactType, UserCounties, UserResidence, UserContact)
-
-
-class AbstractFieldsMixin(object):
-    """
-    Injects the fields in the abstract base model as a model
-    instance is being saved.
-    """
-    def __init__(self, *args, **kwargs):
-        super(AbstractFieldsMixin, self).__init__(*args, **kwargs)
-
-    def create(self, validated_data):
-        """`created` and `created_by` are only mutated if they are null"""
-        if not validated_data.get('created', None):
-            validated_data['created'] = timezone.now()
-
-        validated_data['updated'] = timezone.now()
-
-        if not validated_data.get('created_by', None):
-            validated_data['created_by'] = self.context['request'].user
-
-        validated_data['updated_by'] = self.context['request'].user
-
-        return self.Meta.model.objects.create(**validated_data)
+    ContactType, UserCounties, UserResidence, UserContact, Town)
+from .serializer_base import AbstractFieldsMixin
 
 
 class UserContactSerializer(
@@ -69,6 +44,13 @@ class CountySerializer(
 
     class Meta:
         model = County
+
+
+class TownSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = Town
 
 
 class WardSerializer(

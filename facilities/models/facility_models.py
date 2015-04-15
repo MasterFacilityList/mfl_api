@@ -1,8 +1,11 @@
+import reversion
+
 from django.db import models
 from common.models import AbstractBase, Ward, Contact, SequenceMixin
 from common.fields import SequenceField
 
 
+@reversion.register
 class OwnerType(AbstractBase):
     """
     Sub divisions of owners of facilities.
@@ -23,6 +26,7 @@ class OwnerType(AbstractBase):
         return self.name
 
 
+@reversion.register
 class Owner(AbstractBase, SequenceMixin):
     """
     Entity that has exclusive legal rights to the facility.
@@ -62,6 +66,7 @@ class Owner(AbstractBase, SequenceMixin):
         return self.name
 
 
+@reversion.register
 class JobTitle(AbstractBase):
     """
     This is the job title names of the officers incharge of facilities.
@@ -80,6 +85,7 @@ class JobTitle(AbstractBase):
         return self.name
 
 
+@reversion.register
 class OfficerInchargeContact(AbstractBase):
     """
     The contact details of the officer incharge.
@@ -99,6 +105,7 @@ class OfficerInchargeContact(AbstractBase):
         return "{}: {}".format(self.officer.name, self.contact.contact)
 
 
+@reversion.register
 class OfficerIncharge(AbstractBase):
     """
     Identify the officer in-charge of a facility.
@@ -106,11 +113,11 @@ class OfficerIncharge(AbstractBase):
     name = models.CharField(
         max_length=150,
         help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
-    job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
     registration_number = models.CharField(
         max_length=100,
         help_text="This is the licence number of the officer. e.g for a nurse"
         " use the NCK registration number.")
+    job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
 
     contacts = models.ManyToManyField(
         Contact, through=OfficerInchargeContact,
@@ -120,6 +127,7 @@ class OfficerIncharge(AbstractBase):
         return self.name
 
 
+@reversion.register
 class ServiceCategory(AbstractBase):
     """
     Categorisation of health services.
@@ -151,6 +159,7 @@ class ServiceCategory(AbstractBase):
         return self.name
 
 
+@reversion.register
 class Service(AbstractBase, SequenceMixin):
     """
     A health service.
@@ -183,6 +192,7 @@ class Service(AbstractBase, SequenceMixin):
         return self.name
 
 
+@reversion.register
 class FacilityStatus(AbstractBase):
     """
     Facility Operational Status covers the following elements:
@@ -203,6 +213,7 @@ class FacilityStatus(AbstractBase):
         return self.name
 
 
+@reversion.register
 class FacilityType(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True,
@@ -220,6 +231,7 @@ class FacilityType(AbstractBase):
         unique_together = ('name', 'sub_division', )
 
 
+@reversion.register
 class RegulatingBody(AbstractBase):
     """
     Bodies responsible for licensing or gazettement of facilites.
@@ -243,6 +255,7 @@ class RegulatingBody(AbstractBase):
         return self.name
 
 
+@reversion.register
 class RegulationStatus(AbstractBase):
     """
     Indicates whether the facililty has been approved.
@@ -289,6 +302,7 @@ class RegulationStatus(AbstractBase):
         return self.name
 
 
+@reversion.register
 class FacilityRegulationStatus(AbstractBase):
     """
     Shows the regulation status of facility.
@@ -315,6 +329,7 @@ class FacilityRegulationStatus(AbstractBase):
         ordering = ('-created', )
 
 
+@reversion.register
 class FacilityService(AbstractBase):
     """
     Service offered in a facility.
@@ -325,13 +340,12 @@ class FacilityService(AbstractBase):
     facility = models.ForeignKey(
         'Facility', related_name='facility_services', on_delete=models.PROTECT)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
-    service_active = models.BooleanField(
-        default=True, help_text="Is the service still being offered or not.")
 
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)
 
 
+@reversion.register
 class FacilityContact(AbstractBase):
     """
     The facility contact.
@@ -348,6 +362,7 @@ class FacilityContact(AbstractBase):
             self.facility.name, self.contact.contact)
 
 
+@reversion.register
 class Facility(AbstractBase, SequenceMixin):
     """
     A health institution in Kenya.
@@ -431,6 +446,7 @@ class Facility(AbstractBase, SequenceMixin):
         verbose_name_plural = 'Facilities'
 
 
+@reversion.register
 class GeoCodeSource(AbstractBase):
     """
     Where the geo-code came from.
@@ -455,6 +471,7 @@ class GeoCodeSource(AbstractBase):
         return self.name
 
 
+@reversion.register
 class GeoCodeMethod(AbstractBase):
     """
     Method used to capture the geo-code.
@@ -478,6 +495,7 @@ class GeoCodeMethod(AbstractBase):
         return self.name
 
 
+@reversion.register
 class FacilityGPS(AbstractBase):
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
@@ -508,6 +526,7 @@ class FacilityGPS(AbstractBase):
         return self.facility.name
 
 
+@reversion.register
 class FacilityUnit(AbstractBase):
     """
     Autonomous units within a facility that are regulated differently from the
@@ -518,7 +537,6 @@ class FacilityUnit(AbstractBase):
     PPB.
     The pharmacy will in this case be treated as a facilty unit.
     """
-
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
     name = models.CharField(max_length=100)
     description = models.TextField(
