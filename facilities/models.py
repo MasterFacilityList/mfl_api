@@ -113,11 +113,11 @@ class OfficerIncharge(AbstractBase):
     name = models.CharField(
         max_length=150,
         help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
-    job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
     registration_number = models.CharField(
         max_length=100,
         help_text="This is the licence number of the officer. e.g for a nurse"
         " use the NCK registration number.")
+    job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
 
     contacts = models.ManyToManyField(
         Contact, through=OfficerInchargeContact,
@@ -340,8 +340,6 @@ class FacilityService(AbstractBase):
     facility = models.ForeignKey(
         'Facility', related_name='facility_services', on_delete=models.PROTECT)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
-    service_active = models.BooleanField(
-        default=True, help_text="Is the service still being offered or not.")
 
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)

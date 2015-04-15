@@ -54,11 +54,13 @@ class CommonFieldsFilterset(django_filters.FilterSet):
         input_formats=(ISO_8601, '%m/%d/%Y %H:%M:%S'))
 
     updated_on = IsoDateTimeFilter(
-        name='updated', lookup_type='eq',
+        name='updated', lookup_type='exact',
         input_formats=(ISO_8601, '%m/%d/%Y %H:%M:%S'))
     created_on = IsoDateTimeFilter(
-        name='created', lookup_type='eq',
+        name='created', lookup_type='exact',
         input_formats=(ISO_8601, '%m/%d/%Y %H:%M:%S'))
 
-    is_deleted = django_filters.BooleanFilter(name='deleted', lookup_type='eq')
-    is_active = django_filters.BooleanFilter(name='active', lookup_type='eq')
+    is_deleted = django_filters.BooleanFilter(
+        name='deleted', lookup_type='exact')
+    is_active = django_filters.BooleanFilter(
+        name='active', lookup_type='exact')

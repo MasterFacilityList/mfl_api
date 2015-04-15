@@ -107,7 +107,12 @@ class AbstractBase(models.Model):
         self.deleted = True
         self.save()
 
+    def __unicode__(self):
+        """Default if child models do not define their string representation"""
+        return '{} {}'.format(self._meta.verbose_name, self.pk)
+
     class Meta:
+        ordering = ('-updated', '-created',)
         abstract = True
 
 

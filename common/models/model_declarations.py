@@ -145,7 +145,6 @@ class Constituency(RegionAbstractBase):
 
     Code generation is handled by the custom save method in RegionAbstractBase
     """
-
     county = models.ForeignKey(
         County,
         help_text="Name of the county where the constituency is located",
@@ -184,9 +183,6 @@ class UserCounties(AbstractBase):
         settings.AUTH_USER_MODEL, related_name='user_counties',
         on_delete=models.PROTECT)
     county = models.ForeignKey(County, on_delete=models.PROTECT)
-    is_active = models.BooleanField(
-        default=True,
-        help_text="Is the user currently incharge of the county?")
 
     def __unicode__(self):
         return "{}: {}".format(self.user.email, self.county.name)
@@ -195,8 +191,7 @@ class UserCounties(AbstractBase):
         """
         A user can be incharge of only one county at the a time.
         """
-        counties = self.__class__.objects.filter(
-            user=self.user, is_active=True)
+        counties = self.__class__.objects.filter(user=self.user, active=True)
         if counties.count() > 0:
             raise ValidationError(
                 "A user can only be active in one county at a time")
@@ -213,7 +208,6 @@ class UserResidence(AbstractBase):
     If a user moves to another ward the current ward is deactivated by setting
     active to False
     """
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='user_residence')
     ward = models.ForeignKey(Ward, on_delete=models.PROTECT)
@@ -237,7 +231,6 @@ class UserContact(AbstractBase):
     """
     Stores a user's contacts.
     """
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='user_contacts', on_delete=models.PROTECT)
