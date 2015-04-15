@@ -11,7 +11,7 @@ from model_mommy import mommy
 
 from ..models import (
     Contact, County, Ward, Constituency, Town,
-    ContactType, PhysicalAddress, UserCounties, UserResidence, UserContact)
+    ContactType, PhysicalAddress, UserCounty, UserResidence, UserContact)
 from ..models import get_default_system_user_id
 
 
@@ -256,7 +256,7 @@ class TestPhysicalAddress(BaseTestCase):
         self.assertEquals("00200: 356", phy.__unicode__())
 
 
-class TestUserCountiesModel(BaseTestCase):
+class TestUserCountyModel(BaseTestCase):
     def test_save(self):
         user = mommy.make(get_user_model())
         county = mommy.make(County)
@@ -264,8 +264,8 @@ class TestUserCountiesModel(BaseTestCase):
             "user": user,
             "county": county
         }
-        user_county = UserCounties.objects.create(**data)
-        self.assertEquals(1, UserCounties.objects.count())
+        user_county = UserCounty.objects.create(**data)
+        self.assertEquals(1, UserCounty.objects.count())
         expected_unicode = "{}: {}".format(user.email, county.name)
         self.assertEquals(expected_unicode, user_county.__unicode__())
 
@@ -273,12 +273,12 @@ class TestUserCountiesModel(BaseTestCase):
         user = mommy.make(get_user_model())
         county_1 = mommy.make(County)
         county_2 = mommy.make(County)
-        UserCounties.objects.create(
+        UserCounty.objects.create(
             user=user,
             county=county_1
         )
         with self.assertRaises(ValidationError):
-            UserCounties.objects.create(
+            UserCounty.objects.create(
                 user=user,
                 county=county_2
             )

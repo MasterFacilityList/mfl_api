@@ -4,9 +4,10 @@ from .views import (
     ContactView, ContactDetailView, CountyView, CountyDetailView,
     ConstituencyView, ConstituencyDetailView, WardView,
     WardDetailView, ContactTypeListView, ContactTypeDetailView,
-    UserCountiesView, UserCountyDetailView, UserResidenceListView,
+    UserCountyView, UserCountyDetailView, UserResidenceListView,
     UserResidenceDetailView, UserContactListView, UserContactDetailView,
-    TownListView, TownDetailView)
+    TownListView, TownDetailView, PhysicalAddressView,
+    PhysicalAddressDetailView)
 
 urlpatterns = patterns(
     '',
@@ -16,9 +17,9 @@ urlpatterns = patterns(
         name='contact_type_detail'),
 
     url(r'^user_residence/$', UserResidenceListView.as_view(),
-        name='user_wards_list'),
+        name='user_residences_list'),
     url(r'^user_residence/(?P<pk>[^/]+)/$', UserResidenceDetailView.as_view(),
-        name='user_ward_detail'),
+        name='user_residence_detail'),
 
     url(r'^user_contacts/$', UserContactListView.as_view(),
         name='user_contacts_list'),
@@ -34,7 +35,7 @@ urlpatterns = patterns(
         name='county_detail'),
 
     url(r'^user_counties/$',
-        UserCountiesView.as_view(), name='user_counties_list'),
+        UserCountyView.as_view(), name='user_counties_list'),
     url(r'^user_counties/(?P<pk>[^/]+)/$',
         UserCountyDetailView.as_view(),
         name='user_county_detail'),
@@ -51,4 +52,10 @@ urlpatterns = patterns(
         name='constituencies_list'),
     url(r'^constituencies/(?P<pk>[^/]+)/$', ConstituencyDetailView.as_view(),
         name='constituency_detail'),
+
+    url(r'^address/$', PhysicalAddressView.as_view(),
+        name='physical_addresses_list'),
+    url(r'^address/(?P<pk>[^/]+)/$',
+        PhysicalAddressDetailView.as_view(),
+        name='physical_address_detail'),
 )

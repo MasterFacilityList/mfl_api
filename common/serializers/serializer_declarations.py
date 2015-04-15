@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from ..models import (
     Contact, PhysicalAddress, County, Ward, Constituency,
-    ContactType, UserCounties, UserResidence, UserContact, Town)
+    ContactType, UserCounty, UserResidence, UserContact, Town)
 from .serializer_base import AbstractFieldsMixin
 
 
@@ -69,4 +69,4 @@ class ConstituencySerializer(
 class InchargeCountiesSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = UserCounties
+        model = UserCounty

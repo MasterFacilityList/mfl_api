@@ -9,12 +9,12 @@ from ..models import (
     Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityGPS,
+    GeoCodeMethod, FacilityCoordinates,
     FacilityService, FacilityContact, FacilityUnit
 )
 
 
-class TetsOwnerTypes(BaseTestCase):
+class TestOwnerTypes(BaseTestCase):
     def test_save(self):
         data = {
             "name": "FBO",
@@ -270,7 +270,7 @@ class TesGeoCodeMethodModel(BaseTestCase):
         self.assertEquals("Taken with GPS device", method.__unicode__())
 
 
-class TestFacilityGPSModel(BaseTestCase):
+class TestFacilityCoordinatesModel(BaseTestCase):
     def test_save(self):
         facility = mommy.make(Facility, name="Nairobi Hospital")
         method = mommy.make(GeoCodeMethod)
@@ -284,8 +284,8 @@ class TestFacilityGPSModel(BaseTestCase):
             "collection_date": timezone.now()
         }
         data = self.inject_audit_fields(data)
-        facility_gps = FacilityGPS.objects.create(**data)
-        self.assertEquals(1, FacilityGPS.objects.count())
+        facility_gps = FacilityCoordinates.objects.create(**data)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
 
         # test unicode
         self.assertEquals("Nairobi Hospital", facility_gps.__unicode__())

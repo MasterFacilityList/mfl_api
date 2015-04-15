@@ -1,7 +1,7 @@
 import django_filters
 
 from ..models import (
-    ContactType, Contact, County, Constituency, Ward, UserCounties,
+    ContactType, Contact, County, Constituency, Ward, UserCounty,
     PhysicalAddress, UserResidence, UserContact, Town)
 from .filter_shared import CommonFieldsFilterset
 
@@ -56,12 +56,12 @@ class WardFilter(CommonFieldsFilterset):
         model = Ward
 
 
-class UserCountiesFilter(CommonFieldsFilterset):
+class UserCountyFilter(CommonFieldsFilterset):
     user = django_filters.AllValuesFilter(lookup_type='exact')
     county = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
-        model = UserCounties
+        model = UserCounty
 
 
 class UserResidenceFilter(CommonFieldsFilterset):

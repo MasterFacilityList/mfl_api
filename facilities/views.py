@@ -5,12 +5,12 @@ from .models import (
     Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityGPS,
+    GeoCodeMethod, FacilityCoordinates,
     FacilityService, FacilityContact, FacilityUnit
 )
 from .serializers import (
     OwnerSerializer, ServiceSerializer, FacilitySerializer,
-    FacilityGPSSerializer, FacilityContactSerializer,
+    FacilityCoordinatesSerializer, FacilityContactSerializer,
     FacilityServiceSerializer, FacilityStatusSerializer,
     FacilityTypeSerializer, JobTitleSerializer,
     OfficerInchargeSerializer, RegulatingBodySerializer,
@@ -20,7 +20,8 @@ from .serializers import (
     FacilityUnitSerializer
 )
 from .filters import (
-    FacilityFilter, ServiceFilter, FacilityGPSFilter, FacilityStatusFilter,
+    FacilityFilter, ServiceFilter, FacilityCoordinatesFilter,
+    FacilityStatusFilter,
     OwnerFilter, JobTitleFilter, FacilityUnitFilter, OfficerInchargeFilter,
     RegulatingBodyFilter, GeoCodeSourceFilter, ServiceCategoryFilter,
     OwnerTypeFilter, OfficerInchargeContactFilter, GeoCodeMethodFilter,
@@ -212,17 +213,17 @@ class FacilityContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FacilityContactSerializer
 
 
-class FacilityGPSListView(generics.ListCreateAPIView):
-    queryset = FacilityGPS.objects.all()
-    serializer_class = FacilityGPSSerializer
-    filter_class = FacilityGPSFilter
+class FacilityCoordinatesListView(generics.ListCreateAPIView):
+    queryset = FacilityCoordinates.objects.all()
+    serializer_class = FacilityCoordinatesSerializer
+    filter_class = FacilityCoordinatesFilter
     ordering_fields = (
         'facility', 'latitude', 'longitude', 'source', 'method',)
 
 
-class FacilityGPSDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityGPS.objects.all()
-    serializer_class = FacilityGPSSerializer
+class FacilityCoordinatesDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityCoordinates.objects.all()
+    serializer_class = FacilityCoordinatesSerializer
 
 
 class FacilityRegulationStatusListView(generics.ListCreateAPIView):

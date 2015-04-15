@@ -1,7 +1,7 @@
 import django_filters
 
 from .models import (
-    Owner, Service, Facility, FacilityGPS, JobTitle, FacilityUnit,
+    Owner, Service, Facility, FacilityCoordinates, JobTitle, FacilityUnit,
     FacilityStatus, OfficerIncharge, RegulatingBody, GeoCodeSource,
     ServiceCategory, OwnerType, OfficerInchargeContact, GeoCodeMethod,
     FacilityService, FacilityContact, FacilityRegulationStatus,
@@ -169,7 +169,7 @@ class GeoCodeMethodFilter(CommonFieldsFilterset):
         model = GeoCodeMethod
 
 
-class FacilityGPSFilter(CommonFieldsFilterset):
+class FacilityCoordinatesFilter(CommonFieldsFilterset):
     latitude = django_filters.CharFilter(lookup_type='icontains')
     longitude = django_filters.CharFilter(lookup_type='icontains')
     facility = django_filters.AllValuesFilter(lookup_type='exact')
@@ -177,7 +177,7 @@ class FacilityGPSFilter(CommonFieldsFilterset):
     method = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
-        model = FacilityGPS
+        model = FacilityCoordinates
 
 
 class FacilityUnitFilter(CommonFieldsFilterset):

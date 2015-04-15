@@ -90,6 +90,9 @@ class PhysicalAddress(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(self.postal_code, self.address)
 
+    class Meta:
+        verbose_name_plural = 'physical addresses'
+
 
 @reversion.register
 class RegionAbstractBase(AbstractBase, SequenceMixin):
@@ -133,6 +136,9 @@ class County(RegionAbstractBase):
     """
     pass  # Everything, including __unicode__ is handled by the abstract model
 
+    class Meta:
+        verbose_name_plural = 'counties'
+
 
 @reversion.register
 class Constituency(RegionAbstractBase):
@@ -149,6 +155,9 @@ class Constituency(RegionAbstractBase):
         County,
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name_plural = 'constituencies'
 
 
 @reversion.register
@@ -173,7 +182,7 @@ class Ward(RegionAbstractBase):
 
 
 @reversion.register
-class UserCounties(AbstractBase):
+class UserCounty(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of.
 
@@ -198,7 +207,10 @@ class UserCounties(AbstractBase):
 
     def save(self, *args, **kwargs):
         self.validate_only_one_county_active()
-        super(UserCounties, self).save(*args, **kwargs)
+        super(UserCounty, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'user_counties'
 
 
 @reversion.register

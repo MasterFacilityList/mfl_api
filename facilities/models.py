@@ -126,6 +126,10 @@ class OfficerIncharge(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'officer in charge'
+        verbose_name_plural = 'officers in charge'
+
 
 @reversion.register
 class ServiceCategory(AbstractBase):
@@ -157,6 +161,9 @@ class ServiceCategory(AbstractBase):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'service categories'
 
 
 @reversion.register
@@ -191,6 +198,9 @@ class Service(AbstractBase, SequenceMixin):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'services'
+
 
 @reversion.register
 class FacilityStatus(AbstractBase):
@@ -211,6 +221,9 @@ class FacilityStatus(AbstractBase):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'facility statuses'
 
 
 @reversion.register
@@ -253,6 +266,9 @@ class RegulatingBody(AbstractBase):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'regulating bodies'
 
 
 @reversion.register
@@ -301,6 +317,9 @@ class RegulationStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'regulation_statuses'
+
 
 @reversion.register
 class FacilityRegulationStatus(AbstractBase):
@@ -326,7 +345,7 @@ class FacilityRegulationStatus(AbstractBase):
             self.facility.name, self.regulation_status.name)
 
     class Meta:
-        ordering = ('-created', )
+        verbose_name_plural = 'facility regulation statuses'
 
 
 @reversion.register
@@ -343,6 +362,9 @@ class FacilityService(AbstractBase):
 
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)
+
+    class Meta:
+        verbose_name_plural = 'facility services'
 
 
 @reversion.register
@@ -443,7 +465,7 @@ class Facility(AbstractBase, SequenceMixin):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Facilities'
+        verbose_name_plural = 'facilities'
 
 
 @reversion.register
@@ -496,7 +518,7 @@ class GeoCodeMethod(AbstractBase):
 
 
 @reversion.register
-class FacilityGPS(AbstractBase):
+class FacilityCoordinates(AbstractBase):
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
 
@@ -524,6 +546,10 @@ class FacilityGPS(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name
+
+    class Meta:
+        verbose_name_plural = 'facility coordinates'
+        verbose_name = 'facility coordinates'
 
 
 @reversion.register

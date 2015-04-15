@@ -10,8 +10,9 @@ from .views import (
     GeoCodeMethodListView, GeoCodeMethodDetailView, OwnerListView,
     OwnerDetailView, ServiceListView, ServiceDetailView, FacilityListView,
     FaciltyDetailView, FacilityServiceListView, FacilityServiceDetailView,
-    FacilityContactListView, FacilityContactDetailView, FacilityGPSListView,
-    FacilityGPSDetailView, FacilityRegulationStatusListView,
+    FacilityContactListView, FacilityContactDetailView,
+    FacilityCoordinatesListView,
+    FacilityCoordinatesDetailView, FacilityRegulationStatusListView,
     FacilityRegulationStatusDetailView, FacilityTypeListView,
     FacilityTypeDetailView, RegulationStatusListView,
     RegulationStatusDetailView, FacilityUnitsListView, FacilityUnitDetailView)
@@ -36,7 +37,7 @@ urlpatterns = patterns(
         name='facility_type_detail'),
 
     url(r'^facility_status/$', FacilityStatusListView.as_view(),
-        name='facility_status_list'),
+        name='facility_statuses_list'),
     url(r'^facility_status/(?P<pk>[^/]+)/$',
         FacilityStatusDetailView.as_view(),
         name='facility_status_detail'),
@@ -60,13 +61,13 @@ urlpatterns = patterns(
 
     url(r'^facility_regulation_status/$',
         FacilityRegulationStatusListView.as_view(),
-        name='facility_regulation_status_list'),
+        name='facility_regulation_statuses_list'),
     url(r'^facility_regulation_status/(?P<pk>[^/]+)/$',
         FacilityRegulationStatusDetailView.as_view(),
         name='facility_regulation_status_detail'),
 
     url(r'^regulation_status/$', RegulationStatusListView.as_view(),
-        name='regulation_status_list'),
+        name='regulation_statuses_list'),
     url(r'^regulation_status/(?P<pk>[^/]+)/$',
         RegulationStatusDetailView.as_view(),
         name='regulation_status_detail'),
@@ -78,7 +79,7 @@ urlpatterns = patterns(
         name='geo_code_method_detail'),
 
     url(r'^officers_incharge/$', OfficerInchargeListView.as_view(),
-        name='officers_incharge_list'),
+        name='officers_in_charge_list'),
     url(r'^officers_incharge/(?P<pk>[^/]+)/$',
         OfficerInchargeDetailView.as_view(),
         name='officer_incharge_detail'),
@@ -103,7 +104,7 @@ urlpatterns = patterns(
         name='service_detail'),
 
     url(r'^contacts/$', FacilityContactListView .as_view(),
-        name='facilities_contact_list'),
+        name='facility_contacts_list'),
     url(r'^contacts/(?P<pk>[^/]+)/$', FacilityContactDetailView.as_view(),
         name='facility_contact_detail'),
 
@@ -113,11 +114,13 @@ urlpatterns = patterns(
         FacilityServiceDetailView.as_view(),
         name='facility_service_detail'),
 
-    url(r'^gis/$', FacilityGPSListView.as_view(), name='facility_gis_list'),
-    url(r'^gis/(?P<pk>[^/]+)/$', FacilityGPSDetailView.as_view(),
-        name='facility_gis_detail'),
+    url(r'^coordinates/$', FacilityCoordinatesListView.as_view(),
+        name='facility_coordinates_list'),
+    url(r'^coordinates/(?P<pk>[^/]+)/$',
+        FacilityCoordinatesDetailView.as_view(),
+        name='facility_coordinates_detail'),
 
-    url(r'^$', FacilityListView.as_view(), name='facility_list'),
+    url(r'^$', FacilityListView.as_view(), name='facilities_list'),
     url(r'^(?P<pk>[^/]+)/$', FaciltyDetailView.as_view(),
         name='facility_detail'),
 )
