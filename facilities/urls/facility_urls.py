@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 
-from .views import (
+from ..views import (
     FacilityStatusListView, FacilityStatusDetailView, JobTitleListView,
     JobTitleDetailView, OfficerInchargeListView, OfficerInchargeDetailView,
     RegulatingBodyListView, RegulatingBodyDetailView, GeoCodeSourceListView,

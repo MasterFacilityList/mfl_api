@@ -1,5 +1,6 @@
 from rest_framework import generics
-from .models import (
+
+from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
     OfficerInchargeContact, ServiceCategory,
     Service, FacilityStatus, FacilityType,
@@ -8,7 +9,8 @@ from .models import (
     GeoCodeMethod, FacilityGPS,
     FacilityService, FacilityContact, FacilityUnit
 )
-from .serializers import (
+
+from ..serializers import (
     OwnerSerializer, ServiceSerializer, FacilitySerializer,
     FacilityGPSSerializer, FacilityContactSerializer,
     FacilityServiceSerializer, FacilityStatusSerializer,
@@ -19,7 +21,9 @@ from .serializers import (
     OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
     FacilityUnitSerializer
 )
-from .filters import (
+
+from ..filters import (
+
     FacilityFilter, ServiceFilter, FacilityGPSFilter, FacilityStatusFilter,
     OwnerFilter, JobTitleFilter, FacilityUnitFilter, OfficerInchargeFilter,
     RegulatingBodyFilter, GeoCodeSourceFilter, ServiceCategoryFilter,

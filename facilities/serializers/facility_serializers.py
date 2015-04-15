@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from .models import (
+from common.serializers import AbstractFieldsMixin
+
+from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
     OfficerInchargeContact, ServiceCategory,
     Service, FacilityStatus, FacilityType,
@@ -9,7 +11,6 @@ from .models import (
     GeoCodeMethod, FacilityGPS,
     FacilityService, FacilityContact, FacilityUnit
 )
-from common.serializers import AbstractFieldsMixin
 
 
 class FacilityStatusSerializer(
