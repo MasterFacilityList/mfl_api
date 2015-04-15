@@ -24,7 +24,7 @@ class RatingScaleListView(generics.ListCreateAPIView):
     ordering_fields = ('name',)
 
 
-class RatingScaleDetailView(generics.RetrieveUpdateDestroyAPIVIew):
+class RatingScaleDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = RatingScale.objects.all()
     serializer_class = RatingScaleSerializer
 
@@ -36,7 +36,7 @@ class RatingListView(generics.ListCreateAPIView):
     ordering_fields = ('scale', 'rating_code', )
 
 
-class RatingDetailView(generics.RetrieveUpdateDestroyAPIVIew):
+class RatingDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
 
@@ -48,7 +48,7 @@ class FacilityRatingScaleListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'scale', )
 
 
-class FacilityRatingScaleDetailView(generics.RetrieveUpdateDestroyAPIVIew):
+class FacilityRatingScaleDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityRatingScale.objects.all()
     serializer_class = FacilityRatingScaleSerializer
 
@@ -60,7 +60,7 @@ class FacilityServiceRatingScaleListView(generics.ListCreateAPIView):
     ordering_fields = ('facility_service', 'scale', )
 
 
-class FacilityServiceRatingDetailView(generics.RetrieveUpdateDestroyAPIVIew):
+class FacilityServiceRatingDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityServiceRatingScale.objects.all()
     serializer_class = FacilityServiceRatingScaleSerializer
 
@@ -73,7 +73,7 @@ class UserFacilityRatingListView(generics.ListCreateAPIView):
 
 
 class UserFacilityRatingDetailView(
-        generics.RetrieveUpdateDestroyAPIVIew):
+        generics.RetrieveUpdateDestroyAPIView):
     queryset = UserFacilityRating.objects.all()
     serializer_class = UserFacilityRatingSerializer
 
@@ -86,6 +86,6 @@ class UserFacilityServiceRatingListView(generics.ListCreateAPIView):
 
 
 class UserFacilityServiceRatingDetailView(
-        generics.RetrieveUpdateDestroyAPIVIew):
+        generics.RetrieveUpdateDestroyAPIView):
     queryset = UserFacilityServiceRating.objects.all()
     serializer_class = UserFacilityServiceRatingSerializer

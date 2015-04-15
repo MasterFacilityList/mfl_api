@@ -165,7 +165,7 @@ class UserFacilityRating(RatingAbstractBase):
         unique_together = ('facility', 'user', )
 
 
-class UserFacitlityServiceRating(RatingAbstractBase):
+class UserFacilityServiceRating(RatingAbstractBase):
     """
     User rating of a facility service.
     """
@@ -194,7 +194,7 @@ class UserFacitlityServiceRating(RatingAbstractBase):
 
     def save(self, *args, **kwargs):
         self.validate_user_rating_scale_matches_service_scale()
-        super(UserFacitlityServiceRating, self).save(*args, **kwargs)
+        super(UserFacilityServiceRating, self).save(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility_service', 'user', )

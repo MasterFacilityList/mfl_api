@@ -8,7 +8,7 @@ from facilities.models import Facility, FacilityService
 
 from ..models import(
     RatingScale, Rating, FacilityRatingScale, FacilityServiceRatingScale,
-    UserFacilityRating, UserFacitlityServiceRating)
+    UserFacilityRating, UserFacilityServiceRating)
 
 
 class TestRatingScale(TestCase):
@@ -132,9 +132,9 @@ class TestUserFacilityServiceRating(BaseTestCase):
             FacilityServiceRatingScale, scale=scale,
             facility_service=facility_service)
         user_facility_service_rating = mommy.make(
-            UserFacitlityServiceRating,
+            UserFacilityServiceRating,
             facility_service=facility_service, rating=rating)
-        self.assertEquals(1, UserFacitlityServiceRating.objects.count())
+        self.assertEquals(1, UserFacilityServiceRating.objects.count())
 
         #  test unicode
         expected_unicode = "{}: {}: {}".format(
@@ -160,4 +160,4 @@ class TestUserFacilityServiceRating(BaseTestCase):
         }
         data = self.inject_audit_fields(data)
         with self.assertRaises(ValidationError):
-            UserFacitlityServiceRating.objects.create(**data)
+            UserFacilityServiceRating.objects.create(**data)
