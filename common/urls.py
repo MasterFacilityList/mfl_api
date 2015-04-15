@@ -37,7 +37,7 @@ urlpatterns = patterns(
         UserCountiesView.as_view(), name='user_counties_list'),
     url(r'^user_counties/(?P<pk>[^/]+)/$',
         UserCountyDetailView.as_view(),
-        name='user_counties_detail'),
+        name='user_county_detail'),
 
     url(r'^wards/$', WardView.as_view(), name='wards_list'),
     url(r'^wards/(?P<pk>[^/]+)/$', WardDetailView.as_view(),

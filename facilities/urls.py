@@ -87,7 +87,7 @@ urlpatterns = patterns(
         name='service_categories_list'),
     url(r'^service_categories/(?P<pk>[^/]+)/$',
         ServiceCategoryDetailView.as_view(),
-        name='sevice_category_detail'),
+        name='service_category_detail'),
 
     url(r'^owner_types/$', OwnerTypeListView.as_view(),
         name='owner_types_list'),
@@ -111,11 +111,11 @@ urlpatterns = patterns(
         name='facility_services_list'),
     url(r'^facility_services/(?P<pk>[^/]+)/$',
         FacilityServiceDetailView.as_view(),
-        name='facilities_service_detail'),
+        name='facility_service_detail'),
 
     url(r'^gis/$', FacilityGPSListView.as_view(), name='facility_gis_list'),
     url(r'^gis/(?P<pk>[^/]+)/$', FacilityGPSDetailView.as_view(),
-        name='facilities_gis_detail'),
+        name='facility_gis_detail'),
 
     url(r'^$', FacilityListView.as_view(), name='facility_list'),
     url(r'^(?P<pk>[^/]+)/$', FaciltyDetailView.as_view(),
