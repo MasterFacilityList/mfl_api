@@ -103,7 +103,11 @@ In summary:
  tagged
  * fixes on released versions will occur in hotfix branches
 
-We adhere to semantic versioning - https://github.com/nvie/gitflow .
+We adhere to semantic versioning - https://semver.org .
+
+In order to deploy a new version, you will need to have a ``$HOME/.pypirc``
+that has the correct pypi credentials. The command to deploy is ``fab deploy``.
+The credentials are not stored on GitHub - for obvious reasons.
 
 Authentication
 --------------
