@@ -25,6 +25,7 @@ def deploy():
     """
     Should be run only by the release manager
     """
+    test()
     local('python setup.py sdist upload -r slade')
 
 
