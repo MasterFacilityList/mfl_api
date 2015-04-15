@@ -2,7 +2,7 @@ import django_filters
 
 from ..models import(
     RatingScale, Rating, FacilityRatingScale, FacilityServiceRatingScale,
-    UserFacilityRating, UserFacitlityServiceRating)
+    UserFacilityRating, UserFacilityServiceRating)
 from common.filters.filter_shared import CommonFieldsFilterset
 
 
@@ -54,4 +54,4 @@ class UserFacilityServiceRatingFilter(CommonFieldsFilterset):
     comment = django_filters.CharFilter(lookup_type='icontains')
 
     class Meta:
-        model = UserFacitlityServiceRating
+        model = UserFacilityServiceRating

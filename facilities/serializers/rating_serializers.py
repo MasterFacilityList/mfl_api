@@ -5,7 +5,7 @@ from common.serializers import AbstractFieldsMixin
 
 from ..models import(
     RatingScale, Rating, FacilityRatingScale, FacilityServiceRatingScale,
-    UserFacilityRating, UserFacitlityServiceRating)
+    UserFacilityRating, UserFacilityServiceRating)
 
 
 class RatingScaleSerializer(
@@ -41,4 +41,4 @@ class UserFacilityRatingSerializer(
 class UserFacilityServiceRatingSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = UserFacitlityServiceRating
+        model = UserFacilityServiceRating
