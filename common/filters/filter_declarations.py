@@ -15,14 +15,14 @@ class ContactTypeFilter(CommonFieldsFilterset):
 
 class ContactFilter(CommonFieldsFilterset):
     contact = django_filters.CharFilter(lookup_type='icontains')
-    contact_type = django_filters.AllValuesFilter(lookup_type='eq')
+    contact_type = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
         model = Contact
 
 
 class PhysicalAddressFilter(CommonFieldsFilterset):
-    town = django_filters.AllValuesFilter(lookup_type='eq')
+    town = django_filters.AllValuesFilter(lookup_type='exact')
     postal_code = django_filters.CharFilter(lookup_type='icontains')
     address = django_filters.CharFilter(lookup_type='icontains')
     nearest_landmark = django_filters.CharFilter(lookup_type='icontains')
@@ -34,7 +34,7 @@ class PhysicalAddressFilter(CommonFieldsFilterset):
 
 class CountyFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='eq')
+    code = django_filters.NumberFilter(lookup_type='exact')
 
     class Meta:
         model = County
@@ -42,7 +42,7 @@ class CountyFilter(CommonFieldsFilterset):
 
 class ConstituencyFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='eq')
+    code = django_filters.NumberFilter(lookup_type='exact')
 
     class Meta:
         model = Constituency
@@ -50,31 +50,31 @@ class ConstituencyFilter(CommonFieldsFilterset):
 
 class WardFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='eq')
+    code = django_filters.NumberFilter(lookup_type='exact')
 
     class Meta:
         model = Ward
 
 
 class UserCountiesFilter(CommonFieldsFilterset):
-    user = django_filters.AllValuesFilter(lookup_type='eq')
-    county = django_filters.AllValuesFilter(lookup_type='eq')
+    user = django_filters.AllValuesFilter(lookup_type='exact')
+    county = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
         model = UserCounties
 
 
 class UserResidenceFilter(CommonFieldsFilterset):
-    user = django_filters.AllValuesFilter(lookup_type='eq')
-    ward = django_filters.AllValuesFilter(lookup_type='eq')
+    user = django_filters.AllValuesFilter(lookup_type='exact')
+    ward = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
         model = UserResidence
 
 
 class UserContactFilter(CommonFieldsFilterset):
-    user = django_filters.AllValuesFilter(lookup_type='eq')
-    contact = django_filters.AllValuesFilter(lookup_type='eq')
+    user = django_filters.AllValuesFilter(lookup_type='exact')
+    contact = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
         model = UserContact
