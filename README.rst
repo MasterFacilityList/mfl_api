@@ -89,6 +89,22 @@ Deployment notes
 Because this server uses ``GDAL``, which is not threadsafe, it should not be
 deployed behind a threaded server / WSGI server.
 
+Contributing
+-------------
+This project uses the ``git-flow`` workflow. You can find more information
+by following the links at https://github.com/nvie/gitflow .
+
+In summary:
+
+ * all work should occur in feature branches
+ * the target for pull requests is the ``develop`` branch
+ * the release manager ( presently @ngurenyaga ) will periodically
+ create release branches that ultimately get merged into ``master`` and
+ tagged
+ * fixes on released versions will occur in hotfix branches
+
+We adhere to semantic versioning - https://github.com/nvie/gitflow .
+
 Authentication
 --------------
 TODO
