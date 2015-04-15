@@ -1,6 +1,6 @@
 import django_filters
 
-from .models import (
+from ..models import (
     Owner, Service, Facility, FacilityGPS, JobTitle, FacilityUnit,
     FacilityStatus, OfficerIncharge, RegulatingBody, GeoCodeSource,
     ServiceCategory, OwnerType, OfficerInchargeContact, GeoCodeMethod,
