@@ -481,18 +481,6 @@ class FacilityUnit(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
-    regulating_body = models.ForeignKey(
-        RegulatingBody, null=True, blank=True, on_delete=models.PROTECT)
-    is_approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
-
-    @property
-    def unit_regulating_body(self):
-        if self.regulating_body:
-            return self.regulating_body
-        else:
-            #  pick the lastest regulation body from the
-            #  facility regulation status model
-            return self.facility.regulatory_details.all()[0].regulating_body
