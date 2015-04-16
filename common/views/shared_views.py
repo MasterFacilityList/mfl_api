@@ -92,11 +92,12 @@ def _resolve_detail_metadata(request, url_name, model_cls):
 
     if not model_cls.objects.count():  # Do this only if there is no record
         obj = mommy.make(model_cls)
+        metadata = _get_metadata_from_detail_url(url_name, obj, request)
         obj.delete()
     else:
         obj = model_cls.objects.all()[:1][0]
+        metadata = _get_metadata_from_detail_url(url_name, obj, request)
 
-    metadata = _get_metadata_from_detail_url(url_name, obj, request)
     return metadata
 
 
