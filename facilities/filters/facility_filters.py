@@ -1,10 +1,12 @@
 import django_filters
 
 from ..models import (
-    Owner, Facility, FacilityCoordinates, JobTitle, FacilityUnit,
+    Owner, Service, Facility, FacilityCoordinates, JobTitle, FacilityUnit,
     FacilityStatus, OfficerIncharge, RegulatingBody, GeoCodeSource,
-    OwnerType, OfficerInchargeContact, GeoCodeMethod, FacilityContact,
-    FacilityRegulationStatus, FacilityType, RegulationStatus
+    ServiceCategory, OwnerType, OfficerInchargeContact, GeoCodeMethod,
+    FacilityService, FacilityContact, FacilityRegulationStatus,
+    FacilityType, RegulationStatus, ChoiceService,
+    KEPHLevelService, BasicComprehensiveService
 )
 from common.filters.filter_shared import CommonFieldsFilterset
 
@@ -53,6 +55,23 @@ class OfficerInchargeFilter(CommonFieldsFilterset):
         model = OfficerIncharge
 
 
+class ServiceCategoryFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = ServiceCategory
+
+
+class ServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+    code = django_filters.NumberFilter(lookup_type='exact')
+    category = django_filters.AllValuesFilter(lookup_type='exact')
+
+    class Meta:
+        model = Service
+
+
 class FacilityStatusFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
@@ -93,6 +112,14 @@ class FacilityRegulationStatusFilter(CommonFieldsFilterset):
 
     class Meta:
         model = FacilityRegulationStatus
+
+
+class FacilityServiceFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    service = django_filters.AllValuesFilter(lookup_type='exact')
+
+    class Meta:
+        model = FacilityService
 
 
 class FacilityContactFilter(CommonFieldsFilterset):
@@ -163,3 +190,27 @@ class FacilityUnitFilter(CommonFieldsFilterset):
 
     class Meta:
         model = FacilityUnit
+
+
+class ChoiceServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = ChoiceService
+
+
+class KEPHLevelServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = KEPHLevelService
+
+
+class BasicComprehensiveServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = BasicComprehensiveService

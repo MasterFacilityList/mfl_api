@@ -8,12 +8,13 @@ from model_mommy import mommy
 from common.tests.test_views import LogginMixin, default
 
 from ..serializers import (
-    OwnerSerializer, FacilitySerializer,
+    OwnerSerializer, ServiceSerializer, FacilitySerializer,
     FacilityStatusSerializer, FacilityUnitSerializer
 )
 
 from ..models import (
-    OwnerType, Owner, FacilityStatus,
+    OwnerType, Owner, ServiceCategory,
+    Service, FacilityStatus,
     Facility, FacilityUnit
 )
 
@@ -110,6 +111,100 @@ class TestOwnersView(LogginMixin, APITestCase):
         url = self.url + "?owner_type={}".format(owner_type_2.id)
         response_2 = self.client.get(url)
 
+        self.assertEquals(200, response_2.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data_2, default=default)),
+            json.loads(json.dumps(response_2.data, default=default)))
+
+
+class TestServiceView(LogginMixin, APITestCase):
+    def setUp(self):
+        super(TestServiceView, self).setUp()
+        self.url = reverse("api:facilities:services_list")
+
+    def test_list_services(self):
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
+        service_1 = mommy.make(Service, category=service_cat)
+        service_2 = mommy.make(Service, category=service_cat)
+        expected_data = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                ServiceSerializer(service_2).data,
+                ServiceSerializer(service_1).data
+            ]
+        }
+        self.maxDiff = None
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_post(self):
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
+        data = {
+            "name": "Diabetes screening",
+            "description": "This is a description of the service",
+            "category": service_cat.id
+        }
+        response = self.client.post(self.url, data)
+        response_data = json.dumps(response.data, default=default)
+        self.assertEquals(201, response.status_code)
+        self.assertIn("id", response_data)
+        self.assertIn("name", response_data)
+        self.assertIn("code", response_data)
+        self.assertIn("description", response_data)
+        self.assertIn("category", response_data)
+        self.assertIn("active", response_data)
+        self.assertEquals(1, Service.objects.count())
+
+    def test_retrive_single_service(self):
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
+        service = mommy.make(Service, category=service_cat)
+        url = self.url + "{}/".format(service.id)
+        response = self.client.get(url)
+        expected_data = ServiceSerializer(service).data
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_filtering(self):
+        service_cat = mommy.make(ServiceCategory, b_c_service=True)
+        service_cat_2 = mommy.make(ServiceCategory, b_c_service=True)
+        service_1 = mommy.make(
+            Service, name='Cancer screening', category=service_cat)
+        service_2 = mommy.make(
+            Service, name='Diabetes screening', category=service_cat)
+        service_3 = mommy.make(
+            Service, name='Malaria screening', category=service_cat_2)
+        expected_data_1 = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                ServiceSerializer(service_2).data,
+                ServiceSerializer(service_1).data
+            ]
+        }
+        url = self.url + "?category={}".format(service_cat.id)
+        response_1 = self.client.get(url)
+        self.assertEquals(200, response_1.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data_1, default=default)),
+            json.loads(json.dumps(response_1.data, default=default)))
+        expected_data_2 = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                ServiceSerializer(service_3).data
+            ]
+        }
+        url = self.url + "?category={}".format(service_cat_2.id)
+        response_2 = self.client.get(url)
         self.assertEquals(200, response_2.status_code)
         self.assertEquals(
             json.loads(json.dumps(expected_data_2, default=default)),

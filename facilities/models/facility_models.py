@@ -132,6 +132,131 @@ class OfficerIncharge(AbstractBase):
         verbose_name_plural = 'officers in charge'
 
 
+class ChoiceService(AbstractBase):
+    """
+    Service cateories that only allow for a YES/NO
+    """
+    name = models.CharField(max_length=30)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.name
+
+
+class KEPHLevelService(AbstractBase):
+    """
+    Service Categories that are offered based on levels
+    from level 1-6
+    """
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.name
+
+
+class BasicComprehensiveService(AbstractBase):
+    """
+    Services that are offered as either basic or Comprehensive.
+    """
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.name
+
+
+@reversion.register
+class ServiceCategory(AbstractBase):
+    """
+    Categorisation of health services.
+
+    The categorisation of services could either be:
+        Given in terms of KEPH levels:
+
+        Similar services are offered in the different KEPH levels:
+            For example, Environmental Health Services offered in KEPH level
+            2 are similar to those offered in KEPH level 3. If the KEPH level
+            of the facility is known, the corresponding KEPH level of the
+            service should apply. If it is not known, write the higher KEPH
+            level.
+
+        Given through a choice of service level:
+            For example, Oral Health Services are either Basic or Comprehensive
+
+        A combination of choices and KEPH levels:
+            For example, Mental Health Services are either Integrated or
+            Specialised (and the Specialised Services are split into KEPH
+            level).
+    """
+    name = models.CharField(
+        max_length=100,
+        help_text="What is the name of the category? ")
+    b_c_service = models.BooleanField(default=False)
+    choice_service = models.BooleanField(default=False)
+    keph_level_service = models.BooleanField(default=False)
+
+    # TODO Deal with this code scare before the metadata ticket is closed
+    # This is a proper pain in the neck with the current metadata style
+
+    # def validate_service_offer_types(self):
+    #     offers = [
+    #         self.b_c_service, self.choice_service, self.keph_level_service]
+    #     truths_count = offers.count(True)
+    #     if truths_count > 1:
+    #         raise ValidationError(
+    #             "A service category can only be of one choice type")
+    #     if truths_count < 1:
+    #         raise ValidationError(
+    #             "Indicate the type of choices for the service")
+
+    # def clean(self, *args, **kwargs):
+    #     self.validate_service_offer_types()
+    #     super(ServiceCategory, self).clean(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'service categories'
+
+
+@reversion.register
+class Service(AbstractBase, SequenceMixin):
+    """
+    A health service.
+
+    The definition of services has attempted to describe the actual components
+    of the services provided, the basic infrastructure required to effectively
+    provide the service, and human resource required. For example,
+    Comprehensive Dental Services cannot be said to be provided unless there is
+    a dental chair with its accessories and a dentist. If any of this is
+    missing then the service is not provided. However, some services
+    definitions are quite complex and will require involvement of the technical
+    person attached to the district to work with the DHRIO in order to collect
+    the data. For example, the laboratory equipment may require the presence
+    of a District Laboratory Technologist
+    """
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(
+        ServiceCategory,
+        help_text="The classification that the service lies in.")
+
+    code = SequenceField(unique=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Service, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'services'
+
+
 @reversion.register
 class FacilityStatus(AbstractBase):
     """
@@ -279,6 +404,65 @@ class FacilityRegulationStatus(AbstractBase):
 
 
 @reversion.register
+class FacilityService(AbstractBase):
+    """
+    Service offered in a facility.
+
+    Service is either offered all or none, i.e. they exist or do not exist.
+    (YES/NO)
+    Could also be offered according to KEPH level 1-6,
+    It could also be offered as either basic or Comprehensive.
+    """
+    facility = models.ForeignKey(
+        'Facility', related_name='facility_services', on_delete=models.PROTECT)
+    service = models.ForeignKey(Service, on_delete=models.PROTECT)
+    choice_service = models.ForeignKey(
+        ChoiceService, null=True, blank=True, on_delete=models.PROTECT)
+    keph_level_service = models.ForeignKey(
+        KEPHLevelService, null=True, blank=True, on_delete=models.PROTECT)
+    b_c_service = models.ForeignKey(
+        BasicComprehensiveService, null=True, blank=True,
+        on_delete=models.PROTECT)
+
+    def validate_only_one_service_level_chosen(self):
+        pass
+        # TODO Re-implement this when completing the metadata ticket
+        # service_choices = [
+        #     self.choice_service, self.keph_level_service, self.b_c_service]
+        # services_choices_nulls_count = service_choices.count(None)
+        # if services_choices_nulls_count != 2:
+        #     raise ValidationError("One service level choice is required.")
+
+    def validate_service_offer_choices(self):
+        pass
+        # TODO Re-implement this when completing the metadata ticket
+        # if self.service.category.b_c_service and not self.b_c_service:
+        #     raise ValidationError(
+        #         "Basic or Comprehensive choice is required for the service"
+        #     )
+        # if self.service.category.keph_level_service and not \
+        #         self.keph_level_service:
+        #     raise ValidationError(
+        #         "KEPH level is required for the service."
+        #     )
+        # if self.service.category.choice_service and not self.choice_service:
+        #     raise ValidationError(
+        #         "A YES/NO choice is required for the service."
+        #     )
+
+    def clean(self, *args, **kwargs):
+        self.validate_only_one_service_level_chosen()
+        self.validate_service_offer_choices()
+        super(FacilityService, self).clean(*args, **kwargs)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facility.name, self.service.name)
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'facility services'
+
+
+@reversion.register
 class FacilityContact(AbstractBase):
     """
     The facility contact.
@@ -362,6 +546,9 @@ class Facility(AbstractBase, SequenceMixin):
     contacts = models.ManyToManyField(
         Contact, through=FacilityContact,
         help_text='Facility contacts - email, phone, fax, postal etc')
+    services = models.ManyToManyField(
+        Service, through=FacilityService,
+        help_text='Services offered at the facility')
     parent = models.ForeignKey(
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)

@@ -3,10 +3,14 @@ from rest_framework import serializers
 from common.serializers import AbstractFieldsMixin
 
 from ..models import (
-    OwnerType, Owner, JobTitle, OfficerIncharge, OfficerInchargeContact,
-    FacilityStatus, FacilityType, RegulatingBody, RegulationStatus, Facility,
-    FacilityRegulationStatus, GeoCodeSource, GeoCodeMethod,
-    FacilityCoordinates, FacilityContact, FacilityUnit
+    OwnerType, Owner, JobTitle, OfficerIncharge,
+    OfficerInchargeContact, ServiceCategory,
+    Service, FacilityStatus, FacilityType,
+    RegulatingBody, RegulationStatus, Facility,
+    FacilityRegulationStatus, GeoCodeSource,
+    GeoCodeMethod, FacilityCoordinates,
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEPHLevelService, BasicComprehensiveService
 )
 
 
@@ -32,6 +36,12 @@ class GeoCodeMethodSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = GeoCodeMethod
+
+
+class ServiceCategorySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ServiceCategory
 
 
 class OwnerTypeSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
@@ -80,11 +90,25 @@ class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
         model = Owner
 
 
+class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+
+
 class FacilitySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    services = ServiceSerializer(many=True, required=False)
 
     class Meta:
         model = Facility
+
+
+class FacilityServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = FacilityService
 
 
 class FacilityContactSerializer(
@@ -104,3 +128,22 @@ class FacilityUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = FacilityUnit
+
+
+class ChoiceServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ChoiceService
+
+
+class KEPHLevelServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = KEPHLevelService
+
+
+class BasicComprehensiveServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = BasicComprehensiveService

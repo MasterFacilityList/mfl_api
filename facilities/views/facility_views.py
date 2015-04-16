@@ -2,32 +2,76 @@ from rest_framework import generics
 
 from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
-    OfficerInchargeContact, FacilityStatus, FacilityType,
+    OfficerInchargeContact, ServiceCategory,
+    Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityCoordinates, FacilityContact, FacilityUnit
+    GeoCodeMethod, FacilityCoordinates,
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEPHLevelService, BasicComprehensiveService
 )
 
 from ..serializers import (
-    OwnerSerializer, FacilitySerializer,
+    OwnerSerializer, ServiceSerializer, FacilitySerializer,
     FacilityCoordinatesSerializer, FacilityContactSerializer,
-    FacilityStatusSerializer,
+    FacilityServiceSerializer, FacilityStatusSerializer,
     FacilityTypeSerializer, JobTitleSerializer,
     OfficerInchargeSerializer, RegulatingBodySerializer,
     GeoCodeMethodSerializer, GeoCodeSourceSerializer,
-    OwnerTypeSerializer,
+    ServiceCategorySerializer, OwnerTypeSerializer,
     OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
-    FacilityUnitSerializer
+    FacilityUnitSerializer, ChoiceServiceSerializer,
+    KEPHLevelServiceSerializer, BasicComprehensiveServiceSerializer
 )
 from ..filters import (
-    FacilityFilter, FacilityCoordinatesFilter,
+    FacilityFilter, ServiceFilter, FacilityCoordinatesFilter,
     FacilityStatusFilter,
     OwnerFilter, JobTitleFilter, FacilityUnitFilter, OfficerInchargeFilter,
-    RegulatingBodyFilter, GeoCodeSourceFilter,
+    RegulatingBodyFilter, GeoCodeSourceFilter, ServiceCategoryFilter,
     OwnerTypeFilter, OfficerInchargeContactFilter, GeoCodeMethodFilter,
-    FacilityContactFilter, FacilityTypeFilter,
-    FacilityRegulationStatusFilter, RegulationStatusFilter
+    FacilityServiceFilter, FacilityContactFilter, FacilityTypeFilter,
+    FacilityRegulationStatusFilter, RegulationStatusFilter,
+    ChoiceServiceFilter,
+    KEPHLevelServiceFilter, BasicComprehensiveServiceFilter
+
 )
+
+
+class ChoiceServiceListView(generics.ListCreateAPIView):
+    queryset = ChoiceService.objects.all()
+    serializer_class = ChoiceServiceSerializer
+    filter_class = ChoiceServiceFilter
+    ordering_fields = ('name', )
+
+
+class ChoiceServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ChoiceService.objects.all()
+    serializer_class = ChoiceServiceSerializer
+
+
+class KEPHLevelServiceListView(generics.ListCreateAPIView):
+    queryset = KEPHLevelService.objects.all()
+    serializer_class = KEPHLevelServiceSerializer
+    filter_class = KEPHLevelServiceFilter
+    ordering_fields = ('name', )
+
+
+class KEPHLevelServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = KEPHLevelService.objects.all()
+    serializer_class = KEPHLevelServiceSerializer
+
+
+class BasicComprehensiveSeviceListView(generics.ListCreateAPIView):
+    queryset = BasicComprehensiveService.objects.all()
+    serializer_class = BasicComprehensiveServiceSerializer
+    filter_class = BasicComprehensiveServiceFilter
+    ordering_fields = ('name', )
+
+
+class BasicComprehensiveServiceDetailView(
+        generics.RetrieveUpdateDestroyAPIView):
+    queryset = BasicComprehensiveService.objects.all()
+    serializer_class = BasicComprehensiveServiceSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
@@ -102,6 +146,18 @@ class GeoCodeSourceDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GeoCodeSourceSerializer
 
 
+class ServiceCategoryListView(generics.ListCreateAPIView):
+    queryset = ServiceCategory.objects.all()
+    serializer_class = ServiceCategorySerializer
+    ordering_fields = ('name',)
+    filter_class = ServiceCategoryFilter
+
+
+class ServiceCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceCategory.objects.all()
+    serializer_class = ServiceCategorySerializer
+
+
 class OwnerTypeListView(generics.ListCreateAPIView):
     queryset = OwnerType.objects.all()
     serializer_class = OwnerTypeSerializer
@@ -150,6 +206,18 @@ class OwnerDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OwnerSerializer
 
 
+class ServiceListView(generics.ListCreateAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+    filter_class = ServiceFilter
+    ordering_fields = ('name', 'category', 'code',)
+
+
+class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+
 class FacilityListView(generics.ListCreateAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
@@ -163,6 +231,18 @@ class FacilityListView(generics.ListCreateAPIView):
 class FacilityDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
+
+
+class FacilityServiceListView(generics.ListCreateAPIView):
+    queryset = FacilityService.objects.all()
+    serializer_class = FacilityServiceSerializer
+    filter_class = FacilityServiceFilter
+    ordering_fields = ('facility', 'service',)
+
+
+class FacilityServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityService.objects.all()
+    serializer_class = FacilityServiceSerializer
 
 
 class FacilityContactListView(generics.ListCreateAPIView):
