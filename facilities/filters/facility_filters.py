@@ -158,8 +158,6 @@ class FacilityUnitFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
     facility = django_filters.AllValuesFilter(lookup_type='exact')
-    regulating_body = django_filters.AllValuesFilter(lookup_type='exact')
-    is_approved = django_filters.BooleanFilter(lookup_type='exact')
 
     class Meta:
         model = FacilityUnit

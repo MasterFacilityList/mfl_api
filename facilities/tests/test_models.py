@@ -302,36 +302,15 @@ class TestFacilityRegulationStatus(BaseTestCase):
 
 
 class TestFacilityUnitModel(BaseTestCase):
-    def test_save_with_regulating_body(self):
+
+    def test_string_representation(self):
         facility = mommy.make(Facility, name='AKUH')
-        regulating_body = mommy.make(RegulatingBody, name='PPB')
         data = {
             "facility": facility,
-            "name": "AKUH Pharmacy",
-            "description": "This is the AKUH Pharmacy section.",
-            "regulating_body": regulating_body
-        }
-        data = self.inject_audit_fields(data)
-        facility_unit = FacilityUnit.objects.create(**data)
-        self.assertEquals(1, FacilityUnit.objects.count())
-
-        expected_unicode = 'AKUH: AKUH Pharmacy'
-        self.assertEquals(expected_unicode, facility_unit.__unicode__())
-        self.assertEquals(facility_unit.unit_regulating_body, regulating_body)
-
-    def test_save_without_regulating_body(self):
-        regulating_body = mommy.make(RegulatingBody)
-        facility = mommy.make(Facility)
-        mommy.make(
-            FacilityRegulationStatus, facility=facility,
-            regulating_body=regulating_body)
-
-        data = {
-            "facility": facility,
-            "name": "AKUH Pharmacy",
+            "name": "Pharmacy",
             "description": "This is the AKUH Pharmacy section."
         }
         data = self.inject_audit_fields(data)
         facility_unit = FacilityUnit.objects.create(**data)
         self.assertEquals(1, FacilityUnit.objects.count())
-        self.assertEquals(regulating_body, facility_unit.unit_regulating_body)
+        self.assertEquals(str(facility_unit), 'AKUH: Pharmacy')

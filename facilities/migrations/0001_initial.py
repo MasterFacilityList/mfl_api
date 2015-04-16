@@ -149,9 +149,9 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.TextField(help_text=b'A short summary of the facility unit.')),
-                ('is_approved', models.BooleanField(default=False)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(to='facilities.Facility', on_delete=django.db.models.deletion.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -351,16 +351,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='officerincharge',
-            name='updated_by',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='facilityunit',
-            name='regulating_body',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='facilities.RegulatingBody', null=True),
-        ),
-        migrations.AddField(
-            model_name='facilityunit',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
