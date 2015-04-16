@@ -47,7 +47,7 @@ class UserList(generics.ListCreateAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
     filter_class = MFLUserFilter
-    ordering_fields = ('first_name', )
+    ordering_fields = ('first_name', 'last_name', 'email', 'username',)
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
