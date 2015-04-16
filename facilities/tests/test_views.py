@@ -214,7 +214,7 @@ class TestServiceView(LogginMixin, APITestCase):
 class TestFacilityView(LogginMixin, APITestCase):
     def setUp(self):
         super(TestFacilityView, self).setUp()
-        self.url = reverse('api:facilities:facility_list')
+        self.url = reverse('api:facilities:facilities_list')
 
     def test_facility_listing(self):
         facility_1 = mommy.make(Facility)
@@ -227,9 +227,9 @@ class TestFacilityView(LogginMixin, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                FacilitySerializer(facility_1).data,
+                FacilitySerializer(facility_3).data,
                 FacilitySerializer(facility_2).data,
-                FacilitySerializer(facility_3).data
+                FacilitySerializer(facility_1).data
             ]
         }
         self.assertEquals(200, response.status_code)
@@ -251,7 +251,7 @@ class TestFacilityView(LogginMixin, APITestCase):
 class TestFacilityStatusView(LogginMixin, APITestCase):
     def setUp(self):
         super(TestFacilityStatusView, self).setUp()
-        self.url = reverse("api:facilities:facility_status_list")
+        self.url = reverse("api:facilities:facility_statuses_list")
 
     def test_list_facility_status(self):
         status_1 = mommy.make(FacilityStatus)

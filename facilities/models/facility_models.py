@@ -1,5 +1,3 @@
-from django.core.exceptions import ValidationError
-
 import reversion
 
 from django.db import models
@@ -128,6 +126,10 @@ class OfficerIncharge(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'officer in charge'
+        verbose_name_plural = 'officers in charge'
+
 
 class ChoiceService(AbstractBase):
     """
@@ -140,7 +142,7 @@ class ChoiceService(AbstractBase):
         return self.name
 
 
-class KEHPLevelService(AbstractBase):
+class KEPHLevelService(AbstractBase):
     """
     Service Categories that are offered based on levels
     from level 1-6
@@ -171,7 +173,6 @@ class ServiceCategory(AbstractBase):
     The categorisation of services could either be:
         Given in terms of KEPH levels:
 
-
         Similar services are offered in the different KEPH levels:
             For example, Environmental Health Services offered in KEPH level
             2 are similar to those offered in KEPH level 3. If the KEPH level
@@ -194,23 +195,29 @@ class ServiceCategory(AbstractBase):
     choice_service = models.BooleanField(default=False)
     keph_level_service = models.BooleanField(default=False)
 
-    def validate_service_offer_types(self):
-        offers = [
-            self.b_c_service, self.choice_service, self.keph_level_service]
-        truths_count = offers.count(True)
-        if truths_count > 1:
-            raise ValidationError(
-                "A service category can only be of one choice type")
-        if truths_count < 1:
-            raise ValidationError(
-                "Indicate the type of choices for the service")
+    # TODO Deal with this code scare before the metadata ticket is closed
+    # This is a proper pain in the neck with the current metadata style
 
-    def clean(self, *args, **kwargs):
-        self.validate_service_offer_types()
-        super(ServiceCategory, self).clean(*args, **kwargs)
+    # def validate_service_offer_types(self):
+    #     offers = [
+    #         self.b_c_service, self.choice_service, self.keph_level_service]
+    #     truths_count = offers.count(True)
+    #     if truths_count > 1:
+    #         raise ValidationError(
+    #             "A service category can only be of one choice type")
+    #     if truths_count < 1:
+    #         raise ValidationError(
+    #             "Indicate the type of choices for the service")
+
+    # def clean(self, *args, **kwargs):
+    #     self.validate_service_offer_types()
+    #     super(ServiceCategory, self).clean(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'service categories'
 
 
 @reversion.register
@@ -245,6 +252,9 @@ class Service(AbstractBase, SequenceMixin):
     def __unicode__(self):
         return self.name
 
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'services'
+
 
 @reversion.register
 class FacilityStatus(AbstractBase):
@@ -266,6 +276,9 @@ class FacilityStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'facility statuses'
+
 
 @reversion.register
 class FacilityType(AbstractBase):
@@ -281,7 +294,7 @@ class FacilityType(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         unique_together = ('name', 'sub_division', )
 
 
@@ -307,6 +320,9 @@ class RegulatingBody(AbstractBase):
 
     def __unicode__(self):
         return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'regulating bodies'
 
 
 @reversion.register
@@ -355,6 +371,9 @@ class RegulationStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'regulation_statuses'
+
 
 @reversion.register
 class FacilityRegulationStatus(AbstractBase):
@@ -379,8 +398,8 @@ class FacilityRegulationStatus(AbstractBase):
         return "{}: {}".format(
             self.facility.name, self.regulation_status.name)
 
-    class Meta:
-        ordering = ('-created', )
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'facility regulation statuses'
 
 
 @reversion.register
@@ -399,32 +418,36 @@ class FacilityService(AbstractBase):
     choice_service = models.ForeignKey(
         ChoiceService, null=True, blank=True, on_delete=models.PROTECT)
     keph_level_service = models.ForeignKey(
-        KEHPLevelService, null=True, blank=True, on_delete=models.PROTECT)
+        KEPHLevelService, null=True, blank=True, on_delete=models.PROTECT)
     b_c_service = models.ForeignKey(
         BasicComprehensiveService, null=True, blank=True,
         on_delete=models.PROTECT)
 
     def validate_only_one_service_level_chosen(self):
-        service_choices = [
-            self.choice_service, self.keph_level_service, self.b_c_service]
-        services_choices_nulls_count = service_choices.count(None)
-        if services_choices_nulls_count != 2:
-            raise ValidationError("One service level choice is required.")
+        pass
+        # TODO Re-implement this when completing the metadata ticket
+        # service_choices = [
+        #     self.choice_service, self.keph_level_service, self.b_c_service]
+        # services_choices_nulls_count = service_choices.count(None)
+        # if services_choices_nulls_count != 2:
+        #     raise ValidationError("One service level choice is required.")
 
     def validate_service_offer_choices(self):
-        if self.service.category.b_c_service and not self.b_c_service:
-            raise ValidationError(
-                "Basic or Comprehensive choice is required for the service"
-            )
-        if self.service.category.keph_level_service and not \
-                self.keph_level_service:
-            raise ValidationError(
-                "KEPH level is required for the service."
-            )
-        if self.service.category.choice_service and not self.choice_service:
-            raise ValidationError(
-                "A YES/NO choice is required for the service."
-            )
+        pass
+        # TODO Re-implement this when completing the metadata ticket
+        # if self.service.category.b_c_service and not self.b_c_service:
+        #     raise ValidationError(
+        #         "Basic or Comprehensive choice is required for the service"
+        #     )
+        # if self.service.category.keph_level_service and not \
+        #         self.keph_level_service:
+        #     raise ValidationError(
+        #         "KEPH level is required for the service."
+        #     )
+        # if self.service.category.choice_service and not self.choice_service:
+        #     raise ValidationError(
+        #         "A YES/NO choice is required for the service."
+        #     )
 
     def clean(self, *args, **kwargs):
         self.validate_only_one_service_level_chosen()
@@ -433,6 +456,9 @@ class FacilityService(AbstractBase):
 
     def __unicode__(self):
         return "{}: {}".format(self.facility.name, self.service.name)
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'facility services'
 
 
 @reversion.register
@@ -535,8 +561,8 @@ class Facility(AbstractBase, SequenceMixin):
     def __unicode__(self):
         return self.name
 
-    class Meta:
-        verbose_name_plural = 'Facilities'
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'facilities'
 
 
 @reversion.register
@@ -589,7 +615,7 @@ class GeoCodeMethod(AbstractBase):
 
 
 @reversion.register
-class FacilityGPS(AbstractBase):
+class FacilityCoordinates(AbstractBase):
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
 
@@ -617,6 +643,10 @@ class FacilityGPS(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'facility coordinates'
+        verbose_name = 'facility coordinates'
 
 
 @reversion.register

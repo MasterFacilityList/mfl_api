@@ -1,21 +1,18 @@
 from rest_framework import generics
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
 
-from .models import (
+from ..models import (
     Contact, PhysicalAddress, County, Ward, Constituency, ContactType,
-    UserCounties, UserResidence, UserContact, Town)
+    UserCounty, UserResidence, UserContact, Town)
 
-from .serializers import (
+from ..serializers import (
     ContactSerializer, CountySerializer, WardSerializer,
     PhysicalAddressSerializer, ConstituencySerializer,
     ContactTypeSerializer, InchargeCountiesSerializer,
     UserResidenceSerializer, UserContactSerializer, TownSerializer)
 
-from .filters import (
+from ..filters import (
     ContactTypeFilter, ContactFilter, PhysicalAddressFilter,
-    CountyFilter, ConstituencyFilter, WardFilter, UserCountiesFilter,
+    CountyFilter, ConstituencyFilter, WardFilter, UserCountyFilter,
     UserResidenceFilter, UserContactFilter, TownFilter)
 
 
@@ -91,15 +88,15 @@ class ContactTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ContactTypeSerializer
 
 
-class UserCountiesView(generics.ListCreateAPIView):
-    queryset = UserCounties.objects.all()
+class UserCountyView(generics.ListCreateAPIView):
+    queryset = UserCounty.objects.all()
     serializer_class = InchargeCountiesSerializer
-    filter_class = UserCountiesFilter
+    filter_class = UserCountyFilter
     ordering_fields = ('user', 'county',)
 
 
 class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserCounties.objects.all()
+    queryset = UserCounty.objects.all()
     serializer_class = InchargeCountiesSerializer
 
 
@@ -137,29 +134,3 @@ class TownListView(generics.ListCreateAPIView):
 class TownDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Town.objects.all()
     serializer_class = TownSerializer
-
-
-@api_view(('GET',))
-def api_root(request, format=None):
-    return Response({
-        'counties': reverse(
-            'api:common:counties_list', request=request, format=format),
-        'users': reverse(
-            'api:users:users_list', request=request, format=format),
-        'facilities': reverse(
-            'api:facilities:facility_list', request=request, format=format),
-        'contacts': reverse(
-            'api:common:contacts_list', request=request, format=format),
-        'contact_types': reverse(
-            'api:common:contact_types_list', request=request, format=format),
-        'wards': reverse(
-            'api:common:wards_list', request=request, format=format),
-        'constituencies': reverse(
-            'api:common:constituencies_list', request=request, format=format),
-        'owners': reverse(
-            'api:facilities:owners_list', request=request, format=format),
-        'owner_types': reverse(
-            'api:facilities:facility_list', request=request, format=format),
-        'services': reverse(
-            'api:facilities:services_list', request=request, format=format)
-    })

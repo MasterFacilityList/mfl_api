@@ -118,6 +118,9 @@ Running tests
 ------------
 TODO
 
+Credits
+--------
+Developed and maintained by Savannah Informatics Limited | info@savannahinformatics.com
 
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/MasterFacilityList/mfl_api

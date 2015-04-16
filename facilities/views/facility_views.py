@@ -6,14 +6,14 @@ from ..models import (
     Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityGPS,
-    FacilityService, FacilityContact, FacilityUnit, ChoiceService,
-    KEHPLevelService, BasicComprehensiveService
+    GeoCodeMethod, FacilityCoordinates,
+    FacilityService, FacilityContact, FacilityUnit,
+    ChoiceService, KEPHLevelService, BasicComprehensiveService
 )
 
 from ..serializers import (
     OwnerSerializer, ServiceSerializer, FacilitySerializer,
-    FacilityGPSSerializer, FacilityContactSerializer,
+    FacilityCoordinatesSerializer, FacilityContactSerializer,
     FacilityServiceSerializer, FacilityStatusSerializer,
     FacilityTypeSerializer, JobTitleSerializer,
     OfficerInchargeSerializer, RegulatingBodySerializer,
@@ -21,19 +21,18 @@ from ..serializers import (
     ServiceCategorySerializer, OwnerTypeSerializer,
     OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
     FacilityUnitSerializer, ChoiceServiceSerializer,
-    KEHPLevelServiceSerializer, BasicComprehensiveServiceSerializer
+    KEPHLevelServiceSerializer, BasicComprehensiveServiceSerializer
 )
-
 from ..filters import (
-
-    FacilityFilter, ServiceFilter, FacilityGPSFilter, FacilityStatusFilter,
+    FacilityFilter, ServiceFilter, FacilityCoordinatesFilter,
+    FacilityStatusFilter,
     OwnerFilter, JobTitleFilter, FacilityUnitFilter, OfficerInchargeFilter,
     RegulatingBodyFilter, GeoCodeSourceFilter, ServiceCategoryFilter,
     OwnerTypeFilter, OfficerInchargeContactFilter, GeoCodeMethodFilter,
     FacilityServiceFilter, FacilityContactFilter, FacilityTypeFilter,
     FacilityRegulationStatusFilter, RegulationStatusFilter,
     ChoiceServiceFilter,
-    KEHPLevelServiceFilter, BasicComprehensiveServiceFilter
+    KEPHLevelServiceFilter, BasicComprehensiveServiceFilter
 
 )
 
@@ -51,15 +50,15 @@ class ChoiceServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class KEPHLevelServiceListView(generics.ListCreateAPIView):
-    queryset = KEHPLevelService.objects.all()
-    serializer_class = KEHPLevelServiceSerializer
-    filter_class = KEHPLevelServiceFilter
+    queryset = KEPHLevelService.objects.all()
+    serializer_class = KEPHLevelServiceSerializer
+    filter_class = KEPHLevelServiceFilter
     ordering_fields = ('name', )
 
 
 class KEPHLevelServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = KEHPLevelService.objects.all()
-    serializer_class = KEHPLevelServiceSerializer
+    queryset = KEPHLevelService.objects.all()
+    serializer_class = KEPHLevelServiceSerializer
 
 
 class BasicComprehensiveSeviceListView(generics.ListCreateAPIView):
@@ -229,7 +228,7 @@ class FacilityListView(generics.ListCreateAPIView):
     )
 
 
-class FaciltyDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
 
@@ -258,17 +257,17 @@ class FacilityContactDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FacilityContactSerializer
 
 
-class FacilityGPSListView(generics.ListCreateAPIView):
-    queryset = FacilityGPS.objects.all()
-    serializer_class = FacilityGPSSerializer
-    filter_class = FacilityGPSFilter
+class FacilityCoordinatesListView(generics.ListCreateAPIView):
+    queryset = FacilityCoordinates.objects.all()
+    serializer_class = FacilityCoordinatesSerializer
+    filter_class = FacilityCoordinatesFilter
     ordering_fields = (
         'facility', 'latitude', 'longitude', 'source', 'method',)
 
 
-class FacilityGPSDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityGPS.objects.all()
-    serializer_class = FacilityGPSSerializer
+class FacilityCoordinatesDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityCoordinates.objects.all()
+    serializer_class = FacilityCoordinatesSerializer
 
 
 class FacilityRegulationStatusListView(generics.ListCreateAPIView):

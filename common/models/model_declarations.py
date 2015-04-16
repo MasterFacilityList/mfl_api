@@ -90,6 +90,9 @@ class PhysicalAddress(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(self.postal_code, self.address)
 
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'physical addresses'
+
 
 @reversion.register
 class RegionAbstractBase(AbstractBase, SequenceMixin):
@@ -118,7 +121,7 @@ class RegionAbstractBase(AbstractBase, SequenceMixin):
             self.code = self.generate_next_code_sequence()
         super(RegionAbstractBase, self).save(*args, **kwargs)
 
-    class Meta:
+    class Meta(AbstractBase.Meta):
         abstract = True
 
 
@@ -132,6 +135,9 @@ class County(RegionAbstractBase):
     Code generation is handled by the custom save method in RegionAbstractBase
     """
     pass  # Everything, including __unicode__ is handled by the abstract model
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'counties'
 
 
 @reversion.register
@@ -149,6 +155,9 @@ class Constituency(RegionAbstractBase):
         County,
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'constituencies'
 
 
 @reversion.register
@@ -173,7 +182,7 @@ class Ward(RegionAbstractBase):
 
 
 @reversion.register
-class UserCounties(AbstractBase):
+class UserCounty(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of.
 
@@ -191,14 +200,18 @@ class UserCounties(AbstractBase):
         """
         A user can be incharge of only one county at the a time.
         """
-        counties = self.__class__.objects.filter(user=self.user, active=True)
-        if counties.count() > 0:
+        counties = self.__class__.objects.filter(
+            user=self.user, active=True, deleted=False)
+        if counties.count() > 0 and not self.deleted:
             raise ValidationError(
                 "A user can only be active in one county at a time")
 
     def save(self, *args, **kwargs):
         self.validate_only_one_county_active()
-        super(UserCounties, self).save(*args, **kwargs)
+        super(UserCounty, self).save(*args, **kwargs)
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'user_counties'
 
 
 @reversion.register
@@ -216,8 +229,9 @@ class UserResidence(AbstractBase):
         return self.user.email + ": " + self.ward.name
 
     def validate_user_residing_in_one_place_at_a_time(self):
-        user_wards = self.__class__.objects.filter(user=self.user, active=True)
-        if user_wards.count() > 0:
+        user_wards = self.__class__.objects.filter(
+            user=self.user, active=True, deleted=False)
+        if user_wards.count() > 0 and not self.deleted:
             raise ValidationError(
                 "User can only reside in one ward at a a time")
 

@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 
 from rest_framework.test import APITestCase
+from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
 from ..models import (
@@ -13,6 +14,7 @@ from ..models import (
 from ..serializers import (
     ContactSerializer, WardSerializer, CountySerializer,
     ConstituencySerializer, UserResidenceSerializer, UserContactSerializer)
+from ..views import APIRoot
 from .test_models import BaseTestCase
 
 
@@ -26,6 +28,7 @@ class LogginMixin(object):
     def setUp(self):
         self.user = mommy.make(get_user_model())
         self.client.force_authenticate(user=self.user)
+        self.maxDiff = None
         super(LogginMixin, self).setUp()
 
 
@@ -56,8 +59,8 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                CountySerializer(county).data,
-                CountySerializer(county_2).data
+                CountySerializer(county_2).data,
+                CountySerializer(county).data
             ]
         }
         self.assertEquals(
@@ -101,8 +104,8 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                ConstituencySerializer(constituency).data,
-                ConstituencySerializer(constituency_2).data
+                ConstituencySerializer(constituency_2).data,
+                ConstituencySerializer(constituency).data
             ]
         }
         # some weird ordering the dumps string
@@ -154,8 +157,8 @@ class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
             "next": None,
             "previous": None,
             "results": [
-                WardSerializer(ward_1).data,
-                WardSerializer(ward_2).data
+                WardSerializer(ward_2).data,
+                WardSerializer(ward_1).data
             ]
         }
         self.assertEquals(
@@ -303,15 +306,54 @@ class TestTownView(LogginMixin, BaseTestCase, APITestCase):
 
 
 class TestAPIRootView(APITestCase):
-    def test_list_endpoints(self):
-        url = reverse('api:common:url_listing')
-        response = self.client.get(url)
+    def setUp(self):
+        self.url = reverse('api:root_listing')
+        super(TestAPIRootView, self).setUp()
+
+    def test_api_root_exception_path(self):
+        with self.assertRaises(ValidationError) as c:
+            # A null request is guaranteed to "tickle" something
+            root_view = APIRoot()
+            root_view.get(request=None)
+
+        self.assertEqual(
+            c.exception.message, 'Could not create root / metadata view')
+
+    def test_api_and_metadata_root_view(self):
+        """
+        So, you've landed here, presumably after an exasperating test failure
+        ( probably cursing under your breath ).
+
+        There's a high chance that one of two things is wrong:
+
+            * you have a concrete model in an app that is in
+            `settings.LOCAL_APPS` that has no list & detail views and URLs OR
+            * you violated the URL naming conventions (for the `name` param )
+
+        What are these naming conventions, I hear you ask...
+
+            * detail views -> 'api:<app_name>:<applicable_model_verbose_name>'
+            * list views ->
+                'api:<app_name>:<applicable_model_verbose_name_plural>'
+
+        If Django gives your model a funny `verbose_name_plural` ( because
+        it ends with a 'y' or 's' and silly Django just appends an 's' ),
+        set a better `verbose_name_plural` in the model's `Meta`. Once in
+        a while, Django will also pick a `verbose_name` that is not to your
+        liking; you can override that too.
+
+        PS: Yes, this is a bitch. It is also a good discipline master.
+        And - it is stupid, only assembling metadata for CRUD views.
+        """
+        # It is not the size of the dog in the fight that matters...
+        # This is one sensitive bitch of a test!
+        response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
 
 
 class TestUserResidenceView(LogginMixin, APITestCase):
     def setUp(self):
-        self.url = reverse("api:common:user_wards_list")
+        self.url = reverse("api:common:user_residences_list")
         super(TestUserResidenceView, self).setUp()
 
     def test_list_user_wards(self):

@@ -64,8 +64,8 @@ class TestCommonFieldsFilterset(LogginMixin, BaseTestCase, APITestCase):
                 "next": None,
                 "previous": None,
                 "results": [
-                    CountySerializer(active_county).data,
-                    CountySerializer(inactive_county).data
+                    CountySerializer(inactive_county).data,
+                    CountySerializer(active_county).data
                 ]
             })
         )

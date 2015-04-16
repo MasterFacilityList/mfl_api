@@ -8,9 +8,9 @@ from ..models import (
     Service, FacilityStatus, FacilityType,
     RegulatingBody, RegulationStatus, Facility,
     FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityGPS,
+    GeoCodeMethod, FacilityCoordinates,
     FacilityService, FacilityContact, FacilityUnit,
-    ChoiceService, KEHPLevelService, BasicComprehensiveService
+    ChoiceService, KEPHLevelService, BasicComprehensiveService
 )
 
 
@@ -118,10 +118,10 @@ class FacilityContactSerializer(
         model = FacilityContact
 
 
-class FacilityGPSSerializer(
+class FacilityCoordinatesSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = FacilityGPS
+        model = FacilityCoordinates
 
 
 class FacilityUnitSerializer(
@@ -136,10 +136,10 @@ class ChoiceServiceSerializer(
         model = ChoiceService
 
 
-class KEHPLevelServiceSerializer(
+class KEPHLevelServiceSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = KEHPLevelService
+        model = KEPHLevelService
 
 
 class BasicComprehensiveServiceSerializer(
