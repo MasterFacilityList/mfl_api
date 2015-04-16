@@ -98,5 +98,6 @@ setup(
         "pytz>=2015.2",
         "django-extensions>=1.5.2",
         "pygraphviz>=1.2",
+        "werkzeug>=0.10.4",
     ],
 )
