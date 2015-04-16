@@ -7,11 +7,11 @@ from ..models import (
     JobTitle,
     FacilityUnit,
     FacilityStatus,
-    OfficerIncharge,
+    Officer,
     RegulatingBody,
     GeoCodeSource,
     OwnerType,
-    OfficerInchargeContact,
+    OfficerContact,
     GeoCodeMethod,
     FacilityContact,
     FacilityRegulationStatus,
@@ -48,21 +48,21 @@ class JobTitleFilter(CommonFieldsFilterset):
         model = JobTitle
 
 
-class OfficerInchargeContactFilter(CommonFieldsFilterset):
+class OfficerContactFilter(CommonFieldsFilterset):
     officer = django_filters.AllValuesFilter(lookup_type='icontains')
     contact = django_filters.AllValuesFilter(lookup_type='icontains')
 
     class Meta:
-        model = OfficerInchargeContact
+        model = OfficerContact
 
 
-class OfficerInchargeFilter(CommonFieldsFilterset):
+class OfficerFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     registration_number = django_filters.CharFilter(lookup_type='icontains')
     job_title = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
-        model = OfficerIncharge
+        model = Officer
 
 
 class FacilityStatusFilter(CommonFieldsFilterset):

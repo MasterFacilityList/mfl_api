@@ -6,8 +6,8 @@ from ..models import (
     OwnerType,
     Owner,
     JobTitle,
-    OfficerIncharge,
-    OfficerInchargeContact,
+    Officer,
+    OfficerContact,
     FacilityStatus,
     FacilityType,
     RegulatingBody,
@@ -63,10 +63,10 @@ class FacilityTypeSerializer(serializers.ModelSerializer):
         model = FacilityType
 
 
-class OfficerInchargeContactSerializer(
+class OfficerContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = OfficerInchargeContact
+        model = OfficerContact
 
 
 class JobTitleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
@@ -80,10 +80,10 @@ class RegulationStatusSerializer(
         model = RegulationStatus
 
 
-class OfficerInchargeSerializer(
+class OfficerSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = OfficerIncharge
+        model = Officer
 
 
 class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):

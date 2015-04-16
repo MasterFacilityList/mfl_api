@@ -214,7 +214,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='OfficerIncharge',
+            name='Officer',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
@@ -231,7 +231,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='OfficerInchargeContact',
+            name='OfficerContact',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
@@ -240,7 +240,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('contact', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Contact', help_text=b'The contact of the officer incharge may it be email,  mobile number etc')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('officer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='facilities.OfficerIncharge', help_text=b'The is the officer in charge')),
+                ('officer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='facilities.Officer', help_text=b'The is the officer in charge')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -335,22 +335,22 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='officerincharge',
+            model_name='officer',
             name='contacts',
-            field=models.ManyToManyField(help_text=b'Personal contacts of the officer in charge', to='common.Contact', through='facilities.OfficerInchargeContact'),
+            field=models.ManyToManyField(help_text=b'Personal contacts of the officer in charge', to='common.Contact', through='facilities.OfficerContact'),
         ),
         migrations.AddField(
-            model_name='officerincharge',
+            model_name='officer',
             name='created_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='officerincharge',
+            model_name='officer',
             name='job_title',
             field=models.ForeignKey(to='facilities.JobTitle', on_delete=django.db.models.deletion.PROTECT),
         ),
         migrations.AddField(
-            model_name='officerincharge',
+            model_name='officer',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
@@ -402,7 +402,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='officer_in_charge',
-            field=models.ForeignKey(help_text=b'The officer in charge of the facility', to='facilities.OfficerIncharge'),
+            field=models.ForeignKey(help_text=b'The officer in charge of the facility', to='facilities.Officer'),
         ),
         migrations.AddField(
             model_name='facility',

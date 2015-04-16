@@ -4,8 +4,8 @@ from ..models import (
     OwnerType,
     Owner,
     JobTitle,
-    OfficerIncharge,
-    OfficerInchargeContact,
+    Officer,
+    OfficerContact,
     FacilityStatus,
     FacilityType,
     RegulatingBody,
@@ -27,12 +27,12 @@ from ..serializers import (
     FacilityStatusSerializer,
     FacilityTypeSerializer,
     JobTitleSerializer,
-    OfficerInchargeSerializer,
+    OfficerSerializer,
     RegulatingBodySerializer,
     GeoCodeMethodSerializer,
     GeoCodeSourceSerializer,
     OwnerTypeSerializer,
-    OfficerInchargeContactSerializer,
+    OfficerContactSerializer,
     FacilityRegulationStatusSerializer,
     FacilityUnitSerializer
 )
@@ -43,11 +43,11 @@ from ..filters import (
     OwnerFilter,
     JobTitleFilter,
     FacilityUnitFilter,
-    OfficerInchargeFilter,
+    OfficerFilter,
     RegulatingBodyFilter,
     GeoCodeSourceFilter,
     OwnerTypeFilter,
-    OfficerInchargeContactFilter,
+    OfficerContactFilter,
     GeoCodeMethodFilter,
     FacilityContactFilter,
     FacilityTypeFilter,
@@ -92,16 +92,16 @@ class JobTitleDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = JobTitleSerializer
 
 
-class OfficerInchargeListView(generics.ListCreateAPIView):
-    queryset = OfficerIncharge.objects.all()
-    serializer_class = OfficerInchargeSerializer
+class OfficerListView(generics.ListCreateAPIView):
+    queryset = Officer.objects.all()
+    serializer_class = OfficerSerializer
     ordering_fields = ('name', 'job_title', 'registration_number',)
-    filter_class = OfficerInchargeFilter
+    filter_class = OfficerFilter
 
 
-class OfficerInchargeDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = OfficerIncharge.objects.all()
-    serializer_class = OfficerInchargeSerializer
+class OfficerDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Officer.objects.all()
+    serializer_class = OfficerSerializer
 
 
 class RegulatingBodyListView(generics.ListCreateAPIView):
@@ -140,16 +140,16 @@ class OwnerTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OwnerTypeSerializer
 
 
-class OfficerInchargeContactListView(generics.ListCreateAPIView):
-    queryset = OfficerInchargeContact.objects.all()
-    serializer_class = OfficerInchargeContactSerializer
+class OfficerContactListView(generics.ListCreateAPIView):
+    queryset = OfficerContact.objects.all()
+    serializer_class = OfficerContactSerializer
     ordering_fields = ('officer', 'contact',)
-    filter_class = OfficerInchargeContactFilter
+    filter_class = OfficerContactFilter
 
 
-class OfficerInchargeContactDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = OfficerInchargeContact.objects.all()
-    serializer_class = OfficerInchargeContactSerializer
+class OfficerContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = OfficerContact.objects.all()
+    serializer_class = OfficerContactSerializer
 
 
 class GeoCodeMethodListView(generics.ListCreateAPIView):

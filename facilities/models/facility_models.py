@@ -92,7 +92,7 @@ class JobTitle(AbstractBase):
 
 
 @reversion.register
-class OfficerInchargeContact(AbstractBase):
+class OfficerContact(AbstractBase):
     """
     The contact details of the officer incharge.
 
@@ -100,7 +100,7 @@ class OfficerInchargeContact(AbstractBase):
     Also the number of email addresses is not limited.
     """
     officer = models.ForeignKey(
-        'OfficerIncharge',
+        'Officer',
         help_text="The is the officer in charge", on_delete=models.PROTECT)
     contact = models.ForeignKey(
         Contact,
@@ -112,9 +112,9 @@ class OfficerInchargeContact(AbstractBase):
 
 
 @reversion.register
-class OfficerIncharge(AbstractBase):
+class Officer(AbstractBase):
     """
-    Identify the officer in-charge of a facility.
+    Identify officers in-charge of facilities
     """
     name = models.CharField(
         max_length=150,
@@ -126,7 +126,7 @@ class OfficerIncharge(AbstractBase):
     job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
 
     contacts = models.ManyToManyField(
-        Contact, through=OfficerInchargeContact,
+        Contact, through=OfficerContact,
         help_text='Personal contacts of the officer in charge')
 
     def __unicode__(self):
@@ -359,7 +359,7 @@ class Facility(AbstractBase, SequenceMixin):
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
     officer_in_charge = models.ForeignKey(
-        OfficerIncharge, help_text="The officer in charge of the facility")
+        Officer, help_text="The officer in charge of the facility")
     physical_address = models.ForeignKey(
         PhysicalAddress,
         help_text="Postal and courier addressing for the facility")
