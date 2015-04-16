@@ -10,5 +10,4 @@ urlpatterns = patterns(
     url(r'^$', UserList.as_view(), name='users_list'),
     url(r'^(?P<pk>[^/]+)/$', UserDetailView.as_view(),
         name='user_detail'),
-
 )

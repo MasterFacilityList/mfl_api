@@ -6,12 +6,23 @@ from common.tests.test_models import BaseTestCase
 from common.models import Contact, Ward, PhysicalAddress
 
 from ..models import (
-    OwnerType, Owner, JobTitle, OfficerIncharge,
-    OfficerInchargeContact, FacilityStatus, FacilityType,
-    RegulatingBody, RegulationStatus, Facility,
-    FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityCoordinates,
-    FacilityContact, FacilityUnit)
+    OwnerType,
+    Owner,
+    JobTitle,
+    Officer,
+    OfficerContact,
+    FacilityStatus,
+    FacilityType,
+    RegulatingBody,
+    RegulationStatus,
+    Facility,
+    FacilityRegulationStatus,
+    GeoCodeSource,
+    GeoCodeMethod,
+    FacilityCoordinates,
+    FacilityContact,
+    FacilityUnit
+)
 
 
 class TestOwnerTypes(BaseTestCase):
@@ -73,7 +84,7 @@ class TestJobTitleModel(BaseTestCase):
         self.assertEquals("Nurse officer incharge", jt.__unicode__())
 
 
-class TestOfficerIncharge(BaseTestCase):
+class TestOfficer(BaseTestCase):
     def test_save(self):
         jt = mommy.make(JobTitle)
         data = {
@@ -82,24 +93,24 @@ class TestOfficerIncharge(BaseTestCase):
             "job_title": jt
         }
         data = self.inject_audit_fields(data)
-        officer = OfficerIncharge.objects.create(**data)
-        self.assertEquals(1, OfficerIncharge.objects.count())
+        officer = Officer.objects.create(**data)
+        self.assertEquals(1, Officer.objects.count())
 
         # test unicode
         self.assertEquals("Kimani Maruge", officer.__unicode__())
 
 
-class TestOfficerInchargeContactModel(BaseTestCase):
+class TestOfficerContactModel(BaseTestCase):
     def test_save(self):
-        officer = mommy.make(OfficerIncharge, name='Maruge')
+        officer = mommy.make(Officer, name='Maruge')
         contact = mommy.make(Contact, contact='maruge@gmail.com')
         data = {
             "officer": officer,
             "contact": contact
         }
         data = self.inject_audit_fields(data)
-        contact = OfficerInchargeContact.objects.create(**data)
-        self.assertEquals(1, OfficerInchargeContact.objects.count())
+        contact = OfficerContact.objects.create(**data)
+        self.assertEquals(1, OfficerContact.objects.count())
 
         # test unicode
         expected = "Maruge: maruge@gmail.com"
@@ -153,7 +164,7 @@ class TestFacility(BaseTestCase):
     def test_save(self):
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
-        officer_in_charge = mommy.make(OfficerIncharge)
+        officer_in_charge = mommy.make(Officer)
         regulating_body = mommy.make(RegulatingBody)
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)

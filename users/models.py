@@ -5,7 +5,10 @@ from django.utils import timezone
 from django.core.validators import validate_email, RegexValidator
 from django.contrib.auth.models import make_password
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin)
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin
+)
 from django.conf import settings
 
 

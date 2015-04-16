@@ -1,19 +1,38 @@
 from rest_framework import generics
 
 from ..models import (
-    Contact, PhysicalAddress, County, Ward, Constituency, ContactType,
-    UserCounty, UserContact, Town)
-
+    Contact,
+    PhysicalAddress,
+    County,
+    Ward,
+    Constituency,
+    ContactType,
+    UserCounty,
+    UserContact,
+    Town
+)
 from ..serializers import (
-    ContactSerializer, CountySerializer, WardSerializer,
-    PhysicalAddressSerializer, ConstituencySerializer,
-    ContactTypeSerializer, InchargeCountiesSerializer,
-    UserContactSerializer, TownSerializer)
-
+    ContactSerializer,
+    CountySerializer,
+    WardSerializer,
+    PhysicalAddressSerializer,
+    ConstituencySerializer,
+    ContactTypeSerializer,
+    InchargeCountiesSerializer,
+    UserContactSerializer,
+    TownSerializer
+)
 from ..filters import (
-    ContactTypeFilter, ContactFilter, PhysicalAddressFilter,
-    CountyFilter, ConstituencyFilter, WardFilter, UserCountyFilter,
-    UserContactFilter, TownFilter)
+    ContactTypeFilter,
+    ContactFilter,
+    PhysicalAddressFilter,
+    CountyFilter,
+    ConstituencyFilter,
+    WardFilter,
+    UserCountyFilter,
+    UserContactFilter,
+    TownFilter
+)
 
 
 class ContactView(generics.ListCreateAPIView):

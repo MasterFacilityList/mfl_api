@@ -1,32 +1,58 @@
 from rest_framework import generics
 
 from ..models import (
-    OwnerType, Owner, JobTitle, OfficerIncharge,
-    OfficerInchargeContact, FacilityStatus, FacilityType,
-    RegulatingBody, RegulationStatus, Facility,
-    FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityCoordinates, FacilityContact, FacilityUnit
+    OwnerType,
+    Owner,
+    JobTitle,
+    Officer,
+    OfficerContact,
+    FacilityStatus,
+    FacilityType,
+    RegulatingBody,
+    RegulationStatus,
+    Facility,
+    FacilityRegulationStatus,
+    GeoCodeSource,
+    GeoCodeMethod,
+    FacilityCoordinates,
+    FacilityContact,
+    FacilityUnit
 )
 
 from ..serializers import (
-    OwnerSerializer, FacilitySerializer,
-    FacilityCoordinatesSerializer, FacilityContactSerializer,
+    OwnerSerializer,
+    FacilitySerializer,
+    FacilityCoordinatesSerializer,
+    FacilityContactSerializer,
     FacilityStatusSerializer,
-    FacilityTypeSerializer, JobTitleSerializer,
-    OfficerInchargeSerializer, RegulatingBodySerializer,
-    GeoCodeMethodSerializer, GeoCodeSourceSerializer,
+    FacilityTypeSerializer,
+    JobTitleSerializer,
+    OfficerSerializer,
+    RegulatingBodySerializer,
+    GeoCodeMethodSerializer,
+    GeoCodeSourceSerializer,
     OwnerTypeSerializer,
-    OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
+    OfficerContactSerializer,
+    FacilityRegulationStatusSerializer,
     FacilityUnitSerializer
 )
 from ..filters import (
-    FacilityFilter, FacilityCoordinatesFilter,
+    FacilityFilter,
+    FacilityCoordinatesFilter,
     FacilityStatusFilter,
-    OwnerFilter, JobTitleFilter, FacilityUnitFilter, OfficerInchargeFilter,
-    RegulatingBodyFilter, GeoCodeSourceFilter,
-    OwnerTypeFilter, OfficerInchargeContactFilter, GeoCodeMethodFilter,
-    FacilityContactFilter, FacilityTypeFilter,
-    FacilityRegulationStatusFilter, RegulationStatusFilter
+    OwnerFilter,
+    JobTitleFilter,
+    FacilityUnitFilter,
+    OfficerFilter,
+    RegulatingBodyFilter,
+    GeoCodeSourceFilter,
+    OwnerTypeFilter,
+    OfficerContactFilter,
+    GeoCodeMethodFilter,
+    FacilityContactFilter,
+    FacilityTypeFilter,
+    FacilityRegulationStatusFilter,
+    RegulationStatusFilter
 )
 
 
@@ -66,16 +92,16 @@ class JobTitleDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = JobTitleSerializer
 
 
-class OfficerInchargeListView(generics.ListCreateAPIView):
-    queryset = OfficerIncharge.objects.all()
-    serializer_class = OfficerInchargeSerializer
+class OfficerListView(generics.ListCreateAPIView):
+    queryset = Officer.objects.all()
+    serializer_class = OfficerSerializer
     ordering_fields = ('name', 'job_title', 'registration_number',)
-    filter_class = OfficerInchargeFilter
+    filter_class = OfficerFilter
 
 
-class OfficerInchargeDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = OfficerIncharge.objects.all()
-    serializer_class = OfficerInchargeSerializer
+class OfficerDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Officer.objects.all()
+    serializer_class = OfficerSerializer
 
 
 class RegulatingBodyListView(generics.ListCreateAPIView):
@@ -114,16 +140,16 @@ class OwnerTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OwnerTypeSerializer
 
 
-class OfficerInchargeContactListView(generics.ListCreateAPIView):
-    queryset = OfficerInchargeContact.objects.all()
-    serializer_class = OfficerInchargeContactSerializer
+class OfficerContactListView(generics.ListCreateAPIView):
+    queryset = OfficerContact.objects.all()
+    serializer_class = OfficerContactSerializer
     ordering_fields = ('officer', 'contact',)
-    filter_class = OfficerInchargeContactFilter
+    filter_class = OfficerContactFilter
 
 
-class OfficerInchargeContactDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = OfficerInchargeContact.objects.all()
-    serializer_class = OfficerInchargeContactSerializer
+class OfficerContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = OfficerContact.objects.all()
+    serializer_class = OfficerContactSerializer
 
 
 class GeoCodeMethodListView(generics.ListCreateAPIView):

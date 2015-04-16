@@ -1,8 +1,16 @@
 import django_filters
 
 from ..models import (
-    ContactType, Contact, County, Constituency, Ward, UserCounty,
-    PhysicalAddress, UserContact, Town)
+    ContactType,
+    Contact,
+    County,
+    Constituency,
+    Ward,
+    UserCounty,
+    PhysicalAddress,
+    UserContact,
+    Town
+)
 from .filter_shared import CommonFieldsFilterset
 
 

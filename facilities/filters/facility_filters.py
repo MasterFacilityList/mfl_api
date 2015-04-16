@@ -1,10 +1,22 @@
 import django_filters
 
 from ..models import (
-    Owner, Facility, FacilityCoordinates, JobTitle, FacilityUnit,
-    FacilityStatus, OfficerIncharge, RegulatingBody, GeoCodeSource,
-    OwnerType, OfficerInchargeContact, GeoCodeMethod, FacilityContact,
-    FacilityRegulationStatus, FacilityType, RegulationStatus
+    Owner,
+    Facility,
+    FacilityCoordinates,
+    JobTitle,
+    FacilityUnit,
+    FacilityStatus,
+    Officer,
+    RegulatingBody,
+    GeoCodeSource,
+    OwnerType,
+    OfficerContact,
+    GeoCodeMethod,
+    FacilityContact,
+    FacilityRegulationStatus,
+    FacilityType,
+    RegulationStatus
 )
 from common.filters.filter_shared import CommonFieldsFilterset
 
@@ -36,21 +48,21 @@ class JobTitleFilter(CommonFieldsFilterset):
         model = JobTitle
 
 
-class OfficerInchargeContactFilter(CommonFieldsFilterset):
+class OfficerContactFilter(CommonFieldsFilterset):
     officer = django_filters.AllValuesFilter(lookup_type='icontains')
     contact = django_filters.AllValuesFilter(lookup_type='icontains')
 
     class Meta:
-        model = OfficerInchargeContact
+        model = OfficerContact
 
 
-class OfficerInchargeFilter(CommonFieldsFilterset):
+class OfficerFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     registration_number = django_filters.CharFilter(lookup_type='icontains')
     job_title = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
-        model = OfficerIncharge
+        model = Officer
 
 
 class FacilityStatusFilter(CommonFieldsFilterset):

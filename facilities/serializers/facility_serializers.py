@@ -3,10 +3,22 @@ from rest_framework import serializers
 from common.serializers import AbstractFieldsMixin
 
 from ..models import (
-    OwnerType, Owner, JobTitle, OfficerIncharge, OfficerInchargeContact,
-    FacilityStatus, FacilityType, RegulatingBody, RegulationStatus, Facility,
-    FacilityRegulationStatus, GeoCodeSource, GeoCodeMethod,
-    FacilityCoordinates, FacilityContact, FacilityUnit
+    OwnerType,
+    Owner,
+    JobTitle,
+    Officer,
+    OfficerContact,
+    FacilityStatus,
+    FacilityType,
+    RegulatingBody,
+    RegulationStatus,
+    Facility,
+    FacilityRegulationStatus,
+    GeoCodeSource,
+    GeoCodeMethod,
+    FacilityCoordinates,
+    FacilityContact,
+    FacilityUnit
 )
 
 
@@ -51,10 +63,10 @@ class FacilityTypeSerializer(serializers.ModelSerializer):
         model = FacilityType
 
 
-class OfficerInchargeContactSerializer(
+class OfficerContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = OfficerInchargeContact
+        model = OfficerContact
 
 
 class JobTitleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
@@ -68,10 +80,10 @@ class RegulationStatusSerializer(
         model = RegulationStatus
 
 
-class OfficerInchargeSerializer(
+class OfficerSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = OfficerIncharge
+        model = Officer
 
 
 class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
