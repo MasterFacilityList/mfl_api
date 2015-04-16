@@ -140,3 +140,43 @@ SWAGGER_SETTINGS = {
     },
     'doc_expansion': 'full',
 }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'  # NOQA
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'common': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },
+        'facilities': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },
+        'users': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        }
+    }
+}

@@ -1,3 +1,5 @@
+import logging
+
 from django.core.urlresolvers import resolve
 from django.core.urlresolvers import reverse as django_reverse
 from django.conf import settings
@@ -6,10 +8,12 @@ from django.apps import apps
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.exceptions import ValidationError
 
 from ..metadata import CustomMetadata
 
 METADATA_CLASS = CustomMetadata()
+LOGGER = logging.getLogger(__name__)
 
 
 def _create_model_view_dict():
@@ -85,13 +89,14 @@ def _resolve_detail_metadata(request, url_name, model_cls):
     # There is a plan to do our own metadata implementation; it will be cleaner
     from model_mommy import mommy  # Late import because of embarassment
 
-    if not model_cls.objects.count():
+    if not model_cls.objects.count():  # Do this only if there is no record
         if model_cls._meta.model_name == 'servicecategory':
             obj = mommy.make(model_cls, keph_level_service=True)
+            obj.delete()  # Take the dummy object out of operation
+            LOGGER.debug('Executed special case for service category')
         else:
             obj = mommy.make(model_cls)
-
-        # obj.delete()  TODO - Fix this properly
+            obj.delete()
     else:
         obj = model_cls.objects.all()[:1][0]
 
@@ -127,8 +132,20 @@ class APIRoot(APIView):
     It also hosts all the metadata.
     """
     def get(self, request, format=None):
-        return Response({
-            model_cls._meta.verbose_name:
-                _lookup_metadata(url_name_dict, request, model_cls)
-            for model_cls, url_name_dict in MODEL_VIEW_DICT.iteritems()
-        })
+        resp = {}
+        errors = []
+
+        for model_cls, url_name_dict in MODEL_VIEW_DICT.iteritems():
+            try:
+                resp[model_cls._meta.verbose_name] = \
+                    _lookup_metadata(url_name_dict, request, model_cls)
+            except Exception as e:
+                # There is a good reason for this broad catch
+                # Accumulate and report all errors at once ( re-raising )
+                LOGGER.exception(e)
+                errors.append(e)
+
+        if errors:  # See, our broad Except up there wasn't so evil after all
+            raise ValidationError(detail=errors)
+        else:
+            return Response(resp)
