@@ -6,12 +6,23 @@ from common.tests.test_models import BaseTestCase
 from common.models import Contact, Ward, PhysicalAddress
 
 from ..models import (
-    OwnerType, Owner, JobTitle, OfficerIncharge,
-    OfficerInchargeContact, FacilityStatus, FacilityType,
-    RegulatingBody, RegulationStatus, Facility,
-    FacilityRegulationStatus, GeoCodeSource,
-    GeoCodeMethod, FacilityCoordinates,
-    FacilityContact, FacilityUnit)
+    OwnerType,
+    Owner,
+    JobTitle,
+    OfficerIncharge,
+    OfficerInchargeContact,
+    FacilityStatus,
+    FacilityType,
+    RegulatingBody,
+    RegulationStatus,
+    Facility,
+    FacilityRegulationStatus,
+    GeoCodeSource,
+    GeoCodeMethod,
+    FacilityCoordinates,
+    FacilityContact,
+    FacilityUnit
+)
 
 
 class TestOwnerTypes(BaseTestCase):

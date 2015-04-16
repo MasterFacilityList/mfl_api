@@ -2,7 +2,12 @@ import reversion
 
 from django.db import models
 from common.models import (
-    AbstractBase, Ward, Contact, SequenceMixin, PhysicalAddress)
+    AbstractBase,
+    Ward,
+    Contact,
+    SequenceMixin,
+    PhysicalAddress
+)
 from common.fields import SequenceField
 
 

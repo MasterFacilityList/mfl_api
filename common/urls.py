@@ -1,12 +1,25 @@
 from django.conf.urls import url, patterns
 
 from .views import (
-    ContactView, ContactDetailView, CountyView, CountyDetailView,
-    ConstituencyView, ConstituencyDetailView, WardView,
-    WardDetailView, ContactTypeListView, ContactTypeDetailView,
-    UserCountyView, UserCountyDetailView, UserContactListView,
-    UserContactDetailView, TownListView, TownDetailView, PhysicalAddressView,
-    PhysicalAddressDetailView)
+    ContactView,
+    ContactDetailView,
+    CountyView,
+    CountyDetailView,
+    ConstituencyView,
+    ConstituencyDetailView,
+    WardView,
+    WardDetailView,
+    ContactTypeListView,
+    ContactTypeDetailView,
+    UserCountyView,
+    UserCountyDetailView,
+    UserContactListView,
+    UserContactDetailView,
+    TownListView,
+    TownDetailView,
+    PhysicalAddressView,
+    PhysicalAddressDetailView
+)
 
 urlpatterns = patterns(
     '',

@@ -1,10 +1,22 @@
 import django_filters
 
 from ..models import (
-    Owner, Facility, FacilityCoordinates, JobTitle, FacilityUnit,
-    FacilityStatus, OfficerIncharge, RegulatingBody, GeoCodeSource,
-    OwnerType, OfficerInchargeContact, GeoCodeMethod, FacilityContact,
-    FacilityRegulationStatus, FacilityType, RegulationStatus
+    Owner,
+    Facility,
+    FacilityCoordinates,
+    JobTitle,
+    FacilityUnit,
+    FacilityStatus,
+    OfficerIncharge,
+    RegulatingBody,
+    GeoCodeSource,
+    OwnerType,
+    OfficerInchargeContact,
+    GeoCodeMethod,
+    FacilityContact,
+    FacilityRegulationStatus,
+    FacilityType,
+    RegulationStatus
 )
 from common.filters.filter_shared import CommonFieldsFilterset
 

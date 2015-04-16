@@ -10,8 +10,16 @@ from model_mommy import mommy
 
 
 from ..models import (
-    Contact, County, Ward, Constituency, Town,
-    ContactType, PhysicalAddress, UserCounty, UserContact)
+    Contact,
+    County,
+    Ward,
+    Constituency,
+    Town,
+    ContactType,
+    PhysicalAddress,
+    UserCounty,
+    UserContact
+)
 from ..models import get_default_system_user_id
 
 

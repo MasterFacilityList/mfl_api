@@ -9,10 +9,20 @@ from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
 from ..models import (
-    County, Contact, ContactType, Constituency, Ward, UserContact)
+    County,
+    Contact,
+    ContactType,
+    Constituency,
+    Ward,
+    UserContact
+)
 from ..serializers import (
-    ContactSerializer, WardSerializer, CountySerializer,
-    ConstituencySerializer, UserContactSerializer)
+    ContactSerializer,
+    WardSerializer,
+    CountySerializer,
+    ConstituencySerializer,
+    UserContactSerializer
+)
 from ..views import APIRoot
 from .test_models import BaseTestCase
 

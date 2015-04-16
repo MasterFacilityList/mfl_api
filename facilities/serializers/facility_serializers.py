@@ -3,10 +3,22 @@ from rest_framework import serializers
 from common.serializers import AbstractFieldsMixin
 
 from ..models import (
-    OwnerType, Owner, JobTitle, OfficerIncharge, OfficerInchargeContact,
-    FacilityStatus, FacilityType, RegulatingBody, RegulationStatus, Facility,
-    FacilityRegulationStatus, GeoCodeSource, GeoCodeMethod,
-    FacilityCoordinates, FacilityContact, FacilityUnit
+    OwnerType,
+    Owner,
+    JobTitle,
+    OfficerIncharge,
+    OfficerInchargeContact,
+    FacilityStatus,
+    FacilityType,
+    RegulatingBody,
+    RegulationStatus,
+    Facility,
+    FacilityRegulationStatus,
+    GeoCodeSource,
+    GeoCodeMethod,
+    FacilityCoordinates,
+    FacilityContact,
+    FacilityUnit
 )
 
 

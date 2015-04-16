@@ -1,8 +1,16 @@
 from rest_framework import serializers
 
 from ..models import (
-    Contact, PhysicalAddress, County, Ward, Constituency,
-    ContactType, UserCounty, UserContact, Town)
+    Contact,
+    PhysicalAddress,
+    County,
+    Ward,
+    Constituency,
+    ContactType,
+    UserCounty,
+    UserContact,
+    Town
+)
 from .serializer_base import AbstractFieldsMixin
 
 
