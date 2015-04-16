@@ -11,7 +11,7 @@ from model_mommy import mommy
 
 from ..models import (
     Contact, County, Ward, Constituency, Town,
-    ContactType, PhysicalAddress, UserCounty, UserResidence, UserContact)
+    ContactType, PhysicalAddress, UserCounty, UserContact)
 from ..models import get_default_system_user_id
 
 
@@ -282,45 +282,6 @@ class TestUserCountyModel(BaseTestCase):
                 user=user,
                 county=county_2
             )
-
-
-class TestUserResidenceModel(BaseTestCase):
-    def test_save(self):
-        user = mommy.make(get_user_model())
-        ward = mommy.make(Ward)
-        data = {
-            "user": user,
-            "ward": ward
-        }
-        data = self.inject_audit_fields(data)
-        user_ward = UserResidence.objects.create(**data)
-        self.assertEquals(1, UserResidence.objects.count())
-
-        # test unicode
-        expected_unicode = "{}: {}".format(user.email, ward.name)
-        self.assertEquals(expected_unicode, user_ward.__unicode__())
-
-    def test_user_resides_in_one_ward_at_a_time(self):
-        user = mommy.make(get_user_model())
-        ward = mommy.make(Ward)
-        data = {
-            "user": user,
-            "ward": ward,
-            "active": True
-        }
-        data = self.inject_audit_fields(data)
-        UserResidence.objects.create(**data)
-        self.assertEquals(1, UserResidence.objects.count())
-        ward_2 = mommy.make(Ward)
-        data_2 = {
-            "user": user,
-            "ward": ward_2,
-            "active": True
-        }
-        data_2 = self.inject_audit_fields(data_2)
-
-        with self.assertRaises(ValidationError):
-            UserResidence.objects.create(**data_2)
 
 
 class TestUserContactModel(BaseTestCase):

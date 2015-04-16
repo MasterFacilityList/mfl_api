@@ -163,23 +163,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='UserResidence',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('deleted', models.BooleanField(default=False)),
-                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(related_name='user_residence', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ('-updated', '-created'),
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
             name='Ward',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
@@ -198,11 +181,6 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
             bases=(models.Model, common.models.base.SequenceMixin),
-        ),
-        migrations.AddField(
-            model_name='userresidence',
-            name='ward',
-            field=models.ForeignKey(to='common.Ward', on_delete=django.db.models.deletion.PROTECT),
         ),
         migrations.AddField(
             model_name='physicaladdress',
