@@ -27,6 +27,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'rest_auth.registration',
     'reversion',
+    'django_extensions',
 )
 LOCAL_APPS = (
     'facilities',
