@@ -4,42 +4,22 @@ from ..views import (
     FacilityStatusListView, FacilityStatusDetailView, JobTitleListView,
     JobTitleDetailView, OfficerInchargeListView, OfficerInchargeDetailView,
     RegulatingBodyListView, RegulatingBodyDetailView, GeoCodeSourceListView,
-    GeoCodeSourceDetailView, ServiceCategoryListView,
-    ServiceCategoryDetailView, OwnerTypeListView, OwnerTypeDetailView,
+    GeoCodeSourceDetailView, OwnerTypeListView, OwnerTypeDetailView,
     OfficerInchargeContactListView, OfficerInchargeContactDetailView,
     GeoCodeMethodListView, GeoCodeMethodDetailView, OwnerListView,
-    OwnerDetailView, ServiceListView, ServiceDetailView, FacilityListView,
-    FacilityDetailView, FacilityServiceListView, FacilityServiceDetailView,
+    OwnerDetailView, FacilityListView,
+    FacilityDetailView,
     FacilityContactListView, FacilityContactDetailView,
     FacilityCoordinatesListView,
     FacilityCoordinatesDetailView, FacilityRegulationStatusListView,
     FacilityRegulationStatusDetailView, FacilityTypeListView,
     FacilityTypeDetailView, RegulationStatusListView,
-    RegulationStatusDetailView, FacilityUnitsListView, FacilityUnitDetailView,
-    ChoiceServiceListView, ChoiceServiceDetailView, KEPHLevelServiceListView,
-    KEPHLevelServiceDetailView, BasicComprehensiveSeviceListView,
-    BasicComprehensiveServiceDetailView)
+    RegulationStatusDetailView, FacilityUnitsListView, FacilityUnitDetailView
+)
 
 
 urlpatterns = patterns(
     '',
-    url(r'^choice_service/$', ChoiceServiceListView.as_view(),
-        name='choice_services_list'),
-    url(r'^choice_service/(?P<pk>[^/]+)/$', ChoiceServiceDetailView.as_view(),
-        name='choice_service_detail'),
-
-    url(r'^keph_level_service/$', KEPHLevelServiceListView.as_view(),
-        name='keph_level_services_list'),
-    url(r'^keph_level_service/(?P<pk>[^/]+)/$',
-        KEPHLevelServiceDetailView.as_view(),
-        name='keph_level_service_detail'),
-
-    url(r'^basic_comprehensive_service/$',
-        BasicComprehensiveSeviceListView.as_view(),
-        name='basic_comprehensive_services_list'),
-    url(r'^basic_comprehensive_service/(?P<pk>[^/]+)/$',
-        BasicComprehensiveServiceDetailView.as_view(),
-        name='basic_comprehensive_service_detail'),
 
     url(r'^facility_units/$', FacilityUnitsListView.as_view(),
         name='facility_units_list'),
@@ -105,12 +85,6 @@ urlpatterns = patterns(
         OfficerInchargeDetailView.as_view(),
         name='officer_incharge_detail'),
 
-    url(r'^service_categories/$', ServiceCategoryListView.as_view(),
-        name='service_categories_list'),
-    url(r'^service_categories/(?P<pk>[^/]+)/$',
-        ServiceCategoryDetailView.as_view(),
-        name='service_category_detail'),
-
     url(r'^owner_types/$', OwnerTypeListView.as_view(),
         name='owner_types_list'),
     url(r'^owner_types/(?P<pk>[^/]+)/$', OwnerTypeDetailView.as_view(),
@@ -120,20 +94,10 @@ urlpatterns = patterns(
     url(r'^owners/(?P<pk>[^/]+)/$', OwnerDetailView.as_view(),
         name='owner_detail'),
 
-    url(r'^services/$', ServiceListView.as_view(), name='services_list'),
-    url(r'^services/(?P<pk>[^/]+)/$', ServiceDetailView.as_view(),
-        name='service_detail'),
-
     url(r'^contacts/$', FacilityContactListView .as_view(),
         name='facility_contacts_list'),
     url(r'^contacts/(?P<pk>[^/]+)/$', FacilityContactDetailView.as_view(),
         name='facility_contact_detail'),
-
-    url(r'^facility_services/$', FacilityServiceListView.as_view(),
-        name='facility_services_list'),
-    url(r'^facility_services/(?P<pk>[^/]+)/$',
-        FacilityServiceDetailView.as_view(),
-        name='facility_service_detail'),
 
     url(r'^coordinates/$', FacilityCoordinatesListView.as_view(),
         name='facility_coordinates_list'),
