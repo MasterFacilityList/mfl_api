@@ -3,7 +3,7 @@ from django.utils import timezone
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
-from common.models import Contact, Ward
+from common.models import Contact, Ward, PhysicalAddress
 
 from ..models import (
     OwnerType, Owner, JobTitle, OfficerIncharge,
@@ -204,6 +204,7 @@ class TestFacility(BaseTestCase):
         regulating_body = mommy.make(RegulatingBody)
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
+        address = mommy.make(PhysicalAddress)
         data = {
             "name": "Forces Memorial",
             "description": "Hospital for the armed forces",
@@ -216,7 +217,8 @@ class TestFacility(BaseTestCase):
             "ward": ward,
             "owner": owner,
             "location_desc": "it is located along Moi Avenue Nairobi",
-            "officer_in_charge": officer_in_charge
+            "officer_in_charge": officer_in_charge,
+            "physical_address": address
         }
         data = self.inject_audit_fields(data)
         facility = Facility.objects.create(**data)

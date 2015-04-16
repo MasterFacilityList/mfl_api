@@ -1,7 +1,8 @@
 import reversion
 
 from django.db import models
-from common.models import AbstractBase, Ward, Contact, SequenceMixin
+from common.models import (
+    AbstractBase, Ward, Contact, SequenceMixin, PhysicalAddress)
 from common.fields import SequenceField
 
 
@@ -538,6 +539,9 @@ class Facility(AbstractBase, SequenceMixin):
         Owner, help_text="A link to the organization that owns the facility")
     officer_in_charge = models.ForeignKey(
         OfficerIncharge, help_text="The officer in charge of the facility")
+    physical_address = models.ForeignKey(
+        PhysicalAddress,
+        help_text="Postal and courier addressing for the facility")
 
     contacts = models.ManyToManyField(
         Contact, through=FacilityContact,
