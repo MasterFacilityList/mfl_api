@@ -691,6 +691,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facility',
+            name='physical_address',
+            field=models.ForeignKey(help_text=b'Postal and courier addressing for the facility', to='common.PhysicalAddress'),
+        ),
+        migrations.AddField(
+            model_name='facility',
             name='services',
             field=models.ManyToManyField(help_text=b'Services offered at the facility', to='facilities.Service', through='facilities.FacilityService'),
         ),
