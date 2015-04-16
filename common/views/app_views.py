@@ -2,18 +2,18 @@ from rest_framework import generics
 
 from ..models import (
     Contact, PhysicalAddress, County, Ward, Constituency, ContactType,
-    UserCounty, UserResidence, UserContact, Town)
+    UserCounty, UserContact, Town)
 
 from ..serializers import (
     ContactSerializer, CountySerializer, WardSerializer,
     PhysicalAddressSerializer, ConstituencySerializer,
     ContactTypeSerializer, InchargeCountiesSerializer,
-    UserResidenceSerializer, UserContactSerializer, TownSerializer)
+    UserContactSerializer, TownSerializer)
 
 from ..filters import (
     ContactTypeFilter, ContactFilter, PhysicalAddressFilter,
     CountyFilter, ConstituencyFilter, WardFilter, UserCountyFilter,
-    UserResidenceFilter, UserContactFilter, TownFilter)
+    UserContactFilter, TownFilter)
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -98,18 +98,6 @@ class UserCountyView(generics.ListCreateAPIView):
 class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserCounty.objects.all()
     serializer_class = InchargeCountiesSerializer
-
-
-class UserResidenceListView(generics.ListCreateAPIView):
-    queryset = UserResidence.objects.all()
-    serializer_class = UserResidenceSerializer
-    filter_class = UserResidenceFilter
-    ordering_fields = ('user', 'ward',)
-
-
-class UserResidenceDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserResidence.objects.all()
-    serializer_class = UserResidenceSerializer
 
 
 class UserContactListView(generics.ListCreateAPIView):

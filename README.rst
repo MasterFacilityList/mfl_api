@@ -11,11 +11,12 @@ Read more at http://ehealth.or.ke/facilities/
 
 System dependencies
 ---------------------
-The GIS features of this system depend on ``postgis``, ``geos``, ``proj`` and ``gdal``.
+The system depends on ``postgis``, ``geos``, ``proj``, ``gdal`` and
+``graphviz``.
 
 If you are on a recent Ubuntu Linux, you can get them all with:
 
-    sudo apt-get install binutils postgis gdal-bin libproj-dev libgeoip1
+    sudo apt-get install binutils postgis gdal-bin libproj-dev libgeoip1 graphviz libgraphviz-dev
 
 In order to build some of the Python dependencies in the virtualenv, some
 libraries will need to be in place. Again, if you are on a recent Ubuntu, you

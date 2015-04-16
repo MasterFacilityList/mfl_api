@@ -29,6 +29,28 @@ def deploy():
     local('python setup.py sdist upload -r slade')
 
 
+def reset_migrations():
+    """
+    A development only task; got sick of typing the same commands repeatedly
+    """
+    local('rm -f users/migrations/ -r')
+    local('rm -f common/migrations/ -r')
+    local('rm -f facilities/migrations/ -r')
+    manage('makemigrations users')
+    manage('makemigrations common')
+    manage('makemigrations facilities')
+    local('git add . --all')
+
+
+def graph_models():
+    """Another dev only task"""
+    manage(
+        'graph_models common facilities -g -d '
+        '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
+        '-o  mfl_models_graph.png')
+    local('eog mfl_models_graph.png')
+
+
 def psql(query, no_sudo=False, is_file=False):
     sudo = 'sudo -u postgres'
     if no_sudo:
