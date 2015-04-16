@@ -26,7 +26,7 @@ urlpatterns = patterns(
         name='facility_rating_scales_list'),
     url(r'^facility_ratings/(?P<pk>[^/]+)/$',
         FacilityRatingScaleDetailView.as_view(),
-        name='faciity_rating_scale_detail'),
+        name='facility_rating_scale_detail'),
 
     url(r'^service_scales/$', FacilityServiceRatingScaleListView.as_view(),
         name='facility_service_rating_scales_list'),

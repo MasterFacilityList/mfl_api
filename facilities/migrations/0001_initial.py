@@ -293,7 +293,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='KEHPLevelService',
+            name='KEPHLevelService',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
@@ -602,7 +602,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facilityservice',
             name='keph_level_service',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='facilities.KEHPLevelService', null=True),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='facilities.KEPHLevelService', null=True),
         ),
         migrations.AddField(
             model_name='facilityservice',

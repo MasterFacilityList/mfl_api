@@ -10,7 +10,7 @@ from ..models import (
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityCoordinates,
     FacilityService, FacilityContact, FacilityUnit,
-    ChoiceService, KEHPLevelService, BasicComprehensiveService
+    ChoiceService, KEPHLevelService, BasicComprehensiveService
 )
 
 
@@ -136,10 +136,10 @@ class ChoiceServiceSerializer(
         model = ChoiceService
 
 
-class KEHPLevelServiceSerializer(
+class KEPHLevelServiceSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = KEHPLevelService
+        model = KEPHLevelService
 
 
 class BasicComprehensiveServiceSerializer(

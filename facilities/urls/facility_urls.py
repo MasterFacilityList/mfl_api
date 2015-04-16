@@ -141,7 +141,7 @@ urlpatterns = patterns(
         FacilityCoordinatesDetailView.as_view(),
         name='facility_coordinates_detail'),
 
-    url(r'^$', FacilityListView.as_view(), name='facilities_list'),
-    url(r'^(?P<pk>[^/]+)/$', FacilityDetailView.as_view(),
+    url(r'^facilities/$', FacilityListView.as_view(), name='facilities_list'),
+    url(r'^facilities/(?P<pk>[^/]+)/$', FacilityDetailView.as_view(),
         name='facility_detail'),
 )

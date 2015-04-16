@@ -8,7 +8,7 @@ from ..models import (
     FacilityRegulationStatus, GeoCodeSource,
     GeoCodeMethod, FacilityCoordinates,
     FacilityService, FacilityContact, FacilityUnit,
-    ChoiceService, KEHPLevelService, BasicComprehensiveService
+    ChoiceService, KEPHLevelService, BasicComprehensiveService
 )
 
 from ..serializers import (
@@ -21,7 +21,7 @@ from ..serializers import (
     ServiceCategorySerializer, OwnerTypeSerializer,
     OfficerInchargeContactSerializer, FacilityRegulationStatusSerializer,
     FacilityUnitSerializer, ChoiceServiceSerializer,
-    KEHPLevelServiceSerializer, BasicComprehensiveServiceSerializer
+    KEPHLevelServiceSerializer, BasicComprehensiveServiceSerializer
 )
 from ..filters import (
     FacilityFilter, ServiceFilter, FacilityCoordinatesFilter,
@@ -32,7 +32,7 @@ from ..filters import (
     FacilityServiceFilter, FacilityContactFilter, FacilityTypeFilter,
     FacilityRegulationStatusFilter, RegulationStatusFilter,
     ChoiceServiceFilter,
-    KEHPLevelServiceFilter, BasicComprehensiveServiceFilter
+    KEPHLevelServiceFilter, BasicComprehensiveServiceFilter
 
 )
 
@@ -50,15 +50,15 @@ class ChoiceServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class KEPHLevelServiceListView(generics.ListCreateAPIView):
-    queryset = KEHPLevelService.objects.all()
-    serializer_class = KEHPLevelServiceSerializer
-    filter_class = KEHPLevelServiceFilter
+    queryset = KEPHLevelService.objects.all()
+    serializer_class = KEPHLevelServiceSerializer
+    filter_class = KEPHLevelServiceFilter
     ordering_fields = ('name', )
 
 
 class KEPHLevelServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = KEHPLevelService.objects.all()
-    serializer_class = KEHPLevelServiceSerializer
+    queryset = KEPHLevelService.objects.all()
+    serializer_class = KEPHLevelServiceSerializer
 
 
 class BasicComprehensiveSeviceListView(generics.ListCreateAPIView):

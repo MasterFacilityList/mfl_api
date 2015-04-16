@@ -87,16 +87,12 @@ def _resolve_detail_metadata(request, url_name, model_cls):
     # The default metadata API will not resolve the actions otherwise
     # If called on a live system, it may cause sequence fields to "skip"
     # There is a plan to do our own metadata implementation; it will be cleaner
+
     from model_mommy import mommy  # Late import because of embarassment
 
     if not model_cls.objects.count():  # Do this only if there is no record
-        if model_cls._meta.model_name == 'servicecategory':
-            obj = mommy.make(model_cls, keph_level_service=True)
-            obj.delete()  # Take the dummy object out of operation
-            LOGGER.debug('Executed special case for service category')
-        else:
-            obj = mommy.make(model_cls)
-            obj.delete()
+        obj = mommy.make(model_cls)
+        obj.delete()
     else:
         obj = model_cls.objects.all()[:1][0]
 
@@ -147,5 +143,5 @@ class APIRoot(APIView):
 
         if errors:  # See, our broad Except up there wasn't so evil after all
             raise ValidationError(detail=errors)
-        else:
-            return Response(resp)
+
+        return Response(resp)

@@ -200,8 +200,9 @@ class UserCounty(AbstractBase):
         """
         A user can be incharge of only one county at the a time.
         """
-        counties = self.__class__.objects.filter(user=self.user, active=True)
-        if counties.count() > 0:
+        counties = self.__class__.objects.filter(
+            user=self.user, active=True, deleted=False)
+        if counties.count() > 0 and not self.deleted:
             raise ValidationError(
                 "A user can only be active in one county at a time")
 
@@ -228,8 +229,9 @@ class UserResidence(AbstractBase):
         return self.user.email + ": " + self.ward.name
 
     def validate_user_residing_in_one_place_at_a_time(self):
-        user_wards = self.__class__.objects.filter(user=self.user, active=True)
-        if user_wards.count() > 0:
+        user_wards = self.__class__.objects.filter(
+            user=self.user, active=True, deleted=False)
+        if user_wards.count() > 0 and not self.deleted:
             raise ValidationError(
                 "User can only reside in one ward at a a time")
 

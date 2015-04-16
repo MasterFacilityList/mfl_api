@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.exceptions import ValidationError
 
 from common.models import AbstractBase
 
@@ -68,16 +67,17 @@ class FacilityRatingScale(AbstractBase):
     def __unicode__(self):
         return self.facility.name + ": " + self.scale.name
 
-    def validate_only_one_active(self):
-        facility_scales_no = self.__class__.objects.filter(
-            facility=self.facility, scale=self.scale, active=True).count()
-        if facility_scales_no > 0:
-            raise ValidationError(
-                "Only one type scale can be active for a facility at a time")
+    # TODO Fix this code scar before the metadata ticket is closed
+    # def validate_only_one_active(self):
+    #     facility_scales_no = self.__class__.objects.filter(
+    #         facility=self.facility, scale=self.scale, active=True).count()
+    #     if facility_scales_no > 0:
+    #         raise ValidationError(
+    #             "Only one type scale can be active for a facility at a time")
 
-    def clean(self, *args, **kwargs):
-        self.validate_only_one_active()
-        super(FacilityRatingScale, self).clean(*args, **kwargs)
+    # def clean(self, *args, **kwargs):
+    #     self.validate_only_one_active()
+    #     super(FacilityRatingScale, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility', 'scale', )
@@ -102,17 +102,18 @@ class FacilityServiceRatingScale(AbstractBase):
             self.scale.name)
         return unicode_string
 
-    def validate_only_one_active(self):
-        facility_service_scales_no = self.__class__.objects.filter(
-            facility_service=self.facility_service,
-            scale=self.scale, active=True).count()
-        if facility_service_scales_no > 0:
-            raise ValidationError(
-                "Only one type of scale can be active for a facility service")
+    # TODO Fix this code scar before the metadata ticket is closed
+    # def validate_only_one_active(self):
+    #     facility_service_scales_no = self.__class__.objects.filter(
+    #         facility_service=self.facility_service,
+    #         scale=self.scale, active=True).count()
+    #     if facility_service_scales_no > 0:
+    #         raise ValidationError(
+    #             "Only one type of scale can be active for a facility service")  # NOQA
 
-    def clean(self, *args, **kwargs):
-        self.validate_only_one_active()
-        super(FacilityServiceRatingScale, self).clean(*args, **kwargs)
+    # def clean(self, *args, **kwargs):
+    #     self.validate_only_one_active()
+    #     super(FacilityServiceRatingScale, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility_service', 'scale', )
@@ -136,31 +137,32 @@ class UserFacilityRating(RatingAbstractBase):
     """
     User rating of a facility.
     """
-
     user = models.ForeignKey(
         MflUser, on_delete=models.PROTECT, related_name='user_facility_rating')
     facility = models.ForeignKey(
         Facility, on_delete=models.PROTECT, related_name='facility_rating')
 
-    def validate_user_rating_scale_matches_facility_scale(self):
-        """
-        Ensure the scale used by user is that used by the facility.
-        """
-        try:
-            FacilityRatingScale.objects.get(
-                facility=self.facility, scale=self.rating.scale, active=True)
-        except FacilityRatingScale.DoesNotExist:
-            raise ValidationError(
-                "The rating scale used is not allowed for the facility.")
+    # TODO Fix this code scar before the metadata ticket is closed
+    # def validate_user_rating_scale_matches_facility_scale(self):
+    #     """
+    #     Ensure the scale used by user is that used by the facility.
+    #     """
+    #     try:
+    #         FacilityRatingScale.objects.get(
+    #             facility=self.facility, scale=self.rating.scale, active=True)
+    #     except FacilityRatingScale.DoesNotExist:
+    #         raise ValidationError(
+    #             "The rating scale used is not allowed for the facility.")
 
     def __unicode__(self):
         unicode_string = "{}: {}: {}".format(
             self.user.email, self.facility.name, self.rating)
         return unicode_string
 
-    def clean(self, *args, **kwargs):
-        self.validate_user_rating_scale_matches_facility_scale()
-        super(UserFacilityRating, self).clean(*args, **kwargs)
+    # TODO Fix this code scar before the metadata ticket is closed
+    # def clean(self, *args, **kwargs):
+    #     self.validate_user_rating_scale_matches_facility_scale()
+    #     super(UserFacilityRating, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility', 'user', )
@@ -170,7 +172,6 @@ class UserFacilityServiceRating(RatingAbstractBase):
     """
     User rating of a facility service.
     """
-
     user = models.ForeignKey(
         MflUser, on_delete=models.PROTECT, related_name='user_service_rating')
     facility_service = models.ForeignKey(
@@ -181,23 +182,24 @@ class UserFacilityServiceRating(RatingAbstractBase):
             self.user, self.facility_service, self.rating)
         return unicode_string
 
-    def validate_user_rating_scale_matches_service_scale(self):
-        """
-        Ensure the scale used by the user is that used by the facility.
-        """
+    # TODO Fix this code scar before the metadata ticket is closed
+    # def validate_user_rating_scale_matches_service_scale(self):
+    #     """
+    #     Ensure the scale used by the user is that used by the facility.
+    #     """
 
-        try:
-            FacilityServiceRatingScale.objects.get(
-                facility_service=self.facility_service,
-                scale=self.rating.scale, active=True)
-        except FacilityServiceRatingScale.DoesNotExist:
-            raise ValidationError(
-                "The rating scale used is not allowed for the facility service"
-            )
+    #     try:
+    #         FacilityServiceRatingScale.objects.get(
+    #             facility_service=self.facility_service,
+    #             scale=self.rating.scale, active=True)
+    #     except FacilityServiceRatingScale.DoesNotExist:
+    #         raise ValidationError(
+    #             "The rating scale used is not allowed for the facility service"  # NOQA
+    #         )
 
-    def clean(self, *args, **kwargs):
-        self.validate_user_rating_scale_matches_service_scale()
-        super(UserFacilityServiceRating, self).clean(*args, **kwargs)
+    # def clean(self, *args, **kwargs):
+    #     self.validate_user_rating_scale_matches_service_scale()
+    #     super(UserFacilityServiceRating, self).clean(*args, **kwargs)
 
     class Meta:
         unique_together = ('facility_service', 'user', )

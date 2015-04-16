@@ -6,7 +6,7 @@ from ..models import (
     ServiceCategory, OwnerType, OfficerInchargeContact, GeoCodeMethod,
     FacilityService, FacilityContact, FacilityRegulationStatus,
     FacilityType, RegulationStatus, ChoiceService,
-    KEHPLevelService, BasicComprehensiveService
+    KEPHLevelService, BasicComprehensiveService
 )
 from common.filters.filter_shared import CommonFieldsFilterset
 
@@ -200,12 +200,12 @@ class ChoiceServiceFilter(CommonFieldsFilterset):
         model = ChoiceService
 
 
-class KEHPLevelServiceFilter(CommonFieldsFilterset):
+class KEPHLevelServiceFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
     class Meta:
-        model = KEHPLevelService
+        model = KEPHLevelService
 
 
 class BasicComprehensiveServiceFilter(CommonFieldsFilterset):
