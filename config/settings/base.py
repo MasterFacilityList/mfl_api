@@ -12,6 +12,7 @@ ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke']
 INSTALLED_APPS = (
     'django.contrib.admin',
     'users',
+    'common',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -28,13 +29,20 @@ INSTALLED_APPS = (
     'rest_auth.registration',
     'reversion',
     'django_extensions',
+    'facilities',
+    'data_bootstrap',
 )
+
+# LOCAL_APPS is now just a convenience setting for the metadata API
+# It is *NOT* appended to INSTALLED_APPS
+# There is a bit of a DRYness violation
+# This was forced by the need to override rest_framework templates in common
 LOCAL_APPS = (
     'facilities',
     'common',
     'data_bootstrap',
 )
-INSTALLED_APPS += LOCAL_APPS
+
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
@@ -181,3 +189,10 @@ LOGGING = {
         }
     }
 }
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': os.path.join(BASE_DIR, '/common/templates/'),
+        'APP_DIRS': True,
+    },
+]
