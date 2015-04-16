@@ -102,7 +102,7 @@ def _resolve_detail_metadata(request, url_name, model_cls):
 
 def _lookup_metadata(url_name_dict, request, model_cls):
     """
-    This is what composes the payload that goes to the client
+    This is what composes the final payload that goes to the client
     """
     return {
         'list_endpoint':
@@ -142,6 +142,8 @@ class APIRoot(APIView):
                 errors.append(e)
 
         if errors:  # See, our broad Except up there wasn't so evil after all
-            raise ValidationError(detail=errors)
+            raised_exc = ValidationError(detail=errors)
+            raised_exc.message = 'Could not create root / metadata view'
+            raise raised_exc
 
         return Response(resp)

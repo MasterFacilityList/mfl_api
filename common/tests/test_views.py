@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 
 from rest_framework.test import APITestCase
+from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
 from ..models import (
@@ -13,6 +14,7 @@ from ..models import (
 from ..serializers import (
     ContactSerializer, WardSerializer, CountySerializer,
     ConstituencySerializer, UserResidenceSerializer, UserContactSerializer)
+from ..views import APIRoot
 from .test_models import BaseTestCase
 
 
@@ -304,7 +306,20 @@ class TestTownView(LogginMixin, BaseTestCase, APITestCase):
 
 
 class TestAPIRootView(APITestCase):
-    def test_list_endpoints(self):
+    def setUp(self):
+        self.url = reverse('api:root_listing')
+        super(TestAPIRootView, self).setUp()
+
+    def test_api_root_exception_path(self):
+        with self.assertRaises(ValidationError) as c:
+            # A null request is guaranteed to "tickle" something
+            root_view = APIRoot()
+            root_view.get(request=None)
+
+        self.assertEqual(
+            c.exception.message, 'Could not create root / metadata view')
+
+    def test_api_and_metadata_root_view(self):
         """
         So, you've landed here, presumably after an exasperating test failure
         ( probably cursing under your breath ).
@@ -330,8 +345,9 @@ class TestAPIRootView(APITestCase):
         PS: Yes, this is a bitch. It is also a good discipline master.
         And - it is stupid, only assembling metadata for CRUD views.
         """
-        url = reverse('api:root_listing')
-        response = self.client.get(url)
+        # It is not the size of the dog in the fight that matters...
+        # This is one sensitive bitch of a test!
+        response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
 
 
