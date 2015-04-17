@@ -25,4 +25,3 @@ class CommunityHealthWorkerContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = CommunityHealthWorkerContact
-

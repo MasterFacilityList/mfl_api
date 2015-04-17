@@ -41,6 +41,7 @@ LOCAL_APPS = (
     'facilities',
     'common',
     'data_bootstrap',
+    'chul',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
