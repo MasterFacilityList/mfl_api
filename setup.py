@@ -101,5 +101,6 @@ setup(
         "werkzeug>=0.10.4",
         "gunicorn>=19.3.0",
         "ansible>=1.9.0",
+        "apache-libcloud>=0.17.0",
     ],
 )
