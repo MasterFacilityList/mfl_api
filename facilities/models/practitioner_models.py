@@ -85,6 +85,9 @@ class PractitionerFacility(AbstractBase):
     is_owner = models.BooleanField(
         default=False, help_text='Does the practitioner own the facility?')
 
+    def __unicode__(self):
+        return "{}: {}".format(self.practitioner, self.facility)
+
 
 class Practitioner(AbstractBase):
     """
