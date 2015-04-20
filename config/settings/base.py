@@ -31,6 +31,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'facilities',
     'data_bootstrap',
+    'chul',
 )
 
 # LOCAL_APPS is now just a convenience setting for the metadata API
@@ -41,6 +42,7 @@ LOCAL_APPS = (
     'facilities',
     'common',
     'data_bootstrap',
+    'chul',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
