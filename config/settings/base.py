@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'rest_auth.registration',
     'reversion',
     'django_extensions',
+    'gunicorn',
     'facilities',
     'data_bootstrap',
 )
