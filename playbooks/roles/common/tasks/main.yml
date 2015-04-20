@@ -1,0 +1,11 @@
+---
+# Set up UFW to allow ports 80,443 and 22
+# Also rate limit SSH connections and log new connections
+# The default policy is 'deny' ( unless whitelisted )
+
+ufw: state=enabled policy=deny
+ufw: rule=allow port=80 proto=tcp
+ufw: rule=allow port=443 proto=tcp
+ufw: rule=allow name=OpenSSH
+ufw: rule=limit port=ssh proto=tcp
+ufw: logging=on
