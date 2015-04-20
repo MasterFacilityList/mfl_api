@@ -1,7 +1,6 @@
 ---
-- hosts: mfl
+- hosts: all
   name: Install MFL API and front-ends
-  sudo: True
   roles:
     - common
     - mfl_api
