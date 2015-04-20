@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 
 from model_mommy import mommy
 
-from common.tests import TestViewTestBase
+from common.tests import ViewTestBase
 
 
 from ..serializers import (
@@ -71,7 +71,7 @@ test_views_config = [
 ]
 
 
-class TestViews(TestViewTestBase):
+class TestViews(ViewTestBase):
     def setUp(self):
         self.base_namespace = 'api:facilities'
         super(TestViews, self).setUp()
@@ -80,25 +80,17 @@ class TestViews(TestViewTestBase):
         for test_config in test_views_config:
             model_cls = test_config.get('model')
             list_url_name = test_config.get('list_url_name')
-            serializer_cls = test_config.get('serializer_cls')
 
             complete_list_url_name = self.base_namespace + ":{}".format(
                 list_url_name)
             url = reverse(complete_list_url_name)
 
-            obj_1 = mommy.make(model_cls)
-            obj_2 = mommy.make(model_cls)
+            mommy.make(model_cls)
+            mommy.make(model_cls)
 
             response = self.client.get(url)
-            expected_data = {
-                'count': 2,
-                'next': None,
-                'previous': None,
-                'results': [
-                    # the objects are returned in reverse chronological order
-                    serializer_cls(obj_2).data,
-                    serializer_cls(obj_1).data
-                ]
-            }
+
+            response_data = self._dump_data_with_uuid_objects(response.data)
+            self.assertEquals(2, response_data.get('count'))
+            self.assertEquals(2, len(response_data.get('results')))
             self.assertEquals(200, response.status_code)
-            self._assert_response_data_equality(expected_data, response.data)

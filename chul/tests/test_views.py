@@ -1,11 +1,9 @@
-import json
-
 from django.core.urlresolvers import reverse
 
-from rest_framework.test import APITestCase
 from model_mommy import mommy
 
-from common.tests.test_views import default
+from common.tests import ViewTestBase
+
 
 from ..models import (
     CommunityHealthUnit,
@@ -19,15 +17,7 @@ from ..serializers import (
 )
 
 
-class TestViewTestBase(APITestCase):
-
-    def _assert_response_data_equality(self, data_1, data_2):
-        self.assertEquals(
-            json.loads(json.dumps(data_1, default=default)),
-            json.loads(json.dumps(data_2, default=default)))
-
-
-class TestCommunityHealthUnitView(TestViewTestBase):
+class TestCommunityHealthUnitView(ViewTestBase):
     def setUp(self):
         self.url = reverse("api:chul:community_health_units_list")
         super(TestCommunityHealthUnitView, self).setUp()
@@ -59,7 +49,7 @@ class TestCommunityHealthUnitView(TestViewTestBase):
         self._assert_response_data_equality(expected_data, response.data)
 
 
-class TestCommunitHealthWorkerView(TestViewTestBase):
+class TestCommunitHealthWorkerView(ViewTestBase):
     def setUp(self):
         self.url = reverse("api:chul:community_health_workers_list")
         super(TestCommunitHealthWorkerView, self).setUp()
@@ -91,7 +81,7 @@ class TestCommunitHealthWorkerView(TestViewTestBase):
         self._assert_response_data_equality(expected_data, response.data)
 
 
-class TestCommunityHealthWokerContactView(TestViewTestBase):
+class TestCommunityHealthWokerContactView(ViewTestBase):
     def setUp(self):
         self.url = reverse("api:chul:community_health_worker_contacts_list")
         super(TestCommunityHealthWokerContactView, self).setUp()

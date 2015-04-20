@@ -22,7 +22,7 @@ class PracticeTypeFilter(CommonFieldsFilterset):
 
 class SpecialityFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
-    practitioner_type = django_filters.AllValuesFilter(lookup_type='exact')
+    practice_type = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta:
         model = Speciality
@@ -39,7 +39,7 @@ class QualificationFilter(CommonFieldsFilterset):
 class PractitionerFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     registration_number = django_filters.CharFilter(lookup_type='exact')
-    qualification = django_filters.AllValuesFilter(lookup_type='icontains')
+    qualifications = django_filters.AllValuesFilter(lookup_type='icontains')
     contacts = django_filters.AllValuesFilter(lookup_type='icontains')
     ward = django_filters.AllValuesFilter(lookup_type='exact')
 

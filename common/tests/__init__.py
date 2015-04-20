@@ -8,12 +8,15 @@ from model_mommy import mommy
 from common.tests.test_views import default
 
 
-class TestViewTestBase(APITestCase):
+class ViewTestBase(APITestCase):
     def setUp(self):
         self.user = mommy.make(get_user_model())
         self.client.force_authenticate(user=self.user)
         self.maxDiff = None
-        super(TestViewTestBase, self).setUp()
+        super(ViewTestBase, self).setUp()
+
+    def _dump_data_with_uuid_objects(self, data):
+        return json.loads(json.dumps(data, default=default))
 
     def _assert_response_data_equality(self, data_1, data_2):
         self.assertEquals(
