@@ -12,7 +12,7 @@ from ..models import (
 )
 
 
-class PractitionerTypeFilter(CommonFieldsFilterset):
+class PracticeTypeFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
