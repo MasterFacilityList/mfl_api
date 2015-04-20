@@ -11,21 +11,23 @@ from .views import(
 
 urlpatterns = patterns(
     '',
-    url(r'^(?P<pk>[^/]+)',
-        CommunityHealthWorkerDetailView.as_view,
-        name="community_health_worker_detail"),
-    url(r'^$', CommunityHealthWorkerListView.as_view(),
+    url(r'^workers/$', CommunityHealthWorkerListView.as_view(),
         name='community_health_workers_list'),
+    url(r'^workers/(?P<pk>[^/]+)/$',
+        CommunityHealthWorkerDetailView.as_view(),
+        name="community_health_worker_detail"),
 
-    url(r'^(?P<pk>[^/]+)',
+
+    url(r'^workers_contacts/$', CommunityHealthWorkerContactListView.as_view(),
+        name='community_health_worker_contacts_list'),
+    url(r'^workers_contacts/(?P<pk>[^/]+)/$',
         CommunityHealthWorkerContactDetailView.as_view(),
         name="community_health_worker_contact_detail"),
-    url(r'^$', CommunityHealthWorkerContactListView.as_view(),
-        name='community_health_worker_contacts_list'),
 
-    url(r'^chul/(?P<pk>[^/]+)/',
-        CommunityHealthUnitDetailView.as_view,
-        name='community_health_unit_detail'),
-    url(r'^chul/$', CommunityHealthUnitListView.as_view(),
+
+    url(r'^units/$', CommunityHealthUnitListView.as_view(),
         name='community_health_units_list'),
+    url(r'^units/(?P<pk>[^/]+)/$',
+        CommunityHealthUnitDetailView.as_view(),
+        name='community_health_unit_detail'),
 )

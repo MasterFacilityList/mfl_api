@@ -27,12 +27,13 @@ class CommunityHealthWorker(AbstractBase):
     """
     A person who is incharge of a certain community health area.
     """
-    firt_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
+    id_number = models.PositiveIntegerField(unique=True)
 
     def __unicode__(self):
-        return "{} {} {}".format(self.firt_name, self.last_name, self.surname)
+        return str(self.id_number)
 
 
 class CommunityHealthWorkerContact(AbstractBase):
