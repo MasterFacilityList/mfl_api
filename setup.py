@@ -100,5 +100,6 @@ setup(
         "pygraphviz>=1.2",
         "werkzeug>=0.10.4",
         "gunicorn>=19.3.0",
+        "ansible>=1.9.0",
     ],
 )
