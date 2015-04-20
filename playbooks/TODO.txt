@@ -16,6 +16,7 @@ sudo apt-get install git
 sudo apt-get install python-virtualenv
 sudo apt-get install virtualenvwrapper
 sudo apt-get install postgresql-9.4 ( may need a new server )
+sudo apt-get install cowsay
 
  sudo apt-get install binutils
  sudo apt-get install postgis
@@ -23,6 +24,8 @@ sudo apt-get install postgresql-9.4 ( may need a new server )
  sudo apt-get install libproj-dev
  sudo apt-get install libgeoip1 graphviz
  sudo apt-get install libgraphviz-dev
+
+ # TODO Set up PostgreSQL user
 
 sudo apt-get build-dep python-psycopg2
 sudo apt-get build-dep

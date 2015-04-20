@@ -1,0 +1,10 @@
+---
+- hosts: mfl
+  name: Install MFL API and front-ends
+  sudo: yes
+  roles:
+    - common
+    - mfl_api
+    - mfl_public_web
+    - mfl_admin_web
+  tags: MFL Server
