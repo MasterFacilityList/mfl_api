@@ -1,3 +1,7 @@
+gcloud compute --project "speedy-lattice-334" ssh --zone "europe-west1-c" "mfl-temporary-test-server-remove-mid-may-2015"
+
+# Dry run with VagrantFile
+
 
 sudo ufw allow 80
 sudo ufw allow 443
@@ -8,5 +12,40 @@ sudo apt-get update
 sudo apt-get dist-upgrade
 
 sudo apt-get install nginx
+sudo apt-get install git
+sudo apt-get install python-virtualenv
+sudo apt-get install virtualenvwrapper
+sudo apt-get install postgresql-9.4 ( may need a new server )
+
+ sudo apt-get install binutils
+ sudo apt-get install postgis
+ sudo apt-get install gdal-bin
+ sudo apt-get install libproj-dev
+ sudo apt-get install libgeoip1 graphviz
+ sudo apt-get install libgraphviz-dev
+
+sudo apt-get build-dep python-psycopg2
+sudo apt-get build-dep
+sudo apt-get build-dep python-shapely
+sudo apt-get build-dep python-gdal
+sudo apt-get build-dep python-numpy
+sudo apt-get build-dep cython
+sudo apt-get build-dep python-psycopg2
+# TODO Install ElasticSearch too
+
+sudo pip install pip --upgrade
+sudo pip install distribute --upgrade
+sudo pip install virtualenv --upgrade
+sudo pip install virtualenvwrapper --upgrade
 
 # Set up a virtualenv
+# Check out the code
+# Install dependencies in the virtualenv
+# TODO Add a Procfile
+# TODO Set up MEDIA_ROOT
+# TODO Set up STATIC_ROOT
+# Run fab setup ( setup stuff should be there )
+# TODO Run collectstatic
+# Set up supervisor; merely starting the procfile
+# Set up nginx - proxying to the gunicorn, serving media and static
+# TODO Add a favicon ( coat of arms )?
