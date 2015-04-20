@@ -1,1 +1,0 @@
-{"virtualbox":{"/opt/mfl_api":{"guestpath":"/opt/mfl_api","hostpath":"/home/ngurenyaga/Code/mfl/mfl_api","disabled":false},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/ngurenyaga/Code/mfl/mfl_api/playbooks","disabled":false}}}

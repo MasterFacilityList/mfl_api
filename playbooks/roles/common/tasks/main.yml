@@ -10,6 +10,13 @@
 - ufw: rule=limit port=ssh proto=tcp
 - ufw: logging=on
 
+# Add additional apt repositories
+- apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+- apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present
+
+- apt_key: url=https://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+- apt_repository: repo='deb http://packages.elasticsearch.org/elasticsearch/1.5/debian stable main' state=present
+
 # Update the machine's APT cache
 - apt: upgrade=dist update_cache=yes
 
@@ -26,32 +33,25 @@
 - apt: name=binutils update_cache=yes state=latest
 - apt: name=gdal-bin update_cache=yes state=latest
 - apt: name=libproj-dev update_cache=yes state=latest
-- apt: name=libgeoip1 graphviz update_cache=yes state=latest
+- apt: name=libgeoip1 update_cache=yes state=latest
+- apt: name=graphviz update_cache=yes state=latest
 - apt: name=libgraphviz-dev update_cache=yes state=latest
 - apt: name=supervisor update_cache=yes state=latest
-
-# Install PostgreSQL
-- apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
-- apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' state=present
-- apt: name=postgresql update_cache=yes state=latest
-- apt: name=postgis update_cache=yes state=latest
+- apt: name=postgresql-9.4 update_cache=yes state=latest
+- apt: name=postgresql-9.4-postgis-2.1 update_cache=yes state=latest
+- apt: name=elasticsearch update_cache=yes state=latest
 
 # Install build dependencies of some virtualenv packages
-- apt: pkg=python-psycopg2 state-build-dep
-- apt: pkg=python-shapely state-build-dep
-- apt: pkg=python-gdal state-build-dep
-- apt: pkg=python-numpy state-build-dep
-- apt: pkg=cython state-build-dep
+- apt: pkg=python-psycopg2 state=build-dep
+- apt: pkg=python-shapely state=build-dep
+- apt: pkg=python-gdal state=build-dep
+- apt: pkg=python-numpy state=build-dep
+- apt: pkg=cython state=build-dep
 
 # Set up PostgreSQL
 - postgresql_db: name=mfl state=present
 - postgresql_user: name=mfl password=mfl db=mfl role_attr_flags=CREATEDB,NOSUPERUSER state=present
 - postgresql_ext: name=postgis db=mfl
-
-# Set up ElasticSearch
-- apt_key: url=https://packages.elasticsearch.org/GPG-KEY-elasticsearch state-prsent
-- apt_repository: repo='deb http://packages.elasticsearch.org/elasticsearch/1.5/debian stable main' state=present
-- apt: name=elasticsearch update_cache=yes state=latest
 
 # Prepare to install the virtualenv
 # Upgrade the ancient OS versions of pip & co
@@ -62,6 +62,7 @@
 
 # Confirm that the essential services are started
 # We always restart ES after deploy because it can be a b*****
+# It is also not enabled by default
 - service: name=nginx state=started
 - service: name=postgresql state=started
 - service: name=supervisor state=started
