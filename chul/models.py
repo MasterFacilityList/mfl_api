@@ -19,6 +19,9 @@ class CommunityHealthUnit(AbstractBase):
         Facility,
         help_text='The facility on which the health unit is tied to.')
 
+    def __unicode__(self):
+        return self.name
+
 
 class CommunityHealthWorker(AbstractBase):
     """
@@ -27,6 +30,9 @@ class CommunityHealthWorker(AbstractBase):
     firt_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return "{} {} {}".format(self.firt_name, self.last_name, self.surname)
 
 
 class CommunityHealthWorkerContact(AbstractBase):
@@ -37,3 +43,6 @@ class CommunityHealthWorkerContact(AbstractBase):
     """
     health_worker = models.ForeignKey(CommunityHealthWorker)
     contact = models.ForeignKey(Contact)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.health_worker, self.contact)

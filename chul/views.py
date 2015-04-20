@@ -25,19 +25,19 @@ class CommunityHealthUnitListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'facility',)
 
 
-class CommunityHealthUnitDetailView(generics.RetrieveUpdateDestroryAPIView):
+class CommunityHealthUnitDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthUnit.objects.all()
     serializer_class = CommunityHealthUnitSerializer
 
 
-class CommunityHealthWorkerListView(generics.ListCreateAPIViewA):
+class CommunityHealthWorkerListView(generics.ListCreateAPIView):
     queryset = CommunityHealthWorker.objects.all()
     serializer_class = CommunityHealthWorkerSerializer
     filter_class = CommunityHealthWorkerFilter
     ordering_fields = ('first_name', 'last_name', 'username',)
 
 
-class CommunityHealthWorkerDetailView(generics.RetrieveUpdateDestroyAPUView):
+class CommunityHealthWorkerDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthWorker.objects.all()
     serializer_class = CommunityHealthWorkerSerializer
 
@@ -50,7 +50,6 @@ class CommunityHealthWorkerContactListView(generics.ListCreateAPIView):
 
 
 class CommunityHealthWorkerContactDetailView(
-        generics.RetrieveUpdateDestroyView):
-    queryset = CommunityHealthWorkerContact.objests.all()
+        generics.RetrieveUpdateDestroyAPIView):
+    queryset = CommunityHealthWorkerContact.objects.all()
     serializer_class = CommunityHealthWorkerContactSerializer
-

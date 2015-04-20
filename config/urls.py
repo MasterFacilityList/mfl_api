@@ -10,6 +10,7 @@ apipatterns = patterns(
     url(r'^common/', include('common.urls', namespace='common')),
     url(r'^users/', include('users.urls', namespace='users')),
     url(r'^facilities/', include('facilities.urls', namespace='facilities')),
+    url(r'^chul/', include('chul.urls', namespace='chul')),
 )
 
 urlpatterns = patterns(
