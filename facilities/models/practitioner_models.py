@@ -23,7 +23,7 @@ class PracticeType(AbstractBase):
 
 class Speciality(AbstractBase):
     """
-    The specilization of a pracitioner e.g  Dentist can specilize in
+    The specilization of a pracitioner e.g  Dentist can specialize in
     Endodontics.
     """
     name = models.CharField(
