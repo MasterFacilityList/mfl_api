@@ -521,6 +521,9 @@ class ServiceCategory(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'service categories'
+
 
 class Option(AbstractBase):
     """
@@ -603,4 +606,4 @@ class FacilityService(AbstractBase):
     selected_option = models.ForeignKey(ServiceOption)
 
     def __unicode__(self):
-        return "{}: {}".format(self.facilty, self.selected_option)
+        return "{}: {}".format(self.facility, self.selected_option)

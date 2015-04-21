@@ -49,7 +49,7 @@ class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
         model = Service
 
 
-class FacilityServiceFilterSerializer(
+class FacilityServiceSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = FacilityService
