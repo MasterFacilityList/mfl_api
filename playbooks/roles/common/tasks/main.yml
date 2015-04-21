@@ -1,8 +1,5 @@
 ---
-# Set up UFW to allow ports 80,443 and 22
-# Also rate limit SSH connections and log new connections
-# The default policy is 'deny' ( unless whitelisted )
-
+# Start by toughening up the firewall configuration
 - ufw: state=enabled policy=deny
 - ufw: rule=allow port=80 proto=tcp
 - ufw: rule=allow port=443 proto=tcp
@@ -10,17 +7,23 @@
 - ufw: rule=limit port=ssh proto=tcp
 - ufw: logging=on
 
+# On Vagrant, there are lots of locale issues; this helps, **sometimes**
 - locale_gen: name=en_US.UTF-8 state=present
 
-# Add additional apt repositories
-- apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
-- apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present
+- name: Add APT keys for third party DEB package repositories
+  apt_key: 'url={{item}} state=present'
+  with_items:
+    - https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    - https://packages.elasticsearch.org/GPG-KEY-elasticsearch
 
-- apt_key: url=https://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
-- apt_repository: repo='deb http://packages.elasticsearch.org/elasticsearch/1.5/debian stable main' state=present
+- name: 'Add third party APT repos, after adding their signing keys above'
+  apt_repository: "repo='{{item}}' state=present"
+  with_items:
+    - 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
+    - 'deb http://packages.elasticsearch.org/elasticsearch/1.5/debian stable main'
 
-# Update the machine's APT cache
-- apt: upgrade=dist update_cache=yes
+- name: Update the package cache and upgrade any packages that need updates
+  apt: upgrade=dist update_cache=yes
 
 - name: Install essential packages
   apt: 'name={{item}} state=latest'
@@ -43,15 +46,19 @@
     - postgresql-9.4-postgis-2.1
     - elasticsearch
 
-# Install build dependencies of some virtualenv packages
-- apt: pkg=python-psycopg2 state=build-dep
-- apt: pkg=python-shapely state=build-dep
-- apt: pkg=python-gdal state=build-dep
-- apt: pkg=python-numpy state=build-dep
-- apt: pkg=cython state=build-dep
+- name: Install dependencies for packages that will compile in the virtualenv
+  apt: 'pkg={{item}} state=build-dep'
+  with_items:
+    - python-psycopg2
+    - python-shapely
+    - python-gdal
+    - python-numpy
+    - cython
 
-# Confirm that the essential services are started
-- service: name=nginx state=restarted
-- service: name=postgresql state=restarted
-- service: name=supervisor state=restarted
-- service: name=elasticsearch enabled=yes state=restarted
+- name: Restart essential services
+  service: 'name={{item}} state=restarted'
+  with_items:
+    - nginx
+    - postgresql
+    - supervisor
+    - elasticsearch "enabled=yes"
