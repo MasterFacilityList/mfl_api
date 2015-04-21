@@ -2,8 +2,6 @@ gcloud compute --project "speedy-lattice-334" ssh --zone "europe-west1-c" "mfl-t
 
 
 # TODO Add a Procfile
-# TODO Set up MEDIA_ROOT
-# TODO Set up STATIC_ROOT
 # Run fab setup ( setup stuff should be there )
 # TODO Run collectstatic
 # Set up supervisor; merely starting the procfile
