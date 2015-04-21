@@ -1,0 +1,25 @@
+---
+
+- name: Create mfl database
+  sudo: yes
+  sudo_user: postgres
+  postgresql_db:
+    name: mfl
+    state: present
+
+- name: Set up mfl user and grant them access to the DB
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user:
+    name: mfl
+    password: mfl
+    db: mfl
+    role_attr_flags: 'CREATEDB,NOSUPERUSER'
+    state: present
+
+- name: Set up PostGIS
+  sudo: yes
+  sudo_user: postgres
+  postgresql_ext:
+    name: postgis
+    db: mfl

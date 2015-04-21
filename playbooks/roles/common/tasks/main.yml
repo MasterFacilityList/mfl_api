@@ -10,6 +10,8 @@
 - ufw: rule=limit port=ssh proto=tcp
 - ufw: logging=on
 
+- locale_gen: name=en_US.UTF-8 state=present
+
 # Add additional apt repositories
 - apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
 - apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present
@@ -20,26 +22,26 @@
 # Update the machine's APT cache
 - apt: upgrade=dist update_cache=yes
 
-# Install essential packages
-# Yes, apparently "cowsay" is essential
-- apt: name=build-essential update_cache=yes state=latest
-- apt: name=nginx update_cache=yes state=latest
-- apt: name=openjdk-7-jdk update_cache=yes state=latest
-- apt: name=git update_cache=yes state=latest
-- apt: name=python-virtualenv update_cache=yes state=latest
-- apt: name=python-psycopg2 update_cache=yes state=latest
-- apt: name=virtualenvwrapper update_cache=yes state=latest
-- apt: name=cowsay update_cache=yes state=latest
-- apt: name=binutils update_cache=yes state=latest
-- apt: name=gdal-bin update_cache=yes state=latest
-- apt: name=libproj-dev update_cache=yes state=latest
-- apt: name=libgeoip1 update_cache=yes state=latest
-- apt: name=graphviz update_cache=yes state=latest
-- apt: name=libgraphviz-dev update_cache=yes state=latest
-- apt: name=supervisor update_cache=yes state=latest
-- apt: name=postgresql-9.4 update_cache=yes state=latest
-- apt: name=postgresql-9.4-postgis-2.1 update_cache=yes state=latest
-- apt: name=elasticsearch update_cache=yes state=latest
+- name: Install essential packages
+  apt: 'name={{item}} state=latest'
+  with_items:
+    - build-essential
+    - nginx
+    - openjdk-7-jdk
+    - git
+    - python-virtualenv
+    - python-psycopg2
+    - virtualenvwrapper
+    - binutils
+    - gdal-bin
+    - libproj-dev
+    - libgeoip1
+    - graphviz
+    - libgraphviz-dev
+    - supervisor
+    - postgresql-9.4
+    - postgresql-9.4-postgis-2.1
+    - elasticsearch
 
 # Install build dependencies of some virtualenv packages
 - apt: pkg=python-psycopg2 state=build-dep
@@ -48,22 +50,8 @@
 - apt: pkg=python-numpy state=build-dep
 - apt: pkg=cython state=build-dep
 
-# Set up PostgreSQL
-- postgresql_db: name=mfl state=present
-- postgresql_user: name=mfl password=mfl db=mfl role_attr_flags=CREATEDB,NOSUPERUSER state=present
-- postgresql_ext: name=postgis db=mfl
-
-# Prepare to install the virtualenv
-# Upgrade the ancient OS versions of pip & co
-- command: pip install pip --upgrade
-- command: pip install distribute --upgrade
-- command: pip install virtualenv --upgrade
-- command: pip install virtualenvwrapper --upgrade
-
 # Confirm that the essential services are started
-# We always restart ES after deploy because it can be a b*****
-# It is also not enabled by default
-- service: name=nginx state=started
-- service: name=postgresql state=started
-- service: name=supervisor state=started
+- service: name=nginx state=restarted
+- service: name=postgresql state=restarted
+- service: name=supervisor state=restarted
 - service: name=elasticsearch enabled=yes state=restarted

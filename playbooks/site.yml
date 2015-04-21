@@ -4,5 +4,5 @@
   sudo: True
   roles:
     - common
-    - mfl_api
+    - postgresql
   tags: api
