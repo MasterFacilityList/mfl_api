@@ -10,6 +10,11 @@ from ..models import (
     PractitionerContact,
     PractitionerFacility,
     Practitioner,
+    ServiceCategory,
+    Option,
+    Service,
+    FacilityService,
+    ServiceOption
 )
 
 
@@ -18,7 +23,8 @@ class TestModels(TestCase):
         models = [
             PracticeType, Speciality, Qualification,
             PractitionerQualification, PractitionerContact,
-            PractitionerFacility, Practitioner
+            PractitionerFacility, Practitioner, ServiceCategory, Option,
+            Service, FacilityService, ServiceOption
         ]
 
         for model_cls in models:

@@ -518,6 +518,9 @@ class ServiceCategory(AbstractBase):
         help_text="What is the name of the category? ")
     description = models.TextField(null=True, blank=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Option(AbstractBase):
     """
@@ -536,6 +539,9 @@ class Option(AbstractBase):
         ('DECIMAL', 'Decimal numbers, may have a fraction e.g 3.14'),
         ('TEXT', 'Plain text'),
     ))
+
+    def __unicode__(self):
+        return "{}: {}".format(self.option_type, self.display_text)
 
 
 class Service(AbstractBase, SequenceMixin):
@@ -584,11 +590,17 @@ class ServiceOption(AbstractBase):
     service = models.ForeignKey(Service)
     option = models.ForeignKey(Option)
 
+    def __unicode__(self):
+        return "{}: {}".format(self.service, self.option)
+
 
 class FacilityService(AbstractBase):
     """
-    A join table;
+    A join table
     so we can say that 'one facility can have zero or more services
     """
     facility = models.ForeignKey(Facility)
     selected_option = models.ForeignKey(ServiceOption)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facilty, self.selected_option)

@@ -16,9 +16,58 @@ from ..models import (
     FacilityContact,
     FacilityRegulationStatus,
     FacilityType,
-    RegulationStatus
+    RegulationStatus,
+    ServiceCategory,
+    Option,
+    Service,
+    FacilityService,
+    ServiceOption
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class ServiceCategoryFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = ServiceCategory
+
+
+class OptionFilter(CommonFieldsFilterset):
+    value = django_filters.CharFilter(lookup_type='icontains')
+    display_text = django_filters.CharFilter(lookup_type='icontains')
+    option_type = django_filters.CharFilter(lookup_type='icontains')
+    is_exclusive_option = django_filters.BooleanFilter(lookup_type='exact')
+
+    class Meta:
+        model = Option
+
+
+class ServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+    category = django_filters.AllValuesFilter(lookup_type='exact')
+    code = django_filters.CharFilter(lookup_type='exact')
+
+    class Meta:
+        model = Service
+
+
+class FacilityServiceFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    selected_option = django_filters.AllValuesFilter(lookup_type='exact')
+
+    class Meta:
+        model = FacilityService
+
+
+class ServiceOptionFilter(CommonFieldsFilterset):
+    service = django_filters.AllValuesFilter(lookup_type='exact')
+    option = django_filters.AllValuesFilter(lookup_type='exact')
+
+    class Meta:
+        model = ServiceOption
 
 
 class OwnerTypeFilter(CommonFieldsFilterset):
