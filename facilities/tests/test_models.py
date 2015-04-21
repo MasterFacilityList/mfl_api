@@ -21,8 +21,22 @@ from ..models import (
     GeoCodeMethod,
     FacilityCoordinates,
     FacilityContact,
-    FacilityUnit
+    FacilityUnit,
+    Service
 )
+
+
+class TestServiceModel(BaseTestCase):
+    def test_save_without_code(self):
+        service = mommy.make(Service, name='some name')
+        self.assertEquals(1, Service.objects.count())
+
+        # test unicode
+        self.assertEquals('some name', service.__unicode__())
+
+    def test_save_with_code(self):
+        service = mommy.make(Service, code='1341')
+        self.assertEquals(1341, service.code)
 
 
 class TestOwnerTypes(BaseTestCase):

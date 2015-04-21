@@ -18,8 +18,48 @@ from ..models import (
     GeoCodeMethod,
     FacilityCoordinates,
     FacilityContact,
-    FacilityUnit
+    FacilityUnit,
+    ServiceCategory,
+    Option,
+    Service,
+    FacilityService,
+    ServiceOption,
+    ServiceRating
 )
+
+
+class ServiceCategorySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ServiceCategory
+
+
+class ServiceRatingSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ServiceRating
+
+
+class OptionSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = Option
+
+
+class ServiceOptionSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ServiceOption
+
+
+class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = Service
+
+
+class FacilityServiceSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = FacilityService
 
 
 class FacilityStatusSerializer(

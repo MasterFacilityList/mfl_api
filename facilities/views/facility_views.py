@@ -16,7 +16,13 @@ from ..models import (
     GeoCodeMethod,
     FacilityCoordinates,
     FacilityContact,
-    FacilityUnit
+    FacilityUnit,
+    ServiceCategory,
+    Option,
+    Service,
+    FacilityService,
+    ServiceOption,
+    ServiceRating
 )
 
 from ..serializers import (
@@ -34,7 +40,13 @@ from ..serializers import (
     OwnerTypeSerializer,
     OfficerContactSerializer,
     FacilityRegulationStatusSerializer,
-    FacilityUnitSerializer
+    FacilityUnitSerializer,
+    ServiceCategorySerializer,
+    OptionSerializer,
+    ServiceSerializer,
+    FacilityServiceSerializer,
+    ServiceOptionSerializer,
+    ServiceRatingSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -52,8 +64,86 @@ from ..filters import (
     FacilityContactFilter,
     FacilityTypeFilter,
     FacilityRegulationStatusFilter,
-    RegulationStatusFilter
+    RegulationStatusFilter,
+    ServiceCategoryFilter,
+    OptionFilter,
+    ServiceFilter,
+    FacilityServiceFilter,
+    ServiceOptionFilter,
+    ServiceRatingFilter
 )
+
+
+class ServiceRatingListView(generics.ListCreateAPIView):
+    queryset = ServiceRating.objects.all()
+    serializer_class = ServiceRatingSerializer
+    filter_class = ServiceRatingFilter
+    ordering_fields = ('facility_service')
+
+
+class ServiceRatingDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceRating.objects.all()
+    serializer_class = ServiceRatingSerializer
+
+
+class ServiceCategoryListView(generics.ListCreateAPIView):
+    queryset = ServiceCategory.objects.all()
+    serializer_class = ServiceCategorySerializer
+    filter_class = ServiceCategoryFilter
+    ordering_fields = ('name', 'description', )
+
+
+class ServiceCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceCategory.objects.all()
+    serializer_class = ServiceCategorySerializer
+
+
+class OptionListView(generics.ListCreateAPIView):
+    queryset = Option.objects.all()
+    serializer_class = OptionSerializer
+    filter_class = OptionFilter
+    ordering_fields = ('option_type', 'display_text', 'value', )
+
+
+class OptionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Option.objects.all()
+    serializer_class = OptionSerializer
+
+
+class ServiceListView(generics.ListCreateAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+    filter_class = ServiceFilter
+    ordering_fields = ('name', 'category', 'code',)
+
+
+class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+
+class FacilityServiceListView(generics.ListCreateAPIView):
+    queryset = FacilityService.objects.all()
+    serializer_class = FacilityServiceSerializer
+    filter_class = FacilityServiceFilter
+    ordering_fields = ('facility', 'service')
+
+
+class FacilityServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityService.objects.all()
+    serializer_class = FacilityServiceSerializer
+
+
+class ServiceOptionListView(generics.ListCreateAPIView):
+    queryset = ServiceOption.objects.all()
+    serializer_class = ServiceOptionSerializer
+    filter_class = ServiceOptionFilter
+    ordering_fields = ('service', 'option',)
+
+
+class ServiceOptionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceOption.objects.all()
+    serializer_class = ServiceOptionSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
