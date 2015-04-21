@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 
 from common.models import AbstractBase, Contact, SequenceMixin, Ward
 from common.fields import SequenceField
@@ -17,6 +16,9 @@ class Status(AbstractBase):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'statuses'
 
 
 class Approver(AbstractBase):
@@ -44,6 +46,9 @@ class ApprovalStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'approval_statuses'
+
 
 class Community(SequenceMixin, AbstractBase):
     """
@@ -57,6 +62,9 @@ class Community(SequenceMixin, AbstractBase):
         if not self.code:
             self.code = self.generate_next_code_sequence()
         super(Community, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'communities'
 
 
 class CommunityHealthUnitContact(AbstractBase):
@@ -161,11 +169,6 @@ class CommunityHealthWorker(AbstractBase):
 
     def __unicode__(self):
         return str(self.id_number)
-
-    def validate_id_number(self):
-        id_number_size = len(str(self.id_number))
-        if id_number_size < 7:
-            raise ValidationError("The id number given is too small.")
 
     class Meta:
         unique_together = ('id_number', 'health_unit')

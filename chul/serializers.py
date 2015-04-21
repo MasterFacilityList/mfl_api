@@ -42,22 +42,24 @@ class CommunityHealthWorkerApprovalSerializer(
 class CommunityHealthWorkerSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     health_worker_approvals = CommunityHealthWorkerApprovalSerializer(
-        many=True, readonly=True)
+        many=True)
 
     class Meta:
         model = CommunityHealthWorker
+        read_only_fields = ('health_unit_approvals',)
 
 
 class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
     health_unit_approvals = CommunityHealthWorkerApprovalSerializer(
-        many=True, readonly=True)
+        many=True)
     health_unit_workers = CommunityHealthWorkerSerializer(
-        many=True, readonly=True)
+        many=True)
 
     class Meta:
         model = CommunityHealthUnit
+        read_only_fields = ('health_unit_workers', 'health_unit_approvals', )
 
 
 class CommunityHealthWorkerContactSerializer(

@@ -33,8 +33,7 @@ class Migration(migrations.Migration):
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'ordering': ('-updated', '-created'),
-                'abstract': False,
+                'verbose_name_plural': 'approval_statuses',
             },
         ),
         migrations.CreateModel(
@@ -71,8 +70,7 @@ class Migration(migrations.Migration):
                 ('ward', models.ForeignKey(to='common.Ward')),
             ],
             options={
-                'ordering': ('-updated', '-created'),
-                'abstract': False,
+                'verbose_name_plural': 'communities',
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
@@ -200,8 +198,7 @@ class Migration(migrations.Migration):
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'ordering': ('-updated', '-created'),
-                'abstract': False,
+                'verbose_name_plural': 'statuses',
             },
         ),
         migrations.AddField(

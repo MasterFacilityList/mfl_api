@@ -62,8 +62,8 @@ class TestCommunitHealthWorkerView(ViewTestBase):
             "next": None,
             "previous": None,
             "results": [
-                CommunityHealthWorkerSerializer(worker_2).data,
-                CommunityHealthWorkerSerializer(worker_1).data
+                CommunityHealthWorkerSerializer(worker_1).data,
+                CommunityHealthWorkerSerializer(worker_2).data
 
             ]
         }
