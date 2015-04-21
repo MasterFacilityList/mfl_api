@@ -1,4 +1,4 @@
-[program:gunicorn]
+[program:mfl_api]
 command=/opt/mfl_api_virtualenv/bin/gunicorn -w 3 config.wsgi:application
 directory=/opt/mfl_api
 user=nobody
