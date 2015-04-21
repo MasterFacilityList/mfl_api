@@ -5,7 +5,14 @@ from model_mommy import mommy
 from ..models import (
     CommunityHealthUnit,
     CommunityHealthWorker,
-    CommunityHealthWorkerContact
+    CommunityHealthWorkerContact,
+    Status,
+    Community,
+    CommunityHealthUnitContact,
+    Approver,
+    CommunityHealthUnitApproval,
+    CommunityHealthWorkerApproval,
+    ApprovalStatus
 )
 
 
@@ -16,6 +23,10 @@ class TestCommunityHealthUnit(TestCase):
 
         # test unicode
         self.assertEquals(health_unit.__unicode__(), health_unit.name)
+
+    def test_save_with_code(self):
+        mommy.make(CommunityHealthUnit, code='7800')
+        self.assertEquals(1, CommunityHealthUnit.objects.count())
 
 
 class TestCommunityHealthWorkerModel(TestCase):
@@ -38,3 +49,30 @@ class TestCommunityHealthWorkerContact(TestCase):
         expected_unicode = "{}: {}".format(
             hw_contact.health_worker, hw_contact.contact)
         self.assertEquals(expected_unicode, hw_contact.__unicode__())
+
+
+class TestCommunityModel(TestCase):
+    def test_save_community_with_code(self):
+        community = mommy.make(Community, code=1344)
+        self.assertEquals(1, Community.objects.count())
+        self.assertEquals(1344, community.code)
+
+
+class TestModels(TestCase):
+    def test_save(self):
+        models = [
+            CommunityHealthUnit, CommunityHealthWorker,
+            CommunityHealthWorkerContact, Status, Community,
+            CommunityHealthUnitContact, Approver, CommunityHealthUnitApproval,
+            CommunityHealthWorkerApproval, ApprovalStatus
+        ]
+
+        for model_cls in models:
+            obj = mommy.make(model_cls)
+            self.assertNotEquals(0, len(model_cls.objects.all()))
+
+            #  a naive way to test unicodes for coverage purposes only
+            try:
+                self.assertIsInstance(obj.__unicode__(), str)
+            except AssertionError:
+                self.assertIsInstance(obj.__unicode__(), unicode)
