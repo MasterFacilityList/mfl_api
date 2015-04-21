@@ -1,9 +1,10 @@
 gcloud compute --project "speedy-lattice-334" ssh --zone "europe-west1-c" "mfl-temporary-test-server-remove-mid-may-2015"
 
 
-# TODO Add a Procfile
-# Run fab setup ( setup stuff should be there )
+# TODO Run manage.py migrate
 # TODO Run collectstatic
-# Set up supervisor; merely starting the procfile
-# Set up nginx - proxying to the gunicorn, serving media and static
-# TODO Add a favicon ( coat of arms )?
+# TODO Set up supervisor; merely starting the procfile
+# TODO Set up nginx - proxying to the gunicorn, serving media and static
+
+
+/opt/mfl_api_virtualenv/bin/gunicorn -w 3 config.wsgi:application

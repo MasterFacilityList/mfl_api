@@ -18,7 +18,7 @@ def test():
 
 
 def run():
-    local('{}/manage.py runserver 8000'.format(BASE_DIR))
+    local('gunicorn -w 3 config.wsgi')
 
 
 def deploy():
@@ -63,6 +63,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def setup(*args, **kwargs):
+    """Do not use this in production!"""
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
