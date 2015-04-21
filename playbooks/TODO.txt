@@ -1,9 +1,6 @@
 gcloud compute --project "speedy-lattice-334" ssh --zone "europe-west1-c" "mfl-temporary-test-server-remove-mid-may-2015"
 
 
-# Set up a virtualenv
-# Check out the code
-# Install dependencies in the virtualenv
 # TODO Add a Procfile
 # TODO Set up MEDIA_ROOT
 # TODO Set up STATIC_ROOT

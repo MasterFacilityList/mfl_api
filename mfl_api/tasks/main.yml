@@ -10,3 +10,14 @@
 
 - name: copy the code to the target machine
   copy: 'src=.. dest=/opt/mfl_api owner={{ lookup("env","USER") }} group={{ lookup("env","USER") }} mode=0644 directory_mode=0644'
+
+- name: update versions of common dependencies via pip before we make our venv
+  pip: 'name={{item}} state=latest'
+  with_items:
+    - pip
+    - distribute
+    - virtualenv
+    - virtualenvwrapper
+
+- name: now install the dependencies that we need
+  pip: requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv

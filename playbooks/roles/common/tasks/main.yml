@@ -26,12 +26,13 @@
   apt: upgrade=dist update_cache=yes
 
 - name: Install essential packages
-  apt: 'name={{item}} state=latest'
+  apt: 'name={{item}} state=installed install_recommends=yes'
   with_items:
     - build-essential
     - nginx
     - openjdk-7-jdk
     - git
+    - python-pip
     - python-virtualenv
     - python-psycopg2
     - virtualenvwrapper
