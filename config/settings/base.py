@@ -4,7 +4,7 @@ import dj_database_url
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 SEND_BROKEN_LINK_EMAILS = not DEBUG
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke']
