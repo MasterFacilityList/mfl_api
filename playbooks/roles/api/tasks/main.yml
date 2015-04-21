@@ -1,8 +1,5 @@
 ---
 
-- name: set up an account on the target machine for the current user
-  user: 'name={{ lookup("env","USER") }} shell=/bin/bash groups=adm,admin,sudo,plugdev append=yes state=present'
-
 - name: set up the authorized key of this machine's user
   authorized_key: 'user={{ lookup("env","USER") }} key="{{ item }}"'
   with_file:

@@ -62,3 +62,6 @@
     - nginx
     - postgresql
     - elasticsearch "enabled=yes"
+
+- name: set up an account on the target machine for the current user
+  user: 'name={{ lookup("env","USER") }} shell=/bin/bash groups=adm,admin,sudo,plugdev append=yes state=present'
