@@ -37,7 +37,7 @@ class Approver(AbstractBase):
 
 class ApprovalStatus(AbstractBase):
     """
-    Status of a community health unit indicatting whether it has been
+    Status of a community health unit indicating whether it has been
     approved or not.
     """
     name = models.CharField(max_length=100)
@@ -176,7 +176,7 @@ class CommunityHealthWorker(AbstractBase):
 
 class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
     """
-    Shows wen a health worker was approved and by who.
+    Shows when a health worker was approved and by who.
     """
     health_worker = models.ForeignKey(
         CommunityHealthWorker, related_name='health_worker_approvals')
