@@ -588,7 +588,7 @@ class ServiceOption(AbstractBase):
 
 class FacilityService(AbstractBase):
     """
-    A facility can have zero or more services
+    A facility can have zero or more services.
     """
     facility = models.ForeignKey(Facility)
     selected_option = models.ForeignKey(ServiceOption)

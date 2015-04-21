@@ -112,8 +112,6 @@ class Practitioner(AbstractBase):
         help_text='Practitioner contacts emails, phone numbers etc.')
     facilities = models.ManyToManyField(
         Facility, through=PractitionerFacility)
-
-    # can the practitioner have more than one speciality?
     speciality = models.ForeignKey(Speciality)
 
     def __unicode__(self):
