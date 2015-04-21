@@ -1,7 +1,8 @@
 #! /usr/bin/env python
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join
 from config.settings import base
 from fabric.api import local
+from fabric.context_managers import lcd
 
 
 BASE_DIR = dirname(abspath(__file__))
@@ -27,6 +28,14 @@ def deploy():
     """
     test()
     local('python setup.py sdist upload -r slade')
+
+
+def server_deploy():
+    """
+    Deploy to the staging and prod servers
+    """
+    with lcd(join(BASE_DIR, 'playbooks')):
+        local('ansible-playbook site.yml -vvv --become --become-method=su')
 
 
 def reset_migrations():
