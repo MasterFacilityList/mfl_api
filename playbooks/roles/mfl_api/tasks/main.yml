@@ -7,3 +7,6 @@
   authorized_key: 'user={{ lookup("env","USER") }} key="{{ item }}"'
   with_file:
     - "{{ lookup('env','HOME') }}/.ssh/id_rsa.pub"
+
+- name: copy the code to the target machine
+  copy: 'src=.. dest=/opt/mfl_api owner={{ lookup("env","USER") }} group={{ lookup("env","USER") }} mode=0644 directory_mode=0644'
