@@ -26,16 +26,17 @@
   apt: upgrade=dist update_cache=yes
 
 - name: Install essential packages
-  apt: 'name={{item}} state=installed install_recommends=yes'
+  apt: 'name={{item}} state=latest install_recommends=yes'
   with_items:
     - build-essential
     - nginx
     - openjdk-7-jdk
     - git
+    - python-setuptools
+    - python-distribute
     - python-pip
     - python-virtualenv
     - python-psycopg2
-    - virtualenvwrapper
     - binutils
     - gdal-bin
     - libproj-dev
@@ -52,7 +53,6 @@
   with_items:
     - python-psycopg2
     - python-shapely
-    - python-gdal
     - python-numpy
     - cython
 
