@@ -595,3 +595,18 @@ class FacilityService(AbstractBase):
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)
+
+
+class ServiceRating(AbstractBase):
+    """
+    The scale for rating the facility service.
+    """
+    facility_service = models.ForeignKey(FacilityService)
+    cleanliness = models.BooleanField(default=True)
+    attitude = models.BooleanField(default=True)
+    will_return = models.BooleanField(default=True)
+    occupation = models.CharField(max_length=100)
+    comment = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facility_service, self.created_by)

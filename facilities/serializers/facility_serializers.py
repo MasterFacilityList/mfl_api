@@ -23,7 +23,8 @@ from ..models import (
     Option,
     Service,
     FacilityService,
-    ServiceOption
+    ServiceOption,
+    ServiceRating
 )
 
 
@@ -31,6 +32,12 @@ class ServiceCategorySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = ServiceCategory
+
+
+class ServiceRatingSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ServiceRating
 
 
 class OptionSerializer(AbstractFieldsMixin, serializers.ModelSerializer):

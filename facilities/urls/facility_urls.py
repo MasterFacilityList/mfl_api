@@ -43,9 +43,17 @@ from ..views import (
     FacilityServiceDetailView,
     ServiceOptionListView,
     ServiceOptionDetailView,
+    ServiceRatingListView,
+    ServiceRatingDetailView
 )
 urlpatterns = patterns(
     '',
+
+    url(r'^service_ratings/$', ServiceRatingListView.as_view(),
+        name='service_ratings_list'),
+    url(r'^service_ratings/(?P<pk>[^/]+)/$',
+        ServiceRatingDetailView.as_view(),
+        name='service_rating_detail'),
 
     url(r'^service_categories/$', ServiceCategoryListView.as_view(),
         name='service_categories_list'),

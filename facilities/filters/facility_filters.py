@@ -21,9 +21,26 @@ from ..models import (
     Option,
     Service,
     FacilityService,
-    ServiceOption
+    ServiceOption,
+    ServiceRating
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class ServiceRatingFilter(CommonFieldsFilterset):
+    facility_service = django_filters.AllValuesFilter(lookup_type='exact')
+    cleanliness = django_filters.BooleanFilter(lookup_type='exact')
+    attitude = django_filters.BooleanFilter(lookup_type='exact')
+    will_return = django_filters.BooleanFilter(lookup_type='exact')
+    occupation = django_filters.CharFilter(lookup_type='icontains')
+    comment = django_filters.CharFilter(lookup_type='icontains')
+    service = django_filters.AllValuesFilter(
+        name='facility_service__service', lookup_type='exact')
+    facility = django_filters.AllValuesFilter(
+        name='facility_service__facility', lookup_type='exact')
+
+    class Meta:
+        model = ServiceRating
 
 
 class ServiceCategoryFilter(CommonFieldsFilterset):
