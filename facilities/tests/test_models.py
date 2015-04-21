@@ -36,7 +36,7 @@ class TestServiceModel(BaseTestCase):
 
     def test_save_with_code(self):
         service = mommy.make(Service, code='1341')
-        self.assertEquals('1341', service.code)
+        self.assertEquals(1341, service.code)
 
 
 class TestOwnerTypes(BaseTestCase):
