@@ -493,9 +493,27 @@ class FacilityUnit(AbstractBase):
 
 class ServiceCategory(AbstractBase):
     """
-    Categorisation of health services.
+    Categorisation of health services. e.g Immunisation, Antenatal,
+    Family Planning etc.
+    """
+    name = models.CharField(
+        max_length=100,
+        help_text="What is the name of the category? ")
+    description = models.TextField(null=True, blank=True)
+    abbreviation = models.CharField(
+        max_length=50, null=True, blank=True,
+        help_text='A short form of the category e.g ANC for antenatal')
 
-    The categorisation of services could either be:
+    def __unicode__(self):
+        return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'service categories'
+
+
+class Option(AbstractBase):
+    """
+    services could either be:
         Given in terms of KEPH levels:
 
         Similar services are offered in the different KEPH levels:
@@ -512,21 +530,6 @@ class ServiceCategory(AbstractBase):
             For example, Mental Health Services are either Integrated or
             Specialised (and the Specialised Services are split into KEPH
             level).
-    """
-    name = models.CharField(
-        max_length=100,
-        help_text="What is the name of the category? ")
-    description = models.TextField(null=True, blank=True)
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta(AbstractBase.Meta):
-        verbose_name_plural = 'service categories'
-
-
-class Option(AbstractBase):
-    """
     """
     value = models.TextField()
     display_text = models.CharField(max_length=30)
@@ -548,6 +551,10 @@ class Service(SequenceMixin, AbstractBase):
     """
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
+    abbreviation = models.CharField(
+        null=True, blank=True,
+        help_text='A short form for the service e.g FANC for Focused '
+        'Antenatal Care')
     category = models.ForeignKey(
         ServiceCategory,
         help_text="The classification that the service lies in.")
@@ -581,7 +588,7 @@ class ServiceOption(AbstractBase):
 
 class FacilityService(AbstractBase):
     """
-    Facility can have zero or more services
+    A facility can have zero or more services
     """
     facility = models.ForeignKey(Facility)
     selected_option = models.ForeignKey(ServiceOption)
