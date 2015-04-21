@@ -527,11 +527,6 @@ class ServiceCategory(AbstractBase):
 
 class Option(AbstractBase):
     """
-    We chicken out of relational modelling here a bit...
-    The "meaning" of an option will be defined outside the "model proper"
-    e.g. it could be that `Y` and `N` represent boolean `True` and `False`.
-    If `is_exclusive_option` is `True`, it can be selected more than once
-    for a specified service.
     """
     value = models.TextField()
     display_text = models.CharField(max_length=30)
@@ -547,20 +542,9 @@ class Option(AbstractBase):
         return "{}: {}".format(self.option_type, self.display_text)
 
 
-class Service(AbstractBase, SequenceMixin):
+class Service(SequenceMixin, AbstractBase):
     """
     A health service.
-
-    The definition of services has attempted to describe the actual components
-    of the services provided, the basic infrastructure required to effectively
-    provide the service, and human resource required. For example,
-    Comprehensive Dental Services cannot be said to be provided unless there is
-    a dental chair with its accessories and a dentist. If any of this is
-    missing then the service is not provided. However, some services
-    definitions are quite complex and will require involvement of the technical
-    person attached to the district to work with the DHRIO in order to collect
-    the data. For example, the laboratory equipment may require the presence
-    of a District Laboratory Technologist
     """
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
@@ -585,10 +569,8 @@ class Service(AbstractBase, SequenceMixin):
 
 class ServiceOption(AbstractBase):
     """
-    This is a join table; - "available options"
-    so we can say that
-    'one service can have multiple options to be selected'
-    this is for defining the available choices
+    One service can have multiple options to be selected
+    this is for defining the available choices for a service.
     """
     service = models.ForeignKey(Service)
     option = models.ForeignKey(Option)
@@ -599,8 +581,7 @@ class ServiceOption(AbstractBase):
 
 class FacilityService(AbstractBase):
     """
-    A join table
-    so we can say that 'one facility can have zero or more services
+    Facility can have zero or more services
     """
     facility = models.ForeignKey(Facility)
     selected_option = models.ForeignKey(ServiceOption)
