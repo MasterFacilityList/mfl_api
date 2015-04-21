@@ -1,9 +1,8 @@
 import os
 import dj_database_url
 
-BASE_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "..", "..")
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -85,9 +84,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-MEDIA_ROOT = os.path.join(BASE_DIR, '/media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 SESSION_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'

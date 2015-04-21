@@ -75,4 +75,7 @@ mfl_models_graph.png
 
 *.vagrant*
 .vagrant/
+./mfl_api
 
+*static*
+*media*

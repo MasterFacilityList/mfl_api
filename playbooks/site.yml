@@ -5,5 +5,4 @@
   roles:
     - common
     - postgresql
-    - mfl_api
-  tags: api
+    - api
