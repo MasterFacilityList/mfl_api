@@ -35,7 +35,9 @@ def server_deploy():
     Deploy to the staging and prod servers
     """
     with lcd(join(BASE_DIR, 'playbooks')):
-        local('ansible-playbook site.yml -vvv --become --become-method=su')
+        local(
+            'ansible-playbook site.yml -vv'
+        )
 
 
 def reset_migrations():
