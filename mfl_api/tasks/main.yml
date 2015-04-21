@@ -20,4 +20,4 @@
     - virtualenvwrapper
 
 - name: now install the dependencies that we need
-  pip: requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
+  pip: chdir=/opt/mfl_api requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
