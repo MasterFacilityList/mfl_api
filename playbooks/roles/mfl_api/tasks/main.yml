@@ -23,7 +23,7 @@
   pip: chdir=/opt/mfl_api requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
 
 - name: run the Django migrations and collectstatic
-  django-manage: command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/
+  django_manage: command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/
   with_items:
     - migrate
     - collectstatic
@@ -31,9 +31,11 @@
 - name: copy the supervisor configuration to its destination
   sudo: yes
   template: src=../templates/mfl_supervisor_conf.j2 dest=/etc/supervisor/conf.d/mfl_api.conf backup=yes
-  # TODO Notify and restart supervisor
+  notify:
+    - restart supervisor
 
 - name: copy the nginx configuration to its destination
   sudo: yes
-  template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites_enabled/mfl.conf backup=yes
-  # TODO Notify and restart nginx
+  template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf backup=yes
+  notify:
+    - restart nginx

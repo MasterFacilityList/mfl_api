@@ -56,10 +56,9 @@
     - python-numpy
     - cython
 
-- name: Restart essential services
+- name: Restart essential services just to be sure
   service: 'name={{item}} state=restarted'
   with_items:
     - nginx
     - postgresql
-    - supervisor
     - elasticsearch "enabled=yes"
