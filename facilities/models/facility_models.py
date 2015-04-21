@@ -489,3 +489,106 @@ class FacilityUnit(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
+
+
+class ServiceCategory(AbstractBase):
+    """
+    Categorisation of health services.
+
+    The categorisation of services could either be:
+        Given in terms of KEPH levels:
+
+        Similar services are offered in the different KEPH levels:
+            For example, Environmental Health Services offered in KEPH level
+            2 are similar to those offered in KEPH level 3. If the KEPH level
+            of the facility is known, the corresponding KEPH level of the
+            service should apply. If it is not known, write the higher KEPH
+            level.
+
+        Given through a choice of service level:
+            For example, Oral Health Services are either Basic or Comprehensive
+
+        A combination of choices and KEPH levels:
+            For example, Mental Health Services are either Integrated or
+            Specialised (and the Specialised Services are split into KEPH
+            level).
+    """
+    name = models.CharField(
+        max_length=100,
+        help_text="What is the name of the category? ")
+    description = models.TextField(null=True, blank=True)
+
+
+class Option(AbstractBase):
+    """
+    We chicken out of relational modelling here a bit...
+    The "meaning" of an option will be defined outside the "model proper"
+    e.g. it could be that `Y` and `N` represent boolean `True` and `False`.
+    If `is_exclusive_option` is `True`, it can be selected more than once
+    for a specified service.
+    """
+    value = models.TextField()
+    display_text = models.CharField(max_length=30)
+    is_exclusive_option = models.BooleanField(default=True)
+    option_type = models.CharField(max_length=12, choices=(
+        ('BOOLEAN', 'Yes/No or True/False responses'),
+        ('INTEGER', 'Integral numbers e.g 1,2,3'),
+        ('DECIMAL', 'Decimal numbers, may have a fraction e.g 3.14'),
+        ('TEXT', 'Plain text'),
+    ))
+
+
+class Service(AbstractBase, SequenceMixin):
+    """
+    A health service.
+
+    The definition of services has attempted to describe the actual components
+    of the services provided, the basic infrastructure required to effectively
+    provide the service, and human resource required. For example,
+    Comprehensive Dental Services cannot be said to be provided unless there is
+    a dental chair with its accessories and a dentist. If any of this is
+    missing then the service is not provided. However, some services
+    definitions are quite complex and will require involvement of the technical
+    person attached to the district to work with the DHRIO in order to collect
+    the data. For example, the laboratory equipment may require the presence
+    of a District Laboratory Technologist
+    """
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(
+        ServiceCategory,
+        help_text="The classification that the service lies in.")
+
+    code = SequenceField(unique=True, editable=False)
+    options = models.ManyToManyField(Option, through='ServiceOption')
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Service, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'services'
+
+
+class ServiceOption(AbstractBase):
+    """
+    This is a join table; - "available options"
+    so we can say that
+    'one service can have multiple options to be selected'
+    this is for defining the available choices
+    """
+    service = models.ForeignKey(Service)
+    option = models.ForeignKey(Option)
+
+
+class FacilityService(AbstractBase):
+    """
+    A join table;
+    so we can say that 'one facility can have zero or more services
+    """
+    facility = models.ForeignKey(Facility)
+    selected_option = models.ForeignKey(ServiceOption)
