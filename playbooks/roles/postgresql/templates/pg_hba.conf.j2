@@ -1,0 +1,8 @@
+# This works with the pg_ident in the same folder to allow the root user
+# to become postgres with no password
+# It take steps to ensure that "normal" administrative access as the postgres
+# user is still there
+local   all     postgres                    peer map=root_as_postgres
+local   all     all                         peer map=root_as_postgres
+host    all     all         127.0.0.1/32    md5
+host    all     all         ::1/128         md5

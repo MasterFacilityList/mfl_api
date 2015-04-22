@@ -1,7 +1,8 @@
 #! /usr/bin/env python
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join
 from config.settings import base
 from fabric.api import local
+from fabric.context_managers import lcd
 
 
 BASE_DIR = dirname(abspath(__file__))
@@ -18,7 +19,7 @@ def test():
 
 
 def run():
-    local('{}/manage.py runserver 8000'.format(BASE_DIR))
+    local('gunicorn -w 3 config.wsgi')
 
 
 def deploy():
@@ -27,6 +28,18 @@ def deploy():
     """
     test()
     local('python setup.py sdist upload -r slade')
+
+
+def server_deploy():
+    """
+    Deploy to the staging and prod servers
+    """
+    with lcd(join(BASE_DIR, 'playbooks')):
+        local(
+            'ansible-playbook site.yml -v --extra-vars "base_dir={}"'.format(
+                BASE_DIR
+            )
+        )
 
 
 def reset_migrations():
@@ -63,6 +76,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def setup(*args, **kwargs):
+    """Do not use this in production!"""
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
