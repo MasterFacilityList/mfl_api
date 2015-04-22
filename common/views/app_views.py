@@ -33,6 +33,7 @@ from ..filters import (
     UserContactFilter,
     TownFilter
 )
+from .app_views import AuditableDetailViewMixin
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -42,7 +43,8 @@ class ContactView(generics.ListCreateAPIView):
     filter_class = ContactFilter
 
 
-class ContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ContactDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
 
@@ -54,7 +56,8 @@ class PhysicalAddressView(generics.ListCreateAPIView):
     filter_class = PhysicalAddressFilter
 
 
-class PhysicalAddressDetailView(generics.RetrieveUpdateDestroyAPIView):
+class PhysicalAddressDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = PhysicalAddress.objects.all()
     serializer_class = PhysicalAddressSerializer
 
@@ -66,7 +69,8 @@ class CountyView(generics.ListCreateAPIView):
     filter_class = CountyFilter
 
 
-class CountyDetailView(generics.RetrieveUpdateDestroyAPIView):
+class CountyDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = County.objects.all()
     serializer_class = CountySerializer
 
@@ -78,7 +82,8 @@ class WardView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code', 'constituency',)
 
 
-class WardDetailView(generics.RetrieveUpdateDestroyAPIView):
+class WardDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Ward.objects.all()
     serializer_class = WardSerializer
 
@@ -90,7 +95,8 @@ class ConstituencyView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code', 'county',)
 
 
-class ConstituencyDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ConstituencyDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Constituency.objects.all()
     serializer_class = ConstituencySerializer
 
@@ -102,7 +108,8 @@ class ContactTypeListView(generics.ListCreateAPIView):
     filter_class = ContactTypeFilter
 
 
-class ContactTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ContactTypeDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
 
@@ -114,7 +121,8 @@ class UserCountyView(generics.ListCreateAPIView):
     ordering_fields = ('user', 'county',)
 
 
-class UserCountyDetailView(generics.RetrieveUpdateDestroyAPIView):
+class UserCountyDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = UserCounty.objects.all()
     serializer_class = InchargeCountiesSerializer
 
@@ -126,7 +134,8 @@ class UserContactListView(generics.ListCreateAPIView):
     ordering_fields = ('user', 'contact',)
 
 
-class UserContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+class UserContactDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = UserContact.objects.all()
     serializer_class = UserContactSerializer
 
@@ -138,6 +147,7 @@ class TownListView(generics.ListCreateAPIView):
     ordering_fields = ('name', )
 
 
-class TownDetailView(generics.RetrieveUpdateDestroyAPIView):
+class TownDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Town.objects.all()
     serializer_class = TownSerializer

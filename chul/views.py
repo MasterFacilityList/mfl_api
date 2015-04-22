@@ -1,5 +1,5 @@
 from rest_framework import generics
-
+from common.views import AuditableDetailViewMixin
 from .models import (
     CommunityHealthUnit,
     CommunityHealthWorker,
@@ -47,7 +47,8 @@ class StatusListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'description', )
 
 
-class StatusDetailView(generics.RetrieveUpdateDestroyAPIView):
+class StatusDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
 
@@ -59,7 +60,8 @@ class CommunityListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code', )
 
 
-class CommunityDetailView(generics.RetrieveUpdateDestroyAPIView):
+class CommunityDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
@@ -72,6 +74,7 @@ class CommunityHealthUnitContactListView(generics.ListCreateAPIView):
 
 
 class CommunityHealthUnitContactDetailView(
+        AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthUnitContact.objects.all()
     serializer_class = CommunityHealthUnitContactSerializer
@@ -84,7 +87,8 @@ class ApproverListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'abbreviation',)
 
 
-class ApproverDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ApproverDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Approver.objects.all()
     serializer_class = ApproverSerializer
 
@@ -97,6 +101,7 @@ class CommunityHealthUnitApprovalListView(generics.ListCreateAPIView):
 
 
 class CommunityHealthUnitApprovalDetailView(
+        AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthUnitApproval.objects.all()
     serializer_class = CommunityHealthUnitApprovalSerializer
@@ -110,6 +115,7 @@ class CommunityHealthWorkerApprovalListView(generics.ListCreateAPIView):
 
 
 class CommunityHealthWorkerApprovalDetailView(
+        AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthWorkerApproval.objects.all()
     serializer_class = CommunityHealthWorkerApprovalSerializer
@@ -122,7 +128,8 @@ class ApprovalStatusListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'description',)
 
 
-class ApprovalStatusDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ApprovalStatusDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = ApprovalStatus.objects.all()
     serializer_class = ApprovalStatusSerializer
 
@@ -134,7 +141,8 @@ class CommunityHealthUnitListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'facility',)
 
 
-class CommunityHealthUnitDetailView(generics.RetrieveUpdateDestroyAPIView):
+class CommunityHealthUnitDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthUnit.objects.all()
     serializer_class = CommunityHealthUnitSerializer
 
@@ -146,7 +154,8 @@ class CommunityHealthWorkerListView(generics.ListCreateAPIView):
     ordering_fields = ('first_name', 'last_name', 'username',)
 
 
-class CommunityHealthWorkerDetailView(generics.RetrieveUpdateDestroyAPIView):
+class CommunityHealthWorkerDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthWorker.objects.all()
     serializer_class = CommunityHealthWorkerSerializer
 
@@ -159,6 +168,7 @@ class CommunityHealthWorkerContactListView(generics.ListCreateAPIView):
 
 
 class CommunityHealthWorkerContactDetailView(
+        AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     queryset = CommunityHealthWorkerContact.objects.all()
     serializer_class = CommunityHealthWorkerContactSerializer
