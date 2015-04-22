@@ -64,3 +64,7 @@
 
 - name: set up an account on the target machine for the current user
   user: 'name={{ lookup("env","USER") }} shell=/bin/bash groups=adm,admin,sudo,plugdev append=yes state=present'
+
+- name: ensure that the login user has ALL=(ALL) NOPASSWD:ALL
+  sudo: yes
+  template: 'src=../templates/user_sudoers.d.j2 dest=/etc/sudoers.d/{{ lookup("env","USER") }}'
