@@ -112,14 +112,15 @@ def _resolve_detail_metadata(request, url_name, model_cls):
                 FacilityOperationState, facility=facility,
                 operation_status=status_2)
             metadata = _get_metadata_from_detail_url(url_name, obj, request)
-            FacilityOperationState.objects.filter(facility=facility).delete()
+            FacilityOperationState.objects.filter(
+                facility=facility).all().delete()
             facility.delete()
             status.delete()
             status_2.delete()
         elif model_cls == FacilityUpgrade:
-            owner_type = mommy.make(OwnerType, name='MOH')
+            owner_type = mommy.make(OwnerType, name='PRIVATE')
             owner = mommy.make(Owner, owner_type=owner_type)
-            facility_type = mommy.make(FacilityType, name='HEALTH_CENTER')
+            facility_type = mommy.make(FacilityType, name='MATERNITY_HOME')
             facility_type_upgrade = mommy.make(
                 FacilityType, name='LOWEST_LEVEL_HOSPITAL')
             facility = mommy.make(
@@ -130,7 +131,7 @@ def _resolve_detail_metadata(request, url_name, model_cls):
                 FacilityUpgrade, facility_type=facility_type_upgrade,
                 facility=facility)
             metadata = _get_metadata_from_detail_url(url_name, obj, request)
-            obj.delete()
+            FacilityUpgrade.objects.filter(facility=facility).all().delete()
             facility.delete()
             facility_type.delete()
             facility_type_upgrade.delete()

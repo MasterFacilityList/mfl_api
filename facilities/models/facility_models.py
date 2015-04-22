@@ -439,36 +439,50 @@ class FacilityOperationState(AbstractBase):
 class FacilityUpgrade(AbstractBase):
     """
     """
-    facility = models.ForeignKey(Facility)
+    facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
     reason = models.TextField()
 
+    def fbo_facility_upgrade_check(self, current_level, next_level, error):
+        if can_upgrade_in_fbo(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def moh_facility_upgrade_check(self, current_level, next_level, error):
+        if can_upgrade_in_moh(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def private_facility_upgrade_check(
+            self, current_level, next_level, error):
+        if can_upgrade_in_private_sector(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
     def validate_upgrade(self):
-        facility_owner_type = self.facilty.owner.owner_type.name
+        facility_owner_type = self.facility.owner.owner_type.name
         current_level = str(self.facility.facility_type.name).upper()
         next_level = str(self.facility_type.name).upper()
         error = "Upgrage from {} to {} is not allowed".format(
             current_level, next_level)
         if facility_owner_type == 'MOH':
-            if can_upgrade_in_moh(current_level, next_level):
-                self.facility.facility_type = self.facility_type
-                self.facility.save()
-            else:
-                raise ValidationError(error)
+            self.moh_facility_upgrade_check(
+                current_level, next_level, error)
 
         elif facility_owner_type == 'FBO':
-            if can_upgrade_in_fbo(current_level, next_level):
-                self.facility.facility_type = self.facility_type
-                self.facility.save()
-            else:
-                raise ValidationError(error)
+            self.fbo_facility_upgrade_check(
+                current_level, next_level, error)
 
         elif facility_owner_type == 'PRIVATE':
-            if can_upgrade_in_private_sector(current_level, next_level):
-                self.facility.facility_type = self.facility_type
-                self.facility.save()
-            else:
-                raise ValidationError(error)
+            self.private_facility_upgrade_check(
+                current_level, next_level, error)
+
         else:
             error = "Unknowm owner type {}".format(facility_owner_type)
             raise ValidationError(error)
