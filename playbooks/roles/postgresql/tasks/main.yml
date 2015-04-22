@@ -19,16 +19,16 @@
   sudo: yes
   sudo_user: postgres
   postgresql_db:
-    name: mfl
+    name: '{{ database_name }}'
     state: present
 
 - name: Set up mfl user and grant them access to the DB
   sudo: yes
   sudo_user: postgres
   postgresql_user:
-    name: mfl
-    password: mfl
-    db: mfl
+    name: '{{ database_user }}'
+    password: '{{ database_password }}'
+    db: '{{ database_name }}'
     role_attr_flags: 'CREATEDB,NOSUPERUSER'
     state: present
 
@@ -37,4 +37,4 @@
   sudo_user: postgres
   postgresql_ext:
     name: postgis
-    db: mfl
+    db: '{{ database_name }}'
