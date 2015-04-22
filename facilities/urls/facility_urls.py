@@ -52,12 +52,12 @@ from ..views import (
 )
 urlpatterns = patterns(
     '',
-    url(r'^facilitiy_operation_state/$',
+    url(r'^facility_operation_state/$',
         FacilityOperationStateListView.as_view(),
-        name='facilitiy_operation_states_list'),
-    url(r'^facilitiy_operation_state/(?P<pk>[^/]+)/$',
+        name='facility_operation_states_list'),
+    url(r'^facility_operation_state/(?P<pk>[^/]+)/$',
         FacilityOperationStateDetailView.as_view(),
-        name='facilitiy_operation_state_detail'),
+        name='facility_operation_state_detail'),
 
     url(r'^facilitiy_approvals/$', FacilityApprovalListView.as_view(),
         name='facility_approvals_list'),
