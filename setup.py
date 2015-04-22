@@ -102,5 +102,6 @@ setup(
         "gunicorn>=19.3.0",
         "ansible>=1.9.0",
         "apache-libcloud>=0.17.0",
+        "django-environ>=0.3.0",
     ],
 )

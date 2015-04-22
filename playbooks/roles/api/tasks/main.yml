@@ -5,8 +5,12 @@
   with_file:
     - "{{ lookup('env','HOME') }}/.ssh/id_rsa.pub"
 
+- name: work around some silly Ubuntu vagrant box perms issue that I am too tired to debug
+  sudo: yes
+  file: path=/opt mode=0777 recurse=no state=directory
+
 - name: copy the code to the target machine using rsync
-  synchronize: 'src={{base_dir}} dest=/opt delete=yes recursive=yes mode=push'
+  synchronize: 'src={{base_dir}} dest=/opt delete=yes archive=yes recursive=yes mode=push'
 
 - name: update versions of common dependencies via pip before we make our venv
   pip: 'name={{item}} state=latest'
