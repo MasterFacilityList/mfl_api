@@ -22,7 +22,8 @@ from ..models import (
     FacilityCoordinates,
     FacilityContact,
     FacilityUnit,
-    Service
+    Service,
+    FacilityApproval
 )
 
 
@@ -222,6 +223,22 @@ class TestFacility(BaseTestCase):
         facility_2 = mommy.make(Facility, code=None)
         facility_2_code = int(facility_1.code) + 1
         self.assertEquals(int(facility_2.code), facility_2_code)
+
+    def test_facility_not_approved(self):
+        facility = mommy.make(Facility)
+        self.assertFalse(facility.is_approved)
+
+    def test_facility_approved(self):
+        facility = mommy.make(Facility)
+        facility_approval = mommy.make(
+            FacilityApproval,
+            facility=facility,
+            comment='It meets all the registration requirements')
+        self.assertTrue(facility.is_approved)
+        self.assertEquals(facility, facility_approval.facility)
+        self.assertEquals(
+            facility_approval.comment,
+            'It meets all the registration requirements')
 
 
 class TestGeoCodeSourceModel(BaseTestCase):
