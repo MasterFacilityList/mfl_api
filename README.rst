@@ -132,6 +132,10 @@ The deployment scripts will fail unless the following are true:
   * you have run ``ssh-keygen`` and have a public key at ``$HOME/.ssh/id_rsa.pub``
 
 
+Vagrant
+----------
+You will need to have the vagrant-env plugin - https://github.com/gosuri/vagrant-env .
+
 Credits
 --------
 Developed and maintained by Savannah Informatics Limited | info@savannahinformatics.com

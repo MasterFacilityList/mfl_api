@@ -5,6 +5,10 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.box_check_update = true
 
+  # THe vagrant-env plugin needs to be installed
+  # Find it at https://github.com/gosuri/vagrant-env
+  config.env.enable
+
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 443, host: 8443
 
@@ -29,9 +33,9 @@ Vagrant.configure(2) do |config|
     ansible.playbook = "site.yml"
     ansible.extra_vars = {
       base_dir: File.expand_path('..'),
-      database_name: "mfl",
-      database_user: "mfl",
-      database_password: "mfl"
+      database_name: ENV['DATABASE_NAME'],
+      database_user: ENV['DATABASE_USER'],
+      database_password: ENV['DATABASE_PASSWORD']
     }
   end
 end
