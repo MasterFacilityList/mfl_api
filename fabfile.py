@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+import json
+
 from os.path import dirname, abspath, join
 from config.settings import base
 from fabric.api import local
@@ -30,8 +32,14 @@ def server_deploy():
     """Production - run the deployment Ansible playbook"""
     with lcd(join(BASE_DIR, 'playbooks')):
         local(
-            'ansible-playbook site.yml -v --extra-vars "base_dir={}"'.format(
-                BASE_DIR
+            "ansible-playbook site.yml -v --extra-vars '{}'".format(
+                json.dumps({
+                    "base_dir": BASE_DIR,
+                    "database_name": base.DATABASES.get('default').get('NAME'),
+                    "database_user": base.DATABASES.get('default').get('USER'),
+                    "database_password":
+                        base.DATABASES.get('default').get('PASSWORD')
+                })
             )
         )
 

@@ -28,7 +28,10 @@ Vagrant.configure(2) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "site.yml"
     ansible.extra_vars = {
-      base_dir: File.expand_path('..')
+      base_dir: File.expand_path('..'),
+      database_name: "mfl",
+      database_user: "mfl",
+      database_password: "mfl"
     }
   end
 end
