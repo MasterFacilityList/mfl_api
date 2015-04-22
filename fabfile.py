@@ -77,3 +77,11 @@ def setup(*args, **kwargs):
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate users')
     manage('migrate')
+
+
+def load_initial_data(*args, **kwargs):
+    pass
+
+
+def load_demo_data(*args, **kwargs):
+    pass

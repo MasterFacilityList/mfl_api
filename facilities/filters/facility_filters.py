@@ -23,9 +23,19 @@ from ..models import (
     FacilityService,
     ServiceOption,
     ServiceRating,
-    FacilityApproval
+    FacilityApproval,
+    FacilityOperationState
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class FacilityOperationStateFilter(CommonFieldsFilterset):
+    operation_status = django_filters.AllValuesFilter(lookup_type='exact')
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    reason = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = FacilityOperationState
 
 
 class FacilityApprovalFilter(CommonFieldsFilterset):

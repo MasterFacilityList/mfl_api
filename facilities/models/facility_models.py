@@ -1,6 +1,8 @@
 import reversion
 
 from django.db import models
+from django.core.exceptions import ValidationError
+
 from common.models import (
     AbstractBase,
     Ward,
@@ -9,6 +11,8 @@ from common.models import (
     PhysicalAddress
 )
 from common.fields import SequenceField
+
+from .transitions import can_transition
 
 
 @reversion.register
@@ -393,6 +397,35 @@ class Facility(AbstractBase, SequenceMixin):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'
+
+
+class FacilityOperationState(AbstractBase):
+    """
+
+    """
+    operation_status = models.ForeignKey(
+        FacilityStatus,
+        help_text="Indicates whether the facility"
+        "has been approved to operate, is operating, is temporarily"
+        "non-operational, or is closed down")
+    facility = models.ForeignKey(Facility)
+    reason = models.TextField(
+        null=True, blank=True,
+        help_text='Additional information for the transition')
+
+    def validate_transition(self):
+        current_state = str(self.facility.operation_status.name).upper()
+        next_state = str(self.operation_status.name).upper()
+        if can_transition(current_state, next_state):
+            self.facility.operation_status = self.operation_status
+            self.facility.save()
+        else:
+            error = "Transition from {} to {} is not allowed".format(
+                current_state, next_state)
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_transition()
 
 
 @reversion.register

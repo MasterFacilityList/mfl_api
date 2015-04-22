@@ -25,8 +25,15 @@ from ..models import (
     FacilityService,
     ServiceOption,
     ServiceRating,
-    FacilityApproval
+    FacilityApproval,
+    FacilityOperationState
 )
+
+
+class FacilityOperationStateSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = FacilityOperationState
 
 
 class FacilityApprovalSerializer(
