@@ -4,6 +4,9 @@ Master Facility List API
 .. image:: https://circleci.com/gh/MasterFacilityList/mfl_api.svg?style=shield
     :target: https://circleci.com/gh/MasterFacilityList/mfl_api
 
+.. image:: https://badge.fury.io/py/mfl.svg
+    :target: http://badge.fury.io/py/mfl
+
 This is the backend for the Master Facility list.
 It provides an API through which one is able to access various resources provided by master facility list; Including facilities and their services.
 

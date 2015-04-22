@@ -9,31 +9,25 @@ BASE_DIR = dirname(abspath(__file__))
 
 
 def manage(command, args=''):
+    """Dev only - a convenience"""
     local('{}/manage.py {} {}'.format(BASE_DIR, command, args))
 
 
 def test():
+    """Dev and release - run the test suite"""
     local('python setup.py check')
     local('pip install tox')
     local('tox -r -c tox.ini')
 
 
-def run():
-    local('gunicorn -w 3 config.wsgi')
-
-
 def deploy():
-    """
-    Should be run only by the release manager
-    """
+    """Release only - publish to PyPi"""
     test()
     local('python setup.py sdist upload -r slade')
 
 
 def server_deploy():
-    """
-    Deploy to the staging and prod servers
-    """
+    """Production - run the deployment Ansible playbook"""
     with lcd(join(BASE_DIR, 'playbooks')):
         local(
             'ansible-playbook site.yml -v --extra-vars "base_dir={}"'.format(
@@ -43,9 +37,7 @@ def server_deploy():
 
 
 def reset_migrations():
-    """
-    A development only task; got sick of typing the same commands repeatedly
-    """
+    """Development only - remove and recreate all migration"""
     local('rm -f users/migrations/ -r')
     local('rm -f common/migrations/ -r')
     local('rm -f facilities/migrations/ -r')
@@ -56,7 +48,7 @@ def reset_migrations():
 
 
 def graph_models():
-    """Another dev only task"""
+    """Dev only - visualize the current model relationships"""
     manage(
         'graph_models common facilities -g -d '
         '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
@@ -65,6 +57,7 @@ def graph_models():
 
 
 def psql(query, no_sudo=False, is_file=False):
+    """Dev only - used by the setup function below"""
     sudo = 'sudo -u postgres'
     if no_sudo:
         sudo = ''
@@ -76,7 +69,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def setup(*args, **kwargs):
-    """Do not use this in production!"""
+    """Dev only - clear and recreate the entire database"""
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
