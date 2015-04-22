@@ -54,6 +54,7 @@
     - python-psycopg2
     - python-shapely
     - python-numpy
+    - python-pygraphviz
     - cython
 
 - name: Restart essential services just to be sure
