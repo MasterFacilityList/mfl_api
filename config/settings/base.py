@@ -1,10 +1,16 @@
 import os
-import dj_database_url
+import environ
 
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
-DEBUG = False
+
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
+
+DEBUG = env('DEBUG')
+SECRET_KEY = env('SECRET_KEY')
+DATABASES = {'default': env.db()}  # Env should have DATABASE_URL
+
 TEMPLATE_DEBUG = DEBUG
 SEND_BROKEN_LINK_EMAILS = not DEBUG
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
@@ -33,10 +39,8 @@ INSTALLED_APPS = (
     'data_bootstrap',
     'chul',
 )
-
 # LOCAL_APPS is now just a convenience setting for the metadata API
-# It is *NOT* appended to INSTALLED_APPS
-# There is a bit of a DRYness violation
+# It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
 # This was forced by the need to override rest_framework templates in common
 LOCAL_APPS = (
     'facilities',
@@ -44,7 +48,6 @@ LOCAL_APPS = (
     'data_bootstrap',
     'chul',
 )
-
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
@@ -76,13 +79,8 @@ AUTHENTICATION_BACKENDS = (
 )
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://mfl:mfl@localhost:5432/mfl'
-    )
-}
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
