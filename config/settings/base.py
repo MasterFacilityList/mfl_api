@@ -1,14 +1,13 @@
 import os
 import dj_database_url
 
-BASE_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "..", "..")
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 SEND_BROKEN_LINK_EMAILS = not DEBUG
-ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke']
+ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
     'django.contrib.admin',
     'users',
@@ -29,6 +28,7 @@ INSTALLED_APPS = (
     'rest_auth.registration',
     'reversion',
     'django_extensions',
+    'gunicorn',
     'facilities',
     'data_bootstrap',
     'chul',
@@ -86,6 +86,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 SESSION_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'

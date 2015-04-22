@@ -114,6 +114,7 @@ Authentication
 --------------
 TODO
 
+TODO - Add notes about removing LC forwarding from SSH config
 
 Running tests
 ------------

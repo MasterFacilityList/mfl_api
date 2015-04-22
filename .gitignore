@@ -72,3 +72,10 @@ build/
 dist/
 htmlcov/
 mfl_models_graph.png
+
+*.vagrant*
+.vagrant/
+/api/
+
+*static*
+*media*
