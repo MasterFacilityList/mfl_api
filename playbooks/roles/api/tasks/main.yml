@@ -5,8 +5,8 @@
   with_file:
     - "{{ lookup('env','HOME') }}/.ssh/id_rsa.pub"
 
-- name: copy the code to the target machine
-  copy: 'src=.. dest=/opt/mfl_api owner={{ lookup("env","USER") }} group={{ lookup("env","USER") }} mode=0644 directory_mode=0644'
+- name: copy the code to the target machine using rsync
+  synchronize: 'src=.. dest=/opt/mfl_api delete=yes recursive=yes delete=yes mode=push'
 
 - name: update versions of common dependencies via pip before we make our venv
   pip: 'name={{item}} state=latest'
