@@ -22,7 +22,8 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating
+    ServiceRating,
+    FacilityApproval
 )
 
 from ..serializers import (
@@ -46,7 +47,8 @@ from ..serializers import (
     ServiceSerializer,
     FacilityServiceSerializer,
     ServiceOptionSerializer,
-    ServiceRatingSerializer
+    ServiceRatingSerializer,
+    FacilityApprovalSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -70,8 +72,21 @@ from ..filters import (
     ServiceFilter,
     FacilityServiceFilter,
     ServiceOptionFilter,
-    ServiceRatingFilter
+    ServiceRatingFilter,
+    FacilityApprovalFilter
 )
+
+
+class FacilityApprovalListView(generics.ListCreateAPIView):
+    queryset = FacilityApproval.objects.all()
+    serializer_class = FacilityApprovalSerializer
+    filter_class = FacilityApprovalFilter
+    ordering_fields = ('facility', 'comment', )
+
+
+class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityApproval.objects.all()
+    serializer_class = FacilityApprovalSerializer
 
 
 class ServiceRatingListView(generics.ListCreateAPIView):

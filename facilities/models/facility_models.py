@@ -380,11 +380,33 @@ class Facility(AbstractBase, SequenceMixin):
             self.code = self.generate_next_code_sequence()
         super(Facility, self).save(*args, **kwargs)
 
+    @property
+    def is_approved(self):
+        approvals = FacilityApproval.objects.filter(facility=self).count()
+        if approvals:
+            return True
+        else:
+            False
+
     def __unicode__(self):
         return self.name
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'
+
+
+@reversion.register
+class FacilityApproval(AbstractBase):
+    """
+    Before a facility is visible to the public it is first approved
+    at the county level.
+    The user who approves a facility will be the same as the created_by field.
+    """
+    facility = models.ForeignKey(Facility)
+    comment = models.TextField()
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facility, self.created_by)
 
 
 @reversion.register

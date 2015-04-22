@@ -22,9 +22,18 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating
+    ServiceRating,
+    FacilityApproval
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class FacilityApprovalFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    comment = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = FacilityApproval
 
 
 class ServiceRatingFilter(CommonFieldsFilterset):
