@@ -1,7 +1,8 @@
 """The transition the different operation states that a facility can be in."""
 
 
-allowed_transitions = [
+ALLOWED_TRANSITIONS = [
+
     {
         'current_state': 'PENDING_OPENING',
         'next_state': 'OPERATIONAL'
@@ -18,7 +19,7 @@ allowed_transitions = [
 ]
 
 
-allowed_moh_upgrades = [
+ALLOWED_MOH_UPGRADES = [
     {
         "lower": "DISPENSARY",
         "upper": "HEALTH_CENTER"
@@ -42,7 +43,7 @@ allowed_moh_upgrades = [
 
 ]
 
-allowed_fbo_upgrades = [
+ALLOWED_FBO_UPGRADES = [
     {
         "lower": "DISPENSARY",
         "upper": "HEALTH_CENTER"
@@ -58,7 +59,7 @@ allowed_fbo_upgrades = [
 
 ]
 
-allowed_private_upgrades = [
+ALLOWED_PRIVATE_UPGRADES = [
     {
         "lower": "MEDICAL_CENTER",
         "upper": "MATERNITY_HOME"
@@ -91,33 +92,61 @@ allowed_private_upgrades = [
 ]
 
 
+def reverse_dict(transition_dict):
+    """
+    This will allow for reversal of a record. More like a contra entry in
+    accounting.
+    """
+    next_state = transition_dict.get("next_state")
+    current_state = transition_dict.get("next_state")
+    if not next_state and not current_state:
+        return {
+            "lower": transition_dict.get("upper"),
+            "upper": transition_dict.get("lower")
+        }
+
+    return {
+        "current_state": transition_dict.get("next_state"),
+        "next_state": transition_dict.get("current_state")
+    }
+
+
+def transition_helper(transition_dict, transitions_class):
+    if transition_dict in transitions_class:
+        return True
+    elif reverse_dict(transition_dict) in transitions_class:
+        return True
+    else:
+        return False
+
+
 def can_transition(current_state, next_state):
     transition_dict = {
         'current_state': current_state,
         'next_state': next_state
     }
-    return True if transition_dict in allowed_transitions else False
+    return transition_helper(transition_dict, ALLOWED_TRANSITIONS)
 
 
-def can_upgrade_in_moh(current_level, next_level):
+def can_upgrade_or_downgrade_in_moh(current_level, next_level):
     transition_dict = {
         'lower': current_level,
         'upper': next_level
     }
-    return True if transition_dict in allowed_moh_upgrades else False
+    return transition_helper(transition_dict, ALLOWED_MOH_UPGRADES)
 
 
-def can_upgrade_in_fbo(current_level, next_level):
+def can_upgrade_or_downgrade_in_fbo(current_level, next_level):
     transition_dict = {
         'lower': current_level,
         'upper': next_level
     }
-    return True if transition_dict in allowed_fbo_upgrades else False
+    return transition_helper(transition_dict, ALLOWED_FBO_UPGRADES)
 
 
-def can_upgrade_in_private_sector(current_level, next_level):
+def can_upgrade_or_downgrade_in_private_sector(current_level, next_level):
     transition_dict = {
         'lower': current_level,
         'upper': next_level
     }
-    return True if transition_dict in allowed_private_upgrades else False
+    return transition_helper(transition_dict, ALLOWED_PRIVATE_UPGRADES)

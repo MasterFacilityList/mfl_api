@@ -15,9 +15,9 @@ from common.fields import SequenceField
 
 from .transitions import (
     can_transition,
-    can_upgrade_in_moh,
-    can_upgrade_in_fbo,
-    can_upgrade_in_private_sector
+    can_upgrade_or_downgrade_in_moh,
+    can_upgrade_or_downgrade_in_fbo,
+    can_upgrade_or_downgrade_in_private_sector
 
 )
 
@@ -444,14 +444,14 @@ class FacilityUpgrade(AbstractBase):
     reason = models.TextField()
 
     def fbo_facility_upgrade_check(self, current_level, next_level, error):
-        if can_upgrade_in_fbo(current_level, next_level):
+        if can_upgrade_or_downgrade_in_fbo(current_level, next_level):
                 self.facility.facility_type = self.facility_type
                 self.facility.save()
         else:
             raise ValidationError(error)
 
     def moh_facility_upgrade_check(self, current_level, next_level, error):
-        if can_upgrade_in_moh(current_level, next_level):
+        if can_upgrade_or_downgrade_in_moh(current_level, next_level):
                 self.facility.facility_type = self.facility_type
                 self.facility.save()
         else:
@@ -459,7 +459,8 @@ class FacilityUpgrade(AbstractBase):
 
     def private_facility_upgrade_check(
             self, current_level, next_level, error):
-        if can_upgrade_in_private_sector(current_level, next_level):
+        if can_upgrade_or_downgrade_in_private_sector(
+                current_level, next_level):
                 self.facility.facility_type = self.facility_type
                 self.facility.save()
         else:
@@ -469,7 +470,7 @@ class FacilityUpgrade(AbstractBase):
         facility_owner_type = self.facility.owner.owner_type.name
         current_level = str(self.facility.facility_type.name).upper()
         next_level = str(self.facility_type.name).upper()
-        error = "Upgrage from {} to {} is not allowed".format(
+        error = "Upgrade/Download from {} to {} is not allowed".format(
             current_level, next_level)
         if facility_owner_type == 'MOH':
             self.moh_facility_upgrade_check(
