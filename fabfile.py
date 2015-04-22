@@ -36,7 +36,9 @@ def server_deploy():
     """
     with lcd(join(BASE_DIR, 'playbooks')):
         local(
-            'ansible-playbook site.yml -vvvv'
+            'ansible-playbook site.yml -v --extra-vars "base_dir={}"'.format(
+                BASE_DIR
+            )
         )
 
 
