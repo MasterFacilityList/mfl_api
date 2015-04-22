@@ -408,7 +408,8 @@ class FacilityOperationState(AbstractBase):
         help_text="Indicates whether the facility"
         "has been approved to operate, is operating, is temporarily"
         "non-operational, or is closed down")
-    facility = models.ForeignKey(Facility)
+    facility = models.ForeignKey(
+        Facility, related_name='facility_operation_states')
     reason = models.TextField(
         null=True, blank=True,
         help_text='Additional information for the transition')
