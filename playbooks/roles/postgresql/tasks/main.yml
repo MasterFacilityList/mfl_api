@@ -1,5 +1,20 @@
 ---
 
+- name: copy the customized pg_hba.conf over
+  sudo: yes
+  template: src=../templates/pg_hba.conf.j2 dest=/etc/postgresql/9.4/main/pg_hba.conf
+  notify:
+    - restart postgresql
+
+- name: copy the customized pg_ident.conf over
+  sudo: yes
+  template: src=../templates/pg_ident.conf.j2 dest=/etc/postgresql/9.4/main/pg_ident.conf
+  notify:
+    - restart postgresql
+
+- name: restart postgresql after copying the new configs
+  service: name=postgresql state=restarted
+
 - name: Create mfl database
   sudo: yes
   sudo_user: postgres

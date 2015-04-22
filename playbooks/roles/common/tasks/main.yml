@@ -60,7 +60,6 @@
   service: 'name={{item}} state=restarted'
   with_items:
     - nginx
-    - postgresql
     - elasticsearch "enabled=yes"
 
 - name: set up an account on the target machine for the current user
