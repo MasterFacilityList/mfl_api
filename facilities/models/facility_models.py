@@ -408,7 +408,7 @@ class Facility(AbstractBase, SequenceMixin):
 
 class FacilityOperationState(AbstractBase):
     """
-
+    logs chages to the operation_status of a facility.
     """
     operation_status = models.ForeignKey(
         FacilityStatus,
@@ -438,6 +438,7 @@ class FacilityOperationState(AbstractBase):
 
 class FacilityUpgrade(AbstractBase):
     """
+    Logs the upgrades and the downgrades of a facility.
     """
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
