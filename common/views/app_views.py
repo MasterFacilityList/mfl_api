@@ -33,7 +33,7 @@ from ..filters import (
     UserContactFilter,
     TownFilter
 )
-from .app_views import AuditableDetailViewMixin
+from .shared_views import AuditableDetailViewMixin
 
 
 class ContactView(generics.ListCreateAPIView):

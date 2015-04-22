@@ -1,5 +1,5 @@
 from rest_framework import generics
-from common.models import AuditableDetailViewMixin
+from common.views import AuditableDetailViewMixin
 
 from ..models import (
     OwnerType,
