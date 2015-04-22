@@ -12,7 +12,14 @@ from common.models import (
 )
 from common.fields import SequenceField
 
-from .transitions import can_transition
+
+from .transitions import (
+    can_transition,
+    can_upgrade_in_moh,
+    can_upgrade_in_fbo,
+    can_upgrade_in_private_sector
+
+)
 
 
 @reversion.register
@@ -427,6 +434,47 @@ class FacilityOperationState(AbstractBase):
 
     def clean(self, *args, **kwargs):
         self.validate_transition()
+
+
+class FacilityUpgrade(AbstractBase):
+    """
+    """
+    facility = models.ForeignKey(Facility)
+    facility_type = models.ForeignKey(FacilityType)
+    reason = models.TextField()
+
+    def validate_upgrade(self):
+        facility_owner_type = self.facilty.owner.owner_type.name
+        current_level = str(self.facility.facility_type.name).upper()
+        next_level = str(self.facility_type.name).upper()
+        error = "Upgrage from {} to {} is not allowed".format(
+            current_level, next_level)
+        if facility_owner_type == 'MOH':
+            if can_upgrade_in_moh(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+            else:
+                raise ValidationError(error)
+
+        elif facility_owner_type == 'FBO':
+            if can_upgrade_in_fbo(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+            else:
+                raise ValidationError(error)
+
+        elif facility_owner_type == 'PRIVATE':
+            if can_upgrade_in_private_sector(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+            else:
+                raise ValidationError(error)
+        else:
+            error = "Unknowm owner type {}".format(facility_owner_type)
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_upgrade()
 
 
 @reversion.register

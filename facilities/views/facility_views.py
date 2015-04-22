@@ -24,7 +24,8 @@ from ..models import (
     ServiceOption,
     ServiceRating,
     FacilityApproval,
-    FacilityOperationState
+    FacilityOperationState,
+    FacilityUpgrade
 )
 
 from ..serializers import (
@@ -50,7 +51,8 @@ from ..serializers import (
     ServiceOptionSerializer,
     ServiceRatingSerializer,
     FacilityApprovalSerializer,
-    FacilityOperationStateSerializer
+    FacilityOperationStateSerializer,
+    FacilityUpgradeSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -76,8 +78,21 @@ from ..filters import (
     ServiceOptionFilter,
     ServiceRatingFilter,
     FacilityApprovalFilter,
-    FacilityOperationStateFilter
+    FacilityOperationStateFilter,
+    FacilityUpgradeFilter
 )
+
+
+class FacilityUpgradeListView(generics.ListCreateAPIView):
+    queryset = FacilityUpgrade.objects.all()
+    serializer_class = FacilityUpgradeSerializer
+    filter_class = FacilityUpgradeFilter
+    ordering_fields = ('facility', 'facility_type', 'reason', )
+
+
+class FacilityUpgradeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityUpgrade.objects.all()
+    serializer_class = FacilityUpgradeSerializer
 
 
 class FacilityOperationStateListView(generics.ListCreateAPIView):

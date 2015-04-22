@@ -24,9 +24,15 @@ from ..models import (
     ServiceOption,
     ServiceRating,
     FacilityApproval,
-    FacilityOperationState
+    FacilityOperationState,
+    FacilityUpgrade
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class FacilityUpgradeFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityUpgrade
 
 
 class FacilityOperationStateFilter(CommonFieldsFilterset):
