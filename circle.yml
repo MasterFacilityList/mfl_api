@@ -1,4 +1,6 @@
 machine:
+  pre:
+    - cp .env-example .env
   environment:
     DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
 
@@ -7,8 +9,6 @@ dependencies:
     - pip install fabric
 
 test:
-  pre:
-    - cp .env-example .env
   override:
     - fab test
 
