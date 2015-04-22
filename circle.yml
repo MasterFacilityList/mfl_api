@@ -1,8 +1,10 @@
 machine:
-  pre:
-    - cp .env-example .env
   environment:
     DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
+
+checkout:
+  post:
+    - cp .env-example .env
 
 dependencies:
   post:
