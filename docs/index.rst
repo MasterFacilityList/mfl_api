@@ -1,14 +1,9 @@
 Welcome to the Master Facility List API server documentation
 ==============================================================
 
-:Version: |version|
-
-
 .. include:: ../README.rst
 
 .. include:: ../CHANGELOG.rst
-
-Contents:
 
 .. toctree::
    :maxdepth: 2
