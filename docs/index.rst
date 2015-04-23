@@ -8,8 +8,8 @@ Welcome to the Master Facility List API server documentation
 .. toctree::
    :maxdepth: 2
 
-   getting_started/index
    installing/index
+   getting_started/index
    contributing/index
 
 
