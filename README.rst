@@ -110,9 +110,7 @@ In summary:
 
  * all work should occur in feature branches
  * the target for pull requests is the ``develop`` branch
- * the release manager ( presently @ngurenyaga ) will periodically
- create release branches that ultimately get merged into ``master`` and
- tagged
+ * the release manager ( presently @ngurenyaga ) will periodically create release branches that ultimately get merged into ``master`` and tagged
  * fixes on released versions will occur in hotfix branches
 
 We adhere to semantic versioning - https://semver.org .
