@@ -52,13 +52,14 @@ def reset_migrations():
     manage('makemigrations users')
     manage('makemigrations common')
     manage('makemigrations facilities')
+    manage('makemigrations chul')
     local('git add . --all')
 
 
 def graph_models():
     """Dev only - visualize the current model relationships"""
     manage(
-        'graph_models common facilities -g -d '
+        'graph_models common facilities chul -g -d '
         '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
         '-o  mfl_models_graph.png')
     local('eog mfl_models_graph.png')
@@ -92,3 +93,11 @@ def setup(*args, **kwargs):
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate users')
     manage('migrate')
+
+
+def load_initial_data(*args, **kwargs):
+    pass
+
+
+def load_demo_data(*args, **kwargs):
+    pass

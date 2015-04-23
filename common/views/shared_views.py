@@ -1,4 +1,5 @@
 import logging
+import reversion
 
 from django.core.urlresolvers import resolve
 from django.core.urlresolvers import reverse as django_reverse
@@ -9,6 +10,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.exceptions import ValidationError
+from rest_framework.mixins import RetrieveModelMixin
+
+from facilities.models import (
+    FacilityOperationState,
+    FacilityStatus,
+    Facility,
+    Owner,
+    OwnerType,
+    FacilityUpgrade,
+    FacilityType
+)
 
 from ..metadata import CustomMetadata
 
@@ -91,9 +103,47 @@ def _resolve_detail_metadata(request, url_name, model_cls):
     from model_mommy import mommy  # Late import because of embarassment
 
     if not model_cls.objects.count():  # Do this only if there is no record
-        obj = mommy.make(model_cls)
-        metadata = _get_metadata_from_detail_url(url_name, obj, request)
-        obj.delete()
+
+        # hack to cater for the validation in transitions
+
+        if model_cls == FacilityOperationState:
+            status = mommy.make(FacilityStatus, name='PENDING_OPENING')
+            status_2 = mommy.make(FacilityStatus, name='OPERATIONAL')
+            facility = mommy.make(Facility, operation_status=status)
+            obj = mommy.make(
+                FacilityOperationState, facility=facility,
+                operation_status=status_2)
+            metadata = _get_metadata_from_detail_url(url_name, obj, request)
+            FacilityOperationState.objects.filter(
+                facility=facility).all().delete()
+            facility.delete()
+            status.delete()
+            status_2.delete()
+        elif model_cls == FacilityUpgrade:
+            owner_type = mommy.make(OwnerType, name='PRIVATE')
+            owner = mommy.make(Owner, owner_type=owner_type)
+            facility_type = mommy.make(FacilityType, name='MATERNITY_HOME')
+            facility_type_upgrade = mommy.make(
+                FacilityType, name='LOWEST_LEVEL_HOSPITAL')
+            facility = mommy.make(
+                Facility, name='Mbagathi hosi', facility_type=facility_type,
+                owner=owner)
+
+            obj = mommy.make(
+                FacilityUpgrade, facility_type=facility_type_upgrade,
+                facility=facility)
+            metadata = _get_metadata_from_detail_url(url_name, obj, request)
+            FacilityUpgrade.objects.filter(facility=facility).all().delete()
+            facility.delete()
+            facility_type.delete()
+            facility_type_upgrade.delete()
+            owner.delete()
+            owner_type.delete()
+
+        else:
+            obj = mommy.make(model_cls)
+            metadata = _get_metadata_from_detail_url(url_name, obj, request)
+            obj.delete()
     else:
         obj = model_cls.objects.all()[:1][0]
         metadata = _get_metadata_from_detail_url(url_name, obj, request)
@@ -120,6 +170,49 @@ def _lookup_metadata(url_name_dict, request, model_cls):
                 model_cls
             )
     }
+
+
+class AuditableDetailViewMixin(RetrieveModelMixin):
+    """
+    A very thin extension of the default `RetrieveModelMixin` that adds audit.
+
+    As at Django REST Framework 3.1, `RetrieveModelMixin` looks like this:
+
+        ```
+        class RetrieveModelMixin(object):
+            '''
+            Retrieve a model instance.
+            '''
+            def retrieve(self, request, *args, **kwargs):
+                instance = self.get_object()
+                serializer = self.get_serializer(instance)
+                return Response(serializer.data)
+        ```
+
+    Our variant is not very different...all it does is to look for an
+    `include_audit` GET param ( boolean ) in the request. If it is found,
+    we include that model instance's audit information in the returned
+    representation.
+
+    We are counting on the fact that this API operates only on a single
+    *instance* AND the fact that audit data is optional ( opt-in ); hence
+    the lack of pagination of the revisions.
+
+    Reconstruction will be left to the client / consumer of this API.
+    """
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+
+        if str(request.query_params.get('include_audit', None)).lower() in \
+                ['true', 'yes', 'y', '1', 't']:
+            data["revisions"] = [
+                version.field_dict
+                for version in reversion.get_for_object(instance)
+            ]
+
+        return Response(data)
 
 
 class APIRoot(APIView):

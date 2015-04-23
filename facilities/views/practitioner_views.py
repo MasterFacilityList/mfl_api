@@ -1,4 +1,5 @@
 from rest_framework import generics
+from common.views import AuditableDetailViewMixin
 
 from ..models import (
     PracticeType,
@@ -40,7 +41,8 @@ class PracticeTypeListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'description', )
 
 
-class PracticeTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
+class PracticeTypeDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = PracticeType.objects.all()
     serializer_class = PracticeTypeSerializer
 
@@ -52,7 +54,8 @@ class SpecialityListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'practice_type',)
 
 
-class SpecialityDetailView(generics.RetrieveUpdateDestroyAPIView):
+class SpecialityDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Speciality.objects.all()
     serializer_class = SpecialitySerializer
 
@@ -64,7 +67,8 @@ class QualificationListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'description', )
 
 
-class QualificationDetailView(generics.RetrieveUpdateDestroyAPIView):
+class QualificationDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Qualification.objects.all()
     serializer_class = QualificationSerializer
 
@@ -76,7 +80,8 @@ class PractitionerListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'registration_number', )
 
 
-class PractitionerDetailView(generics.RetrieveUpdateDestroyAPIView):
+class PractitionerDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Practitioner.objects.all()
     serializer_class = PractitionerSerializer
 
@@ -89,6 +94,7 @@ class PractitionerQualificationListView(generics.ListCreateAPIView):
 
 
 class PractitionerQualificationDetailView(
+        AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     queryset = PractitionerQualification.objects.all()
     serializer_class = PractitionerQualificationSerializer
@@ -101,7 +107,8 @@ class PractitionerContactListView(generics.ListCreateAPIView):
     ordering_fields = ('practitioner', 'contact',)
 
 
-class PractitionerContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+class PractitionerContactDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = PractitionerContact.objects.all()
     serializer_class = PractitionerContactSerializer
 
@@ -113,6 +120,7 @@ class PractitionerFacilityListView(generics.ListCreateAPIView):
     serializer_class = PractitionerFacilitySerializer
 
 
-class PractitionerFacilityDetailView(generics.RetrieveUpdateDestroyAPIView):
+class PractitionerFacilityDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = PractitionerFacility.objects.all()
     serializer_class = PractitionerFacilitySerializer
