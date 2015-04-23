@@ -1,0 +1,209 @@
+[
+    {
+        "model": "common.County",
+        "unique_fields": ["code"],
+      
+        "records": [
+            {
+                "code":11,
+                "name":"Baringo"
+            },
+
+            {
+                "code":12,
+                "name":"Bomet"
+            },
+            {
+                "code":13,
+                "name":"Bungoma"
+            },
+            {
+                "code":14,
+                "name":"Busia"
+            },
+            {
+                "code":15,
+                "name":"Elgeyo Marakwet"
+            },
+            {
+                "code":16,
+                "name":"Embu"
+            },
+            {
+                "code":17,
+                "name": "Garissa"
+            },
+            {
+                "code":18,
+                "name":"Homa Bay"
+            },
+            {
+                "code":19,
+                "name":"Isiolo"
+            },
+            {
+                "code":20,
+                "name": "Kajiado"
+            },
+            {
+                "code": 21,
+                "name": "Kakamega"
+            },
+            {
+                "code": 22,
+                "name": "Kericho"
+            },
+            {
+                "code": 23,
+                "name": "Kiambu"
+            },
+            {
+                "code": 24,
+                "name": "Kilifi"
+            },
+            {
+                "code": 25,
+                "name": "Kirinyaga"
+            },
+            {
+                "code": 26,
+                "name": "Kisii"
+            },
+            {
+                "code": 27,
+                "name": "Kisumu"
+            },
+            {
+                "code": 28,
+                "name": "Kitui"
+            },
+            {
+                "code": 29,
+                "name": "Kwale"
+            },
+            {
+                "code": 30,
+                "name": "Laikipia"
+            },
+            {
+                "code": 31,
+                "name": "Lamu"
+            },
+            {
+                "code": 32,
+                "name": "Machakos"
+            },
+            {
+                "code": 33,
+                "name": "Makueni"
+            },
+            {
+                "code": 34,
+                "name": "Mandera"
+            },
+            {
+                "code": 35,
+                "name": "Marsabit"
+            },
+            {
+                "code": 36,
+                "name": "Meru"
+            },
+            {
+                "code": 37,
+                "name": "Migori"
+            },
+            {
+                "code": 38,
+                "name": "Mombasa"
+            },
+            {
+                "code": 39,
+                "name": "Murang'a"
+            },
+            {
+                "code": 40,
+                "name": "Nairobi"
+            },
+            {
+                "code": 41,
+                "name": "Nakuru"
+            },
+            {
+                "code": 42,
+                "name": "Nandi"
+            },
+            {
+                "code": 43,
+                "name": "Narok"
+            },
+            {
+                "code": 44,
+                "name": "Nyamira"
+            },
+            {
+                "code": 45,
+                "name": "Nyandarua"
+            },
+            {
+                "code": 46,
+                "name": "Nyeri"
+            },
+            {
+                "code": 47,
+                "name": "Samburu"
+            },
+            {
+            
+                "code": 48,
+                "name": "Siaya"
+            },
+
+            {
+                "code": 49,
+                "name": "Taita Taveta"
+            },
+
+            {
+                "code": 50,
+                "name": "Tana River"
+            },
+
+            {
+                "code": 51,
+                "name": "Tharaka Nithi"
+            },
+
+            {
+                "code": 52,
+                "name": "Trans Nzoia"
+            },
+
+            {
+                "code": 53,
+                "name": "Turkana"
+            },
+
+            {
+                "code": 54,
+                "name": "Uasin Gishu"
+            },
+
+            {
+                "code": 55,
+                "name": "Vihiga"
+            },
+
+            {
+                "code": 56,
+                "name": "Wajir"
+            },
+
+            {       
+                "code": 57,
+                "name": "West Pokot"
+
+            }
+        ]
+    }
+]
