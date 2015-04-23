@@ -133,10 +133,8 @@ Deployment Assumptions
 -----------------------
 The deployment scripts will fail unless the following are true:
 
-  * you are on a recent Ubuntu ( Ubuntu 14.04LTS or newer should work, other
-  Debian derivatives *may* work )
+  * you are on a recent Ubuntu ( Ubuntu 14.04LTS or newer should work, other Debian derivatives *may* work )
   * you have run ``ssh-keygen`` and have a public key at ``$HOME/.ssh/id_rsa.pub``
-
 
 Vagrant
 ----------
