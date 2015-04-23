@@ -1,6 +1,5 @@
-==========
 Master Facility List API
-==========
+===========================
 .. image:: https://circleci.com/gh/MasterFacilityList/mfl_api.svg?style=shield
     :target: https://circleci.com/gh/MasterFacilityList/mfl_api
 
@@ -50,7 +49,7 @@ Getting started
 2. Activate the virtualenv and run ``python setup.py install`` while in the project folder.
 
 Explore the API
----------------
+-----------------
 Once all the steps above have been carried out, the system is ready to run and one can explore the API.
 
 There are two ways to explore the API:
@@ -64,7 +63,7 @@ There are two ways to explore the API:
 The list of the endpoints availble is located at ``api/common/api_root/``.
 
 Resource Formats Supported
-----------------------
+----------------------------
 The formats supported are xml, json, csv and xlsx.
 The default data format is json. To access xml append ``?format=xml`` to an endpoint. To access data in csv append ``?format=csv`` and similarly to access xlsx append ``?format=xlsx``.
 
@@ -114,7 +113,7 @@ that has the correct pypi credentials. The command to deploy is ``fab deploy``.
 The credentials are not stored on GitHub - for obvious reasons.
 
 Authentication
---------------
+---------------
 TODO
 
 TODO - Add notes about removing LC forwarding from SSH config
