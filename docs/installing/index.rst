@@ -5,7 +5,7 @@ of the person installing.
 
 Installing for evaluation
 ---------------------------
-In this scenario, you do not plan to make any changes to the MFL APi server
+In this scenario, you do not plan to make any changes to the MFL API server
 but you need to have a local copy against which you can test a new API
 client or a new third party integration.
 
@@ -20,14 +20,14 @@ expert Vagrant user, you can substitute Virtualbox with VMWare
 Desktop / Player, HyperV etc. You'll have an easier time if you are on a
 ``_nix`` e.g Ubuntu or OS X.
 
-Installing a production server
---------------------------------
+Installing on a production server
+-----------------------------------
 This server has been developed and tested on `Ubuntu`_ Linux ( any Ubuntu
 that is currently "in support" will do ). It should be *trivial* to get it
 working on any ``*NIX`` ( including OS X ). It is *possible* to get it
 running on Windows, but we have not put any work into it. If you've got a
 burning desire to see the server running on Windows, you are encouraged to
-test it there and send issue pull requests for any fixes that would be needed.
+test it there and issue pull requests for any fixes that would be needed.
 
 Kindly note that this restriction applies to the servers only, and not to
 any of the API clients e.g browsers and third party systems. Clients can
@@ -58,9 +58,10 @@ can get them at once with:
     sudo apt-get build-dep python-shapely python-gdal python-numpy
     cython python-psycopg2
 
-You can find more informationa at :doc:`developer_install`.
+You can find more information at :doc:`developer_install`.
 
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
+
 
 .. toctree::
     :maxdepth: 2

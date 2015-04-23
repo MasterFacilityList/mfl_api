@@ -2,6 +2,10 @@ Understanding the API
 ============================
 TBD - **everything here is work in progress**
 
+TODO - API root and metadata
+
+TODO - Plagiarize chomba ( connecting etc )
+
 Explore the API
 -----------------
 Once all the steps above have been carried out, the system is ready to run and one can explore the API.
