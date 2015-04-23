@@ -7,6 +7,10 @@ Master Facility List API
 .. image:: https://badge.fury.io/py/mfl.svg
     :target: http://badge.fury.io/py/mfl
 
+.. image:: https://readthedocs.org/projects/mfl-api/badge/?version=latest
+    :target: https://readthedocs.org/projects/mfl-api/?badge=latest
+    :alt: Documentation Status
+
 This is the backend for the Master Facility list.
 It provides an API through which one is able to access various resources provided by master facility list; Including facilities and their services.
 
