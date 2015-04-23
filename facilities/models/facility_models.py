@@ -1,6 +1,8 @@
 import reversion
 
 from django.db import models
+from django.core.exceptions import ValidationError
+
 from common.models import (
     AbstractBase,
     Ward,
@@ -9,6 +11,15 @@ from common.models import (
     PhysicalAddress
 )
 from common.fields import SequenceField
+
+
+from .transitions import (
+    can_transition,
+    can_upgrade_or_downgrade_in_moh,
+    can_upgrade_or_downgrade_in_fbo,
+    can_upgrade_or_downgrade_in_private_sector
+
+)
 
 
 @reversion.register
@@ -380,11 +391,120 @@ class Facility(AbstractBase, SequenceMixin):
             self.code = self.generate_next_code_sequence()
         super(Facility, self).save(*args, **kwargs)
 
+    @property
+    def is_approved(self):
+        approvals = FacilityApproval.objects.filter(facility=self).count()
+        if approvals:
+            return True
+        else:
+            False
+
     def __unicode__(self):
         return self.name
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'
+
+
+class FacilityOperationState(AbstractBase):
+    """
+    logs chages to the operation_status of a facility.
+    """
+    operation_status = models.ForeignKey(
+        FacilityStatus,
+        help_text="Indicates whether the facility"
+        "has been approved to operate, is operating, is temporarily"
+        "non-operational, or is closed down")
+    facility = models.ForeignKey(
+        Facility, related_name='facility_operation_states')
+    reason = models.TextField(
+        null=True, blank=True,
+        help_text='Additional information for the transition')
+
+    def validate_transition(self):
+        current_state = str(self.facility.operation_status.name).upper()
+        next_state = str(self.operation_status.name).upper()
+        if can_transition(current_state, next_state):
+            self.facility.operation_status = self.operation_status
+            self.facility.save()
+        else:
+            error = "Transition from {} to {} is not allowed".format(
+                current_state, next_state)
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_transition()
+
+
+class FacilityUpgrade(AbstractBase):
+    """
+    Logs the upgrades and the downgrades of a facility.
+    """
+    facility = models.ForeignKey(Facility, related_name='facility_upgrades')
+    facility_type = models.ForeignKey(FacilityType)
+    reason = models.TextField()
+
+    def fbo_facility_upgrade_check(self, current_level, next_level, error):
+        if can_upgrade_or_downgrade_in_fbo(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def moh_facility_upgrade_check(self, current_level, next_level, error):
+        if can_upgrade_or_downgrade_in_moh(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def private_facility_upgrade_check(
+            self, current_level, next_level, error):
+        if can_upgrade_or_downgrade_in_private_sector(
+                current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def validate_upgrade(self):
+        facility_owner_type = self.facility.owner.owner_type.name
+        current_level = str(self.facility.facility_type.name).upper()
+        next_level = str(self.facility_type.name).upper()
+        error = "Upgrade/Download from {} to {} is not allowed".format(
+            current_level, next_level)
+        if facility_owner_type == 'MOH':
+            self.moh_facility_upgrade_check(
+                current_level, next_level, error)
+
+        elif facility_owner_type == 'FBO':
+            self.fbo_facility_upgrade_check(
+                current_level, next_level, error)
+
+        elif facility_owner_type == 'PRIVATE':
+            self.private_facility_upgrade_check(
+                current_level, next_level, error)
+
+        else:
+            error = "Unknowm owner type {}".format(facility_owner_type)
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_upgrade()
+
+
+@reversion.register
+class FacilityApproval(AbstractBase):
+    """
+    Before a facility is visible to the public it is first approved
+    at the county level.
+    The user who approves a facility will be the same as the created_by field.
+    """
+    facility = models.ForeignKey(Facility)
+    comment = models.TextField()
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facility, self.created_by)
 
 
 @reversion.register

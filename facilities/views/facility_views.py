@@ -23,7 +23,10 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating
+    ServiceRating,
+    FacilityApproval,
+    FacilityOperationState,
+    FacilityUpgrade
 )
 
 from ..serializers import (
@@ -47,7 +50,10 @@ from ..serializers import (
     ServiceSerializer,
     FacilityServiceSerializer,
     ServiceOptionSerializer,
-    ServiceRatingSerializer
+    ServiceRatingSerializer,
+    FacilityApprovalSerializer,
+    FacilityOperationStateSerializer,
+    FacilityUpgradeSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -71,8 +77,47 @@ from ..filters import (
     ServiceFilter,
     FacilityServiceFilter,
     ServiceOptionFilter,
-    ServiceRatingFilter
+    ServiceRatingFilter,
+    FacilityApprovalFilter,
+    FacilityOperationStateFilter,
+    FacilityUpgradeFilter
 )
+
+
+class FacilityUpgradeListView(generics.ListCreateAPIView):
+    queryset = FacilityUpgrade.objects.all()
+    serializer_class = FacilityUpgradeSerializer
+    filter_class = FacilityUpgradeFilter
+    ordering_fields = ('facility', 'facility_type', 'reason', )
+
+
+class FacilityUpgradeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityUpgrade.objects.all()
+    serializer_class = FacilityUpgradeSerializer
+
+
+class FacilityOperationStateListView(generics.ListCreateAPIView):
+    queryset = FacilityOperationState.objects.all()
+    serializer_class = FacilityOperationStateSerializer
+    filter_class = FacilityOperationStateFilter
+    ordering_fields = ('facility', 'operation_status', 'reason')
+
+
+class FacilityOperationStateDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityOperationState.objects.all()
+    serializer_class = FacilityOperationStateSerializer
+
+
+class FacilityApprovalListView(generics.ListCreateAPIView):
+    queryset = FacilityApproval.objects.all()
+    serializer_class = FacilityApprovalSerializer
+    filter_class = FacilityApprovalFilter
+    ordering_fields = ('facility', 'comment', )
+
+
+class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityApproval.objects.all()
+    serializer_class = FacilityApprovalSerializer
 
 
 class ServiceRatingListView(generics.ListCreateAPIView):

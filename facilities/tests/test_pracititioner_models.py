@@ -15,7 +15,8 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating
+    ServiceRating,
+    FacilityApproval
 )
 
 
@@ -25,7 +26,8 @@ class TestModels(TestCase):
             PracticeType, Speciality, Qualification,
             PractitionerQualification, PractitionerContact,
             PractitionerFacility, Practitioner, ServiceCategory, Option,
-            Service, FacilityService, ServiceOption, ServiceRating
+            Service, FacilityService, ServiceOption, ServiceRating,
+            FacilityApproval
         ]
 
         for model_cls in models:

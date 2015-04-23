@@ -22,9 +22,34 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating
+    ServiceRating,
+    FacilityApproval,
+    FacilityOperationState,
+    FacilityUpgrade
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class FacilityUpgradeFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityUpgrade
+
+
+class FacilityOperationStateFilter(CommonFieldsFilterset):
+    operation_status = django_filters.AllValuesFilter(lookup_type='exact')
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    reason = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = FacilityOperationState
+
+
+class FacilityApprovalFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    comment = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = FacilityApproval
 
 
 class ServiceRatingFilter(CommonFieldsFilterset):

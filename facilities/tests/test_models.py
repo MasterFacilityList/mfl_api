@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from model_mommy import mommy
 
@@ -22,8 +23,184 @@ from ..models import (
     FacilityCoordinates,
     FacilityContact,
     FacilityUnit,
-    Service
+    Service,
+    FacilityApproval,
+    FacilityOperationState,
+    FacilityUpgrade
 )
+
+
+class TestFacilityUpgrade(BaseTestCase):
+    def test_upgrade_moh_facility_correctly(self):
+        owner_type = mommy.make(OwnerType, name='MOH')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='DISPENSARY')
+        facility_type_upgrade = mommy.make(FacilityType, name='HEALTH_CENTER')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        mommy.make(
+            FacilityUpgrade, facility_type=facility_type_upgrade,
+            facility=facility)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type_upgrade, facility_refetched.facility_type)
+
+    def test_downgrade_moh_facility_correctly(self):
+        owner_type = mommy.make(OwnerType, name='MOH')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='HEALTH_CENTER')
+        facility_type_downgrade = mommy.make(FacilityType, name='DISPENSARY')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        mommy.make(
+            FacilityUpgrade, facility_type=facility_type_downgrade,
+            facility=facility)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type_downgrade, facility_refetched.facility_type)
+
+    def test_upgrade_moh_facility_with_error(self):
+        owner_type = mommy.make(OwnerType, name='MOH')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='DISPENSARY')
+        facility_type_upgrade = mommy.make(
+            FacilityType,
+            name='SUB_DISTRICT_HOSPITAL')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityUpgrade, facility_type=facility_type_upgrade,
+                facility=facility)
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type, facility_refetched.facility_type)
+
+    def test_upgrade_fbo_facility_correctly(self):
+        owner_type = mommy.make(OwnerType, name='FBO')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='HEALTH_CENTER')
+        facility_type_upgrade = mommy.make(
+            FacilityType, name='LOWEST_LEVEL_HOSPITAL')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        mommy.make(
+            FacilityUpgrade, facility_type=facility_type_upgrade,
+            facility=facility)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type_upgrade, facility_refetched.facility_type)
+
+    def test_upgrade_fbo_facility_with_error(self):
+        owner_type = mommy.make(OwnerType, name='FBO')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='DISPENSARY')
+        facility_type_upgrade = mommy.make(
+            FacilityType,
+            name='HIGHER_LEVEL_HOSPITAL')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityUpgrade, facility_type=facility_type_upgrade,
+                facility=facility)
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type, facility_refetched.facility_type)
+
+    def test_upgrade_private_facility_correctly(self):
+        owner_type = mommy.make(OwnerType, name='PRIVATE')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='MEDICAL_CENTER')
+        facility_type_upgrade = mommy.make(
+            FacilityType, name='MATERNITY_HOME')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        mommy.make(
+            FacilityUpgrade, facility_type=facility_type_upgrade,
+            facility=facility)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type_upgrade, facility_refetched.facility_type)
+
+    def test_upgrade_private_facility_with_error(self):
+        owner_type = mommy.make(OwnerType, name='PRIVATE')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='MEDICAL_CENTER')
+        facility_type_upgrade = mommy.make(
+            FacilityType,
+            name='HIGHER_LEVEL_HOSPITAL')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityUpgrade, facility_type=facility_type_upgrade,
+                facility=facility)
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type, facility_refetched.facility_type)
+
+    def test_upgrade_unkwon_onwer_type(self):
+        owner_type = mommy.make(OwnerType, name='FUNKY OWNER')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility_type = mommy.make(FacilityType, name='MEDICAL_CENTER')
+        facility_type_upgrade = mommy.make(
+            FacilityType,
+            name='HIGHER_LEVEL_HOSPITAL')
+        facility = mommy.make(
+            Facility, name='Mbagathi hosi', facility_type=facility_type,
+            owner=owner)
+
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityUpgrade, facility_type=facility_type_upgrade,
+                facility=facility)
+        facility_refetched = Facility.objects.get(name='Mbagathi hosi')
+        self.assertEquals(
+            facility_type, facility_refetched.facility_type)
+
+
+class TestFacilityOperationState(BaseTestCase):
+    def test_save(self):
+        status = mommy.make(FacilityStatus, name='PENDING_OPENING')
+        facility = mommy.make(
+            Facility, name='Nai hosi', operation_status=status)
+        status_2 = mommy.make(FacilityStatus, name='OPERATIONAL')
+        facility_operation_state = mommy.make(
+            FacilityOperationState, facility=facility,
+            operation_status=status_2)
+        self.assertEquals(1, FacilityOperationState.objects.count())
+        self.assertEquals(facility_operation_state.facility, facility)
+        facility_refetched = Facility.objects.get(name='Nai hosi')
+        self.assertEquals(status_2, facility_refetched.operation_status)
+
+    def test_save_errorneous_transition(self):
+        status = mommy.make(FacilityStatus, name='PENDING_OPENING')
+        facility = mommy.make(
+            Facility, name='Nai hosi', operation_status=status)
+        status_2 = mommy.make(FacilityStatus, name='CLOSED')
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityOperationState, facility=facility,
+                operation_status=status_2)
 
 
 class TestServiceModel(BaseTestCase):
@@ -222,6 +399,22 @@ class TestFacility(BaseTestCase):
         facility_2 = mommy.make(Facility, code=None)
         facility_2_code = int(facility_1.code) + 1
         self.assertEquals(int(facility_2.code), facility_2_code)
+
+    def test_facility_not_approved(self):
+        facility = mommy.make(Facility)
+        self.assertFalse(facility.is_approved)
+
+    def test_facility_approved(self):
+        facility = mommy.make(Facility)
+        facility_approval = mommy.make(
+            FacilityApproval,
+            facility=facility,
+            comment='It meets all the registration requirements')
+        self.assertTrue(facility.is_approved)
+        self.assertEquals(facility, facility_approval.facility)
+        self.assertEquals(
+            facility_approval.comment,
+            'It meets all the registration requirements')
 
 
 class TestGeoCodeSourceModel(BaseTestCase):
