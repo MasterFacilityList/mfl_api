@@ -2,12 +2,9 @@ Installing for production
 ============================
 TBD - **everything here is work in progress**
 
-
-
-Deployment notes
------------------
-Because this server uses ``GDAL``, which is not threadsafe, it should not be
-deployed behind a threaded server / WSGI server.
+TODO - Django deploy checklist'
+TODO - Can only be in a non-threaded server, because of ``GDAL``
+( for those who will not use the supplied playbooks )
 
 
 .. toctree::
