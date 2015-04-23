@@ -1,0 +1,4090 @@
+[
+    {
+        "model": "common.Constituency",
+        "unique_fields": ["code"],
+      
+   "records": [
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"1",
+            "name":"CHANGAMWE "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"1",
+            "name":"CHANGAMWE "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"1",
+            "name":"CHANGAMWE "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"1",
+            "name":"CHANGAMWE "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"1",
+            "name":"CHANGAMWE "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"2",
+            "name":"JOMVU "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"2",
+            "name":"JOMVU "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"2",
+            "name":"JOMVU "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"KISAUNI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"KISAUNI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"KISAUNI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"KISAUNI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"KISAUNI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"KISAUNI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"KISAUNI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"4",
+            "name":"NYALI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"4",
+            "name":"NYALI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"4",
+            "name":"NYALI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"4",
+            "name":"NYALI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"4",
+            "name":"NYALI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"5",
+            "name":"LIKONI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"5",
+            "name":"LIKONI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"5",
+            "name":"LIKONI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"5",
+            "name":"LIKONI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"5",
+            "name":"LIKONI "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"6",
+            "name":"MVITA "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"6",
+            "name":"MVITA "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"6",
+            "name":"MVITA "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"6",
+            "name":"MVITA "
+         },
+         {
+            "county":{
+               "code":"1"
+            },
+            "code":"6",
+            "name":"MVITA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"7",
+            "name":"MSAMBWENI "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"7",
+            "name":"MSAMBWENI "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"7",
+            "name":"MSAMBWENI "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"7",
+            "name":"MSAMBWENI "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"8",
+            "name":"LUNGALUNGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"8",
+            "name":"LUNGALUNGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"8",
+            "name":"LUNGALUNGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"8",
+            "name":"LUNGALUNGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"9",
+            "name":"MATUGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"9",
+            "name":"MATUGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"9",
+            "name":"MATUGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"9",
+            "name":"MATUGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"9",
+            "name":"MATUGA "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"10",
+            "name":"KINANGO "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"10",
+            "name":"KINANGO "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"10",
+            "name":"KINANGO "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"10",
+            "name":"KINANGO "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"10",
+            "name":"KINANGO "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"10",
+            "name":"KINANGO "
+         },
+         {
+            "county":{
+               "code":"2"
+            },
+            "code":"10",
+            "name":"KINANGO "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"KILIFI NORTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"KILIFI NORTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"KILIFI NORTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"KILIFI NORTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"KILIFI NORTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"KILIFI NORTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"KILIFI NORTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"12",
+            "name":"KILIFI SOUTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"12",
+            "name":"KILIFI SOUTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"12",
+            "name":"KILIFI SOUTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"12",
+            "name":"KILIFI SOUTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"12",
+            "name":"KILIFI SOUTH "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"13",
+            "name":"KALOLENI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"13",
+            "name":"KALOLENI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"13",
+            "name":"KALOLENI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"13",
+            "name":"KALOLENI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"14",
+            "name":"RABAI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"14",
+            "name":"RABAI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"14",
+            "name":"RABAI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"14",
+            "name":"RABAI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"15",
+            "name":"GANZE "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"15",
+            "name":"GANZE "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"15",
+            "name":"GANZE "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"15",
+            "name":"GANZE "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"16",
+            "name":"MALINDI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"16",
+            "name":"MALINDI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"16",
+            "name":"MALINDI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"16",
+            "name":"MALINDI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"16",
+            "name":"MALINDI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"17",
+            "name":"MAGARINI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"17",
+            "name":"MAGARINI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"17",
+            "name":"MAGARINI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"17",
+            "name":"MAGARINI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"17",
+            "name":"MAGARINI "
+         },
+         {
+            "county":{
+               "code":"3"
+            },
+            "code":"17",
+            "name":"MAGARINI "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"18",
+            "name":"GARSEN "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"18",
+            "name":"GARSEN "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"18",
+            "name":"GARSEN "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"18",
+            "name":"GARSEN "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"18",
+            "name":"GARSEN "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"18",
+            "name":"GARSEN "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"19",
+            "name":"GALOLE "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"19",
+            "name":"GALOLE "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"19",
+            "name":"GALOLE "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"19",
+            "name":"GALOLE "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"20",
+            "name":"BURA "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"20",
+            "name":"BURA "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"20",
+            "name":"BURA "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"20",
+            "name":"BURA "
+         },
+         {
+            "county":{
+               "code":"4"
+            },
+            "code":"20",
+            "name":"BURA "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"21",
+            "name":"LAMU EAST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"21",
+            "name":"LAMU EAST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"21",
+            "name":"LAMU EAST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"LAMU WEST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"LAMU WEST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"LAMU WEST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"LAMU WEST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"LAMU WEST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"LAMU WEST "
+         },
+         {
+            "county":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"LAMU WEST "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"23",
+            "name":"TAVETA "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"23",
+            "name":"TAVETA "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"23",
+            "name":"TAVETA "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"23",
+            "name":"TAVETA "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"23",
+            "name":"TAVETA "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"24",
+            "name":"WUNDANYI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"24",
+            "name":"WUNDANYI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"24",
+            "name":"WUNDANYI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"24",
+            "name":"WUNDANYI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"25",
+            "name":"MWATATE "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"25",
+            "name":"MWATATE "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"25",
+            "name":"MWATATE "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"25",
+            "name":"MWATATE "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"25",
+            "name":"MWATATE "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"26",
+            "name":"VOI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"26",
+            "name":"VOI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"26",
+            "name":"VOI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"26",
+            "name":"VOI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"26",
+            "name":"VOI "
+         },
+         {
+            "county":{
+               "code":"6"
+            },
+            "code":"26",
+            "name":"VOI "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"27",
+            "name":"GARISSA TOWNSHIP "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"27",
+            "name":"GARISSA TOWNSHIP "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"27",
+            "name":"GARISSA TOWNSHIP "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"27",
+            "name":"GARISSA TOWNSHIP "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"28",
+            "name":"BALAMBALA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"28",
+            "name":"BALAMBALA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"28",
+            "name":"BALAMBALA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"28",
+            "name":"BALAMBALA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"28",
+            "name":"BALAMBALA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"29",
+            "name":"LAGDERA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"29",
+            "name":"LAGDERA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"29",
+            "name":"LAGDERA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"29",
+            "name":"LAGDERA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"29",
+            "name":"LAGDERA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"29",
+            "name":"LAGDERA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"30",
+            "name":"DADAAB "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"30",
+            "name":"DADAAB "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"30",
+            "name":"DADAAB "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"30",
+            "name":"DADAAB "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"30",
+            "name":"DADAAB "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"30",
+            "name":"DADAAB "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"31",
+            "name":"FAFI "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"31",
+            "name":"FAFI "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"31",
+            "name":"FAFI "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"31",
+            "name":"FAFI "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"31",
+            "name":"FAFI "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"32",
+            "name":"IJARA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"32",
+            "name":"IJARA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"32",
+            "name":"IJARA "
+         },
+         {
+            "county":{
+               "code":"7"
+            },
+            "code":"32",
+            "name":"IJARA "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"33",
+            "name":"WAJIR NORTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"33",
+            "name":"WAJIR NORTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"33",
+            "name":"WAJIR NORTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"33",
+            "name":"WAJIR NORTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"33",
+            "name":"WAJIR NORTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"33",
+            "name":"WAJIR NORTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"33",
+            "name":"WAJIR NORTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"34",
+            "name":"WAJIR EAST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"34",
+            "name":"WAJIR EAST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"34",
+            "name":"WAJIR EAST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"34",
+            "name":"WAJIR EAST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"35",
+            "name":"TARBAJ "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"35",
+            "name":"TARBAJ "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"35",
+            "name":"TARBAJ "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"35",
+            "name":"TARBAJ "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"36",
+            "name":"WAJIR WEST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"36",
+            "name":"WAJIR WEST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"36",
+            "name":"WAJIR WEST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"36",
+            "name":"WAJIR WEST "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"37",
+            "name":"ELDAS "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"37",
+            "name":"ELDAS "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"37",
+            "name":"ELDAS "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"37",
+            "name":"ELDAS "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"WAJIR SOUTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"WAJIR SOUTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"WAJIR SOUTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"WAJIR SOUTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"WAJIR SOUTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"WAJIR SOUTH "
+         },
+         {
+            "county":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"WAJIR SOUTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"39",
+            "name":"MANDERA WEST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"39",
+            "name":"MANDERA WEST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"39",
+            "name":"MANDERA WEST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"39",
+            "name":"MANDERA WEST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"39",
+            "name":"MANDERA WEST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"40",
+            "name":"BANISSA "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"40",
+            "name":"BANISSA "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"40",
+            "name":"BANISSA "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"40",
+            "name":"BANISSA "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"40",
+            "name":"BANISSA "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"41",
+            "name":"MANDERA NORTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"41",
+            "name":"MANDERA NORTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"41",
+            "name":"MANDERA NORTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"41",
+            "name":"MANDERA NORTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"41",
+            "name":"MANDERA NORTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"42",
+            "name":"MANDERA SOUTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"42",
+            "name":"MANDERA SOUTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"42",
+            "name":"MANDERA SOUTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"42",
+            "name":"MANDERA SOUTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"42",
+            "name":"MANDERA SOUTH "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"43",
+            "name":"MANDERA EAST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"43",
+            "name":"MANDERA EAST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"43",
+            "name":"MANDERA EAST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"43",
+            "name":"MANDERA EAST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"43",
+            "name":"MANDERA EAST "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"44",
+            "name":"LAFEY "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"44",
+            "name":"LAFEY "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"44",
+            "name":"LAFEY "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"44",
+            "name":"LAFEY "
+         },
+         {
+            "county":{
+               "code":"9"
+            },
+            "code":"44",
+            "name":"LAFEY "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"MOYALE "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"MOYALE "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"MOYALE "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"MOYALE "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"MOYALE "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"MOYALE "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"MOYALE "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"46",
+            "name":"NORTH HORR "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"46",
+            "name":"NORTH HORR "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"46",
+            "name":"NORTH HORR "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"46",
+            "name":"NORTH HORR "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"46",
+            "name":"NORTH HORR "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"47",
+            "name":"SAKU "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"47",
+            "name":"SAKU "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"47",
+            "name":"SAKU "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"48",
+            "name":"LAISAMIS "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"48",
+            "name":"LAISAMIS "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"48",
+            "name":"LAISAMIS "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"48",
+            "name":"LAISAMIS "
+         },
+         {
+            "county":{
+               "code":"10"
+            },
+            "code":"48",
+            "name":"LAISAMIS "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"49",
+            "name":"ISIOLO NORTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"49",
+            "name":"ISIOLO NORTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"49",
+            "name":"ISIOLO NORTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"49",
+            "name":"ISIOLO NORTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"49",
+            "name":"ISIOLO NORTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"49",
+            "name":"ISIOLO NORTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"49",
+            "name":"ISIOLO NORTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"50",
+            "name":"ISIOLO SOUTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"50",
+            "name":"ISIOLO SOUTH "
+         },
+         {
+            "county":{
+               "code":"11"
+            },
+            "code":"50",
+            "name":"ISIOLO SOUTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"51",
+            "name":"IGEMBE SOUTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"51",
+            "name":"IGEMBE SOUTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"51",
+            "name":"IGEMBE SOUTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"51",
+            "name":"IGEMBE SOUTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"51",
+            "name":"IGEMBE SOUTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"52",
+            "name":"IGEMBE CENTRAL "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"52",
+            "name":"IGEMBE CENTRAL "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"52",
+            "name":"IGEMBE CENTRAL "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"52",
+            "name":"IGEMBE CENTRAL "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"52",
+            "name":"IGEMBE CENTRAL "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"53",
+            "name":"IGEMBE NORTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"53",
+            "name":"IGEMBE NORTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"53",
+            "name":"IGEMBE NORTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"53",
+            "name":"IGEMBE NORTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"53",
+            "name":"IGEMBE NORTH "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"54",
+            "name":"TIGANIA WEST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"54",
+            "name":"TIGANIA WEST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"54",
+            "name":"TIGANIA WEST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"54",
+            "name":"TIGANIA WEST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"54",
+            "name":"TIGANIA WEST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"55",
+            "name":"TIGANIA EAST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"55",
+            "name":"TIGANIA EAST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"55",
+            "name":"TIGANIA EAST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"55",
+            "name":"TIGANIA EAST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"55",
+            "name":"TIGANIA EAST "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"56",
+            "name":"NORTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"56",
+            "name":"NORTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"56",
+            "name":"NORTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"56",
+            "name":"NORTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"56",
+            "name":"NORTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"57",
+            "name":"BUURI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"57",
+            "name":"BUURI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"57",
+            "name":"BUURI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"57",
+            "name":"BUURI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"57",
+            "name":"BUURI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"58",
+            "name":"CENTRAL IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"58",
+            "name":"CENTRAL IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"58",
+            "name":"CENTRAL IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"58",
+            "name":"CENTRAL IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"59",
+            "name":"SOUTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"59",
+            "name":"SOUTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"59",
+            "name":"SOUTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"59",
+            "name":"SOUTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"59",
+            "name":"SOUTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"12"
+            },
+            "code":"59",
+            "name":"SOUTH IMENTI "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"60",
+            "name":"MAARA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"60",
+            "name":"MAARA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"60",
+            "name":"MAARA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"60",
+            "name":"MAARA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"60",
+            "name":"MAARA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"61",
+            "name":"CHUKA/IGAMBANG'OM "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"61",
+            "name":"CHUKA/IGAMBANG'OM "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"61",
+            "name":"CHUKA/IGAMBANG'OM "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"61",
+            "name":"CHUKA/IGAMBANG'OM "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"61",
+            "name":"CHUKA/IGAMBANG'OM "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"62",
+            "name":"THARAKA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"62",
+            "name":"THARAKA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"62",
+            "name":"THARAKA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"62",
+            "name":"THARAKA "
+         },
+         {
+            "county":{
+               "code":"13"
+            },
+            "code":"62",
+            "name":"THARAKA "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"63",
+            "name":"MANYATTA "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"63",
+            "name":"MANYATTA "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"63",
+            "name":"MANYATTA "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"63",
+            "name":"MANYATTA "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"63",
+            "name":"MANYATTA "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"63",
+            "name":"MANYATTA "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"64",
+            "name":"RUNYENJES "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"64",
+            "name":"RUNYENJES "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"64",
+            "name":"RUNYENJES "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"64",
+            "name":"RUNYENJES "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"64",
+            "name":"RUNYENJES "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"64",
+            "name":"RUNYENJES "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"65",
+            "name":"MBEERE SOUTH "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"65",
+            "name":"MBEERE SOUTH "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"65",
+            "name":"MBEERE SOUTH "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"65",
+            "name":"MBEERE SOUTH "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"65",
+            "name":"MBEERE SOUTH "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"66",
+            "name":"MBEERE NORTH "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"66",
+            "name":"MBEERE NORTH "
+         },
+         {
+            "county":{
+               "code":"14"
+            },
+            "code":"66",
+            "name":"MBEERE NORTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"67",
+            "name":"MWINGI NORTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"67",
+            "name":"MWINGI NORTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"67",
+            "name":"MWINGI NORTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"67",
+            "name":"MWINGI NORTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"67",
+            "name":"MWINGI NORTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"68",
+            "name":"MWINGI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"68",
+            "name":"MWINGI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"68",
+            "name":"MWINGI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"68",
+            "name":"MWINGI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"69",
+            "name":"MWINGI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"69",
+            "name":"MWINGI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"69",
+            "name":"MWINGI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"69",
+            "name":"MWINGI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"69",
+            "name":"MWINGI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"69",
+            "name":"MWINGI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"70",
+            "name":"KITUI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"70",
+            "name":"KITUI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"70",
+            "name":"KITUI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"70",
+            "name":"KITUI WEST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"71",
+            "name":"KITUI RURAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"71",
+            "name":"KITUI RURAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"71",
+            "name":"KITUI RURAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"71",
+            "name":"KITUI RURAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"72",
+            "name":"KITUI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"72",
+            "name":"KITUI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"72",
+            "name":"KITUI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"72",
+            "name":"KITUI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"72",
+            "name":"KITUI CENTRAL "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"73",
+            "name":"KITUI EAST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"73",
+            "name":"KITUI EAST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"73",
+            "name":"KITUI EAST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"73",
+            "name":"KITUI EAST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"73",
+            "name":"KITUI EAST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"73",
+            "name":"KITUI EAST "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"74",
+            "name":"KITUI SOUTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"74",
+            "name":"KITUI SOUTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"74",
+            "name":"KITUI SOUTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"74",
+            "name":"KITUI SOUTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"74",
+            "name":"KITUI SOUTH "
+         },
+         {
+            "county":{
+               "code":"15"
+            },
+            "code":"74",
+            "name":"KITUI SOUTH "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"75",
+            "name":"MASINGA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"75",
+            "name":"MASINGA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"75",
+            "name":"MASINGA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"75",
+            "name":"MASINGA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"75",
+            "name":"MASINGA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"76",
+            "name":"YATTA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"76",
+            "name":"YATTA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"76",
+            "name":"YATTA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"76",
+            "name":"YATTA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"76",
+            "name":"YATTA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"77",
+            "name":"KANGUNDO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"77",
+            "name":"KANGUNDO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"77",
+            "name":"KANGUNDO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"77",
+            "name":"KANGUNDO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"78",
+            "name":"MATUNGULU "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"78",
+            "name":"MATUNGULU "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"78",
+            "name":"MATUNGULU "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"78",
+            "name":"MATUNGULU "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"78",
+            "name":"MATUNGULU "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"79",
+            "name":"KATHIANI "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"79",
+            "name":"KATHIANI "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"79",
+            "name":"KATHIANI "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"79",
+            "name":"KATHIANI "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"80",
+            "name":"MAVOKO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"80",
+            "name":"MAVOKO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"80",
+            "name":"MAVOKO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"80",
+            "name":"MAVOKO "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"81",
+            "name":"MACHAKOS TOWN "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"81",
+            "name":"MACHAKOS TOWN "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"81",
+            "name":"MACHAKOS TOWN "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"81",
+            "name":"MACHAKOS TOWN "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"81",
+            "name":"MACHAKOS TOWN "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"81",
+            "name":"MACHAKOS TOWN "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"81",
+            "name":"MACHAKOS TOWN "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"82",
+            "name":"MWALA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"82",
+            "name":"MWALA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"82",
+            "name":"MWALA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"82",
+            "name":"MWALA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"82",
+            "name":"MWALA "
+         },
+         {
+            "county":{
+               "code":"16"
+            },
+            "code":"82",
+            "name":"MWALA "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"83",
+            "name":"MBOONI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"83",
+            "name":"MBOONI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"83",
+            "name":"MBOONI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"83",
+            "name":"MBOONI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"83",
+            "name":"MBOONI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"83",
+            "name":"MBOONI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"84",
+            "name":"KILOME "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"84",
+            "name":"KILOME "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"84",
+            "name":"KILOME "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"85",
+            "name":"KAITI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"85",
+            "name":"KAITI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"85",
+            "name":"KAITI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"85",
+            "name":"KAITI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"86",
+            "name":"MAKUENI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"86",
+            "name":"MAKUENI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"86",
+            "name":"MAKUENI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"86",
+            "name":"MAKUENI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"86",
+            "name":"MAKUENI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"86",
+            "name":"MAKUENI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"86",
+            "name":"MAKUENI "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"87",
+            "name":"KIBWEZI WEST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"87",
+            "name":"KIBWEZI WEST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"87",
+            "name":"KIBWEZI WEST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"87",
+            "name":"KIBWEZI WEST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"87",
+            "name":"KIBWEZI WEST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"87",
+            "name":"KIBWEZI WEST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"88",
+            "name":"KIBWEZI EAST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"88",
+            "name":"KIBWEZI EAST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"88",
+            "name":"KIBWEZI EAST "
+         },
+         {
+            "county":{
+               "code":"17"
+            },
+            "code":"88",
+            "name":"KIBWEZI EAST "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"KINANGOP "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"90",
+            "name":"KIPIPIRI "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"90",
+            "name":"KIPIPIRI "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"90",
+            "name":"KIPIPIRI "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"90",
+            "name":"KIPIPIRI "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"91",
+            "name":"OL KALOU "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"91",
+            "name":"OL KALOU "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"91",
+            "name":"OL KALOU "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"91",
+            "name":"OL KALOU "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"91",
+            "name":"OL KALOU "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"92",
+            "name":"OL JOROK "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"92",
+            "name":"OL JOROK "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"92",
+            "name":"OL JOROK "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"92",
+            "name":"OL JOROK "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"93",
+            "name":"NDARAGWA "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"93",
+            "name":"NDARAGWA "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"93",
+            "name":"NDARAGWA "
+         },
+         {
+            "county":{
+               "code":"18"
+            },
+            "code":"93",
+            "name":"NDARAGWA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"94",
+            "name":"TETU "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"94",
+            "name":"TETU "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"94",
+            "name":"TETU "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"KIENI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"96",
+            "name":"MATHIRA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"96",
+            "name":"MATHIRA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"96",
+            "name":"MATHIRA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"96",
+            "name":"MATHIRA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"96",
+            "name":"MATHIRA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"96",
+            "name":"MATHIRA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"97",
+            "name":"OTHAYA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"97",
+            "name":"OTHAYA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"97",
+            "name":"OTHAYA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"97",
+            "name":"OTHAYA "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"98",
+            "name":"MUKURWEINI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"98",
+            "name":"MUKURWEINI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"98",
+            "name":"MUKURWEINI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"98",
+            "name":"MUKURWEINI "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"99",
+            "name":"NYERI TOWN "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"99",
+            "name":"NYERI TOWN "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"99",
+            "name":"NYERI TOWN "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"99",
+            "name":"NYERI TOWN "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"99",
+            "name":"NYERI TOWN "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"102",
+            "name":"NDIA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"102",
+            "name":"NDIA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"102",
+            "name":"NDIA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"104",
+            "name":"KANGEMA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"104",
+            "name":"KANGEMA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"104",
+            "name":"KANGEMA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"105",
+            "name":"MATHIOYA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"105",
+            "name":"MATHIOYA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"105",
+            "name":"MATHIOYA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"106",
+            "name":"KIHARU "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"106",
+            "name":"KIHARU "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"106",
+            "name":"KIHARU "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"106",
+            "name":"KIHARU "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"106",
+            "name":"KIHARU "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"106",
+            "name":"KIHARU "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"107",
+            "name":"KIGUMO "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"107",
+            "name":"KIGUMO "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"107",
+            "name":"KIGUMO "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"107",
+            "name":"KIGUMO "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"107",
+            "name":"KIGUMO "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"108",
+            "name":"MARAGWA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"108",
+            "name":"MARAGWA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"108",
+            "name":"MARAGWA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"108",
+            "name":"MARAGWA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"108",
+            "name":"MARAGWA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"108",
+            "name":"MARAGWA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"109",
+            "name":"KANDARA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"109",
+            "name":"KANDARA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"109",
+            "name":"KANDARA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"109",
+            "name":"KANDARA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"109",
+            "name":"KANDARA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"109",
+            "name":"KANDARA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"110",
+            "name":"GATANGA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"110",
+            "name":"GATANGA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"110",
+            "name":"GATANGA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"110",
+            "name":"GATANGA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"110",
+            "name":"GATANGA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"110",
+            "name":"GATANGA "
+         },
+         {
+            "county":{
+               "code":"22"
+            },
+            "code":"111",
+            "name":"GATUNDU SOUTH "
+         },
+         {
+            "county":{
+               "code":"22"
+            },
+            "code":"111",
+            "name":"GATUNDU SOUTH "
+         },
+         {
+            "county":{
+               "code":"22"
+            },
+            "code":"111",
+            "name":"GATUNDU SOUTH "
+         },
+         {
+            "county":{
+               "code":"22"
+            },
+            "code":"111",
+            "name":"GATUNDU SOUTH "
+         },
+         {
+            "county":{
+               "code":"22"
+            },
+            "code":"112",
+            "name":"GATUNDU NORTH "
+         },
+         {
+            "county":{
+               "code":"22"
+            },
+            "code":"112",
+            "name":"GATUNDU NORTH "
+         },
+         {
+            "county":{
+               "code":"19"
+            },
+            "code":"99",
+            "name":"NYERI TOWN "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MWEA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"101",
+            "name":"GICHUGU "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"102",
+            "name":"NDIA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"102",
+            "name":"NDIA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"102",
+            "name":"NDIA "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"20"
+            },
+            "code":"103",
+            "name":"KIRINYAGA CENTRAL "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"104",
+            "name":"KANGEMA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"104",
+            "name":"KANGEMA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"104",
+            "name":"KANGEMA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"105",
+            "name":"MATHIOYA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"105",
+            "name":"MATHIOYA "
+         },
+         {
+            "county":{
+               "code":"21"
+            },
+            "code":"105",
+            "name":"MATHIOYA "
+         }
+   ]
+}
+]

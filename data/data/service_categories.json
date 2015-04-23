@@ -1,0 +1,19 @@
+[
+    {
+        "model": "facilities.ServiceCategory",
+        "unique_fields": ["name"],
+      
+        "records": [
+           {
+                "name": "HIV Prevention Services"
+     
+            },
+            {
+                "name": "Antenatal"
+     
+            }
+        ]
+    }
+
+    
+]
