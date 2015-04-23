@@ -1,6 +1,5 @@
-==========
 Master Facility List API
-==========
+===========================
 .. image:: https://circleci.com/gh/MasterFacilityList/mfl_api.svg?style=shield
     :target: https://circleci.com/gh/MasterFacilityList/mfl_api
 
