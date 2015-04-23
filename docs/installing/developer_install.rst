@@ -2,6 +2,7 @@ Installing for development
 ============================
 TBD - **everything here is work in progress**
 
+TODO - Add notes about removing LC forwarding from SSH config
 
 
 Getting started

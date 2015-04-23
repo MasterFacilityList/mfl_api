@@ -58,12 +58,10 @@ can get them at once with:
     sudo apt-get build-dep python-shapely python-gdal python-numpy
     cython python-psycopg2
 
-You can find more informationa at :doc:`developer_install`.
+You can find more information at :doc:`developer_install`.
 
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
 
-Related Links
---------------
 
 .. toctree::
     :maxdepth: 2
