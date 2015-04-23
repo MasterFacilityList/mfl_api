@@ -32,12 +32,80 @@ from ..views import (
     RegulationStatusListView,
     RegulationStatusDetailView,
     FacilityUnitsListView,
-    FacilityUnitDetailView
+    FacilityUnitDetailView,
+    ServiceCategoryListView,
+    ServiceCategoryDetailView,
+    OptionListView,
+    OptionDetailView,
+    ServiceListView,
+    ServiceDetailView,
+    FacilityServiceListView,
+    FacilityServiceDetailView,
+    ServiceOptionListView,
+    ServiceOptionDetailView,
+    ServiceRatingListView,
+    ServiceRatingDetailView,
+    FacilityApprovalListView,
+    FacilityApprovalDetailView,
+    FacilityOperationStateListView,
+    FacilityOperationStateDetailView,
+    FacilityUpgradeListView,
+    FacilityUpgradeDetailView
 )
-
-
 urlpatterns = patterns(
     '',
+    url(r'^facility_upgrade/$',
+        FacilityUpgradeListView.as_view(),
+        name='facility_upgrades_list'),
+    url(r'^facility_upgrade/(?P<pk>[^/]+)/$',
+        FacilityUpgradeDetailView.as_view(),
+        name='facility_upgrade_detail'),
+
+    url(r'^facility_operation_state/$',
+        FacilityOperationStateListView.as_view(),
+        name='facility_operation_states_list'),
+    url(r'^facility_operation_state/(?P<pk>[^/]+)/$',
+        FacilityOperationStateDetailView.as_view(),
+        name='facility_operation_state_detail'),
+
+    url(r'^facilitiy_approvals/$', FacilityApprovalListView.as_view(),
+        name='facility_approvals_list'),
+    url(r'^facilitiy_approvals/(?P<pk>[^/]+)/$',
+        FacilityApprovalDetailView.as_view(),
+        name='facility_approval_detail'),
+
+    url(r'^service_ratings/$', ServiceRatingListView.as_view(),
+        name='service_ratings_list'),
+    url(r'^service_ratings/(?P<pk>[^/]+)/$',
+        ServiceRatingDetailView.as_view(),
+        name='service_rating_detail'),
+
+    url(r'^service_categories/$', ServiceCategoryListView.as_view(),
+        name='service_categories_list'),
+    url(r'^service_categories/(?P<pk>[^/]+)/$',
+        ServiceCategoryDetailView.as_view(),
+        name='service_category_detail'),
+
+    url(r'^services/$', ServiceListView.as_view(),
+        name='services_list'),
+    url(r'^services/(?P<pk>[^/]+)/$', ServiceDetailView.as_view(),
+        name='service_detail'),
+
+    url(r'^options/$', OptionListView.as_view(),
+        name='options_list'),
+    url(r'^options/(?P<pk>[^/]+)/$', OptionDetailView.as_view(),
+        name='option_detail'),
+
+    url(r'^facility_services/$', FacilityServiceListView.as_view(),
+        name='facility_services_list'),
+    url(r'^facility_services/(?P<pk>[^/]+)/$',
+        FacilityServiceDetailView.as_view(),
+        name='facility_service_detail'),
+
+    url(r'^service_options/$', ServiceOptionListView.as_view(),
+        name='service_options_list'),
+    url(r'^service_options/(?P<pk>[^/]+)/$', ServiceOptionDetailView.as_view(),
+        name='service_option_detail'),
 
     url(r'^facility_units/$', FacilityUnitsListView.as_view(),
         name='facility_units_list'),

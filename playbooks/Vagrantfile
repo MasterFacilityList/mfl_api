@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.box_check_update = true
+
+  # THe vagrant-env plugin needs to be installed
+  # Find it at https://github.com/gosuri/vagrant-env
+  config.env.enable
+
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 443, host: 8443
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "1024"
+  end
+
+  # Fix the annoyance from https://github.com/mitchellh/vagrant/issues/1673
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
+  # Fix a stubborn locale bug affecting PostgreSQL on Ubuntu
+  config.vm.provision :shell, :inline => <<-EOT
+    echo 'LC_ALL="en_US.UTF-8"'  >  /etc/default/locale
+    export LANGUAGE=en_US.UTF-8
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+    sudo locale-gen en_US.UTF-8
+    sudo dpkg-reconfigure locales
+  EOT
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "site.yml"
+    ansible.extra_vars = {
+      base_dir: File.expand_path('..'),
+      database_name: ENV['DATABASE_NAME'],
+      database_user: ENV['DATABASE_USER'],
+      database_password: ENV['DATABASE_PASSWORD']
+    }
+  end
+end

@@ -1,4 +1,5 @@
 from rest_framework import generics
+from common.views import AuditableDetailViewMixin
 
 from ..models import (
     OwnerType,
@@ -16,7 +17,16 @@ from ..models import (
     GeoCodeMethod,
     FacilityCoordinates,
     FacilityContact,
-    FacilityUnit
+    FacilityUnit,
+    ServiceCategory,
+    Option,
+    Service,
+    FacilityService,
+    ServiceOption,
+    ServiceRating,
+    FacilityApproval,
+    FacilityOperationState,
+    FacilityUpgrade
 )
 
 from ..serializers import (
@@ -34,7 +44,16 @@ from ..serializers import (
     OwnerTypeSerializer,
     OfficerContactSerializer,
     FacilityRegulationStatusSerializer,
-    FacilityUnitSerializer
+    FacilityUnitSerializer,
+    ServiceCategorySerializer,
+    OptionSerializer,
+    ServiceSerializer,
+    FacilityServiceSerializer,
+    ServiceOptionSerializer,
+    ServiceRatingSerializer,
+    FacilityApprovalSerializer,
+    FacilityOperationStateSerializer,
+    FacilityUpgradeSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -52,8 +71,131 @@ from ..filters import (
     FacilityContactFilter,
     FacilityTypeFilter,
     FacilityRegulationStatusFilter,
-    RegulationStatusFilter
+    RegulationStatusFilter,
+    ServiceCategoryFilter,
+    OptionFilter,
+    ServiceFilter,
+    FacilityServiceFilter,
+    ServiceOptionFilter,
+    ServiceRatingFilter,
+    FacilityApprovalFilter,
+    FacilityOperationStateFilter,
+    FacilityUpgradeFilter
 )
+
+
+class FacilityUpgradeListView(generics.ListCreateAPIView):
+    queryset = FacilityUpgrade.objects.all()
+    serializer_class = FacilityUpgradeSerializer
+    filter_class = FacilityUpgradeFilter
+    ordering_fields = ('facility', 'facility_type', 'reason', )
+
+
+class FacilityUpgradeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityUpgrade.objects.all()
+    serializer_class = FacilityUpgradeSerializer
+
+
+class FacilityOperationStateListView(generics.ListCreateAPIView):
+    queryset = FacilityOperationState.objects.all()
+    serializer_class = FacilityOperationStateSerializer
+    filter_class = FacilityOperationStateFilter
+    ordering_fields = ('facility', 'operation_status', 'reason')
+
+
+class FacilityOperationStateDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityOperationState.objects.all()
+    serializer_class = FacilityOperationStateSerializer
+
+
+class FacilityApprovalListView(generics.ListCreateAPIView):
+    queryset = FacilityApproval.objects.all()
+    serializer_class = FacilityApprovalSerializer
+    filter_class = FacilityApprovalFilter
+    ordering_fields = ('facility', 'comment', )
+
+
+class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityApproval.objects.all()
+    serializer_class = FacilityApprovalSerializer
+
+
+class ServiceRatingListView(generics.ListCreateAPIView):
+    queryset = ServiceRating.objects.all()
+    serializer_class = ServiceRatingSerializer
+    filter_class = ServiceRatingFilter
+    ordering_fields = ('facility_service')
+
+
+class ServiceRatingDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceRating.objects.all()
+    serializer_class = ServiceRatingSerializer
+
+
+class ServiceCategoryListView(generics.ListCreateAPIView):
+    queryset = ServiceCategory.objects.all()
+    serializer_class = ServiceCategorySerializer
+    filter_class = ServiceCategoryFilter
+    ordering_fields = ('name', 'description', )
+
+
+class ServiceCategoryDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceCategory.objects.all()
+    serializer_class = ServiceCategorySerializer
+
+
+class OptionListView(generics.ListCreateAPIView):
+    queryset = Option.objects.all()
+    serializer_class = OptionSerializer
+    filter_class = OptionFilter
+    ordering_fields = ('option_type', 'display_text', 'value', )
+
+
+class OptionDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Option.objects.all()
+    serializer_class = OptionSerializer
+
+
+class ServiceListView(generics.ListCreateAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+    filter_class = ServiceFilter
+    ordering_fields = ('name', 'category', 'code',)
+
+
+class ServiceDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+
+class FacilityServiceListView(generics.ListCreateAPIView):
+    queryset = FacilityService.objects.all()
+    serializer_class = FacilityServiceSerializer
+    filter_class = FacilityServiceFilter
+    ordering_fields = ('facility', 'service')
+
+
+class FacilityServiceDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityService.objects.all()
+    serializer_class = FacilityServiceSerializer
+
+
+class ServiceOptionListView(generics.ListCreateAPIView):
+    queryset = ServiceOption.objects.all()
+    serializer_class = ServiceOptionSerializer
+    filter_class = ServiceOptionFilter
+    ordering_fields = ('service', 'option',)
+
+
+class ServiceOptionDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = ServiceOption.objects.all()
+    serializer_class = ServiceOptionSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
@@ -63,7 +205,8 @@ class FacilityUnitsListView(generics.ListCreateAPIView):
     filter_class = FacilityUnitFilter
 
 
-class FacilityUnitDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityUnitDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityUnit.objects.all()
     serializer_class = FacilityUnitSerializer
 
@@ -75,7 +218,8 @@ class FacilityStatusListView(generics.ListCreateAPIView):
     filter_class = FacilityStatusFilter
 
 
-class FacilityStatusDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityStatusDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityStatus.objects.all()
     serializer_class = FacilityStatusSerializer
 
@@ -87,7 +231,8 @@ class JobTitleListView(generics.ListCreateAPIView):
     filter_class = JobTitleFilter
 
 
-class JobTitleDetailView(generics.RetrieveUpdateDestroyAPIView):
+class JobTitleDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = JobTitle.objects.all()
     serializer_class = JobTitleSerializer
 
@@ -99,7 +244,8 @@ class OfficerListView(generics.ListCreateAPIView):
     filter_class = OfficerFilter
 
 
-class OfficerDetailView(generics.RetrieveUpdateDestroyAPIView):
+class OfficerDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Officer.objects.all()
     serializer_class = OfficerSerializer
 
@@ -111,7 +257,8 @@ class RegulatingBodyListView(generics.ListCreateAPIView):
     filter_class = RegulatingBodyFilter
 
 
-class RegulatingBodyDetailView(generics.RetrieveUpdateDestroyAPIView):
+class RegulatingBodyDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = RegulatingBody.objects.all()
     serializer_class = RegulatingBodySerializer
 
@@ -123,7 +270,8 @@ class GeoCodeSourceListView(generics.ListCreateAPIView):
     filter_class = GeoCodeSourceFilter
 
 
-class GeoCodeSourceDetailView(generics.RetrieveUpdateDestroyAPIView):
+class GeoCodeSourceDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = GeoCodeSource.objects.all()
     serializer_class = GeoCodeSourceSerializer
 
@@ -135,7 +283,8 @@ class OwnerTypeListView(generics.ListCreateAPIView):
     filter_class = OwnerTypeFilter
 
 
-class OwnerTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
+class OwnerTypeDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = OwnerType.objects.all()
     serializer_class = OwnerTypeSerializer
 
@@ -147,7 +296,8 @@ class OfficerContactListView(generics.ListCreateAPIView):
     filter_class = OfficerContactFilter
 
 
-class OfficerContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+class OfficerContactDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = OfficerContact.objects.all()
     serializer_class = OfficerContactSerializer
 
@@ -159,7 +309,8 @@ class GeoCodeMethodListView(generics.ListCreateAPIView):
     ordering_fields = ('name', )
 
 
-class GeoCodeMethodDetailView(generics.RetrieveUpdateDestroyAPIView):
+class GeoCodeMethodDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = GeoCodeMethod.objects.all()
     serializer_class = GeoCodeMethodSerializer
 
@@ -171,7 +322,8 @@ class OwnerListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code', 'owner_type',)
 
 
-class OwnerDetailView(generics.RetrieveUpdateDestroyAPIView):
+class OwnerDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
 
@@ -186,7 +338,8 @@ class FacilityListView(generics.ListCreateAPIView):
     )
 
 
-class FacilityDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
 
@@ -198,7 +351,8 @@ class FacilityContactListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'contact',)
 
 
-class FacilityContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityContactDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityContact.objects.all()
     serializer_class = FacilityContactSerializer
 
@@ -211,7 +365,8 @@ class FacilityCoordinatesListView(generics.ListCreateAPIView):
         'facility', 'latitude', 'longitude', 'source', 'method',)
 
 
-class FacilityCoordinatesDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityCoordinatesDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityCoordinates.objects.all()
     serializer_class = FacilityCoordinatesSerializer
 
@@ -225,6 +380,7 @@ class FacilityRegulationStatusListView(generics.ListCreateAPIView):
 
 
 class FacilityRegulationStatusDetailView(
+        AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityRegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer
@@ -237,18 +393,21 @@ class FacilityTypeListView(generics.ListCreateAPIView):
     ordering_fields = ('name', )
 
 
-class FacilityTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityTypeDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityType.objects.all()
     serializer_class = FacilityTypeSerializer
 
 
-class RegulationStatusListView(generics.ListCreateAPIView):
+class RegulationStatusListView(
+        AuditableDetailViewMixin, generics.ListCreateAPIView):
     queryset = RegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer
     filter_class = RegulationStatusFilter
     ordering_fields = ('name', )
 
 
-class RegulationStatusDetailView(generics.RetrieveUpdateDestroyAPIView):
+class RegulationStatusDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = RegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer

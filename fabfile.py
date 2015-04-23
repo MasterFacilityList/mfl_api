@@ -1,57 +1,72 @@
 #! /usr/bin/env python
-from os.path import dirname, abspath
+import json
+
+from os.path import dirname, abspath, join
 from config.settings import base
 from fabric.api import local
+from fabric.context_managers import lcd
 
 
 BASE_DIR = dirname(abspath(__file__))
 
 
 def manage(command, args=''):
+    """Dev only - a convenience"""
     local('{}/manage.py {} {}'.format(BASE_DIR, command, args))
 
 
 def test():
+    """Dev and release - run the test suite"""
     local('python setup.py check')
     local('pip install tox')
     local('tox -r -c tox.ini')
 
 
-def run():
-    local('{}/manage.py runserver 8000'.format(BASE_DIR))
-
-
 def deploy():
-    """
-    Should be run only by the release manager
-    """
+    """Release only - publish to PyPi"""
     test()
     local('python setup.py sdist upload -r slade')
 
 
+def server_deploy():
+    """Production - run the deployment Ansible playbook"""
+    with lcd(join(BASE_DIR, 'playbooks')):
+        local(
+            "ansible-playbook site.yml -v --extra-vars '{}'".format(
+                json.dumps({
+                    "base_dir": BASE_DIR,
+                    "database_name": base.DATABASES.get('default').get('NAME'),
+                    "database_user": base.DATABASES.get('default').get('USER'),
+                    "database_password":
+                        base.DATABASES.get('default').get('PASSWORD')
+                })
+            )
+        )
+
+
 def reset_migrations():
-    """
-    A development only task; got sick of typing the same commands repeatedly
-    """
+    """Development only - remove and recreate all migration"""
     local('rm -f users/migrations/ -r')
     local('rm -f common/migrations/ -r')
     local('rm -f facilities/migrations/ -r')
     manage('makemigrations users')
     manage('makemigrations common')
     manage('makemigrations facilities')
+    manage('makemigrations chul')
     local('git add . --all')
 
 
 def graph_models():
-    """Another dev only task"""
+    """Dev only - visualize the current model relationships"""
     manage(
-        'graph_models common facilities -g -d '
+        'graph_models common facilities chul -g -d '
         '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
         '-o  mfl_models_graph.png')
     local('eog mfl_models_graph.png')
 
 
 def psql(query, no_sudo=False, is_file=False):
+    """Dev only - used by the setup function below"""
     sudo = 'sudo -u postgres'
     if no_sudo:
         sudo = ''
@@ -63,6 +78,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def setup(*args, **kwargs):
+    """Dev only - clear and recreate the entire database"""
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
@@ -77,3 +93,11 @@ def setup(*args, **kwargs):
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate users')
     manage('migrate')
+
+
+def load_initial_data(*args, **kwargs):
+    pass
+
+
+def load_demo_data(*args, **kwargs):
+    pass

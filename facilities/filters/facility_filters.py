@@ -16,9 +16,100 @@ from ..models import (
     FacilityContact,
     FacilityRegulationStatus,
     FacilityType,
-    RegulationStatus
+    RegulationStatus,
+    ServiceCategory,
+    Option,
+    Service,
+    FacilityService,
+    ServiceOption,
+    ServiceRating,
+    FacilityApproval,
+    FacilityOperationState,
+    FacilityUpgrade
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class FacilityUpgradeFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityUpgrade
+
+
+class FacilityOperationStateFilter(CommonFieldsFilterset):
+    operation_status = django_filters.AllValuesFilter(lookup_type='exact')
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    reason = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = FacilityOperationState
+
+
+class FacilityApprovalFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    comment = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = FacilityApproval
+
+
+class ServiceRatingFilter(CommonFieldsFilterset):
+    facility_service = django_filters.AllValuesFilter(lookup_type='exact')
+    cleanliness = django_filters.BooleanFilter(lookup_type='exact')
+    attitude = django_filters.BooleanFilter(lookup_type='exact')
+    will_return = django_filters.BooleanFilter(lookup_type='exact')
+    occupation = django_filters.CharFilter(lookup_type='icontains')
+    comment = django_filters.CharFilter(lookup_type='icontains')
+    service = django_filters.AllValuesFilter(
+        name='facility_service__service', lookup_type='exact')
+    facility = django_filters.AllValuesFilter(
+        name='facility_service__facility', lookup_type='exact')
+
+    class Meta:
+        model = ServiceRating
+
+
+class ServiceCategoryFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta:
+        model = ServiceCategory
+
+
+class OptionFilter(CommonFieldsFilterset):
+    value = django_filters.CharFilter(lookup_type='icontains')
+    display_text = django_filters.CharFilter(lookup_type='icontains')
+    option_type = django_filters.CharFilter(lookup_type='icontains')
+    is_exclusive_option = django_filters.BooleanFilter(lookup_type='exact')
+
+    class Meta:
+        model = Option
+
+
+class ServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+    category = django_filters.AllValuesFilter(lookup_type='exact')
+    code = django_filters.CharFilter(lookup_type='exact')
+
+    class Meta:
+        model = Service
+
+
+class FacilityServiceFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    selected_option = django_filters.AllValuesFilter(lookup_type='exact')
+
+    class Meta:
+        model = FacilityService
+
+
+class ServiceOptionFilter(CommonFieldsFilterset):
+    service = django_filters.AllValuesFilter(lookup_type='exact')
+    option = django_filters.AllValuesFilter(lookup_type='exact')
+
+    class Meta:
+        model = ServiceOption
 
 
 class OwnerTypeFilter(CommonFieldsFilterset):

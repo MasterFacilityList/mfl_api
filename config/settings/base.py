@@ -1,14 +1,28 @@
 import os
-import dj_database_url
+import environ
 
-BASE_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "..", "..")
-SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
-DEBUG = True
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# The env based settings are non-forgiving, intentionally
+# If you do not have a setting...a kinder outcome will be had if the app
+# blows up at the first opportunity
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
+
+DEBUG = env('DEBUG')
+SECRET_KEY = env('SECRET_KEY')
+DATABASES = {'default': env.db()}  # Env should have DATABASE_URL
+
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 TEMPLATE_DEBUG = DEBUG
 SEND_BROKEN_LINK_EMAILS = not DEBUG
-ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke']
+ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
     'django.contrib.admin',
     'users',
@@ -29,14 +43,13 @@ INSTALLED_APPS = (
     'rest_auth.registration',
     'reversion',
     'django_extensions',
+    'gunicorn',
     'facilities',
     'data_bootstrap',
     'chul',
 )
-
 # LOCAL_APPS is now just a convenience setting for the metadata API
-# It is *NOT* appended to INSTALLED_APPS
-# There is a bit of a DRYness violation
+# It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
 # This was forced by the need to override rest_framework templates in common
 LOCAL_APPS = (
     'facilities',
@@ -44,7 +57,6 @@ LOCAL_APPS = (
     'data_bootstrap',
     'chul',
 )
-
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
@@ -56,7 +68,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'reversion.middleware.RevisionMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -76,16 +87,14 @@ AUTHENTICATION_BACKENDS = (
 )
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://mfl:mfl@localhost:5432/mfl'
-    )
-}
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 SESSION_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'

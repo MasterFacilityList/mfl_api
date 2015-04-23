@@ -1,6 +1,8 @@
 import reversion
 
 from django.db import models
+from django.core.exceptions import ValidationError
+
 from common.models import (
     AbstractBase,
     Ward,
@@ -9,6 +11,15 @@ from common.models import (
     PhysicalAddress
 )
 from common.fields import SequenceField
+
+
+from .transitions import (
+    can_transition,
+    can_upgrade_or_downgrade_in_moh,
+    can_upgrade_or_downgrade_in_fbo,
+    can_upgrade_or_downgrade_in_private_sector
+
+)
 
 
 @reversion.register
@@ -380,11 +391,120 @@ class Facility(AbstractBase, SequenceMixin):
             self.code = self.generate_next_code_sequence()
         super(Facility, self).save(*args, **kwargs)
 
+    @property
+    def is_approved(self):
+        approvals = FacilityApproval.objects.filter(facility=self).count()
+        if approvals:
+            return True
+        else:
+            False
+
     def __unicode__(self):
         return self.name
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'
+
+
+class FacilityOperationState(AbstractBase):
+    """
+    logs chages to the operation_status of a facility.
+    """
+    operation_status = models.ForeignKey(
+        FacilityStatus,
+        help_text="Indicates whether the facility"
+        "has been approved to operate, is operating, is temporarily"
+        "non-operational, or is closed down")
+    facility = models.ForeignKey(
+        Facility, related_name='facility_operation_states')
+    reason = models.TextField(
+        null=True, blank=True,
+        help_text='Additional information for the transition')
+
+    def validate_transition(self):
+        current_state = str(self.facility.operation_status.name).upper()
+        next_state = str(self.operation_status.name).upper()
+        if can_transition(current_state, next_state):
+            self.facility.operation_status = self.operation_status
+            self.facility.save()
+        else:
+            error = "Transition from {} to {} is not allowed".format(
+                current_state, next_state)
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_transition()
+
+
+class FacilityUpgrade(AbstractBase):
+    """
+    Logs the upgrades and the downgrades of a facility.
+    """
+    facility = models.ForeignKey(Facility, related_name='facility_upgrades')
+    facility_type = models.ForeignKey(FacilityType)
+    reason = models.TextField()
+
+    def fbo_facility_upgrade_check(self, current_level, next_level, error):
+        if can_upgrade_or_downgrade_in_fbo(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def moh_facility_upgrade_check(self, current_level, next_level, error):
+        if can_upgrade_or_downgrade_in_moh(current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def private_facility_upgrade_check(
+            self, current_level, next_level, error):
+        if can_upgrade_or_downgrade_in_private_sector(
+                current_level, next_level):
+                self.facility.facility_type = self.facility_type
+                self.facility.save()
+        else:
+            raise ValidationError(error)
+
+    def validate_upgrade(self):
+        facility_owner_type = self.facility.owner.owner_type.name
+        current_level = str(self.facility.facility_type.name).upper()
+        next_level = str(self.facility_type.name).upper()
+        error = "Upgrade/Download from {} to {} is not allowed".format(
+            current_level, next_level)
+        if facility_owner_type == 'MOH':
+            self.moh_facility_upgrade_check(
+                current_level, next_level, error)
+
+        elif facility_owner_type == 'FBO':
+            self.fbo_facility_upgrade_check(
+                current_level, next_level, error)
+
+        elif facility_owner_type == 'PRIVATE':
+            self.private_facility_upgrade_check(
+                current_level, next_level, error)
+
+        else:
+            error = "Unknowm owner type {}".format(facility_owner_type)
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_upgrade()
+
+
+@reversion.register
+class FacilityApproval(AbstractBase):
+    """
+    Before a facility is visible to the public it is first approved
+    at the county level.
+    The user who approves a facility will be the same as the created_by field.
+    """
+    facility = models.ForeignKey(Facility)
+    comment = models.TextField()
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facility, self.created_by)
 
 
 @reversion.register
@@ -489,3 +609,124 @@ class FacilityUnit(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
+
+
+class ServiceCategory(AbstractBase):
+    """
+    Categorisation of health services. e.g Immunisation, Antenatal,
+    Family Planning etc.
+    """
+    name = models.CharField(
+        max_length=100,
+        help_text="What is the name of the category? ")
+    description = models.TextField(null=True, blank=True)
+    abbreviation = models.CharField(
+        max_length=50, null=True, blank=True,
+        help_text='A short form of the category e.g ANC for antenatal')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'service categories'
+
+
+class Option(AbstractBase):
+    """
+    services could either be:
+        Given in terms of KEPH levels:
+
+        Similar services are offered in the different KEPH levels:
+            For example, Environmental Health Services offered in KEPH level
+            2 are similar to those offered in KEPH level 3. If the KEPH level
+            of the facility is known, the corresponding KEPH level of the
+            service should apply. If it is not known, write the higher KEPH
+            level.
+
+        Given through a choice of service level:
+            For example, Oral Health Services are either Basic or Comprehensive
+
+        A combination of choices and KEPH levels:
+            For example, Mental Health Services are either Integrated or
+            Specialised (and the Specialised Services are split into KEPH
+            level).
+    """
+    value = models.TextField()
+    display_text = models.CharField(max_length=30)
+    is_exclusive_option = models.BooleanField(default=True)
+    option_type = models.CharField(max_length=12, choices=(
+        ('BOOLEAN', 'Yes/No or True/False responses'),
+        ('INTEGER', 'Integral numbers e.g 1,2,3'),
+        ('DECIMAL', 'Decimal numbers, may have a fraction e.g 3.14'),
+        ('TEXT', 'Plain text'),
+    ))
+
+    def __unicode__(self):
+        return "{}: {}".format(self.option_type, self.display_text)
+
+
+class Service(SequenceMixin, AbstractBase):
+    """
+    A health service.
+    """
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+    abbreviation = models.CharField(
+        max_length=50, null=True, blank=True,
+        help_text='A short form for the service e.g FANC for Focused '
+        'Antenatal Care')
+    category = models.ForeignKey(
+        ServiceCategory,
+        help_text="The classification that the service lies in.")
+
+    code = SequenceField(unique=True, editable=False)
+    options = models.ManyToManyField(Option, through='ServiceOption')
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Service, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'services'
+
+
+class ServiceOption(AbstractBase):
+    """
+    One service can have multiple options to be selected
+    this is for defining the available choices for a service.
+    """
+    service = models.ForeignKey(Service)
+    option = models.ForeignKey(Option)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.service, self.option)
+
+
+class FacilityService(AbstractBase):
+    """
+    A facility can have zero or more services.
+    """
+    facility = models.ForeignKey(Facility)
+    selected_option = models.ForeignKey(ServiceOption)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facility, self.selected_option)
+
+
+class ServiceRating(AbstractBase):
+    """
+    The scale for rating the facility service.
+    """
+    facility_service = models.ForeignKey(FacilityService)
+    cleanliness = models.BooleanField(default=True)
+    attitude = models.BooleanField(default=True)
+    will_return = models.BooleanField(default=True)
+    occupation = models.CharField(max_length=100)
+    comment = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.facility_service, self.created_by)
