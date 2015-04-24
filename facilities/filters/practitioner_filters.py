@@ -16,7 +16,7 @@ class PracticeTypeFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = PracticeType
 
 
@@ -24,7 +24,7 @@ class SpecialityFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     practice_type = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Speciality
 
 
@@ -32,7 +32,7 @@ class QualificationFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = Qualification
 
 
@@ -43,7 +43,7 @@ class PractitionerFilter(CommonFieldsFilterset):
     contacts = django_filters.AllValuesFilter(lookup_type='icontains')
     ward = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Practitioner
 
 
@@ -51,7 +51,7 @@ class PractitionerQualificationFilter(CommonFieldsFilterset):
     practitioner = django_filters.AllValuesFilter(lookup_type='exact')
     qualification = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = PractitionerQualification
 
 
@@ -59,7 +59,7 @@ class PractitionerContactFilter(CommonFieldsFilterset):
     practitioner = django_filters.AllValuesFilter(lookup_type='exact')
     contact = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = PractitionerContact
 
 
@@ -67,5 +67,5 @@ class PractitionerFacilityFilter(CommonFieldsFilterset):
     practitioner = django_filters.AllValuesFilter(lookup_type='exact')
     facility = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = PractitionerFacility

@@ -4,5 +4,5 @@ from .models import MflUser
 
 
 class MFLUserFilter(django_filters.FilterSet):
-    class Meta:
+    class Meta(object):
         model = MflUser

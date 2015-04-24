@@ -17,25 +17,25 @@ from .models import (
 
 
 class ApproverSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = Approver
 
 
 class ApprovalStatusSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = ApprovalStatus
 
 
 class CommunityHealthUnitApprovalSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = CommunityHealthUnitApproval
 
 
 class CommunityHealthWorkerApprovalSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = CommunityHealthWorkerApproval
 
 
@@ -44,7 +44,7 @@ class CommunityHealthWorkerSerializer(
     health_worker_approvals = CommunityHealthWorkerApprovalSerializer(
         many=True)
 
-    class Meta:
+    class Meta(object):
         model = CommunityHealthWorker
         read_only_fields = ('health_unit_approvals',)
 
@@ -57,28 +57,28 @@ class CommunityHealthUnitSerializer(
     health_unit_workers = CommunityHealthWorkerSerializer(
         many=True)
 
-    class Meta:
+    class Meta(object):
         model = CommunityHealthUnit
         read_only_fields = ('health_unit_workers', 'health_unit_approvals', )
 
 
 class CommunityHealthWorkerContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = CommunityHealthWorkerContact
 
 
 class StatusSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = Status
 
 
 class CommunitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = Community
 
 
 class CommunityHealthUnitContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = CommunityHealthUnitContact
