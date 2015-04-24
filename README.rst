@@ -18,8 +18,8 @@ Master Facility List API
      :target: https://requires.io/github/MasterFacilityList/mfl_api/requirements/?branch=gis
      :alt: Requirements Status
 
-.. image:: https://landscape.io/github/MasterFacilityList/mfl_api/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/MasterFacilityList/mfl_api/master
+.. image:: https://landscape.io/github/MasterFacilityList/mfl_api/develop/landscape.svg?style=flat
+   :target: https://landscape.io/github/MasterFacilityList/mfl_api/develop
    :alt: Code Health
 
 
