@@ -3,16 +3,13 @@ import django_filters
 from ..models import (
     Owner,
     Facility,
-    FacilityCoordinates,
     JobTitle,
     FacilityUnit,
     FacilityStatus,
     Officer,
     RegulatingBody,
-    GeoCodeSource,
     OwnerType,
     OfficerContact,
-    GeoCodeMethod,
     FacilityContact,
     FacilityRegulationStatus,
     FacilityType,
@@ -227,34 +224,6 @@ class FacilityFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = Facility
-
-
-class GeoCodeSourceFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    abbreviation = django_filters.CharFilter(lookup_type='icontains')
-    description = django_filters.CharFilter(lookup_type='icontains')
-
-    class Meta(object):
-        model = GeoCodeSource
-
-
-class GeoCodeMethodFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    description = django_filters.CharFilter(lookup_type='icontains')
-
-    class Meta(object):
-        model = GeoCodeMethod
-
-
-class FacilityCoordinatesFilter(CommonFieldsFilterset):
-    latitude = django_filters.CharFilter(lookup_type='icontains')
-    longitude = django_filters.CharFilter(lookup_type='icontains')
-    facility = django_filters.AllValuesFilter(lookup_type='exact')
-    source = django_filters.AllValuesFilter(lookup_type='exact')
-    method = django_filters.AllValuesFilter(lookup_type='exact')
-
-    class Meta(object):
-        model = FacilityCoordinates
 
 
 class FacilityUnitFilter(CommonFieldsFilterset):

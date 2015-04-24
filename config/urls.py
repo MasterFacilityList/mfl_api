@@ -11,6 +11,7 @@ apipatterns = patterns(
     url(r'^users/', include('users.urls', namespace='users')),
     url(r'^facilities/', include('facilities.urls', namespace='facilities')),
     url(r'^chul/', include('chul.urls', namespace='chul')),
+    url(r'^mfl_gis/', include('mfl_gis.urls', namespace='mfl_gis')),
 )
 
 urlpatterns = patterns(

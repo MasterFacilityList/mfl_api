@@ -62,13 +62,15 @@ INSTALLED_APPS = (
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
 # This was forced by the need to override rest_framework templates in common
-LOCAL_APPS = (
-    'facilities',
+# It is a list because order matters
+LOCAL_APPS = [
+    'users',
     'common',
-    'data_bootstrap',
+    'facilities',
     'chul',
     'mfl_gis',
-)
+    'data_bootstrap',
+]
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (

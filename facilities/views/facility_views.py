@@ -13,9 +13,6 @@ from ..models import (
     RegulationStatus,
     Facility,
     FacilityRegulationStatus,
-    GeoCodeSource,
-    GeoCodeMethod,
-    FacilityCoordinates,
     FacilityContact,
     FacilityUnit,
     ServiceCategory,
@@ -32,15 +29,12 @@ from ..models import (
 from ..serializers import (
     OwnerSerializer,
     FacilitySerializer,
-    FacilityCoordinatesSerializer,
     FacilityContactSerializer,
     FacilityStatusSerializer,
     FacilityTypeSerializer,
     JobTitleSerializer,
     OfficerSerializer,
     RegulatingBodySerializer,
-    GeoCodeMethodSerializer,
-    GeoCodeSourceSerializer,
     OwnerTypeSerializer,
     OfficerContactSerializer,
     FacilityRegulationStatusSerializer,
@@ -57,17 +51,14 @@ from ..serializers import (
 )
 from ..filters import (
     FacilityFilter,
-    FacilityCoordinatesFilter,
     FacilityStatusFilter,
     OwnerFilter,
     JobTitleFilter,
     FacilityUnitFilter,
     OfficerFilter,
     RegulatingBodyFilter,
-    GeoCodeSourceFilter,
     OwnerTypeFilter,
     OfficerContactFilter,
-    GeoCodeMethodFilter,
     FacilityContactFilter,
     FacilityTypeFilter,
     FacilityRegulationStatusFilter,
@@ -263,19 +254,6 @@ class RegulatingBodyDetailView(
     serializer_class = RegulatingBodySerializer
 
 
-class GeoCodeSourceListView(generics.ListCreateAPIView):
-    queryset = GeoCodeSource.objects.all()
-    serializer_class = GeoCodeSourceSerializer
-    ordering_fields = ('name', 'abbreviation',)
-    filter_class = GeoCodeSourceFilter
-
-
-class GeoCodeSourceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = GeoCodeSource.objects.all()
-    serializer_class = GeoCodeSourceSerializer
-
-
 class OwnerTypeListView(generics.ListCreateAPIView):
     queryset = OwnerType.objects.all()
     serializer_class = OwnerTypeSerializer
@@ -300,19 +278,6 @@ class OfficerContactDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = OfficerContact.objects.all()
     serializer_class = OfficerContactSerializer
-
-
-class GeoCodeMethodListView(generics.ListCreateAPIView):
-    queryset = GeoCodeMethod.objects.all()
-    serializer_class = GeoCodeMethodSerializer
-    filter_class = GeoCodeMethodFilter
-    ordering_fields = ('name', )
-
-
-class GeoCodeMethodDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = GeoCodeMethod.objects.all()
-    serializer_class = GeoCodeMethodSerializer
 
 
 class OwnerListView(generics.ListCreateAPIView):
@@ -355,20 +320,6 @@ class FacilityContactDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityContact.objects.all()
     serializer_class = FacilityContactSerializer
-
-
-class FacilityCoordinatesListView(generics.ListCreateAPIView):
-    queryset = FacilityCoordinates.objects.all()
-    serializer_class = FacilityCoordinatesSerializer
-    filter_class = FacilityCoordinatesFilter
-    ordering_fields = (
-        'facility', 'latitude', 'longitude', 'source', 'method',)
-
-
-class FacilityCoordinatesDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityCoordinates.objects.all()
-    serializer_class = FacilityCoordinatesSerializer
 
 
 class FacilityRegulationStatusListView(generics.ListCreateAPIView):

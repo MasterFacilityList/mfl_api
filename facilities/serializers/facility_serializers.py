@@ -14,9 +14,6 @@ from ..models import (
     RegulationStatus,
     Facility,
     FacilityRegulationStatus,
-    GeoCodeSource,
-    GeoCodeMethod,
-    FacilityCoordinates,
     FacilityContact,
     FacilityUnit,
     ServiceCategory,
@@ -95,18 +92,6 @@ class RegulatingBodySerializer(
         model = RegulatingBody
 
 
-class GeoCodeSourceSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = GeoCodeSource
-
-
-class GeoCodeMethodSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = GeoCodeMethod
-
-
 class OwnerTypeSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = OwnerType
@@ -165,12 +150,6 @@ class FacilityContactSerializer(
 
     class Meta(object):
         model = FacilityContact
-
-
-class FacilityCoordinatesSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = FacilityCoordinates
 
 
 class FacilityUnitSerializer(
