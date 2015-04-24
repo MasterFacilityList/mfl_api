@@ -3,16 +3,13 @@ import django_filters
 from ..models import (
     Owner,
     Facility,
-    FacilityCoordinates,
     JobTitle,
     FacilityUnit,
     FacilityStatus,
     Officer,
     RegulatingBody,
-    GeoCodeSource,
     OwnerType,
     OfficerContact,
-    GeoCodeMethod,
     FacilityContact,
     FacilityRegulationStatus,
     FacilityType,
@@ -31,7 +28,7 @@ from common.filters.filter_shared import CommonFieldsFilterset
 
 
 class FacilityUpgradeFilter(CommonFieldsFilterset):
-    class Meta:
+    class Meta(object):
         model = FacilityUpgrade
 
 
@@ -40,7 +37,7 @@ class FacilityOperationStateFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
     reason = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = FacilityOperationState
 
 
@@ -48,7 +45,7 @@ class FacilityApprovalFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
     comment = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = FacilityApproval
 
 
@@ -64,7 +61,7 @@ class ServiceRatingFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(
         name='facility_service__facility', lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = ServiceRating
 
 
@@ -72,7 +69,7 @@ class ServiceCategoryFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = ServiceCategory
 
 
@@ -82,7 +79,7 @@ class OptionFilter(CommonFieldsFilterset):
     option_type = django_filters.CharFilter(lookup_type='icontains')
     is_exclusive_option = django_filters.BooleanFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Option
 
 
@@ -92,7 +89,7 @@ class ServiceFilter(CommonFieldsFilterset):
     category = django_filters.AllValuesFilter(lookup_type='exact')
     code = django_filters.CharFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Service
 
 
@@ -100,7 +97,7 @@ class FacilityServiceFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
     selected_option = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = FacilityService
 
 
@@ -108,7 +105,7 @@ class ServiceOptionFilter(CommonFieldsFilterset):
     service = django_filters.AllValuesFilter(lookup_type='exact')
     option = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = ServiceOption
 
 
@@ -116,7 +113,7 @@ class OwnerTypeFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = OwnerType
 
 
@@ -127,7 +124,7 @@ class OwnerFilter(CommonFieldsFilterset):
     code = django_filters.NumberFilter(lookup_type='exact')
     owner_type = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Owner
 
 
@@ -135,7 +132,7 @@ class JobTitleFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = JobTitle
 
 
@@ -143,7 +140,7 @@ class OfficerContactFilter(CommonFieldsFilterset):
     officer = django_filters.AllValuesFilter(lookup_type='icontains')
     contact = django_filters.AllValuesFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = OfficerContact
 
 
@@ -152,7 +149,7 @@ class OfficerFilter(CommonFieldsFilterset):
     registration_number = django_filters.CharFilter(lookup_type='icontains')
     job_title = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Officer
 
 
@@ -160,7 +157,7 @@ class FacilityStatusFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = FacilityStatus
 
 
@@ -168,7 +165,7 @@ class FacilityTypeFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     sub_division = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = FacilityType
 
 
@@ -176,7 +173,7 @@ class RegulatingBodyFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     abbreviation = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = RegulatingBody
 
 
@@ -184,7 +181,7 @@ class RegulationStatusFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = RegulationStatus
 
 
@@ -194,7 +191,7 @@ class FacilityRegulationStatusFilter(CommonFieldsFilterset):
     regulation_status = django_filters.AllValuesFilter(lookup_type='exact')
     reason = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = FacilityRegulationStatus
 
 
@@ -202,7 +199,7 @@ class FacilityContactFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
     contact = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = FacilityContact
 
 
@@ -225,36 +222,8 @@ class FacilityFilter(CommonFieldsFilterset):
     is_classified = django_filters.BooleanFilter(lookup_type='exact')
     is_published = django_filters.BooleanFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Facility
-
-
-class GeoCodeSourceFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    abbreviation = django_filters.CharFilter(lookup_type='icontains')
-    description = django_filters.CharFilter(lookup_type='icontains')
-
-    class Meta:
-        model = GeoCodeSource
-
-
-class GeoCodeMethodFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    description = django_filters.CharFilter(lookup_type='icontains')
-
-    class Meta:
-        model = GeoCodeMethod
-
-
-class FacilityCoordinatesFilter(CommonFieldsFilterset):
-    latitude = django_filters.CharFilter(lookup_type='icontains')
-    longitude = django_filters.CharFilter(lookup_type='icontains')
-    facility = django_filters.AllValuesFilter(lookup_type='exact')
-    source = django_filters.AllValuesFilter(lookup_type='exact')
-    method = django_filters.AllValuesFilter(lookup_type='exact')
-
-    class Meta:
-        model = FacilityCoordinates
 
 
 class FacilityUnitFilter(CommonFieldsFilterset):
@@ -262,5 +231,5 @@ class FacilityUnitFilter(CommonFieldsFilterset):
     description = django_filters.CharFilter(lookup_type='icontains')
     facility = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = FacilityUnit

@@ -34,7 +34,7 @@ class Speciality(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(object):
         unique_together = ('name', 'practice_type',)
         verbose_name_plural = 'specialities'
 
@@ -89,7 +89,7 @@ class PractitionerFacility(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(self.practitioner, self.facility)
 
-    class Meta:
+    class Meta(object):
         verbose_name_plural = 'practitioner_facilities'
 
 

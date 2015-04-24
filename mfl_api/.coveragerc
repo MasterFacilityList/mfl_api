@@ -1,6 +1,0 @@
-[run]
-source=mfl_api
-branch=True
-
-[report]
-show_missing=True

@@ -46,13 +46,12 @@ def server_deploy():
 
 def reset_migrations():
     """Development only - remove and recreate all migration"""
-    local('rm -f users/migrations/ -r')
-    local('rm -f common/migrations/ -r')
-    local('rm -f facilities/migrations/ -r')
-    manage('makemigrations users')
-    manage('makemigrations common')
-    manage('makemigrations facilities')
-    manage('makemigrations chul')
+    for app_name in base.LOCAL_APPS:
+        local('rm -f {}/migrations/ -r'.format(app_name))
+
+    for app_name in base.LOCAL_APPS:
+        manage('makemigrations {}'.format(app_name))
+
     local('git add . --all')
 
 

@@ -1,6 +1,6 @@
 [
     {
-        "model": "facilities.GeoCodeMethod",
+        "model": "mfl_gis.GeoCodeMethod",
         "unique_fields": ["name"],
       
         "records": [  

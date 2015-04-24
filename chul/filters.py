@@ -17,22 +17,22 @@ from common.filters.filter_shared import CommonFieldsFilterset
 
 
 class ApproverFilter(CommonFieldsFilterset):
-    class Meta:
+    class Meta(object):
         model = Approver
 
 
 class CommunityHealthUnitApprovalFilter(CommonFieldsFilterset):
-    class Meta:
+    class Meta(object):
         model = CommunityHealthUnitApproval
 
 
 class CommunityHealthWorkerApprovalFilter(CommonFieldsFilterset):
-    class Meta:
+    class Meta(object):
         model = CommunityHealthWorkerApproval
 
 
 class ApprovalStatusFilter(CommonFieldsFilterset):
-    class Meta:
+    class Meta(object):
         model = ApprovalStatus
 
 
@@ -40,7 +40,7 @@ class StatusFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = Status
 
 
@@ -51,7 +51,7 @@ class CommunityFilter(CommonFieldsFilterset):
     constituency = django_filters.CharFilter(name='ward__constituency')
     county = django_filters.CharFilter(name='ward__constituency__county')
 
-    class Meta:
+    class Meta(object):
         model = Community
 
 
@@ -59,7 +59,7 @@ class CommunityHealthUnitContactFilter(CommonFieldsFilterset):
     health_unit = django_filters.AllValuesFilter(lookup_type='exact')
     contact = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = CommunityHealthUnitContact
 
 
@@ -73,7 +73,7 @@ class CommunityHealthUnitFilter(CommonFieldsFilterset):
     county = django_filters.CharFilter(
         name='community__ward__constituency__county')
 
-    class Meta:
+    class Meta(object):
         model = CommunityHealthUnit
 
 
@@ -89,7 +89,7 @@ class CommunityHealthWorkerFilter(CommonFieldsFilterset):
     county = django_filters.CharFilter(
         name='health_unit__community__ward__constituency__county')
 
-    class Meta:
+    class Meta(object):
         model = CommunityHealthWorker
 
 
@@ -97,5 +97,5 @@ class CommunityHealthWorkerContactFilter(CommonFieldsFilterset):
     health_worker = django_filters.AllValuesFilter(lookup_type='icontains')
     contact = django_filters.AllValuesFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = CommunityHealthWorkerContact

@@ -12,7 +12,17 @@ env.read_env(os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
-DATABASES = {'default': env.db()}  # Env should have DATABASE_URL
+ENV_DB = env.db()
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'HOST': ENV_DB['HOST'],
+        'NAME': ENV_DB['NAME'],
+        'PASSWORD': ENV_DB['PASSWORD'],
+        'PORT': ENV_DB['PORT'],
+        'USER': ENV_DB['USER'],
+    }
+}  # Env should have DATABASE_URL
 
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
@@ -48,16 +58,20 @@ INSTALLED_APPS = (
     'data_bootstrap',
     'chul',
     'data',
+    'mfl_gis',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
 # This was forced by the need to override rest_framework templates in common
-LOCAL_APPS = (
-    'facilities',
+# It is a list because order matters
+LOCAL_APPS = [
+    'users',
     'common',
-    'data_bootstrap',
+    'facilities',
     'chul',
-)
+    'mfl_gis',
+    'data_bootstrap',
+]
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
