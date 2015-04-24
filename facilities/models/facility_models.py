@@ -66,7 +66,7 @@ class Owner(AbstractBase, SequenceMixin):
         help_text="A unique number to identify the owner."
         "Could be up to 7 characteres long.", editable=False)
     abbreviation = models.CharField(
-        max_length=10, null=True, blank=True,
+        max_length=30, null=True, blank=True,
         help_text="Short form of the name of the owner e.g Ministry of health"
         " could be shortened as MOH")
     owner_type = models.ForeignKey(
