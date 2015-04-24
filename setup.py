@@ -104,6 +104,6 @@ setup(
         "apache-libcloud>=0.17.0",
         "django-environ>=0.3.0",
         "python-coveralls>=2.5.0",
-        "djangorestframework-gis",
+        "djangorestframework-gis>=0.8.1",
     ],
 )
