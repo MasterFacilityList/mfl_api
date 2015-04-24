@@ -30,7 +30,7 @@ class Command(BaseCommand):
             settings.BASE_DIR, 'data/data/facility_status.json')
         args = [
             counties, constituencies, owners, job_titles, geo_code_methods,
-            facility_status, services, service_categories
+            facility_status, service_categories, services, 
         ]
 
         for suggestion in args:
