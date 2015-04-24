@@ -76,6 +76,11 @@ def psql(query, no_sudo=False, is_file=False):
         local('{} psql -c "{}"'.format(sudo, query))
 
 
+def load_demo_data(*args, **kwargs):
+    data_files = join(BASE_DIR, 'data/data/*')
+    manage('bootstrap', data_files)
+
+
 def setup(*args, **kwargs):
     """Dev only - clear and recreate the entire database"""
     no_sudo = True if 'no-sudo' in args else False
@@ -93,10 +98,5 @@ def setup(*args, **kwargs):
     manage('migrate users')
     manage('migrate')
 
-
-def load_initial_data(*args, **kwargs):
-    pass
-
-
-def load_demo_data(*args, **kwargs):
-    pass
+    if base.DEBUG:
+        load_demo_data()

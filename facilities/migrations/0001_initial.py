@@ -291,7 +291,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text=b'The name of owner e.g Ministry of Health.', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A brief summary of the owner.', null=True, blank=True)),
                 ('code', common.fields.SequenceField(help_text=b'A unique number to identify the owner.Could be up to 7 characteres long.', unique=True, editable=False, blank=True)),
-                ('abbreviation', models.CharField(help_text=b'Short form of the name of the owner e.g Ministry of health could be shortened as MOH', max_length=10, null=True, blank=True)),
+                ('abbreviation', models.CharField(help_text=b'Short form of the name of the owner e.g Ministry of health could be shortened as MOH', max_length=30, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
