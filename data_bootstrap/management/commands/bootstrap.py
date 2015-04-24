@@ -18,8 +18,10 @@ class Command(BaseCommand):
         owners = os.path.join(
             settings.BASE_DIR, 'data/data/facility_owners.json')
 
-        owners = os.path.join(
+        service_categories = os.path.join(
             settings.BASE_DIR, 'data/data/service_categories.json')
+        services = os.path.join(
+            settings.BASE_DIR, 'data/data/services.json')
         job_titles = os.path.join(
             settings.BASE_DIR, 'data/data/job_titles.json')
         geo_code_methods = os.path.join(
@@ -28,7 +30,7 @@ class Command(BaseCommand):
             settings.BASE_DIR, 'data/data/facility_status.json')
         args = [
             counties, constituencies, owners, job_titles, geo_code_methods,
-            facility_status
+            facility_status, services, service_categories
         ]
 
         for suggestion in args:

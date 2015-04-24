@@ -1,339 +1,426 @@
-
-{
-    "name": "HIV Prevention Services",
-    "abbreviation":  "HIVPS",
-    "description": "HIV Prevention Services
-},
-{
-
-    "name": "Condom Promotion and Distribution",
-    "abbreviation": "CONDOM",
-    "description": "Condom Promotion and Distribution"
-},
-{
-
-    "name": "Management of STIs",
-    "abbreviation": "STI",
-    "description": "Management of STIs"
-},
-{
-    "name": "Voluntary Counselling and Testing",
-    "abbreviation": "VCT",
-    "description": "Voluntary Counselling and Testing"
-},
-{
-    "name": "Early Infant Diagnosis",
-    "abbreviation": "EID",
-    "description": "Early Infant Diagnosis"
-{
-    "name": "PMTCT - ANC",
-    "abbreviation": "ANC PMTCT",
-    "description": "PMTCT - ANC",
-},
-{
-    "name": "PMTCT - Maternity",
-    "abbreviation": "MAT PMTCT",
-    "description": "PMTCT - Maternity"
-},
-{
-    "name": "Post Exposure Prophylaxis",
-    "abbreviation": "PEP",
-    "description": "Post Exposure Prophylaxis"
-},
-{
-    "name": "Diagnostic Counselling and Testing",
-    "abbreviation": "DCT",
-    "description": "Diagnostic Counselling and Testing"
-},
-{
-    "name": "HIV/AIDS Services - Treatment and Care",
-    "abbreviation": "HIVTC",
-    "description": "HIV/AIDS Services - Treatment and Care"
-},
-{
-    "name": "Paediatric Antiretroviral Therapy",
-    "abbreviation": "Paed ART",
-    "description": "Paediatric Antiretroviral Therapy"
-},
-{
-    "name": "Adult Antiretroviral Therapy",
-    "abbreviation": "Adult ART",
-    "description": "Adult Antiretroviral Therapy"
-},
-{
-    "name": "Home Based Care",
-    "abbreviation": "HBC",
-    "description": "Home Based Care"
-},
-{
-    "name": "Family Planning",
-    "abbreviation": "FP",
-    "description": "Family Planning"
-},
-{
-    "name": "Short Term FP",
-    "abbreviation": "STFP",
-    "description": "Short Term FP"
-
-},
-{
-    "name": "Long Term FP",
-    "abbreviation": "LTFP",
-    "description": "Long Term FP (LTFP)"
-},
-{
-    "name": "Comprehensive Youth Friendly Services",
-    "abbreviation": "CYFS",
-    "description": "Comprehensive Youth Friendly Services"
-},
-{
-    "name": "Integrated Services",
-    "abbreviation": "YOUTH-Int",
-    "description": "Integrated Services"
-},
-{
-    "name": "Stand Alone Services",
-    "abbreviation": "YOUTH-StandAlone",
-    "description": "Stand Alone services"
-},
-{
-    "name": "Antenatal",
-    "abbreviation": "ANC",
-    "description": "Antenatal"
-},
-{
-    "name": "Focused Antenatal Care",
-    "abbreviation": "FANC",
-    "description": "Focused Antenatal Care"
-},
-{
-    "name": "Specialized ANC",
-    "abbreviation": "SP-ANC",
-    "description": "Specialized ANC"
-},
-{
-    "name": "Immunization",
-    "abbreviation": "IMM",
-    "description": "Immunization"
-},
-{
-    "name": "Basic Immunization",
-    "abbreviation": "IMM-BASIC",
-    "description": "Basic Immunization"
-
-},
-{
-    "name": "Immunization with additional vaccines",
-    "abbreviation": "IMM-ADD",
-    "description": "Immunization with additional vaccines"
-},
-{
-    "name": "Port Immunization Services",
-    "abbreviation": "IMM-PORT",
-    "description": "Port Immunization Services"
-},
-{
-    "name": "Tuberculosis Diagnosis and Treatments",
-    "abbreviation": "TB",
-    "description": "Tuberculosis Diagnosis and Treatments"
-
-},
-{
-    "name": "Smear Microscopy",
-    "abbreviation": "TB-SMEAR",
-    "description": "Smear Microscopy"
-
-},
-{
-    "name": "Tuberculosis Culture",
-    "abbreviation": "TB_CULTURE",
-    "description": "Tuberculosis Culture
-
-},
-{
-    "name": "First Line Treatment",
-    "abbreviation": "TB-1st Line",
-    "description": "First Line Treatment"
-
-},
-{
-    "name": "MDRTB Treatment",
-    "abbreviation": "TB-MDRTB",
-    "description": "MDRTB Treatment"
-
-},
-{
-    "name": "Rehabilitative Health Services - Occupational Health",
-    "abbreviation": "RHSOH",
-    "description": "Rehabilitative Health Services - Occupational Health"
-},
-{
-    "name": "Rehabilitative Health Services - Occupational Health",
-    "abbreviation": "RHS-OCC",
-    "description": "Rehabilitative Health Services - Occupational Health"
-
-
-},
-{
-    "name": "Blood Transfusion",
-    "abbreviation": "BT",
-    "description": "Blood Transfusion"
-
-},
-{
-    "name": "Facility Based Blood Collection Service",
-    "abbreviation": "FBBCS",
-    "description": "Facility Based Blood Collection Service"
-
-},
-{
-    "name": "Facility Based Blood Transfusion Service",
-    "abbreviation": "FBBTS",
-    "description": "Facility Based Blood Transfusion Service"
-
-},
-{
-    "name": "Services for Gender Based Violence Survivors",
-    "abbreviation": "SGBVS",
-    "description": "Services for Gender Based Violence Survivors"
-},
-
-{
-    "name": "Services for Female Genital Mutilation (FGM) Survivors",
-    "abbreviation": "FGM,
-    "description": "Services for Female Genital Mutilation (FGM) Survivors"
-},
-{
-    "name": "ther Services",
-    "abbreviation": "OS",
-    "description": "Other Services"
-},
-{
-    "name": "Port Health Services",
-    "abbreviation": "PORT",
-    "description": "Port Health Services"
-},
-{
-   "name": "Mortuary Services",
-    "abbreviation": "MS",
-    "description": "Mortuary Services"
-},
-
-{
-    "name": "Services for Sexual Violence Survivors",
-    "abbreviation": "SSVS",
-    "description": "Services for Sexual Violence Survivors"
-
-},
-{
-    "name": "Maternity Services",
-    "abbreviation": "MS2",
-    "description": "Maternity Services"
-},
-{
-    "name": "Integrated Management of Childhood Illnesses",
-    "abbreviation": "IMCI",
-    "description": "Integrated Management of Childhood Illnesses"
-},
-{
-    "name": "Nutrition Services",
-    "abbreviation": "NS",
-    "description": "Nutrition Services"
-
-},
-{
-    "name": "Radiology Services",
-    "abbreviation": "RS",
-    "description": "Radiology Services"
-
-},
-
-{
-    "name": "Surgical Services",
-    "abbreviation": "SS",
-    "description": "Surgical Services"
-
-},
-
-{
-    "name": "Ambulance Sevices",
-    "abbreviation": "AS",
-    "description": "Ambulance Sevices"
-},
-
-{   
-    "name": "Opthalmic Services",
-    "abbreviation": "OS",
-    "description": "Opthalmic Services"
-},
-{
-    "name": "Mental Health Services",
-    "abbreviation": "MHS",
-    "description": "Mental Health Services"
-},
-{   
-    "name": "Laboratory Services,
-    "abbreviation": "LS,
-    "description": "Laboratory Services"
-},
-{
-
-    "name": "Rehabilitative Health Services - Physiotherapy",
-    "abbreviation": "RHSP",
-    "description": "Rehabilitative Health Services - Physiotherapy"
-},
-{
-    "name": "Environmental Health Services"
-    "abbreviation": "EHS",
-    "description": "Environmental Health Services"
-},
-{
-    "name": "Emergency Obstetric Care",
-    "abbreviation": "BOC",
-    "description": "Emergency Obstetric Care"
-},
-{
-    "name": "Oral Health Services (Dental Services)",
-    "abbreviation": "OHS",
-    "description": "Oral Health Services (Dental Services)"
-
-},
-{   
-    "name": "Dental Laboratory Services",
-    "abbreviation": "DLS",
-    Dental Laboratory Services"
-},
-{
-    "name": "ENT Services",
-    "abbreviation": "ENT",
-    "description": "ENT Services"
-
-},
-{
-    "name": "Emergency Preparedness",
-    "abbreviation": "EP",
-    "description": "Emergency Preparedness"
-
-},
-{
-    "name": "Provider Initiated Counselling and Testing",
-    "abbreviation": "PICT",
-    "description": "Provider Initiated Counselling and Testing"
-},
-{
-    "name": "Voluntary Male Circumcision",
-    "abbreviation": "VMC",
-    "description": "Voluntary Male Circumcision"
-},
-
-{
-    "name": "Rehabilitative Health Services - Orthopaedic Technology",
-    "abbreviation": "RHS-ORTH",
-    "description": "Rehabilitative Health Services - Orthopaedic Technology"
-},
-{
-    "name": "Permanent FP",
-    "abbreviation": "PERM-FP",
-    "description": "Permanent FP"
-}
-
+[
+   {
+      "model":"facilities.Service",
+      "unique_fields":[
+         "name"
+      ],
+      "records":[
+         {
+            "name":"HIV Prevention Services",
+            "abbreviation":"HIVPS",
+            "description":"HIV Prevention Services",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Condom Promotion and Distribution",
+            "abbreviation":"CONDOM",
+            "description":"Condom Promotion and Distribution",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Management of STIs",
+            "abbreviation":"STI",
+            "description":"Management of STIs",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Voluntary Counselling and Testing",
+            "abbreviation":"VCT",
+            "description":"Voluntary Counselling and Testing",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Early Infant Diagnosis",
+            "abbreviation":"EID",
+            "description":"Early Infant Diagnosis",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"PMTCT - ANC",
+            "abbreviation":"ANC PMTCT",
+            "description":"PMTCT - ANC",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"PMTCT - Maternity",
+            "abbreviation":"MAT PMTCT",
+            "description":"PMTCT - Maternity",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Post Exposure Prophylaxis",
+            "abbreviation":"PEP",
+            "description":"Post Exposure Prophylaxis",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Diagnostic Counselling and Testing",
+            "abbreviation":"DCT",
+            "description":"Diagnostic Counselling and Testing",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Paediatric Antiretroviral Therapy",
+            "abbreviation":"Paed ART",
+            "description":"Paediatric Antiretroviral Therapy",
+            "category":{
+               "name":"HIV/AIDS Services - Treatment and Care"
+            }
+         },
+         {
+            "name":"Adult Antiretroviral Therapy",
+            "abbreviation":"Adult ART",
+            "description":"Adult Antiretroviral Therapy",
+            "category":{
+               "name":"HIV/AIDS Services - Treatment and Care"
+            }
+         },
+         {
+            "name":"Home Based Care",
+            "abbreviation":"HBC",
+            "description":"Home Based Care",
+            "category":{
+               "name":"HIV/AIDS Services - Treatment and Care"
+            }
+         },
+         {
+            "name":"Short Term FP",
+            "abbreviation":"STFP",
+            "description":"Short Term FP",
+            "category":{
+               "name":"Family Planning"
+            }
+         },
+         {
+            "name":"Long Term FP",
+            "abbreviation":"LTFP",
+            "description":"Long Term FP (LTFP)",
+            "category":{
+               "name":"Family Planning"
+            }
+         },
+         {
+            "name":"Integrated Services",
+            "abbreviation":"YOUTH-Int",
+            "description":"Integrated Services",
+            "category":{
+               "name":"Comprehensive Youth Friendly Services"
+            }
+         },
+         {
+            "name":"Stand Alone Services",
+            "abbreviation":"YOUTH-StandAlone",
+            "description":"Stand Alone services",
+            "category":{
+               "name":"Comprehensive Youth Friendly Services"
+            }
+         },
+         {
+            "name":"Focused Antenatal Care",
+            "abbreviation":"FANC",
+            "description":"Focused Antenatal Care",
+            "category":{
+               "name":"Antenatal"
+            }
+         },
+         {
+            "name":"Specialized ANC",
+            "abbreviation":"SP-ANC",
+            "description":"Specialized ANC",
+            "category":{
+               "name":"Antenatal"
+            }
+         },
+         {
+            "name":"Basic Immunization",
+            "abbreviation":"IMM-BASIC",
+            "description":"Basic Immunization",
+            "category":{
+               "name":"Immunization"
+            }
+         },
+         {
+            "name":"Immunization with additional vaccines",
+            "abbreviation":"IMM-ADD",
+            "description":"Immunization with additional vaccines",
+            "category":{
+               "name":"Immunization"
+            }
+         },
+         {
+            "name":"Port Immunization Services",
+            "abbreviation":"IMM-PORT",
+            "description":"Port Immunization Services",
+            "category":{
+               "name":"Immunization"
+            }
+         },
+         {
+            "name":"Smear Microscopy",
+            "abbreviation":"TB-SMEAR",
+            "description":"Smear Microscopy",
+            "category":{
+               "name":"Tuberculosis Diagnosis and Treatments"
+            }
+         },
+         {
+            "name":"Tuberculosis Culture",
+            "abbreviation":"TB_CULTURE",
+            "description":"Tuberculosis Culture",
+            "category":{
+               "name":"Tuberculosis Diagnosis and Treatments"
+            }
+         },
+         {
+            "name":"First Line Treatment",
+            "abbreviation":"TB-1st Line",
+            "description":"First Line Treatment",
+            "category":{
+               "name":"Tuberculosis Diagnosis and Treatments"
+            }
+         },
+         {
+            "name":"MDRTB Treatment",
+            "abbreviation":"TB-MDRTB",
+            "description":"MDRTB Treatment",
+            "category":{
+               "name":"Tuberculosis Diagnosis and Treatments"
+            }
+         },
+         {
+            "name":"Rehabilitative Health Services - Occupational Health",
+            "abbreviation":"RHS-OCC",
+            "description":"Rehabilitative Health Services - Occupational Health",
+            "category":{
+               "name":"Rehabilitative Health Services - Occupational Health"
+            }
+         },
+         {
+            "name":"Facility Based Blood Collection Service",
+            "abbreviation":"FBBCS",
+            "description":"Facility Based Blood Collection Service",
+            "category":{
+               "name":"Blood Transfusion"
+            }
+         },
+         {
+            "name":"Facility Based Blood Transfusion Service",
+            "abbreviation":"FBBTS",
+            "description":"Facility Based Blood Transfusion Service",
+            "category":{
+               "name":"Blood Transfusion"
+            }
+         },
+         {
+            "name":"Services for Female Genital Mutilation (FGM) Survivors",
+            "abbreviation":"FGM",
+            "description":"Services for Female Genital Mutilation (FGM) Survivors",
+            "category":{
+               "name":"Services for Gender Based Violence Survivors"
+            }
+         },
+         {
+            "name":"Port Health Services",
+            "abbreviation":"PORT",
+            "description":"Port Health Services",
+            "category":{
+               "name":"Other Services"
+            }
+         },
+         {
+            "name":"Mortuary Services",
+            "abbreviation":"MS",
+            "description":"Mortuary Services",
+            "category":{
+               "name":"Other Services"
+            }
+         },
+         {
+            "name":"Services for Sexual Violence Survivors",
+            "abbreviation":"SSVS",
+            "description":"Services for Sexual Violence Survivors",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Maternity Services",
+            "abbreviation":"MS2",
+            "description":"Maternity Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Integrated Management of Childhood Illnesses",
+            "abbreviation":"IMCI",
+            "description":"Integrated Management of Childhood Illnesses",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Nutrition Services",
+            "abbreviation":"NS",
+            "description":"Nutrition Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Radiology Services",
+            "abbreviation":"RS",
+            "description":"Radiology Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Surgical Services",
+            "abbreviation":"SS",
+            "description":"Surgical Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Ambulance Sevices",
+            "abbreviation":"AS",
+            "description":"Ambulance Sevices",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Opthalmic Services",
+            "abbreviation":"OS",
+            "description":"Opthalmic Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Mental Health Services",
+            "abbreviation":"MHS",
+            "description":"Mental Health Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Laboratory Services",
+            "abbreviation":"LS",
+            "description":"Laboratory Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Rehabilitative Health Services - Physiotherapy",
+            "abbreviation":"RHSP",
+            "description":"Rehabilitative Health Services - Physiotherapy",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Environmental Health Services",
+            "abbreviation":"EHS",
+            "description":"Environmental Health Services",
+            "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+         },
+         {
+            "name":"Emergency Obstetric Care",
+            "abbreviation":"BOC",
+            "description":"Emergency Obstetric Care",
+            "category":{
+               "name":"Services - Choose Basic or Comprehensive"
+            }
+         },
+         {
+            "name":"Oral Health Services (Dental Services)",
+            "abbreviation":"OHS",
+            "description":"Oral Health Services (Dental Services)",
+            "category":{
+               "name":"Services - Choose Basic or Comprehensive"
+            }
+         },
+         {
+            "name":"Dental Laboratory Services",
+            "abbreviation":"DLS",
+            "description":"Dental Laboratory Services",
+            "category":{
+               "name":"Services - Choose Basic or Comprehensive"
+            }
+         },
+         {
+            "name":"ENT Services",
+            "abbreviation":"ENT",
+            "description":"ENT Services",
+            "category":{
+               "name":"Services - Choose Basic or Comprehensive"
+            }
+         },
+         {
+            "name":"Emergency Preparedness",
+            "abbreviation":"EP",
+            "description":"Emergency Preparedness",
+            "category":{
+               "name":"Services - Choose Basic or Comprehensive"
+            }
+         },
+         {
+            "name":"Provider Initiated Counselling and Testing",
+            "abbreviation":"PICT",
+            "description":"Provider Initiated Counselling and Testing",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Voluntary Male Circumcision",
+            "abbreviation":"VMC",
+            "description":"Voluntary Male Circumcision",
+            "category":{
+               "name":"HIV/AIDS Prevention Services"
+            }
+         },
+         {
+            "name":"Rehabilitative Health Services - Orthopaedic Technology",
+            "abbreviation":"RHS-ORTH",
+            "description":"Rehabilitative Health Services - Orthopaedic Technology",
+            "category":{
+               "name":"Rehabilitative Health Services - Occupational Health"
+            }
+         },
+         {
+            "name":"Permanent FP",
+            "abbreviation":"PERM-FP",
+            "description":"Permanent FP",
+            "category":{
+               "name":"Family Planning"
+            }
+         }
+      ]
+   }
+]

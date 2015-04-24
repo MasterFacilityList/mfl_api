@@ -9,8 +9,38 @@
      
             },
             {
+                "name": "HIV/AIDS Services - Treatment and Care"
+            },
+            {
+                "name": "Family Planning"
+            },
+            {
+                "name": "Comprehensive Youth Friendly Services"
+            },
+            {
                 "name": "Antenatal"
      
+            },
+            {
+                "name": "Tuberculosis Diagnosis and Treatments"
+            },
+            {
+                "name": "Rehabilitative Health Services - Occupational Health"
+            },
+            {
+                "name": "Blood Transfusion"
+            },
+            {
+                "name": "Services for Gender Based Violence Survivors"
+            },
+            {
+                "name": "Services - Maximum Level of Service 1 - 6"
+            },
+            {
+                "name": "Services - Choose Basic or Comprehensive"
+            },
+            {
+                "name": "Other Services"
             },
             {
                 "name": "Emergency Obstetric Care (EOC)"
@@ -27,7 +57,7 @@
                 "name": "Nutrition Services"
             },
             {
-                "name": "Immunisation"
+                "name": "Immunization"
             },
             {
                 "name": "Tuberculosis Diagnosis"
