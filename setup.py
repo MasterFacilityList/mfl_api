@@ -103,5 +103,6 @@ setup(
         "ansible>=1.9.0",
         "apache-libcloud>=0.17.0",
         "django-environ>=0.3.0",
+        "python-coveralls>=2.5.0"
     ],
 )
