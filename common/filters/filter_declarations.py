@@ -17,7 +17,7 @@ from .filter_shared import CommonFieldsFilterset
 class ContactTypeFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = ContactType
 
 
@@ -25,7 +25,7 @@ class ContactFilter(CommonFieldsFilterset):
     contact = django_filters.CharFilter(lookup_type='icontains')
     contact_type = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Contact
 
 
@@ -36,7 +36,7 @@ class PhysicalAddressFilter(CommonFieldsFilterset):
     nearest_landmark = django_filters.CharFilter(lookup_type='icontains')
     plot_number = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = PhysicalAddress
 
 
@@ -44,7 +44,7 @@ class CountyFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     code = django_filters.NumberFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = County
 
 
@@ -52,7 +52,7 @@ class ConstituencyFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     code = django_filters.NumberFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Constituency
 
 
@@ -60,7 +60,7 @@ class WardFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     code = django_filters.NumberFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = Ward
 
 
@@ -68,7 +68,7 @@ class UserCountyFilter(CommonFieldsFilterset):
     user = django_filters.AllValuesFilter(lookup_type='exact')
     county = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = UserCounty
 
 
@@ -76,12 +76,12 @@ class UserContactFilter(CommonFieldsFilterset):
     user = django_filters.AllValuesFilter(lookup_type='exact')
     contact = django_filters.AllValuesFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = UserContact
 
 
 class TownFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
 
-    class Meta:
+    class Meta(object):
         model = Town

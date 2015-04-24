@@ -17,7 +17,7 @@ class Status(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(object):
         verbose_name_plural = 'statuses'
 
 
@@ -46,7 +46,7 @@ class ApprovalStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(object):
         verbose_name_plural = 'approval_statuses'
 
 
@@ -63,7 +63,7 @@ class Community(SequenceMixin, AbstractBase):
             self.code = self.generate_next_code_sequence()
         super(Community, self).save(*args, **kwargs)
 
-    class Meta:
+    class Meta(object):
         verbose_name_plural = 'communities'
 
 
@@ -119,7 +119,7 @@ class EntityApprovalAbstractBase(AbstractBase):
     comment = models.TextField()
     approval_date = models.DateField(default=timezone.now)
 
-    class Meta:
+    class Meta(object):
         abstract = True
 
 
@@ -170,7 +170,7 @@ class CommunityHealthWorker(AbstractBase):
     def __unicode__(self):
         return str(self.id_number)
 
-    class Meta:
+    class Meta(object):
         unique_together = ('id_number', 'health_unit')
 
 

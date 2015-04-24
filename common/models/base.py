@@ -117,7 +117,7 @@ class AbstractBase(models.Model):
         """Default if child models do not define their string representation"""
         return '{} {}'.format(self._meta.verbose_name, self.pk)
 
-    class Meta:
+    class Meta(object):
         ordering = ('-updated', '-created',)
         abstract = True
 
