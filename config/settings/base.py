@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'facilities',
     'data_bootstrap',
     'chul',
+    'data',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )

@@ -1,6 +1,6 @@
 [run]
 branch=True
-source=common,users,facilities,chul
+source=common,users,facilities,chul,data
 omit=
     *migrations*
 
