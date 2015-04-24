@@ -1,0 +1,33 @@
+[
+    {
+        "model": "facilities.GeoCodeMethod",
+        "unique_fields": ["name"],
+      
+        "records": [  
+            {
+                "name": "GPS",
+                "description": "Taken with GPS Device"
+            },
+            {
+                "name": "Calc",
+                "description": "Calc from proximity to school, village,markets"
+            },
+            {
+                "name": "Calc from 1:50000 scale map",
+                "description": "Calc from 1:50,000 scale topographic maps"
+            },
+            {
+                "name": "Scanned from hand drawn maps",
+                "description": "Scanned from hand drawn maps"
+            },
+            {
+                "name": "Other",
+                "description": "Other"
+            },
+            {
+                "name": "Sublocation",
+                "description": "Sublocation Centroid Exercise of MOH/ICF Macro"
+            }
+        ]
+    }
+]
