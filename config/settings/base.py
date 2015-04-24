@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'facilities',
     'data_bootstrap',
     'chul',
+    'mfl_gis',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
@@ -56,6 +57,7 @@ LOCAL_APPS = (
     'common',
     'data_bootstrap',
     'chul',
+    'mfl_gis',
 )
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
