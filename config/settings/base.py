@@ -12,7 +12,17 @@ env.read_env(os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
-DATABASES = {'default': env.db()}  # Env should have DATABASE_URL
+ENV_DB = env.db()
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'HOST': ENV_DB['HOST'],
+        'NAME': ENV_DB['NAME'],
+        'PASSWORD': ENV_DB['PASSWORD'],
+        'PORT': ENV_DB['PORT'],
+        'USER': ENV_DB['USER'],
+    }
+}  # Env should have DATABASE_URL
 
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')

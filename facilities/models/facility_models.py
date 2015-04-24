@@ -583,6 +583,25 @@ class FacilityCoordinates(AbstractBase):
         " taken with GPS device")
     collection_date = models.DateTimeField()
 
+    def validate_longitude_and_latitude_within_kenya(self):
+        pass
+
+    def validate_longitude_and_latitude_within_constituency(self):
+        pass
+
+    def validate_longitude_and_latitude_within_county(self):
+        pass
+
+    def validate_longitude_and_latitude_within_ward(self):
+        pass
+
+    def clean(self):
+        self.validate_longitude_and_latitude_within_kenya()
+        self.validate_longitude_and_latitude_within_constituency()
+        self.validate_longitude_and_latitude_within_county()
+        self.validate_longitude_and_latitude_within_ward()
+        super(FacilityCoordinates, self).clean()
+
     def __unicode__(self):
         return self.facility.name
 
