@@ -137,13 +137,33 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     All common operations and fields are here
     """
     name = gis_models.CharField(max_length=100)
-    polygons = gis_models.MultiPolygonField()
+    area = gis_models.IntegerField()
+    pop2005 = gis_models.IntegerField('Population 2005')
+    fips = gis_models.CharField('FIPS Code', max_length=2)
+    iso2 = gis_models.CharField('2 Digit ISO', max_length=2)
+    iso3 = gis_models.CharField('3 Digit ISO', max_length=3)
+    un = gis_models.IntegerField('United Nations Code')
+    region = gis_models.IntegerField('Region Code')
+    subregion = gis_models.IntegerField('Sub-Region Code')
+    lon = gis_models.FloatField()
+    lat = gis_models.FloatField()
+
+    mpoly = gis_models.MultiPolygonField()
 
     def __unicode__(self):
         return self.name
 
     class Meta(GISAbstractBase.Meta):
         abstract = True
+
+
+@reversion.register
+class WorldBorder(AdministrativeUnitBoundary):
+    """World boundaries
+
+    Source: http://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
+    """
+    pass
 
 
 @reversion.register
