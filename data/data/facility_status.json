@@ -6,19 +6,15 @@
         "records": [
             {
                 "name": "OPERATIONAL",
-                "description": ""
-            }
+                "description": "The facility is operating normally"
+            },
             {
                 "name": "Not-Operational",
-                "description": ""
-            }
+                "description": "The facility is not operating at all"
+            },
             {
                 "name": "PENDING",
-                "description": ""
-            }
-            {
-                "name": "UNKNOWN",
-                "description": ""
+                "description": "The facility is waiting to be permitted to operate."
             }
         ]   
     }

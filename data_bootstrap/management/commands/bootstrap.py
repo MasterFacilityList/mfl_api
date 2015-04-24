@@ -24,8 +24,11 @@ class Command(BaseCommand):
             settings.BASE_DIR, 'data/data/job_titles.json')
         geo_code_methods = os.path.join(
             settings.BASE_DIR, 'data/data/geo_code_methods.json')
+        facility_status = os.path.join(
+            settings.BASE_DIR, 'data/data/facility_status.json')
         args = [
-            counties, constituencies, owners, job_titles, geo_code_methods
+            counties, constituencies, owners, job_titles, geo_code_methods,
+            facility_status
         ]
 
         for suggestion in args:
