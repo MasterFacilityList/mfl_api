@@ -22,7 +22,7 @@ class TestDataLoading(TestCase):
         service_cat_files = os.path.join(
             settings.BASE_DIR, 'data/data/0007_service_categories.json')
         services = os.path.join(
-            settings.BASE_DIR, 'data/data/0008_services.json')
+            settings.BASE_DIR, 'data/data/0008_the_services.json')
         wards_files = os.path.join(
             settings.BASE_DIR, 'data/data/0009_wards.json')
         job_titles = os.path.join(

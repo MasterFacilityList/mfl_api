@@ -71,6 +71,7 @@ LOCAL_APPS = [
     'chul',
     'mfl_gis',
     'data_bootstrap',
+    'data',
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
