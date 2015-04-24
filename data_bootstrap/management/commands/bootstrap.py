@@ -1,7 +1,6 @@
 import os
 import glob
 
-from django.conf import settings
 
 from django.core.management import BaseCommand
 
@@ -9,33 +8,15 @@ from ...bootstrap import process_json_file
 
 
 class Command(BaseCommand):
+    def add_arguments(self, parser):
+        # Positional arguments
+        parser.add_argument('data_file', nargs='+', type=str)
 
-    def handle(self, *args, **kwargs):
-        counties = os.path.join(settings.BASE_DIR, 'data/data/counties.json')
-        constituencies = os.path.join(
-            settings.BASE_DIR, 'data/data/constituencies.json')
-        #  wards = os.path.join(settings.BASE_DIR, 'data/data/wards.json')
-        owners = os.path.join(
-            settings.BASE_DIR, 'data/data/facility_owners.json')
-
-        service_categories = os.path.join(
-            settings.BASE_DIR, 'data/data/service_categories.json')
-        services = os.path.join(
-            settings.BASE_DIR, 'data/data/services.json')
-        job_titles = os.path.join(
-            settings.BASE_DIR, 'data/data/job_titles.json')
-        geo_code_methods = os.path.join(
-            settings.BASE_DIR, 'data/data/geo_code_methods.json')
-        facility_status = os.path.join(
-            settings.BASE_DIR, 'data/data/facility_status.json')
-        args = [
-            counties, constituencies, owners, job_titles, geo_code_methods,
-            facility_status, service_categories, services, 
-        ]
-
-        for suggestion in args:
+    def handle(self, *args, **options):
+        for suggestion in options['data_file']:
             # if it's just a simple json file
             if os.path.exists(suggestion) and os.path.isfile(suggestion):
+
                 process_json_file(suggestion)
             else:
                 # check if it's a glob

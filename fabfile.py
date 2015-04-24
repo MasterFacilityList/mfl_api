@@ -77,6 +77,33 @@ def psql(query, no_sudo=False, is_file=False):
         local('{} psql -c "{}"'.format(sudo, query))
 
 
+def load_demo_data(*args, **kwargs):
+    counties = join(BASE_DIR, 'data/data/counties.json')
+    constituencies = join(
+        BASE_DIR, 'data/data/constituencies.json')
+    #  wards = os.path.join(settings.BASE_DIR, 'data/data/wards.json')
+    owners = join(
+        BASE_DIR, 'data/data/facility_owners.json')
+
+    service_categories = join(
+        BASE_DIR, 'data/data/service_categories.json')
+    services = join(
+        BASE_DIR, 'data/data/services.json')
+    job_titles = join(
+        BASE_DIR, 'data/data/job_titles.json')
+    geo_code_methods = join(
+        BASE_DIR, 'data/data/geo_code_methods.json')
+    facility_status = join(
+        BASE_DIR, 'data/data/facility_status.json')
+    all_data_files = [
+        counties, constituencies, owners, job_titles, geo_code_methods,
+        facility_status, service_categories, services
+    ]
+
+    for data_file in all_data_files:
+        manage('bootstrap', data_file)
+
+
 def setup(*args, **kwargs):
     """Dev only - clear and recreate the entire database"""
     no_sudo = True if 'no-sudo' in args else False
@@ -94,10 +121,5 @@ def setup(*args, **kwargs):
     manage('migrate users')
     manage('migrate')
 
-
-def load_initial_data(*args, **kwargs):
-    pass
-
-
-def load_demo_data(*args, **kwargs):
-    pass
+    if base.DEBUG:
+        load_demo_data()
