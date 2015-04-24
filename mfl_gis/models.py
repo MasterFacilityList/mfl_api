@@ -2,7 +2,7 @@ import reversion
 import logging
 
 from django.contrib.gis.db import models as gis_models
-from common.models import AbstractBase
+from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
 
 
@@ -129,3 +129,42 @@ class FacilityCoordinates(GISAbstractBase):
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'facility coordinates'
         verbose_name = 'facility coordinates'
+
+
+class AdministrativeUnitBoundary(GISAbstractBase):
+    """Base class for the models that implement administrative boundaries
+
+    All common operations and fields are here
+    """
+    name = gis_models.CharField(max_length=100)
+    polygons = gis_models.MultiPolygonField()
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta(GISAbstractBase.Meta):
+        abstract = True
+
+
+@reversion.register
+class CountyBoundary(AdministrativeUnitBoundary):
+    county = gis_models.OneToOneField(County)
+
+    class Meta(GISAbstractBase.Meta):
+        verbose_name_plural = 'county boundaries'
+
+
+@reversion.register
+class ConstituencyBoundary(AdministrativeUnitBoundary):
+    constituency = gis_models.OneToOneField(Constituency)
+
+    class Meta(GISAbstractBase.Meta):
+        verbose_name_plural = 'constituency boundaries'
+
+
+@reversion.register
+class WardBoundary(AdministrativeUnitBoundary):
+    ward = gis_models.OneToOneField(Ward)
+
+    class Meta(GISAbstractBase.Meta):
+        verbose_name_plural = 'ward boundaries'
