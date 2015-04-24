@@ -22,6 +22,10 @@ Master Facility List API
    :target: https://landscape.io/github/MasterFacilityList/mfl_api/develop
    :alt: Code Health
 
+.. image:: https://coveralls.io/repos/savannahinformatics/mfl_api/badge.svg
+  :target: https://coveralls.io/r/savannahinformatics/mfl_api
+  :alt: Code coverage metrics from coveralls
+
 
 This is the API server for the second generation Kenyan Ministry of Health Master Facility List ( MFL ).
 
