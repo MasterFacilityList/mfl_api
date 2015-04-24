@@ -1,7 +1,7 @@
 [
     {
         "model": "common.Ward",
-        "unique_fields": ["code","name"],
+        "unique_fields": ["name"],
       
    "records": [
          {
