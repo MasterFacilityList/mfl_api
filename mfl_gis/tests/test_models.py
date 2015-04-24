@@ -4,7 +4,7 @@ from model_mommy import mommy
 from common.tests.test_models import BaseTestCase
 from facilities.models import Facility
 
-from .models import GeoCodeSource, GeoCodeMethod, FacilityCoordinates
+from ..models import GeoCodeSource, GeoCodeMethod, FacilityCoordinates
 
 
 class TestGeoCodeSourceModel(BaseTestCase):
