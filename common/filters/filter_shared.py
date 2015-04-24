@@ -1,8 +1,11 @@
 import django_filters
+from datetime import timedelta
 
 from django import forms
 from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
+from django.utils import timezone
+
 from rest_framework import ISO_8601
 
 
@@ -26,6 +29,33 @@ class IsoDateTimeField(forms.DateTimeField):
 class IsoDateTimeFilter(django_filters.DateTimeFilter):
     """ Extend ``DateTimeFilter`` to filter by ISO 8601 formated dates too"""
     field_class = IsoDateTimeField
+
+
+class TimeRangeFilter(django_filters.filters.Filter):
+
+    def __init__(self, *args, **kwargs):
+        self.alias = kwargs.get('alias')
+        self.last_one_week = True if self.alias == 'last_one_week' else False
+        self.last_one_quater = True if self.alias == 'last_one_quater' \
+            else False
+        self.last_one_month = True if self.alias == 'last_one_month' else False
+        kwargs.pop('alias')
+        super(TimeRangeFilter, self).__init__(*args, **kwargs)
+
+    def filter(self, qs, value):
+        super(TimeRangeFilter, self).filter(qs, value)
+        today = timezone.now()
+        if self.last_one_week:
+            week_start = today - timedelta(days=6)
+            return qs.filter(created__gte=week_start, created__lte=today)
+        if self.last_one_quater:
+            quater_start = today - timedelta(days=90)
+            return qs.filter(created__gte=quater_start, created__lte=today)
+
+        if self.last_one_month:
+            month_start = today - timedelta(days=30)
+            return qs.filter(created__gte=month_start, created__lte=today)
+        return qs
 
 
 class CommonFieldsFilterset(django_filters.FilterSet):
@@ -64,3 +94,7 @@ class CommonFieldsFilterset(django_filters.FilterSet):
         name='deleted', lookup_type='exact')
     is_active = django_filters.BooleanFilter(
         name='active', lookup_type='exact')
+    last_one_week = TimeRangeFilter(name='created', alias='last_one_week')
+    last_one_quater = TimeRangeFilter(name='created', alias='last_one_quater')
+    last_one_month = TimeRangeFilter(
+        name='created', alias='last_one_month')

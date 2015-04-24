@@ -114,3 +114,83 @@ class TestCommonFieldsFilterset(LogginMixin, BaseTestCase, APITestCase):
                 ]
             })
         )
+
+
+class TestTimeRangeFilter(BaseTestCase):
+    def setUp(self):
+        super(TestTimeRangeFilter, self).setUp()
+        self.url = reverse('api:common:counties_list')
+
+    def sanitize_time(self, date_obj):
+        year = date_obj.year
+        month = date_obj.month
+        day = date_obj.day
+        return "{}-{}-{}T12:22:55.988064Z".format(year, month, day)
+
+    def test_last_one_week(self):
+        three_days_ago = timezone.now() - timedelta(days=3)
+        last_month = timezone.now() - timedelta(days=34)
+        county_1 = mommy.make(County, created=three_days_ago)
+        mommy.make(County, created=last_month)
+        url = self.url + "?last_one_week={}".format(
+            self.sanitize_time(timezone.now()))
+        response = self.client.get(url)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                CountySerializer(county_1).data
+            ]
+        }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            _dict(self.client.get(response).data),
+            _dict(expected_data)
+        )
+
+    def test_last_one_quater(self):
+        seventy_days_ago = timezone.now() - timedelta(days=70)
+        last_five_months = timezone.now() - timedelta(days=150)
+        county_1 = mommy.make(County, created=seventy_days_ago)
+        mommy.make(County, created=last_five_months)
+
+        url = self.url + "?last_one_quater={}".format(
+            self.sanitize_time(timezone.now()))
+        response = self.client.get(url)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                CountySerializer(county_1).data
+            ]
+        }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            _dict(self.client.get(response).data),
+            _dict(expected_data)
+        )
+
+    def test_one_month(self):
+        two_weeks_ago = timezone.now() - timedelta(days=14)
+        last_two_months = timezone.now() - timedelta(days=40)
+        county_1 = mommy.make(County, created=two_weeks_ago)
+        mommy.make(County, created=last_two_months)
+
+        url = self.url + "?last_one_month={}".format(
+            self.sanitize_time(timezone.now()))
+        response = self.client.get(url)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                CountySerializer(county_1).data
+            ]
+        }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            _dict(self.client.get(response).data),
+            _dict(expected_data)
+        )
