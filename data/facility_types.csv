@@ -1,2 +1,0 @@
-AuditTrailID,LoginID,LastOperation,TimeStamp,ParametersUsed,Success
-1,2,GetFacilities,2015-01-12 15:23:15.760000000,none,True

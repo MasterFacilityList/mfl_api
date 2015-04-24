@@ -1,0 +1,113 @@
+
+[
+    {
+        "model": "facilities.JobTitle",
+        "unique_fields": ["name"],
+      
+        "records": [  
+            {
+                "name": "MedSup",
+                "description":"Medical Superintendant,Medical Superintendant"
+            },
+
+            {
+               "name":"Nurse",
+               "description": "Nursing Officer in Charge,Nursing Officer in Charge"
+            },
+
+            {
+                "name": "Hosp Dir",
+                "description": "Hospital Director,Hospital Director"
+            },
+            {
+                "name": "Clinical Officer",
+                "description": " Clinical Officer"
+            },
+            {
+                "name": "PHRIO-MoMS",
+                "description": "Provincial Health Records and Information Officer - Medical Services"
+            },
+
+            {
+                "name": "PHRIO-MoPHS",
+                "description": "Provincial Health Records and Information Officer - Public Health and Sanitation"
+            },
+
+            {
+                 "name": "PPHN-MoPHS",
+                 "description": "Provincial Public Health Nurse - Public Health and Sanitation"
+            },
+            {
+                "name": "PDMS",
+                "description": "Provincial Director - Medical Services"
+            },
+            {
+                "name": "DMOH",
+                "description": "District Medical Officer of Health"
+            },
+            {
+
+                "name": "DHRIO",
+                "description": "District Health Records and Information Officer"
+            },
+            {
+                "name": "DPHN",
+                "description": "District Public Health Nurse"
+            },
+            {
+                "name": "DPHO", 
+                "description": "District Public Health Officer"
+            },
+            {
+                "name": "Doctor",
+                "description": "Doctor In Charge"
+            },
+            {
+               "name": "HIS",
+               "description": "National HIS Facilitator"
+
+            },
+            {
+                "name": "Prog/Config",
+                "description": "System Configuration and Programming"
+            },
+
+            {
+                "name": "DCHAO",
+                "description": "District Chief Health Administrative Office"
+            },
+            {
+                 "name": "PCHAO-MMS",
+                 "description": "Provincial Chief Health Administrative Officer - Medical Services"
+            },
+            {
+                "name": "PCHAO-PHS",
+                "description": " Provincial Chief Health Administrative Officer - Public Health and Sanitation"
+            },
+            {
+                "name": "Unknown",
+                "description": "Unknown"
+            },
+            {
+                "name": "National MOH Officer",
+                "description": "National MOH Officer"
+            },
+            {
+                "name": "PASCO",
+                "description": "Provincial Aids Co-Ordinator"
+            },
+            {
+               "name": "Natl HIS Admin",
+               "description": "National HIS Help Desk and Administration"
+            },
+            {
+                "name": "Dir MoPHS",
+                "description": "Director of Public Health and Sanitation"
+            },
+            {
+                "name": "County HRIO",
+                "description": "County Health Records and Information Officer-MOH"
+            }
+        ]
+    }
+]

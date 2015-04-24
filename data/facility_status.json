@@ -1,0 +1,25 @@
+
+[
+    {
+        "model": "facilities.FacilityStatus",
+        "unique_fields": ["name"],
+        "records": [
+            {
+                "name": "OPERATIONAL",
+                "description": ""
+            }
+            {
+                "name": "Not-Operational",
+                "description": ""
+            }
+            {
+                "name": "PENDING",
+                "description": ""
+            }
+            {
+                "name": "UNKNOWN",
+                "description": ""
+            }
+        ]   
+    }
+]
