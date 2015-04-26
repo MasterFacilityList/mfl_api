@@ -32,6 +32,13 @@ class IsoDateTimeFilter(django_filters.DateTimeFilter):
 
 
 class TimeRangeFilter(django_filters.filters.Filter):
+    """
+    Filters a queryset based on the number of days needed. eg a week, a month
+    or a quater (3 months)
+
+    It is a very naive implmentation as it does not cater for the fact that
+    months do not have equal number of days
+    """
 
     def __init__(self, *args, **kwargs):
         self.alias = kwargs.get('alias')
@@ -55,7 +62,6 @@ class TimeRangeFilter(django_filters.filters.Filter):
         if self.last_one_month:
             month_start = today - timedelta(days=30)
             return qs.filter(created__gte=month_start, created__lte=today)
-        return qs
 
 
 class CommonFieldsFilterset(django_filters.FilterSet):

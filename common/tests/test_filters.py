@@ -145,7 +145,7 @@ class TestTimeRangeFilter(BaseTestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            _dict(self.client.get(response).data),
+            _dict(response.data),
             _dict(expected_data)
         )
 
@@ -168,7 +168,7 @@ class TestTimeRangeFilter(BaseTestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            _dict(self.client.get(response).data),
+            _dict(response.data),
             _dict(expected_data)
         )
 
@@ -191,6 +191,6 @@ class TestTimeRangeFilter(BaseTestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            _dict(self.client.get(response).data),
+            _dict(response.data),
             _dict(expected_data)
         )
