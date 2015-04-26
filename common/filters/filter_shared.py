@@ -63,6 +63,8 @@ class TimeRangeFilter(django_filters.filters.Filter):
             month_start = today - timedelta(days=30)
             return qs.filter(created__gte=month_start, created__lte=today)
 
+        return qs
+
 
 class CommonFieldsFilterset(django_filters.FilterSet):
     """Every model that descends from AbstractBase should have this

@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 from rest_framework import ISO_8601
 from model_mommy import mommy
 
-from ..filters.filter_shared import IsoDateTimeField
+from ..filters.filter_shared import IsoDateTimeField, TimeRangeFilter
 from ..models import County
 from ..serializers import CountySerializer
 from .test_models import BaseTestCase
@@ -194,3 +194,12 @@ class TestTimeRangeFilter(BaseTestCase):
             _dict(response.data),
             _dict(expected_data)
         )
+
+    def test_no_filter(self):
+        mommy.make(County)
+        mommy.make(County)
+        qs = County.objects.all()
+
+        time_filter = TimeRangeFilter(name='created', alias='not_supported')
+        result = time_filter.filter(qs, '2015-04-26T13:17:18.975021Z')
+        self.assertEquals(result, qs)
