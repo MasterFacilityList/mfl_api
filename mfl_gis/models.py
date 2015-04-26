@@ -139,7 +139,8 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     name = gis_models.CharField(max_length=100)
     area = gis_models.IntegerField()
     pop2005 = gis_models.IntegerField('Population 2005')
-    fips = gis_models.CharField('FIPS Code', max_length=2)
+    fips = gis_models.CharField(
+        'FIPS Code', max_length=2, null=True, blank=True)
     iso2 = gis_models.CharField('2 Digit ISO', max_length=2)
     iso3 = gis_models.CharField('3 Digit ISO', max_length=3)
     un = gis_models.IntegerField('United Nations Code')
