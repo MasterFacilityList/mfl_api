@@ -1,0 +1,2313 @@
+[
+    {
+        "model": "common.County",
+        "unique_fields": ["code"],
+      
+        "records": [  
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"1",
+      "name":"MOMBASA "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"2",
+      "name":"KWALE "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"3",
+      "name":"KILIFI "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"4",
+      "name":"TANA RIVER "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"5",
+      "name":"LAMU "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"6",
+      "name":"TAITA TAVETA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"7",
+      "name":"GARISSA "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"8",
+      "name":"WAJIR "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"9",
+      "name":"MANDERA "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"10",
+      "name":"MARSABIT "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"11",
+      "name":"ISIOLO "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"12",
+      "name":"MERU "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"13",
+      "name":"THARAKA - NITHI "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"14",
+      "name":"EMBU "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"15",
+      "name":"KITUI "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"16",
+      "name":"MACHAKOS "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"17",
+      "name":"MAKUENI "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"18",
+      "name":"NYANDARUA "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"21",
+      "name":"MURANG'A "
+   },
+   {  
+      "code":"22",
+      "name":"KIAMBU "
+   },
+   {  
+      "code":"22",
+      "name":"KIAMBU "
+   },
+   {  
+      "code":"22",
+      "name":"KIAMBU "
+   },
+   {  
+      "code":"22",
+      "name":"KIAMBU "
+   },
+   {  
+      "code":"22",
+      "name":"KIAMBU "
+   },
+   {  
+      "code":"22",
+      "name":"KIAMBU "
+   },
+   {  
+      "code":"19",
+      "name":"NYERI "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYAGA "
+   },
+   {  
+      "code":"20",
+      "name":"KIRINYA"
+   }
+]
+    }
+]

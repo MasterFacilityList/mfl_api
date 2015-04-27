@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "facilities.FacilityStatus",
+        "unique_fields": ["name"],
+        "records": [
+            {
+                "name": "OPERATIONAL",
+                "description": "The facility is operating normally"
+            },
+            {
+                "name": "Not-Operational",
+                "description": "The facility is not operating at all"
+            },
+            {
+                "name": "PENDING",
+                "description": "The facility is waiting to be permitted to operate."
+            }
+        ]   
+    }
+]

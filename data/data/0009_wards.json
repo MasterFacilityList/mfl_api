@@ -1,0 +1,4083 @@
+[
+    {
+        "model": "common.Ward",
+        "unique_fields": ["name"],
+      
+   "records": [
+         {
+            "constituency":{
+               "code":"1"
+            },
+            "code":"1",
+            "name":"PORT REITZ "
+         },
+         {
+            "constituency":{
+               "code":"1"
+            },
+            "code":"2",
+            "name":"KIPEVU "
+         },
+         {
+            "constituency":{
+               "code":"1"
+            },
+            "code":"3",
+            "name":"AIRPORT "
+         },
+         {
+            "constituency":{
+               "code":"1"
+            },
+            "code":"4",
+            "name":"CHANGAMWE "
+         },
+         {
+            "constituency":{
+               "code":"1"
+            },
+            "code":"5",
+            "name":"CHAANI "
+         },
+         {
+            "constituency":{
+               "code":"2"
+            },
+            "code":"6",
+            "name":"JOMVU KUU "
+         },
+         {
+            "constituency":{
+               "code":"2"
+            },
+            "code":"7",
+            "name":"MIRITINI "
+         },
+         {
+            "constituency":{
+               "code":"2"
+            },
+            "code":"8",
+            "name":"MIKINDANI "
+         },
+         {
+            "constituency":{
+               "code":"3"
+            },
+            "code":"9",
+            "name":"MJAMBERE "
+         },
+         {
+            "constituency":{
+               "code":"3"
+            },
+            "code":"10",
+            "name":"JUNDA "
+         },
+         {
+            "constituency":{
+               "code":"3"
+            },
+            "code":"11",
+            "name":"BAMBURI "
+         },
+         {
+            "constituency":{
+               "code":"3"
+            },
+            "code":"12",
+            "name":"MWAKIRUNGE "
+         },
+         {
+            "constituency":{
+               "code":"3"
+            },
+            "code":"13",
+            "name":"MTOPANGA "
+         },
+         {
+            "constituency":{
+               "code":"3"
+            },
+            "code":"14",
+            "name":"MAGOGONI "
+         },
+         {
+            "constituency":{
+               "code":"3"
+            },
+            "code":"15",
+            "name":"SHANZU "
+         },
+         {
+            "constituency":{
+               "code":"4"
+            },
+            "code":"16",
+            "name":"FRERE TOWN "
+         },
+         {
+            "constituency":{
+               "code":"4"
+            },
+            "code":"17",
+            "name":"ZIWA LA NG'OMBE "
+         },
+         {
+            "constituency":{
+               "code":"4"
+            },
+            "code":"18",
+            "name":"MKOMANI "
+         },
+         {
+            "constituency":{
+               "code":"4"
+            },
+            "code":"19",
+            "name":"KONGOWEA "
+         },
+         {
+            "constituency":{
+               "code":"4"
+            },
+            "code":"20",
+            "name":"KADZANDANI "
+         },
+         {
+            "constituency":{
+               "code":"5"
+            },
+            "code":"21",
+            "name":"MTONGWE "
+         },
+         {
+            "constituency":{
+               "code":"5"
+            },
+            "code":"22",
+            "name":"SHIKA ADABU "
+         },
+         {
+            "constituency":{
+               "code":"5"
+            },
+            "code":"23",
+            "name":"BOFU "
+         },
+         {
+            "constituency":{
+               "code":"5"
+            },
+            "code":"24",
+            "name":"LIKONI "
+         },
+         {
+            "constituency":{
+               "code":"5"
+            },
+            "code":"25",
+            "name":"TIMBWANI "
+         },
+         {
+            "constituency":{
+               "code":"6"
+            },
+            "code":"26",
+            "name":"MJI WA KALE/MAKADARA "
+         },
+         {
+            "constituency":{
+               "code":"6"
+            },
+            "code":"27",
+            "name":"TUDOR "
+         },
+         {
+            "constituency":{
+               "code":"6"
+            },
+            "code":"28",
+            "name":"TONONOKA "
+         },
+         {
+            "constituency":{
+               "code":"6"
+            },
+            "code":"29",
+            "name":"SHIMANZI/GANJONI "
+         },
+         {
+            "constituency":{
+               "code":"6"
+            },
+            "code":"30",
+            "name":"MAJENGO "
+         },
+         {
+            "constituency":{
+               "code":"7"
+            },
+            "code":"31",
+            "name":"GOMBATOBONGWE "
+         },
+         {
+            "constituency":{
+               "code":"7"
+            },
+            "code":"32",
+            "name":"UKUNDA "
+         },
+         {
+            "constituency":{
+               "code":"7"
+            },
+            "code":"33",
+            "name":"KINONDO "
+         },
+         {
+            "constituency":{
+               "code":"7"
+            },
+            "code":"34",
+            "name":"RAMISI "
+         },
+         {
+            "constituency":{
+               "code":"8"
+            },
+            "code":"35",
+            "name":"PONGWEKIKONENI "
+         },
+         {
+            "constituency":{
+               "code":"8"
+            },
+            "code":"36",
+            "name":"DZOMBO "
+         },
+         {
+            "constituency":{
+               "code":"8"
+            },
+            "code":"37",
+            "name":"MWERENI "
+         },
+         {
+            "constituency":{
+               "code":"8"
+            },
+            "code":"38",
+            "name":"VANGA "
+         },
+         {
+            "constituency":{
+               "code":"9"
+            },
+            "code":"39",
+            "name":"TSIMBA GOLINI "
+         },
+         {
+            "constituency":{
+               "code":"9"
+            },
+            "code":"40",
+            "name":"WAA "
+         },
+         {
+            "constituency":{
+               "code":"9"
+            },
+            "code":"41",
+            "name":"TIWI "
+         },
+         {
+            "constituency":{
+               "code":"9"
+            },
+            "code":"42",
+            "name":"KUBO SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"9"
+            },
+            "code":"43",
+            "name":"MKONGANI "
+         },
+         {
+            "constituency":{
+               "code":"10"
+            },
+            "code":"44",
+            "name":"NADAVAYA "
+         },
+         {
+            "constituency":{
+               "code":"10"
+            },
+            "code":"45",
+            "name":"PUMA "
+         },
+         {
+            "constituency":{
+               "code":"10"
+            },
+            "code":"46",
+            "name":"KINANGO "
+         },
+         {
+            "constituency":{
+               "code":"10"
+            },
+            "code":"47",
+            "name":"MACKINNON-ROAD "
+         },
+         {
+            "constituency":{
+               "code":"10"
+            },
+            "code":"48",
+            "name":"CHENGONI/SAMBURU "
+         },
+         {
+            "constituency":{
+               "code":"10"
+            },
+            "code":"49",
+            "name":"MWAVUMBO "
+         },
+         {
+            "constituency":{
+               "code":"10"
+            },
+            "code":"50",
+            "name":"KASEMENI "
+         },
+         {
+            "constituency":{
+               "code":"11"
+            },
+            "code":"51",
+            "name":"TEZO "
+         },
+         {
+            "constituency":{
+               "code":"11"
+            },
+            "code":"52",
+            "name":"SOKONI "
+         },
+         {
+            "constituency":{
+               "code":"11"
+            },
+            "code":"53",
+            "name":"KIBARANI "
+         },
+         {
+            "constituency":{
+               "code":"11"
+            },
+            "code":"54",
+            "name":"DABASO "
+         },
+         {
+            "constituency":{
+               "code":"11"
+            },
+            "code":"55",
+            "name":"MATSANGONI "
+         },
+         {
+            "constituency":{
+               "code":"11"
+            },
+            "code":"56",
+            "name":"WATAMU "
+         },
+         {
+            "constituency":{
+               "code":"11"
+            },
+            "code":"57",
+            "name":"MNARANI "
+         },
+         {
+            "constituency":{
+               "code":"12"
+            },
+            "code":"58",
+            "name":"JUNJU "
+         },
+         {
+            "constituency":{
+               "code":"12"
+            },
+            "code":"59",
+            "name":"MWARAKAYA "
+         },
+         {
+            "constituency":{
+               "code":"12"
+            },
+            "code":"60",
+            "name":"SHIMO LA TEWA "
+         },
+         {
+            "constituency":{
+               "code":"12"
+            },
+            "code":"61",
+            "name":"CHASIMBA "
+         },
+         {
+            "constituency":{
+               "code":"12"
+            },
+            "code":"62",
+            "name":"MTEPENI "
+         },
+         {
+            "constituency":{
+               "code":"13"
+            },
+            "code":"63",
+            "name":"MARIAKANI "
+         },
+         {
+            "constituency":{
+               "code":"13"
+            },
+            "code":"64",
+            "name":"KAYAFUNGO "
+         },
+         {
+            "constituency":{
+               "code":"13"
+            },
+            "code":"65",
+            "name":"KALOLENI "
+         },
+         {
+            "constituency":{
+               "code":"13"
+            },
+            "code":"66",
+            "name":"MWANAMWINGA "
+         },
+         {
+            "constituency":{
+               "code":"14"
+            },
+            "code":"67",
+            "name":"MWAWESA "
+         },
+         {
+            "constituency":{
+               "code":"14"
+            },
+            "code":"68",
+            "name":"RURUMA "
+         },
+         {
+            "constituency":{
+               "code":"14"
+            },
+            "code":"69",
+            "name":"KAMBE/RIBE "
+         },
+         {
+            "constituency":{
+               "code":"14"
+            },
+            "code":"70",
+            "name":"RABAI/KISURUTINI "
+         },
+         {
+            "constituency":{
+               "code":"15"
+            },
+            "code":"71",
+            "name":"GANZE "
+         },
+         {
+            "constituency":{
+               "code":"15"
+            },
+            "code":"72",
+            "name":"BAMBA "
+         },
+         {
+            "constituency":{
+               "code":"15"
+            },
+            "code":"73",
+            "name":"JARIBUNI "
+         },
+         {
+            "constituency":{
+               "code":"15"
+            },
+            "code":"74",
+            "name":"SOKOKE "
+         },
+         {
+            "constituency":{
+               "code":"16"
+            },
+            "code":"75",
+            "name":"JILORE "
+         },
+         {
+            "constituency":{
+               "code":"16"
+            },
+            "code":"76",
+            "name":"KAKUYUNI "
+         },
+         {
+            "constituency":{
+               "code":"16"
+            },
+            "code":"77",
+            "name":"GANDA "
+         },
+         {
+            "constituency":{
+               "code":"16"
+            },
+            "code":"78",
+            "name":"MALINDI TOWN "
+         },
+         {
+            "constituency":{
+               "code":"16"
+            },
+            "code":"79",
+            "name":"SHELLA "
+         },
+         {
+            "constituency":{
+               "code":"17"
+            },
+            "code":"80",
+            "name":"MARAFA "
+         },
+         {
+            "constituency":{
+               "code":"17"
+            },
+            "code":"81",
+            "name":"MAGARINI "
+         },
+         {
+            "constituency":{
+               "code":"17"
+            },
+            "code":"82",
+            "name":"GONGONI "
+         },
+         {
+            "constituency":{
+               "code":"17"
+            },
+            "code":"83",
+            "name":"ADU "
+         },
+         {
+            "constituency":{
+               "code":"17"
+            },
+            "code":"84",
+            "name":"GARASHI "
+         },
+         {
+            "constituency":{
+               "code":"17"
+            },
+            "code":"85",
+            "name":"SABAKI "
+         },
+         {
+            "constituency":{
+               "code":"18"
+            },
+            "code":"86",
+            "name":"KIPINI EAST "
+         },
+         {
+            "constituency":{
+               "code":"18"
+            },
+            "code":"87",
+            "name":"GARSEN SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"18"
+            },
+            "code":"88",
+            "name":"KIPINI WEST "
+         },
+         {
+            "constituency":{
+               "code":"18"
+            },
+            "code":"89",
+            "name":"GARSEN CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"18"
+            },
+            "code":"90",
+            "name":"GARSEN WEST "
+         },
+         {
+            "constituency":{
+               "code":"18"
+            },
+            "code":"91",
+            "name":"GARSEN NORTH "
+         },
+         {
+            "constituency":{
+               "code":"19"
+            },
+            "code":"92",
+            "name":"KINAKOMBA "
+         },
+         {
+            "constituency":{
+               "code":"19"
+            },
+            "code":"93",
+            "name":"MIKINDUNI "
+         },
+         {
+            "constituency":{
+               "code":"19"
+            },
+            "code":"94",
+            "name":"CHEWANI "
+         },
+         {
+            "constituency":{
+               "code":"19"
+            },
+            "code":"95",
+            "name":"WAYU "
+         },
+         {
+            "constituency":{
+               "code":"20"
+            },
+            "code":"96",
+            "name":"CHEWELE "
+         },
+         {
+            "constituency":{
+               "code":"20"
+            },
+            "code":"97",
+            "name":"BURA "
+         },
+         {
+            "constituency":{
+               "code":"20"
+            },
+            "code":"98",
+            "name":"BANGALE "
+         },
+         {
+            "constituency":{
+               "code":"20"
+            },
+            "code":"99",
+            "name":"SALA "
+         },
+         {
+            "constituency":{
+               "code":"20"
+            },
+            "code":"100",
+            "name":"MADOGO "
+         },
+         {
+            "constituency":{
+               "code":"21"
+            },
+            "code":"101",
+            "name":"FAZA "
+         },
+         {
+            "constituency":{
+               "code":"21"
+            },
+            "code":"102",
+            "name":"KIUNGA "
+         },
+         {
+            "constituency":{
+               "code":"21"
+            },
+            "code":"103",
+            "name":"BASUBA "
+         },
+         {
+            "constituency":{
+               "code":"22"
+            },
+            "code":"104",
+            "name":"SHELLA "
+         },
+         {
+            "constituency":{
+               "code":"22"
+            },
+            "code":"105",
+            "name":"MKOMANI "
+         },
+         {
+            "constituency":{
+               "code":"22"
+            },
+            "code":"106",
+            "name":"HINDI "
+         },
+         {
+            "constituency":{
+               "code":"22"
+            },
+            "code":"107",
+            "name":"MKUNUMBI "
+         },
+         {
+            "constituency":{
+               "code":"22"
+            },
+            "code":"108",
+            "name":"HONGWE "
+         },
+         {
+            "constituency":{
+               "code":"22"
+            },
+            "code":"109",
+            "name":"WITU "
+         },
+         {
+            "constituency":{
+               "code":"22"
+            },
+            "code":"110",
+            "name":"BAHARI "
+         },
+         {
+            "constituency":{
+               "code":"23"
+            },
+            "code":"111",
+            "name":"CHALA "
+         },
+         {
+            "constituency":{
+               "code":"23"
+            },
+            "code":"112",
+            "name":"MAHOO "
+         },
+         {
+            "constituency":{
+               "code":"23"
+            },
+            "code":"113",
+            "name":"BOMENI "
+         },
+         {
+            "constituency":{
+               "code":"23"
+            },
+            "code":"114",
+            "name":"MBOGHONI "
+         },
+         {
+            "constituency":{
+               "code":"23"
+            },
+            "code":"115",
+            "name":"MATA "
+         },
+         {
+            "constituency":{
+               "code":"24"
+            },
+            "code":"116",
+            "name":"WUNDANYI/MBALE "
+         },
+         {
+            "constituency":{
+               "code":"24"
+            },
+            "code":"117",
+            "name":"WERUGHA "
+         },
+         {
+            "constituency":{
+               "code":"24"
+            },
+            "code":"118",
+            "name":"WUMINGU/KISHUSHE "
+         },
+         {
+            "constituency":{
+               "code":"24"
+            },
+            "code":"119",
+            "name":"MWANDA/MGANGE "
+         },
+         {
+            "constituency":{
+               "code":"25"
+            },
+            "code":"120",
+            "name":"RONG'E "
+         },
+         {
+            "constituency":{
+               "code":"25"
+            },
+            "code":"121",
+            "name":"MWATATE "
+         },
+         {
+            "constituency":{
+               "code":"25"
+            },
+            "code":"122",
+            "name":"BURA "
+         },
+         {
+            "constituency":{
+               "code":"25"
+            },
+            "code":"123",
+            "name":"CHAWIA "
+         },
+         {
+            "constituency":{
+               "code":"25"
+            },
+            "code":"124",
+            "name":"WUSI/KISHAMBA "
+         },
+         {
+            "constituency":{
+               "code":"26"
+            },
+            "code":"125",
+            "name":"MBOLOLO "
+         },
+         {
+            "constituency":{
+               "code":"26"
+            },
+            "code":"126",
+            "name":"SAGALLA "
+         },
+         {
+            "constituency":{
+               "code":"26"
+            },
+            "code":"127",
+            "name":"KALOLENI "
+         },
+         {
+            "constituency":{
+               "code":"26"
+            },
+            "code":"128",
+            "name":"MARUNGU "
+         },
+         {
+            "constituency":{
+               "code":"26"
+            },
+            "code":"129",
+            "name":"KASIGAU "
+         },
+         {
+            "constituency":{
+               "code":"26"
+            },
+            "code":"130",
+            "name":"NGOLIA "
+         },
+         {
+            "constituency":{
+               "code":"27"
+            },
+            "code":"131",
+            "name":"WABERI "
+         },
+         {
+            "constituency":{
+               "code":"27"
+            },
+            "code":"132",
+            "name":"GALBET "
+         },
+         {
+            "constituency":{
+               "code":"27"
+            },
+            "code":"133",
+            "name":"TOWNSHIP "
+         },
+         {
+            "constituency":{
+               "code":"27"
+            },
+            "code":"134",
+            "name":"IFTIN "
+         },
+         {
+            "constituency":{
+               "code":"28"
+            },
+            "code":"135",
+            "name":"BALAMBALA "
+         },
+         {
+            "constituency":{
+               "code":"28"
+            },
+            "code":"136",
+            "name":"DANYERE "
+         },
+         {
+            "constituency":{
+               "code":"28"
+            },
+            "code":"137",
+            "name":"JARA JARA "
+         },
+         {
+            "constituency":{
+               "code":"28"
+            },
+            "code":"138",
+            "name":"SAKA "
+         },
+         {
+            "constituency":{
+               "code":"28"
+            },
+            "code":"139",
+            "name":"SANKURI "
+         },
+         {
+            "constituency":{
+               "code":"29"
+            },
+            "code":"140",
+            "name":"MODOGASHE "
+         },
+         {
+            "constituency":{
+               "code":"29"
+            },
+            "code":"141",
+            "name":"BENANE "
+         },
+         {
+            "constituency":{
+               "code":"29"
+            },
+            "code":"142",
+            "name":"GOREALE "
+         },
+         {
+            "constituency":{
+               "code":"29"
+            },
+            "code":"143",
+            "name":"MAALIMIN "
+         },
+         {
+            "constituency":{
+               "code":"29"
+            },
+            "code":"144",
+            "name":"SABENA "
+         },
+         {
+            "constituency":{
+               "code":"29"
+            },
+            "code":"145",
+            "name":"BARAKI "
+         },
+         {
+            "constituency":{
+               "code":"30"
+            },
+            "code":"146",
+            "name":"DERTU "
+         },
+         {
+            "constituency":{
+               "code":"30"
+            },
+            "code":"147",
+            "name":"DADAAB "
+         },
+         {
+            "constituency":{
+               "code":"30"
+            },
+            "code":"148",
+            "name":"LABASIGALE "
+         },
+         {
+            "constituency":{
+               "code":"30"
+            },
+            "code":"149",
+            "name":"DAMAJALE "
+         },
+         {
+            "constituency":{
+               "code":"30"
+            },
+            "code":"150",
+            "name":"LIBOI "
+         },
+         {
+            "constituency":{
+               "code":"30"
+            },
+            "code":"151",
+            "name":"ABAKAILE "
+         },
+         {
+            "constituency":{
+               "code":"31"
+            },
+            "code":"152",
+            "name":"BURA "
+         },
+         {
+            "constituency":{
+               "code":"31"
+            },
+            "code":"153",
+            "name":"DEKAHARIA "
+         },
+         {
+            "constituency":{
+               "code":"31"
+            },
+            "code":"154",
+            "name":"JARAJILA "
+         },
+         {
+            "constituency":{
+               "code":"31"
+            },
+            "code":"155",
+            "name":"FAFI "
+         },
+         {
+            "constituency":{
+               "code":"31"
+            },
+            "code":"156",
+            "name":"NANIGHI "
+         },
+         {
+            "constituency":{
+               "code":"32"
+            },
+            "code":"157",
+            "name":"HULUGHO "
+         },
+         {
+            "constituency":{
+               "code":"32"
+            },
+            "code":"158",
+            "name":"SANGAILU "
+         },
+         {
+            "constituency":{
+               "code":"32"
+            },
+            "code":"159",
+            "name":"IJARA "
+         },
+         {
+            "constituency":{
+               "code":"32"
+            },
+            "code":"160",
+            "name":"MASALANI "
+         },
+         {
+            "constituency":{
+               "code":"33"
+            },
+            "code":"161",
+            "name":"GURAR "
+         },
+         {
+            "constituency":{
+               "code":"33"
+            },
+            "code":"162",
+            "name":"BUTE "
+         },
+         {
+            "constituency":{
+               "code":"33"
+            },
+            "code":"163",
+            "name":"KORONDILE "
+         },
+         {
+            "constituency":{
+               "code":"33"
+            },
+            "code":"164",
+            "name":"MALKAGUFU "
+         },
+         {
+            "constituency":{
+               "code":"33"
+            },
+            "code":"165",
+            "name":"BATALU "
+         },
+         {
+            "constituency":{
+               "code":"33"
+            },
+            "code":"166",
+            "name":"DANABA "
+         },
+         {
+            "constituency":{
+               "code":"33"
+            },
+            "code":"167",
+            "name":"GODOMA "
+         },
+         {
+            "constituency":{
+               "code":"34"
+            },
+            "code":"168",
+            "name":"WAGBERI "
+         },
+         {
+            "constituency":{
+               "code":"34"
+            },
+            "code":"169",
+            "name":"TOWNSHIP "
+         },
+         {
+            "constituency":{
+               "code":"34"
+            },
+            "code":"170",
+            "name":"BARWAGO "
+         },
+         {
+            "constituency":{
+               "code":"34"
+            },
+            "code":"171",
+            "name":"KHOROF/HARAR "
+         },
+         {
+            "constituency":{
+               "code":"35"
+            },
+            "code":"172",
+            "name":"ELBEN "
+         },
+         {
+            "constituency":{
+               "code":"35"
+            },
+            "code":"173",
+            "name":"SARMAN "
+         },
+         {
+            "constituency":{
+               "code":"35"
+            },
+            "code":"174",
+            "name":"TARBAJ "
+         },
+         {
+            "constituency":{
+               "code":"35"
+            },
+            "code":"175",
+            "name":"WARGADUD "
+         },
+         {
+            "constituency":{
+               "code":"36"
+            },
+            "code":"176",
+            "name":"ARBAJAHAN "
+         },
+         {
+            "constituency":{
+               "code":"36"
+            },
+            "code":"177",
+            "name":"HADADO/ATHIBOHOL "
+         },
+         {
+            "constituency":{
+               "code":"36"
+            },
+            "code":"178",
+            "name":"ADEMASAJIDE "
+         },
+         {
+            "constituency":{
+               "code":"36"
+            },
+            "code":"179",
+            "name":"WAGALLA/GANYURE "
+         },
+         {
+            "constituency":{
+               "code":"37"
+            },
+            "code":"180",
+            "name":"ELDAS "
+         },
+         {
+            "constituency":{
+               "code":"37"
+            },
+            "code":"181",
+            "name":"DELLA "
+         },
+         {
+            "constituency":{
+               "code":"37"
+            },
+            "code":"182",
+            "name":"LAKOLEY SOUTH/BASIR "
+         },
+         {
+            "constituency":{
+               "code":"37"
+            },
+            "code":"183",
+            "name":"ELNUR/TULA TULA "
+         },
+         {
+            "constituency":{
+               "code":"38"
+            },
+            "code":"184",
+            "name":"BENANE "
+         },
+         {
+            "constituency":{
+               "code":"38"
+            },
+            "code":"185",
+            "name":"BURDER "
+         },
+         {
+            "constituency":{
+               "code":"38"
+            },
+            "code":"186",
+            "name":"DADAJA BULLA "
+         },
+         {
+            "constituency":{
+               "code":"38"
+            },
+            "code":"187",
+            "name":"HABASSWEIN "
+         },
+         {
+            "constituency":{
+               "code":"38"
+            },
+            "code":"188",
+            "name":"LAGBOGHOL SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"38"
+            },
+            "code":"189",
+            "name":"IBRAHIM URE "
+         },
+         {
+            "constituency":{
+               "code":"38"
+            },
+            "code":"190",
+            "name":"DIIF "
+         },
+         {
+            "constituency":{
+               "code":"39"
+            },
+            "code":"191",
+            "name":"TAKABA SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"39"
+            },
+            "code":"192",
+            "name":"TAKABA "
+         },
+         {
+            "constituency":{
+               "code":"39"
+            },
+            "code":"193",
+            "name":"LAG SURE "
+         },
+         {
+            "constituency":{
+               "code":"39"
+            },
+            "code":"194",
+            "name":"DANDU "
+         },
+         {
+            "constituency":{
+               "code":"39"
+            },
+            "code":"195",
+            "name":"GITHER "
+         },
+         {
+            "constituency":{
+               "code":"40"
+            },
+            "code":"196",
+            "name":"BANISSA "
+         },
+         {
+            "constituency":{
+               "code":"40"
+            },
+            "code":"197",
+            "name":"DERKHALE "
+         },
+         {
+            "constituency":{
+               "code":"40"
+            },
+            "code":"198",
+            "name":"GUBA "
+         },
+         {
+            "constituency":{
+               "code":"40"
+            },
+            "code":"199",
+            "name":"MALKAMARI "
+         },
+         {
+            "constituency":{
+               "code":"40"
+            },
+            "code":"200",
+            "name":"KILIWEHIRI "
+         },
+         {
+            "constituency":{
+               "code":"41"
+            },
+            "code":"201",
+            "name":"ASHABITO "
+         },
+         {
+            "constituency":{
+               "code":"41"
+            },
+            "code":"202",
+            "name":"GUTICHA "
+         },
+         {
+            "constituency":{
+               "code":"41"
+            },
+            "code":"203",
+            "name":"MOROTHILE "
+         },
+         {
+            "constituency":{
+               "code":"41"
+            },
+            "code":"204",
+            "name":"RHAMU "
+         },
+         {
+            "constituency":{
+               "code":"41"
+            },
+            "code":"205",
+            "name":"RHAMU-DIMTU "
+         },
+         {
+            "constituency":{
+               "code":"42"
+            },
+            "code":"206",
+            "name":"WARGUDUD "
+         },
+         {
+            "constituency":{
+               "code":"42"
+            },
+            "code":"207",
+            "name":"KUTULO "
+         },
+         {
+            "constituency":{
+               "code":"42"
+            },
+            "code":"208",
+            "name":"ELWAK SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"42"
+            },
+            "code":"209",
+            "name":"ELWAK NORTH "
+         },
+         {
+            "constituency":{
+               "code":"42"
+            },
+            "code":"210",
+            "name":"SHIMBIR FATUMA "
+         },
+         {
+            "constituency":{
+               "code":"43"
+            },
+            "code":"211",
+            "name":"ARABIA "
+         },
+         {
+            "constituency":{
+               "code":"43"
+            },
+            "code":"212",
+            "name":"BULLA MPYA "
+         },
+         {
+            "constituency":{
+               "code":"43"
+            },
+            "code":"213",
+            "name":"KHALALIO "
+         },
+         {
+            "constituency":{
+               "code":"43"
+            },
+            "code":"214",
+            "name":"NEBOI "
+         },
+         {
+            "constituency":{
+               "code":"43"
+            },
+            "code":"215",
+            "name":"TOWNSHIP "
+         },
+         {
+            "constituency":{
+               "code":"44"
+            },
+            "code":"216",
+            "name":"LIBEHIA "
+         },
+         {
+            "constituency":{
+               "code":"44"
+            },
+            "code":"217",
+            "name":"FINO "
+         },
+         {
+            "constituency":{
+               "code":"44"
+            },
+            "code":"218",
+            "name":"LAFEY "
+         },
+         {
+            "constituency":{
+               "code":"44"
+            },
+            "code":"219",
+            "name":"WARANKARA "
+         },
+         {
+            "constituency":{
+               "code":"44"
+            },
+            "code":"220",
+            "name":"ALUNGO GOF "
+         },
+         {
+            "constituency":{
+               "code":"45"
+            },
+            "code":"221",
+            "name":"BUTIYE "
+         },
+         {
+            "constituency":{
+               "code":"45"
+            },
+            "code":"222",
+            "name":"SOLOLO "
+         },
+         {
+            "constituency":{
+               "code":"45"
+            },
+            "code":"223",
+            "name":"HEILU-MANYATTA "
+         },
+         {
+            "constituency":{
+               "code":"45"
+            },
+            "code":"224",
+            "name":"GOLBO "
+         },
+         {
+            "constituency":{
+               "code":"45"
+            },
+            "code":"225",
+            "name":"MOYALE TOWNSHIP "
+         },
+         {
+            "constituency":{
+               "code":"45"
+            },
+            "code":"226",
+            "name":"URAN "
+         },
+         {
+            "constituency":{
+               "code":"45"
+            },
+            "code":"227",
+            "name":"OBBU "
+         },
+         {
+            "constituency":{
+               "code":"46"
+            },
+            "code":"232",
+            "name":"ILLERET "
+         },
+         {
+            "constituency":{
+               "code":"46"
+            },
+            "code":"231",
+            "name":"NORTH HORR "
+         },
+         {
+            "constituency":{
+               "code":"46"
+            },
+            "code":"228",
+            "name":"DUKANA "
+         },
+         {
+            "constituency":{
+               "code":"46"
+            },
+            "code":"229",
+            "name":"MAIKONA "
+         },
+         {
+            "constituency":{
+               "code":"46"
+            },
+            "code":"230",
+            "name":"TURBI "
+         },
+         {
+            "constituency":{
+               "code":"47"
+            },
+            "code":"233",
+            "name":"SAGANTE/JALDESA "
+         },
+         {
+            "constituency":{
+               "code":"47"
+            },
+            "code":"234",
+            "name":"KARARE "
+         },
+         {
+            "constituency":{
+               "code":"47"
+            },
+            "code":"235",
+            "name":"MARSABIT CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"48"
+            },
+            "code":"236",
+            "name":"LOIYANGALANI "
+         },
+         {
+            "constituency":{
+               "code":"48"
+            },
+            "code":"237",
+            "name":"KARGI/SOUTH HORR "
+         },
+         {
+            "constituency":{
+               "code":"48"
+            },
+            "code":"238",
+            "name":"KORR/NGURUNIT "
+         },
+         {
+            "constituency":{
+               "code":"48"
+            },
+            "code":"239",
+            "name":"LOG LOGO "
+         },
+         {
+            "constituency":{
+               "code":"48"
+            },
+            "code":"240",
+            "name":"LAISAMIS "
+         },
+         {
+            "constituency":{
+               "code":"49"
+            },
+            "code":"241",
+            "name":"WABERA "
+         },
+         {
+            "constituency":{
+               "code":"49"
+            },
+            "code":"242",
+            "name":"BULLA PESA "
+         },
+         {
+            "constituency":{
+               "code":"49"
+            },
+            "code":"243",
+            "name":"CHARI "
+         },
+         {
+            "constituency":{
+               "code":"49"
+            },
+            "code":"244",
+            "name":"CHERAB "
+         },
+         {
+            "constituency":{
+               "code":"49"
+            },
+            "code":"245",
+            "name":"NGARE MARA "
+         },
+         {
+            "constituency":{
+               "code":"49"
+            },
+            "code":"246",
+            "name":"BURAT "
+         },
+         {
+            "constituency":{
+               "code":"49"
+            },
+            "code":"247",
+            "name":"OLDONYIRO "
+         },
+         {
+            "constituency":{
+               "code":"50"
+            },
+            "code":"248",
+            "name":"GARBATULLA "
+         },
+         {
+            "constituency":{
+               "code":"50"
+            },
+            "code":"249",
+            "name":"KINNA "
+         },
+         {
+            "constituency":{
+               "code":"50"
+            },
+            "code":"250",
+            "name":"SERICHO "
+         },
+         {
+            "constituency":{
+               "code":"51"
+            },
+            "code":"251",
+            "name":"MAUA "
+         },
+         {
+            "constituency":{
+               "code":"51"
+            },
+            "code":"252",
+            "name":"KIEGOI/ANTUBOCHIU "
+         },
+         {
+            "constituency":{
+               "code":"51"
+            },
+            "code":"253",
+            "name":"ATHIRU GAITI "
+         },
+         {
+            "constituency":{
+               "code":"51"
+            },
+            "code":"254",
+            "name":"AKACHIU "
+         },
+         {
+            "constituency":{
+               "code":"51"
+            },
+            "code":"255",
+            "name":"KANUNI "
+         },
+         {
+            "constituency":{
+               "code":"52"
+            },
+            "code":"256",
+            "name":"AKIRANG'ONDU "
+         },
+         {
+            "constituency":{
+               "code":"52"
+            },
+            "code":"257",
+            "name":"ATHIRU RUUJINE "
+         },
+         {
+            "constituency":{
+               "code":"52"
+            },
+            "code":"258",
+            "name":"IGEMBE EAST "
+         },
+         {
+            "constituency":{
+               "code":"52"
+            },
+            "code":"259",
+            "name":"NJIA "
+         },
+         {
+            "constituency":{
+               "code":"52"
+            },
+            "code":"260",
+            "name":"KANGETA "
+         },
+         {
+            "constituency":{
+               "code":"53"
+            },
+            "code":"261",
+            "name":"ANTUAMBUI "
+         },
+         {
+            "constituency":{
+               "code":"53"
+            },
+            "code":"262",
+            "name":"NTUNENE "
+         },
+         {
+            "constituency":{
+               "code":"53"
+            },
+            "code":"263",
+            "name":"ANTUBETWE KIONGO "
+         },
+         {
+            "constituency":{
+               "code":"53"
+            },
+            "code":"264",
+            "name":"NAATHU "
+         },
+         {
+            "constituency":{
+               "code":"53"
+            },
+            "code":"265",
+            "name":"AMWATHI "
+         },
+         {
+            "constituency":{
+               "code":"54"
+            },
+            "code":"266",
+            "name":"ATHWANA "
+         },
+         {
+            "constituency":{
+               "code":"54"
+            },
+            "code":"267",
+            "name":"AKITHII "
+         },
+         {
+            "constituency":{
+               "code":"54"
+            },
+            "code":"268",
+            "name":"KIANJAI "
+         },
+         {
+            "constituency":{
+               "code":"54"
+            },
+            "code":"269",
+            "name":"NKOMO "
+         },
+         {
+            "constituency":{
+               "code":"54"
+            },
+            "code":"270",
+            "name":"MBEU "
+         },
+         {
+            "constituency":{
+               "code":"55"
+            },
+            "code":"271",
+            "name":"THANGATHA "
+         },
+         {
+            "constituency":{
+               "code":"55"
+            },
+            "code":"272",
+            "name":"MIKINDURI "
+         },
+         {
+            "constituency":{
+               "code":"55"
+            },
+            "code":"273",
+            "name":"KIGUCHWA "
+         },
+         {
+            "constituency":{
+               "code":"55"
+            },
+            "code":"274",
+            "name":"MUTHARA "
+         },
+         {
+            "constituency":{
+               "code":"55"
+            },
+            "code":"275",
+            "name":"KARAMA "
+         },
+         {
+            "constituency":{
+               "code":"56"
+            },
+            "code":"276",
+            "name":"MUNICIPALITY "
+         },
+         {
+            "constituency":{
+               "code":"56"
+            },
+            "code":"277",
+            "name":"NTIMA EAST "
+         },
+         {
+            "constituency":{
+               "code":"56"
+            },
+            "code":"278",
+            "name":"NTIMA WEST "
+         },
+         {
+            "constituency":{
+               "code":"56"
+            },
+            "code":"279",
+            "name":"NYAKI WEST "
+         },
+         {
+            "constituency":{
+               "code":"56"
+            },
+            "code":"280",
+            "name":"NYAKI EAST "
+         },
+         {
+            "constituency":{
+               "code":"57"
+            },
+            "code":"281",
+            "name":"TIMAU "
+         },
+         {
+            "constituency":{
+               "code":"57"
+            },
+            "code":"282",
+            "name":"KISIMA "
+         },
+         {
+            "constituency":{
+               "code":"57"
+            },
+            "code":"283",
+            "name":"KIIRUA/NAARI "
+         },
+         {
+            "constituency":{
+               "code":"57"
+            },
+            "code":"284",
+            "name":"RUIRI/RWARERA "
+         },
+         {
+            "constituency":{
+               "code":"57"
+            },
+            "code":"289",
+            "name":"KIBIRICHIA "
+         },
+         {
+            "constituency":{
+               "code":"58"
+            },
+            "code":"285",
+            "name":"MWANGANTHIA "
+         },
+         {
+            "constituency":{
+               "code":"58"
+            },
+            "code":"286",
+            "name":"ABOTHUGUCHI CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"58"
+            },
+            "code":"287",
+            "name":"ABOTHUGUCHI WEST "
+         },
+         {
+            "constituency":{
+               "code":"58"
+            },
+            "code":"288",
+            "name":"KIAGU "
+         },
+         {
+            "constituency":{
+               "code":"59"
+            },
+            "code":"290",
+            "name":"MITUNGUU "
+         },
+         {
+            "constituency":{
+               "code":"59"
+            },
+            "code":"291",
+            "name":"IGOJI EAST "
+         },
+         {
+            "constituency":{
+               "code":"59"
+            },
+            "code":"292",
+            "name":"IGOJI WEST "
+         },
+         {
+            "constituency":{
+               "code":"59"
+            },
+            "code":"293",
+            "name":"ABOGETA EAST "
+         },
+         {
+            "constituency":{
+               "code":"59"
+            },
+            "code":"294",
+            "name":"ABOGETA WEST "
+         },
+         {
+            "constituency":{
+               "code":"59"
+            },
+            "code":"295",
+            "name":"NKUENE "
+         },
+         {
+            "constituency":{
+               "code":"60"
+            },
+            "code":"296",
+            "name":"MITHERU "
+         },
+         {
+            "constituency":{
+               "code":"60"
+            },
+            "code":"297",
+            "name":"MUTHAMBI "
+         },
+         {
+            "constituency":{
+               "code":"60"
+            },
+            "code":"298",
+            "name":"MWIMBI "
+         },
+         {
+            "constituency":{
+               "code":"60"
+            },
+            "code":"299",
+            "name":"GANGA "
+         },
+         {
+            "constituency":{
+               "code":"60"
+            },
+            "code":"300",
+            "name":"CHOGORIA "
+         },
+         {
+            "constituency":{
+               "code":"61"
+            },
+            "code":"301",
+            "name":"MARIANI "
+         },
+         {
+            "constituency":{
+               "code":"61"
+            },
+            "code":"302",
+            "name":"KARINGANI "
+         },
+         {
+            "constituency":{
+               "code":"61"
+            },
+            "code":"303",
+            "name":"MAGUMONI "
+         },
+         {
+            "constituency":{
+               "code":"61"
+            },
+            "code":"304",
+            "name":"MUGWE "
+         },
+         {
+            "constituency":{
+               "code":"61"
+            },
+            "code":"305",
+            "name":"IGAMBANG'OMBE "
+         },
+         {
+            "constituency":{
+               "code":"62"
+            },
+            "code":"306",
+            "name":"GATUNGA "
+         },
+         {
+            "constituency":{
+               "code":"62"
+            },
+            "code":"307",
+            "name":"MUKOTHIMA "
+         },
+         {
+            "constituency":{
+               "code":"62"
+            },
+            "code":"308",
+            "name":"NKONDI "
+         },
+         {
+            "constituency":{
+               "code":"62"
+            },
+            "code":"309",
+            "name":"CHIAKARIGA "
+         },
+         {
+            "constituency":{
+               "code":"62"
+            },
+            "code":"310",
+            "name":"MARIMANTI "
+         },
+         {
+            "constituency":{
+               "code":"63"
+            },
+            "code":"311",
+            "name":"RUGURU/NGANDORI "
+         },
+         {
+            "constituency":{
+               "code":"63"
+            },
+            "code":"312",
+            "name":"KITHIMU "
+         },
+         {
+            "constituency":{
+               "code":"63"
+            },
+            "code":"313",
+            "name":"NGINDA "
+         },
+         {
+            "constituency":{
+               "code":"63"
+            },
+            "code":"314",
+            "name":"MBETI NORTH "
+         },
+         {
+            "constituency":{
+               "code":"63"
+            },
+            "code":"315",
+            "name":"KIRIMARI "
+         },
+         {
+            "constituency":{
+               "code":"63"
+            },
+            "code":"316",
+            "name":"GATURI SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"64"
+            },
+            "code":"317",
+            "name":"GATURI NORTH "
+         },
+         {
+            "constituency":{
+               "code":"64"
+            },
+            "code":"318",
+            "name":"KAGAARI SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"64"
+            },
+            "code":"319",
+            "name":"CENTRAL WARD "
+         },
+         {
+            "constituency":{
+               "code":"64"
+            },
+            "code":"320",
+            "name":"KAGAARI NORTH "
+         },
+         {
+            "constituency":{
+               "code":"64"
+            },
+            "code":"321",
+            "name":"KYENI NORTH "
+         },
+         {
+            "constituency":{
+               "code":"64"
+            },
+            "code":"322",
+            "name":"KYENI SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"65"
+            },
+            "code":"323",
+            "name":"MWEA "
+         },
+         {
+            "constituency":{
+               "code":"65"
+            },
+            "code":"324",
+            "name":"MAKIMA "
+         },
+         {
+            "constituency":{
+               "code":"65"
+            },
+            "code":"325",
+            "name":"MBETI SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"65"
+            },
+            "code":"326",
+            "name":"MAVURIA "
+         },
+         {
+            "constituency":{
+               "code":"65"
+            },
+            "code":"327",
+            "name":"KIAMBERE "
+         },
+         {
+            "constituency":{
+               "code":"66"
+            },
+            "code":"328",
+            "name":"NTHAWA "
+         },
+         {
+            "constituency":{
+               "code":"66"
+            },
+            "code":"329",
+            "name":"MUMINJI "
+         },
+         {
+            "constituency":{
+               "code":"66"
+            },
+            "code":"330",
+            "name":"EVURORE "
+         },
+         {
+            "constituency":{
+               "code":"67"
+            },
+            "code":"331",
+            "name":"NGOMENI "
+         },
+         {
+            "constituency":{
+               "code":"67"
+            },
+            "code":"332",
+            "name":"KYUSO "
+         },
+         {
+            "constituency":{
+               "code":"67"
+            },
+            "code":"333",
+            "name":"MUMONI "
+         },
+         {
+            "constituency":{
+               "code":"67"
+            },
+            "code":"334",
+            "name":"TSEIKURU "
+         },
+         {
+            "constituency":{
+               "code":"67"
+            },
+            "code":"335",
+            "name":"THARAKA "
+         },
+         {
+            "constituency":{
+               "code":"68"
+            },
+            "code":"336",
+            "name":"KYOME/THAANA "
+         },
+         {
+            "constituency":{
+               "code":"68"
+            },
+            "code":"337",
+            "name":"NGUUTANI "
+         },
+         {
+            "constituency":{
+               "code":"68"
+            },
+            "code":"338",
+            "name":"MIGWANI "
+         },
+         {
+            "constituency":{
+               "code":"68"
+            },
+            "code":"339",
+            "name":"KIOMO/KYETHANI "
+         },
+         {
+            "constituency":{
+               "code":"69"
+            },
+            "code":"340",
+            "name":"CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"69"
+            },
+            "code":"341",
+            "name":"KIVOU "
+         },
+         {
+            "constituency":{
+               "code":"69"
+            },
+            "code":"342",
+            "name":"NGUNI "
+         },
+         {
+            "constituency":{
+               "code":"69"
+            },
+            "code":"343",
+            "name":"NUU "
+         },
+         {
+            "constituency":{
+               "code":"69"
+            },
+            "code":"344",
+            "name":"MUI "
+         },
+         {
+            "constituency":{
+               "code":"69"
+            },
+            "code":"345",
+            "name":"WAITA "
+         },
+         {
+            "constituency":{
+               "code":"70"
+            },
+            "code":"346",
+            "name":"MUTONGUNI "
+         },
+         {
+            "constituency":{
+               "code":"70"
+            },
+            "code":"347",
+            "name":"KAUWI "
+         },
+         {
+            "constituency":{
+               "code":"70"
+            },
+            "code":"348",
+            "name":"MATINYANI "
+         },
+         {
+            "constituency":{
+               "code":"70"
+            },
+            "code":"349",
+            "name":"KWA MUTONGA/KITHUMULA "
+         },
+         {
+            "constituency":{
+               "code":"71"
+            },
+            "code":"350",
+            "name":"KISASI "
+         },
+         {
+            "constituency":{
+               "code":"71"
+            },
+            "code":"351",
+            "name":"MBITINI "
+         },
+         {
+            "constituency":{
+               "code":"71"
+            },
+            "code":"352",
+            "name":"KWAVONZA/YATTA "
+         },
+         {
+            "constituency":{
+               "code":"71"
+            },
+            "code":"353",
+            "name":"KANYANGI "
+         },
+         {
+            "constituency":{
+               "code":"72"
+            },
+            "code":"354",
+            "name":"MIAMBANI "
+         },
+         {
+            "constituency":{
+               "code":"72"
+            },
+            "code":"355",
+            "name":"TOWNSHIP "
+         },
+         {
+            "constituency":{
+               "code":"72"
+            },
+            "code":"356",
+            "name":"KYANGWITHYA WEST "
+         },
+         {
+            "constituency":{
+               "code":"72"
+            },
+            "code":"357",
+            "name":"MULANGO "
+         },
+         {
+            "constituency":{
+               "code":"72"
+            },
+            "code":"358",
+            "name":"KYANGWITHYA EAST "
+         },
+         {
+            "constituency":{
+               "code":"73"
+            },
+            "code":"359",
+            "name":"ZOMBE/MWITIKA "
+         },
+         {
+            "constituency":{
+               "code":"73"
+            },
+            "code":"360",
+            "name":"CHULUNI "
+         },
+         {
+            "constituency":{
+               "code":"73"
+            },
+            "code":"361",
+            "name":"NZAMBANI "
+         },
+         {
+            "constituency":{
+               "code":"73"
+            },
+            "code":"362",
+            "name":"VOO/KYAMATU "
+         },
+         {
+            "constituency":{
+               "code":"73"
+            },
+            "code":"363",
+            "name":"ENDAU/MALALANI "
+         },
+         {
+            "constituency":{
+               "code":"73"
+            },
+            "code":"364",
+            "name":"MUTITO/KALIKU "
+         },
+         {
+            "constituency":{
+               "code":"74"
+            },
+            "code":"365",
+            "name":"IKANGA/KYATUNE "
+         },
+         {
+            "constituency":{
+               "code":"74"
+            },
+            "code":"366",
+            "name":"MUTOMO "
+         },
+         {
+            "constituency":{
+               "code":"74"
+            },
+            "code":"367",
+            "name":"MUTHA "
+         },
+         {
+            "constituency":{
+               "code":"74"
+            },
+            "code":"368",
+            "name":"IKUTHA "
+         },
+         {
+            "constituency":{
+               "code":"74"
+            },
+            "code":"369",
+            "name":"KANZIKO "
+         },
+         {
+            "constituency":{
+               "code":"74"
+            },
+            "code":"370",
+            "name":"ATHI "
+         },
+         {
+            "constituency":{
+               "code":"75"
+            },
+            "code":"371",
+            "name":"KIVAA "
+         },
+         {
+            "constituency":{
+               "code":"75"
+            },
+            "code":"372",
+            "name":"MASINGA CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"75"
+            },
+            "code":"373",
+            "name":"EKALAKALA "
+         },
+         {
+            "constituency":{
+               "code":"75"
+            },
+            "code":"374",
+            "name":"MUTHESYA "
+         },
+         {
+            "constituency":{
+               "code":"75"
+            },
+            "code":"375",
+            "name":"NDITHINI "
+         },
+         {
+            "constituency":{
+               "code":"76"
+            },
+            "code":"376",
+            "name":"NDALANI "
+         },
+         {
+            "constituency":{
+               "code":"76"
+            },
+            "code":"377",
+            "name":"MATUU "
+         },
+         {
+            "constituency":{
+               "code":"76"
+            },
+            "code":"378",
+            "name":"KITHIMANI "
+         },
+         {
+            "constituency":{
+               "code":"76"
+            },
+            "code":"379",
+            "name":"IKOMBE "
+         },
+         {
+            "constituency":{
+               "code":"76"
+            },
+            "code":"380",
+            "name":"KATANGI "
+         },
+         {
+            "constituency":{
+               "code":"77"
+            },
+            "code":"381",
+            "name":"KANGUNDO NORTH "
+         },
+         {
+            "constituency":{
+               "code":"77"
+            },
+            "code":"382",
+            "name":"KANGUNDO CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"77"
+            },
+            "code":"383",
+            "name":"KANGUNDO EAST "
+         },
+         {
+            "constituency":{
+               "code":"77"
+            },
+            "code":"384",
+            "name":"KANGUNDO WEST "
+         },
+         {
+            "constituency":{
+               "code":"78"
+            },
+            "code":"385",
+            "name":"TALA "
+         },
+         {
+            "constituency":{
+               "code":"78"
+            },
+            "code":"386",
+            "name":"MATUNGULU NORTH "
+         },
+         {
+            "constituency":{
+               "code":"78"
+            },
+            "code":"387",
+            "name":"MATUNGULU EAST "
+         },
+         {
+            "constituency":{
+               "code":"78"
+            },
+            "code":"388",
+            "name":"MATUNGULU WEST "
+         },
+         {
+            "constituency":{
+               "code":"78"
+            },
+            "code":"389",
+            "name":"KYELENI "
+         },
+         {
+            "constituency":{
+               "code":"79"
+            },
+            "code":"390",
+            "name":"MITABONI "
+         },
+         {
+            "constituency":{
+               "code":"79"
+            },
+            "code":"391",
+            "name":"KATHIANI CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"79"
+            },
+            "code":"392",
+            "name":"UPPER KAEWA/IVETI "
+         },
+         {
+            "constituency":{
+               "code":"79"
+            },
+            "code":"393",
+            "name":"LOWER KAEWA/KAANI "
+         },
+         {
+            "constituency":{
+               "code":"80"
+            },
+            "code":"394",
+            "name":"ATHI RIVER "
+         },
+         {
+            "constituency":{
+               "code":"80"
+            },
+            "code":"395",
+            "name":"KINANIE "
+         },
+         {
+            "constituency":{
+               "code":"80"
+            },
+            "code":"396",
+            "name":"MUTHWANI "
+         },
+         {
+            "constituency":{
+               "code":"80"
+            },
+            "code":"397",
+            "name":"SYOKIMAU/MULOLONGO "
+         },
+         {
+            "constituency":{
+               "code":"81"
+            },
+            "code":"398",
+            "name":"KALAMA "
+         },
+         {
+            "constituency":{
+               "code":"81"
+            },
+            "code":"399",
+            "name":"MUA "
+         },
+         {
+            "constituency":{
+               "code":"81"
+            },
+            "code":"400",
+            "name":"MUTITUNI "
+         },
+         {
+            "constituency":{
+               "code":"81"
+            },
+            "code":"401",
+            "name":"MACHAKOS CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"81"
+            },
+            "code":"402",
+            "name":"MUMBUNI NORTH "
+         },
+         {
+            "constituency":{
+               "code":"81"
+            },
+            "code":"403",
+            "name":"MUVUTI/KIIMA-KIMWE "
+         },
+         {
+            "constituency":{
+               "code":"81"
+            },
+            "code":"404",
+            "name":"KOLA "
+         },
+         {
+            "constituency":{
+               "code":"82"
+            },
+            "code":"405",
+            "name":"MBIUNI "
+         },
+         {
+            "constituency":{
+               "code":"82"
+            },
+            "code":"406",
+            "name":"MAKUTANO/ MWALA "
+         },
+         {
+            "constituency":{
+               "code":"82"
+            },
+            "code":"407",
+            "name":"MASII "
+         },
+         {
+            "constituency":{
+               "code":"82"
+            },
+            "code":"408",
+            "name":"MUTHETHENI "
+         },
+         {
+            "constituency":{
+               "code":"82"
+            },
+            "code":"409",
+            "name":"WAMUNYU "
+         },
+         {
+            "constituency":{
+               "code":"82"
+            },
+            "code":"410",
+            "name":"KIBAUNI "
+         },
+         {
+            "constituency":{
+               "code":"83"
+            },
+            "code":"411",
+            "name":"TULIMANI "
+         },
+         {
+            "constituency":{
+               "code":"83"
+            },
+            "code":"412",
+            "name":"MBOONI "
+         },
+         {
+            "constituency":{
+               "code":"83"
+            },
+            "code":"413",
+            "name":"KITHUNGO/KITUNDU "
+         },
+         {
+            "constituency":{
+               "code":"83"
+            },
+            "code":"414",
+            "name":"KISAU/KITETA "
+         },
+         {
+            "constituency":{
+               "code":"83"
+            },
+            "code":"415",
+            "name":"WAIA/KAKO "
+         },
+         {
+            "constituency":{
+               "code":"83"
+            },
+            "code":"416",
+            "name":"KALAWA "
+         },
+         {
+            "constituency":{
+               "code":"84"
+            },
+            "code":"417",
+            "name":"KASIKEU "
+         },
+         {
+            "constituency":{
+               "code":"84"
+            },
+            "code":"418",
+            "name":"MUKAA "
+         },
+         {
+            "constituency":{
+               "code":"84"
+            },
+            "code":"419",
+            "name":"KIIMA KIU/KALANZONI "
+         },
+         {
+            "constituency":{
+               "code":"85"
+            },
+            "code":"420",
+            "name":"UKIA "
+         },
+         {
+            "constituency":{
+               "code":"85"
+            },
+            "code":"421",
+            "name":"KEE "
+         },
+         {
+            "constituency":{
+               "code":"85"
+            },
+            "code":"422",
+            "name":"KILUNGU "
+         },
+         {
+            "constituency":{
+               "code":"85"
+            },
+            "code":"423",
+            "name":"ILIMA "
+         },
+         {
+            "constituency":{
+               "code":"86"
+            },
+            "code":"424",
+            "name":"WOTE "
+         },
+         {
+            "constituency":{
+               "code":"86"
+            },
+            "code":"425",
+            "name":"MUVAU/KIKUUMINI "
+         },
+         {
+            "constituency":{
+               "code":"86"
+            },
+            "code":"426",
+            "name":"MAVINDINI "
+         },
+         {
+            "constituency":{
+               "code":"86"
+            },
+            "code":"427",
+            "name":"KITISE/KITHUKI "
+         },
+         {
+            "constituency":{
+               "code":"86"
+            },
+            "code":"428",
+            "name":"KATHONZWENI "
+         },
+         {
+            "constituency":{
+               "code":"86"
+            },
+            "code":"429",
+            "name":"NZAUI/KILILI/KALAMBA "
+         },
+         {
+            "constituency":{
+               "code":"86"
+            },
+            "code":"430",
+            "name":"MBITINI "
+         },
+         {
+            "constituency":{
+               "code":"87"
+            },
+            "code":"431",
+            "name":"MAKINDU "
+         },
+         {
+            "constituency":{
+               "code":"87"
+            },
+            "code":"432",
+            "name":"NGUUMO "
+         },
+         {
+            "constituency":{
+               "code":"87"
+            },
+            "code":"433",
+            "name":"KIKUMBULYU NORTH "
+         },
+         {
+            "constituency":{
+               "code":"87"
+            },
+            "code":"434",
+            "name":"KIKUMBULYU SOUTH "
+         },
+         {
+            "constituency":{
+               "code":"87"
+            },
+            "code":"435",
+            "name":"NGUU/MASUMBA "
+         },
+         {
+            "constituency":{
+               "code":"87"
+            },
+            "code":"436",
+            "name":"EMALI/MULALA "
+         },
+         {
+            "constituency":{
+               "code":"88"
+            },
+            "code":"437",
+            "name":"MASONGALENI "
+         },
+         {
+            "constituency":{
+               "code":"88"
+            },
+            "code":"438",
+            "name":"MTITO ANDEI "
+         },
+         {
+            "constituency":{
+               "code":"88"
+            },
+            "code":"439",
+            "name":"THANGE "
+         },
+         {
+            "constituency":{
+               "code":"88"
+            },
+            "code":"440",
+            "name":"IVINGONI/NZAMBANI "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"441",
+            "name":"ENGINEER "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"442",
+            "name":"GATHARA "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"443",
+            "name":"NORTH KINANGOP "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"444",
+            "name":"MURUNGARU "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"445",
+            "name":"NJABINI\\KIBURU "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"446",
+            "name":"NYAKIO "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"447",
+            "name":"GITHABAI "
+         },
+         {
+            "constituency":{
+               "code":"89"
+            },
+            "code":"448",
+            "name":"MAGUMU "
+         },
+         {
+            "constituency":{
+               "code":"90"
+            },
+            "code":"449",
+            "name":"WANJOHI "
+         },
+         {
+            "constituency":{
+               "code":"90"
+            },
+            "code":"450",
+            "name":"KIPIPIRI "
+         },
+         {
+            "constituency":{
+               "code":"90"
+            },
+            "code":"451",
+            "name":"GETA "
+         },
+         {
+            "constituency":{
+               "code":"90"
+            },
+            "code":"452",
+            "name":"GITHIORO "
+         },
+         {
+            "constituency":{
+               "code":"91"
+            },
+            "code":"453",
+            "name":"KARAU "
+         },
+         {
+            "constituency":{
+               "code":"91"
+            },
+            "code":"454",
+            "name":"KANJUIRI RIDGE "
+         },
+         {
+            "constituency":{
+               "code":"91"
+            },
+            "code":"455",
+            "name":"MIRANGINE "
+         },
+         {
+            "constituency":{
+               "code":"91"
+            },
+            "code":"456",
+            "name":"KAIMBAGA "
+         },
+         {
+            "constituency":{
+               "code":"91"
+            },
+            "code":"457",
+            "name":"RURII "
+         },
+         {
+            "constituency":{
+               "code":"92"
+            },
+            "code":"458",
+            "name":"GATHANJI "
+         },
+         {
+            "constituency":{
+               "code":"92"
+            },
+            "code":"459",
+            "name":"GATIMU "
+         },
+         {
+            "constituency":{
+               "code":"92"
+            },
+            "code":"460",
+            "name":"WERU "
+         },
+         {
+            "constituency":{
+               "code":"92"
+            },
+            "code":"461",
+            "name":"CHARAGITA "
+         },
+         {
+            "constituency":{
+               "code":"93"
+            },
+            "code":"462",
+            "name":"LESHAU PONDO "
+         },
+         {
+            "constituency":{
+               "code":"93"
+            },
+            "code":"463",
+            "name":"KIRIITA "
+         },
+         {
+            "constituency":{
+               "code":"93"
+            },
+            "code":"464",
+            "name":"CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"93"
+            },
+            "code":"465",
+            "name":"SHAMATA "
+         },
+         {
+            "constituency":{
+               "code":"94"
+            },
+            "code":"466",
+            "name":"DEDAN KIMANTHI "
+         },
+         {
+            "constituency":{
+               "code":"94"
+            },
+            "code":"467",
+            "name":"WAMAGANA "
+         },
+         {
+            "constituency":{
+               "code":"94"
+            },
+            "code":"468",
+            "name":"AGUTHI/GAAKI "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"469",
+            "name":"MWEIGA "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"470",
+            "name":"NAROMORU KIAMATHAGA "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"471",
+            "name":"MWIYOGO/ENDARASHA "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"472",
+            "name":"MUGUNDA "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"473",
+            "name":"GATARAKWA "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"474",
+            "name":"THEGU RIVER "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"475",
+            "name":"KABARU "
+         },
+         {
+            "constituency":{
+               "code":"95"
+            },
+            "code":"476",
+            "name":"GAKAWA "
+         },
+         {
+            "constituency":{
+               "code":"96"
+            },
+            "code":"477",
+            "name":"RUGURU "
+         },
+         {
+            "constituency":{
+               "code":"96"
+            },
+            "code":"478",
+            "name":"MAGUTU "
+         },
+         {
+            "constituency":{
+               "code":"96"
+            },
+            "code":"479",
+            "name":"IRIAINI "
+         },
+         {
+            "constituency":{
+               "code":"96"
+            },
+            "code":"480",
+            "name":"KONYU "
+         },
+         {
+            "constituency":{
+               "code":"96"
+            },
+            "code":"481",
+            "name":"KIRIMUKUYU "
+         },
+         {
+            "constituency":{
+               "code":"96"
+            },
+            "code":"482",
+            "name":"KARATINA TOWN "
+         },
+         {
+            "constituency":{
+               "code":"97"
+            },
+            "code":"483",
+            "name":"MAHIGA "
+         },
+         {
+            "constituency":{
+               "code":"97"
+            },
+            "code":"484",
+            "name":"IRIA-INI "
+         },
+         {
+            "constituency":{
+               "code":"97"
+            },
+            "code":"485",
+            "name":"CHINGA "
+         },
+         {
+            "constituency":{
+               "code":"97"
+            },
+            "code":"486",
+            "name":"KARIMA "
+         },
+         {
+            "constituency":{
+               "code":"98"
+            },
+            "code":"487",
+            "name":"GIKONDI "
+         },
+         {
+            "constituency":{
+               "code":"98"
+            },
+            "code":"488",
+            "name":"RUGI "
+         },
+         {
+            "constituency":{
+               "code":"98"
+            },
+            "code":"489",
+            "name":"MUKURWE-INI WEST "
+         },
+         {
+            "constituency":{
+               "code":"98"
+            },
+            "code":"490",
+            "name":"MUKURWE-INI CENTRAL "
+         },
+         {
+            "constituency":{
+               "code":"99"
+            },
+            "code":"491",
+            "name":"KIGANJO/MATHARI "
+         },
+         {
+            "constituency":{
+               "code":"99"
+            },
+            "code":"492",
+            "name":"RWARE "
+         },
+         {
+            "constituency":{
+               "code":"99"
+            },
+            "code":"493",
+            "name":"GATITU/MURUGURU "
+         },
+         {
+            "constituency":{
+               "code":"99"
+            },
+            "code":"494",
+            "name":"RURING'U "
+         },
+         {
+            "constituency":{
+               "code":"99"
+            },
+            "code":"495",
+            "name":"KAMAKWA/MUKARO "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"496",
+            "name":"MUTITHI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"497",
+            "name":"KANGAI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"498",
+            "name":"THIBA "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"499",
+            "name":"WAMUMU "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"500",
+            "name":"NYANGATI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"501",
+            "name":"MURINDUKO "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"502",
+            "name":"GATHIGIRIRI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"503",
+            "name":"TEBERE "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"504",
+            "name":"KABARE "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"505",
+            "name":"BARAGWI "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"506",
+            "name":"NJUKIINI "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"507",
+            "name":"NGARIAMA "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"508",
+            "name":"KARUMANDI "
+         },
+         {
+            "constituency":{
+               "code":"102"
+            },
+            "code":"509",
+            "name":"MUKURE "
+         },
+         {
+            "constituency":{
+               "code":"102"
+            },
+            "code":"510",
+            "name":"KIINE "
+         },
+         {
+            "constituency":{
+               "code":"102"
+            },
+            "code":"511",
+            "name":"KARITI "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"512",
+            "name":"MUTIRA "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"513",
+            "name":"KANYEKI-INI "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"514",
+            "name":"KERUGOYA "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"515",
+            "name":"INOI "
+         },
+         {
+            "constituency":{
+               "code":"104"
+            },
+            "code":"516",
+            "name":"KANYENYAINI "
+         },
+         {
+            "constituency":{
+               "code":"104"
+            },
+            "code":"517",
+            "name":"MUGURU "
+         },
+         {
+            "constituency":{
+               "code":"104"
+            },
+            "code":"518",
+            "name":"RWATHIA "
+         },
+         {
+            "constituency":{
+               "code":"105"
+            },
+            "code":"519",
+            "name":"GITUGI "
+         },
+         {
+            "constituency":{
+               "code":"105"
+            },
+            "code":"520",
+            "name":"KIRU "
+         },
+         {
+            "constituency":{
+               "code":"105"
+            },
+            "code":"521",
+            "name":"KAMACHARIA "
+         },
+         {
+            "constituency":{
+               "code":"106"
+            },
+            "code":"522",
+            "name":"WANGU "
+         },
+         {
+            "constituency":{
+               "code":"106"
+            },
+            "code":"523",
+            "name":"MUGOIRI "
+         },
+         {
+            "constituency":{
+               "code":"106"
+            },
+            "code":"524",
+            "name":"MBIRI "
+         },
+         {
+            "constituency":{
+               "code":"106"
+            },
+            "code":"525",
+            "name":"TOWNSHIP "
+         },
+         {
+            "constituency":{
+               "code":"106"
+            },
+            "code":"526",
+            "name":"MURARANDIA "
+         },
+         {
+            "constituency":{
+               "code":"106"
+            },
+            "code":"527",
+            "name":"GATURI "
+         },
+         {
+            "constituency":{
+               "code":"107"
+            },
+            "code":"528",
+            "name":"KAHUMBU "
+         },
+         {
+            "constituency":{
+               "code":"107"
+            },
+            "code":"529",
+            "name":"MUTHITHI "
+         },
+         {
+            "constituency":{
+               "code":"107"
+            },
+            "code":"530",
+            "name":"KIGUMO "
+         },
+         {
+            "constituency":{
+               "code":"107"
+            },
+            "code":"531",
+            "name":"KANGARI "
+         },
+         {
+            "constituency":{
+               "code":"107"
+            },
+            "code":"532",
+            "name":"KINYONA "
+         },
+         {
+            "constituency":{
+               "code":"108"
+            },
+            "code":"533",
+            "name":"KIMORORI/WEMPA "
+         },
+         {
+            "constituency":{
+               "code":"108"
+            },
+            "code":"534",
+            "name":"MAKUYU "
+         },
+         {
+            "constituency":{
+               "code":"108"
+            },
+            "code":"535",
+            "name":"KAMBITI "
+         },
+         {
+            "constituency":{
+               "code":"108"
+            },
+            "code":"536",
+            "name":"KAMAHUHA "
+         },
+         {
+            "constituency":{
+               "code":"108"
+            },
+            "code":"537",
+            "name":"ICHAGAKI "
+         },
+         {
+            "constituency":{
+               "code":"108"
+            },
+            "code":"538",
+            "name":"NGINDA "
+         },
+         {
+            "constituency":{
+               "code":"109"
+            },
+            "code":"539",
+            "name":"NG'ARARIA "
+         },
+         {
+            "constituency":{
+               "code":"109"
+            },
+            "code":"540",
+            "name":"MURUKA "
+         },
+         {
+            "constituency":{
+               "code":"109"
+            },
+            "code":"541",
+            "name":"KAGUNDU-INI "
+         },
+         {
+            "constituency":{
+               "code":"109"
+            },
+            "code":"542",
+            "name":"GAICHANJIRU "
+         },
+         {
+            "constituency":{
+               "code":"109"
+            },
+            "code":"543",
+            "name":"ITHIRU "
+         },
+         {
+            "constituency":{
+               "code":"109"
+            },
+            "code":"544",
+            "name":"RUCHU "
+         },
+         {
+            "constituency":{
+               "code":"110"
+            },
+            "code":"545",
+            "name":"ITHANGA "
+         },
+         {
+            "constituency":{
+               "code":"110"
+            },
+            "code":"546",
+            "name":"KAKUZI/MITUBIRI "
+         },
+         {
+            "constituency":{
+               "code":"110"
+            },
+            "code":"547",
+            "name":"MUGUMO-INI "
+         },
+         {
+            "constituency":{
+               "code":"110"
+            },
+            "code":"548",
+            "name":"KIHUMBU-INI "
+         },
+         {
+            "constituency":{
+               "code":"110"
+            },
+            "code":"549",
+            "name":"GATANGA "
+         },
+         {
+            "constituency":{
+               "code":"110"
+            },
+            "code":"550",
+            "name":"KARIARA "
+         },
+         {
+            "constituency":{
+               "code":"111"
+            },
+            "code":"551",
+            "name":"KIAMWANGI "
+         },
+         {
+            "constituency":{
+               "code":"111"
+            },
+            "code":"552",
+            "name":"KIGANJO "
+         },
+         {
+            "constituency":{
+               "code":"111"
+            },
+            "code":"553",
+            "name":"NDARUGU "
+         },
+         {
+            "constituency":{
+               "code":"111"
+            },
+            "code":"554",
+            "name":"NGENDA "
+         },
+         {
+            "constituency":{
+               "code":"112"
+            },
+            "code":"555",
+            "name":"GITUAMBA "
+         },
+         {
+            "constituency":{
+               "code":"112"
+            },
+            "code":"556",
+            "name":"GITHOBOKONI "
+         },
+         {
+            "constituency":{
+               "code":"99"
+            },
+            "code":"495",
+            "name":"KAMAKWA/MUKARO "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"496",
+            "name":"MUTITHI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"497",
+            "name":"KANGAI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"498",
+            "name":"THIBA "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"499",
+            "name":"WAMUMU "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"500",
+            "name":"NYANGATI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"501",
+            "name":"MURINDUKO "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"502",
+            "name":"GATHIGIRIRI "
+         },
+         {
+            "constituency":{
+               "code":"100"
+            },
+            "code":"503",
+            "name":"TEBERE "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"504",
+            "name":"KABARE "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"505",
+            "name":"BARAGWI "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"506",
+            "name":"NJUKIINI "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"507",
+            "name":"NGARIAMA "
+         },
+         {
+            "constituency":{
+               "code":"101"
+            },
+            "code":"508",
+            "name":"KARUMANDI "
+         },
+         {
+            "constituency":{
+               "code":"102"
+            },
+            "code":"509",
+            "name":"MUKURE "
+         },
+         {
+            "constituency":{
+               "code":"102"
+            },
+            "code":"510",
+            "name":"KIINE "
+         },
+         {
+            "constituency":{
+               "code":"102"
+            },
+            "code":"511",
+            "name":"KARITI "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"512",
+            "name":"MUTIRA "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"513",
+            "name":"KANYEKI-INI "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"514",
+            "name":"KERUGOYA "
+         },
+         {
+            "constituency":{
+               "code":"103"
+            },
+            "code":"515",
+            "name":"INOI "
+         },
+         {
+            "constituency":{
+               "code":"104"
+            },
+            "code":"516",
+            "name":"KANYENYAINI "
+         },
+         {
+            "constituency":{
+               "code":"104"
+            },
+            "code":"517",
+            "name":"MUGURU "
+         },
+         {
+            "constituency":{
+               "code":"104"
+            },
+            "code":"518",
+            "name":"RWATHIA "
+         },
+         {
+            "constituency":{
+               "code":"105"
+            },
+            "code":"519",
+            "name":"GITUGI "
+         },
+         {
+            "constituency":{
+               "code":"105"
+            },
+            "code":"520",
+            "name":"KIRU "
+         }
+      ]
+   }
+]
