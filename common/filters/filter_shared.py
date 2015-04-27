@@ -61,11 +61,11 @@ class TimeRangeFilter(django_filters.filters.Filter):
             return qs.filter(
                 created__gte=week_start_midnight,
                 created__lte=today_end)
-        if self.last_one_quater:
-            quater_start = today - timedelta(days=90)
+        if self.last_one_quarter:
+            quarter_start = today - timedelta(days=90)
             quarter_start_midnight = datetime(
-                quater_start.year, quater_start.month,
-                quater_start.day, 0, 0, 0, 0)
+                quarter_start.year, quarter_start.month,
+                quarter_start.day, 0, 0, 0, 0)
             return qs.filter(
                 created__gte=quarter_start_midnight,
                 created__lte=today_end)
