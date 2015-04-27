@@ -413,3 +413,16 @@ def get_cover_report(request, facility_id):
         }
     )
     return HttpResponse(template.render(context))
+
+
+def get_correction_template(request, facility_id):
+    facility = Facility.objects.get(pk=facility_id)
+    template = loader.get_template('correction_template.txt')
+    request_date = timezone.now().isoformat()
+    context = Context(
+        {
+            "request_date": request_date,
+            "facility": facility
+        }
+    )
+    return HttpResponse(template.render(context))

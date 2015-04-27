@@ -48,10 +48,18 @@ from ..views import (
     get_cover_report,
     get_inspection_report,
     RegulatingBodyContactListView,
-    RegulatingBodyContactDetailView
+    RegulatingBodyContactDetailView,
+    get_correction_template
 )
 urlpatterns = patterns(
     '',
+    url(r'^facility_correction_template/(?P<facility_id>[^/]+)/$',
+        get_correction_template,
+        name='facility_correction_template'),
+    url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
+        get_inspection_report,
+        name='facility_inspection_report'),
+
     url(r'^facility_cover_report/(?P<facility_id>[^/]+)/$', get_cover_report,
         name='facility_cover_report'),
     url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',

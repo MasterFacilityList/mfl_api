@@ -250,3 +250,14 @@ class TestInspectionAndCoverReportsView(LogginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, 'cover_report.txt')
+
+    def test_correction_templates(self):
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_correction_template',
+            kwargs={'facility_id': facility.id})
+
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'correction_template.txt')
