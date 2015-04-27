@@ -68,7 +68,7 @@ urlpatterns = patterns(
         CoverReportTemplateDetailView.as_view(),
         name='cover_report_template_detail'),
 
-    url(r'^cover_templates/(?P<pk>[^/]+)/$',
+    url(r'^inspection_reports/$',
         InspectionReportListView.as_view(),
         name='inspection_reports_list'),
 

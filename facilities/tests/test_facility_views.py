@@ -222,3 +222,19 @@ class TestFacilityUnitView(LogginMixin, APITestCase):
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
+
+
+class TestInspectionAndCoverReportsView(LogginMixin, APITestCase):
+    def test_inspection_report(self):
+        url = 'api:facilities:facility_inspection_report'
+        facility = mommy.make(Facility)
+        url = url + "{}/".format(facility.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_cover_reports(self):
+        url = 'api:facilities:facility_cover_report'
+        facility = mommy.make(Facility)
+        url = url + "{}/".format(facility.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
