@@ -1,0 +1,25 @@
+Medical Officer of Health 
+{{facility.ward.county.name}}
+[[DISTRICT ADDRESS]]
+Date: {{report_date}}
+
+TO: {{facility.current_regulation_status.regulating_body.name}} 
+[[ADDRESSED TO POSTAL ADDRESS]] 
+RE: Inspection of {{facility.name}}
+
+The County Health Management Team of {{ facility.ward.county.name }} has inspected the {{facility.facility_type.name}} whose details are below.
+
+Facility Name: {{facility.name}}
+Facility Type: {{facility.facility_type.name}}
+Facility Owner: {{facility.owner.name}}
+County: {{facility.ward.county.name}}
+Constituency: {{facility.ward.constitunecy.name}}
+We request that you Regulate this facility.
+
+The facility details are given on the next page and the inspection report is attached.
+
+Signed
+
+Medical Officer of Health
+
+{{facility.ward.county.name}}
