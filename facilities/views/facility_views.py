@@ -373,7 +373,7 @@ class RegulationStatusDetailView(
 class InspectionReportListView(
         AuditableDetailViewMixin, generics.ListCreateAPIView):
     queryset = InspectionReport.objects.all()
-    serializer_class = InspectionReportSerializer()
+    serializer_class = InspectionReportSerializer
     filter_class = InspectionReportFilter
     ordering_fields = ('template', )
 
@@ -381,7 +381,7 @@ class InspectionReportListView(
 class InspectionReportDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = InspectionReport.objects.all()
-    serializer_class = InspectionReportSerializer()
+    serializer_class = InspectionReportSerializer
 
 
 class CoverReportTemplateListView(
@@ -392,7 +392,7 @@ class CoverReportTemplateListView(
     ordering_fields = ('template')
 
 
-class CoverTemplateDetailView(
+class CoverReportTemplateDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = CoverReportTemplate.objects.all()
     serializer_class = CoverReportTemplateSerializer
