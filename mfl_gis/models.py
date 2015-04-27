@@ -140,7 +140,11 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     name = gis_models.CharField(max_length=100, unique=True)
     code = gis_models.CharField(max_length=10, unique=True)
 
-    mpoly = gis_models.MultiPolygonField()
+    # Making this field nullable is a temporary band-aid for a deficiency
+    # in model_mommy ( a testing tool )
+    # The impact of this is minimal; these models hold setup data that is
+    # loaded and tested during each build
+    mpoly = gis_models.MultiPolygonField(null=True, blank=True)
 
     @property
     def area(self):
