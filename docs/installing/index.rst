@@ -49,14 +49,20 @@ key dependencies can be installed with:
     sudo apt-get install postgresql binutils postgis gdal-bin libproj-dev
     libgeoip1 graphviz libgraphviz-dev
 
+**You may need to install distribution specific packages** e.g on Ubuntu 14.04
+with the default PosgreSQL 9.3:
+
+::
+
+    sudo apt-get install postgresql-9.3-postgis-2.1
+
 In order to build some of the Python dependencies in the `virtualenv`, some
 libraries will need to be in place. Again, if you are on a recent Ubuntu, you
 can get them at once with:
 
 ::
 
-    sudo apt-get build-dep python-shapely python-gdal python-numpy
-    cython python-psycopg2
+    sudo apt-get build-dep python-shapely python-numpy cython python-psycopg2
 
 You can find more information at :doc:`developer_install`.
 
