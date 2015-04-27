@@ -23,6 +23,7 @@ class Command(BaseCommand):
         with open(COMBINED_GEOJSON) as f:
             combined = json.load(f)
 
+        # Easier to comprehend than a nested list comprehension
         county_features = []
         for county in combined['counties']:
             for layer in DataSource(county):

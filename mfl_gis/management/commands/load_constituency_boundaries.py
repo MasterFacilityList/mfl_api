@@ -2,7 +2,7 @@ import os
 import json
 
 from django.contrib.gis.gdal import DataSource
-from django.core.management import BaseCommand
+from django.core.management import BaseCommand, CommandError
 
 from mfl_gis.models import ConstituencyBoundary
 from common.models import Constituency
@@ -23,41 +23,28 @@ class Command(BaseCommand):
         with open(COMBINED_GEOJSON) as f:
             combined = json.load(f)
 
-        for county in combined['counties']:
-            for layer in DataSource(county):
+        # Easier to comprehend than a nested list comprehension
+        constituency_features = []
+        for constituency in combined['constituencies']:
+            for layer in DataSource(constituency):
                 for feature in layer:
-                    try:
-                        ConstituencyBoundary.objects.get(
-                            code=feature.get('COUNTY_COD'),
-                            name=feature.get('COUNTY_NAM')
-                        )
-                        self.stdout.write(
-                            "County with id {} and name {} EXISTS".format(
-                                feature.get('COUNTY_COD'),
-                                feature.get('COUNTY_NAM')
-                            )
-                        )
-                    except ConstituencyBoundary.DoesNotExist:
-                        try:
-                            county = Constituency.objects.get(
-                                code=feature.get('COUNTY_COD'),
-                                name=feature.get('COUNTY_NAM')
-                            )
-                            ConstituencyBoundary.objects.create(
-                                name=feature.get('COUNTY_NAM'),
-                                code=feature.get('COUNTY_COD'),
-                                mpoly=str(feature.geom),
-                                county=county
-                            )
-                            self.stdout.write(
-                                "ADDED boundary for {}".format(
-                                    feature.get('COUNTY_NAM')
-                                )
-                            )
-                        except Constituency.DoesNotExist:
-                            self.stdout.write(
-                                "NO county with id {} and name {}".format(
-                                    feature.get('COUNTY_COD'),
-                                    feature.get('COUNTY_NAM')
-                                )
-                            )
+                    constituency_features.append(feature)
+
+        for feature in constituency_features:
+            code = feature.get('CONST_CODE')
+            name = feature.get('CONSTITUEN')
+            try:
+                ConstituencyBoundary.objects.get(code=code, name=name)
+                self.stdout.write(
+                    "Existing boundary for {}:{}".format(code, name))
+            except ConstituencyBoundary.DoesNotExist:
+                try:
+                    constituency = Constituency.objects.get(
+                        code=code, name=name)
+                    ConstituencyBoundary.objects.create(
+                        name=name, code=code, mpoly=str(feature.geom),
+                        constituency=constituency
+                    )
+                    self.stdout.write("ADDED boundary for {}".format(name))
+                except Constituency.DoesNotExist:
+                    raise CommandError("{}:{} NOT FOUND".format(code, name))
