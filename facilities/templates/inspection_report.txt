@@ -1,10 +1,9 @@
 <p>Medical Officer of Health </p>
 <p>{{facility.ward.county.name}} </p>
-<p>[DISTRICT ADDRESS]]</p>
 <p>Date: {{report_date}}</p>
 
-<p>TO: {{facility.current_regulation_status.regulating_body.name}} </p>
-<p>[[ADDRESSED TO POSTAL ADDRESS]] </p>
+<p>TO: {{facility.current_regulatory_status.regulating_body.name}} </p>
+<p>P.O BOX {{regulating_body.regulating_body.postal_address.contact.contact}}</p>
 <p>RE: Inspection of {{facility.name}}</p>
 
 <p>The County Health Management Team of {{ facility.ward.county.name }} has inspected the {{facility.facility_type.name}} whose details are below.</p>
@@ -13,7 +12,7 @@
 <p>Facility Type: {{facility.facility_type.name}}</p>
 <p>Facility Owner: {{facility.owner.name}}</p>
 <p>County: {{facility.ward.county.name}}</p>
-<p>Constituency: {{facility.ward.constitunecy.name}}</p>
+<p>Constituency: {{facility.ward.constituency.name}}</p>
 <p>We request that you Regulate this facility.</p>
 
 <p>he facility details are given on the next page and the inspection report is attached.</p>

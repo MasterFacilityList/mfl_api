@@ -373,10 +373,13 @@ def get_inspection_report(request, facility_id):
     facility = Facility.objects.get(pk=facility_id)
     template = loader.get_template('inspection_report.txt')
     report_date = timezone.now().isoformat()
+    regulating_bodies = FacilityRegulationStatus.objects.filter(
+        facility=facility)
     context = Context(
         {
             "report_date": report_date,
-            "facility": facility
+            "facility": facility,
+            "regulating_body": regulating_bodies[0]
         }
     )
     return HttpResponse(template.render(context))

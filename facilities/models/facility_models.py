@@ -191,6 +191,18 @@ class FacilityType(AbstractBase):
 
 
 @reversion.register
+class RegulatingBodyContact(AbstractBase):
+    """
+    A regulating body contacts.
+    """
+    regulating_body = models.ForeignKey('RegulatingBody')
+    contact = models.ForeignKey(Contact)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.regulating_body, self.contact)
+
+
+@reversion.register
 class RegulatingBody(AbstractBase):
     """
     Bodies responsible for licensing or gazettement of facilites.
@@ -209,6 +221,15 @@ class RegulatingBody(AbstractBase):
         max_length=10, null=True, blank=True,
         help_text="A shortform of the name of the regulating body e.g Nursing"
         "Council of Kenya could be abbreviated as NCK.")
+    contacts = models.ManyToManyField(
+        Contact, through='RegulatingBodyContact')
+
+    @property
+    def postal_address(self):
+        contacts = RegulatingBodyContact.objects.filter(
+            regulating_body=self,
+            contact__contact_type__name='POSTAL')
+        return contacts[0]
 
     def __unicode__(self):
         return self.name
