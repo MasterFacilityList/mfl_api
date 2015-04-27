@@ -312,7 +312,7 @@ class FacilityContact(AbstractBase):
 
 
 @reversion.register
-class Facility(AbstractBase, SequenceMixin):
+class Facility(SequenceMixin, AbstractBase):
     """
     A health institution in Kenya.
 

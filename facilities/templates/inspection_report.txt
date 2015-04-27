@@ -1,25 +1,25 @@
-Medical Officer of Health 
-{{facility.ward.county.name}}
-[[DISTRICT ADDRESS]]
-Date: {{report_date}}
+<p>Medical Officer of Health </p>
+<p>{{facility.ward.county.name}} </p>
+<p>[DISTRICT ADDRESS]]</p>
+<p>Date: {{report_date}}</p>
 
-TO: {{facility.current_regulation_status.regulating_body.name}} 
-[[ADDRESSED TO POSTAL ADDRESS]] 
-RE: Inspection of {{facility.name}}
+<p>TO: {{facility.current_regulation_status.regulating_body.name}} </p>
+<p>[[ADDRESSED TO POSTAL ADDRESS]] </p>
+<p>RE: Inspection of {{facility.name}}</p>
 
-The County Health Management Team of {{ facility.ward.county.name }} has inspected the {{facility.facility_type.name}} whose details are below.
+<p>The County Health Management Team of {{ facility.ward.county.name }} has inspected the {{facility.facility_type.name}} whose details are below.</p>
 
-Facility Name: {{facility.name}}
-Facility Type: {{facility.facility_type.name}}
-Facility Owner: {{facility.owner.name}}
-County: {{facility.ward.county.name}}
-Constituency: {{facility.ward.constitunecy.name}}
-We request that you Regulate this facility.
+<p>Facility Name: {{facility.name}}</p>
+<p>Facility Type: {{facility.facility_type.name}}</p>
+<p>Facility Owner: {{facility.owner.name}}</p>
+<p>County: {{facility.ward.county.name}}</p>
+<p>Constituency: {{facility.ward.constitunecy.name}}</p>
+<p>We request that you Regulate this facility.</p>
 
-The facility details are given on the next page and the inspection report is attached.
+<p>he facility details are given on the next page and the inspection report is attached.</p>
 
-Signed
+<p>Signed</p>
 
-Medical Officer of Health
+<p>Medical Officer of Health</p>
 
-{{facility.ward.county.name}}
+<p>{{facility.ward.county.name}}</p>

@@ -1,24 +1,24 @@
-Medical Officer of Health
-{{facility.ward.county}}
+<p>Medical Officer of Health</p>
+<p>{{facility.ward.county}}</p>
 
-Date: {{ report_date }}
+<p> Date: {{ report_date | date }}</p>
 
-TO: Kenya MPDB - Institution
+<p> TO: Kenya MPDB - Institution</p>
 
-RE: Registration of {{facility.name}} - {{facility.code}}
+<p> RE: Registration of {{facility.name}} - {{facility.code}}</p>
 
-The County Health Management Team of {{facility.ward.county.name}}has inspected the Medical Centre whose details are below.
+<p> The County Health Management Team of {{facility.ward.county.name}}has inspected the Medical Centre whose details are below.</p>
 
-Facility Name: {{facility.name}} - {{facility.code}}
-Facility Type: {{facility.facility_type.name}}
-Facility Owner: {{facility.owner.name}}
-County: {{facility.ward.county.name}}
-Constituency: {{facility.ward.constituency.name}}
-We request that you Register this facility.
+<p> Facility Name: {{facility.name}} - {{facility.code}}</p>
+<p> Facility Type: {{facility.facility_type.name}}</p>
+<p> Facility Owner: {{facility.owner.name}}</p>
+<p> County: {{facility.ward.county.name}}</p>
+<p> Constituency: {{facility.ward.constituency.name}}</p>
+<p> We request that you Register this facility.</p>
 
-The facility details are given on the next page and the inspection report is attached.
+<p> The facility details are given on the next page and the inspection report is attached.</p>
 
-Signed
+ <p>Signed</p>
 
-Medical Officer of Health
-{{ facility.ward.county.name }}
+<p>Medical Officer of Health</p>
+<p>{{ facility.ward.county.name }}</p>

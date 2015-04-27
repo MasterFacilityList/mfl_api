@@ -48,20 +48,30 @@ from ..views import (
     InspectionReportListView,
     InspectionReportDetailView,
     CoverReportTemplateListView,
-    CoverReportTemplateDetailView
+    CoverReportTemplateDetailView,
+    get_cover_report,
+    get_inspection_report
 )
 urlpatterns = patterns(
     '',
-    url(r'^cover_report_templates/$',
+    url(r'^facility_cover_report/(?P<facility_id>[^/]+)/$', get_cover_report,
+        name='facility_cover_report'),
+    url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
+        get_inspection_report,
+        name='facility_inspection_report'),
+
+    url(r'^cover_templates/$',
         CoverReportTemplateListView.as_view(),
         name='cover_report_templates_list'),
+
     url(r'^cover_templates/(?P<pk>[^/]+)/$',
         CoverReportTemplateDetailView.as_view(),
         name='cover_report_template_detail'),
 
-    url(r'^inspection_reports/$',
+    url(r'^cover_templates/(?P<pk>[^/]+)/$',
         InspectionReportListView.as_view(),
         name='inspection_reports_list'),
+
     url(r'^inspection_reports/(?P<pk>[^/]+)/$',
         InspectionReportDetailView.as_view(),
         name='inspection_report_detail'),

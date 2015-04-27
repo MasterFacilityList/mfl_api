@@ -1,3 +1,8 @@
+from django.template import loader, Context
+from django.http import HttpResponse
+
+from django.utils import timezone
+
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
 
@@ -384,13 +389,6 @@ class InspectionReportDetailView(
     serializer_class = InspectionReportSerializer
 
 
-class FacilityInspectionReport(object):
-    def get(self, facility_pk, *args, **kwargs):
-        data = InspectionReport.objects.all()[0]
-        facility = Facility.objects.get(pk=facility_pk)
-        return ""
-
-
 class CoverReportTemplateListView(
         AuditableDetailViewMixin, generics.ListCreateAPIView):
     queryset = CoverReportTemplate.objects.all()
@@ -404,3 +402,28 @@ class CoverReportTemplateDetailView(
     queryset = CoverReportTemplate.objects.all()
     serializer_class = CoverReportTemplateSerializer
 
+
+def get_inspection_report(request, facility_id):
+    facility = Facility.objects.get(pk=facility_id)
+    template = loader.get_template('inspection_report.txt')
+    report_date = timezone.now().isoformat()
+    context = Context(
+        {
+            "report_date": report_date,
+            "facility": facility
+        }
+    )
+    return HttpResponse(template.render(context))
+
+
+def get_cover_report(request, facility_id):
+    facility = Facility.objects.get(pk=facility_id)
+    template = loader.get_template('cover_report.txt')
+    report_date = timezone.now().isoformat()
+    context = Context(
+        {
+            "report_date": report_date,
+            "facility": facility
+        }
+    )
+    return HttpResponse(template.render(context))
