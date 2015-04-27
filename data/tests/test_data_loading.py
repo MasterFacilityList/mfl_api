@@ -38,6 +38,6 @@ class TestDataLoading(TestCase):
         call_command('bootstrap', wards_files)
         call_command('bootstrap', job_titles)
 
-        self.assertEquals(22, County.objects.all().count())
-        self.assertEquals(112, Constituency.objects.all().count())
-        self.assertEquals(543, Ward.objects.all().count())
+        self.assertEquals(47, County.objects.all().count())
+        self.assertEquals(290, Constituency.objects.all().count())
+        self.assertEquals(1447, Ward.objects.all().count())
