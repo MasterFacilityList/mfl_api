@@ -28,9 +28,7 @@ from ..models import (
     ServiceRating,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade,
-    InspectionReport,
-    CoverReportTemplate
+    FacilityUpgrade
 )
 
 from ..serializers import (
@@ -54,9 +52,7 @@ from ..serializers import (
     ServiceRatingSerializer,
     FacilityApprovalSerializer,
     FacilityOperationStateSerializer,
-    FacilityUpgradeSerializer,
-    InspectionReportSerializer,
-    CoverReportTemplateSerializer
+    FacilityUpgradeSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -80,9 +76,7 @@ from ..filters import (
     ServiceRatingFilter,
     FacilityApprovalFilter,
     FacilityOperationStateFilter,
-    FacilityUpgradeFilter,
-    InspectionReportFilter,
-    CoverReportTemplateFilter
+    FacilityUpgradeFilter
 )
 
 
@@ -373,34 +367,6 @@ class RegulationStatusDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = RegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer
-
-
-class InspectionReportListView(
-        AuditableDetailViewMixin, generics.ListCreateAPIView):
-    queryset = InspectionReport.objects.all()
-    serializer_class = InspectionReportSerializer
-    filter_class = InspectionReportFilter
-    ordering_fields = ('template', )
-
-
-class InspectionReportDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = InspectionReport.objects.all()
-    serializer_class = InspectionReportSerializer
-
-
-class CoverReportTemplateListView(
-        AuditableDetailViewMixin, generics.ListCreateAPIView):
-    queryset = CoverReportTemplate.objects.all()
-    serializer_class = CoverReportTemplateSerializer
-    filter_class = CoverReportTemplateFilter
-    ordering_fields = ('template')
-
-
-class CoverReportTemplateDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = CoverReportTemplate.objects.all()
-    serializer_class = CoverReportTemplateSerializer
 
 
 def get_inspection_report(request, facility_id):

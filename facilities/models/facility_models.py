@@ -646,23 +646,3 @@ class ServiceRating(AbstractBase):
 
     def __unicode__(self):
         return "{}: {}".format(self.facility_service, self.created_by)
-
-
-class InspectionReport(AbstractBase):
-    """
-    The inspection report template.
-
-    The template will be entered in the system via wysiwyg widget.
-    This will support a rich text.
-    """
-    template = models.TextField(help_text='')
-
-
-class CoverReportTemplate(AbstractBase):
-    """
-    The cover report template.
-
-    Just like the inspection report template the cover report template
-    will also be entered via wysiwyg widget.
-    """
-    template = models.TextField(help_text='')

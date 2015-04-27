@@ -24,20 +24,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    InspectionReport,
-    CoverReportTemplate
 )
 from common.filters.filter_shared import CommonFieldsFilterset
-
-
-class CoverReportTemplateFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = CoverReportTemplate
-
-
-class InspectionReportFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = InspectionReport
 
 
 class FacilityUpgradeFilter(CommonFieldsFilterset):

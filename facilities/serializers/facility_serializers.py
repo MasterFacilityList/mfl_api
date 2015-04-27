@@ -24,22 +24,8 @@ from ..models import (
     ServiceRating,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade,
-    InspectionReport,
-    CoverReportTemplate
+    FacilityUpgrade
 )
-
-
-class CoverReportTemplateSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = CoverReportTemplate
-
-
-class InspectionReportSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = InspectionReport
 
 
 class FacilityUpgradeSerializer(
