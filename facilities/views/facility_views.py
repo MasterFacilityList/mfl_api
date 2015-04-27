@@ -390,11 +390,13 @@ def get_inspection_report(request, facility_id):
     report_date = timezone.now().isoformat()
     regulating_bodies = FacilityRegulationStatus.objects.filter(
         facility=facility)
+    regulating_body = regulating_bodies[0] if regulating_bodies else None
+
     context = Context(
         {
             "report_date": report_date,
             "facility": facility,
-            "regulating_body": regulating_bodies[0]
+            "regulating_body": regulating_body
         }
     )
     return HttpResponse(template.render(context))

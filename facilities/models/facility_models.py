@@ -405,7 +405,10 @@ class Facility(SequenceMixin, AbstractBase):
 
     @property
     def current_regulatory_status(self):
-        return self.regulatory_details.all()[0]
+        try:
+            return self.regulatory_details.all()[0]
+        except IndexError:
+            return []
 
     def save(self, *args, **kwargs):
         if not self.code:

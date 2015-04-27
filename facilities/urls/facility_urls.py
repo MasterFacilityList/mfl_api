@@ -48,7 +48,7 @@ from ..views import (
     get_cover_report,
     get_inspection_report,
     RegulatingBodyContactListView,
-    RegulatingBodyContactDetilView
+    RegulatingBodyContactDetailView
 )
 urlpatterns = patterns(
     '',
@@ -60,9 +60,9 @@ urlpatterns = patterns(
 
     url(r'^regulating_body_contacts/$',
         RegulatingBodyContactListView.as_view(),
-        name='regulating_body_contact_list'),
+        name='regulating_body_contacts_list'),
     url(r'^regulating_body_contacts/(?P<pk>[^/]+)/$',
-        RegulatingBodyContactDetilView.as_view(),
+        RegulatingBodyContactDetailView.as_view(),
         name='regulating_body_contact_detail'),
 
     url(r'^facility_upgrade/$',
