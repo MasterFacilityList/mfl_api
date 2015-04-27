@@ -1,5 +1,5 @@
 import django_filters
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django import forms
 from django.utils.encoding import force_str
@@ -52,16 +52,32 @@ class TimeRangeFilter(django_filters.filters.Filter):
     def filter(self, qs, value):
         super(TimeRangeFilter, self).filter(qs, value)
         today = timezone.now()
+        today_end = datetime(
+            today.year, today.month, today.day, 23, 59, 59, 999999)
         if self.last_one_week:
-            week_start = today - timedelta(days=6)
-            return qs.filter(created__gte=week_start, created__lte=today)
+            week_start = today - timedelta(days=7)
+            week_start_midnight = datetime(
+                week_start.year, week_start.month, week_start.day, 0, 0, 0, 0)
+            return qs.filter(
+                created__gte=week_start_midnight,
+                created__lte=today_end)
         if self.last_one_quater:
             quater_start = today - timedelta(days=90)
-            return qs.filter(created__gte=quater_start, created__lte=today)
+            quarter_start_midnight = datetime(
+                quater_start.year, quater_start.month,
+                quater_start.day, 0, 0, 0, 0)
+            return qs.filter(
+                created__gte=quarter_start_midnight,
+                created__lte=today_end)
 
         if self.last_one_month:
             month_start = today - timedelta(days=30)
-            return qs.filter(created__gte=month_start, created__lte=today)
+            month_start_midnight = datetime(
+                month_start.year, month_start.month,
+                month_start.day, 0, 0, 0, 0)
+            return qs.filter(
+                created__gte=month_start_midnight,
+                created__lte=today_end)
 
         return qs
 
