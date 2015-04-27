@@ -384,6 +384,13 @@ class InspectionReportDetailView(
     serializer_class = InspectionReportSerializer
 
 
+class FacilityInspectionReport(object):
+    def get(self, facility_pk, *args, **kwargs):
+        data = InspectionReport.objects.all()[0]
+        facility = Facility.objects.get(pk=facility_pk)
+        return ""
+
+
 class CoverReportTemplateListView(
         AuditableDetailViewMixin, generics.ListCreateAPIView):
     queryset = CoverReportTemplate.objects.all()
@@ -396,3 +403,4 @@ class CoverReportTemplateDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = CoverReportTemplate.objects.all()
     serializer_class = CoverReportTemplateSerializer
+

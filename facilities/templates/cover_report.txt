@@ -1,0 +1,24 @@
+Medical Officer of Health
+{{facility.ward.county}}
+
+Date: {{ report_date }}
+
+TO: Kenya MPDB - Institution
+
+RE: Registration of {{facility.name}} - {{facility.code}}
+
+The County Health Management Team of {{facility.ward.county.name}}has inspected the Medical Centre whose details are below.
+
+Facility Name: {{facility.name}} - {{facility.code}}
+Facility Type: {{facility.facility_type.name}}
+Facility Owner: {{facility.owner.name}}
+County: {{facility.ward.county.name}}
+Constituency: {{facility.ward.constituency.name}}
+We request that you Register this facility.
+
+The facility details are given on the next page and the inspection report is attached.
+
+Signed
+
+Medical Officer of Health
+{{ facility.ward.county.name }}
