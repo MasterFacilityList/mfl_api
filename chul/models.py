@@ -65,6 +65,7 @@ class Community(SequenceMixin, AbstractBase):
 
     class Meta(object):
         verbose_name_plural = 'communities'
+        unique_together = ('name', 'ward', )
 
 
 class CommunityHealthUnitContact(AbstractBase):

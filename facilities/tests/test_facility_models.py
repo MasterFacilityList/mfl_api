@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
-from common.models import Contact, Ward, PhysicalAddress
+from common.models import Contact, Ward, PhysicalAddress, ContactType
 
 from ..models import (
     OwnerType,
@@ -22,7 +22,8 @@ from ..models import (
     Service,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade
+    FacilityUpgrade,
+    RegulatingBodyContact
 )
 
 
@@ -346,6 +347,15 @@ class TestRegulatingBodyModel(BaseTestCase):
             "Director of Medical Services",
             regulating_body.__unicode__())
 
+    def test_regulating_body_postal_address(self):
+        postal = mommy.make(ContactType, name='POSTAL')
+        contact = mommy.make(Contact, contact_type=postal)
+        regulating_body = mommy.make(RegulatingBody)
+        mommy.make(
+            RegulatingBodyContact, regulating_body=regulating_body,
+            contact=contact)
+        self.assertEquals(contact, regulating_body.postal_address.contact)
+
 
 class TestFacility(BaseTestCase):
     def test_save(self):
@@ -386,7 +396,7 @@ class TestFacility(BaseTestCase):
         self.assertEquals("Forces Memorial", facility.__unicode__())
         self.assertIsNotNone(facility.code)
         self.assertEquals(
-            facility_reg_status.regulation_status,
+            facility_reg_status,
             facility.current_regulatory_status)
 
     def test_working_of_facility_code_sequence(self):

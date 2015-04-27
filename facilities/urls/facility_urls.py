@@ -44,10 +44,35 @@ from ..views import (
     FacilityOperationStateListView,
     FacilityOperationStateDetailView,
     FacilityUpgradeListView,
-    FacilityUpgradeDetailView
+    FacilityUpgradeDetailView,
+    get_cover_report,
+    get_inspection_report,
+    RegulatingBodyContactListView,
+    RegulatingBodyContactDetailView,
+    get_correction_template
 )
 urlpatterns = patterns(
     '',
+    url(r'^facility_correction_template/(?P<facility_id>[^/]+)/$',
+        get_correction_template,
+        name='facility_correction_template'),
+    url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
+        get_inspection_report,
+        name='facility_inspection_report'),
+
+    url(r'^facility_cover_report/(?P<facility_id>[^/]+)/$', get_cover_report,
+        name='facility_cover_report'),
+    url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
+        get_inspection_report,
+        name='facility_inspection_report'),
+
+    url(r'^regulating_body_contacts/$',
+        RegulatingBodyContactListView.as_view(),
+        name='regulating_body_contacts_list'),
+    url(r'^regulating_body_contacts/(?P<pk>[^/]+)/$',
+        RegulatingBodyContactDetailView.as_view(),
+        name='regulating_body_contact_detail'),
+
     url(r'^facility_upgrade/$',
         FacilityUpgradeListView.as_view(),
         name='facility_upgrades_list'),
