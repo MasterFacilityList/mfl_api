@@ -36,7 +36,7 @@ class TimeRangeFilter(django_filters.filters.Filter):
     Filters a queryset based on the number of days needed. eg a week, a month
     or a quater (3 months)
 
-    It is a very naive implimentation as it does not cater for the fact that
+    It is a very naive implementation as it does not cater for the fact that
     months do not have equal number of days
     """
 
