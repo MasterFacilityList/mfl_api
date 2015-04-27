@@ -134,22 +134,14 @@ class FacilityCoordinates(GISAbstractBase):
 class AdministrativeUnitBoundary(GISAbstractBase):
     """Base class for the models that implement administrative boundaries
 
-    All common operations and fields are here
+    All common operations and fields are here.
+    We retain the default SRID ( 4326 - WGS84 ).
     """
-    name = gis_models.CharField(max_length=100)
+    name = gis_models.CharField(max_length=100, unique=True)
+    code = gis_models.CharField(max_length=10, null=True, blank=True)
     area = gis_models.IntegerField()
-    pop2005 = gis_models.IntegerField('Population 2005')
-    fips = gis_models.CharField(
-        'FIPS Code', max_length=2, null=True, blank=True)
-    iso2 = gis_models.CharField('2 Digit ISO', max_length=2)
-    iso3 = gis_models.CharField('3 Digit ISO', max_length=3)
-    un = gis_models.IntegerField('United Nations Code')
-    region = gis_models.IntegerField('Region Code')
-    subregion = gis_models.IntegerField('Sub-Region Code')
-    lon = gis_models.FloatField()
-    lat = gis_models.FloatField()
 
-    mpoly = gis_models.MultiPolygonField()
+    mpoly = gis_models.MultiPolygonField(geography=True)
 
     def __unicode__(self):
         return self.name
@@ -164,7 +156,8 @@ class WorldBorder(AdministrativeUnitBoundary):
 
     Source: http://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
     """
-    pass
+    lon = gis_models.FloatField()
+    lat = gis_models.FloatField()
 
 
 @reversion.register
