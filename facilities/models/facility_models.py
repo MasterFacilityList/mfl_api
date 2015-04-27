@@ -306,6 +306,10 @@ class FacilityRegulationStatus(AbstractBase):
     reason = models.TextField(
         null=True, blank=True,
         help_text="e.g Why has a facility been suspended")
+    license_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text='The license number that the facility has been '
+        'given by the regulator')
 
     def __unicode__(self):
         return "{}: {}".format(
