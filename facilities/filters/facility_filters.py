@@ -23,9 +23,15 @@ from ..models import (
     ServiceRating,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade
+    FacilityUpgrade,
+    InspectionReport
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class InspectionReportFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = InspectionReport
 
 
 class FacilityUpgradeFilter(CommonFieldsFilterset):

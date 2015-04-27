@@ -646,3 +646,10 @@ class ServiceRating(AbstractBase):
 
     def __unicode__(self):
         return "{}: {}".format(self.facility_service, self.created_by)
+
+
+class InspectionReport(AbstractBase):
+    """
+    The inspection report template
+    """
+    template = models.TextField(help_text='')

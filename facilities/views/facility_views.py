@@ -23,7 +23,8 @@ from ..models import (
     ServiceRating,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade
+    FacilityUpgrade,
+    InspectionReport
 )
 
 from ..serializers import (
@@ -47,7 +48,8 @@ from ..serializers import (
     ServiceRatingSerializer,
     FacilityApprovalSerializer,
     FacilityOperationStateSerializer,
-    FacilityUpgradeSerializer
+    FacilityUpgradeSerializer,
+    InspectionReportSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -71,7 +73,8 @@ from ..filters import (
     ServiceRatingFilter,
     FacilityApprovalFilter,
     FacilityOperationStateFilter,
-    FacilityUpgradeFilter
+    FacilityUpgradeFilter,
+    InspectionReportFilter
 )
 
 
@@ -362,3 +365,11 @@ class RegulationStatusDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = RegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer
+
+
+class InspectionReportListView(
+        AuditableDetailViewMixin, generics.ListCreateAPIView):
+    queryset = InspectionReport.objects.all()
+    serializer_class = InspectionReportSerializer()
+    filter_class = InspectionReportFilter
+    ordering_fields = ('template', )

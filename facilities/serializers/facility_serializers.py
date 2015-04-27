@@ -24,8 +24,15 @@ from ..models import (
     ServiceRating,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade
+    FacilityUpgrade,
+    InspectionReport
 )
+
+
+class InspectionReportSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = InspectionReport
 
 
 class FacilityUpgradeSerializer(

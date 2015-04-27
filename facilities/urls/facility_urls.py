@@ -44,10 +44,19 @@ from ..views import (
     FacilityOperationStateListView,
     FacilityOperationStateDetailView,
     FacilityUpgradeListView,
-    FacilityUpgradeDetailView
+    FacilityUpgradeDetailView,
+    InspectionReportListView,
+    InspectionReportDetailView
 )
 urlpatterns = patterns(
     '',
+    url(r'^inspection_reports/$',
+        InspectionReportListView.as_view(),
+        name='inspection_reports_list'),
+    url(r'^inspection_reports/(?P<pk>[^/]+)/$',
+        InspectionReportDetailView.as_view(),
+        name='inspection_report_detail'),
+
     url(r'^facility_upgrade/$',
         FacilityUpgradeListView.as_view(),
         name='facility_upgrades_list'),
