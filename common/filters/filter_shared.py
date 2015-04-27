@@ -43,7 +43,7 @@ class TimeRangeFilter(django_filters.filters.Filter):
     def __init__(self, *args, **kwargs):
         self.alias = kwargs.get('alias')
         self.last_one_week = True if self.alias == 'last_one_week' else False
-        self.last_one_quater = True if self.alias == 'last_one_quater' \
+        self.last_one_quarter = True if self.alias == 'last_one_quarter' \
             else False
         self.last_one_month = True if self.alias == 'last_one_month' else False
         kwargs.pop('alias')
@@ -55,9 +55,9 @@ class TimeRangeFilter(django_filters.filters.Filter):
         if self.last_one_week:
             week_start = today - timedelta(days=6)
             return qs.filter(created__gte=week_start, created__lte=today)
-        if self.last_one_quater:
-            quater_start = today - timedelta(days=90)
-            return qs.filter(created__gte=quater_start, created__lte=today)
+        if self.last_one_quarter:
+            quarter_start = today - timedelta(days=90)
+            return qs.filter(created__gte=quarter_start, created__lte=today)
 
         if self.last_one_month:
             month_start = today - timedelta(days=30)
@@ -102,7 +102,9 @@ class CommonFieldsFilterset(django_filters.FilterSet):
         name='deleted', lookup_type='exact')
     is_active = django_filters.BooleanFilter(
         name='active', lookup_type='exact')
-    last_one_week = TimeRangeFilter(name='created', alias='last_one_week')
-    last_one_quater = TimeRangeFilter(name='created', alias='last_one_quater')
+    last_one_week = TimeRangeFilter(
+        name='created', alias='last_one_week')
+    last_one_quarter = TimeRangeFilter(
+        name='created', alias='last_one_quarter')
     last_one_month = TimeRangeFilter(
         name='created', alias='last_one_month')

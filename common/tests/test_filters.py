@@ -155,7 +155,7 @@ class TestTimeRangeFilter(BaseTestCase):
         county_1 = mommy.make(County, created=seventy_days_ago)
         mommy.make(County, created=last_five_months)
 
-        url = self.url + "?last_one_quater={}".format(
+        url = self.url + "?last_one_quarter={}".format(
             self.sanitize_time(timezone.now()))
         response = self.client.get(url)
         expected_data = {
