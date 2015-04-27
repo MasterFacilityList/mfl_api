@@ -34,16 +34,16 @@ class IsoDateTimeFilter(django_filters.DateTimeFilter):
 class TimeRangeFilter(django_filters.filters.Filter):
     """
     Filters a queryset based on the number of days needed. eg a week, a month
-    or a quater (3 months)
+    or a quarter (3 months)
 
-    It is a very naive implimentation as it does not cater for the fact that
+    It is a very naive implementation as it does not cater for the fact that
     months do not have equal number of days
     """
 
     def __init__(self, *args, **kwargs):
         self.alias = kwargs.get('alias')
         self.last_one_week = True if self.alias == 'last_one_week' else False
-        self.last_one_quater = True if self.alias == 'last_one_quater' \
+        self.last_one_quarter = True if self.alias == 'last_one_quarter' \
             else False
         self.last_one_month = True if self.alias == 'last_one_month' else False
         kwargs.pop('alias')
@@ -118,7 +118,9 @@ class CommonFieldsFilterset(django_filters.FilterSet):
         name='deleted', lookup_type='exact')
     is_active = django_filters.BooleanFilter(
         name='active', lookup_type='exact')
-    last_one_week = TimeRangeFilter(name='created', alias='last_one_week')
-    last_one_quater = TimeRangeFilter(name='created', alias='last_one_quater')
+    last_one_week = TimeRangeFilter(
+        name='created', alias='last_one_week')
+    last_one_quarter = TimeRangeFilter(
+        name='created', alias='last_one_quarter')
     last_one_month = TimeRangeFilter(
         name='created', alias='last_one_month')

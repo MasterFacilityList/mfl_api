@@ -58,7 +58,7 @@ def reset_migrations():
 def graph_models():
     """Dev only - visualize the current model relationships"""
     manage(
-        'graph_models common facilities chul -g -d '
+        'graph_models common facilities chul mfl_gis -d '
         '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
         '-o  mfl_models_graph.png')
     local('eog mfl_models_graph.png')
