@@ -11,7 +11,7 @@ WORLD_SHAPEFILE = os.path.join(
             os.path.dirname(__file__)  # Folder with this file i.e 'commands'
         )  # Parent of folder where this file is i.e 'management'
     ),  # The application folder itself i.e mfl_gis
-    'world/TM_WORLD_BORDERS-0.3.shp'
+    'data/world/TM_WORLD_BORDERS-0.3.shp'
 )
 WORLD_SHAPEFILE_MODEL_MAPPING = {
     'name': 'NAME',
