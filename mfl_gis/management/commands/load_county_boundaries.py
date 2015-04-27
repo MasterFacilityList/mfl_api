@@ -17,20 +17,22 @@ COMBINED_GEOJSON = os.path.join(
 )
 
 
-class Command(BaseCommand):
+def _get_features():
+    with open(COMBINED_GEOJSON) as f:
+        combined = json.load(f)
 
-    def handle(self, *args, **options):
-        with open(COMBINED_GEOJSON) as f:
-            combined = json.load(f)
-
-        # Easier to comprehend than a nested list comprehension
         county_features = []
         for county in combined['counties']:
             for layer in DataSource(county):
                 for feature in layer:
                     county_features.append(feature)
+        return county_features
 
-        for feature in county_features:
+
+class Command(BaseCommand):
+
+    def handle(self, *args, **options):
+        for feature in _get_features():
             code = feature.get('COUNTY_COD')
             name = feature.get('COUNTY_NAM')
             try:
