@@ -26,38 +26,22 @@ class Command(BaseCommand):
         for county in combined['counties']:
             for layer in DataSource(county):
                 for feature in layer:
+                    code = feature.get('COUNTY_COD')
+                    name = feature.get('COUNTY_NAM')
                     try:
-                        CountyBoundary.objects.get(
-                            code=feature.get('COUNTY_COD'),
-                            name=feature.get('COUNTY_NAM')
-                        )
+                        CountyBoundary.objects.get(code=code, name=name)
                         self.stdout.write(
-                            "County with id {} and name {} EXISTS".format(
-                                feature.get('COUNTY_COD'),
-                                feature.get('COUNTY_NAM')
-                            )
-                        )
+                            "Existing boundary for {}:{}".format(code, name))
                     except CountyBoundary.DoesNotExist:
                         try:
-                            county = County.objects.get(
-                                code=feature.get('COUNTY_COD'),
-                                name=feature.get('COUNTY_NAM')
-                            )
+                            county = County.objects.get(code=code, name=name)
                             CountyBoundary.objects.create(
-                                name=feature.get('COUNTY_NAM'),
-                                code=feature.get('COUNTY_COD'),
+                                name=name,
+                                code=code,
                                 mpoly=str(feature.geom),
                                 county=county
                             )
-                            self.stdout.write(
-                                "ADDED boundary for {}".format(
-                                    feature.get('COUNTY_NAM')
-                                )
-                            )
+                            self.stdout.write("+ boundary for {}".format(name))
                         except County.DoesNotExist:
                             self.stdout.write(
-                                "NO county with id {} and name {}".format(
-                                    feature.get('COUNTY_COD'),
-                                    feature.get('COUNTY_NAM')
-                                )
-                            )
+                                "NO county {}:{}".format(code, name))
