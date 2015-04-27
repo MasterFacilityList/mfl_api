@@ -125,7 +125,7 @@ class TestTimeRangeFilter(BaseTestCase):
         year = date_obj.year
         month = date_obj.month
         day = date_obj.day
-        return "{}-{}-{}T12:22:55.988064Z".format(year, month, day)
+        return "{}-{}-{} 23:59:59.999999Z".format(year, month, day)
 
     def test_last_one_week(self):
         three_days_ago = timezone.now() - timedelta(days=3)
@@ -143,6 +143,35 @@ class TestTimeRangeFilter(BaseTestCase):
                 CountySerializer(county_1).data
             ]
         }
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            _dict(response.data),
+            _dict(expected_data)
+        )
+
+    def test_last_one_week_days_closely_together(self):
+        just_before_week_start = timezone.now() - timedelta(days=8)
+        week_start = timezone.now() - timedelta(days=7)
+        mid_week = timezone.now() - timedelta(days=3)
+        right_now = timezone.now()
+        mommy.make(County, created=just_before_week_start)
+        county_2 = mommy.make(County, created=week_start)
+        county_3 = mommy.make(County, created=mid_week)
+        county_4 = mommy.make(County, created=right_now)
+        url = self.url + "?last_one_week={}".format(
+            self.sanitize_time(timezone.now()))
+        response = self.client.get(url)
+        expected_data = {
+            "count": 3,
+            "next": None,
+            "previous": None,
+            "results": [
+                CountySerializer(county_4).data,
+                CountySerializer(county_3).data,
+                CountySerializer(county_2).data
+            ]
+        }
+
         self.assertEquals(200, response.status_code)
         self.assertEquals(
             _dict(response.data),

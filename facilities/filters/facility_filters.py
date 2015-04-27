@@ -23,9 +23,15 @@ from ..models import (
     ServiceRating,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade
+    FacilityUpgrade,
+    RegulatingBodyContact
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class RegulatingBodyContactFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = RegulatingBodyContact
 
 
 class FacilityUpgradeFilter(CommonFieldsFilterset):
