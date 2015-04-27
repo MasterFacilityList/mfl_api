@@ -653,3 +653,10 @@ class InspectionReport(AbstractBase):
     The inspection report template
     """
     template = models.TextField(help_text='')
+
+
+class CoverReportTemplate(AbstractBase):
+    """
+    The cover report template.
+    """
+    template = models.TextField(help_text='')

@@ -24,7 +24,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    InspectionReport
+    InspectionReport,
+    CoverReportTemplate
 )
 
 from ..serializers import (
@@ -49,7 +50,8 @@ from ..serializers import (
     FacilityApprovalSerializer,
     FacilityOperationStateSerializer,
     FacilityUpgradeSerializer,
-    InspectionReportSerializer
+    InspectionReportSerializer,
+    CoverReportTemplateSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -74,7 +76,8 @@ from ..filters import (
     FacilityApprovalFilter,
     FacilityOperationStateFilter,
     FacilityUpgradeFilter,
-    InspectionReportFilter
+    InspectionReportFilter,
+    CoverReportTemplateFilter
 )
 
 
@@ -373,3 +376,23 @@ class InspectionReportListView(
     serializer_class = InspectionReportSerializer()
     filter_class = InspectionReportFilter
     ordering_fields = ('template', )
+
+
+class InspectionReportDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = InspectionReport.objects.all()
+    serializer_class = InspectionReportSerializer()
+
+
+class CoverReportTemplateListView(
+        AuditableDetailViewMixin, generics.ListCreateAPIView):
+    queryset = CoverReportTemplate.objects.all()
+    serializer_class = CoverReportTemplateSerializer
+    filter_class = CoverReportTemplateFilter
+    ordering_fields = ('template')
+
+
+class CoverTemplateDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = CoverReportTemplate.objects.all()
+    serializer_class = CoverReportTemplateSerializer
