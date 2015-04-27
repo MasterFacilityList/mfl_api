@@ -28,7 +28,8 @@ from ..models import (
     ServiceRating,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade
+    FacilityUpgrade,
+    RegulatingBodyContact
 )
 
 from ..serializers import (
@@ -52,7 +53,8 @@ from ..serializers import (
     ServiceRatingSerializer,
     FacilityApprovalSerializer,
     FacilityOperationStateSerializer,
-    FacilityUpgradeSerializer
+    FacilityUpgradeSerializer,
+    RegulatingBodyContactSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -76,8 +78,21 @@ from ..filters import (
     ServiceRatingFilter,
     FacilityApprovalFilter,
     FacilityOperationStateFilter,
-    FacilityUpgradeFilter
+    FacilityUpgradeFilter,
+    RegulatingBodyContactFilter
 )
+
+
+class RegulatingBodyContactListView(generics.ListCreateAPIView):
+    queryset = RegulatingBodyContact.objects.all()
+    serializer_class = RegulatingBodyContactSerializer
+    filter_class = RegulatingBodyContactFilter
+    ordering_fields = ('regulating_body', 'contact', )
+
+
+class RegulatingBodyContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = RegulatingBodyContact.objects.all()
+    serializer_class = RegulatingBodyContactSerializer
 
 
 class FacilityUpgradeListView(generics.ListCreateAPIView):

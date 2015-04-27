@@ -46,7 +46,9 @@ from ..views import (
     FacilityUpgradeListView,
     FacilityUpgradeDetailView,
     get_cover_report,
-    get_inspection_report
+    get_inspection_report,
+    RegulatingBodyContactListView,
+    RegulatingBodyContactDetilView
 )
 urlpatterns = patterns(
     '',
@@ -55,6 +57,13 @@ urlpatterns = patterns(
     url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
         get_inspection_report,
         name='facility_inspection_report'),
+
+    url(r'^regulating_body_contacts/$',
+        RegulatingBodyContactListView.as_view(),
+        name='regulating_body_contact_list'),
+    url(r'^regulating_body_contacts/(?P<pk>[^/]+)/$',
+        RegulatingBodyContactDetilView.as_view(),
+        name='regulating_body_contact_detail'),
 
     url(r'^facility_upgrade/$',
         FacilityUpgradeListView.as_view(),
