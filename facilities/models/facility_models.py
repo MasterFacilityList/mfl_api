@@ -650,7 +650,10 @@ class ServiceRating(AbstractBase):
 
 class InspectionReport(AbstractBase):
     """
-    The inspection report template
+    The inspection report template.
+
+    The template will be entered in the system via wysiwyg widget.
+    This will support a rich text.
     """
     template = models.TextField(help_text='')
 
@@ -658,5 +661,8 @@ class InspectionReport(AbstractBase):
 class CoverReportTemplate(AbstractBase):
     """
     The cover report template.
+
+    Just like the inspection report template the cover report template
+    will also be entered via wysiwyg widget.
     """
     template = models.TextField(help_text='')
