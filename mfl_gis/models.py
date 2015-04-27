@@ -139,9 +139,12 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     """
     name = gis_models.CharField(max_length=100, unique=True)
     code = gis_models.CharField(max_length=10, null=True, blank=True)
-    area = gis_models.IntegerField()
 
     mpoly = gis_models.MultiPolygonField(geography=True)
+
+    @property
+    def area(self):
+        return self.mpoly.area
 
     def __unicode__(self):
         return self.name
@@ -156,8 +159,8 @@ class WorldBorder(AdministrativeUnitBoundary):
 
     Source: http://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
     """
-    lon = gis_models.FloatField()
-    lat = gis_models.FloatField()
+    longitude = gis_models.FloatField()
+    latitude = gis_models.FloatField()
 
 
 @reversion.register
