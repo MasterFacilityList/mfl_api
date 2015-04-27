@@ -1,12 +1,16 @@
 import json
 
 from django.core.urlresolvers import reverse
+
 from rest_framework.test import APITestCase
 from model_mommy import mommy
+
 from common.tests.test_views import (
     LogginMixin,
     default
 )
+from common.models import Ward
+
 from ..serializers import (
     OwnerSerializer,
     FacilitySerializer,
@@ -226,15 +230,23 @@ class TestFacilityUnitView(LogginMixin, APITestCase):
 
 class TestInspectionAndCoverReportsView(LogginMixin, APITestCase):
     def test_inspection_report(self):
-        url = 'api:facilities:facility_inspection_report'
-        facility = mommy.make(Facility)
-        url = url + "{}/".format(facility.id)
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_inspection_report',
+            kwargs={'facility_id': facility.id})
+
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'inspection_report.txt')
 
     def test_cover_reports(self):
-        url = 'api:facilities:facility_cover_report'
-        facility = mommy.make(Facility)
-        url = url + "{}/".format(facility.id)
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_cover_report',
+            kwargs={'facility_id': facility.id})
+
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'cover_report.txt')

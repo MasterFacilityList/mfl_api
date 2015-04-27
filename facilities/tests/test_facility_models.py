@@ -386,7 +386,7 @@ class TestFacility(BaseTestCase):
         self.assertEquals("Forces Memorial", facility.__unicode__())
         self.assertIsNotNone(facility.code)
         self.assertEquals(
-            facility_reg_status.regulation_status,
+            facility_reg_status,
             facility.current_regulatory_status)
 
     def test_working_of_facility_code_sequence(self):
