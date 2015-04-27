@@ -2,7 +2,7 @@ import os
 import json
 
 from django.contrib.gis.gdal import DataSource
-from django.core.management import BaseCommand
+from django.core.management import BaseCommand, CommandError
 
 from mfl_gis.models import CountyBoundary
 from common.models import County
@@ -23,25 +23,26 @@ class Command(BaseCommand):
         with open(COMBINED_GEOJSON) as f:
             combined = json.load(f)
 
+        county_features = []
         for county in combined['counties']:
             for layer in DataSource(county):
                 for feature in layer:
-                    code = feature.get('COUNTY_COD')
-                    name = feature.get('COUNTY_NAM')
-                    try:
-                        CountyBoundary.objects.get(code=code, name=name)
-                        self.stdout.write(
-                            "Existing boundary for {}:{}".format(code, name))
-                    except CountyBoundary.DoesNotExist:
-                        try:
-                            county = County.objects.get(code=code, name=name)
-                            CountyBoundary.objects.create(
-                                name=name,
-                                code=code,
-                                mpoly=str(feature.geom),
-                                county=county
-                            )
-                            self.stdout.write("+ boundary for {}".format(name))
-                        except County.DoesNotExist:
-                            self.stdout.write(
-                                "NO county {}:{}".format(code, name))
+                    county_features.append(feature)
+
+        for feature in county_features:
+            code = feature.get('COUNTY_COD')
+            name = feature.get('COUNTY_NAM')
+            try:
+                CountyBoundary.objects.get(code=code, name=name)
+                self.stdout.write(
+                    "Existing boundary for {}:{}".format(code, name))
+            except CountyBoundary.DoesNotExist:
+                try:
+                    county = County.objects.get(code=code, name=name)
+                    CountyBoundary.objects.create(
+                        name=name, code=code, mpoly=str(feature.geom),
+                        county=county
+                    )
+                    self.stdout.write("ADDED boundary for {}".format(name))
+                except County.DoesNotExist:
+                    raise CommandError("{}:{} NOT FOUND".format(code, name))
