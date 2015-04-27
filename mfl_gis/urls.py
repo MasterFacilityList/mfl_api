@@ -6,7 +6,15 @@ from .views import (
     GeoCodeMethodListView,
     GeoCodeMethodDetailView,
     FacilityCoordinatesListView,
-    FacilityCoordinatesDetailView
+    FacilityCoordinatesDetailView,
+    WorldBorderListView,
+    CountyBoundaryListView,
+    ConstituencyBoundaryListView,
+    WardBoundaryListView,
+    WorldBorderDetailView,
+    CountyBoundaryDetailView,
+    ConstituencyBoundaryDetailView,
+    WardBoundaryDetailView
 )
 
 
@@ -29,4 +37,28 @@ urlpatterns = patterns(
     url(r'^coordinates/(?P<pk>[^/]+)/$',
         FacilityCoordinatesDetailView.as_view(),
         name='facility_coordinates_detail'),
+
+    url(r'^country_borders/$', WorldBorderListView.as_view(),
+        name='world_borders_list'),
+    url(r'^country_borders/(?P<pk>[^/]+)/$',
+        WorldBorderDetailView.as_view(),
+        name='world_border_detail'),
+
+    url(r'^county_boundaries/$', CountyBoundaryListView.as_view(),
+        name='county_boundaries_list'),
+    url(r'^county_boundaries/(?P<pk>[^/]+)/$',
+        CountyBoundaryDetailView.as_view(),
+        name='county_boundary_detail'),
+
+    url(r'^constituency_boundaries/$', ConstituencyBoundaryListView.as_view(),
+        name='constituency_boundaries_list'),
+    url(r'^constituency_boundaries/(?P<pk>[^/]+)/$',
+        ConstituencyBoundaryDetailView.as_view(),
+        name='constituency_boundary_detail'),
+
+    url(r'^ward_boundaries/$', WardBoundaryListView.as_view(),
+        name='ward_boundaries_list'),
+    url(r'^ward_boundaries/(?P<pk>[^/]+)/$',
+        WardBoundaryDetailView.as_view(),
+        name='ward_boundary_detail'),
 )
