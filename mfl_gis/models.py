@@ -138,9 +138,9 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     We retain the default SRID ( 4326 - WGS84 ).
     """
     name = gis_models.CharField(max_length=100, unique=True)
-    code = gis_models.CharField(max_length=10, null=True, blank=True)
+    code = gis_models.CharField(max_length=10, unique=True)
 
-    mpoly = gis_models.MultiPolygonField(geography=True)
+    mpoly = gis_models.MultiPolygonField()
 
     @property
     def area(self):
