@@ -22,9 +22,6 @@ LOGGER = logging.getLogger(__name__)
 
 def _get_features(feature_type):
     """Get 'counties', 'constituencies' or 'wards' features"""
-    if feature_type not in ['counties', 'constituencies', 'wards']:
-        raise CommandError('Invalid feature type "{{"'.format(feature_type))
-
     with open(COMBINED_GEOJSON) as f:
         combined = json.load(f)
 
@@ -60,3 +57,49 @@ def _get_mpoly_from_geom(geom):
                 type(geom)
             )
         )
+
+
+def _load_boundaries(
+        feature_type, boundary_cls, admin_area_cls, name_field, code_field):
+    """
+    A generic routine to load Kenyan geographic feature boundaries
+
+    It is used for counties, constituencies and wards
+
+    :param: feature_type - one of `ward`, `constituency` or `county`
+    :param: boundary_cls - e.g `WardBoundary`
+    :param: admin_area_cls e.g `Ward`
+    :param: code_field e.g `COUNTY_A_1` contains the names of wards
+    :param: name_field e.g `COUNTY_ASS` contains the ward codes
+    """
+    if feature_type not in ['counties', 'constituencies', 'wards']:
+        raise CommandError('Invalid feature type "{{"'.format(feature_type))
+
+    features = _get_features(feature_type)
+    LOGGER.debug('{} features found'.format(len(features)))
+    for feature in features:
+        code = feature.get(name_field)
+        name = feature.get(code_field)
+        LOGGER.debug('Code: {} Name: {}'.format(code, name))
+        try:
+            boundary = boundary_cls.objects.get(code=code, name=name)
+            LOGGER.debug("Existing boundary {}".format(boundary))
+        except boundary_cls.DoesNotExist:
+            try:
+                admin_area = admin_area_cls.objects.get(code=code)
+                boundary_cls.objects.create(
+                    name=name,
+                    code=code,
+                    mpoly=_get_mpoly_from_geom(feature.geom),
+                    ward=admin_area
+                )
+                LOGGER.debug("ADDED boundary for {}".format(admin_area))
+            except admin_area_cls.DoesNotExist:
+                raise CommandError(
+                    "{} {}:{} NOT FOUND".format(admin_area_cls, code, name))
+            except Exception as e:  # Broad catch, to print debug info
+                raise CommandError(
+                    "'{}' '{}'' '{}:{}:{}' and geometry \n    {}\n".format(
+                        e, feature, code, name, admin_area_cls, feature.geom
+                    )
+                )

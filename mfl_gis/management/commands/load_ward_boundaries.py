@@ -1,38 +1,18 @@
-from django.core.management import BaseCommand, CommandError
+from django.core.management import BaseCommand
 
 from mfl_gis.models import WardBoundary
 from common.models import Ward
 
-from .shared import _get_mpoly_from_geom, _get_features
+from .shared import _load_boundaries
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        features = _get_features('wards')
-        self.stdout.write('{} features found'.format(len(features)))
-        for feature in features:
-            code = feature.get('COUNTY_ASS')
-            name = feature.get('COUNTY_A_1')
-            try:
-                WardBoundary.objects.get(code=code, name=name)
-                self.stdout.write(
-                    "Existing boundary for {}:{}".format(code, name))
-            except WardBoundary.DoesNotExist:
-                try:
-                    ward = Ward.objects.get(code=code)
-                    WardBoundary.objects.create(
-                        name=name, code=code,
-                        mpoly=_get_mpoly_from_geom(feature.geom),
-                        ward=ward
-                    )
-                    self.stdout.write(
-                        "ADDED boundary for ward {}".format(name))
-                except Ward.DoesNotExist:
-                    raise CommandError("{}:{} NOT FOUND".format(code, name))
-                except Exception as e:  # Broad catch, to print debug info
-                    raise CommandError(
-                        "'{}' '{}'' '{}:{}:{}' and geometry \n    {}\n".format(
-                            e, feature, code, name, ward, feature.geom
-                        )
-                    )
+        _load_boundaries(
+            feature_type='wards',
+            boundary_cls=WardBoundary,
+            admin_area_cls=Ward,
+            name_field='COUNTY_ASS',
+            code_field='COUNTY_A_1'
+        )
