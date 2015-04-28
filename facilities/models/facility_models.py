@@ -1,7 +1,6 @@
 import reversion
 
 from django.db import models
-from django.contrib.postgres.fields import HStoreField
 from django.core.exceptions import ValidationError
 
 from common.models import (
@@ -408,7 +407,6 @@ class Facility(SequenceMixin, AbstractBase):
     parent = models.ForeignKey(
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
-    attributes = HStoreField(default='{"null": "true"}')
 
     @property
     def current_regulatory_status(self):
