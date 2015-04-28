@@ -24,7 +24,8 @@ class Command(BaseCommand):
                         mpoly=_get_mpoly_from_geom(feature.geom),
                         constituency=constituency
                     )
-                    self.stdout.write("ADDED boundary for {}".format(name))
+                    self.stdout.write(
+                        "ADDED boundary for constituency {}".format(name))
                 except Constituency.DoesNotExist:
                     raise CommandError("{}:{} NOT FOUND".format(code, name))
                 except Exception as e:  # Broad catch, to print debug info

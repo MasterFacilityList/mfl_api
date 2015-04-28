@@ -24,7 +24,8 @@ class Command(BaseCommand):
                         mpoly=_get_mpoly_from_geom(feature.geom),
                         ward=ward
                     )
-                    self.stdout.write("ADDED boundary for {}".format(name))
+                    self.stdout.write(
+                        "ADDED boundary for ward {}".format(name))
                 except Ward.DoesNotExist:
                     raise CommandError("{}:{} NOT FOUND".format(code, name))
                 except Exception as e:  # Broad catch, to print debug info

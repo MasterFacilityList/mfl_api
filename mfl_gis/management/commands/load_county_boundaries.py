@@ -24,7 +24,8 @@ class Command(BaseCommand):
                         mpoly=_get_mpoly_from_geom(feature.geom),
                         county=county
                     )
-                    self.stdout.write("ADDED boundary for {}".format(name))
+                    self.stdout.write(
+                        "ADDED boundary for county {}".format(name))
                 except County.DoesNotExist:
                     raise CommandError("{}:{} NOT FOUND".format(code, name))
                 except Exception as e:  # Broad catch, to print debug info
