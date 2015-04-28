@@ -84,9 +84,7 @@ def load_demo_data(*args, **kwargs):
 
 def load_gis_data(*args, **kwargs):
     """Load boundary data from stored GeoJSON files"""
-    manage('load_county_boundaries')
-    manage('load_constituency_boundaries')
-    manage('load_ward_boundaries')
+    manage('load_kenyan_administrative_boundaries')
 
 
 def setup(*args, **kwargs):
