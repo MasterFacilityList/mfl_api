@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'rest_framework_swagger',
     'django.contrib.gis',
+    'django.contrib.postgres',
     'rest_auth',
     'allauth',
     'allauth.account',
