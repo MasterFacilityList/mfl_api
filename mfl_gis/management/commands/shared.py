@@ -28,6 +28,8 @@ def _get_features(feature_type):
     with open(COMBINED_GEOJSON) as f:
         combined = json.load(f)
 
+        LOGGER.debug('Feature keys: {}'.format(combined.keys()))
+
         # Easier to comprehend than a nested list comprehension
         features = []
         for feature in combined[feature_type]:
@@ -37,7 +39,7 @@ def _get_features(feature_type):
                 # Handle special cases in IEBC data
                 LOGGER.error(
                     'Unable to process {} {}'.format(feature_type, feature))
-                break
+                continue
 
             for layer in ds:
                 for feature in layer:
