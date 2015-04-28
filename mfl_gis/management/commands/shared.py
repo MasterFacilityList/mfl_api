@@ -141,12 +141,12 @@ def _load_boundaries(
     :param: name_field e.g `COUNTY_ASS` contains the ward codes
     """
     errors = []
+
     for feature in _get_features(feature_type):
         try:
             code, name = _get_code_and_name(feature, name_field, code_field)
             boundary = boundary_cls.objects.get(code=code, name=name)
-
-            LOGGER.debug("Existing boundary {}".format(boundary))
+            LOGGER.debug("Existing boundary for '{}'".format(boundary))
         except boundary_cls.DoesNotExist:
             try:
                 admin_area = admin_area_cls.objects.get(code=code)
@@ -156,16 +156,15 @@ def _load_boundaries(
                     mpoly=_get_mpoly_from_geom(feature.geom),
                     area=admin_area
                 )
-                LOGGER.debug("ADDED boundary for {}".format(admin_area))
+                LOGGER.debug("ADDED boundary for '{}'".format(admin_area))
             except admin_area_cls.DoesNotExist:
                 errors.append(
                     "{} {}:{} NOT FOUND".format(admin_area_cls, code, name))
         except Exception as e:  # Broad catch, to print debug info
             errors.append(
                 "{}:{}:{}:{}:{}".format(
-                    e, feature,
+                    e, feature, admin_area_cls, boundary_cls,
                     {field: feature.get(field) for field in feature.fields},
-                    admin_area_cls, boundary_cls
                 )
             )
 

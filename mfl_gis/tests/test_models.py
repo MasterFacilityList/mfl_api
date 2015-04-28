@@ -45,8 +45,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         source = mommy.make(GeoCodeSource)
         data = {
             "facility": facility,
-            "latitude": "78.99",
-            "longitude": "67.54",
+            "coordinates": "POINT(-1.295241, 36.805127)",
             "method": method,
             "source": source,
             "collection_date": timezone.now()
