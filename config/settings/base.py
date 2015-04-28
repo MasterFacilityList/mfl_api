@@ -213,6 +213,14 @@ LOGGING = {
         'users': {
             'handlers': ['console'],
             'level': 'DEBUG'
+        },
+        'data_bootstrap': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },
+        'mfl_gis': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
         }
     }
 }

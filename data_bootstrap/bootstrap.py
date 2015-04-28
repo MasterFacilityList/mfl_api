@@ -1,7 +1,11 @@
 import json
+import logging
 
 from functools import partial
 from django.db.models import get_model
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def get_model_cls(model):
@@ -13,7 +17,14 @@ def resolve_foreign_key(model_cls, field_data):
     # to prevent any modifications making their way back to
     # the original dict
     assert isinstance(field_data, dict)
-    instance = model_cls.objects.get(**field_data)
+    try:
+        instance = model_cls.objects.get(**field_data)
+    except:
+        LOGGER.error(
+            'Unable to get an instance of {} with {}'
+            .format(model_cls, field_data)
+        )
+        raise
     return instance
 
 

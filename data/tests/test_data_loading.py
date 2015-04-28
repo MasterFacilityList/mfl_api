@@ -19,25 +19,25 @@ class TestDataLoading(TestCase):
             settings.BASE_DIR, 'data/data/0004_facility_status.json')
         geo_code_files = os.path.join(
             settings.BASE_DIR, 'data/data/0005_geo_codes_methods.json')
+        job_titles = os.path.join(
+            settings.BASE_DIR, 'data/data/0006_job_titles.json')
         service_cat_files = os.path.join(
             settings.BASE_DIR, 'data/data/0007_service_categories.json')
         services = os.path.join(
             settings.BASE_DIR, 'data/data/0008_the_services.json')
         wards_files = os.path.join(
             settings.BASE_DIR, 'data/data/0009_wards.json')
-        job_titles = os.path.join(
-            settings.BASE_DIR, 'data/data/0006_job_titles.json')
 
         call_command('bootstrap', county_files)
         call_command('bootstrap', constituencies_files)
         call_command('bootstrap', owners_files)
         call_command('bootstrap', status_files)
         call_command('bootstrap', geo_code_files)
+        call_command('bootstrap', job_titles)
         call_command('bootstrap', service_cat_files)
         call_command('bootstrap', services)
         call_command('bootstrap', wards_files)
-        call_command('bootstrap', job_titles)
 
-        self.assertEquals(22, County.objects.all().count())
-        self.assertEquals(112, Constituency.objects.all().count())
-        self.assertEquals(543, Ward.objects.all().count())
+        self.assertEquals(47, County.objects.all().count())
+        self.assertEquals(290, Constituency.objects.all().count())
+        self.assertEquals(1391, Ward.objects.all().count())

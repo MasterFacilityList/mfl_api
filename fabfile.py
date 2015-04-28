@@ -58,7 +58,7 @@ def reset_migrations():
 def graph_models():
     """Dev only - visualize the current model relationships"""
     manage(
-        'graph_models common facilities chul -g -d '
+        'graph_models common facilities chul mfl_gis -d '
         '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
         '-o  mfl_models_graph.png')
     local('eog mfl_models_graph.png')
@@ -77,6 +77,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def load_demo_data(*args, **kwargs):
+    """Loads demo data for testing purpose. Do not use this in production"""
     data_files = join(BASE_DIR, 'data/data/*')
     manage('bootstrap', data_files)
 

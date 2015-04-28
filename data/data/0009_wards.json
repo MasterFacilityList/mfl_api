@@ -2,7 +2,7 @@
     {
         "model": "common.Ward",
         "unique_fields": [
-            "name"
+            "code"
         ],
         "records": [
             {
@@ -347,6 +347,13 @@
                 },
                 "code": 49,
                 "name": "MWAVUMBO"
+            },
+            {
+                "constituency": {
+                    "code": 10
+                },
+                "code": 50,
+                "name": "KASEMENI"
             },
             {
                 "constituency": {
@@ -1463,6 +1470,13 @@
             },
             {
                 "constituency": {
+                    "code": 42
+                },
+                "code": 210,
+                "name": "SHIMBIR FATUMA"
+            },
+            {
+                "constituency": {
                     "code": 43
                 },
                 "code": 211,
@@ -1992,6 +2006,13 @@
                 },
                 "code": 286,
                 "name": "ABOTHUGUCHI CENTRAL"
+            },
+            {
+                "constituency": {
+                    "code": 58
+                },
+                "code": 287,
+                "name": "ABOTHUGUCHI WEST"
             },
             {
                 "constituency": {
@@ -3969,59 +3990,58 @@
             },
             {
                 "constituency": {
-                    "code": null
+                    "code": 115
                 },
-                "code": null,
-                "name": null
+                "name": "GITOTHUA",
+                "code": 569
             },
             {
                 "constituency": {
-                    "code": null
+                    "code": 115
                 },
-                "code": null,
-                "name": null
+                "name": "BIASHARA",
+                "code": 570
             },
             {
                 "constituency": {
-                    "code": null
+                    "code": 115
                 },
-                "code": null,
-                "name": null
+                "name": "GATONGORA",
+                "code": 571
             },
             {
                 "constituency": {
-                    "code": null
+                    "code": 115
                 },
-                "code": null,
-                "name": null
+                "name": "KAHAWA/SUKARI",
+                "code": 572
+            },
+            {   
+                "constituency": {
+                    "code": 115
+                },
+                "name": "KAHAWA WENDANI",
+                "code": 573
+            },
+            {   "constituency": {
+                    "code": 115
+                },
+                "name": "KIUU",
+                "code": 574
             },
             {
                 "constituency": {
-                    "code": null
+                    "code": 115
                 },
-                "code": null,
-                "name": null
+                "name": "MWIKI",
+                "code": 575
             },
             {
                 "constituency": {
-                    "code": null
+                    "code": 115
                 },
-                "code": null,
-                "name": null
-            },
-            {
-                "constituency": {
-                    "code": null
-                },
-                "code": null,
-                "name": null
-            },
-            {
-                "constituency": {
-                    "code": null
-                },
-                "code": null,
-                "name": null
+                "name": "MWIHOKO",
+                "code": 576
             },
             {
                 "constituency": {
@@ -4466,6 +4486,13 @@
             },
             {
                 "constituency": {
+                    "code": 128
+                },
+                "code": 640,
+                "name": "LOKORI/KOCHODIN"
+            },
+            {
+                "constituency": {
                     "code": 129
                 },
                 "code": 641,
@@ -4708,6 +4735,13 @@
                 },
                 "code": 675,
                 "name": "WAMBA NORTH"
+            },
+            {
+                "constituency": {
+                    "code": 136
+                },
+                "code": 676,
+                "name": "KAPOMBOI"
             },
             {
                 "constituency": {
@@ -5114,6 +5148,20 @@
                 },
                 "code": 733,
                 "name": "ENDO"
+            },
+            {
+                "constituency": {
+                    "code": 147
+                },
+                "code": 734,
+                "name": "EMBOBUT / EMBULOT"
+            },
+            {
+                "constituency": {
+                    "code": 148
+                },
+                "code": 735,
+                "name": "LELAN"
             },
             {
                 "constituency": {
@@ -10098,6 +10146,13 @@
                 },
                 "code": 1447,
                 "name": "HURUMA"
+            },
+            {
+                "constituency": {
+                    "code": 290
+                },
+                "code": 1448,
+                "name": "NGEI"
             },
             {
                 "constituency": {

@@ -95,16 +95,13 @@ class PhysicalAddress(AbstractBase):
 
 
 @reversion.register
-class RegionAbstractBase(AbstractBase, SequenceMixin):
+class County(SequenceMixin, AbstractBase):
     """
-    Model to supply the common attributes of a region.
+    This is the largest administrative/political division in Kenya.
 
-    A  region is an Administrative/political hierarchy and includes the
-    following levels:
-        1. County,
-        2. Constituency,
-        3. Sub-county,
-        4. ward
+    Kenya is divided in 47 different counties.
+
+    Code generation is handled by the custom save method in RegionAbstractBase
     """
     name = models.CharField(
         max_length=100, unique=True,
@@ -119,29 +116,14 @@ class RegionAbstractBase(AbstractBase, SequenceMixin):
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()
-        super(RegionAbstractBase, self).save(*args, **kwargs)
-
-    class Meta(AbstractBase.Meta):
-        abstract = True
-
-
-@reversion.register
-class County(RegionAbstractBase):
-    """
-    This is the largest administrative/political division in Kenya.
-
-    Kenya is divided in 47 different counties.
-
-    Code generation is handled by the custom save method in RegionAbstractBase
-    """
-    pass  # Everything, including __unicode__ is handled by the abstract model
+        super(County, self).save(*args, **kwargs)
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'counties'
 
 
 @reversion.register
-class Constituency(RegionAbstractBase):
+class Constituency(SequenceMixin, AbstractBase):
     """
     Counties in Kenya are divided into constituencies.
 
@@ -151,17 +133,32 @@ class Constituency(RegionAbstractBase):
 
     Code generation is handled by the custom save method in RegionAbstractBase
     """
+    name = models.CharField(
+        max_length=100,
+        help_text="Name og the region may it be e.g Nairobi")
+    code = SequenceField(
+        unique=True,
+        help_text="A unique_code 4 digit number representing the region.")
     county = models.ForeignKey(
         County,
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
 
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Constituency, self).save(*args, **kwargs)
+
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'constituencies'
+        unique_together = ('county', 'name',)
 
 
 @reversion.register
-class Ward(AbstractBase):
+class Ward(SequenceMixin, AbstractBase):
     """
     The Kenyan counties are sub divided into wards.
 
@@ -185,6 +182,14 @@ class Ward(AbstractBase):
     @property
     def county(self):
         return self.constituency.county
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Ward, self).save(*args, **kwargs)
 
 
 @reversion.register

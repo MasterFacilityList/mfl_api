@@ -31,7 +31,12 @@ def get_wards():
                     'code': props.get('CONST_CODE')
                 }
             }
-            formatted_wards.append(ward_dict)
+            if not ward_dict.get('name'):
+                import pdb
+                pdb.set_trace()
+
+            else:
+                formatted_wards.append(ward_dict)
         except:
 
             print "Ward with code {} not parsable".format(index)
