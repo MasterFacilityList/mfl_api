@@ -2,7 +2,7 @@ import os
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.gdal import DataSource
-from model_mommy.recipe import Recipe, foreign_key, seq
+from model_mommy.recipe import Recipe, foreign_key
 
 from common.models import County, Constituency, Ward
 from facilities.models import Facility
@@ -11,6 +11,7 @@ from mfl_gis.management.commands.shared import _get_mpoly_from_geom
 
 from ..models import (
     FacilityCoordinates,
+    WorldBorder,
     CountyBoundary,
     ConstituencyBoundary,
     WardBoundary
@@ -23,6 +24,14 @@ CONSTITUENCY_BORDER = DataSource(
     os.path.join(CUR_DIR, 'dagoretti_north_constituency_boundary.geojson'))
 WARD_BORDER = DataSource(
     os.path.join(CUR_DIR, 'kilimani_ward_boundary.geojson'))
+KENYA_BORDER = DataSource(
+    os.path.join(CUR_DIR, 'kenya_boundary.geojson'))
+
+
+country_boundary_recipe = Recipe(
+    WorldBorder,
+    mpoly=_get_mpoly_from_geom(KENYA_BORDER[0].get_geoms()[0])
+)
 
 
 county_recipe = Recipe(
@@ -58,17 +67,17 @@ ward_boundary_recipe = Recipe(
     mpoly=_get_mpoly_from_geom(WARD_BORDER[0].get_geoms()[0])
 )
 
-MEMOIZED_WARD = None
-
 
 def _get_ward():
     """We need to use the same ward each time we make a facility"""
-    global MEMOIZED_WARD  # Yikes!
-    if not MEMOIZED_WARD:
-        MEMOIZED_WARD = ward_recipe.make()
-        ward_boundary_recipe.make(ward=MEMOIZED_WARD)
+    ward = ward_recipe.make()
 
-    return MEMOIZED_WARD
+    ward_boundary_recipe.make(area=ward)
+    constituency_boundary_recipe.make(area=ward.constituency)
+    county_boundary_recipe.make(area=ward.constituency.county)
+    country_boundary_recipe.make(code='KEN')
+
+    return ward
 
 
 facility_recipe = Recipe(
@@ -79,5 +88,5 @@ facility_recipe = Recipe(
 facility_coordinates_recipe = Recipe(
     FacilityCoordinates,
     facility=foreign_key(facility_recipe),
-    coordinates=Point(-1.295241, 36.805127)
+    coordinates=Point(36.78378206656476, -1.2840274151085824)  # x, y
 )

@@ -185,7 +185,7 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     # in model_mommy ( a testing tool )
     # The impact of this is minimal; these models hold setup data that is
     # loaded and tested during each build
-    mpoly = gis_models.MultiPolygonField(null=True, blank=True)
+    mpoly = gis_models.MultiPolygonField(null=True, blank=True, geography=True)
 
     @property
     def area(self):

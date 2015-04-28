@@ -1,9 +1,5 @@
-from django.utils import timezone
-from django.contrib.gis.geos import Point
 from model_mommy import mommy
-
 from common.tests.test_models import BaseTestCase
-from facilities.models import Facility
 
 from ..models import GeoCodeSource, GeoCodeMethod, FacilityCoordinates
 
@@ -41,22 +37,14 @@ class TesGeoCodeMethodModel(BaseTestCase):
 
 class TestFacilityCoordinatesModel(BaseTestCase):
     def test_save(self):
-        facility = mommy.make(Facility, name="Nairobi Hospital")
-        method = mommy.make(GeoCodeMethod)
-        source = mommy.make(GeoCodeSource)
-        data = {
-            "facility": facility,
-            "coordinates": Point(-1.295241, 36.805127),
-            "method": method,
-            "source": source,
-            "collection_date": timezone.now()
-        }
-        data = self.inject_audit_fields(data)
-        facility_gps = FacilityCoordinates.objects.create(**data)
+        facility_gps = mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe'
+        )
         self.assertEquals(1, FacilityCoordinates.objects.count())
 
         # test unicode
-        self.assertEquals("Nairobi Hospital", facility_gps.__unicode__())
+        self.assertEquals(
+            facility_gps.facility.name, facility_gps.__unicode__())
 
     def test_validate_longitude_and_latitude_within_kenya_valid(self):
         pass

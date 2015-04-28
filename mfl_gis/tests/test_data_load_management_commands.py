@@ -7,6 +7,16 @@ from django.conf import settings
 
 class TestLoadKenyaBoundaries(BaseTestCase):
     def test_default_load(self):
-        data_files = os.path.join(settings.BASE_DIR, 'data/data/*')
-        call_command('bootstrap', data_files)
+        county_files = os.path.join(
+            settings.BASE_DIR, 'data/data/0001_counties.json')
+        constituencies_files = os.path.join(
+            settings.BASE_DIR, 'data/data/0002_constituencies.json')
+        wards_files = os.path.join(
+            settings.BASE_DIR, 'data/data/0009_wards.json')
+
+        call_command('bootstrap', county_files)
+        call_command('bootstrap', constituencies_files)
+        call_command('bootstrap', wards_files)
+
+        call_command('load_world_boundaries')
         call_command('load_kenyan_administrative_boundaries')
