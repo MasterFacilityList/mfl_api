@@ -179,7 +179,7 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     All common operations and fields are here.
     We retain the default SRID ( 4326 - WGS84 ).
     """
-    name = gis_models.CharField(max_length=100, unique=True)
+    name = gis_models.CharField(max_length=100)
     code = gis_models.CharField(max_length=10, unique=True)
 
     # Making this field nullable is a temporary band-aid for a deficiency

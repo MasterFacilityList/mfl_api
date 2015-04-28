@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
+                ('name', models.CharField(help_text=b'Name of the region  e.g Nairobi', max_length=100)),
                 ('code', common.fields.SequenceField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, blank=True)),
             ],
             options={
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'verbose_name_plural': 'constituencies',
             },
-            bases=(models.Model, common.models.base.SequenceMixin),
+            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Contact',
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
+                ('name', models.CharField(help_text=b'Name of the regions e.g Nairobi', unique=True, max_length=100)),
                 ('code', common.fields.SequenceField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'verbose_name_plural': 'counties',
             },
-            bases=(models.Model, common.models.base.SequenceMixin),
+            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='PhysicalAddress',
@@ -170,7 +170,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('name', models.CharField(help_text=b'Name og the region may it be e.g Nairobi', unique=True, max_length=100)),
+                ('name', models.CharField(help_text=b'Name of the region e.g Nairobi', max_length=100)),
                 ('code', common.fields.SequenceField(help_text=b'A unique_code 4 digit number representing the region.', unique=True, blank=True)),
                 ('constituency', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Constituency', help_text=b'The constituency where the ward is located.')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -180,7 +180,7 @@ class Migration(migrations.Migration):
                 'ordering': ('-updated', '-created'),
                 'abstract': False,
             },
-            bases=(models.Model, common.models.base.SequenceMixin),
+            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.AddField(
             model_name='physicaladdress',
@@ -221,5 +221,9 @@ class Migration(migrations.Migration):
             model_name='constituency',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AlterUniqueTogether(
+            name='constituency',
+            unique_together=set([('county', 'name')]),
         ),
     ]
