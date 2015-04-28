@@ -57,6 +57,7 @@ class TownSerializer(
 
 class WardSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    county = serializers.CharField(read_only=True)
 
     class Meta(object):
         model = Ward
