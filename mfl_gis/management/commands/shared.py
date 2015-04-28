@@ -22,9 +22,6 @@ LOGGER = logging.getLogger(__name__)
 
 def _get_features(feature_type):
     """Get 'counties', 'constituencies' or 'wards' features"""
-    if feature_type not in ['counties', 'constituencies', 'wards']:
-        raise CommandError('Invalid feature type "{{"'.format(feature_type))
-
     with open(COMBINED_GEOJSON) as f:
         combined = json.load(f)
 
@@ -160,13 +157,6 @@ def _load_boundaries(
             except admin_area_cls.DoesNotExist:
                 errors.append(
                     "{} {}:{} NOT FOUND".format(admin_area_cls, code, name))
-        except Exception as e:  # Broad catch, to print debug info
-            errors.append(
-                "{}:{}:{}:{}:{}".format(
-                    e, feature, admin_area_cls, boundary_cls,
-                    {field: feature.get(field) for field in feature.fields},
-                )
-            )
 
     if errors:
         raise CommandError('\n'.join(errors))

@@ -187,10 +187,6 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     # loaded and tested during each build
     mpoly = gis_models.MultiPolygonField(null=True, blank=True, geography=True)
 
-    @property
-    def area(self):
-        return self.mpoly.area
-
     def __unicode__(self):
         return self.name
 
