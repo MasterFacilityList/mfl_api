@@ -40,4 +40,4 @@ class TestDataLoading(TestCase):
 
         self.assertEquals(47, County.objects.all().count())
         self.assertEquals(290, Constituency.objects.all().count())
-        self.assertEquals(1391, Ward.objects.all().count())
+        self.assertEquals(1450, Ward.objects.all().count())
