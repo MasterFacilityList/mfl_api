@@ -154,7 +154,6 @@ class FacilityCoordinates(GISAbstractBase):
                     )
                 )
         except WardBoundary.DoesNotExist:
-            # Allow this to pass...there are 6/1450 wards with no boundaries
             LOGGER.error(
                 'Ward {} does not have boundary info' % self.facility.ward)
 

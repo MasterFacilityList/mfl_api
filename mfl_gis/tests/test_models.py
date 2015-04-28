@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.contrib.gis.geos import Point
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
@@ -45,7 +46,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         source = mommy.make(GeoCodeSource)
         data = {
             "facility": facility,
-            "coordinates": "POINT(-1.295241, 36.805127)",
+            "coordinates": Point(-1.295241, 36.805127),
             "method": method,
             "source": source,
             "collection_date": timezone.now()
