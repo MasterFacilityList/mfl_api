@@ -52,10 +52,28 @@ def read_the_facilities_file():
                 number_of_cots = row[44]
                 abbreviation = row[83]
 
-                if number_of_cots == "":
+                if number_of_cots == "" or not number_of_cots or number_of_cots == "Num_Cots":
                     number_of_cots = 0
+                else:
+                    number_of_cots = int(number_of_cots)
+
+                if number_of_beds == "" or not number_of_beds or number_of_beds == "Num_Beds":
+                    number_of_beds = 0
+                else:
+                    number_of_beds = int(number_of_beds)
+
                 open_whole_day = row[68]
                 open_whole_week = row[69]
+
+                if open_whole_day == "0":
+                    open_whole_day = False
+                else:
+                    open_whole_day = True
+
+                if open_whole_week == "0":
+                    open_whole_week = False
+                else:
+                    open_whole_week = True
 
                 is_published = row[90]
 
