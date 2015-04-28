@@ -13,6 +13,6 @@ class Command(BaseCommand):
             feature_type='wards',
             boundary_cls=WardBoundary,
             admin_area_cls=Ward,
-            name_field='COUNTY_ASS',
-            code_field='COUNTY_A_1'
+            name_field='COUNTY_A_1',
+            code_field='COUNTY_ASS'
         )

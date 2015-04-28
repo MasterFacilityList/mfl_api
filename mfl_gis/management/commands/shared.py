@@ -59,6 +59,75 @@ def _get_mpoly_from_geom(geom):
         )
 
 
+def _feature_has_ward_name(feature):
+    """Because I am too lazy to monkey-patch feature [ GeoDjango ]"""
+    try:
+        return True if feature.get('Ward_Name') else False
+    except:
+        return False
+
+
+def _get_code_and_name(feature, name_field, code_field):
+    """This exists solely for the purpose of handling 'special cases'
+
+    i.e. compensating for inconsistencies in IEBC sourced GeoJSON
+    """
+    # Special cases
+    malformed_geojson_wards = [
+        {
+            'OBJECTID': 5763,
+            'Ward_Name': 'GITOTHUA',
+            'CODE': 569
+        },
+        {
+            'OBJECTID': 5763,
+            'Ward_Name': 'BIASHARA',
+            'CODE': 570
+        },
+        {
+            'OBJECTID': 3219,
+            'Ward_Name': 'GATONGORA',
+            'CODE': 571
+        },
+        {
+            'OBJECTID': 3219,
+            'Ward_Name': 'KAHAWA/SUKARI',
+            'CODE': 572
+        },
+        {
+            'OBJECTID': 3219,
+            'Ward_Name': 'KAHAWA WENDANI',
+            'CODE': 573
+        },
+        {
+            'OBJECTID': 3219,
+            'Ward_Name': 'KIUU',
+            'CODE': 574
+        },
+        {
+            'OBJECTID': 3219,
+            'Ward_Name': 'MWIKI',
+            'CODE': 575
+        },
+        {
+            'OBJECTID': 3219,
+            'Ward_Name': 'MWIHOKO',
+            'CODE': 576
+        }
+    ]
+
+    # Inefficient, but this is used in a one off operation
+    for ward in malformed_geojson_wards:
+        if (
+            _feature_has_ward_name(feature)
+            and feature.get('OBJECTID') == ward['OBJECTID']
+            and feature.get('Ward_Name') == ward['Ward_Name']
+        ):
+            return ward['CODE'], ward['Ward_Name']
+
+    return feature.get(code_field), feature.get(name_field)
+
+
 def _load_boundaries(
         feature_type, boundary_cls, admin_area_cls, name_field, code_field):
     """
@@ -76,16 +145,11 @@ def _load_boundaries(
         raise CommandError('Invalid feature type "{{"'.format(feature_type))
 
     features = _get_features(feature_type)
-    LOGGER.debug('{} features found'.format(len(features)))
 
     errors = []
     for feature in features:
         try:
-            code = feature.get(name_field)
-            name = feature.get(code_field)
-
-            LOGGER.debug('Code: {} Name: {}'.format(code, name))
-
+            code, name = _get_code_and_name(feature, name_field, code_field)
             boundary = boundary_cls.objects.get(code=code, name=name)
 
             LOGGER.debug("Existing boundary {}".format(boundary))
@@ -104,8 +168,10 @@ def _load_boundaries(
                     "{} {}:{} NOT FOUND".format(admin_area_cls, code, name))
         except Exception as e:  # Broad catch, to print debug info
             errors.append(
-                "'{}' '{}'' '{}:{}:{}:{}'".format(
-                    e, feature, code, name, admin_area_cls, boundary_cls
+                "{}:{}:{}:{}:{}".format(
+                    e, feature,
+                    {field: feature.get(field) for field in feature.fields},
+                    admin_area_cls, boundary_cls
                 )
             )
 
