@@ -7,6 +7,7 @@ from .shared import _load_boundaries
 
 
 class Command(BaseCommand):
+    """Load the boundaries of counties, constituencies and wards"""
 
     def handle(self, *args, **options):
         _load_boundaries(

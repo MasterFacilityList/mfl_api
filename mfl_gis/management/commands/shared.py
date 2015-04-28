@@ -22,27 +22,26 @@ LOGGER = logging.getLogger(__name__)
 
 def _get_features(feature_type):
     """Get 'counties', 'constituencies' or 'wards' features"""
+    if feature_type not in ['counties', 'constituencies', 'wards']:
+        raise CommandError('Invalid feature type "{{"'.format(feature_type))
+
     with open(COMBINED_GEOJSON) as f:
         combined = json.load(f)
 
-        LOGGER.debug('Feature keys: {}'.format(combined.keys()))
+    # Easier to comprehend than a nested list comprehension
+    features = []
+    for feature in combined[feature_type]:
+        try:
+            features.extend(
+                [feature for layer in DataSource(feature) for feature in layer]
+            )
+        except:
+            # Handle special cases in IEBC data
+            LOGGER.error(
+                'Unable to process {} {}'.format(feature_type, feature))
+            continue
 
-        # Easier to comprehend than a nested list comprehension
-        features = []
-        for feature in combined[feature_type]:
-            try:
-                ds = DataSource(feature)
-            except:
-                # Handle special cases in IEBC data
-                LOGGER.error(
-                    'Unable to process {} {}'.format(feature_type, feature))
-                continue
-
-            for layer in ds:
-                for feature in layer:
-                    features.append(feature)
-
-        return features
+    return features
 
 
 def _get_mpoly_from_geom(geom):
@@ -141,13 +140,8 @@ def _load_boundaries(
     :param: code_field e.g `COUNTY_A_1` contains the names of wards
     :param: name_field e.g `COUNTY_ASS` contains the ward codes
     """
-    if feature_type not in ['counties', 'constituencies', 'wards']:
-        raise CommandError('Invalid feature type "{{"'.format(feature_type))
-
-    features = _get_features(feature_type)
-
     errors = []
-    for feature in features:
+    for feature in _get_features(feature_type):
         try:
             code, name = _get_code_and_name(feature, name_field, code_field)
             boundary = boundary_cls.objects.get(code=code, name=name)

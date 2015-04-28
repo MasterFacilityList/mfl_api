@@ -58,26 +58,26 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         # test unicode
         self.assertEquals("Nairobi Hospital", facility_gps.__unicode__())
 
-    def test_validate_longitude_and_latitude_within_kenya_valid():
+    def test_validate_longitude_and_latitude_within_kenya_valid(self):
         pass
 
-    def test_validate_longitude_and_latitude_within_kenya_invalid():
+    def test_validate_longitude_and_latitude_within_kenya_invalid(self):
         pass
 
-    def test_validate_longitude_and_latitude_within_county_valid():
+    def test_validate_longitude_and_latitude_within_county_valid(self):
         pass
 
-    def test_validate_longitude_and_latitude_within_county_invalid():
+    def test_validate_longitude_and_latitude_within_county_invalid(self):
         pass
 
-    def test_validate_longitude_and_latitude_within_constituency_valid():
+    def test_validate_longitude_and_latitude_within_constituency_valid(self):
         pass
 
-    def test_validate_longitude_and_latitude_within_constituency_invalid():
+    def test_validate_longitude_and_latitude_within_constituency_invalid(self):
         pass
 
-    def test_validate_longitude_and_latitude_within_ward_valid():
+    def test_validate_longitude_and_latitude_within_ward_valid(self):
         pass
 
-    def test_validate_longitude_and_latitude_within_ward_invalid():
+    def test_validate_longitude_and_latitude_within_ward_invalid(self):
         pass
