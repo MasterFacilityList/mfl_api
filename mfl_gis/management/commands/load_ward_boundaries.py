@@ -18,8 +18,7 @@ class Command(BaseCommand):
                     "Existing boundary for {}:{}".format(code, name))
             except WardBoundary.DoesNotExist:
                 try:
-                    ward = Ward.objects.get(
-                        code=code, name=name)
+                    ward = Ward.objects.get(code=code)
                     WardBoundary.objects.create(
                         name=name, code=code,
                         poly=_get_mpoly_from_geom(feature.geom),

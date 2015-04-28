@@ -18,8 +18,7 @@ class Command(BaseCommand):
                     "Existing boundary for {}:{}".format(code, name))
             except ConstituencyBoundary.DoesNotExist:
                 try:
-                    constituency = Constituency.objects.get(
-                        code=code, name=name)
+                    constituency = Constituency.objects.get(code=code)
                     ConstituencyBoundary.objects.create(
                         name=name, code=code,
                         mpoly=_get_mpoly_from_geom(feature.geom),

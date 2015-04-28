@@ -18,7 +18,7 @@ class Command(BaseCommand):
                     "Existing boundary for {}:{}".format(code, name))
             except CountyBoundary.DoesNotExist:
                 try:
-                    county = County.objects.get(code=code, name=name)
+                    county = County.objects.get(code=code)
                     CountyBoundary.objects.create(
                         name=name, code=code,
                         mpoly=_get_mpoly_from_geom(feature.geom),
