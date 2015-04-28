@@ -160,7 +160,7 @@ def _load_boundaries(
                     name=name,
                     code=code,
                     mpoly=_get_mpoly_from_geom(feature.geom),
-                    ward=admin_area
+                    area=admin_area
                 )
                 LOGGER.debug("ADDED boundary for {}".format(admin_area))
             except admin_area_cls.DoesNotExist:

@@ -108,7 +108,10 @@ class FacilityCoordinates(GISAbstractBase):
         pass
 
     def validate_longitude_and_latitude_within_ward(self):
-        pass
+        try:
+            pass
+        except WardBoundary.DoesNotExist:
+            pass
 
     def clean(self):
         self.validate_longitude_and_latitude_within_kenya()
@@ -163,7 +166,7 @@ class WorldBorder(AdministrativeUnitBoundary):
 
 @reversion.register
 class CountyBoundary(AdministrativeUnitBoundary):
-    county = gis_models.OneToOneField(County)
+    area = gis_models.OneToOneField(County)
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'county boundaries'
@@ -171,7 +174,7 @@ class CountyBoundary(AdministrativeUnitBoundary):
 
 @reversion.register
 class ConstituencyBoundary(AdministrativeUnitBoundary):
-    constituency = gis_models.OneToOneField(Constituency)
+    area = gis_models.OneToOneField(Constituency)
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'constituency boundaries'
@@ -179,7 +182,7 @@ class ConstituencyBoundary(AdministrativeUnitBoundary):
 
 @reversion.register
 class WardBoundary(AdministrativeUnitBoundary):
-    ward = gis_models.OneToOneField(Ward)
+    area = gis_models.OneToOneField(Ward)
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'
