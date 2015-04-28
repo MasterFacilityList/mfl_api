@@ -21,7 +21,7 @@ class Command(BaseCommand):
                     ward = Ward.objects.get(code=code)
                     WardBoundary.objects.create(
                         name=name, code=code,
-                        poly=_get_mpoly_from_geom(feature.geom),
+                        mpoly=_get_mpoly_from_geom(feature.geom),
                         ward=ward
                     )
                     self.stdout.write("ADDED boundary for {}".format(name))
