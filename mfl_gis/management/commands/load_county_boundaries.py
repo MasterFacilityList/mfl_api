@@ -1,38 +1,15 @@
-import os
-import json
-
-from django.contrib.gis.gdal import DataSource
 from django.core.management import BaseCommand, CommandError
 
 from mfl_gis.models import CountyBoundary
 from common.models import County
 
-COMBINED_GEOJSON = os.path.join(
-    os.path.dirname(
-        os.path.dirname(
-            os.path.dirname(__file__)  # Folder with this file i.e 'commands'
-        )  # Parent of folder where this file is i.e 'management'
-    ),  # The application folder itself i.e mfl_gis
-    'data/kenya_gis_formatted.json'
-)
-
-
-def _get_features():
-    with open(COMBINED_GEOJSON) as f:
-        combined = json.load(f)
-
-        county_features = []
-        for county in combined['counties']:
-            for layer in DataSource(county):
-                for feature in layer:
-                    county_features.append(feature)
-        return county_features
+from .shared import _get_mpoly_from_geom, _get_features
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        for feature in _get_features():
+        for feature in _get_features('counties'):
             code = feature.get('COUNTY_COD')
             name = feature.get('COUNTY_NAM')
             try:
@@ -43,9 +20,16 @@ class Command(BaseCommand):
                 try:
                     county = County.objects.get(code=code, name=name)
                     CountyBoundary.objects.create(
-                        name=name, code=code, mpoly=str(feature.geom),
+                        name=name, code=code,
+                        mpoly=_get_mpoly_from_geom(feature.geom),
                         county=county
                     )
                     self.stdout.write("ADDED boundary for {}".format(name))
                 except County.DoesNotExist:
                     raise CommandError("{}:{} NOT FOUND".format(code, name))
+                except Exception as e:  # Broad catch, to print debug info
+                    raise CommandError(
+                        "'{}' '{}'' '{}:{}:{}' and geometry \n    {}\n".format(
+                            e, feature, code, name, county, feature.geom
+                        )
+                    )

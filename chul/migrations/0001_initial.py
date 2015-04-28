@@ -250,4 +250,8 @@ class Migration(migrations.Migration):
             name='communityhealthworker',
             unique_together=set([('id_number', 'health_unit')]),
         ),
+        migrations.AlterUniqueTogether(
+            name='community',
+            unique_together=set([('name', 'ward')]),
+        ),
     ]
