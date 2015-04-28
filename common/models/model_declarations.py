@@ -161,7 +161,7 @@ class Constituency(RegionAbstractBase):
 
 
 @reversion.register
-class Ward(RegionAbstractBase):
+class Ward(AbstractBase):
     """
     The Kenyan counties are sub divided into wards.
 
@@ -171,6 +171,12 @@ class Ward(RegionAbstractBase):
 
     Code generation is handled by the custom save method in RegionAbstractBase
     """
+    name = models.CharField(
+        max_length=100,
+        help_text="Name og the region may it be e.g Nairobi")
+    code = SequenceField(
+        unique=True,
+        help_text="A unique_code 4 digit number representing the region.")
     constituency = models.ForeignKey(
         Constituency,
         help_text="The constituency where the ward is located.",

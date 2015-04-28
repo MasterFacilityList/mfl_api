@@ -1,6 +1,7 @@
 import reversion
 
 from django.db import models
+from django.contrib.postgres.fields import HStoreField
 from django.core.exceptions import ValidationError
 
 from common.models import (
@@ -191,6 +192,18 @@ class FacilityType(AbstractBase):
 
 
 @reversion.register
+class RegulatingBodyContact(AbstractBase):
+    """
+    A regulating body contacts.
+    """
+    regulating_body = models.ForeignKey('RegulatingBody')
+    contact = models.ForeignKey(Contact)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.regulating_body, self.contact)
+
+
+@reversion.register
 class RegulatingBody(AbstractBase):
     """
     Bodies responsible for licensing or gazettement of facilites.
@@ -209,6 +222,15 @@ class RegulatingBody(AbstractBase):
         max_length=10, null=True, blank=True,
         help_text="A shortform of the name of the regulating body e.g Nursing"
         "Council of Kenya could be abbreviated as NCK.")
+    contacts = models.ManyToManyField(
+        Contact, through='RegulatingBodyContact')
+
+    @property
+    def postal_address(self):
+        contacts = RegulatingBodyContact.objects.filter(
+            regulating_body=self,
+            contact__contact_type__name='POSTAL')
+        return contacts[0]
 
     def __unicode__(self):
         return self.name
@@ -285,6 +307,10 @@ class FacilityRegulationStatus(AbstractBase):
     reason = models.TextField(
         null=True, blank=True,
         help_text="e.g Why has a facility been suspended")
+    license_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text='The license number that the facility has been '
+        'given by the regulator')
 
     def __unicode__(self):
         return "{}: {}".format(
@@ -312,7 +338,7 @@ class FacilityContact(AbstractBase):
 
 
 @reversion.register
-class Facility(AbstractBase, SequenceMixin):
+class Facility(SequenceMixin, AbstractBase):
     """
     A health institution in Kenya.
 
@@ -365,7 +391,8 @@ class Facility(AbstractBase, SequenceMixin):
         "has been approved to operate, is operating, is temporarily"
         "non-operational, or is closed down")
     ward = models.ForeignKey(
-        Ward, on_delete=models.PROTECT,
+        Ward, null=True, blank=True,
+        on_delete=models.PROTECT,
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
@@ -381,10 +408,14 @@ class Facility(AbstractBase, SequenceMixin):
     parent = models.ForeignKey(
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
+    attributes = HStoreField(default='{"null": "true"}')
 
     @property
     def current_regulatory_status(self):
-        return self.regulatory_details.all()[0].regulation_status
+        try:
+            return self.regulatory_details.all()[0]
+        except IndexError:
+            return []
 
     def save(self, *args, **kwargs):
         if not self.code:
