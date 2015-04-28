@@ -88,13 +88,7 @@ class FacilityCoordinates(GISAbstractBase):
     is the source and method of the reading.
     """
     facility = gis_models.OneToOneField(Facility)
-    latitude = gis_models.CharField(
-        max_length=255,
-        help_text="How far north or south a facility is from the equator")
-    longitude = gis_models.CharField(
-        max_length=255,
-        help_text="How far east or west one a facility is from the Greenwich"
-        " Meridian")
+    latitude = gis_models.PointField()
     source = gis_models.ForeignKey(
         GeoCodeSource,
         help_text="where the geo code came from", on_delete=gis_models.PROTECT)
