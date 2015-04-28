@@ -1,7 +1,6 @@
 import reversion
 
 from django.db import models
-from django.contrib.postgres.fields import HStoreField
 from django.core.exceptions import ValidationError
 
 from common.models import (
@@ -354,8 +353,11 @@ class Facility(SequenceMixin, AbstractBase):
     abbreviation = models.CharField(
         max_length=30, null=True, blank=True,
         help_text='A short name for the facility.')
-    description = models.TextField(help_text="A brief summary of the Facility")
+    description = models.TextField(
+        null=True, blank=True,
+        help_text="A brief summary of the Facility")
     location_desc = models.TextField(
+        null=True, blank=True,
         help_text="This field allows a more detailed description of how to"
         "locate the facility e.g Joy medical clinic is in Jubilee Plaza"
         "7th Floor")
@@ -379,14 +381,14 @@ class Facility(SequenceMixin, AbstractBase):
         default=False,
         help_text="Should be True if the facility is to be seen on the "
         "public MFL site")
-    facility_type = models.OneToOneField(
+    facility_type = models.ForeignKey(
         FacilityType,
         help_text="This depends on who owns the facilty. For MOH facilities,"
         "type is the gazetted classification of the facilty."
         "For Non-MOH check under the respective owners.",
         on_delete=models.PROTECT)
-    operation_status = models.OneToOneField(
-        FacilityStatus,
+    operation_status = models.ForeignKey(
+        FacilityStatus, null=True, blank=True,
         help_text="Indicates whether the facility"
         "has been approved to operate, is operating, is temporarily"
         "non-operational, or is closed down")
@@ -397,9 +399,10 @@ class Facility(SequenceMixin, AbstractBase):
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
     officer_in_charge = models.ForeignKey(
-        Officer, help_text="The officer in charge of the facility")
+        Officer, null=True, blank=True,
+        help_text="The officer in charge of the facility")
     physical_address = models.ForeignKey(
-        PhysicalAddress,
+        PhysicalAddress, null=True, blank=True,
         help_text="Postal and courier addressing for the facility")
 
     contacts = models.ManyToManyField(
@@ -408,7 +411,7 @@ class Facility(SequenceMixin, AbstractBase):
     parent = models.ForeignKey(
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
-    attributes = HStoreField(default='{"null": "true"}')
+    attributes = models.TextField(null=True, blank=True)
 
     @property
     def current_regulatory_status(self):

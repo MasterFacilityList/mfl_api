@@ -33,7 +33,10 @@ def resolve_foreign_keys(model_cls, record):
     for field in record.keys():
         field_data = record[field]
         model_field = model_cls._meta.get_field(field)
-        if model_field.get_internal_type() == "ForeignKey":
+        field_internal_type = model_field.get_internal_type()
+        if (
+                (field_internal_type == "ForeignKey") or
+                (field_internal_type == 'OneToOneField')):
             new_record[field] = resolve_foreign_key(
                 model_field.rel.to, field_data)
         else:
