@@ -77,12 +77,17 @@ def _load_boundaries(
 
     features = _get_features(feature_type)
     LOGGER.debug('{} features found'.format(len(features)))
+
+    errors = []
     for feature in features:
-        code = feature.get(name_field)
-        name = feature.get(code_field)
-        LOGGER.debug('Code: {} Name: {}'.format(code, name))
         try:
+            code = feature.get(name_field)
+            name = feature.get(code_field)
+
+            LOGGER.debug('Code: {} Name: {}'.format(code, name))
+
             boundary = boundary_cls.objects.get(code=code, name=name)
+
             LOGGER.debug("Existing boundary {}".format(boundary))
         except boundary_cls.DoesNotExist:
             try:
@@ -95,11 +100,14 @@ def _load_boundaries(
                 )
                 LOGGER.debug("ADDED boundary for {}".format(admin_area))
             except admin_area_cls.DoesNotExist:
-                raise CommandError(
+                errors.append(
                     "{} {}:{} NOT FOUND".format(admin_area_cls, code, name))
-            except Exception as e:  # Broad catch, to print debug info
-                raise CommandError(
-                    "'{}' '{}'' '{}:{}:{}' and geometry \n    {}\n".format(
-                        e, feature, code, name, admin_area_cls, feature.geom
-                    )
+        except Exception as e:  # Broad catch, to print debug info
+            errors.append(
+                "'{}' '{}'' '{}:{}:{}:{}'".format(
+                    e, feature, code, name, admin_area_cls, boundary_cls
                 )
+            )
+
+    if errors:
+        raise CommandError('\n'.join(errors))
