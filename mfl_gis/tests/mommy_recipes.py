@@ -1,5 +1,4 @@
 import os
-import json
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.gdal import DataSource
@@ -27,54 +26,54 @@ WARD_BORDER = DataSource(
 
 
 county_recipe = Recipe(
-    County,
-    name=seq('NAIROBI'),
-    code=seq(470)
+    County
 )
 
 county_boundary_recipe = Recipe(
     CountyBoundary,
-    county=foreign_key(county_recipe),
-    name=seq('NAIROBI'),
-    code=seq(470),
+    area=foreign_key(county_recipe),
     mpoly=_get_mpoly_from_geom(COUNTY_BORDER[0].get_geoms()[0])
 )
 
 constituency_recipe = Recipe(
     Constituency,
-    area=foreign_key(county_recipe),
-    name=seq('DAGORETTI NORTH'),
-    code=seq(2750)
+    county=foreign_key(county_recipe),
 )
 
 constituency_boundary_recipe = Recipe(
     ConstituencyBoundary,
-    constituency=foreign_key(constituency_recipe),
-    name=seq('DAGORETTI NORTH'),
-    code=seq(2750),
+    area=foreign_key(constituency_recipe),
     mpoly=_get_mpoly_from_geom(CONSTITUENCY_BORDER[0].get_geoms()[0])
 )
 
 
 ward_recipe = Recipe(
     Ward,
-    area=foreign_key(constituency_recipe),
-    name=seq('KILIMANI'),
-    code=seq(13710)
+    constituency=foreign_key(constituency_recipe)
 )
 
 ward_boundary_recipe = Recipe(
     WardBoundary,
-    ward=foreign_key(ward_recipe),
-    name=seq('KILIMANI'),
-    code=seq(13710),
+    area=foreign_key(ward_recipe),
     mpoly=_get_mpoly_from_geom(WARD_BORDER[0].get_geoms()[0])
 )
+
+MEMOIZED_WARD = None
+
+
+def _get_ward():
+    """We need to use the same ward each time we make a facility"""
+    global MEMOIZED_WARD  # Yikes!
+    if not MEMOIZED_WARD:
+        MEMOIZED_WARD = ward_recipe.make()
+        ward_boundary_recipe.make(ward=MEMOIZED_WARD)
+
+    return MEMOIZED_WARD
 
 
 facility_recipe = Recipe(
     Facility,
-    ward=foreign_key(ward_recipe)
+    ward=_get_ward
 )
 
 facility_coordinates_recipe = Recipe(
