@@ -105,7 +105,7 @@ class County(SequenceMixin, AbstractBase):
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="Name og the region may it be e.g Nairobi")
+        help_text="Name of the regions e.g Nairobi")
     code = SequenceField(
         unique=True,
         help_text="A unique_code 4 digit number representing the region.")
@@ -135,7 +135,7 @@ class Constituency(SequenceMixin, AbstractBase):
     """
     name = models.CharField(
         max_length=100,
-        help_text="Name og the region may it be e.g Nairobi")
+        help_text="Name of the region  e.g Nairobi")
     code = SequenceField(
         unique=True,
         help_text="A unique_code 4 digit number representing the region.")
@@ -170,7 +170,7 @@ class Ward(SequenceMixin, AbstractBase):
     """
     name = models.CharField(
         max_length=100,
-        help_text="Name og the region may it be e.g Nairobi")
+        help_text="Name of the region e.g Nairobi")
     code = SequenceField(
         unique=True,
         help_text="A unique_code 4 digit number representing the region.")
