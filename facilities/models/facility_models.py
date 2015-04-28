@@ -390,7 +390,8 @@ class Facility(SequenceMixin, AbstractBase):
         "has been approved to operate, is operating, is temporarily"
         "non-operational, or is closed down")
     ward = models.ForeignKey(
-        Ward, on_delete=models.PROTECT,
+        Ward, null=True, blank=True,
+        on_delete=models.PROTECT,
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
