@@ -9,7 +9,9 @@ from .shared import _get_mpoly_from_geom, _get_features
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        for feature in _get_features('wards'):
+        features = _get_features('wards')
+        self.stdout.write('{} features found'.format(len(features)))
+        for feature in features:
             code = feature.get('COUNTY_ASS')
             name = feature.get('COUNTY_A_1')
             try:
