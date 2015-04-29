@@ -38,5 +38,5 @@ class Command(BaseCommand):
             transform=False,
             encoding='iso-8859-1'
         )
-        lm.save(strict=True, verbose=True)
+        lm.save(strict=True, verbose=False)
         self.stdout.write("Loaded world borders")

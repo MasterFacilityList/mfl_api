@@ -138,6 +138,7 @@ def _load_boundaries(
     :param: name_field e.g `COUNTY_ASS` contains the ward codes
     """
     errors = []
+    unsaved_instances = {}
 
     for feature in _get_features(feature_type):
         try:
@@ -147,7 +148,7 @@ def _load_boundaries(
         except boundary_cls.DoesNotExist:
             try:
                 admin_area = admin_area_cls.objects.get(code=code)
-                boundary_cls.objects.create(
+                unsaved_instances[code] = boundary_cls(
                     name=name,
                     code=code,
                     mpoly=_get_mpoly_from_geom(feature.geom),
@@ -158,5 +159,7 @@ def _load_boundaries(
                 errors.append(
                     "{} {}:{} NOT FOUND".format(admin_area_cls, code, name))
 
+    if unsaved_instances:
+        boundary_cls.objects.bulk_create(unsaved_instances.values())
     if errors:
         raise CommandError('\n'.join(errors))
