@@ -1,24 +1,23 @@
-from django.db.models import Field
+from django.db.models import AutoField
 
 
-class SequenceField(Field):
+class SequenceField(AutoField):
+    """Overrides the parts of AutoField that force it to be a PK"""
     def __init__(self, *args, **kwargs):
-        kwargs['blank'] = True
         super(SequenceField, self).__init__(*args, **kwargs)
 
+    def check(self, **kwargs):
+        """Shut up '(fields.E100) AutoFields must set primary_key=True.'"""
+        errors = super(AutoField, self).check(**kwargs)
+        return errors
+
     def deconstruct(self):
-        name, path, args, kwargs = super(SequenceField, self).deconstruct()
+        name, path, args, kwargs = super(AutoField, self).deconstruct()
         # lacks 'kwargs['primary_key'] = True', unlike AutoField
         return name, path, args, kwargs
 
     def get_internal_type(self):
         return "SequenceField"
-
-    def to_python(self, value):
-        return int(value)
-
-    def db_type(self, connection):
-        return 'serial'
 
     def get_db_prep_value(self, value, connection, prepared=False):
         if not prepared:
@@ -26,14 +25,6 @@ class SequenceField(Field):
             # avoid the PK validation of AutoField
         return value
 
-    def get_prep_value(self, value):
-        value = super(SequenceField, self).get_prep_value(value)
-        if value is None or value == '':
-            return None
-        return int(value)
-
-    def contribute_to_class(self, cls, name):
-        # TODO Cleaner way to call Field's version
-        self.set_attributes_from_name(name)
-        self.model = cls
-        cls._meta.add_field(self)
+    def contribute_to_class(self, cls, name, **kwargs):
+        """Stop enforcing the 'one autofield per class' validation"""
+        super(AutoField, self).contribute_to_class(cls, name, **kwargs)
