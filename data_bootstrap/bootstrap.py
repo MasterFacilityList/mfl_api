@@ -5,6 +5,8 @@ from collections import defaultdict
 from django.db.models import get_model
 from django.db import transaction
 
+from common.fields import SequenceField
+from common.models import SequenceMixin
 
 LOGGER = logging.getLogger(__name__)
 
@@ -35,6 +37,7 @@ def _resolve_foreign_keys(model_cls, record):
     for field in record.keys():
         field_data = record[field]
         model_field = model_cls._meta.get_field(field)
+
         if model_field.get_internal_type() == "ForeignKey":
             new_record[field] = _retrieve_existing_model_instance(
                 model_field.rel.to, field_data)
@@ -76,7 +79,23 @@ def _instantiate_single_record(model, unique_fields, record):
                     .format(unique_dict)
                 )
                 normalized_record = _resolve_foreign_keys(model_cls, record)
-                return model_cls, model_cls(**normalized_record)
+                instance = model_cls(**normalized_record)
+
+                # Do not allow SequenceField fields to go to the DB null
+                # bulk_create will not call our custom save()
+                for field in instance._meta.fields:
+                    if (
+                        isinstance(field, SequenceField)
+                        and not getattr(instance, field.name)
+                        and hasattr(instance, 'generate_next_code_sequence')
+                            ):
+                        setattr(
+                            instance,
+                            field.name,
+                            instance.generate_next_code_sequence()
+                        )
+
+                return model_cls, instance
             except Exception as e:  # Don't panic, we will be re-raising
                 LOGGER.error(
                     '"{}" when instantiating a record of "{}" with unique '
