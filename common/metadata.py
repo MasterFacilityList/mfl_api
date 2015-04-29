@@ -72,7 +72,8 @@ class CustomMetadata(SimpleMetadata):
                         MODEL_VIEW_DICT[field.queryset.model]['list_url'],
                         request=self.request
                     ),
-                    'display_name': field.queryset.model._meta.verbose_name
+                    'display_name':
+                        field.queryset.model._meta.verbose_name_plural
                 }
             ]
         elif hasattr(field, 'choices'):
@@ -83,4 +84,5 @@ class CustomMetadata(SimpleMetadata):
                 }
                 for choice_value, choice_name in field.choices.items()
             ]
+
         return field_info
