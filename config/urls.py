@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns, include
 
-from common.views import APIRoot
+from common.views import APIRoot, root_redirect_view
 
 
 apipatterns = patterns(
@@ -16,6 +16,7 @@ apipatterns = patterns(
 
 urlpatterns = patterns(
     '',
+    url(r'^$', root_redirect_view, name='root_redirect'),
     url(r'^api/', include(apipatterns, namespace='api')),
     url(r'^api/auth/',
         include('rest_framework.urls', namespace='rest_framework')),

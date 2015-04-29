@@ -2,7 +2,7 @@ import logging
 import reversion
 
 from collections import OrderedDict
-
+from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -85,3 +85,7 @@ class APIRoot(APIView):
             raise raised_exc
 
         return Response(resp)
+
+
+def root_redirect_view(request):
+    return redirect('api:root_listing', permanent=True)
