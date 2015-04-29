@@ -4,10 +4,7 @@ import logging
 
 from collections import OrderedDict
 from django.utils.encoding import force_text
-from django.core.exceptions import PermissionDenied
-from django.http import Http404
 from rest_framework.metadata import SimpleMetadata
-from rest_framework import exceptions
 
 from rest_framework.request import clone_request
 from rest_framework.reverse import reverse

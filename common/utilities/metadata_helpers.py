@@ -97,5 +97,5 @@ def _lookup_metadata(url_name_dict, request, model_cls, view):
         _resolve_list_metadata(request, url_name_dict['list_url'])
     metadata_dict['detail_metadata'] = \
         _resolve_detail_metadata(
-                request, url_name_dict['detail_url'], model_cls)
+            request, url_name_dict['detail_url'], model_cls)
     return metadata_dict
