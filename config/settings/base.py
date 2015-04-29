@@ -216,11 +216,11 @@ LOGGING = {
         },
         'data_bootstrap': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         },
         'mfl_gis': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         }
     }
 }
