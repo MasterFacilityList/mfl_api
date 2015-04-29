@@ -32,16 +32,9 @@ class CustomMetadata(SimpleMetadata):
         actions = {}
         for method in set(['PUT', 'POST']) & set(view.allowed_methods):
             view.request = clone_request(request, method)
-            try:
-                if hasattr(view, 'check_permissions'):
-                    view.check_permissions(view.request)
-            except (exceptions.APIException, PermissionDenied, Http404) as e:
-                LOGGER.error(e)
-            else:
-                serializer = view.get_serializer()
-                actions[method] = self.get_serializer_info(serializer)
-            finally:
-                view.request = request
+            serializer = view.get_serializer()
+            actions[method] = self.get_serializer_info(serializer)
+            view.request = request
 
         return actions
 
