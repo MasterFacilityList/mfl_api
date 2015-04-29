@@ -47,7 +47,7 @@ class WorldBorderFilter(CommonFieldsFilterset):
 class CountyBoundaryFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     code = django_filters.CharFilter(lookup_type='icontains')
-    county = django_filters.AllValuesFilter(lookup_type='exact')
+    area = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta(object):
         model = CountyBoundary
@@ -56,7 +56,7 @@ class CountyBoundaryFilter(CommonFieldsFilterset):
 class ConstituencyBoundaryFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     code = django_filters.CharFilter(lookup_type='icontains')
-    constituency = django_filters.AllValuesFilter(lookup_type='exact')
+    area = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta(object):
         model = ConstituencyBoundary
@@ -65,7 +65,7 @@ class ConstituencyBoundaryFilter(CommonFieldsFilterset):
 class WardBoundaryFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     code = django_filters.CharFilter(lookup_type='icontains')
-    ward = django_filters.AllValuesFilter(lookup_type='exact')
+    area = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta(object):
         model = WardBoundary
