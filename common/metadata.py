@@ -10,7 +10,7 @@ from rest_framework.metadata import SimpleMetadata
 from rest_framework import exceptions
 
 from rest_framework.request import clone_request
-
+from rest_framework.reverse import reverse
 
 LOGGER = logging.getLogger(__name__)
 
@@ -19,6 +19,10 @@ class CustomMetadata(SimpleMetadata):
     """
     Based on the implementation of SimpleMetaData in DRF v3.1
     """
+    def determine_metadata(self, request, view):
+        self.request = request
+        self.view = view
+        return super(CustomMetadata, self).determine_metadata(request, view)
 
     def determine_actions(self, request, view):
         """
@@ -66,8 +70,19 @@ class CustomMetadata(SimpleMetadata):
             if value is not None and value != '':
                 field_info[attr] = force_text(value, strings_only=True)
 
-        # TODO Overhaul handling of choices
-        if hasattr(field, 'choices'):
+        if hasattr(field, 'queryset'):
+            # Late import ( cyclic import issues )
+            from .utilities.metadata_helpers import MODEL_VIEW_DICT
+            field_info['relational_choices'] = [
+                {
+                    'value': reverse(
+                        MODEL_VIEW_DICT[field.queryset.model]['list_url'],
+                        request=self.request
+                    ),
+                    'display_name': field.queryset.model._meta.verbose_name
+                }
+            ]
+        elif hasattr(field, 'choices'):
             field_info['choices'] = [
                 {
                     'value': choice_value,
@@ -75,5 +90,4 @@ class CustomMetadata(SimpleMetadata):
                 }
                 for choice_value, choice_name in field.choices.items()
             ]
-
         return field_info
