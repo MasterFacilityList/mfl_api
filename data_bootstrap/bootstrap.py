@@ -6,7 +6,6 @@ from django.db.models import get_model
 from django.db import transaction
 
 from common.fields import SequenceField
-from common.models import SequenceMixin
 
 LOGGER = logging.getLogger(__name__)
 
@@ -67,17 +66,9 @@ def _instantiate_single_record(model, unique_fields, record):
 
         try:
             instance = model_cls.objects.get(**unique_dict)
-            LOGGER.debug(
-                'Model with attributes "{}" already exists: {}'
-                .format(unique_dict, instance)
-            )
             return model_cls, None  # Must test for None in calling code
         except model_cls.DoesNotExist:
             try:
-                LOGGER.debug(
-                    'Model with attributes "{}" does not exist, making one'
-                    .format(unique_dict)
-                )
                 normalized_record = _resolve_foreign_keys(model_cls, record)
                 instance = model_cls(**normalized_record)
 
