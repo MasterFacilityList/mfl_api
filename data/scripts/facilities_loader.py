@@ -7,38 +7,38 @@ facilities_file = os.path.join(
     settings.BASE_DIR, 'data/csvs/mfl_facilities.csv')
 
 
-def read_the_facilities_file():
+def read_the_facilities_file():  # noqa
     formatted_facilities = []
     with open(facilities_file, 'r') as csv_file:
         facilities_reader = csv.reader(csv_file)
         col_names = [  # noqa
-            'ID_FACILITY', 'Facility_TransactionID', 'Facility_DataEntryStatus', # noqa
-            'Facility_Code', 'Facility_Name', 'Facility_District_ID', 'Facility_Type_ID', # noqa
-            'Facility_Owner_ID', 'Facility_Op_Status_ID', 'Facility_Reg_Status_ID', # noqa
-            'Facility_Gazette_By_ID', 'Facility_Constituency_ID', 'Facility_Division', # noqa
-            'Facility_Location', 'Facility_SubLocation', 'Facility_Nearest_Town', # noqa
+            'ID_FACILITY', 'Facility_TransactionID', 'Facility_DataEntryStatus',  # noqa
+            'Facility_Code', 'Facility_Name', 'Facility_District_ID', 'Facility_Type_ID',  # noqa
+            'Facility_Owner_ID', 'Facility_Op_Status_ID', 'Facility_Reg_Status_ID',  # noqa
+            'Facility_Gazette_By_ID', 'Facility_Constituency_ID', 'Facility_Division',  # noqa
+            'Facility_Location', 'Facility_SubLocation', 'Facility_Nearest_Town',  # noqa
             'Facility_Plot_Number', 'Facility_Latitude', 'Facility_Longitude',
-            'Source_of_GeoCode', 'Method_of_GeoCode', 'Date_of_GeoCode', # noqa
+            'Source_of_GeoCode', 'Method_of_GeoCode', 'Date_of_GeoCode',  # noqa
             'Facility_Date_Start', 'Facility_Date_End', 'Official_Landline',
-            'Official_Fax', 'Official_Mobile', 'Official_Email', # noqa
-            'Official_Address', 'Official_Address_Town', # noqa
+            'Official_Fax', 'Official_Mobile', 'Official_Email',  # noqa
+            'Official_Address', 'Official_Address_Town',  # noqa
             'Official_Address_PostCode', 'In_Charge_Name',
-            'In_Charge_National_ID', 'In_Charge_Job_Title_ID', # noqa
-            'In_Charge_Mobile', 'In_Charge_Email', # noqa
-            'In_Charge_Pers_Num', 'In_Charge_National_ID_1', # noqa
-            'In_Charge_Name_1', 'In_Charge_Job_Title_ID_1', 'In_Charge_Mobile_1', # noqa
-            'In_Charge_Email_1', 'In_Charge_Pers_Num_1', 'Num_Beds', 'Num_Cots', # noqa
-            'Notes', 'Reg_Date', 'Reg_Ref_Number', 'Date_Added', 'disId',# noqa
-            'disName', 'prvId', 'prvName', 'conId', 'conName', 'typId', # noqa
-            'typName', 'typParent', 'geoId', 'geoName', 'ownId', 'ownName', # noqa
+            'In_Charge_National_ID', 'In_Charge_Job_Title_ID',  # noqa
+            'In_Charge_Mobile', 'In_Charge_Email',  # noqa
+            'In_Charge_Pers_Num', 'In_Charge_National_ID_1',  # noqa
+            'In_Charge_Name_1', 'In_Charge_Job_Title_ID_1', 'In_Charge_Mobile_1',  # noqa
+            'In_Charge_Email_1', 'In_Charge_Pers_Num_1', 'Num_Beds', 'Num_Cots',  # noqa
+            'Notes', 'Reg_Date', 'Reg_Ref_Number', 'Date_Added', 'disId',  # noqa
+            'disName', 'prvId', 'prvName', 'conId', 'conName', 'typId',  # noqa
+            'typName', 'typParent', 'geoId', 'geoName', 'ownId', 'ownName',  # noqa
             'ownParent', 'ttlName', 'ttlId', 'ttlID_1', 'ttlName_1',
-            'RecordArchived', 'Open24Hours', 'OpenWeekends', 'Facility_Keph_ID', # noqa
+            'RecordArchived', 'Open24Hours', 'OpenWeekends', 'Facility_Keph_ID',  # noqa
             'Facility_RegisteredBy_Organization_ID', 'Facility_Official_Name',
-            'RegisteredByName', 'kphName', 'AddedByUsrId', 'Facility_Regulator_ID', # noqa
-            'Facility_Regulatory_Status_ID', 'Location_Description', 'Official_Alternate_Number', # noqa
-            'Official_Post', 'PP_Registration_No', 'regId', 'regShortName', 'regName', # noqa
+            'RegisteredByName', 'kphName', 'AddedByUsrId', 'Facility_Regulator_ID',  # noqa
+            'Facility_Regulatory_Status_ID', 'Location_Description', 'Official_Alternate_Number',  # noqa
+            'Official_Post', 'PP_Registration_No', 'regId', 'regShortName', 'regName',  # noqa
             'regDisplayName', 'regDefaultStatus', 'regFunction', 'regFunctionVerb',  # noqa
-            'regAddress', 'Approved', 'ApprovedByUsrId', 'ApprovedDate', 'staId', # noqa 
+            'regAddress', 'Approved', 'ApprovedByUsrId', 'ApprovedDate', 'staId',  # noqa
             'staDisplayName', 'Date_Modified', 'IsEdit', 'RgnId', 'RgnName']  # noqa
         error_facilities = []
         for row in facilities_reader:
@@ -52,12 +52,12 @@ def read_the_facilities_file():
                 number_of_cots = row[44]
                 abbreviation = row[83]
 
-                if number_of_cots == "" or not number_of_cots or number_of_cots == "Num_Cots":
+                if number_of_cots == "" or not number_of_cots or number_of_cots == "Num_Cots":  # noqa
                     number_of_cots = 0
                 else:
                     number_of_cots = int(number_of_cots)
 
-                if number_of_beds == "" or not number_of_beds or number_of_beds == "Num_Beds":
+                if number_of_beds == "" or not number_of_beds or number_of_beds == "Num_Beds":  # noqa
                     number_of_beds = 0
                 else:
                     number_of_beds = int(number_of_beds)
