@@ -2,7 +2,10 @@ import os
 import csv
 import json
 from django.conf import settings
-from facilities.models import FacilityType, FacilityStatus
+from facilities.models import FacilityType, FacilityStatus, Officer, OfficerContact
+
+from common.models import ContactType, Town, PhyicalAddress
+
 facilities_file = os.path.join(
     settings.BASE_DIR, 'data/csvs/mfl_facilities.csv')
 
@@ -43,6 +46,41 @@ def read_the_facilities_file():  # noqa
         error_facilities = []
         for row in facilities_reader:
             if len(row) == 99:
+                # the child models
+                # physical addrsss
+                neartest_town = row[15]
+                Town.objects.get_or_create(name=neartest_town)
+                plot_number = row[16]
+                address_town = row[29]
+                postal_code = row[30]
+                post_address = row[28]
+
+                physical_addresss = PhyicalAddress.objects.get_or_create(
+                    town=neartest_town, plot_number=plot_number)
+
+                facility_pysical_address = {
+
+                }
+                facility_email = row[27]
+                if facility_email:
+                    facility_email_contact = {
+
+                    }
+                facility_fax = row[25]
+                if facility_fax:
+                    facility_fax_contact = {
+
+                    }
+                facility_mobile = row[26]
+                if facility_mobile:
+                    facility_mobile_contact = {
+
+                    }
+                facility_landline = row[24]
+                if facility_landline:
+                    facility_landline_contact = {
+
+                    }
 
                 name = row[4]
                 code = row[3]

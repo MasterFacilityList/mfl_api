@@ -14,8 +14,8 @@ Master Facility List API
    :alt: Join the chat at https://gitter.im/MasterFacilityList/mfl_api
    :target: https://gitter.im/MasterFacilityList/mfl_api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
-.. image:: https://requires.io/github/MasterFacilityList/mfl_api/requirements.svg?branch=gis
-     :target: https://requires.io/github/MasterFacilityList/mfl_api/requirements/?branch=gis
+.. image:: https://requires.io/github/MasterFacilityList/mfl_api/requirements.svg?branch=develop
+     :target: https://requires.io/github/MasterFacilityList/mfl_api/requirements/?branch=develop
      :alt: Requirements Status
 
 .. image:: https://landscape.io/github/MasterFacilityList/mfl_api/develop/landscape.svg?style=flat

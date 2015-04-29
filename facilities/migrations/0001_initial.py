@@ -29,8 +29,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text=b'This is the official name of the facility', unique=True, max_length=100)),
                 ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each facility', unique=True, editable=False, blank=True)),
                 ('abbreviation', models.CharField(help_text=b'A short name for the facility.', max_length=30, null=True, blank=True)),
-                ('description', models.TextField(help_text=b'A brief summary of the Facility')),
-                ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of how tolocate the facility e.g Joy medical clinic is in Jubilee Plaza7th Floor')),
+                ('description', models.TextField(help_text=b'A brief summary of the Facility', null=True, blank=True)),
+                ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of how tolocate the facility e.g Joy medical clinic is in Jubilee Plaza7th Floor', null=True, blank=True)),
                 ('number_of_beds', models.PositiveIntegerField(default=0, help_text=b'The number of beds that a facilty has. e.g 0')),
                 ('number_of_cots', models.PositiveIntegerField(default=0, help_text=b'The number of cots that a facility has e.g 0')),
                 ('open_whole_day', models.BooleanField(default=False, help_text=b'Is the facility open 24 hours a day?')),
@@ -733,17 +733,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='facility_type',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='facilities.FacilityType', help_text=b'This depends on who owns the facilty. For MOH facilities,type is the gazetted classification of the facilty.For Non-MOH check under the respective owners.'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='facilities.FacilityType', help_text=b'This depends on who owns the facilty. For MOH facilities,type is the gazetted classification of the facilty.For Non-MOH check under the respective owners.'),
         ),
         migrations.AddField(
             model_name='facility',
             name='officer_in_charge',
-            field=models.ForeignKey(help_text=b'The officer in charge of the facility', to='facilities.Officer'),
+            field=models.ForeignKey(blank=True, to='facilities.Officer', help_text=b'The officer in charge of the facility', null=True),
         ),
         migrations.AddField(
             model_name='facility',
             name='operation_status',
-            field=models.OneToOneField(null=True, blank=True, to='facilities.FacilityStatus', help_text=b'Indicates whether the facilityhas been approved to operate, is operating, is temporarilynon-operational, or is closed down'),
+            field=models.ForeignKey(blank=True, to='facilities.FacilityStatus', help_text=b'Indicates whether the facilityhas been approved to operate, is operating, is temporarilynon-operational, or is closed down', null=True),
         ),
         migrations.AddField(
             model_name='facility',

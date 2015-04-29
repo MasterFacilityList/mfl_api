@@ -2,7 +2,8 @@ import reversion
 import logging
 
 from django.contrib.gis.db import models as gis_models
-from common.models import AbstractBase
+from django.core.exceptions import ValidationError
+from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
 
 
@@ -88,13 +89,7 @@ class FacilityCoordinates(GISAbstractBase):
     is the source and method of the reading.
     """
     facility = gis_models.OneToOneField(Facility)
-    latitude = gis_models.CharField(
-        max_length=255,
-        help_text="How far north or south a facility is from the equator")
-    longitude = gis_models.CharField(
-        max_length=255,
-        help_text="How far east or west one a facility is from the Greenwich"
-        " Meridian")
+    coordinates = gis_models.PointField()
     source = gis_models.ForeignKey(
         GeoCodeSource,
         help_text="where the geo code came from", on_delete=gis_models.PROTECT)
@@ -105,21 +100,69 @@ class FacilityCoordinates(GISAbstractBase):
     collection_date = gis_models.DateTimeField()
 
     def validate_longitude_and_latitude_within_kenya(self):
-        pass
+        try:
+            boundary = WorldBorder.objects.get(code='KEN')
+            if not boundary.mpoly.contains(self.coordinates):
+                raise ValidationError(
+                    '{} is not in Kenya'.format(self.coordinates))
+        except WorldBorder.DoesNotExist:
+            raise ValidationError('Setup error: Kenyan boundaries not loaded')
 
     def validate_longitude_and_latitude_within_constituency(self):
-        pass
+        try:
+            boundary = ConstituencyBoundary.objects.get(
+                area=self.facility.ward.constituency)
+            if not boundary.mpoly.contains(self.coordinates):
+                raise ValidationError(
+                    '{} not contained in boundary of {}'.format(
+                        self.coordinates,
+                        self.facility.ward.constituency
+                    )
+                )
+        except ConstituencyBoundary.DoesNotExist:
+            raise ValidationError(
+                'No boundary for {}'.format(
+                    self.facility.ward.constituency
+                )
+            )
 
     def validate_longitude_and_latitude_within_county(self):
-        pass
+        try:
+            boundary = CountyBoundary.objects.get(
+                area=self.facility.ward.constituency.county)
+            if not boundary.mpoly.contains(self.coordinates):
+                raise ValidationError(
+                    '{} not contained in boundary of {}'.format(
+                        self.coordinates,
+                        self.facility.ward.constituency.county
+                    )
+                )
+        except CountyBoundary.DoesNotExist:
+            raise ValidationError(
+                'No boundary for {}'.format(
+                    self.facility.ward.constituency.county
+                )
+            )
 
     def validate_longitude_and_latitude_within_ward(self):
-        pass
+        try:
+            boundary = WardBoundary.objects.get(area=self.facility.ward)
+            if not boundary.mpoly.contains(self.coordinates):
+                raise ValidationError(
+                    '{} not contained in boundary of {}'.format(
+                        self.coordinates, self.facility.ward
+                    )
+                )
+        except WardBoundary.DoesNotExist:
+            LOGGER.error(
+                'Ward {} does not have boundary info'.format(
+                    self.facility.ward)
+            )
 
     def clean(self):
         self.validate_longitude_and_latitude_within_kenya()
-        self.validate_longitude_and_latitude_within_constituency()
         self.validate_longitude_and_latitude_within_county()
+        self.validate_longitude_and_latitude_within_constituency()
         self.validate_longitude_and_latitude_within_ward()
         super(FacilityCoordinates, self).clean()
 
@@ -129,3 +172,59 @@ class FacilityCoordinates(GISAbstractBase):
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'facility coordinates'
         verbose_name = 'facility coordinates'
+
+
+class AdministrativeUnitBoundary(GISAbstractBase):
+    """Base class for the models that implement administrative boundaries
+
+    All common operations and fields are here.
+    We retain the default SRID ( 4326 - WGS84 ).
+    """
+    name = gis_models.CharField(max_length=100)
+    code = gis_models.CharField(max_length=10, unique=True)
+
+    # Making this field nullable is a temporary band-aid for a deficiency
+    # in model_mommy ( a testing tool )
+    # The impact of this is minimal; these models hold setup data that is
+    # loaded and tested during each build
+    mpoly = gis_models.MultiPolygonField(null=True, blank=True, geography=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta(GISAbstractBase.Meta):
+        abstract = True
+
+
+@reversion.register
+class WorldBorder(AdministrativeUnitBoundary):
+    """World boundaries
+
+    Source: http://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
+    """
+    longitude = gis_models.FloatField()
+    latitude = gis_models.FloatField()
+
+
+@reversion.register
+class CountyBoundary(AdministrativeUnitBoundary):
+    area = gis_models.OneToOneField(County)
+
+    class Meta(GISAbstractBase.Meta):
+        verbose_name_plural = 'county boundaries'
+
+
+@reversion.register
+class ConstituencyBoundary(AdministrativeUnitBoundary):
+    area = gis_models.OneToOneField(Constituency)
+
+    class Meta(GISAbstractBase.Meta):
+        verbose_name_plural = 'constituency boundaries'
+
+
+@reversion.register
+class WardBoundary(AdministrativeUnitBoundary):
+    area = gis_models.OneToOneField(Ward)
+
+    class Meta(GISAbstractBase.Meta):
+        verbose_name_plural = 'ward boundaries'

@@ -22,7 +22,9 @@ class ContactType(AbstractBase):
         max_length=100, unique=True,
         help_text="A short name, preferrably 6 characters long, representing a"
         "certain type of contact e.g EMAIL")
-    description = models.TextField(help_text='A brief desx')
+    description = models.TextField(
+        null=True, blank=True,
+        help_text='A brief description of the contact type.')
 
     def __unicode__(self):
         return self.name
@@ -76,7 +78,7 @@ class PhysicalAddress(AbstractBase):
         max_length=100,
         help_text="The 5 digit number for the post office address. e.g 00900")
     address = models.TextField(
-        help_text="This is the actual post office number of the entity. "
+        help_text="This is the actual post office number of the entity"
         "e.g 6790")
     nearest_landmark = models.TextField(
         null=True, blank=True,

@@ -83,6 +83,12 @@ def load_demo_data(*args, **kwargs):
     manage('bootstrap', data_files)
 
 
+def load_gis_data(*args, **kwargs):
+    """Load boundary data from stored GeoJSON files"""
+    manage('load_world_boundaries')
+    manage('load_kenyan_administrative_boundaries')
+
+
 def setup(*args, **kwargs):
     """Dev only - clear and recreate the entire database"""
     no_sudo = True if 'no-sudo' in args else False
@@ -102,3 +108,6 @@ def setup(*args, **kwargs):
 
     if base.DEBUG:
         load_demo_data()
+
+    # Needs to occur after base setup data has been loaded
+    load_gis_data()

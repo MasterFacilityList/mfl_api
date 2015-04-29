@@ -1,0 +1,21 @@
+
+[
+    {
+        "model": "common.ContactType",
+        "unique_fields": ["name"],
+        "records": [
+            {
+                "name": "EMAIL"
+            },
+            {
+                "name": "MOBILE"
+            },
+            {
+                "name": "LAND_LINE"
+            },
+            {
+                "name": "FAX"
+            }       
+        ]
+    }
+]
