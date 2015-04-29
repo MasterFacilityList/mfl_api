@@ -1,14 +1,45 @@
 from __future__ import unicode_literals
 
+import logging
+
 from collections import OrderedDict
 from django.utils.encoding import force_text
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from rest_framework.metadata import SimpleMetadata
+from rest_framework import exceptions
+
+from rest_framework.request import clone_request
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class CustomMetadata(SimpleMetadata):
     """
     Based on the implementation of SimpleMetaData in DRF v3.1
     """
+
+    def determine_actions(self, request, view):
+        """
+        For generic class based views we return information about
+        the fields that are accepted for 'PUT' and 'POST' methods.
+        """
+        actions = {}
+        for method in set(['PUT', 'POST']) & set(view.allowed_methods):
+            view.request = clone_request(request, method)
+            try:
+                if hasattr(view, 'check_permissions'):
+                    view.check_permissions(view.request)
+            except (exceptions.APIException, PermissionDenied, Http404) as e:
+                LOGGER.error(e)
+            else:
+                serializer = view.get_serializer()
+                actions[method] = self.get_serializer_info(serializer)
+            finally:
+                view.request = request
+
+        return actions
 
     def get_field_info(self, field):
         """
@@ -35,6 +66,14 @@ class CustomMetadata(SimpleMetadata):
             if value is not None and value != '':
                 field_info[attr] = force_text(value, strings_only=True)
 
-        # TODO Proper handling of FKs and M2Ms
+        # TODO Overhaul handling of choices
+        if hasattr(field, 'choices'):
+            field_info['choices'] = [
+                {
+                    'value': choice_value,
+                    'display_name': force_text(choice_name, strings_only=True)
+                }
+                for choice_value, choice_name in field.choices.items()
+            ]
 
         return field_info
