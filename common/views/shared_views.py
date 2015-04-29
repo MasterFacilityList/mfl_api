@@ -21,6 +21,7 @@ from facilities.models import (
     FacilityUpgrade,
     FacilityType
 )
+from mfl_gis.models import FacilityCoordinates
 
 from ..metadata import CustomMetadata
 
@@ -139,15 +140,16 @@ def _resolve_detail_metadata(request, url_name, model_cls):
             facility_type_upgrade.delete()
             owner.delete()
             owner_type.delete()
-
+        elif model_cls == FacilityCoordinates:
+            obj = mommy.make_recipe(
+                'mfl_gis.tests.facility_coordinates_recipe')
         else:
             obj = mommy.make(model_cls)
-            metadata = _get_metadata_from_detail_url(url_name, obj, request)
             obj.delete()
     else:
         obj = model_cls.objects.all()[:1][0]
-        metadata = _get_metadata_from_detail_url(url_name, obj, request)
 
+    metadata = _get_metadata_from_detail_url(url_name, obj, request)
     return metadata
 
 

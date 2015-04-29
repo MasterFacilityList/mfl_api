@@ -91,6 +91,7 @@ setup(
         'sqlparse>=0.1',
         "pytest>=2.7",
         "pytest-django>=2.8",
+        "pytest-xdist>=1.11",
         "six>=1.9",
         "django-reversion>=1.8.6",
         "shapely>=1.5.7",

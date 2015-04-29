@@ -3,7 +3,11 @@ from common.serializers import AbstractFieldsMixin
 from .models import (
     GeoCodeSource,
     GeoCodeMethod,
-    FacilityCoordinates
+    FacilityCoordinates,
+    WorldBorder,
+    CountyBoundary,
+    ConstituencyBoundary,
+    WardBoundary
 )
 
 
@@ -23,3 +27,27 @@ class FacilityCoordinatesSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = FacilityCoordinates
+
+
+class WorldBorderSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = WorldBorder
+
+
+class CountyBoundarySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = CountyBoundary
+
+
+class ConstituencyBoundarySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = ConstituencyBoundary
+
+
+class WardBoundarySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = WardBoundary

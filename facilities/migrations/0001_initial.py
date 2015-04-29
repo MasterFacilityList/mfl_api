@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'verbose_name_plural': 'facilities',
             },
-            bases=(models.Model, common.models.base.SequenceMixin),
+            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='FacilityApproval',
@@ -107,6 +107,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('reason', models.TextField(help_text=b'e.g Why has a facility been suspended', null=True, blank=True)),
+                ('license_number', models.CharField(help_text=b'The license number that the facility has been given by the regulator', max_length=100, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='regulatory_details', on_delete=django.db.models.deletion.PROTECT, to='facilities.Facility')),
             ],
@@ -432,13 +433,29 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'The name of the regulating body', unique=True, max_length=100)),
                 ('abbreviation', models.CharField(help_text=b'A shortform of the name of the regulating body e.g NursingCouncil of Kenya could be abbreviated as NCK.', max_length=10, null=True, blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
                 'abstract': False,
                 'verbose_name_plural': 'regulating bodies',
+            },
+        ),
+        migrations.CreateModel(
+            name='RegulatingBodyContact',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('contact', models.ForeignKey(to='common.Contact')),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('regulating_body', models.ForeignKey(to='facilities.RegulatingBody')),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'abstract': False,
             },
         ),
         migrations.CreateModel(
@@ -574,6 +591,21 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='service',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='regulatingbody',
+            name='contacts',
+            field=models.ManyToManyField(to='common.Contact', through='facilities.RegulatingBodyContact'),
+        ),
+        migrations.AddField(
+            model_name='regulatingbody',
+            name='created_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='regulatingbody',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
@@ -735,7 +767,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='ward',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Ward', help_text=b'County ward in which the facility is located'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='common.Ward', help_text=b'County ward in which the facility is located', null=True),
         ),
         migrations.AlterUniqueTogether(
             name='speciality',
