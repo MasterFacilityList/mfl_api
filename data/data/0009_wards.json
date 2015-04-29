@@ -2030,13 +2030,6 @@
             },
             {
                 "constituency": {
-                    "code": 57
-                },
-                "code": 289,
-                "name": "KIBIRICHIA"
-            },
-            {
-                "constituency": {
                     "code": 59
                 },
                 "code": 290,
@@ -4016,7 +4009,7 @@
                 "name": "KAHAWA/SUKARI",
                 "code": 572
             },
-            {   
+            {
                 "constituency": {
                     "code": 115
                 },
@@ -4749,13 +4742,6 @@
                 },
                 "code": 677,
                 "name": "KWANZA"
-            },
-            {
-                "constituency": {
-                    "code": 136
-                },
-                "code": 678,
-                "name": "KEIYO"
             },
             {
                 "constituency": {

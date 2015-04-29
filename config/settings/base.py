@@ -181,7 +181,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'  # NOQA
+            'format': '%(levelname)s: %(asctime)s [%(module)s] %(message)s'  # NOQA
         }
     },
     'handlers': {
@@ -216,11 +216,11 @@ LOGGING = {
         },
         'data_bootstrap': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         },
         'mfl_gis': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         }
     }
 }

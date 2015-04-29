@@ -14,8 +14,8 @@ dependencies:
 test:
   override:
     - fab test
-  post:
-    - coveralls
+  # post:
+  #  - coveralls
 
 general:
   artifacts:
