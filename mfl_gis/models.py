@@ -155,7 +155,9 @@ class FacilityCoordinates(GISAbstractBase):
                 )
         except WardBoundary.DoesNotExist:
             LOGGER.error(
-                'Ward {} does not have boundary info' % self.facility.ward)
+                'Ward {} does not have boundary info'.format(
+                    self.facility.ward)
+            )
 
     def clean(self):
         self.validate_longitude_and_latitude_within_kenya()

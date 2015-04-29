@@ -75,7 +75,11 @@ def _get_ward():
     ward_boundary_recipe.make(area=ward)
     constituency_boundary_recipe.make(area=ward.constituency)
     county_boundary_recipe.make(area=ward.constituency.county)
-    country_boundary_recipe.make(code='KEN')
+
+    try:
+        WorldBorder.objects.get(code='KEN')
+    except WorldBorder.DoesNotExist:
+        country_boundary_recipe.make(code='KEN')
 
     return ward
 

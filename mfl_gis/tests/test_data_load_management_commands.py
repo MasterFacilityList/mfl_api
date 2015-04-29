@@ -9,6 +9,7 @@ from mfl_gis.management.commands.shared import _get_mpoly_from_geom
 
 
 class TestLoadKenyaBoundaries(BaseTestCase):
+
     def test_default_load(self):
         county_files = os.path.join(
             settings.BASE_DIR, 'data/data/0001_counties.json')
@@ -37,6 +38,7 @@ class TestLoadKenyaBoundaries(BaseTestCase):
             "Expected a Polygon or MultiPolygon, got <type 'NoneType'>"
         )
 
-    def test_load_boundaries_non_existent_geographic_area(self):
+    def test_fallback_path(self):
+        # No boundaries defined, should raise
         with self.assertRaises(CommandError):
             call_command('load_kenyan_administrative_boundaries')

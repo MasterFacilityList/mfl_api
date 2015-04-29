@@ -38,6 +38,21 @@ class TesGeoCodeMethodModel(BaseTestCase):
 
 
 class TestFacilityCoordinatesModel(BaseTestCase):
+    def setUp(self):
+        # Linked to geographic units ( county, ward, constituency) that
+        # do not have boundaries; intended to test validation
+        self.test_fac = mommy.make_recipe(
+            'mfl_gis.tests.facility_recipe',
+            ward=mommy.make_recipe('mfl_gis.tests.ward_recipe')
+        )
+        self.test_ward = self.test_fac.ward
+        self.test_constituency = self.test_ward.constituency
+        self.test_county = self.test_constituency.county
+        self.test_coords = mommy.prepare_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe',
+            facility=self.test_fac
+        )
+
     def test_save(self):
         facility_gps = mommy.make_recipe(
             'mfl_gis.tests.facility_coordinates_recipe'
@@ -73,9 +88,41 @@ class TestFacilityCoordinatesModel(BaseTestCase):
             )
 
     def test_validate_longitude_and_latitude_within_ward_invalid(self):
-        """SIL - -1.300470, 36.791655 - is just outside Kilimani ward"""
+        """Kenya High (-1.275611, 36.780612) - is just outside Kilimani ward"""
         with self.assertRaises(ValidationError):
             mommy.make_recipe(
                 'mfl_gis.tests.facility_coordinates_recipe',
-                coordinates=Point(36.791655, -1.300470)
+                coordinates=Point(36.780612, -1.275611)
             )
+
+    def test_validate_longitude_and_latitude_no_country_boundaries(self):
+        with self.assertRaises(ValidationError) as c:
+            self.test_coords.validate_longitude_and_latitude_within_kenya()
+
+        self.assertTrue(
+            'Setup error: Kenyan boundaries not loaded'
+            in c.exception.message
+        )
+
+    def test_validate_longitude_and_latitude_no_county_boundaries(self):
+        with self.assertRaises(ValidationError) as c:
+            self.test_coords.validate_longitude_and_latitude_within_county()
+
+        self.assertTrue(
+            'No boundary for ' + str(self.test_county)
+            in c.exception.message
+        )
+
+    def test_validate_longitude_and_latitude_no_constituency_boundaries(self):
+        with self.assertRaises(ValidationError) as c:
+            self.test_coords.\
+                validate_longitude_and_latitude_within_constituency()
+
+        self.assertTrue(
+            'No boundary for ' + str(self.test_constituency)
+            in c.exception.message
+        )
+
+    def test_validate_longitude_and_latitude_no_ward_boundaries(self):
+        self.test_coords.validate_longitude_and_latitude_within_ward()
+        # Because some wards have no boundaries, we choose to let this pass
