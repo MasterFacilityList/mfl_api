@@ -61,9 +61,56 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
 
 class APIRoot(APIView):
     """
-    This view serves as the entry point to the entire API.
+    This view serves as the entry point to the entire API. It also hosts all
+    the metadata.
 
-    It also hosts all the metadata.
+    # Exploring the API
+    There are two ways to explore this API:
+
+     * the [Swagger](http://swagger.io/)
+     [**sandbox** ( click here )](/api/explore/#!/api)
+     * the browsable API - available through clickable links in the metadata
+     listing below
+
+    # Understanding the metadata listing
+    The metadata listing can at first appear to be intimidating, given that it
+    carries metadata for all API views.
+
+    It has a simple structure it is a dictionary ( map ) of dictionaries.
+    Each entry in the dictionary follows the following scheme:
+
+        "<1: Resource Name>": {
+            "list_endpoint": "<2: List URL>",
+            "list_metadata": "<3: List Metadata Payload>",
+            "detail_metadata": <4: Detail Metadata Payload>"
+        }
+
+    ## 1: Resource Name
+    This is the name of a "thing" e.g `county`.
+
+    ## 2: List URL
+    This is a fully qualified URL to a view that **lists** instances of the
+    resource in question. In this server, list views support `GET`
+    ( retrieval of many resources at once ) and `POST` ( creation of new
+    resources ).
+
+    All the links shown in the browseable API are clickable.
+
+    For example: `http://localhost:8000/api/common/counties/` .
+
+    ## 3: List Metadata Payload
+    This payload takes the following form:
+
+        {
+            "name": "<Name of the list view>",
+            "description": "<A human readable description>",
+            "renders": "<a. Output formats for the list API>",
+            "parses": "<b. Input formats for the list API>",
+            "actions": "<c. Actions supported by the list API>"
+        }
+
+    ## 4: Detail Metadata Payload
+
     """
     def get(self, request, format=None):
         resp = OrderedDict()
