@@ -130,8 +130,11 @@ class Officer(AbstractBase):
     name = models.CharField(
         max_length=150,
         help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
+    id_number = models.CharField(
+        max_length=10,
+        help_text='The  National Identity number of the officer')
     registration_number = models.CharField(
-        max_length=100,
+        max_length=100, null=True, blank=True,
         help_text="This is the licence number of the officer. e.g for a nurse"
         " use the NCK registration number.")
     job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)

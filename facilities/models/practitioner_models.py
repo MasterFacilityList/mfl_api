@@ -112,7 +112,8 @@ class Practitioner(AbstractBase):
         help_text='Practitioner contacts emails, phone numbers etc.')
     facilities = models.ManyToManyField(
         Facility, through=PractitionerFacility)
-    speciality = models.ForeignKey(Speciality)
+    practice_type = models.ForeignKey(PracticeType)
+    speciality = models.ForeignKey(Speciality, null=True, blank=True)
 
     def __unicode__(self):
         return self.name

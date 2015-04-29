@@ -12,6 +12,17 @@ facilities_file = os.path.join(
 
 def read_the_facilities_file():  # noqa
     formatted_facilities = []
+    email_contacts = []
+    facilities_email_contacts = []
+    fax_contacts = []
+    facilities_fax_contacts = []
+    mobile_contact = []
+    facilities_mobile_contacts = []
+    postal_contacts = []
+    facilities_postal_contacts = []
+    land_line_contacts = []
+    facilities_landline_contacts = []
+
     with open(facilities_file, 'r') as csv_file:
         facilities_reader = csv.reader(csv_file)
         col_names = [  # noqa
@@ -46,6 +57,7 @@ def read_the_facilities_file():  # noqa
         error_facilities = []
         for row in facilities_reader:
             if len(row) == 99:
+                name = row[4]
                 # the child models
                 # physical addrsss
                 neartest_town = row[15]
@@ -54,35 +66,68 @@ def read_the_facilities_file():  # noqa
                 address_town = row[29]
                 postal_code = row[30]
                 post_address = row[28]
+                facility_postal_contact = {
+
+                }
 
                 physical_addresss = PhyicalAddress.objects.get_or_create(
                     town=neartest_town, plot_number=plot_number)
 
                 facility_pysical_address = {
+                    "town": neartest_town,
+                    "plot_number": plot_number
 
                 }
                 facility_email = row[27]
+
                 if facility_email:
+                    email_contact = {
+                        "contact_type": "EMAIL",
+                        "contact": facility_email
+                    }
+                    email_contacts.append(
+                        email_contact
+                    )
                     facility_email_contact = {
+                        "facility": name,
+                        "contact": email_contact
 
                     }
+                    facilities_email_contacts.append(
+                        facility_email_contact)
                 facility_fax = row[25]
                 if facility_fax:
+                    fax_contact = {
+                        "contact_type": "FAX",
+                        "contact": facility_fax
+                    }
                     facility_fax_contact = {
+                        "facility": name,
+                        "contact": fax_contact
 
                     }
+                    facilities_fax_contacts.append(facility_fax_contact)
                 facility_mobile = row[26]
                 if facility_mobile:
+                    mobile_contact = {
+                        "contact_type": "MOBILE",
+                        "contact": facility_mobile
+                    }
                     facility_mobile_contact = {
+                        "facility": name,
+                        "contact": mobile_contact
 
                     }
+                    facilities_mobile_contacts.append(facility_mobile_contact)
                 facility_landline = row[24]
                 if facility_landline:
+                    landline_contact = {
+                        "contact_type": "LANDLINE",
+                        "contact": facility_landline
+                    }
                     facility_landline_contact = {
 
                     }
-
-                name = row[4]
                 code = row[3]
                 description = row[45]
                 location_desc = row[78]
