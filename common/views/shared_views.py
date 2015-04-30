@@ -3,6 +3,8 @@ import reversion
 
 from collections import OrderedDict
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -72,6 +74,15 @@ class APIRoot(APIView):
      * the browsable API - available through clickable links in the metadata
      listing below
 
+    # Authentication
+    Anonymous users have **read only** access to *most* ( not all ) views.
+    If you want to try out the `POST`, `PUT`, `PATCH` and `DELETE` actions,
+    you will need to log in using the link on the top right corner.
+
+    For the experimental sandbox, you can get suitable credentials from
+    [the documentation](http://mfl-api.readthedocs.org/en/latest/). For a live
+    instance, you need to request for access from the administrators.
+
     # Understanding the metadata listing
     The metadata listing can at first appear to be intimidating, given that it
     carries metadata for all API views.
@@ -111,7 +122,10 @@ class APIRoot(APIView):
 
     ## 4: Detail Metadata Payload
 
+
+    # Metadata Listing
     """
+    @method_decorator(login_required)
     def get(self, request, format=None):
         resp = OrderedDict()
         errors = []

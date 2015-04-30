@@ -317,6 +317,15 @@ class TestTownView(LogginMixin, BaseTestCase, APITestCase):
 class TestAPIRootView(APITestCase):
     def setUp(self):
         self.url = reverse('api:root_listing')
+        self.user = get_user_model().objects.create_superuser(
+            email='tester@ehealth.or.ke',
+            first_name='Test',
+            username='test',
+            password='mtihani',
+            is_staff=True,
+            is_national=True
+        )
+        self.client.login(username='test', password='mtihani')
         super(TestAPIRootView, self).setUp()
 
     def test_api_root_exception_path(self):

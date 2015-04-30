@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.permissions import DjangoModelPermissions
 from common.views import AuditableDetailViewMixin
 
 from .models import (
@@ -57,6 +58,10 @@ class GeoCodeMethodDetailView(
 
 
 class FacilityCoordinatesListView(generics.ListCreateAPIView):
+
+    # This data is controlled access
+    # Do not change the permission_classes without good reason
+    permission_classes = (DjangoModelPermissions,)
     queryset = FacilityCoordinates.objects.all()
     serializer_class = FacilityCoordinatesSerializer
     filter_class = FacilityCoordinatesFilter
@@ -66,6 +71,10 @@ class FacilityCoordinatesListView(generics.ListCreateAPIView):
 
 class FacilityCoordinatesDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
+    # This data is controlled access
+    # Do not change the permission classes without good reason
+    permission_classes = (DjangoModelPermissions,)
     queryset = FacilityCoordinates.objects.all()
     serializer_class = FacilityCoordinatesSerializer
 

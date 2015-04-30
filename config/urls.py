@@ -24,7 +24,9 @@ urlpatterns = patterns(
 
     # The next three patterns are for django-rest-auth
     # They are there Single Page Application authentication and registration
-    url(r'^accounts/', include('allauth.urls')),
+    # The accounts namespace initially pointed to `allauth.urls`
+    # But we need to have a single way to log in / out for the system
+    url(r'^accounts/', include('rest_framework.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 )
