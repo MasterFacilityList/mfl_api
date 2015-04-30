@@ -11,6 +11,8 @@
 
 - name: copy the code to the target machine using rsync
   synchronize: 'src={{base_dir}} dest=/opt delete=yes archive=yes recursive=yes mode=push'
+  notify:
+    - restart supervisor
 
 - name: update versions of common dependencies via pip before we make our venv
   pip: 'name={{item}} state=latest'
@@ -28,6 +30,8 @@
   with_items:
     - migrate
     - collectstatic
+  notify:
+    - restart supervisor
 
 - name: copy the supervisor configuration to its destination
   sudo: yes
