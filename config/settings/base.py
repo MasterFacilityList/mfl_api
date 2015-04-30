@@ -47,9 +47,6 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django.contrib.gis',
     'rest_auth',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
     'reversion',
     'django_extensions',
     'gunicorn',
@@ -93,12 +90,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.template.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
 )
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 )
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -194,12 +188,16 @@ LOGGING = {
         'django': {
             'handlers': ['console'],
             'propagate': True,
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
         'django.request': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': False,
+        },
+        'rest_auth': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
         },
         'common': {
             'handlers': ['console'],

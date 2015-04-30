@@ -6,10 +6,53 @@
         type="text/css">
 {% endblock bootstrap_theme %}
 
-{% block branding %}
-    <h3>MFL v2 API</h3>
-{% endblock %}
-
 {% block title %}
     Master Facilities List v2 - Login
 {% endblock title %}
+
+{% block body %}
+<body class="container">
+    <div class="row-fluid">
+        <h3>MFL v2 API Login</h3>
+        <form action="{% url 'rest_framework:login' %}" role="form" method="post">
+            {% csrf_token %}
+            <div class="form-group {% if form.email.errors %}error{% endif %}">
+                <label for="id_email">Email:</label>
+                <input type="email" name="email" maxlength="100"
+                    autocapitalize="off"
+                    autocorrect="off" class="form-control textinput textInput"
+                    id="id_email" required
+                    {% if form.email.value %}value="{{ form.email.value }}"{% endif %}>
+                {% if form.email.errors %}
+                    <p class="text-error">
+                        {{ form.email.errors|striptags }}
+                    </p>
+                {% endif %}
+            </div>
+            <div class="form-group {% if form.password.errors %}error{% endif %}">
+                <label for="id_password">Password:</label>
+                <input type="password" name="password" maxlength="100"
+                    autocapitalize="off" autocorrect="off" class="form-control textinput textInput"
+                    id="id_password" required>
+                {% if form.password.errors %}
+                    <p class="text-error">
+                        {{ form.password.errors|striptags }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <input type="hidden" name="next" value="{{ next }}" />
+
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="well well-small text-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <input type="submit" name="submit" value="Log in" class="btn btn-primary form-control" id="submit-id-submit">
+        </form>
+    </div>
+</body>
+{% endblock %}

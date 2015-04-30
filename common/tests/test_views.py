@@ -24,7 +24,6 @@ from ..serializers import (
     UserContactSerializer
 )
 from ..views import APIRoot
-from .test_models import BaseTestCase
 
 
 def default(obj):
@@ -42,12 +41,12 @@ class LogginMixin(object):
             password='mtihani',
             is_national=True
         )
-        self.client.login(username='test', password='mtihani')
+        self.client.login(email='tester@ehealth.or.ke', password='mtihani')
         self.maxDiff = None
         super(LogginMixin, self).setUp()
 
 
-class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
+class TestViewCounties(LogginMixin, APITestCase):
     def setUp(self):
         super(TestViewCounties, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -97,7 +96,7 @@ class TestViewCounties(LogginMixin, BaseTestCase, APITestCase):
         self.assertEquals(200, response.status_code)
 
 
-class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
+class TestViewConstituencies(LogginMixin, APITestCase):
     def setUp(self):
         super(TestViewConstituencies, self).setUp()
 
@@ -149,7 +148,7 @@ class TestViewConstituencies(LogginMixin, BaseTestCase, APITestCase):
         self.assertEquals(200, response.status_code)
 
 
-class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
+class TestViewWards(LogginMixin, APITestCase):
     def setUp(self):
         super(TestViewWards, self).setUp()
 
@@ -203,7 +202,7 @@ class TestViewWards(LogginMixin, BaseTestCase, APITestCase):
         self.assertEquals(200, response.status_code)
 
 
-class TestContactView(LogginMixin, BaseTestCase, APITestCase):
+class TestContactView(LogginMixin, APITestCase):
     def setUp(self):
         super(TestContactView, self).setUp()
         self.url = reverse("api:common:contacts_list")
@@ -275,7 +274,7 @@ class TestContactView(LogginMixin, BaseTestCase, APITestCase):
         pass
 
 
-class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
+class TestContactTypeView(LogginMixin, APITestCase):
     def setUp(self):
         super(TestContactTypeView, self).setUp()
         self.url = reverse("api:common:contact_types_list")
@@ -304,7 +303,7 @@ class TestContactTypeView(LogginMixin, BaseTestCase, APITestCase):
         self.assertIsNone(result)
 
 
-class TestTownView(LogginMixin, BaseTestCase, APITestCase):
+class TestTownView(LogginMixin, APITestCase):
     def setUp(self):
         super(TestTownView, self).setUp()
         self.url = reverse("api:common:towns_list")

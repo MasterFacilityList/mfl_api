@@ -20,7 +20,6 @@ from ..models import (
     UserCounty,
     UserContact
 )
-from ..models import get_default_system_user_id
 
 
 class AbstractBaseModelTest(TestCase):
@@ -102,7 +101,13 @@ class AbstractBaseModelTest(TestCase):
 class BaseTestCase(TestCase):
 
     def setUp(self):
-        self.user = get_user_model().objects.get(pk=get_default_system_user_id)
+        self.user = get_user_model().objects.create_superuser(
+            email='tester1@ehealth.or.ke',
+            first_name='Test',
+            username='test1',
+            password='mtihani',
+            is_national=True
+        )
         super(BaseTestCase, self).setUp()
 
     def inject_audit_fields(self, data):
