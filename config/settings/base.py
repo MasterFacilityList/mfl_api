@@ -46,7 +46,6 @@ INSTALLED_APPS = (
     'corsheaders',
     'rest_framework_swagger',
     'django.contrib.gis',
-    'rest_auth',
     'reversion',
     'django_extensions',
     'gunicorn',
@@ -194,10 +193,6 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
-        },
-        'rest_auth': {
-            'handlers': ['console'],
-            'level': 'DEBUG'
         },
         'rest_framework': {
             'handlers': ['console'],

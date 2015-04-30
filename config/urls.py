@@ -22,6 +22,4 @@ urlpatterns = patterns(
         include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/token/', 'rest_framework.authtoken.views.obtain_auth_token'),
     url(r'^accounts/', include('rest_framework.urls')),
-    url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 )
