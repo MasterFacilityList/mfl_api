@@ -40,8 +40,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'users',
+    'django.contrib.admin',
     'common',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -205,3 +205,4 @@ TEMPLATES = [
         'APP_DIRS': True,
     },
 ]
+LOGIN_REDIRECT_URL = '/api/'

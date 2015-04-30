@@ -16,7 +16,7 @@
 <body class="container">
     <div class="row">
         <h3>MFL v2 API Login</h3>
-        <form action="{% url 'mfl_users:login' %}" role="form" method="post">
+        <form action="{% url 'rest_framework:login' %}" role="form" method="post">
             {% csrf_token %}
 
             <div class="form-group {% if form.username.errors %}has-error{% endif %} form-group-lg">
