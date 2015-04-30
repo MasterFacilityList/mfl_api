@@ -199,6 +199,10 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG'
         },
+        'rest_framework': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },
         'common': {
             'handlers': ['console'],
             'level': 'DEBUG'
