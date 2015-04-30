@@ -28,6 +28,7 @@ def read_the_facilities_file():  # noqa
     facilities_regulation_statuses = []
     regulation_statuses = []
     job_titles = []
+    facility_names = []
 
     with open(facilities_file, 'r') as csv_file:
         facilities_reader = csv.reader(csv_file)
@@ -81,14 +82,18 @@ def read_the_facilities_file():  # noqa
                         post_address, postal_code, address_town
                     )
                 }
-                postal_contacts.append(postal_contact)
+                if postal_contact not in postal_contacts:
+                    postal_contacts.append(postal_contact)
                 facility_postal_contact = {
                     "facility": name,
-                    "contact": "{} {} {}".format(
-                        post_address, postal_code, address_town
-                    )
+                    "contact": {
+                        "contact": "{} {} {}".format(
+                            post_address, postal_code, address_town)
+                    }
+
                 }
-                facilities_postal_contacts.append(facility_postal_contact)
+                if facility_postal_contact not in facilities_postal_contacts:
+                    facilities_postal_contacts.append(facility_postal_contact)
 
                 facility_physical_address = {
                     "town": {
@@ -97,10 +102,12 @@ def read_the_facilities_file():  # noqa
                     "plot_number": plot_number
 
                 }
-
-                towns.append(
-                    {"name": neartest_town})
-                physical_addresss.append(facility_physical_address)
+                town_dict = {"name": neartest_town}
+                if town_dict not in towns:
+                    towns.append(
+                        {"name": neartest_town})
+                if facility_physical_address not in physical_addresss:
+                    physical_addresss.append(facility_physical_address)
                 facility_email = row[27]
 
                 if facility_email:
@@ -110,16 +117,19 @@ def read_the_facilities_file():  # noqa
                         },
                         "contact": facility_email
                     }
-                    email_contacts.append(
-                        email_contact
-                    )
+                    if email_contact not in email_contacts:
+                        email_contacts.append(
+                            email_contact
+                        )
                     facility_email_contact = {
                         "facility": name,
-                        "contact": facility_email
-
+                        "contact": {
+                            "contact": facility_email
+                        }
                     }
-                    facilities_email_contacts.append(
-                        facility_email_contact)
+                    if facility_email_contact not in facilities_email_contacts:
+                        facilities_email_contacts.append(
+                            facility_email_contact)
                 facility_fax = row[25]
                 if facility_fax:
                     fax_contact = {
@@ -128,13 +138,17 @@ def read_the_facilities_file():  # noqa
                         },
                         "contact": facility_fax
                     }
-                    fax_contacts.append(fax_contact)
+                    if fax_contact not in fax_contacts:
+                        fax_contacts.append(fax_contact)
                     facility_fax_contact = {
                         "facility": name,
-                        "contact": facility_fax
+                        "contact": {
+                            "contact": facility_fax
+                        }
 
                     }
-                    facilities_fax_contacts.append(facility_fax_contact)
+                    if facility_fax_contact not in facilities_fax_contacts:
+                        facilities_fax_contacts.append(facility_fax_contact)
                 facility_mobile = row[26]
                 if facility_mobile:
                     mobile_contact = {
@@ -143,13 +157,16 @@ def read_the_facilities_file():  # noqa
                         },
                         "contact": facility_mobile
                     }
-                    mobile_contacts.append(mobile_contact)
+                    if mobile_contact not in mobile_contacts:
+                        mobile_contacts.append(mobile_contact)
                     facility_mobile_contact = {
                         "facility": name,
-                        "contact": facility_mobile
-
+                        "contact": {
+                            "contact": facility_mobile
+                        }
                     }
-                    facilities_mobile_contacts.append(facility_mobile_contact)
+                    if facility_mobile_contact not in facilities_mobile_contacts:  # noqa
+                        facilities_mobile_contacts.append(facility_mobile_contact)  # noqa
                 facility_landline = row[24]
                 if facility_landline:
                     landline_contact = {
@@ -158,13 +175,15 @@ def read_the_facilities_file():  # noqa
                         },
                         "contact": facility_landline
                     }
-                    land_line_contacts.append(landline_contact)
+                    if landline_contact not in land_line_contacts:
+                        land_line_contacts.append(landline_contact)
                     facility_landline_contact = {
                         "facility": name,
                         "contact": facility_landline
                     }
-                    facilities_landline_contacts.append(
-                        facility_landline_contact)
+                    if facility_landline_contact not in facilities_landline_contacts:  # noqa
+                        facilities_landline_contacts.append(
+                            facility_landline_contact)
 
                 officer_name = row[31]
                 id_number = row[32]
@@ -180,8 +199,10 @@ def read_the_facilities_file():  # noqa
                         "id_number": id_number
 
                     }
-                    job_titles.append({"name": jobtitle})
-                    officers.append(officer_incharge)
+                    if {"name": jobtitle} not in job_titles:
+                        job_titles.append({"name": jobtitle})
+                    if officer_incharge not in officers:
+                        officers.append(officer_incharge)
 
                 # contacts
                 officer_email = row[35]
@@ -192,13 +213,16 @@ def read_the_facilities_file():  # noqa
                         },
                         "contact": officer_email
                     }
-                    email_contacts.append(officer_email_contact)
-                    officers_contacts.append(
-                        {
-                            "officer": officer_incharge,
-                            "contact": officer_email
-                        }
-                    )
+                    if officer_email_contact not in email_contacts:
+                        email_contacts.append(officer_email_contact)
+                    officers_contact = {
+                        "officer": officer_incharge,
+                        "contact": {"contact": officer_email}
+                    }
+                    if officers_contact not in officers_contacts:
+                        officers_contacts.append(
+                            officers_contact
+                        )
                 officer_personal_no = row[36]
                 if officer_personal_no:
                     officer_personal_contact = {
@@ -207,13 +231,16 @@ def read_the_facilities_file():  # noqa
                         },
                         "contact": officer_personal_no
                     }
-                    mobile_contacts.append(officer_personal_contact)
-                    officers_contacts.append(
-                        {
-                            "officer": officer_incharge,
-                            "contact": officer_personal_no
-                        }
-                    )
+                    if officer_personal_contact not in mobile_contacts:
+                        mobile_contacts.append(officer_personal_contact)
+                    officers_thru_contact = {
+                        "officer": officer_incharge,
+                        "contact": {"contact": officer_personal_no}
+                    }
+                    if officers_thru_contact not in officers_contacts:
+                        officers_contacts.append(
+                            officers_thru_contact
+                        )
                 officer_mobile = row[34]
                 if officer_mobile:
                     officer_mobile_contact = {
@@ -222,13 +249,15 @@ def read_the_facilities_file():  # noqa
                         },
                         "contact": officer_mobile
                     }
-                    mobile_contacts.append(officer_mobile_contact)
-                    officers_contacts.append(
-                        {
-                            "officer": officer_incharge,
-                            "contact": officer_mobile
-                        }
-                    )
+                    if officer_mobile_contact not in mobile_contacts:
+                        mobile_contacts.append(officer_mobile_contact)
+
+                    officer_incharge_thru_mobile = {
+                        "officer": officer_incharge,
+                        "contact": {"contact": officer_mobile}
+                    }
+                    if officer_incharge_thru_mobile not in officers_contacts:
+                        officers_contacts.append(officer_incharge_thru_mobile)
                 # regulators
                 regulator_name = row[84]
                 regulator_function = row[86]
@@ -241,24 +270,29 @@ def read_the_facilities_file():  # noqa
                         "regulation_function": regulator_function,
                         "regulation_verb": regulator_verb
                     }
-                    regulation_bodies.append(regulator)
+                    if regulator not in regulation_bodies:
+                        regulation_bodies.append(regulator)
                 # regulation statues
                 regulation_status = row[87]
                 if regulation_status and regulation_status != "":
-                    regulation_statuses.append(
-                        {"name": regulation_status})
+                    if {"name": regulation_status} not in regulation_statuses:
+                        regulation_statuses.append(
+                            {"name": regulation_status})
 
                     # facility Regulation status
                     facility_regulation_status = {
-                        "facility": name,
-                        "regulattion_body": regulator,
+                        "facility": {
+                            "name": name
+                        },
+                        "regulation_body": regulator,
                         "regulation_status": {
                             "name": regulation_status
                         }
 
                     }
-                    facilities_regulation_statuses.append(
-                        facility_regulation_status)
+                    if facility_regulation_status not in facilities_regulation_statuses:  # noqa
+                        facilities_regulation_statuses.append(
+                            facility_regulation_status)
 
                 code = row[3]
                 description = row[45]
@@ -337,7 +371,10 @@ def read_the_facilities_file():  # noqa
                     "physical_address": facility_physical_address
 
                 }
-                formatted_facilities.append(facility_dict)
+
+                if name not in facility_names:
+                    facility_names.append(name)
+                    formatted_facilities.append(facility_dict)
 
             else:
                 error_facilities.append(row)

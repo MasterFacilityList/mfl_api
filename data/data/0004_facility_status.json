@@ -27,7 +27,7 @@
             {
                  "name": "Registration",
                  "description": "The facility is being registered"
-            }
+            },
             {
              "name": "Gazettment",
              "description": "The facility is awating gazettment"

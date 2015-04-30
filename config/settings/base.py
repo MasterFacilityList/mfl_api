@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django.contrib.gis',
     'rest_auth',
-    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'rest_auth.registration',
@@ -122,7 +121,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 APPEND_SLASH = False
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
@@ -231,4 +230,3 @@ TEMPLATES = [
         'APP_DIRS': True,
     },
 ]
-SITE_ID = 1
