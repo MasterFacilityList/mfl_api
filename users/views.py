@@ -13,6 +13,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.contrib.auth.forms import AuthenticationForm
 
 from rest_framework import generics
 from rest_framework import permissions
@@ -21,7 +22,6 @@ from rest_framework.views import APIView, Response
 from .models import MflUser
 from .serializers import UserSerializer
 from .filters import MFLUserFilter
-from .forms import MFLAuthenticationForm
 
 
 class APILogin(APIView):
@@ -80,7 +80,7 @@ def mfl_login(request):
     redirect_to = request.POST.get(REDIRECT_FIELD_NAME,
                                    request.GET.get(REDIRECT_FIELD_NAME, ''))
     if request.method == "POST":
-        form = MFLAuthenticationForm(request, data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             # Ensure the user-originating redirection url is safe.
             if not is_safe_url(url=redirect_to, host=request.get_host()):
@@ -95,7 +95,7 @@ def mfl_login(request):
             print 'Invalid auth form!'
             print form.errors
     else:
-        form = MFLAuthenticationForm(request)
+        form = AuthenticationForm(request)
 
     current_site = get_current_site(request)
     context = {

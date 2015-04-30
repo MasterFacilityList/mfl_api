@@ -19,18 +19,18 @@
         <form action="{% url 'mfl_users:login' %}" role="form" method="post">
             {% csrf_token %}
 
-            <div class="form-group {% if form.email.errors %}has-error{% endif %} form-group-lg">
-                <label for="id_email">Email:</label>
-                <input type="email" name="email" maxlength="100"
+            <div class="form-group {% if form.username.errors %}has-error{% endif %} form-group-lg">
+                <label for="id_username">Email:</label>
+                <input type="username" name="username" maxlength="100"
                     class="form-control"
-                    id="id_email" required
-                    {% if form.email.value %}
-                        value="{{ form.email.value }}"
+                    id="id_username" required
+                    {% if form.username.value %}
+                        value="{{ form.username.value }}"
                     {% endif %}
                 >
-                {% if form.email.errors %}
+                {% if form.username.errors %}
                     <p class="text-error">
-                        {{ form.email.errors|striptags }}
+                        {{ form.username.errors|striptags }}
                     </p>
                 {% endif %}
             </div>
