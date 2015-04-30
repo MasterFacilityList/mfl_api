@@ -359,6 +359,11 @@ class TestAPIRootView(APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
 
+        # Test that the root redirects here
+        redirect_response = self.client.get(
+            reverse('root_redirect'), follow=True)
+        self.assertEquals(200, redirect_response.status_code)
+
 
 class TestUserContactView(LogginMixin, APITestCase):
     def setUp(self):
