@@ -14,8 +14,6 @@ dependencies:
 test:
   override:
     - fab test
-  post:
-    - coveralls
 
 general:
   artifacts:
@@ -25,4 +23,5 @@ deployment:
     production:
         branch: develop
         commands:
-            - fab server_deploy
+            - fab server_deploy:
+                timeout: 1800
