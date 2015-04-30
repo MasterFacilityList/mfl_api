@@ -35,8 +35,14 @@ def default(obj):
 class LogginMixin(object):
 
     def setUp(self):
-        self.user = mommy.make(get_user_model())
-        self.client.force_authenticate(user=self.user)
+        self.user = get_user_model().objects.create_superuser(
+            email='tester@ehealth.or.ke',
+            first_name='Test',
+            username='test',
+            password='mtihani',
+            is_national=True
+        )
+        self.client.login(username='test', password='mtihani')
         self.maxDiff = None
         super(LogginMixin, self).setUp()
 
@@ -314,17 +320,9 @@ class TestTownView(LogginMixin, BaseTestCase, APITestCase):
         self.assertEqual("Kiamaiko Taon", response.data['name'])
 
 
-class TestAPIRootView(APITestCase):
+class TestAPIRootView(LogginMixin, APITestCase):
     def setUp(self):
         self.url = reverse('api:root_listing')
-        self.user = get_user_model().objects.create_superuser(
-            email='tester@ehealth.or.ke',
-            first_name='Test',
-            username='test',
-            password='mtihani',
-            is_national=True
-        )
-        self.client.login(username='test', password='mtihani')
         super(TestAPIRootView, self).setUp()
 
     def test_api_root_exception_path(self):
