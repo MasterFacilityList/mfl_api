@@ -284,7 +284,9 @@ def read_the_facilities_file():  # noqa
                         "facility": {
                             "name": name
                         },
-                        "regulation_body": regulator,
+                        "regulating_body": {
+                            "name": regulator_name
+                        },
                         "regulation_status": {
                             "name": regulation_status
                         }
