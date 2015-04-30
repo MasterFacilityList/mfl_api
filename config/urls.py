@@ -18,8 +18,7 @@ urlpatterns = patterns(
     '',
     url(r'^$', root_redirect_view, name='root_redirect'),
     url(r'^api/', include(apipatterns, namespace='api')),
-    url(r'^api/auth/',
-        include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^accounts/',
+        include('users.urls', namespace='mfl_users')),
     url(r'^api/token/', 'rest_framework.authtoken.views.obtain_auth_token'),
-    url(r'^accounts/', include('rest_framework.urls')),
 )
