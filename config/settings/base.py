@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django.contrib.gis',
     'rest_auth',
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'rest_auth.registration',
@@ -79,7 +80,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -231,3 +232,4 @@ TEMPLATES = [
         'APP_DIRS': True,
     },
 ]
+SITE_ID = 1
