@@ -90,6 +90,10 @@ def mfl_login(request):
             auth_login(request, form.get_user())
 
             return HttpResponseRedirect(redirect_to)
+
+        else:
+            print 'Invalid auth form!'
+            print form.errors
     else:
         form = MFLAuthenticationForm(request)
 

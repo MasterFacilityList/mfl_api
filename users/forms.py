@@ -3,11 +3,15 @@ from __future__ import unicode_literals
 from django import forms
 
 from django.contrib.auth import authenticate
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm
 
 
 class MFLAuthenticationForm(AuthenticationForm):
     """Modified to use email instead of username"""
+    email = forms.CharField(max_length=254)
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+
     def clean(self):
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
@@ -23,5 +27,4 @@ class MFLAuthenticationForm(AuthenticationForm):
             else:
                 self.confirm_login_allowed(self.user_cache)
 
-        print self.cleaned_data  # TODO Remove before merging!!!!!!
         return self.cleaned_data
