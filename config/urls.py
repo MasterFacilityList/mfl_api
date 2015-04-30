@@ -1,11 +1,11 @@
 from django.conf.urls import url, patterns, include
-
-from common.views import APIRoot
+from django.contrib.auth.decorators import login_required
+from common.views import APIRoot, root_redirect_view
 
 
 apipatterns = patterns(
     '',
-    url(r'^$', APIRoot.as_view(), name='root_listing'),
+    url(r'^$', login_required(APIRoot.as_view()), name='root_listing'),
     url(r'^explore/', include('rest_framework_swagger.urls')),
     url(r'^common/', include('common.urls', namespace='common')),
     url(r'^users/', include('users.urls', namespace='users')),
@@ -16,6 +16,7 @@ apipatterns = patterns(
 
 urlpatterns = patterns(
     '',
+    url(r'^$', root_redirect_view, name='root_redirect'),
     url(r'^api/', include(apipatterns, namespace='api')),
     url(r'^api/auth/',
         include('rest_framework.urls', namespace='rest_framework')),
@@ -23,7 +24,9 @@ urlpatterns = patterns(
 
     # The next three patterns are for django-rest-auth
     # They are there Single Page Application authentication and registration
-    url(r'^accounts/', include('allauth.urls')),
+    # The accounts namespace initially pointed to `allauth.urls`
+    # But we need to have a single way to log in / out for the system
+    url(r'^accounts/', include('rest_framework.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 )

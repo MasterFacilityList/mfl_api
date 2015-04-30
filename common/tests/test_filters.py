@@ -20,7 +20,7 @@ def _dict(ordered_dict_val):
     return json.loads(json.dumps(ordered_dict_val, default=default))
 
 
-class TestIsoDateTimeField(BaseTestCase):
+class TestIsoDateTimeField(LogginMixin, BaseTestCase):
     def test_strp_time_valid_iso_date(self):
         fl = IsoDateTimeField()
         valid_iso_date = '2015-04-14T06:46:32.709388Z'
@@ -116,7 +116,7 @@ class TestCommonFieldsFilterset(LogginMixin, BaseTestCase, APITestCase):
         )
 
 
-class TestTimeRangeFilter(BaseTestCase):
+class TestTimeRangeFilter(LogginMixin, BaseTestCase):
     def setUp(self):
         super(TestTimeRangeFilter, self).setUp()
         self.url = reverse('api:common:counties_list')

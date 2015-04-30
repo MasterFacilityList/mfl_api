@@ -14,9 +14,15 @@ dependencies:
 test:
   override:
     - fab test
-  # post:
-  #  - coveralls
+  post:
+    - coveralls
 
 general:
   artifacts:
     - "htmlcov"
+
+deployment:
+    production:
+        branch: develop
+        commands:
+            - fab server_deploy
