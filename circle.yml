@@ -22,8 +22,8 @@ general:
     - "htmlcov"
 
 deployment:
-    timeout: 1800
     production:
         branch: develop
         commands:
-            - fab server_deploy
+            - fab server_deploy:
+                timeout: 1800
