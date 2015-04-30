@@ -1,0 +1,7 @@
+[
+    {
+        "model": "facilities.RegulatingBody",
+        "unique_fields": ["name"],
+        "records":[{"abbreviation": "MOH-DMS", "regulation_function": "Pending Gazettement", "name": "Ministry of Health", "regulation_verb": "Gazettment"}, {"abbreviation": "KMPDB - Institution", "regulation_function": "Pending Registration", "name": "Kenya MPDB - Institution", "regulation_verb": "Registration"}, {"abbreviation": "Other", "regulation_function": "Pending Registration", "name": "Other", "regulation_verb": "Registration"}, {"abbreviation": "KMPDB - Private Practice", "regulation_function": "Pending License", "name": "Kenya MPDB - Private Practice", "regulation_verb": "Licensing"}, {"abbreviation": "NCK", "regulation_function": "Pending License", "name": "Nursing Council of Kenya (Private Practice)", "regulation_verb": "Licensing"}, {"abbreviation": "COC", "regulation_function": "Pending License", "name": "Clinical Officers Council", "regulation_verb": "Licensing"}, {"abbreviation": "Pharmacy & Poisons Board", "regulation_function": "Pending License", "name": "Pharmacy & Poisons Board", "regulation_verb": "Licensing"}]
+}
+]

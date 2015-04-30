@@ -1,0 +1,8 @@
+
+[
+    {
+        "model": "facilities.RegulationStatus",
+        "unique_fields": ["name"],
+        "records": [{"name": "Gazettment"}, {"name": "Registration"}, {"name": "Licensing"}]
+    }
+]

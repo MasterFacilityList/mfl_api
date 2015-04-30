@@ -4,6 +4,7 @@ import logging
 from collections import defaultdict
 from django.db.models import get_model
 from django.db import transaction
+from django.db.utils import ProgrammingError
 
 from common.fields import SequenceField
 
@@ -15,14 +16,26 @@ def _retrieve_existing_model_instance(model_cls, field_data):
     # to prevent any modifications making their way back to
     # the original dict
     assert isinstance(field_data, dict)
+
     try:
         instance = model_cls.objects.get(**field_data)
-    except:
-        LOGGER.error(
-            'Unable to get an instance of {} with attributes {}'
-            .format(model_cls, field_data)
-        )
-        raise
+    except ProgrammingError:
+
+        keys = field_data.keys()
+        for key in keys:
+            value = field_data[key]
+            if isinstance(value, dict):
+
+                fk_model = model_cls._meta.get_field(key).rel.to
+                fk_instance = fk_model.objects.get(**value)
+                field_data[key] = fk_instance
+            else:
+                # the field is not a foreign key hence no need to upate
+                # the dict with a model instance
+                pass
+
+        instance = model_cls.objects.get(**field_data)
+
     return instance
 
 
@@ -79,7 +92,7 @@ def _instantiate_single_record(model, unique_fields, record):
                         isinstance(field, SequenceField)
                         and not getattr(instance, field.name)
                         and hasattr(instance, 'generate_next_code_sequence')
-                            ):
+                    ):
                         setattr(
                             instance,
                             field.name,
@@ -109,7 +122,8 @@ def _process_model_spec(model_spec):
     unsaved_instances = defaultdict(list)
     for record in records:
         model_cls, unsaved_obj = _instantiate_single_record(
-            model, unique_fields, record)
+            model, unique_fields, record
+        )
         if unsaved_obj:  # For existing instances, obj is set to `None`
             unsaved_instances[model_cls].append(unsaved_obj)
 

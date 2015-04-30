@@ -167,9 +167,9 @@ class TestFacilityStatusView(LogginMixin, APITestCase):
         self.url = reverse("api:facilities:facility_statuses_list")
 
     def test_list_facility_status(self):
-        status_1 = mommy.make(FacilityStatus)
-        status_2 = mommy.make(FacilityStatus)
-        status_3 = mommy.make(FacilityStatus)
+        status_1 = mommy.make(FacilityStatus, name='OPERTATIONAL')
+        status_2 = mommy.make(FacilityStatus, name='NON_OPERATIONAL')
+        status_3 = mommy.make(FacilityStatus, name='CLOSED')
         response = self.client.get(self.url)
         expected_data = {
             "count": 3,
@@ -187,7 +187,7 @@ class TestFacilityStatusView(LogginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
     def test_retrive_facility_status(self):
-        status = mommy.make(FacilityStatus)
+        status = mommy.make(FacilityStatus, name='OPERTATIONAL')
         url = self.url + "{}/".format(status.id)
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)

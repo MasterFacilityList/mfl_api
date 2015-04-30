@@ -1,0 +1,9 @@
+rgnId,rgnCode,rgnName,rgnOfficeName,rgnOfficialLandline,rgnOfficialMobile,rgnOfficialFax,rgnOfficialEmail,rgnOfficialAddress,rgnOfficialAddressTown,rgnOfficialAddressPostCode,rgnPopulation,rgnRecordArchived
+1,1,Nairobi,PMO Nairobi,,,,,,,,3357771,False
+2,2,Central,PMO Central,020-2114971,0722888222,061-2030189,,,,,4884932,False
+3,3,Coast,PMO Coast,041-2226006,,041-2226006,pdphscoast@yahoo.com,Box 90233 Mombasa,MOMBASA,080100,3502909,False
+4,4,Eastern,PMO Eastern,,,,,,Embu,,6256832,False
+5,5,North Eastern,PMO North Eastern,,,,,,,,1440451,False
+6,6,Nyanza,PMO Nyanza,057-2020105/2023176,,057-2023176,,,,,5849722,False
+7,7,Rift Valley,PMO Rift Valley,,,,,,,,10316631,False
+8,8,Western,PMO Western,,,,,,,,4797160,False

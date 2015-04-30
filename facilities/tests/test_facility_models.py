@@ -274,7 +274,7 @@ class TestJobTitleModel(BaseTestCase):
 
 class TestOfficer(BaseTestCase):
     def test_save(self):
-        jt = mommy.make(JobTitle)
+        jt = mommy.make(JobTitle, name='Nursing officer incharge')
         data = {
             "name": "Kimani Maruge",
             "registration_number": "78736790",
@@ -350,7 +350,7 @@ class TestRegulatingBodyModel(BaseTestCase):
     def test_regulating_body_postal_address(self):
         postal = mommy.make(ContactType, name='POSTAL')
         contact = mommy.make(Contact, contact_type=postal)
-        regulating_body = mommy.make(RegulatingBody)
+        regulating_body = mommy.make(RegulatingBody, name='KMPDB')
         mommy.make(
             RegulatingBodyContact, regulating_body=regulating_body,
             contact=contact)
@@ -361,8 +361,8 @@ class TestFacility(BaseTestCase):
     def test_save(self):
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
-        officer_in_charge = mommy.make(Officer)
-        regulating_body = mommy.make(RegulatingBody)
+        officer_in_charge = mommy.make(Officer, name='Dr Burmuriat')
+        regulating_body = mommy.make(RegulatingBody, name='KMPDB')
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
         address = mommy.make(PhysicalAddress)
@@ -457,7 +457,7 @@ class TestFacilityRegulationStatus(BaseTestCase):
     def test_save(self):
         facility = mommy.make(Facility, name="Nairobi Hospital")
         status = mommy.make(RegulationStatus, name="SUSPENDED")
-        regulator = mommy.make(RegulatingBody)
+        regulator = mommy.make(RegulatingBody, name='KMPDB')
         data = {
             "facility": facility,
             "regulation_status": status,
