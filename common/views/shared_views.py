@@ -3,8 +3,6 @@ import reversion
 
 from collections import OrderedDict
 from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -130,7 +128,6 @@ class APIRoot(APIView):
     renderer_classes = (JSONRenderer, BrowsableAPIRenderer,)
     permission_classes = (IsAdminUser,)
 
-    @method_decorator(login_required)
     def get(self, request, format=None):
         resp = OrderedDict()
         errors = []
