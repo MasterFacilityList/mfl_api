@@ -196,7 +196,7 @@ class TestFacilityStatusView(LogginMixin, APITestCase):
 
 class TestFacilityUnitView(LogginMixin, APITestCase):
     def setUp(self):
-        super(TestFacilityUnitView)
+        super(TestFacilityUnitView, self).setUp()
         self.url = reverse("api:facilities:facility_units_list")
 
     def test_list_facility_units(self):
@@ -217,7 +217,7 @@ class TestFacilityUnitView(LogginMixin, APITestCase):
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
 
-    def test_retrive_facility_unit(self):
+    def test_retrieve_facility_unit(self):
         unit = mommy.make(FacilityUnit)
         expected_data = FacilityUnitSerializer(unit).data
         url = self.url + "{}/".format(unit.id)

@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
+from rest_framework.permissions import IsAdminUser
 
 from ..utilities.metadata_helpers import MODEL_VIEW_DICT, _lookup_metadata
 
@@ -127,6 +128,7 @@ class APIRoot(APIView):
     # Metadata Listing
     """
     renderer_classes = (JSONRenderer, BrowsableAPIRenderer,)
+    permission_classes = (IsAdminUser,)
 
     @method_decorator(login_required)
     def get(self, request, format=None):
