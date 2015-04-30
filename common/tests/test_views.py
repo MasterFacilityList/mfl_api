@@ -322,7 +322,6 @@ class TestAPIRootView(APITestCase):
             first_name='Test',
             username='test',
             password='mtihani',
-            is_staff=True,
             is_national=True
         )
         self.client.login(username='test', password='mtihani')
@@ -330,9 +329,14 @@ class TestAPIRootView(APITestCase):
 
     def test_api_root_exception_path(self):
         with self.assertRaises(ValidationError) as c:
-            # A null request is guaranteed to "tickle" something
+            # Auth makes this test really "interesting"
+            # We have to monkey patch the view to trigger the error path
             root_view = APIRoot()
-            root_view.get(request=None)
+
+            class DummyRequest(object):
+                user = get_user_model()()
+
+            root_view.get(request=DummyRequest())
 
         self.assertEqual(
             c.exception.message, 'Could not create root / metadata view')
