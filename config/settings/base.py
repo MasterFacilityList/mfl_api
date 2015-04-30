@@ -29,13 +29,11 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-SITE_ID = 1  # Remove at the first opportunity; forced by a dependency
 TEMPLATE_DEBUG = DEBUG
 SEND_BROKEN_LINK_EMAILS = not DEBUG
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
     'django.contrib.admin',
-    'django.contrib.sites',  # Remove ASAP; forced by a dependency
     'users',
     'common',
     'django.contrib.auth',
