@@ -93,7 +93,6 @@ class JobTitle(AbstractBase):
      (Nursing Officer I) or Job Group title.Officer
     """
     name = models.CharField(
-        null=True, blank=True,
         max_length=100,
         help_text="A short name for the job title")
     description = models.TextField(
@@ -130,7 +129,6 @@ class Officer(AbstractBase):
     Identify officers in-charge of facilities
     """
     name = models.CharField(
-        null=True, blank=True,
         max_length=255,
         help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
     id_number = models.CharField(
@@ -165,7 +163,6 @@ class FacilityStatus(AbstractBase):
         4. is closed down.
     """
     name = models.CharField(
-        null=True, blank=True,
         max_length=100, unique=True,
         help_text="A short name respresenting the operanation status"
         " e.g OPERATIONAL")
@@ -223,7 +220,6 @@ class RegulatingBody(AbstractBase):
     nursing home owned by a nurse
     """
     name = models.CharField(
-        null=True, blank=True,
         max_length=100, unique=True,
         help_text="The name of the regulating body")
     abbreviation = models.CharField(
@@ -286,7 +282,7 @@ class RegulationStatus(AbstractBase):
             Kenya Gazette.
     """
     name = models.CharField(
-        max_length=100, unique=True, null=True, blank=True,
+        max_length=100, unique=True,
         help_text="A short unique name representing a state/stage of "
         "regulation e.g. PENDING_OPENING ")
     description = models.TextField(

@@ -2,10 +2,6 @@ import os
 import csv
 import json
 from django.conf import settings
-from facilities.models import (
-    FacilityType,
-    FacilityStatus
-)
 
 
 facilities_file = os.path.join(
@@ -173,16 +169,19 @@ def read_the_facilities_file():  # noqa
                 officer_name = row[31]
                 id_number = row[32]
                 jobtitle = row[63]
-                officer_incharge = {
-                    "name": officer_name,
-                    "job_title": {
-                        "name": jobtitle
-                    },
-                    "id_number": id_number
+                if (
+                        officer_name and officer_name != ""
+                        and jobtitle and jobtitle != ""):
+                    officer_incharge = {
+                        "name": officer_name,
+                        "job_title": {
+                            "name": jobtitle
+                        },
+                        "id_number": id_number
 
-                }
-                job_titles.append({"name": jobtitle})
-                officers.append(officer_incharge)
+                    }
+                    job_titles.append({"name": jobtitle})
+                    officers.append(officer_incharge)
 
                 # contacts
                 officer_email = row[35]
@@ -235,29 +234,31 @@ def read_the_facilities_file():  # noqa
                 regulator_function = row[86]
                 regulator_verb = row[87]
                 regulator_abbreviation = row[83]
-                regulator = {
-                    "name": regulator_name,
-                    "abbreviation": regulator_abbreviation,
-                    "regulation_function": regulator_function,
-                    "regulation_verb": regulator_verb
-                }
-                regulation_bodies.append(regulator)
+                if regulator_name and regulator_name != "":
+                    regulator = {
+                        "name": regulator_name,
+                        "abbreviation": regulator_abbreviation,
+                        "regulation_function": regulator_function,
+                        "regulation_verb": regulator_verb
+                    }
+                    regulation_bodies.append(regulator)
                 # regulation statues
                 regulation_status = row[87]
-                regulation_statuses.append(
-                    {"name": regulation_status})
+                if regulation_status and regulation_status != "":
+                    regulation_statuses.append(
+                        {"name": regulation_status})
 
-                # facility Regulation status
-                facility_regulation_status = {
-                    "facility": name,
-                    "regulattion_body": regulator,
-                    "regulation_status": {
-                        "name": regulation_status
+                    # facility Regulation status
+                    facility_regulation_status = {
+                        "facility": name,
+                        "regulattion_body": regulator,
+                        "regulation_status": {
+                            "name": regulation_status
+                        }
+
                     }
-
-                }
-                facilities_regulation_statuses.append(
-                    facility_regulation_status)
+                    facilities_regulation_statuses.append(
+                        facility_regulation_status)
 
                 code = row[3]
                 description = row[45]
@@ -293,16 +294,16 @@ def read_the_facilities_file():  # noqa
 
                 if is_published:
                     is_published = True
+
                 facility_type = row[56]
-                FacilityType.objects.get_or_create(name=facility_type)
+                if facility_type and facility_type != "":
+                    facility_type = facility_type
+                else:
+                    facility_type = "Other Hospital"
+
                 operation_status = row[10]
                 if not operation_status:
                     operation_status = "OPERATIONAL"
-                try:
-                    FacilityStatus.objects.get_or_create(
-                        name=operation_status, description="some desc")
-                except:
-                    pass
 
                 owner = row[61]
                 attributes = {

@@ -17,6 +17,7 @@ from ..models import (
     ServiceOption,
     ServiceRating,
     FacilityApproval,
+    RegulatingBody,
     RegulatingBodyContact
 )
 
@@ -32,6 +33,9 @@ class TestModels(TestCase):
         ]
 
         for model_cls in models:
+            if model_cls == RegulatingBodyContact:
+                rb = mommy.make(RegulatingBody, name='KMPDB')
+                obj = mommy.make(RegulatingBodyContact, regulating_body=rb)
             obj = mommy.make(model_cls)
             self.assertNotEquals(0, len(model_cls.objects.all()))
 
