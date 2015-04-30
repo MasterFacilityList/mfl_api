@@ -1,9 +1,0 @@
-You are using pip version 6.0.8, however version 6.1.1 is available.
-You should consider upgrading via the 'pip install --upgrade pip' command.
-DEPRECATION: --download-cache has been deprecated and will be removed in the future. Pip now automatically uses and configures its cache.
-Collecting pyzmq
-  Retrying (Retry(total=4, connect=None, read=None, redirect=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.requests.packages.urllib3.connection.VerifiedHTTPSConnection object at 0x7fc0ef578750>, 'Connection to pypi.python.org timed out. (connect timeout=15)')': /simple/pyzmq/
-  Downloading pyzmq-14.6.0.tar.gz (1.0MB)
-Installing collected packages: pyzmq
-  Running setup.py install for pyzmq
-    Operation cancelled by user
