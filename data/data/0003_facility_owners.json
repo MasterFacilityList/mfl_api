@@ -2,31 +2,25 @@
     {
         "model": "facilities.OwnerType",
         "unique_fields": ["name"],
-      
+
         "records": [
            {
                 "name": "Ministry of Health"
-     
             },
             {
                 "name": "Other Public Institution"
-     
             },
             {
                 "name": "Faith Based Organization"
-       
             },
             {
                 "name": "Private Institutions and Private Practice"
-        
             },
             {
-
                 "name": "Non-Governmental Organizations"
             },
-            { 
+            {
                 "name": "Other"
-        
             }
         ]
 
@@ -34,10 +28,10 @@
     {
         "model": "facilities.Owner",
         "unique_fields": ["name"],
-      
+
         "records": [
         {
-            
+
             "name": "Ministry of Health",
             "abbreviation":"MOH",
             "owner_type": {
@@ -60,7 +54,7 @@
             }
 
         },
-        { 
+        {
             "name": "Academic (if registered)",
             "abbreviation": "ACADEMIC",
             "owner_type": {
@@ -109,7 +103,7 @@
            "abbreviation": "SUPKEM",
            "owner_type": {
                 "name": "Faith Based Organization"
-            } 
+            }
         },
         {
 
@@ -131,7 +125,7 @@
             "abbreviation": "PRIV-COMP",
             "owner_type": {
 
-                "name": "Private Institutions and Private Practice"        
+                "name": "Private Institutions and Private Practice"
             }
 
         },
@@ -143,8 +137,8 @@
             }
 
         },
-                    
-        
+
+
         {
             "name": "Local Authority T Fund",
             "abbreviation": "LATF",
@@ -162,7 +156,7 @@
         },
 
         {
-            
+
             "name": "Private Practice - Medical Specialist",
             "abbreviation": "PP-MSPEC",
             "owner_type": {
@@ -220,11 +214,11 @@
         },
 
         {
-            "name": "State Coorporation", 
+            "name": "State Coorporation",
             "abbreviation": "STATE CORP",
             "owner_type":{
                 "name": "Other Public Institution"
-     
+
             }
         }
 

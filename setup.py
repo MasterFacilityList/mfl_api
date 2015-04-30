@@ -106,5 +106,6 @@ setup(
         "django-environ>=0.3.0",
         "python-coveralls>=2.5.0",
         "djangorestframework-gis>=0.8.1",
+        "django-debug-toolbar>=1.3.0",
     ],
 )

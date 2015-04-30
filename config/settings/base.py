@@ -29,7 +29,6 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
 TEMPLATE_DEBUG = DEBUG
 SEND_BROKEN_LINK_EMAILS = not DEBUG
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
@@ -78,9 +77,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -115,15 +114,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 SESSION_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 APPEND_SLASH = False
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.DjangoModelPermissions',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
@@ -182,7 +181,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'  # NOQA
+            'format': '%(levelname)s: %(asctime)s [%(module)s] %(message)s'  # NOQA
         }
     },
     'handlers': {
@@ -217,11 +216,11 @@ LOGGING = {
         },
         'data_bootstrap': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         },
         'mfl_gis': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         }
     }
 }

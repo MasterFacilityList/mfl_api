@@ -35,8 +35,14 @@ def default(obj):
 class LogginMixin(object):
 
     def setUp(self):
-        self.user = mommy.make(get_user_model())
-        self.client.force_authenticate(user=self.user)
+        self.user = get_user_model().objects.create_superuser(
+            email='tester@ehealth.or.ke',
+            first_name='Test',
+            username='test',
+            password='mtihani',
+            is_national=True
+        )
+        self.client.login(username='test', password='mtihani')
         self.maxDiff = None
         super(LogginMixin, self).setUp()
 
@@ -314,16 +320,21 @@ class TestTownView(LogginMixin, BaseTestCase, APITestCase):
         self.assertEqual("Kiamaiko Taon", response.data['name'])
 
 
-class TestAPIRootView(APITestCase):
+class TestAPIRootView(LogginMixin, APITestCase):
     def setUp(self):
         self.url = reverse('api:root_listing')
         super(TestAPIRootView, self).setUp()
 
     def test_api_root_exception_path(self):
         with self.assertRaises(ValidationError) as c:
-            # A null request is guaranteed to "tickle" something
+            # Auth makes this test really "interesting"
+            # We have to monkey patch the view to trigger the error path
             root_view = APIRoot()
-            root_view.get(request=None)
+
+            class DummyRequest(object):
+                user = get_user_model()()
+
+            root_view.get(request=DummyRequest())
 
         self.assertEqual(
             c.exception.message, 'Could not create root / metadata view')
@@ -358,6 +369,11 @@ class TestAPIRootView(APITestCase):
         # This is one sensitive bitch of a test!
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
+
+        # Test that the root redirects here
+        redirect_response = self.client.get(
+            reverse('root_redirect'), follow=True)
+        self.assertEquals(200, redirect_response.status_code)
 
 
 class TestUserContactView(LogginMixin, APITestCase):
