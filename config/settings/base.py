@@ -27,6 +27,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -164,28 +165,28 @@ LOGGING = {
         'django': {
             'handlers': ['console'],
             'propagate': True,
-            'level': 'DEBUG',
+            'level': 'ERROR',
         },
         'django.request': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': False,
         },
         'rest_framework': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         },
         'common': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         },
         'facilities': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         },
         'users': {
             'handlers': ['console'],
-            'level': 'DEBUG'
+            'level': 'ERROR'
         },
         'data_bootstrap': {
             'handlers': ['console'],
