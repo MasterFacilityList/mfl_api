@@ -11,7 +11,6 @@ from model_mommy import mommy
 from ..filters.filter_shared import IsoDateTimeField, TimeRangeFilter
 from ..models import County
 from ..serializers import CountySerializer
-from .test_models import BaseTestCase
 from .test_views import LogginMixin, default
 
 
@@ -20,7 +19,7 @@ def _dict(ordered_dict_val):
     return json.loads(json.dumps(ordered_dict_val, default=default))
 
 
-class TestIsoDateTimeField(LogginMixin, BaseTestCase):
+class TestIsoDateTimeField(LogginMixin, APITestCase):
     def test_strp_time_valid_iso_date(self):
         fl = IsoDateTimeField()
         valid_iso_date = '2015-04-14T06:46:32.709388Z'
@@ -43,7 +42,7 @@ class TestIsoDateTimeField(LogginMixin, BaseTestCase):
             value='2006-10-25 14:30:59', format='%Y-%m-%d %H:%M:%S')
 
 
-class TestCommonFieldsFilterset(LogginMixin, BaseTestCase, APITestCase):
+class TestCommonFieldsFilterset(LogginMixin, APITestCase):
     def setUp(self):
         super(TestCommonFieldsFilterset, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -116,7 +115,7 @@ class TestCommonFieldsFilterset(LogginMixin, BaseTestCase, APITestCase):
         )
 
 
-class TestTimeRangeFilter(LogginMixin, BaseTestCase):
+class TestTimeRangeFilter(LogginMixin, APITestCase):
     def setUp(self):
         super(TestTimeRangeFilter, self).setUp()
         self.url = reverse('api:common:counties_list')

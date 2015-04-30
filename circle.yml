@@ -18,10 +18,3 @@ test:
 general:
   artifacts:
     - "htmlcov"
-
-deployment:
-    production:
-        branch: develop
-        commands:
-            - fab server_deploy:
-                timeout: 1800

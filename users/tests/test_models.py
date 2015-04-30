@@ -16,7 +16,7 @@ class TestMflUserModel(BaseTestCase):
         user = MflUser.objects.create(**data)
 
         # the base  test case class comes with another user
-        self.assertEquals(2, MflUser.objects.count())
+        self.assertEquals(3, MflUser.objects.count())
 
         # test unicode
         self.assertEquals('some@email.com', user.__unicode__())
@@ -24,7 +24,7 @@ class TestMflUserModel(BaseTestCase):
         self.assertEquals("jina mwisho jm", user.get_full_name)
 
     def test_save_superuser(self):
-        self.assertEquals(1, MflUser.objects.count())
+        self.assertEquals(2, MflUser.objects.count())
         data = {
             "email": "some@email.com",
             "username": "some",
@@ -36,6 +36,6 @@ class TestMflUserModel(BaseTestCase):
         user = MflUser.objects.create_superuser(**data)
 
         # the base  test case class comes with another user
-        self.assertEquals(2, MflUser.objects.count())
+        self.assertEquals(3, MflUser.objects.count())
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
