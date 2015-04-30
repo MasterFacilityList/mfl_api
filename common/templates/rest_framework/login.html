@@ -1,10 +1,11 @@
 {% extends "rest_framework/login_base.html" %}
 
-{% block bootstrap_theme %}
-    <link rel="stylesheet"
-        href="/static/css/bootstrap.min.css"
-        type="text/css">
-{% endblock bootstrap_theme %}
+{% block style %}
+    {% block bootstrap_theme %}
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css"
+            type="text/css">
+    {% endblock bootstrap_theme %}
+{% endblock %}
 
 {% block title %}
     Master Facilities List v2 - Login
