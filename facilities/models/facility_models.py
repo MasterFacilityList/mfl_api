@@ -93,9 +93,11 @@ class JobTitle(AbstractBase):
      (Nursing Officer I) or Job Group title.Officer
     """
     name = models.CharField(
+        null=True, blank=True,
         max_length=100,
         help_text="A short name for the job title")
     description = models.TextField(
+        null=True, blank=True,
         help_text="A short summary of the job title")
 
     def __unicode__(self):
@@ -128,10 +130,11 @@ class Officer(AbstractBase):
     Identify officers in-charge of facilities
     """
     name = models.CharField(
-        max_length=150,
+        null=True, blank=True,
+        max_length=255,
         help_text="the name of the officer in-charge e.g Roselyne Wiyanga ")
     id_number = models.CharField(
-        max_length=10,
+        max_length=10, null=True, blank=True,
         help_text='The  National Identity number of the officer')
     registration_number = models.CharField(
         max_length=100, null=True, blank=True,

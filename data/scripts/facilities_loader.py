@@ -31,6 +31,7 @@ def read_the_facilities_file():  # noqa
     regulation_bodies = []
     facilities_regulation_statuses = []
     regulation_statuses = []
+    job_titles = []
 
     with open(facilities_file, 'r') as csv_file:
         facilities_reader = csv.reader(csv_file)
@@ -174,12 +175,13 @@ def read_the_facilities_file():  # noqa
                 jobtitle = row[63]
                 officer_incharge = {
                     "name": officer_name,
-                    "jobtitle": {
+                    "job_title": {
                         "name": jobtitle
                     },
                     "id_number": id_number
 
                 }
+                job_titles.append({"name": jobtitle})
                 officers.append(officer_incharge)
 
                 # contacts
@@ -358,7 +360,8 @@ def read_the_facilities_file():  # noqa
             "regulation_bodies": regulation_bodies,
             "facilities_regulation_statuses": facilities_regulation_statuses,
             "regulation_statuses": regulation_statuses,
-            "error_facilities": error_facilities
+            "error_facilities": error_facilities,
+            "job_titles": job_titles
         }
 
 

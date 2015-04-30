@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('facilities', '0007_auto_20150430_1119'),
+    ]
+
+    operations = [
+        migrations.AlterField(
+            model_name='jobtitle',
+            name='description',
+            field=models.TextField(help_text=b'A short summary of the job title', null=True, blank=True),
+        ),
+        migrations.AlterField(
+            model_name='officer',
+            name='name',
+            field=models.CharField(help_text=b'the name of the officer in-charge e.g Roselyne Wiyanga ', max_length=150, null=True, blank=True),
+        ),
+    ]

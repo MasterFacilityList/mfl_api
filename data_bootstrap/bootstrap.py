@@ -3,6 +3,7 @@ import logging
 
 from functools import partial
 from django.db.models import get_model
+# from facilities.models import JobTitle
 
 
 LOGGER = logging.getLogger(__name__)
