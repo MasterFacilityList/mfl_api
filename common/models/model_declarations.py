@@ -55,7 +55,7 @@ class Contact(AbstractBase):
 
 class Town(AbstractBase):
     name = models.CharField(
-        max_length=100, unique=True,
+        max_length=100, unique=True, null=True, blank=True,
         help_text="Name of the town")
 
     def __unicode__(self):
@@ -75,9 +75,11 @@ class PhysicalAddress(AbstractBase):
         Town, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")
     postal_code = models.CharField(
+        null=True, blank=True,
         max_length=100,
         help_text="The 5 digit number for the post office address. e.g 00900")
     address = models.TextField(
+        null=True, blank=True,
         help_text="This is the actual post office number of the entity"
         "e.g 6790")
     nearest_landmark = models.TextField(

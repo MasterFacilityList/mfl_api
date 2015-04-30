@@ -54,7 +54,8 @@ from ..serializers import (
     FacilityApprovalSerializer,
     FacilityOperationStateSerializer,
     FacilityUpgradeSerializer,
-    RegulatingBodyContactSerializer
+    RegulatingBodyContactSerializer,
+    RegulationStatusSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -373,7 +374,7 @@ class FacilityTypeDetailView(
 class RegulationStatusListView(
         AuditableDetailViewMixin, generics.ListCreateAPIView):
     queryset = RegulationStatus.objects.all()
-    serializer_class = FacilityRegulationStatusSerializer
+    serializer_class = RegulationStatusSerializer
     filter_class = RegulationStatusFilter
     ordering_fields = ('name', )
 
@@ -381,7 +382,7 @@ class RegulationStatusListView(
 class RegulationStatusDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = RegulationStatus.objects.all()
-    serializer_class = FacilityRegulationStatusSerializer
+    serializer_class = RegulationStatusSerializer
 
 
 def get_inspection_report(request, facility_id):

@@ -236,7 +236,8 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'the name of the officer in-charge e.g Roselyne Wiyanga ', max_length=150)),
-                ('registration_number', models.CharField(help_text=b'This is the licence number of the officer. e.g for a nurse use the NCK registration number.', max_length=100)),
+                ('id_number', models.CharField(help_text=b'The  National Identity number of the officer', max_length=10)),
+                ('registration_number', models.CharField(help_text=b'This is the licence number of the officer. e.g for a nurse use the NCK registration number.', max_length=100, null=True, blank=True)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -637,13 +638,18 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='practitioner',
+            name='practice_type',
+            field=models.ForeignKey(to='facilities.PracticeType'),
+        ),
+        migrations.AddField(
+            model_name='practitioner',
             name='qualifications',
             field=models.ManyToManyField(help_text=b'Practitioner qualifications', to='facilities.Qualification', through='facilities.PractitionerQualification'),
         ),
         migrations.AddField(
             model_name='practitioner',
             name='speciality',
-            field=models.ForeignKey(to='facilities.Speciality'),
+            field=models.ForeignKey(blank=True, to='facilities.Speciality', null=True),
         ),
         migrations.AddField(
             model_name='practitioner',

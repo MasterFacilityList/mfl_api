@@ -2,9 +2,11 @@ import os
 import csv
 import json
 from django.conf import settings
-from facilities.models import FacilityType, FacilityStatus, Officer, OfficerContact
+from facilities.models import (
+    FacilityType,
+    FacilityStatus
+)
 
-from common.models import ContactType, Town, PhyicalAddress
 
 facilities_file = os.path.join(
     settings.BASE_DIR, 'data/csvs/mfl_facilities.csv')
@@ -16,12 +18,19 @@ def read_the_facilities_file():  # noqa
     facilities_email_contacts = []
     fax_contacts = []
     facilities_fax_contacts = []
-    mobile_contact = []
+    mobile_contacts = []
     facilities_mobile_contacts = []
     postal_contacts = []
     facilities_postal_contacts = []
     land_line_contacts = []
     facilities_landline_contacts = []
+    towns = []
+    physical_addresss = []
+    officers = []
+    officers_contacts = []
+    regulation_bodies = []
+    facilities_regulation_statuses = []
+    regulation_statuses = []
 
     with open(facilities_file, 'r') as csv_file:
         facilities_reader = csv.reader(csv_file)
@@ -61,28 +70,47 @@ def read_the_facilities_file():  # noqa
                 # the child models
                 # physical addrsss
                 neartest_town = row[15]
-                Town.objects.get_or_create(name=neartest_town)
+                #  Town.objects.get_or_create(name=neartest_town)
                 plot_number = row[16]
                 address_town = row[29]
                 postal_code = row[30]
                 post_address = row[28]
-                facility_postal_contact = {
 
+                postal_contact = {
+                    "contact_type": {
+                        "name": "POSTAL"
+                    },
+                    "contact": "{} {} {}".format(
+                        post_address, postal_code, address_town
+                    )
                 }
+                postal_contacts.append(postal_contact)
+                facility_postal_contact = {
+                    "facility": name,
+                    "contact": "{} {} {}".format(
+                        post_address, postal_code, address_town
+                    )
+                }
+                facilities_postal_contacts.append(facility_postal_contact)
 
-                physical_addresss = PhyicalAddress.objects.get_or_create(
-                    town=neartest_town, plot_number=plot_number)
-
-                facility_pysical_address = {
-                    "town": neartest_town,
+                facility_physical_address = {
+                    "town": {
+                        "name": neartest_town
+                    },
                     "plot_number": plot_number
 
                 }
+
+                towns.append(
+                    {"name": neartest_town})
+                physical_addresss.append(facility_physical_address)
                 facility_email = row[27]
 
                 if facility_email:
                     email_contact = {
-                        "contact_type": "EMAIL",
+                        "contact_type": {
+                            "name": "EMAIL"
+                        },
                         "contact": facility_email
                     }
                     email_contacts.append(
@@ -90,7 +118,7 @@ def read_the_facilities_file():  # noqa
                     )
                     facility_email_contact = {
                         "facility": name,
-                        "contact": email_contact
+                        "contact": facility_email
 
                     }
                     facilities_email_contacts.append(
@@ -98,42 +126,143 @@ def read_the_facilities_file():  # noqa
                 facility_fax = row[25]
                 if facility_fax:
                     fax_contact = {
-                        "contact_type": "FAX",
+                        "contact_type": {
+                            "name": "FAX"
+                        },
                         "contact": facility_fax
                     }
+                    fax_contacts.append(fax_contact)
                     facility_fax_contact = {
                         "facility": name,
-                        "contact": fax_contact
+                        "contact": facility_fax
 
                     }
                     facilities_fax_contacts.append(facility_fax_contact)
                 facility_mobile = row[26]
                 if facility_mobile:
                     mobile_contact = {
-                        "contact_type": "MOBILE",
+                        "contact_type": {
+                            "name": "MOBILE"
+                        },
                         "contact": facility_mobile
                     }
+                    mobile_contacts.append(mobile_contact)
                     facility_mobile_contact = {
                         "facility": name,
-                        "contact": mobile_contact
+                        "contact": facility_mobile
 
                     }
                     facilities_mobile_contacts.append(facility_mobile_contact)
                 facility_landline = row[24]
                 if facility_landline:
                     landline_contact = {
-                        "contact_type": "LANDLINE",
+                        "contact_type": {
+                            "name": "LANDLINE"
+                        },
                         "contact": facility_landline
                     }
+                    land_line_contacts.append(landline_contact)
                     facility_landline_contact = {
-
+                        "facility": name,
+                        "contact": facility_landline
                     }
+                    facilities_landline_contacts.append(
+                        facility_landline_contact)
+
+                officer_name = row[31]
+                id_number = row[32]
+                jobtitle = row[63]
+                officer_incharge = {
+                    "name": officer_name,
+                    "jobtitle": {
+                        "name": jobtitle
+                    },
+                    "id_number": id_number
+
+                }
+                officers.append(officer_incharge)
+
+                # contacts
+                officer_email = row[35]
+                if officer_email:
+                    officer_email_contact = {
+                        "contact_type": {
+                            "name": "EMAIL"
+                        },
+                        "contact": officer_email
+                    }
+                    email_contacts.append(officer_email_contact)
+                    officers_contacts.append(
+                        {
+                            "officer": officer_incharge,
+                            "contact": officer_email
+                        }
+                    )
+                officer_personal_no = row[36]
+                if officer_personal_no:
+                    officer_personal_contact = {
+                        "contact_type": {
+                            "name": "MOBILE"
+                        },
+                        "contact": officer_personal_no
+                    }
+                    mobile_contacts.append(officer_personal_contact)
+                    officers_contacts.append(
+                        {
+                            "officer": officer_incharge,
+                            "contact": officer_personal_no
+                        }
+                    )
+                officer_mobile = row[34]
+                if officer_mobile:
+                    officer_mobile_contact = {
+                        "contact_type": {
+                            "name": "MOBILE"
+                        },
+                        "contact": officer_mobile
+                    }
+                    mobile_contacts.append(officer_mobile_contact)
+                    officers_contacts.append(
+                        {
+                            "officer": officer_incharge,
+                            "contact": officer_mobile
+                        }
+                    )
+                # regulators
+                regulator_name = row[84]
+                regulator_function = row[86]
+                regulator_verb = row[87]
+                regulator_abbreviation = row[83]
+                regulator = {
+                    "name": regulator_name,
+                    "abbreviation": regulator_abbreviation,
+                    "regulation_function": regulator_function,
+                    "regulation_verb": regulator_verb
+                }
+                regulation_bodies.append(regulator)
+                # regulation statues
+                regulation_status = row[87]
+                regulation_statuses.append(
+                    {"name": regulation_status})
+
+                # facility Regulation status
+                facility_regulation_status = {
+                    "facility": name,
+                    "regulattion_body": regulator,
+                    "regulation_status": {
+                        "name": regulation_status
+                    }
+
+                }
+                facilities_regulation_statuses.append(
+                    facility_regulation_status)
+
                 code = row[3]
                 description = row[45]
                 location_desc = row[78]
                 number_of_beds = row[43]
                 number_of_cots = row[44]
-                abbreviation = row[83]
+                abbreviation = ""
 
                 if number_of_cots == "" or not number_of_cots or number_of_cots == "Num_Cots":  # noqa
                     number_of_cots = 0
@@ -201,21 +330,58 @@ def read_the_facilities_file():  # noqa
                     "owner": {
                         "name": owner
                     },
-                    "attributes": json.dumps(attributes)
+                    "attributes": json.dumps(attributes),
+                    "physical_address": facility_physical_address
 
                 }
                 formatted_facilities.append(facility_dict)
+
             else:
                 error_facilities.append(row)
 
-        return formatted_facilities, error_facilities
+        return {
+            "formatted_facilities": formatted_facilities,
+            "email_contacts": email_contacts,
+            "facilities_email_contacts": facilities_email_contacts,
+            "fax_contacts": fax_contacts,
+            "facilities_fax_contacts": facilities_fax_contacts,
+            "mobile_contacts": mobile_contacts,
+            "facilities_mobile_contacts": facilities_mobile_contacts,
+            "postal_contacts": postal_contacts,
+            "facilities_postal_contacts": facilities_postal_contacts,
+            "land_line_contacts": land_line_contacts,
+            "facilities_landline_contacts": facilities_landline_contacts,
+            "towns": towns,
+            "physical_addresss": physical_addresss,
+            "officers": officers,
+            "officers_contacts": officers_contacts,
+            "regulation_bodies": regulation_bodies,
+            "facilities_regulation_statuses": facilities_regulation_statuses,
+            "regulation_statuses": regulation_statuses,
+            "error_facilities": error_facilities
+        }
 
 
-def write_to_file():
-    if os.path.exists('facilities.txt'):
-        os.remove('facilities.txt')
-    fac_file = open('facilities.txt', 'w+')
-    data = read_the_facilities_file()
-    data = data[0]
+def write_file(file_name, data):
+    if os.path.exists(file_name):
+        os.remove(file_name)
+    fac_file = open(file_name, 'w+')
     del data[0]
-    fac_file.write(json.dumps(data))
+    dumped_data = ""
+    try:
+        dumped_data = json.dumps(data)
+    except:
+        print data
+        raise
+
+    fac_file.write(dumped_data)
+
+
+def write_jsons_to_file():
+    data = read_the_facilities_file()
+    keys = data.keys()
+
+    for key in keys:
+        entity_data = data.get(key)
+        file_name = key + "{}".format('.txt')
+        write_file(file_name, entity_data)

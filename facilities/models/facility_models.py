@@ -162,10 +162,12 @@ class FacilityStatus(AbstractBase):
         4. is closed down.
     """
     name = models.CharField(
+        null=True, blank=True,
         max_length=100, unique=True,
         help_text="A short name respresenting the operanation status"
         " e.g OPERATIONAL")
     description = models.TextField(
+        null=True, blank=True,
         help_text="A short explanation of what the status entails.")
 
     def __unicode__(self):
@@ -218,14 +220,19 @@ class RegulatingBody(AbstractBase):
     nursing home owned by a nurse
     """
     name = models.CharField(
+        null=True, blank=True,
         max_length=100, unique=True,
         help_text="The name of the regulating body")
     abbreviation = models.CharField(
-        max_length=10, null=True, blank=True,
+        max_length=50, null=True, blank=True,
         help_text="A shortform of the name of the regulating body e.g Nursing"
         "Council of Kenya could be abbreviated as NCK.")
     contacts = models.ManyToManyField(
         Contact, through='RegulatingBodyContact')
+    regulation_function = models.CharField(
+        max_length=100, null=True, blank=True)
+    regulation_verb = models.CharField(
+        max_length=100, null=True, blank=True)
 
     @property
     def postal_address(self):
@@ -276,10 +283,11 @@ class RegulationStatus(AbstractBase):
             Kenya Gazette.
     """
     name = models.CharField(
-        max_length=100, unique=True,
+        max_length=100, unique=True, null=True, blank=True,
         help_text="A short unique name representing a state/stage of "
         "regulation e.g. PENDING_OPENING ")
     description = models.TextField(
+        null=True, blank=True,
         help_text="A short description of the regulation state or state e.g"
         "PENDING_OPENING could be descriped as 'waiting for the license to"
         "begin operating' ")
