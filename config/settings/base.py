@@ -95,9 +95,6 @@ STATIC_URL = '/static/'
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
-OAUTH2_PROVIDER = {
-    'SCOPES': ['read', 'write', 'groups']
-}
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissions',
@@ -117,8 +114,8 @@ REST_FRAMEWORK = {
         'rest_framework_csv.renderers.CSVRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
     'PAGINATE_BY': 25,
