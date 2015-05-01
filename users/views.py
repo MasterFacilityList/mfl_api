@@ -38,7 +38,8 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Document future possibility of social media auth
 # TODO Add and document APIs for role setup
 # TODO Document national vs county stuff
-# TODO Implement and test custom permissions that operate on national / county and use object permissions ( for facilities )
+# TODO Implement and test custom permissions that operate on
+# national / county and use object permissions ( for facilities )
 # TODO Create in demo data default roles for each county and national
 # TODO Define general public role
 # TODO Define public role with GIS access
@@ -46,6 +47,8 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Map current facilities to GIS and make report of unmapped ones
 # TODO Borrow @ngash's introductory API docs
 # TODO Write out an overview of the goals and architecture of MFL v2
-# TODO Write out a section of the docs that talks about how to use e.g what client, what browser extension
+# TODO Write out a section of the docs that talks about how to use
+# e.g what client, what browser extension
 # TODO Add Swagger compatible docstrings to every view
-# ( first line summary, detailed description, params from filters including base filter )
+# ( first line summary, detailed description, params from filters
+# including base filter )

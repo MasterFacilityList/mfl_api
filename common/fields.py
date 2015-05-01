@@ -33,7 +33,6 @@ class SequenceField(Field):
         return int(value)
 
     def contribute_to_class(self, cls, name):
-        # TODO Cleaner way to call Field's version
         self.set_attributes_from_name(name)
         self.model = cls
         cls._meta.add_field(self)
