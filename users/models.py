@@ -93,6 +93,13 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     def permissions(self):
         return self.get_all_permissions()
 
+    @property
+    def county(self):
+        from common.models import UserCounty
+        user_counties = UserCounty.objects.filter(
+            user=self, active=True)
+        return user_counties[0].county if user_counties else None
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 

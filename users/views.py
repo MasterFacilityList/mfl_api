@@ -153,7 +153,7 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # Document adding permissions to users
 # Document adding groups to users / creating users
 
-# TODO Implement and test custom permissions that operate on
+# TODO Implement, document and test custom permissions that operate on
 # national / county and use object permissions ( for facilities )
 # TODO Create in demo data default roles for each county and national
 # TODO Define general public role ( read only, no GIS )
