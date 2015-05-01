@@ -23,7 +23,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 # Protect this view with is_staff and is_superuser
 
 # TODO Sort out ConfirmEmailView ( see rest-auth FAQs )
-# TODO Document API login vis session
+# TODO Document API login vis session; email vs username
 # TODO Document API login via OAuth2
 # TODO Remove token authentication
 # TODO Document API logout
@@ -48,7 +48,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Borrow @ngash's introductory API docs
 # TODO Write out an overview of the goals and architecture of MFL v2
 # TODO Write out a section of the docs that talks about how to use
-# e.g what client, what browser extension
+# e.g what client, what browser extension ( httpie, curl )
 # TODO Add Swagger compatible docstrings to every view
 # ( first line summary, detailed description, params from filters
 # including base filter )

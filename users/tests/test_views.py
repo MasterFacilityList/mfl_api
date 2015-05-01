@@ -15,7 +15,7 @@ class TestLogin(APITestCase):
 
     def test_login(self):
         data = {
-            "email": 'user@test.com',
+            "username": 'user@test.com',
             "password": 'pass'
         }
         response = self.client.post(self.login_url, data)
@@ -31,20 +31,27 @@ class TestLogin(APITestCase):
         response = self.client.post(
             self.login_url,
             {
-                "email": user.email,
+                "username": user.email,
                 "password": 'pass'
             }
         )
-        self.assertEquals(401, response.status_code)
-        self.assertEquals("The user is not active", response.data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(
+            {'non_field_errors': ['User account is disabled.']},
+            response.data
+        )
 
     def test_login_user_does_not_exist(self):
         data = {
-            "email": "non_existent@email.com",
+            "username": "non_existent@email.com",
             "password": 'pass'
         }
         response = self.client.post(self.login_url, data)
-        self.assertEquals(401, response.status_code)
+        self.assertEquals(400, response.status_code)
         self.assertEquals(
-            "Invalid username/password Combination",
-            response.data)
+            {
+                'non_field_errors': [
+                    'Unable to log in with provided credentials.']
+            },
+            response.data
+        )
