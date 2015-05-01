@@ -1,10 +1,15 @@
 Getting started
 =================
-
 The MFL v2 project subscribes to the `API First`_ approach. It is **built to
 interoperate**. We "eat our own dog food" by insisting that the official
 user interfaces be just one more set of API clients, with no special
 privileges.
+
+This guide is for the authors of client applications ( applications that
+consume the RESTful web services ).
+
+Those who would like to make changes to the MFL API server code itself
+should refer to the :doc:`../contributing/index` guide.
 
 .. _`API First`: http://www.api-first.com/
 
@@ -46,5 +51,12 @@ That inspired us to build the MFL API -  :doc:`sandbox`.
     :maxdepth: 2
 
     sandbox
+    the_big_picture
     authentication
     api
+    support_resources
+    services
+    facilities
+    community_health_units
+    regulation
+

@@ -51,6 +51,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
     'corsheaders',
     'rest_framework_swagger',
     'django.contrib.gis',
@@ -190,7 +194,7 @@ LOGGING = {
         },
         'data_bootstrap': {
             'handlers': ['console'],
-            'level': 'ERROR'
+            'level': 'INFO'
         },
         'mfl_gis': {
             'handlers': ['console'],
