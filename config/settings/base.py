@@ -213,3 +213,9 @@ TEMPLATES = [
 ]
 LOGIN_REDIRECT_URL = '/api/'
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'users.MFLOAuthApplication'
+
+# django_rest_auth settings
+OLD_PASSWORD_FIELD_ENABLED = True
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer'
+}

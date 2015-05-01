@@ -1,8 +1,35 @@
 from rest_framework import generics
-
+from django.contrib.auth.models import Group, Permission
 from .models import MflUser, MFLOAuthApplication
-from .serializers import UserSerializer, MFLOAuthApplicationSerializer
+from .serializers import (
+    UserSerializer,
+    MFLOAuthApplicationSerializer,
+    PermissionSerializer,
+    GroupSerializer
+)
 from .filters import MFLUserFilter
+
+
+class PermissionsListView(generics.ListAPIView):
+    """
+    This is a read-only list view; intentionally.
+
+    The system's role based access control is built on the foundations put in
+    place in `django.contrib.auth` and `django.contrib.admin`. The official
+    web front-ends rely on the "automatic" permissions.
+    """
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+
+
+class GroupListView(generics.ListCreateAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
+class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 
 class UserList(generics.ListCreateAPIView):
@@ -121,6 +148,11 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MFLOAuthApplicationSerializer
 
 # TODO Add and document APIs for role setup
+# Read only API for permissions
+# Read-write API for groups
+# Document adding permissions to users
+# Document adding groups to users / creating users
+
 # TODO Implement and test custom permissions that operate on
 # national / county and use object permissions ( for facilities )
 # TODO Create in demo data default roles for each county and national
