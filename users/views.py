@@ -24,6 +24,9 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
     This is a controlled access API. It is limited to admin users
     ( users with `is_admin` set to `True` ).
 
+    Also - if you are using OAuth tokens, **the API server MUST be accessed
+    over HTTPS**.
+
     # Registering a new OAuth2 application
     You can learn all that you need to know about oauth2 by reading
     https://tools.ietf.org/html/rfc6749 .
@@ -102,7 +105,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
     Pick the `access_token` and send it in an `Authorization: Bearer` header
     e.g
 
-        curl -H “Authorization: Bearer fKDvh2fFLR1iFPuB26RUEalbjYO4rx” http://localhost:8000/api/common/counties/
+        curl -H "Authorization: Bearer ziBLqoXwVEA8lW9yEmE260AZ4lCJHq" http://localhost:8000/api/common/counties/
 
     For more detail on OAuth2 e.g the role of the refresh tokens, kindly
     consult the RFC.
@@ -117,10 +120,6 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
 
-# TODO Add proper OAuth support
-# TODO Add view to register an application, and a suitable docstring
-# The docstring should explain how to register an application
-# Protect this view with is_staff and is_superuser
 # TODO Add notes on the need to run over HTTPS ( compulsory )
 # TODO Sort out ConfirmEmailView ( see rest-auth FAQs )
 # TODO Document API login vis session; email vs username
