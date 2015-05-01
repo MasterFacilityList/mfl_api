@@ -9,7 +9,8 @@ class TestLogin(APITestCase):
         self.user = MflUser.objects.create(
             'user@test.com', 'pass', 'pass', 'pass'
         )
-        self.login_url = reverse("api:users:user_login")
+        self.login_url = reverse("api:rest_auth:login")
+        self.logout_url = reverse("api:rest_auth:logout")
         super(TestLogin, self).setUp()
 
     def test_login(self):
@@ -47,22 +48,3 @@ class TestLogin(APITestCase):
         self.assertEquals(
             "Invalid username/password Combination",
             response.data)
-
-    def test_logout(self):
-        user = MflUser.objects.create(
-            'user3@test.com', 'test first name', 'test user name 3', 'pass'
-        )
-        data = {
-            "email": user.email,
-            "password": 'pass'
-        }
-        self.client.login(**data)
-        self.assertTrue(self.user.is_authenticated())
-
-        # logout the user
-        logout_url = reverse("api:users:user_logout")
-        self.client.get(logout_url)
-
-        # test that the user is actually loggged out
-        # some error here
-        # self.assertFalse(self.user.is_authenticated())
