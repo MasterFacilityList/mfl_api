@@ -1,6 +1,9 @@
 [
     {
         "model": "facilities.RegulatingBody",
+        "unique_fields": [
+            "name"
+        ],
         "records": [
             {
                 "abbreviation": "MOH-DMS",
@@ -44,9 +47,6 @@
                 "regulation_function": "Pending License",
                 "regulation_verb": "Licensing"
             }
-        ],
-        "unique_fields": [
-            "name"
         ]
     }
 ]

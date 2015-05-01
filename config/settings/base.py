@@ -194,7 +194,7 @@ LOGGING = {
         },
         'data_bootstrap': {
             'handlers': ['console'],
-            'level': 'ERROR'
+            'level': 'INFO'
         },
         'mfl_gis': {
             'handlers': ['console'],

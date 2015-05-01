@@ -1,6 +1,10 @@
 [
     {
         "model": "facilities.Officer",
+        "unique_fields": [
+            "name",
+            "id_number"
+        ],
         "records": [
             {
                 "id_number": "1",
@@ -41169,10 +41173,6 @@
                 },
                 "name": "Dannington Otiato"
             }
-        ],
-        "unique_fields": [
-            "name",
-            "id_number"
         ]
     }
 ]

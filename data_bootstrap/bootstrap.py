@@ -2,7 +2,7 @@ import json
 import logging
 
 from collections import defaultdict
-from django.db.models import get_model
+from django.apps import apps
 from django.db import transaction
 from django.db.utils import ProgrammingError
 
@@ -58,8 +58,12 @@ def _resolve_foreign_keys(model_cls, record):
 
 def _instantiate_single_record(model, unique_fields, record):
     """Create unsaved model instances, ready to be sent to bulk_create"""
+    assert isinstance(model, str) or isinstance(model, unicode)
+    assert isinstance(unique_fields, list)
+    assert isinstance(record, dict)
+
     app, model_name = model.split('.', 1)  # split only once
-    model_cls = get_model(app, model_name)
+    model_cls = apps.get_model(app_label=app, model_name=model_name)
 
     if unique_fields:
         unique_dict = {}
@@ -104,6 +108,13 @@ def _instantiate_single_record(model, unique_fields, record):
                     .format(e, model, unique_fields, record)
                 )
                 raise
+        except model_cls.MultipleObjectsReturned as ex:
+            LOGGER.error(
+                'Data bug ( non unique ): "{}". '
+                'It relates to record "{}" of model "{}", unique fields "{}".'
+                .format(ex, record, model, unique_fields)
+            )
+            return None, None  # Calling code should be able to handle this
     else:
         LOGGER.error('Data file error; unique fields not specified')
 
@@ -111,29 +122,50 @@ def _instantiate_single_record(model, unique_fields, record):
 def _process_model_spec(model_spec):
     """For each model spec, instantiate but do not save ( bulk save later )"""
     model = model_spec['model']
-    unique_fields = model_spec.get('unique_fields', [])
+    unique_fields = model_spec['unique_fields']
     records = model_spec['records']
+
+    assert isinstance(model, str) or isinstance(model, unicode)
+    assert isinstance(unique_fields, list)
+    assert isinstance(records, list)
+    assert len(records) > 0
 
     # The first version of this function used some fancy functional techniques
     # ( partials / currying ); we go back to a simpler, more deterministic way
     unsaved_instances = defaultdict(list)
     for record in records:
-        model_cls, unsaved_obj = _instantiate_single_record(
-            model, unique_fields, record
-        )
+        assert isinstance(record, dict)
+        try:
+            model_cls, unsaved_obj = _instantiate_single_record(
+                model, unique_fields, record
+            )
+        except Exception as ex:  # Broad catch, reraised after debug logging
+            LOGGER.error('{} when working on {}'.format(ex, record))
+            raise
+
         if unsaved_obj:  # For existing instances, obj is set to `None`
             unsaved_instances[model_cls].append(unsaved_obj)
 
     for model_cls, instances in unsaved_instances.iteritems():
         with transaction.atomic():
             model_cls.objects.bulk_create(instances)
-            LOGGER.debug(
+            LOGGER.info(
                 'Created {} instances of {}'.format(len(instances), model_cls))
 
 
 def process_json_file(filename):
     """The entry point - loops through data files and loads each in"""
-    LOGGER.debug('Processing {}'.format(filename))
+    assert isinstance(filename, str)
+    LOGGER.info('Processing {}'.format(filename))
+
     with open(filename) as f:
         model_specs = json.load(f)
-        map(_process_model_spec, model_specs)
+        assert isinstance(model_specs, list)
+        assert len(model_specs) > 0
+
+        for model_spec in model_specs:
+            try:
+                _process_model_spec(model_spec)
+            except Exception as ex:  # Broad catch to allow debug messages
+                LOGGER.error(
+                    '{} when processing {:.1000}'.format(ex, model_spec))

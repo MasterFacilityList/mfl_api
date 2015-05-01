@@ -1,8 +1,7 @@
-
 [
     {
         "model": "users.MflUser",
-        "unique_fields": ["email", "fist_name", "username"],
+        "unique_fields": ["email", "first_name", "username"],
         "records": [
             {
                 "email": "hakunaruhusa@mfltest.slade360.co.ke",
