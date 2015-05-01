@@ -1,6 +1,6 @@
 [run]
 branch=True
-source=common,users,facilities
+source=common,users,facilities,chul,mfl_gis
 omit=
     *migrations*
 

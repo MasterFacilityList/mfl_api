@@ -1,0 +1,9 @@
+[
+    {
+        "model": "facilities.JobTitle",
+        "unique_fields": [
+            "name"
+        ],
+        "records": [{"name": "Medical Superintendant"}, {"name": "Clinical Officer"}, {"name": "Nursing Officer in Charge"}, {"name": "Hospital Director"}, {"name": "Doctor In Charge"}]
+    }
+]

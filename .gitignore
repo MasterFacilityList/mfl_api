@@ -71,3 +71,25 @@ clonedigger.html
 build/
 dist/
 htmlcov/
+
+# We have a fab task that creates this file
+# We can always recreate it
+mfl_models_graph.png
+
+# Do not store vagrant runtime stuff in git
+*.vagrant*
+.vagrant/
+
+# This one "fixed" some truly weird behavior from the ansible playbooks
+# It was a lazy fix; should have been better to debug the odd behavior
+/api/
+
+# Don't track collected static files and uploads in git
+*static*
+*media*
+
+# env files store config stuff
+.env
+
+# IPython notebooks, used to experiment on stuff
+*.ipynb

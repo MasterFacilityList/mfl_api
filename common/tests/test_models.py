@@ -1,3 +1,5 @@
+import uuid
+
 from datetime import timedelta, datetime
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -8,9 +10,16 @@ from model_mommy import mommy
 
 
 from ..models import (
-    Contact, County, Ward, Constituency, Town,
-    ContactType, PhysicalAddress, UserCounties, UserResidence, UserContact)
-from ..models import get_default_system_user_id
+    Contact,
+    County,
+    Ward,
+    Constituency,
+    Town,
+    ContactType,
+    PhysicalAddress,
+    UserCounty,
+    UserContact
+)
 
 
 class AbstractBaseModelTest(TestCase):
@@ -21,6 +30,15 @@ class AbstractBaseModelTest(TestCase):
         self.juzi = timezone.now() - timedelta(days=2)
         self.user_1 = mommy.make(settings.AUTH_USER_MODEL)
         self.user_2 = mommy.make(settings.AUTH_USER_MODEL)
+
+    def test_unicode(self):
+        from ..models import AbstractBase
+
+        class TestModel(AbstractBase):
+            pass
+
+        ct = TestModel(id=uuid.uuid4())
+        self.assertEqual(str(ct), 'test model ' + str(ct.pk))
 
     def test_validate_updated_date_greater_than_created(self):
         fake = ContactType(created=self.leo, updated=self.jana)
@@ -83,7 +101,13 @@ class AbstractBaseModelTest(TestCase):
 class BaseTestCase(TestCase):
 
     def setUp(self):
-        self.user = get_user_model().objects.get(pk=get_default_system_user_id)
+        self.user = get_user_model().objects.create_superuser(
+            email='tester1@ehealth.or.ke',
+            first_name='Test',
+            username='test1',
+            password='mtihani',
+            is_national=True
+        )
         super(BaseTestCase, self).setUp()
 
     def inject_audit_fields(self, data):
@@ -245,17 +269,16 @@ class TestPhysicalAddress(BaseTestCase):
         self.assertEquals("00200: 356", phy.__unicode__())
 
 
-class TestUserCountiesModel(BaseTestCase):
+class TestUserCountyModel(BaseTestCase):
     def test_save(self):
         user = mommy.make(get_user_model())
         county = mommy.make(County)
         data = {
             "user": user,
             "county": county
-
         }
-        user_county = UserCounties.objects.create(**data)
-        self.assertEquals(1, UserCounties.objects.count())
+        user_county = UserCounty.objects.create(**data)
+        self.assertEquals(1, UserCounty.objects.count())
         expected_unicode = "{}: {}".format(user.email, county.name)
         self.assertEquals(expected_unicode, user_county.__unicode__())
 
@@ -263,54 +286,15 @@ class TestUserCountiesModel(BaseTestCase):
         user = mommy.make(get_user_model())
         county_1 = mommy.make(County)
         county_2 = mommy.make(County)
-        UserCounties.objects.create(
+        UserCounty.objects.create(
             user=user,
             county=county_1
         )
         with self.assertRaises(ValidationError):
-            UserCounties.objects.create(
+            UserCounty.objects.create(
                 user=user,
                 county=county_2
             )
-
-
-class TestUserResidenceModel(BaseTestCase):
-    def test_save(self):
-        user = mommy.make(get_user_model())
-        ward = mommy.make(Ward)
-        data = {
-            "user": user,
-            "ward": ward
-        }
-        data = self.inject_audit_fields(data)
-        user_ward = UserResidence.objects.create(**data)
-        self.assertEquals(1, UserResidence.objects.count())
-
-        # test unicode
-        expected_unicode = "{}: {}".format(user.email, ward.name)
-        self.assertEquals(expected_unicode, user_ward.__unicode__())
-
-    def test_user_resides_in_one_ward_at_a_time(self):
-        user = mommy.make(get_user_model())
-        ward = mommy.make(Ward)
-        data = {
-            "user": user,
-            "ward": ward,
-            "active": True
-        }
-        data = self.inject_audit_fields(data)
-        UserResidence.objects.create(**data)
-        self.assertEquals(1, UserResidence.objects.count())
-        ward_2 = mommy.make(Ward)
-        data_2 = {
-            "user": user,
-            "ward": ward_2,
-            "active": True
-        }
-        data_2 = self.inject_audit_fields(data_2)
-
-        with self.assertRaises(ValidationError):
-            UserResidence.objects.create(**data_2)
 
 
 class TestUserContactModel(BaseTestCase):

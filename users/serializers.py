@@ -7,6 +7,6 @@ from .models import MflUser
 class UserSerializer(serializers.ModelSerializer):
     counties = InchargeCountiesSerializer(many=True, required=False)
 
-    class Meta:
+    class Meta(object):
         model = MflUser
         exclude = ('password',)

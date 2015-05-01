@@ -1,0 +1,3 @@
+service_name: circleci
+repo_token: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
+parallel: true

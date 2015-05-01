@@ -1,17 +1,49 @@
 import os
-import dj_database_url
+import environ
 
-BASE_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "..", "..")
-SECRET_KEY = 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-SEND_BROKEN_LINK_EMAILS = not DEBUG
-ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke']
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# The env based settings are non-forgiving, intentionally
+# If you do not have a setting...a kinder outcome will be had if the app
+# blows up at the first opportunity
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
+
+DEBUG = env('DEBUG')
+SECRET_KEY = env('SECRET_KEY')
+ENV_DB = env.db()
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'HOST': ENV_DB['HOST'],
+        'NAME': ENV_DB['NAME'],
+        'PASSWORD': ENV_DB['PASSWORD'],
+        'PORT': ENV_DB['PORT'],
+        'USER': ENV_DB['USER'],
+    }
+}  # Env should have DATABASE_URL
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+)
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'users',
+    'django.contrib.admin',
+    'common',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -22,68 +54,42 @@ INSTALLED_APPS = (
     'corsheaders',
     'rest_framework_swagger',
     'django.contrib.gis',
-    'rest_auth',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
     'reversion',
-)
-LOCAL_APPS = (
+    'django_extensions',
+    'gunicorn',
     'facilities',
-    'common',
     'data_bootstrap',
+    'chul',
+    'data',
+    'mfl_gis',
 )
-INSTALLED_APPS += LOCAL_APPS
+# LOCAL_APPS is now just a convenience setting for the metadata API
+# It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
+# This was forced by the need to override rest_framework templates in common
+# It is a list because order matters
+LOCAL_APPS = [
+    'users',
+    'common',
+    'facilities',
+    'chul',
+    'mfl_gis',
+    'data_bootstrap',
+    'data',
+]
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'reversion.middleware.RevisionMiddleware',
-)
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.template.context_processors.debug',
-    'django.template.context_processors.i18n',
-    'django.template.context_processors.media',
-    'django.template.context_processors.static',
-    'django.template.context_processors.tz',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
-)
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://mfl:mfl@localhost:5432/mfl'
-    )
-}
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_L10N = True
+TIME_ZONE = 'Africa/Nairobi'
 USE_TZ = True
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-SESSION_COOKIE_SECURE = True
-X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-APPEND_SLASH = False
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
@@ -105,6 +111,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
     'PAGINATE_BY': 25,
     'PAGINATE_BY_PARAM': 'page_size',
     'MAX_PAGINATE_BY': 100,
@@ -128,7 +135,7 @@ SWAGGER_SETTINGS = {
         'delete'
     ],
     'api_key': '',
-    'is_authenticated': False,
+    'is_authenticated': True,
     'is_superuser': False,
     'info': {
         'contact': 'developers@savannahinformatics.com',
@@ -139,3 +146,63 @@ SWAGGER_SETTINGS = {
     },
     'doc_expansion': 'full',
 }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s: %(asctime)s [%(module)s] %(message)s'  # NOQA
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'ERROR',
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'rest_framework': {
+            'handlers': ['console'],
+            'level': 'ERROR'
+        },
+        'common': {
+            'handlers': ['console'],
+            'level': 'ERROR'
+        },
+        'facilities': {
+            'handlers': ['console'],
+            'level': 'ERROR'
+        },
+        'users': {
+            'handlers': ['console'],
+            'level': 'ERROR'
+        },
+        'data_bootstrap': {
+            'handlers': ['console'],
+            'level': 'ERROR'
+        },
+        'mfl_gis': {
+            'handlers': ['console'],
+            'level': 'ERROR'
+        }
+    }
+}
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': os.path.join(BASE_DIR, '/common/templates/'),
+        'APP_DIRS': True,
+    },
+]
+LOGIN_REDIRECT_URL = '/api/'

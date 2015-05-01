@@ -22,7 +22,9 @@ class ContactType(AbstractBase):
         max_length=100, unique=True,
         help_text="A short name, preferrably 6 characters long, representing a"
         "certain type of contact e.g EMAIL")
-    description = models.TextField(help_text='A brief desx')
+    description = models.TextField(
+        null=True, blank=True,
+        help_text='A brief description of the contact type.')
 
     def __unicode__(self):
         return self.name
@@ -53,7 +55,7 @@ class Contact(AbstractBase):
 
 class Town(AbstractBase):
     name = models.CharField(
-        max_length=100, unique=True,
+        max_length=100, unique=True, null=True, blank=True,
         help_text="Name of the town")
 
     def __unicode__(self):
@@ -73,10 +75,12 @@ class PhysicalAddress(AbstractBase):
         Town, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")
     postal_code = models.CharField(
+        null=True, blank=True,
         max_length=100,
         help_text="The 5 digit number for the post office address. e.g 00900")
     address = models.TextField(
-        help_text="This is the actual post office number of the entity. "
+        null=True, blank=True,
+        help_text="This is the actual post office number of the entity"
         "e.g 6790")
     nearest_landmark = models.TextField(
         null=True, blank=True,
@@ -90,22 +94,22 @@ class PhysicalAddress(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(self.postal_code, self.address)
 
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'physical addresses'
+
 
 @reversion.register
-class RegionAbstractBase(AbstractBase, SequenceMixin):
+class County(SequenceMixin, AbstractBase):
     """
-    Model to supply the common attributes of a region.
+    This is the largest administrative/political division in Kenya.
 
-    A  region is an Administrative/political hierarchy and includes the
-    following levels:
-        1. County,
-        2. Constituency,
-        3. Sub-county,
-        4. ward
+    Kenya is divided in 47 different counties.
+
+    Code generation is handled by the custom save method in RegionAbstractBase
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="Name og the region may it be e.g Nairobi")
+        help_text="Name of the regions e.g Nairobi")
     code = SequenceField(
         unique=True,
         help_text="A unique_code 4 digit number representing the region.")
@@ -116,26 +120,14 @@ class RegionAbstractBase(AbstractBase, SequenceMixin):
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()
-        super(RegionAbstractBase, self).save(*args, **kwargs)
+        super(County, self).save(*args, **kwargs)
 
-    class Meta:
-        abstract = True
-
-
-@reversion.register
-class County(RegionAbstractBase):
-    """
-    This is the largest administrative/political division in Kenya.
-
-    Kenya is divided in 47 different counties.
-
-    Code generation is handled by the custom save method in RegionAbstractBase
-    """
-    pass  # Everything, including __unicode__ is handled by the abstract model
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'counties'
 
 
 @reversion.register
-class Constituency(RegionAbstractBase):
+class Constituency(SequenceMixin, AbstractBase):
     """
     Counties in Kenya are divided into constituencies.
 
@@ -145,15 +137,32 @@ class Constituency(RegionAbstractBase):
 
     Code generation is handled by the custom save method in RegionAbstractBase
     """
-
+    name = models.CharField(
+        max_length=100,
+        help_text="Name of the region  e.g Nairobi")
+    code = SequenceField(
+        unique=True,
+        help_text="A unique_code 4 digit number representing the region.")
     county = models.ForeignKey(
         County,
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
 
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Constituency, self).save(*args, **kwargs)
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'constituencies'
+        unique_together = ('county', 'name',)
+
 
 @reversion.register
-class Ward(RegionAbstractBase):
+class Ward(SequenceMixin, AbstractBase):
     """
     The Kenyan counties are sub divided into wards.
 
@@ -163,6 +172,12 @@ class Ward(RegionAbstractBase):
 
     Code generation is handled by the custom save method in RegionAbstractBase
     """
+    name = models.CharField(
+        max_length=100,
+        help_text="Name of the region e.g Nairobi")
+    code = SequenceField(
+        unique=True,
+        help_text="A unique_code 4 digit number representing the region.")
     constituency = models.ForeignKey(
         Constituency,
         help_text="The constituency where the ward is located.",
@@ -172,9 +187,17 @@ class Ward(RegionAbstractBase):
     def county(self):
         return self.constituency.county
 
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Ward, self).save(*args, **kwargs)
+
 
 @reversion.register
-class UserCounties(AbstractBase):
+class UserCounty(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of.
 
@@ -184,9 +207,6 @@ class UserCounties(AbstractBase):
         settings.AUTH_USER_MODEL, related_name='user_counties',
         on_delete=models.PROTECT)
     county = models.ForeignKey(County, on_delete=models.PROTECT)
-    is_active = models.BooleanField(
-        default=True,
-        help_text="Is the user currently incharge of the county?")
 
     def __unicode__(self):
         return "{}: {}".format(self.user.email, self.county.name)
@@ -196,40 +216,17 @@ class UserCounties(AbstractBase):
         A user can be incharge of only one county at the a time.
         """
         counties = self.__class__.objects.filter(
-            user=self.user, is_active=True)
-        if counties.count() > 0:
+            user=self.user, active=True, deleted=False)
+        if counties.count() > 0 and not self.deleted:
             raise ValidationError(
                 "A user can only be active in one county at a time")
 
     def save(self, *args, **kwargs):
         self.validate_only_one_county_active()
-        super(UserCounties, self).save(*args, **kwargs)
+        super(UserCounty, self).save(*args, **kwargs)
 
-
-@reversion.register
-class UserResidence(AbstractBase):
-    """
-    Stores the wards in which the user resides in.
-    If a user moves to another ward the current ward is deactivated by setting
-    active to False
-    """
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='user_residence')
-    ward = models.ForeignKey(Ward, on_delete=models.PROTECT)
-
-    def __unicode__(self):
-        return self.user.email + ": " + self.ward.name
-
-    def validate_user_residing_in_one_place_at_a_time(self):
-        user_wards = self.__class__.objects.filter(user=self.user, active=True)
-        if user_wards.count() > 0:
-            raise ValidationError(
-                "User can only reside in one ward at a a time")
-
-    def save(self, *args, **kwargs):
-        self.validate_user_residing_in_one_place_at_a_time()
-        super(UserResidence, self).save(*args, **kwargs)
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'user_counties'
 
 
 @reversion.register
@@ -237,7 +234,6 @@ class UserContact(AbstractBase):
     """
     Stores a user's contacts.
     """
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='user_contacts', on_delete=models.PROTECT)

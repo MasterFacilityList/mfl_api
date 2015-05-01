@@ -1,0 +1,71 @@
+---
+# Start by toughening up the firewall configuration
+- ufw: state=enabled policy=deny
+- ufw: rule=allow port=80 proto=tcp
+- ufw: rule=allow port=443 proto=tcp
+- ufw: rule=allow name=OpenSSH
+- ufw: rule=limit port=ssh proto=tcp
+- ufw: logging=on
+
+# On Vagrant, there are lots of locale issues; this helps, **sometimes**
+- locale_gen: name=en_US.UTF-8 state=present
+
+- name: Add APT keys for third party DEB package repositories
+  apt_key: 'url={{item}} state=present'
+  with_items:
+    - https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    - https://packages.elasticsearch.org/GPG-KEY-elasticsearch
+
+- name: 'Add third party APT repos, after adding their signing keys above'
+  apt_repository: "repo='{{item}}' state=present"
+  with_items:
+    - 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
+    - 'deb http://packages.elasticsearch.org/elasticsearch/1.5/debian stable main'
+
+- name: Update the package cache and upgrade any packages that need updates
+  apt: upgrade=dist update_cache=yes
+
+- name: Install essential packages
+  apt: 'name={{item}} state=latest install_recommends=yes'
+  with_items:
+    - build-essential
+    - nginx
+    - openjdk-7-jdk
+    - git
+    - python-setuptools
+    - python-distribute
+    - python-pip
+    - python-virtualenv
+    - python-psycopg2
+    - binutils
+    - gdal-bin
+    - libproj-dev
+    - libgeoip1
+    - graphviz
+    - libgraphviz-dev
+    - supervisor
+    - postgresql-9.4
+    - postgresql-9.4-postgis-2.1
+    - elasticsearch
+
+- name: Install dependencies for packages that will compile in the virtualenv
+  apt: 'pkg={{item}} state=build-dep'
+  with_items:
+    - python-psycopg2
+    - python-shapely
+    - python-numpy
+    - python-pygraphviz
+    - cython
+
+- name: Restart essential services just to be sure
+  service: 'name={{item}} state=restarted'
+  with_items:
+    - nginx
+    - elasticsearch "enabled=yes"
+
+- name: set up an account on the target machine for the current user
+  user: 'name={{ lookup("env","USER") }} shell=/bin/bash groups=adm,admin,sudo,plugdev append=yes state=present'
+
+- name: ensure that the login user has ALL=(ALL) NOPASSWD:ALL
+  sudo: yes
+  template: 'src=../templates/user_sudoers.d.j2 dest=/etc/sudoers.d/{{ lookup("env","USER") }}'
