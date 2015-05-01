@@ -9,8 +9,8 @@ class TestLogin(APITestCase):
         self.user = MflUser.objects.create(
             'user@test.com', 'pass', 'pass', 'pass'
         )
-        self.login_url = reverse("api:rest_auth:login")
-        self.logout_url = reverse("api:rest_auth:logout")
+        self.login_url = reverse("api:rest_auth:rest_login")
+        self.logout_url = reverse("api:rest_auth:rest_logout")
         super(TestLogin, self).setUp()
 
     def test_login(self):
