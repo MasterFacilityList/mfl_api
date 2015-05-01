@@ -120,11 +120,17 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
 
-# TODO Add notes on the need to run over HTTPS ( compulsory )
+# TODO Add and document APIs for role setup
+# TODO Implement and test custom permissions that operate on
+# national / county and use object permissions ( for facilities )
+# TODO Create in demo data default roles for each county and national
+# TODO Define general public role
+# TODO Define public role with GIS access
+# TODO Map current facilities to GIS and make report of unmapped ones
+# TODO Add notes on the need to run over HTTPS ( compulsory ) and OAuth
 # TODO Sort out ConfirmEmailView ( see rest-auth FAQs )
 # TODO Document API login vis session; email vs username
 # TODO Document API login via OAuth2
-# TODO Remove token authentication
 # TODO Document API logout
 # TODO Document password reset
 # TODO Document password reset confirmation
@@ -135,15 +141,8 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Document retrieval of user permisions and how to use them
 # TODO Document email verification in registration
 # TODO Document future possibility of social media auth
-# TODO Add and document APIs for role setup
 # TODO Document national vs county stuff
-# TODO Implement and test custom permissions that operate on
-# national / county and use object permissions ( for facilities )
-# TODO Create in demo data default roles for each county and national
-# TODO Define general public role
-# TODO Define public role with GIS access
 # TODO Document GIS ( map plotting APIs ); enhance if needed
-# TODO Map current facilities to GIS and make report of unmapped ones
 # TODO Borrow @ngash's introductory API docs
 # TODO Write out an overview of the goals and architecture of MFL v2
 # TODO Write out a section of the docs that talks about how to use

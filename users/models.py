@@ -89,6 +89,10 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         return "{0} {1} {2}".format(
             self.first_name, self.last_name, self.other_names)
 
+    @property
+    def permissions(self):
+        return self.get_all_permissions()
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 
