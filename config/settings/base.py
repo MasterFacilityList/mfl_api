@@ -55,6 +55,8 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    'provider',
+    'provider.oauth2',
     'corsheaders',
     'rest_framework_swagger',
     'django.contrib.gis',
@@ -114,6 +116,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.OAuth2Authentication',
     ),
     'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
     'PAGINATE_BY': 25,

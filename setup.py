@@ -107,5 +107,6 @@ setup(
         "django-debug-toolbar>=1.3.0",
         "django-rest-auth>=0.3.4",
         "django-allauth>=0.19.1",
+        "djangorestframework_oauth>=1.0.1",
     ],
 )

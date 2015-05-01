@@ -14,7 +14,8 @@ apipatterns = patterns(
     url(r'^gis/', include('mfl_gis.urls', namespace='mfl_gis')),
     url(r'^rest-auth/', include('rest_auth.urls', namespace='rest_auth')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls',
-        namespace='rest_auth_registration'))
+        namespace='rest_auth_registration')),
+    url(r'^oauth2/', include('provider.oauth2.urls', namespace='oauth2')),
 )
 
 urlpatterns = patterns(
