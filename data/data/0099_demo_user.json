@@ -1,0 +1,39 @@
+
+[
+    {
+        "model": "users.MflUser",
+        "unique_fields": ["email", "fist_name", "username"],
+        "records": [
+            {
+                "email": "hakunaruhusa@mfltest.slade360.co.ke",
+                "first_name": "Hakuna",
+                "last_name": "Ruhusa",
+                "username": "hakunaruhusa",
+                "password": "hakunaruhusa",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "serikalikuu@mfltest.slade360.co.ke",
+                "first_name": "Serikali",
+                "last_name": "Kuu",
+                "username": "serikalikuu",
+                "password": "serikalikuu",
+                "is_staff": true,
+                "is_national": true,
+                "is_superuser": true
+            },
+            {
+                "email": "serikalindogo@mfltest.slade360.co.ke",
+                "first_name": "Serikali",
+                "last_name": "Ndogo",
+                "username": "serikalindogo",
+                "password": "serikalindogo",
+                "is_staff": true,
+                "is_national": false,
+                "is_superuser": true
+            }
+        ]
+    }
+]
