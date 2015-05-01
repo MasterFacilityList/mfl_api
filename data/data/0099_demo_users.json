@@ -8,7 +8,7 @@
                 "first_name": "Hakuna",
                 "last_name": "Ruhusa",
                 "username": "hakunaruhusa",
-                "password": "hakunaruhusa",
+                "password": "pbkdf2_sha256$20000$iRX5ARyoRIEs$7xOVSMBqX8qxuHTXa9/aCbc/RZBsi5QXCnf1AU9iHTc=",
                 "is_staff": false,
                 "is_national": false,
                 "is_superuser": false
@@ -18,7 +18,7 @@
                 "first_name": "Serikali",
                 "last_name": "Kuu",
                 "username": "serikalikuu",
-                "password": "serikalikuu",
+                "password": "pbkdf2_sha256$20000$tXNoknj6C4rs$cgeMr9NLPim2eOXtv1FXpm1gDMu1NbBfQNyWazkrCrE=",
                 "is_staff": true,
                 "is_national": true,
                 "is_superuser": true
@@ -28,7 +28,7 @@
                 "first_name": "Serikali",
                 "last_name": "Ndogo",
                 "username": "serikalindogo",
-                "password": "serikalindogo",
+                "password": "pbkdf2_sha256$20000$kGQx56mQHMcx$3PX5pydsPu5q9+rcUOCyQpcX8clE5EZLHnZJcMKWO9s=",
                 "is_staff": true,
                 "is_national": false,
                 "is_superuser": true
