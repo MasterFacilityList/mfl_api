@@ -16,16 +16,13 @@ def _retrieve_existing_model_instance(model_cls, field_data):
     # to prevent any modifications making their way back to
     # the original dict
     assert isinstance(field_data, dict)
-
     try:
         instance = model_cls.objects.get(**field_data)
     except ProgrammingError:
-
         keys = field_data.keys()
         for key in keys:
             value = field_data[key]
             if isinstance(value, dict):
-
                 fk_model = model_cls._meta.get_field(key).rel.to
                 fk_instance = fk_model.objects.get(**value)
                 field_data[key] = fk_instance
