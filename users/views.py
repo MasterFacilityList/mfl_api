@@ -156,8 +156,8 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Implement and test custom permissions that operate on
 # national / county and use object permissions ( for facilities )
 # TODO Create in demo data default roles for each county and national
-# TODO Define general public role
-# TODO Define public role with GIS access
+# TODO Define general public role ( read only, no GIS )
+# TODO Define public role with GIS access ( read only perms, has GIS )
 # TODO Map current facilities to GIS and make report of unmapped ones
 # TODO Add notes on the need to run over HTTPS ( compulsory ) and OAuth
 # TODO Sort out ConfirmEmailView ( see rest-auth FAQs )
