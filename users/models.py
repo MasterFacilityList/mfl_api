@@ -10,6 +10,7 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 from django.conf import settings
+from oauth2_provider.models import AbstractApplication
 
 
 USER_MODEL = settings.AUTH_USER_MODEL
@@ -90,3 +91,10 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
+
+
+class MFLOAuthApplication(AbstractApplication):
+
+    class Meta(object):
+        verbose_name = 'mfl oauth application'
+        verbose_name_plural = 'mfl oauth applications'

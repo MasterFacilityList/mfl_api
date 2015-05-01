@@ -95,9 +95,12 @@ STATIC_URL = '/static/'
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
+OAUTH2_PROVIDER = {
+    'SCOPES': ['read', 'write', 'groups']
+}
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.DjangoModelPermissions',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
@@ -115,6 +118,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
     'PAGINATE_BY': 25,
@@ -211,3 +215,4 @@ TEMPLATES = [
     },
 ]
 LOGIN_REDIRECT_URL = '/api/'
+OAUTH2_PROVIDER_APPLICATION_MODEL = 'users.MFLOAuthApplication'

@@ -1,7 +1,7 @@
 from rest_framework import generics
 
-from .models import MflUser
-from .serializers import UserSerializer
+from .models import MflUser, MFLOAuthApplication
+from .serializers import UserSerializer, MFLOAuthApplicationSerializer
 from .filters import MFLUserFilter
 
 
@@ -16,6 +16,17 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MflUser.objects.all()
     serializer_class = UserSerializer
 
+
+class MFLOAuthApplicationListView(generics.ListCreateAPIView):
+    queryset = MFLOAuthApplication.objects.all()
+    serializer_class = MFLOAuthApplicationSerializer
+    ordering_fields = (
+        'user', 'client_type', 'authorization_grant_type', 'name')
+
+
+class MFLOAuthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MFLOAuthApplication.objects.all()
+    serializer_class = MFLOAuthApplicationSerializer
 
 # TODO Add proper OAuth support
 # TODO Add view to register an application, and a suitable docstring
