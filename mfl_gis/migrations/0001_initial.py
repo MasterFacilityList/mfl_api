@@ -109,7 +109,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('name', models.CharField(help_text=b'The name of the collecting organization', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A short summary of the collecting organization', null=True, blank=True)),
-                ('abbreviation', models.CharField(help_text=b'An acronym of the collecting or e.g SAM', max_length=10)),
+                ('abbreviation', models.CharField(help_text=b'An acronym of the collecting or e.g SAM', max_length=10, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],

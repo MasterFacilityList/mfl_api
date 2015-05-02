@@ -48,7 +48,8 @@ class GeoCodeSource(GISAbstractBase):
         help_text="A short summary of the collecting organization",
         null=True, blank=True)
     abbreviation = gis_models.CharField(
-        max_length=10, help_text="An acronym of the collecting or e.g SAM")
+        max_length=10, null=True, blank=True,
+        help_text="An acronym of the collecting or e.g SAM")
 
     def __unicode__(self):
         return self.name

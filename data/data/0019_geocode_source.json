@@ -1,0 +1,13 @@
+[
+    {
+        "model": "mfl_gis.GeoCodeSource",
+        "unique_fields": [
+            "name"
+        ],
+        "records": [
+            {
+                "name": "Taken with GPS Device"
+            }
+        ]
+    }
+]
