@@ -148,6 +148,7 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MFLOAuthApplicationSerializer
 
 # TODO Map current facilities to GIS and make report of unmapped ones
+# TODO GeoJSON REST serializers
 # TODO Add and document APIs for role setup
 # Read only API for permissions
 # Read-write API for groups
