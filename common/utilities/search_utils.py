@@ -2,28 +2,33 @@ import pydoc
 
 from django.conf import settings
 from django.apps import apps
+import requests
+
+ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
 
 
-def created_index_inelastic_search():
-    """
-    The index name will be located in settings
-    """
+class ElasticAPI(object):
+    def setup_index(self, index_name):
+        url = ELASTIC_URL + index_name
+        result = requests.put(url)
+        return result
 
+    def get_index(self, index_name):
+        url = ELASTIC_URL + index_name
+        result = requests.get(url)
+        return result
 
-def check_if_elastic_is_running():
-    pass
+    def delete_index(self, index_name):
+        url = ELASTIC_URL + index_name
+        result = requests.delete(url)
+        return result
 
-
-def clear_index():
-    pass
-
-
-def updated_index():
-    pass
-
-
-def purge_index():
-    pass
+    def index_instance(self, index_name, instane_data):
+        instance_type = instane_data.get('instance_type')
+        instance_id = instane_data.get('instance_id')
+        url = ELASTIC_URL + index_name + instance_type + instance_id
+        result = requests.put(url, instane_data)
+        return result
 
 
 def serialize_model(obj):
@@ -50,32 +55,3 @@ def serialize_model(obj):
         "index_type": obj.__class__.__name__.lower(),
         "id": str(obj.id)
     }
-
-
-
-def index_instance(serialized_obj):
-    pass
-
-
-def failure_queues():
-    pass
-
-
-def process_failure_queue():
-    pass
-
-
-def index_in_realtime():
-    pass
-
-
-def index_periodically():
-    pass
-
-
-def get_document_from_index():
-    pass
-
-
-def search_document_in_index():
-    pass
