@@ -74,7 +74,7 @@ class AbstractBase(models.Model):
 
     # place holder to enable implementation of a search filter.
     # Will be replaced in future
-    search = models.CharField(max_length=255, )
+    search = models.CharField(max_length=255, null=True, blank=True)
 
     objects = CustomDefaultManager()
     everything = models.Manager()
