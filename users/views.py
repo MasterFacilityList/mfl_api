@@ -152,15 +152,13 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # Read-write API for groups
 # Document adding permissions to users
 # Document adding groups to users / creating users
-
-# TODO Implement, document and test custom permissions that operate on
-# national / county and use object permissions ( for facilities )
+# TODO Implement and document custom permission for accessing GIS
+# TODO Document is_national and county linkage
 # TODO Create in demo data default roles for each county and national
 # TODO Define general public role ( read only, no GIS )
 # TODO Define public role with GIS access ( read only perms, has GIS )
 # TODO Map current facilities to GIS and make report of unmapped ones
 # TODO Add notes on the need to run over HTTPS ( compulsory ) and OAuth
-# TODO Sort out ConfirmEmailView ( see rest-auth FAQs )
 # TODO Document API login vis session; email vs username
 # TODO Document API login via OAuth2
 # TODO Document API logout
@@ -182,3 +180,4 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Add Swagger compatible docstrings to every view
 # ( first line summary, detailed description, params from filters
 # including base filter )
+# TODO Fix sandbox is_logged_in check
