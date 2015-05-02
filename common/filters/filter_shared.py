@@ -7,6 +7,7 @@ from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 from django.conf import settings
+from django.db.models.query import queryset
 
 from rest_framework import ISO_8601
 
@@ -40,19 +41,18 @@ class SearchFilter(django_filters.filters.Filter):
     """
 
     def filter(self, qs, value):
-        super(SearchFilter, self).filter(qs, value)
         api = ElasticAPI()
         document_type = self.model.__name__.lower()
         index_name = settings.SEARCH.get('INDEX_NAME')
         result = api.search_document(index_name, document_type, value)
         hits = result.json().get('hits').get('hits')
-        qs = []
+        hits_list = []
         for hit in hits:
             obj_id = hit.get('_id')
             instance = self.model.objects.get(id=obj_id)
-            qs.append(instance)
-
-        return qs
+            hits_list.append(instance)
+        return hits_list
+        # return super(SearchFilter, self).filter(hits, value)
 
 
 class TimeRangeFilter(django_filters.filters.Filter):
