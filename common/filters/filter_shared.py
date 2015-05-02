@@ -7,7 +7,6 @@ from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 from django.conf import settings
-from django.db.models.query import queryset
 
 from rest_framework import ISO_8601
 
