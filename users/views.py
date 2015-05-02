@@ -148,7 +148,6 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MFLOAuthApplicationSerializer
 
 # TODO Map current facilities to GIS and make report of unmapped ones
-# TODO Fix sandbox is_logged_in check
 # TODO Add and document APIs for role setup
 # Read only API for permissions
 # Read-write API for groups
@@ -176,8 +175,13 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Document GIS ( map plotting APIs ); enhance if needed
 # TODO Borrow @ngash's introductory API docs
 # TODO Write out an overview of the goals and architecture of MFL v2
+# include the fact that it unifies three systems
+# talk about the service catalog
+# talk about future areas: practitioners, terminology server
 # TODO Write out a section of the docs that talks about how to use
 # e.g what client, what browser extension ( httpie, curl )
 # TODO Add Swagger compatible docstrings to every view
 # ( first line summary, detailed description, params from filters
 # including base filter )
+# TODO Make sandbox metadata more consumable, more predictable
+# ( see "inspiration" sandbox )

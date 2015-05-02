@@ -53,7 +53,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(related_name='users_mfloauthapplication', to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'abstract': False,
+                'verbose_name': 'mfl oauth application',
+                'verbose_name_plural': 'mfl oauth applications',
             },
         ),
     ]
