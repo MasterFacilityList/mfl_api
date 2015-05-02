@@ -1,3 +1,5 @@
+import pydoc
+
 from django.conf import settings
 from django.apps import apps
 
@@ -38,11 +40,17 @@ def serialize_model(obj):
 
     Only apps in local apps will be indexed.
     """
-    # get the obj app
-    # check if it is in local apps
-    # locate the serializer
-    # serialize the object
-    # return the serialized object # type and id
+    app_label = obj._meta.app_label
+    serializer_path = "{}{}{}{}".format(
+        app_label, ".serializers.", obj.__class__.__name__, 'Serializer')
+    serializer_cls = pydoc.locate(serializer_path)
+    serialized_data = serializer_cls(obj).data
+    return {
+        "data": serialized_data,
+        "index_type": obj.__class__.__name__.lower(),
+        "id": str(obj.id)
+    }
+
 
 
 def index_instance(serialized_obj):
