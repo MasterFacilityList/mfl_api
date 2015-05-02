@@ -42,7 +42,7 @@ class GeoCodeSource(GISAbstractBase):
     It is not the individual who collected the code
     """
     name = gis_models.CharField(
-        max_length=100,
+        max_length=100, unique=True,
         help_text="The name of the collecting organization")
     description = gis_models.TextField(
         help_text="A short summary of the collecting organization",
@@ -69,7 +69,7 @@ class GeoCodeMethod(GISAbstractBase):
         9= Other
     """
     name = gis_models.CharField(
-        max_length=100, help_text="The name of the method.")
+        max_length=100, unique=True, help_text="The name of the method.")
     description = gis_models.TextField(
         help_text="A short description of the method",
         null=True, blank=True)
