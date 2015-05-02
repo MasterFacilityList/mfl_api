@@ -1,12 +1,16 @@
 import django_filters
+
 from datetime import timedelta, datetime
 
 from django import forms
 from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
+from django.conf import settings
 
 from rest_framework import ISO_8601
+
+from common.utilities.search_utils import ElasticAPI
 
 
 class IsoDateTimeField(forms.DateTimeField):
@@ -29,6 +33,26 @@ class IsoDateTimeField(forms.DateTimeField):
 class IsoDateTimeFilter(django_filters.DateTimeFilter):
     """ Extend ``DateTimeFilter`` to filter by ISO 8601 formated dates too"""
     field_class = IsoDateTimeField
+
+
+class SearchFilter(django_filters.filters.Filter):
+    """
+    """
+
+    def filter(self, qs, value):
+        super(SearchFilter, self).filter(qs, value)
+        api = ElasticAPI()
+        document_type = self.model.__name__.lower()
+        index_name = settings.SEARCH.get('INDEX_NAME')
+        result = api.search_document(index_name, document_type, value)
+        hits = result.json().get('hits').get('hits')
+        qs = []
+        for hit in hits:
+            obj_id = hit.get('_id')
+            instance = self.model.objects.get(id=obj_id)
+            qs.append(instance)
+
+        return qs
 
 
 class TimeRangeFilter(django_filters.filters.Filter):
@@ -124,3 +148,4 @@ class CommonFieldsFilterset(django_filters.FilterSet):
         name='created', alias='last_one_quarter')
     last_one_month = TimeRangeFilter(
         name='created', alias='last_one_month')
+    search = SearchFilter(name='search')

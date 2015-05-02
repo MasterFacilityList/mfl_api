@@ -3,7 +3,6 @@ import json
 import uuid
 
 from django.conf import settings
-from django.apps import apps
 import requests
 
 ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
