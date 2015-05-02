@@ -210,3 +210,8 @@ TEMPLATES = [
     },
 ]
 LOGIN_REDIRECT_URL = '/api/'
+
+SEARCH = {
+    "ELASTIC_URL": "http://localhost:9200",
+    "INDEX_NAME": "mfl_index"
+}
