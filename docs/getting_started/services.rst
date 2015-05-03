@@ -3,4 +3,4 @@ MFL APIs: The Service Catalogue
 TBD
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3

@@ -3,4 +3,4 @@ MFL APIs: Community Health Units
 TBD
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3

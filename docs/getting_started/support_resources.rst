@@ -88,4 +88,4 @@ The example listing below clearly shows the shared fields:
     }
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3

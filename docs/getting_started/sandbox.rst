@@ -5,4 +5,4 @@ TBD - browseable API
 TBD - metadata
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
