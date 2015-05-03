@@ -1,5 +1,6 @@
 import logging
 import reversion
+import json
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -119,6 +120,19 @@ class AdministrativeUnitBase(SequenceMixin, AbstractBase):
         abstract = True
 
 
+def _lookup_facility_coordinates(administrative_area_boundary):
+    """A helper used by the County, Constituency and Ward classes"""
+    from mfl_gis.models import FacilityCoordinates
+    facility_coordinates = FacilityCoordinates.objects.filter(
+        coordinates__contained=administrative_area_boundary.mpoly
+    ) if administrative_area_boundary else []
+    return {
+        facility_coordinate.facility.name:
+        json.loads(facility_coordinate.coordinates.geojson)
+        for facility_coordinate in facility_coordinates
+    }
+
+
 @reversion.register
 class County(AdministrativeUnitBase):
     """
@@ -128,6 +142,11 @@ class County(AdministrativeUnitBase):
 
     Code generation is handled by the custom save method in RegionAbstractBase
     """
+    @property
+    def facility_coordinates(self):
+        """Look up the facilities that are in this unit's boundaries"""
+        return _lookup_facility_coordinates(self.countyboundary)
+
     class Meta(AdministrativeUnitBase.Meta):
         verbose_name_plural = 'counties'
 
@@ -147,6 +166,11 @@ class Constituency(AdministrativeUnitBase):
         County,
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
+
+    @property
+    def facility_coordinates(self):
+        """Look up the facilities that are in this unit's boundaries"""
+        return _lookup_facility_coordinates(self.constituencyboundary)
 
     class Meta(AdministrativeUnitBase.Meta):
         verbose_name_plural = 'constituencies'
@@ -172,6 +196,11 @@ class Ward(AdministrativeUnitBase):
     @property
     def county(self):
         return self.constituency.county
+
+    @property
+    def facility_coordinates(self):
+        """Look up the facilities that are in this unit's boundaries"""
+        return _lookup_facility_coordinates(self.wardboundary)
 
 
 @reversion.register
