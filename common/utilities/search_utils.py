@@ -34,33 +34,25 @@ class ElasticAPI(object):
         instance_type = instance_data.get('instance_type')
         instance_id = instance_data.get('instance_id')
         data = instance_data.get('data')
-        url = ELASTIC_URL + index_name + "/" + instance_type + "/" + instance_id
+        url = "{}{}{}{}{}{}".format(
+            ELASTIC_URL, index_name, "/", instance_type, "/", instance_id)
         result = requests.put(url, data)
         return result
 
     def remove_document(self, index_name, document_type, document_id):
-        url = ELASTIC_URL + index_name + "/" + document_type + "/" + document_id
+        url = "{}{}{}{}{}{}".format(
+            ELASTIC_URL, index_name, "/", document_type, "/", document_id)
         result = requests.delete(url)
-        return result
-
-    def retrieve_parts_of_a_document(self):
-        pass
-
-    def document_exists(self, index_name, document_type, document_id):
-        url = ELASTIC_URL + index_name + "/" + document_type + "/" + document_id
-        result = requests.head(url)
         return result
 
     def update_document(self, index_name, instance_data):
         return self.index_document(index_name, instance_data)
 
-    def search_document(self, index_name, instance_type=None, query=None):
-        if instance_type and query:
-            url = ELASTIC_URL + index_name + "/" + instance_type + "/" + '_search?q={}'.format(query)
-            result = requests.get(url)
-        if instance_type and not query:
-            url = ELASTIC_URL + index_name + "/" + '_search?q={}'.format(query)
-            result = requests.get(url)
+    def search_document(self, index_name, instance_type, query):
+        url = "{}{}{}{}{}{}{}".format(
+            ELASTIC_URL, index_name, "/", instance_type, "/",
+            '_search?q=', query)
+        result = requests.get(url)
 
         return result
 
@@ -96,17 +88,3 @@ def index_instance(obj):
     elastic_api = ElasticAPI()
     data = serialize_model(obj)
     return elastic_api.index_document(INDEX_NAME, data)
-
-
-def build_index():
-    pass
-
-
-def clear_index():
-    elastic_api = ElasticAPI()
-    elastic_api.delete_index(INDEX_NAME)
-    return elastic_api.setup_index()
-
-
-def update_index():
-    pass

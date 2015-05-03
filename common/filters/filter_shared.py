@@ -51,7 +51,6 @@ class SearchFilter(django_filters.filters.Filter):
             instance = self.model.objects.get(id=obj_id)
             hits_list.append(instance)
         return hits_list
-        # return super(SearchFilter, self).filter(hits, value)
 
 
 class TimeRangeFilter(django_filters.filters.Filter):
