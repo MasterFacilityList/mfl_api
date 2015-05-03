@@ -87,5 +87,11 @@ The example listing below clearly shows the shared fields:
         ]
     }
 
+
+Common Filters
+-------------------
+TBD - Document filters found in every resource
+TBD - examples for GET, POST, PUT, PATCH, DELETE ( could be elsewhere )
+
 .. toctree::
     :maxdepth: 3
