@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_gis.serializers import GeoModelSerializer
 from common.serializers import AbstractFieldsMixin
 from .models import (
     GeoCodeSource,
@@ -23,8 +24,7 @@ class GeoCodeMethodSerializer(
         model = GeoCodeMethod
 
 
-class FacilityCoordinatesSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
+class FacilityCoordinatesSerializer(AbstractFieldsMixin, GeoModelSerializer):
     class Meta(object):
         model = FacilityCoordinates
 
