@@ -1,19 +1,38 @@
 {% extends "rest_framework/base.html" %}
+{% load staticfiles %}
 
-{% block bootstrap_theme %}
-    <link rel="stylesheet"
-        href="/static/css/bootstrap.min.css"
-        type="text/css">
-{% endblock bootstrap_theme %}
+{% block style %}
+    {% block bootstrap_theme %}
+       <link rel="stylesheet" href="/static/css/bootstrap.min.css"
+       type="text/css">
+    {% endblock bootstrap_theme %}
+    <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/prettify.css" %}"/>
+{% endblock %}
 
 {% block title %}
     MFL v2 API Browser
 {% endblock title %}
 
-
 {% block branding %}
     <a class="navbar-brand" href="/">
-    Master Facilities List API
-        <span class="version">2</span>
+    Master Facilities List API v2
     </a>
 {% endblock branding %}
+
+{% block userlinks %}
+    {% if request.user.is_authenticated %}
+        <li>
+            <a href="/accounts/logout/">
+                <em>Sign Out</em>, {{request.user.get_short_name}}
+            </a>
+        </li>
+    {% else %}
+        <li><a href="/accounts/login/">Sign In</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/jquery-2.1.3.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="{% static "rest_framework/js/prettify-min.js" %}"></script>
+{% endblock %}

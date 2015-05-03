@@ -10,6 +10,7 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 from django.conf import settings
+from oauth2_provider.models import AbstractApplication
 
 
 USER_MODEL = settings.AUTH_USER_MODEL
@@ -88,5 +89,23 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         return "{0} {1} {2}".format(
             self.first_name, self.last_name, self.other_names)
 
+    @property
+    def permissions(self):
+        return self.get_all_permissions()
+
+    @property
+    def county(self):
+        from common.models import UserCounty
+        user_counties = UserCounty.objects.filter(
+            user=self, active=True)
+        return user_counties[0].county if user_counties else None
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
+
+
+class MFLOAuthApplication(AbstractApplication):
+
+    class Meta(object):
+        verbose_name = 'mfl oauth application'
+        verbose_name_plural = 'mfl oauth applications'

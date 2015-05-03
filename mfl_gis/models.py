@@ -42,13 +42,14 @@ class GeoCodeSource(GISAbstractBase):
     It is not the individual who collected the code
     """
     name = gis_models.CharField(
-        max_length=100,
+        max_length=100, unique=True,
         help_text="The name of the collecting organization")
     description = gis_models.TextField(
         help_text="A short summary of the collecting organization",
         null=True, blank=True)
     abbreviation = gis_models.CharField(
-        max_length=10, help_text="An acronym of the collecting or e.g SAM")
+        max_length=10, null=True, blank=True,
+        help_text="An acronym of the collecting or e.g SAM")
 
     def __unicode__(self):
         return self.name
@@ -69,7 +70,7 @@ class GeoCodeMethod(GISAbstractBase):
         9= Other
     """
     name = gis_models.CharField(
-        max_length=100, help_text="The name of the method.")
+        max_length=100, unique=True, help_text="The name of the method.")
     description = gis_models.TextField(
         help_text="A short description of the method",
         null=True, blank=True)
@@ -97,14 +98,22 @@ class FacilityCoordinates(GISAbstractBase):
         GeoCodeMethod,
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
-    collection_date = gis_models.DateTimeField()
+    collection_date = gis_models.DateTimeField(auto_now_add=True)
 
     def validate_longitude_and_latitude_within_kenya(self):
         try:
             boundary = WorldBorder.objects.get(code='KEN')
             if not boundary.mpoly.contains(self.coordinates):
-                raise ValidationError(
-                    '{} is not in Kenya'.format(self.coordinates))
+                # This validation was relaxed ( temporarily? )
+                # The Kenyan boundaries that we have loaded have low fidelity
+                # at the edges, so that facilities that are, say, 100 meters
+                # from the border are reported as not in Kenya
+                # If higher fidelity map data is obtained, this validation
+                # can be brought back
+                LOGGER.error(
+                    '{} is not within the Kenyan boundaries that we have'
+                    .format(self.coordinates)
+                )
         except WorldBorder.DoesNotExist:
             raise ValidationError('Setup error: Kenyan boundaries not loaded')
 
@@ -187,7 +196,7 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     # in model_mommy ( a testing tool )
     # The impact of this is minimal; these models hold setup data that is
     # loaded and tested during each build
-    mpoly = gis_models.MultiPolygonField(null=True, blank=True, geography=True)
+    mpoly = gis_models.MultiPolygonField(null=True, blank=True)
 
     def __unicode__(self):
         return self.name

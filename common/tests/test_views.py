@@ -31,7 +31,7 @@ def default(obj):
         return str(obj)
 
 
-class LogginMixin(object):
+class LoginMixin(object):
 
     def setUp(self):
         self.user = get_user_model().objects.create_superuser(
@@ -43,10 +43,10 @@ class LogginMixin(object):
         )
         self.client.login(email='tester@ehealth.or.ke', password='mtihani')
         self.maxDiff = None
-        super(LogginMixin, self).setUp()
+        super(LoginMixin, self).setUp()
 
 
-class TestViewCounties(LogginMixin, APITestCase):
+class TestViewCounties(LoginMixin, APITestCase):
     def setUp(self):
         super(TestViewCounties, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -96,7 +96,7 @@ class TestViewCounties(LogginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
 
 
-class TestViewConstituencies(LogginMixin, APITestCase):
+class TestViewConstituencies(LoginMixin, APITestCase):
     def setUp(self):
         super(TestViewConstituencies, self).setUp()
 
@@ -148,7 +148,7 @@ class TestViewConstituencies(LogginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
 
 
-class TestViewWards(LogginMixin, APITestCase):
+class TestViewWards(LoginMixin, APITestCase):
     def setUp(self):
         super(TestViewWards, self).setUp()
 
@@ -202,7 +202,7 @@ class TestViewWards(LogginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
 
 
-class TestContactView(LogginMixin, APITestCase):
+class TestContactView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestContactView, self).setUp()
         self.url = reverse("api:common:contacts_list")
@@ -274,7 +274,7 @@ class TestContactView(LogginMixin, APITestCase):
         pass
 
 
-class TestContactTypeView(LogginMixin, APITestCase):
+class TestContactTypeView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestContactTypeView, self).setUp()
         self.url = reverse("api:common:contact_types_list")
@@ -303,7 +303,7 @@ class TestContactTypeView(LogginMixin, APITestCase):
         self.assertIsNone(result)
 
 
-class TestTownView(LogginMixin, APITestCase):
+class TestTownView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestTownView, self).setUp()
         self.url = reverse("api:common:towns_list")
@@ -319,7 +319,7 @@ class TestTownView(LogginMixin, APITestCase):
         self.assertEqual("Kiamaiko Taon", response.data['name'])
 
 
-class TestAPIRootView(LogginMixin, APITestCase):
+class TestAPIRootView(LoginMixin, APITestCase):
     def setUp(self):
         self.url = reverse('api:root_listing')
         super(TestAPIRootView, self).setUp()
@@ -375,7 +375,7 @@ class TestAPIRootView(LogginMixin, APITestCase):
         self.assertEquals(200, redirect_response.status_code)
 
 
-class TestUserContactView(LogginMixin, APITestCase):
+class TestUserContactView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestUserContactView, self).setUp()
         self.url = reverse("api:common:user_contacts_list")
@@ -410,7 +410,7 @@ class TestUserContactView(LogginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
 
-class TestAuditableViewMixin(LogginMixin, APITestCase):
+class TestAuditableViewMixin(LoginMixin, APITestCase):
     def setUp(self):
         super(TestAuditableViewMixin, self).setUp()
 
