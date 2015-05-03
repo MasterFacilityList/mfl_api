@@ -49,8 +49,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'oauth2_provider',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
     'corsheaders',
     'rest_framework_swagger',
     'django.contrib.gis',
@@ -81,7 +86,7 @@ AUTH_USER_MODEL = 'users.MflUser'
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Africa/Nairobi'
+TIME_ZONE = 'UTC'  # This is INTENTIONAL
 USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -92,7 +97,7 @@ CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.DjangoModelPermissions',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
@@ -110,6 +115,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
     'PAGINATE_BY': 25,
@@ -190,7 +196,7 @@ LOGGING = {
         },
         'data_bootstrap': {
             'handlers': ['console'],
-            'level': 'ERROR'
+            'level': 'INFO'
         },
         'mfl_gis': {
             'handlers': ['console'],
@@ -205,4 +211,23 @@ TEMPLATES = [
         'APP_DIRS': True,
     },
 ]
+
+# django-allauth related settings
+# some of these settings take into account that the target audience
+# of this system is not super-savvy
 LOGIN_REDIRECT_URL = '/api/'
+OAUTH2_PROVIDER_APPLICATION_MODEL = 'users.MFLOAuthApplication'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Master Facilities List]'
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGOUT_REDIRECT_URL = '/api/'
+ACCOUNT_SESSION_REMEMBER = True
+
+# django_rest_auth settings
+OLD_PASSWORD_FIELD_ENABLED = True
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer'
+}

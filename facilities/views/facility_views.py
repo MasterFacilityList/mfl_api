@@ -82,6 +82,7 @@ from ..filters import (
     FacilityUpgradeFilter,
     RegulatingBodyContactFilter
 )
+from ..filter_backends import CountyAndNationalUserFilterBackend
 
 
 class RegulatingBodyContactListView(generics.ListCreateAPIView):
@@ -318,6 +319,7 @@ class FacilityListView(generics.ListCreateAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
     filter_class = FacilityFilter
+    filter_backends = (CountyAndNationalUserFilterBackend,)
     ordering_fields = (
         'name', 'code', 'number_of_beds', 'number_of_cots', 'operation_status',
         'ward', 'owner',
@@ -328,6 +330,7 @@ class FacilityDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
+    filter_backends = (CountyAndNationalUserFilterBackend,)
 
 
 class FacilityContactListView(generics.ListCreateAPIView):

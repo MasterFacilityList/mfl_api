@@ -9,12 +9,13 @@ class TestLogin(APITestCase):
         self.user = MflUser.objects.create(
             'user@test.com', 'pass', 'pass', 'pass'
         )
-        self.login_url = reverse("api:users:user_login")
+        self.login_url = reverse("api:rest_auth:rest_login")
+        self.logout_url = reverse("api:rest_auth:rest_logout")
         super(TestLogin, self).setUp()
 
     def test_login(self):
         data = {
-            "email": 'user@test.com',
+            "username": 'user@test.com',
             "password": 'pass'
         }
         response = self.client.post(self.login_url, data)
@@ -30,39 +31,27 @@ class TestLogin(APITestCase):
         response = self.client.post(
             self.login_url,
             {
-                "email": user.email,
+                "username": user.email,
                 "password": 'pass'
             }
         )
-        self.assertEquals(401, response.status_code)
-        self.assertEquals("The user is not active", response.data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(
+            {'non_field_errors': ['User account is disabled.']},
+            response.data
+        )
 
     def test_login_user_does_not_exist(self):
         data = {
-            "email": "non_existent@email.com",
+            "username": "non_existent@email.com",
             "password": 'pass'
         }
         response = self.client.post(self.login_url, data)
-        self.assertEquals(401, response.status_code)
+        self.assertEquals(400, response.status_code)
         self.assertEquals(
-            "Invalid username/password Combination",
-            response.data)
-
-    def test_logout(self):
-        user = MflUser.objects.create(
-            'user3@test.com', 'test first name', 'test user name 3', 'pass'
+            {
+                'non_field_errors': [
+                    'Unable to log in with provided credentials.']
+            },
+            response.data
         )
-        data = {
-            "email": user.email,
-            "password": 'pass'
-        }
-        self.client.login(**data)
-        self.assertTrue(self.user.is_authenticated())
-
-        # logout the user
-        logout_url = reverse("api:users:user_logout")
-        self.client.get(logout_url)
-
-        # test that the user is actually loggged out
-        # some error here
-        # self.assertFalse(self.user.is_authenticated())

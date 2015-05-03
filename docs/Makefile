@@ -1,7 +1,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-PAPER         =
+PAPER         = a4
 BUILDDIR      = _build
 
 # User-friendly check for sphinx-build

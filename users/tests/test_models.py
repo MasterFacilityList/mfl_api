@@ -39,3 +39,16 @@ class TestMflUserModel(BaseTestCase):
         self.assertEquals(3, MflUser.objects.count())
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_permissions_property(self):
+        data = {
+            "email": "some@email.com",
+            "username": "some",
+            "first_name": "jina",
+            "last_name": "mwisho",
+            "other_names": "jm",
+            "password": "pass",
+        }
+        user = MflUser.objects.create_superuser(**data)
+        self.assertTrue(len(user.permissions) > 0)
+        self.assertTrue("common.add_constituency" in user.permissions)

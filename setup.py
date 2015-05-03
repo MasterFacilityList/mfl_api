@@ -105,5 +105,8 @@ setup(
         "python-coveralls>=2.5.0",
         "djangorestframework-gis>=0.8.1",
         "django-debug-toolbar>=1.3.0",
+        "django-rest-auth>=0.3.4",
+        "django-allauth>=0.19.1",
+        "django-oauth-toolkit>=0.8.1",
     ],
 )
