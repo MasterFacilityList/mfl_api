@@ -1,4 +1,4 @@
-Authentication and authorization
+Authentication and Authorization
 ==================================
 TBD
 

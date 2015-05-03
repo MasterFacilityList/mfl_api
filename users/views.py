@@ -153,13 +153,14 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Define template role for approval ( approver )
 # TODO Make sandbox metadata more consumable, more predictable
 # ( see "inspiration" sandbox )
+
 # TODO Document is_published, is_active, is_deleted
-# TODO Add and document APIs for role setup
+# TODO Document APIs for role setup
+# TODO Document is_national and county linkage
 # Read only API for permissions
 # Read-write API for groups
 # Document adding permissions to users
 # Document adding groups to users / creating users
-# TODO Document is_national and county linkage
 # TODO Add notes on the need to run over HTTPS ( compulsory ) and OAuth
 # TODO Document API login vis session; email vs username
 # TODO Document API login via OAuth2

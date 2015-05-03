@@ -1,3 +1,3 @@
-MFL 2 GIS APIs
-================
+MFL APIs: GIS Support
+=======================
 TBD
