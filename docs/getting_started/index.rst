@@ -49,14 +49,14 @@ is usually communication. Developers operate at a level of precision and
 detail that is alien to most people. We've been spoilt by our past dabblings
 with high quality API documentation sites like the `Stripe API site`_.
 
-That inspired us to build the MFL API -  :doc:`sandbox`.
+That inspired us to build for the MFL API :doc:`sandbox`.
 
 .. _`Stripe API site`: https://stripe.com/docs/api
 
 The MFL 2 Data Model - Support Resources
 ------------------------------------------
 The MFL's job description is to standardize the management of information
-relating to facilities ( including community health units ), the
+relating to facilities ( including community health units ), provide a standard
 catalogue of available healthcare services and act as a central ingress
 point for regulation.
 
@@ -66,8 +66,8 @@ documents this part of the data model.
 
 The Service Catalogue
 -----------------------
-In order for the MFL to do its job ( as the keystone of the Kenyan national
-health information system ), there needs to be a standard registry of
+In order for the MFL to do its job as the keystone of the Kenyan national
+health information system, there needs to be a standard registry of
 healthcare services.
 
 At the time when this edition of the MFL was built, no such thing existed.
