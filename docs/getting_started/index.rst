@@ -13,6 +13,12 @@ should refer to the :doc:`../contributing/index` guide.
 
 .. _`API First`: http://www.api-first.com/
 
+The big picture
+-----------------
+The Master Facilities List is one of the building blocks of the Kenyan
+national health information system. You can read more about its role
+at :doc:`the_big_picture`.
+
 RESTful or not
 ----------------
 Its "RESTish". We subscribe to the principles of `REST`_ but are not
@@ -47,13 +53,58 @@ That inspired us to build the MFL API -  :doc:`sandbox`.
 
 .. _`Stripe API site`: https://stripe.com/docs/api
 
+The MFL 2 Data Model - Support Resources
+------------------------------------------
+The MFL's job description is to standardize the management of information
+relating to facilities ( including community health units ), the
+catalogue of available healthcare services and act as a central ingress
+point for regulation.
+
+However, in order to do this, the MFL needs to have a constellation of
+support resources in its data model. The :doc:`support_resources` page
+documents this part of the data model.
+
+The Service Catalogue
+-----------------------
+In order for the MFL to do its job ( as the keystone of the Kenyan national
+health information system ), there needs to be a standard registry of
+healthcare services.
+
+At the time when this edition of the MFL was built, no such thing existed.
+The MFL therefore took on the responsibility of providing that registry.
+For more information, see :doc:`services`.
+
+Facilities
+------------
+The MFL is not merely a "list" of facilities; it has rich APIs to manage their
+life cycles and to support interaction with other healthcare systems. You can
+read more about that at :doc:`facilities`.
+
+Community Health Units
+------------------------
+Kenya's community health strategy relies on community health workers for
+outreach at the lowest levels ( embedded into communities ). These workers are
+organized into community health units. The second edition of the Master
+Facilities List provides APIs for the management of community health units.
+You can read more at :doc:`community_health_units`.
+
+Regulation
+-------------
+Every healthcare facility falls under the regulatory scope of at least one
+regulator. For example - at the time of writing, most healthcare facilities
+are licensed by the Kenya Medical Practitioners and Dentists Board.
+
+Regulators have their own information systems. The MFL provides APIs that can
+facilitate two way data flow between the regulators' systems and the Master
+Facilities List. You can read more at :doc:`regulation`.
+
 .. toctree::
     :maxdepth: 2
 
-    sandbox
     the_big_picture
-    authentication
     api
+    authentication
+    sandbox
     support_resources
     services
     facilities

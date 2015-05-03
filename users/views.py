@@ -147,7 +147,12 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
 
-# TODO GeoJSON REST serializers
+# TODO Create in demo data default roles and users for each county and national
+# TODO Define general public role ( read only, no GIS )
+# TODO Define public role with GIS access ( read only perms, has GIS )
+# TODO Define template role for approval ( approver )
+# TODO Make sandbox metadata more consumable, more predictable
+# ( see "inspiration" sandbox )
 # TODO Document is_published, is_active, is_deleted
 # TODO Add and document APIs for role setup
 # Read only API for permissions
@@ -155,10 +160,6 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # Document adding permissions to users
 # Document adding groups to users / creating users
 # TODO Document is_national and county linkage
-# TODO Create in demo data default roles for each county and national
-# TODO Define general public role ( read only, no GIS )
-# TODO Define public role with GIS access ( read only perms, has GIS )
-# TODO Define template role for approval ( approver )
 # TODO Add notes on the need to run over HTTPS ( compulsory ) and OAuth
 # TODO Document API login vis session; email vs username
 # TODO Document API login via OAuth2
@@ -184,5 +185,3 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Add Swagger compatible docstrings to every view
 # ( first line summary, detailed description, params from filters
 # including base filter )
-# TODO Make sandbox metadata more consumable, more predictable
-# ( see "inspiration" sandbox )
