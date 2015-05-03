@@ -1,15 +1,16 @@
 import json
 
 from django.core.urlresolvers import reverse
+from django.contrib.auth import get_user_model
 
 from rest_framework.test import APITestCase
 from model_mommy import mommy
 
 from common.tests.test_views import (
-    LogginMixin,
+    LoginMixin,
     default
 )
-from common.models import Ward
+from common.models import Ward, UserCounty
 
 from ..serializers import (
     OwnerSerializer,
@@ -26,7 +27,7 @@ from ..models import (
 )
 
 
-class TestOwnersView(LogginMixin, APITestCase):
+class TestOwnersView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestOwnersView, self).setUp()
         self.url = reverse('api:facilities:owners_list')
@@ -124,7 +125,7 @@ class TestOwnersView(LogginMixin, APITestCase):
             json.loads(json.dumps(response_2.data, default=default)))
 
 
-class TestFacilityView(LogginMixin, APITestCase):
+class TestFacilityView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestFacilityView, self).setUp()
         self.url = reverse('api:facilities:facilities_list')
@@ -161,7 +162,34 @@ class TestFacilityView(LogginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
 
-class TestFacilityStatusView(LogginMixin, APITestCase):
+class CountyAndNationalFilterBackendTest(APITestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_superuser(
+            email='tester@ehealth.or.ke',
+            first_name='Test',
+            username='test',
+            password='mtihani',
+            is_national=False
+        )
+        self.user_county = mommy.make(UserCounty, user=self.user)
+        self.client.login(email='tester@ehealth.or.ke', password='mtihani')
+        self.maxDiff = None
+        self.url = reverse('api:facilities:facilities_list')
+        super(CountyAndNationalFilterBackendTest, self).setUp()
+
+    def test_facility_county_national_filter_backend(self):
+        """Testing the filtered by county level"""
+        mommy.make(Facility)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        # The response should be filtered out for this user; not national
+        self.assertEquals(
+            len(response.data["results"]),
+            0
+        )
+
+
+class TestFacilityStatusView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestFacilityStatusView, self).setUp()
         self.url = reverse("api:facilities:facility_statuses_list")
@@ -194,7 +222,7 @@ class TestFacilityStatusView(LogginMixin, APITestCase):
         self.assertEquals(response.data, FacilityStatusSerializer(status).data)
 
 
-class TestFacilityUnitView(LogginMixin, APITestCase):
+class TestFacilityUnitView(LoginMixin, APITestCase):
     def setUp(self):
         super(TestFacilityUnitView, self).setUp()
         self.url = reverse("api:facilities:facility_units_list")
@@ -228,7 +256,7 @@ class TestFacilityUnitView(LogginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
 
-class TestInspectionAndCoverReportsView(LogginMixin, APITestCase):
+class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
     def test_inspection_report(self):
         ward = mommy.make(Ward)
         facility = mommy.make(Facility, ward=ward)

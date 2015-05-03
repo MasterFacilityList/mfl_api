@@ -11,7 +11,7 @@ from model_mommy import mommy
 from ..filters.filter_shared import IsoDateTimeField, TimeRangeFilter
 from ..models import County
 from ..serializers import CountySerializer
-from .test_views import LogginMixin, default
+from .test_views import LoginMixin, default
 
 
 def _dict(ordered_dict_val):
@@ -19,7 +19,7 @@ def _dict(ordered_dict_val):
     return json.loads(json.dumps(ordered_dict_val, default=default))
 
 
-class TestIsoDateTimeField(LogginMixin, APITestCase):
+class TestIsoDateTimeField(LoginMixin, APITestCase):
     def test_strp_time_valid_iso_date(self):
         fl = IsoDateTimeField()
         valid_iso_date = '2015-04-14T06:46:32.709388Z'
@@ -42,7 +42,7 @@ class TestIsoDateTimeField(LogginMixin, APITestCase):
             value='2006-10-25 14:30:59', format='%Y-%m-%d %H:%M:%S')
 
 
-class TestCommonFieldsFilterset(LogginMixin, APITestCase):
+class TestCommonFieldsFilterset(LoginMixin, APITestCase):
     def setUp(self):
         super(TestCommonFieldsFilterset, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -115,7 +115,7 @@ class TestCommonFieldsFilterset(LogginMixin, APITestCase):
         )
 
 
-class TestTimeRangeFilter(LogginMixin, APITestCase):
+class TestTimeRangeFilter(LoginMixin, APITestCase):
     def setUp(self):
         super(TestTimeRangeFilter, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -149,10 +149,10 @@ class TestTimeRangeFilter(LogginMixin, APITestCase):
         )
 
     def test_last_one_week_days_closely_together(self):
-        just_before_week_start = timezone.now() - timedelta(days=8)
-        week_start = timezone.now() - timedelta(days=7)
-        mid_week = timezone.now() - timedelta(days=3)
         right_now = timezone.now()
+        just_before_week_start = right_now - timedelta(days=8)
+        week_start = right_now - timedelta(days=7)
+        mid_week = right_now - timedelta(days=3)
         mommy.make(County, created=just_before_week_start)
         county_2 = mommy.make(County, created=week_start)
         county_3 = mommy.make(County, created=mid_week)
@@ -172,6 +172,16 @@ class TestTimeRangeFilter(LogginMixin, APITestCase):
         }
 
         self.assertEquals(200, response.status_code)
+
+        import pprint
+        print('=' * 80)
+        print(url)
+        print('=' * 80)
+        pprint.pprint(_dict(expected_data))
+        print('=' * 80)
+        pprint.pprint(_dict(response.data))
+        print('=' * 80)
+
         self.assertEquals(
             _dict(response.data),
             _dict(expected_data)
