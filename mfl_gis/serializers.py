@@ -29,25 +29,21 @@ class FacilityCoordinatesSerializer(AbstractFieldsMixin, GeoModelSerializer):
         model = FacilityCoordinates
 
 
-class WorldBorderSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
+class WorldBorderSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = WorldBorder
 
 
-class CountyBoundarySerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
+class CountyBoundarySerializer(AbstractFieldsMixin, GeoModelSerializer):
     class Meta(object):
         model = CountyBoundary
 
 
-class ConstituencyBoundarySerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
+class ConstituencyBoundarySerializer(AbstractFieldsMixin, GeoModelSerializer):
     class Meta(object):
         model = ConstituencyBoundary
 
 
-class WardBoundarySerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
+class WardBoundarySerializer(AbstractFieldsMixin, GeoModelSerializer):
     class Meta(object):
         model = WardBoundary
