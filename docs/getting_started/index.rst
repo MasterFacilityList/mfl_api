@@ -98,6 +98,16 @@ Regulators have their own information systems. The MFL provides APIs that can
 facilitate two way data flow between the regulators' systems and the Master
 Facilities List. You can read more at :doc:`regulation`.
 
+GIS Support
+--------------
+The MFL 2 API server uses the excellent `GeoDjango`_ and `PostGIS`_ to provide
+services that can be used to generate facility maps, perform geographic
+queries and validate facility coordinate data. You can read more about this at
+the :doc:`gis` page.
+
+.. _`GeoDjango`: https://docs.djangoproject.com/en/dev/ref/contrib/gis/
+.. _`PostGIS`: http://postgis.net/
+
 .. toctree::
     :maxdepth: 3
 
@@ -110,4 +120,5 @@ Facilities List. You can read more at :doc:`regulation`.
     facilities
     community_health_units
     regulation
+    gis
 
