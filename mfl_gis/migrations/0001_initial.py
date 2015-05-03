@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('coordinates', django.contrib.gis.db.models.fields.PointField(srid=4326)),
-                ('collection_date', models.DateTimeField()),
+                ('collection_date', models.DateTimeField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.OneToOneField(to='facilities.Facility')),
             ],

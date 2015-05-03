@@ -98,7 +98,7 @@ class FacilityCoordinates(GISAbstractBase):
         GeoCodeMethod,
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
-    collection_date = gis_models.DateTimeField()
+    collection_date = gis_models.DateTimeField(auto_now_add=True)
 
     def validate_longitude_and_latitude_within_kenya(self):
         try:
