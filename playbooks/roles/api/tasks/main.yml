@@ -29,7 +29,7 @@
   django_manage: "command=clean_pyc app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
 
 - name: run fab setup
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup"
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup >> /tmp/fab_setup.log executable=/bin/bash"
 
 - name: run the Django migrations and collectstatic
   django_manage: "command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
