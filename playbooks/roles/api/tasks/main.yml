@@ -25,8 +25,11 @@
 - name: now install the dependencies that we need
   pip: chdir=/opt/mfl_api requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
 
-- name: migrate the users app first
-  django_manage: "command=migrate apps=users app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
+- name: clean cached .pyc files
+  django_manage: "command=clean_pyc app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
+
+- name: run fab setup
+  command: "source /opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup"
 
 - name: run the Django migrations and collectstatic
   django_manage: "command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
