@@ -145,7 +145,11 @@ class County(AdministrativeUnitBase):
     @property
     def facility_coordinates(self):
         """Look up the facilities that are in this unit's boundaries"""
-        return _lookup_facility_coordinates(self.countyboundary)
+        try:
+            return _lookup_facility_coordinates(self.countyboundary)
+        except:  # Handling RelatedObjectDoesNotExist is a little funky
+            LOGGER.info('No boundaries found for {}'.format(self))
+            return _lookup_facility_coordinates(None)
 
     class Meta(AdministrativeUnitBase.Meta):
         verbose_name_plural = 'counties'
@@ -170,7 +174,11 @@ class Constituency(AdministrativeUnitBase):
     @property
     def facility_coordinates(self):
         """Look up the facilities that are in this unit's boundaries"""
-        return _lookup_facility_coordinates(self.constituencyboundary)
+        try:
+            return _lookup_facility_coordinates(self.constituencyboundary)
+        except:  # Handling RelatedObjectDoesNotExist is a little funky
+            LOGGER.info('No boundaries found for {}'.format(self))
+            return _lookup_facility_coordinates(None)
 
     class Meta(AdministrativeUnitBase.Meta):
         verbose_name_plural = 'constituencies'
@@ -200,7 +208,11 @@ class Ward(AdministrativeUnitBase):
     @property
     def facility_coordinates(self):
         """Look up the facilities that are in this unit's boundaries"""
-        return _lookup_facility_coordinates(self.wardboundary)
+        try:
+            return _lookup_facility_coordinates(self.wardboundary)
+        except:  # Handling RelatedObjectDoesNotExist is a little funky
+            LOGGER.info('No boundaries found for {}'.format(self))
+            return _lookup_facility_coordinates(None)
 
 
 @reversion.register

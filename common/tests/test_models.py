@@ -173,6 +173,13 @@ class TestCountyModel(BaseTestCase):
         county_2_code = int(county.code) + 1
         self.assertEquals(county_2_code, county_2.code)
 
+    def test_lookup_facility_coordinates(self):
+        county = mommy.make(County)
+        self.assertEqual(
+            county.facility_coordinates,
+            {}
+        )
+
 
 class TestConstituencyModel(BaseTestCase):
     def setUp(self):
