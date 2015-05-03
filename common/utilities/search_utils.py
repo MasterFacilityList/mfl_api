@@ -25,7 +25,7 @@ class ElasticAPI(object):
         result = requests.get(url)
         return result
 
-    def delete_index(self, index_name):
+    def delete_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
         result = requests.delete(url)
         return result

@@ -148,34 +148,36 @@ class TestTimeRangeFilter(LogginMixin, APITestCase):
             _dict(expected_data)
         )
 
-    # def test_last_one_week_days_closely_together(self):
-    #     just_before_week_start = timezone.now() - timedelta(days=8)
-    #     week_start = timezone.now() - timedelta(days=7)
-    #     mid_week = timezone.now() - timedelta(days=3)
-    #     right_now = timezone.now()
-    #     # mommy.make(County, created=just_before_week_start)
-    #     # county_2 = mommy.make(County, created=week_start)
-    #     # county_3 = mommy.make(County, created=mid_week)
-    #     # county_4 = mommy.make(County, created=right_now)
-    #     url = self.url + "?last_one_week={}".format(
-    #         self.sanitize_time(timezone.now()))
-    #     response = self.client.get(url)
-    #     # expected_data = {
-    #     #     "count": 3,
-    #     #     "next": None,
-    #     #     "previous": None,
-    #     #     "results": [
-    #     #         CountySerializer(county_4).data,
-    #     #         CountySerializer(county_3).data,
-    #     #         CountySerializer(county_2).data
-    #     #     ]
-    #     # }
+    def test_last_one_week_days_closely_together(self):
+        just_before_week_start = timezone.now() - timedelta(days=8)
+        import pdb
+        pdb.set_trace()
+        week_start = timezone.now() - timedelta(days=7)
+        mid_week = timezone.now() - timedelta(days=3)
+        right_now = timezone.now()
+        mommy.make(County, created=just_before_week_start)
+        county_2 = mommy.make(County, created=week_start)
+        county_3 = mommy.make(County, created=mid_week)
+        county_4 = mommy.make(County, created=right_now)
+        url = self.url + "?last_one_week={}".format(
+            self.sanitize_time(timezone.now()))
+        response = self.client.get(url)
+        expected_data = {
+            "count": 3,
+            "next": None,
+            "previous": None,
+            "results": [
+                CountySerializer(county_4).data,
+                CountySerializer(county_3).data,
+                CountySerializer(county_2).data
+            ]
+        }
 
-    #     self.assertEquals(200, response.status_code)
-    #     # self.assertEquals(
-    #     #     _dict(response.data),
-    #     #     _dict(expected_data)
-    #     # )
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            _dict(response.data),
+            _dict(expected_data)
+        )
 
     def test_last_one_quater(self):
         seventy_days_ago = timezone.now() - timedelta(days=70)
