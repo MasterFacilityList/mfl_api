@@ -28,6 +28,7 @@
 - name: run the Django migrations and collectstatic
   django_manage: "command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
   with_items:
+    - migrate users
     - migrate
     - collectstatic
   notify:
