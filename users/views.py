@@ -147,7 +147,6 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
 
-# TODO Map current facilities to GIS and make report of unmapped ones
 # TODO GeoJSON REST serializers
 # TODO Document is_published, is_active, is_deleted
 # TODO Add and document APIs for role setup
