@@ -18,9 +18,21 @@ class TestElasticSearchAPI(TestCase):
         super(TestElasticSearchAPI, self).tearDown()
 
     def test_setup_index(self):
-        result = self.elastic_search_api.setup_index(index_name='test_index')
-        self.assertEquals(200, result.json().get('status'))
         self.elastic_search_api.delete_index(index_name='test_index')
+        result = self.elastic_search_api.setup_index(index_name='test_index')
+        self.assertEquals(200, result.status_code)
+
+    def test_search_document(self):
+        pass
+
+    def test_remove_document(self):
+        pass
+
+    def test_update_document(self):
+        pass
+
+    def test_test_delete_document(self):
+        pass
 
 
 class TestSearchFunctions(TestCase):
