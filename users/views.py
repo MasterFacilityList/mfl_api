@@ -149,6 +149,7 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # TODO Map current facilities to GIS and make report of unmapped ones
 # TODO GeoJSON REST serializers
+# TODO Document is_published, is_active, is_deleted
 # TODO Add and document APIs for role setup
 # Read only API for permissions
 # Read-write API for groups
