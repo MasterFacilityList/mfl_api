@@ -13,14 +13,14 @@ should refer to the :doc:`../contributing/index` guide.
 
 .. _`API First`: http://www.api-first.com/
 
-The big picture
------------------
+MFL 2: The Big Picture
+------------------------
 The Master Facilities List is one of the building blocks of the Kenyan
 national health information system. You can read more about its role
 at :doc:`the_big_picture`.
 
-RESTful or not
-----------------
+Using the API: Basic Principles
+----------------------------------
 Its "RESTish". We subscribe to the principles of `REST`_ but are not
 pedantic about it. It is built using the excellent `Django REST Framework`_.
 
@@ -30,8 +30,8 @@ pedantic about it. It is built using the excellent `Django REST Framework`_.
 You can find more information about the API and its philosophy at
 :doc:`api`.
 
-Authentication
------------------
+Authentication and Authorization
+----------------------------------
 A system like this has to consider the needs of programmatic clients
 ( like integrations into other systems ) and the needs of "actual users"
 ( in this case people logged in to the web interfaces ).
@@ -42,8 +42,8 @@ at our :doc:`authentication` page.
 
 .. _`rfc6749`: https://tools.ietf.org/html/rfc6749
 
-Sandbox
-----------
+The API Sandbox
+------------------
 Our experience teaches us that the biggest roadblock to systems integration
 is usually communication. Developers operate at a level of precision and
 detail that is alien to most people. We've been spoilt by our past dabblings
@@ -99,7 +99,7 @@ facilitate two way data flow between the regulators' systems and the Master
 Facilities List. You can read more at :doc:`regulation`.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     the_big_picture
     api

@@ -175,7 +175,6 @@ class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
 # TODO Document future possibility of social media auth
 # TODO Document national vs county stuff
 # TODO Document GIS ( map plotting APIs ); enhance if needed
-# TODO Borrow @ngash's introductory API docs
 # TODO Write out an overview of the goals and architecture of MFL v2
 # include the fact that it unifies three systems
 # talk about the service catalog

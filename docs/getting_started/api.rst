@@ -1,5 +1,5 @@
-Understanding the API
-============================
+Using the API - Basic Principles
+==================================
 .. include:: ../substitutes.txt
 
 All the material here assumes that you already have access to an
@@ -35,7 +35,7 @@ relevant sections of the documentation.
 
 The preferred data format is JSON. **We strongly encourage you to use JSON**
 - you will find it to be more reliable, since it is the format used by the
-official front-ends and it therefore extensively tested.
+official front-ends and is therefore extensively tested.
 
 In order to request a specific format, you will need to learn how to use
 `content negotiation`_ .
@@ -61,6 +61,8 @@ Send the correct ``Accept`` header. For example:
 **To get a resource in Microsoft Excel format**
 
     curl -i -H "Accept: application/xlsx" -H "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" http://localhost:8000/api/common/contacts/
+
+Please note that the examples above do not factor in :doc:`authentication`.
 
 Content negotiation using query parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -70,7 +70,7 @@ You can find more information at :doc:`developer_install`.
 
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     evaluator_install
     developer_install
