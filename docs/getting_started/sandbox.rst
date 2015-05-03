@@ -1,7 +1,8 @@
 The API Sandbox
 ============================
-TBD
-
+TBD - swagger
+TBD - browseable API
+TBD - metadata
 
 .. toctree::
     :maxdepth: 2

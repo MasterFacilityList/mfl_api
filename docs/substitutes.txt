@@ -1,0 +1,4 @@
+.. |api_version| replace:: v2
+.. |mfl| replace:: :abbr:`MFL (Master Facilities List)`
+.. |mcul| replace:: :abbr:`MFL (Master Community Units List)`
+.. |snomed| replace:: :abbr:`SNOMED CT (Systematized Nomenclature of Medicine Clinical Terms)`
