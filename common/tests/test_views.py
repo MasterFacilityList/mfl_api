@@ -3,7 +3,7 @@ import uuid
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-
+from django.core.cache import cache
 from rest_framework.test import APITestCase
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
@@ -325,6 +325,7 @@ class TestTownView(LoginMixin, APITestCase):
 class TestAPIRootView(LoginMixin, APITestCase):
     def setUp(self):
         self.url = reverse('api:root_listing')
+        cache.clear()
         super(TestAPIRootView, self).setUp()
 
     def test_api_root_exception_path(self):

@@ -38,7 +38,7 @@ urlpatterns = patterns(
         name='contact_detail'),
 
     url(r'^counties/$',
-        cache_page(60*60*12)(CountyView.as_view()),
+        CountyView.as_view(),
         name='counties_list'),
     url(r'^counties/(?P<pk>[^/]+)/$',
         cache_page(60*60*12)(CountyDetailView.as_view()),
@@ -52,7 +52,7 @@ urlpatterns = patterns(
         name='user_county_detail'),
 
     url(r'^wards/$',
-        cache_page(60*60*12)(WardView.as_view()),
+        WardView.as_view(),
         name='wards_list'),
     url(r'^wards/(?P<pk>[^/]+)/$',
         cache_page(60*60*12)(WardDetailView.as_view()),
@@ -63,7 +63,7 @@ urlpatterns = patterns(
         name='town_detail'),
 
     url(r'^constituencies/$',
-        cache_page(60*60*12)(ConstituencyView.as_view()),
+        ConstituencyView.as_view(),
         name='constituencies_list'),
     url(r'^constituencies/(?P<pk>[^/]+)/$',
         cache_page(60*60*12)(ConstituencyDetailView.as_view()),
