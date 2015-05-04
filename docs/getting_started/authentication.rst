@@ -208,31 +208,34 @@ e.g
 
 Authorization
 ----------------
-TBD - define RBAC, provide link
+This server's `Role Based Access Control`_ setup is based on the
+`Django framework permissions and authorization`_ system.
+
+.. _`Role Based Access Control`: http://en.wikipedia.org/wiki/Role-based_access_control
+.. _`Django framework permissions and authorization`: https://docs.djangoproject.com/en/1.8/topics/auth/default/#topic-authorization
 
 Understanding the role based access control setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The user details API endpoint ( explained above ) returns the logged in user's
+permissions.
+
+A user's permissions come from three "sources":
+
+    * the permissions assigned to the group ( role ) that the user belongs to
+    * the permissions assigned directly to the user
+    * the ``is_superuser`` boolean flag; a user who is a "superuser" automatically gets all permissions
+
+The MFL API server has an additional "layer" of authorization: whether a user
+is a "national user" or a "county user". In certain list endpoints ( chiefly
+those that deal directly with facilities ), a "county" user will have their
+results limited to facilities that are located in their county.
+
+TBD - setting up a link between a user and a county
 TBD - getting and interpreting user permissions
 TBD - overview, how roles and permissions work
-
-National and county users
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - access control for GIS ( standard public role cannot get coordinates )
-TBD - national users, including documenting sandbox
-TBD - county users, including documenting sandbox
-
-Public API clients and GIS data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - default data; GIS enabled public role
-TBD - access control for GIS ( standard public role cannot get coordinates
-
-RBAC and the facility life cycle
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - facility life cycle: approvals and interaction with access control
-
-RBAC and regulation
-~~~~~~~~~~~~~~~~~~~~~~
-TBD - facility life cycle: regulation and interaction with access control
+TBD - note about there being no true unauthenticated access
+TBD - notes about facility approvers and data entry people
+TBD - the regulators systems are just one more set of API clients
 
 RBAC setup
 --------------
