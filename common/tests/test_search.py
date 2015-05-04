@@ -46,6 +46,8 @@ class TestElasticSearchAPI(TestCase):
         response = self.elastic_search_api.setup_index(index_name=index_name)
         self.assertEquals(200, response.status_code)
         result = self.elastic_search_api.get_index(index_name)
+        import pdb
+        pdb.set_trace()
         self.assertEquals(200, result.status_code)
         self.elastic_search_api.delete_index(index_name)
         result = self.elastic_search_api.get_index(index_name)
@@ -75,12 +77,6 @@ class TestElasticSearchAPI(TestCase):
         self.elastic_search_api.remove_document(
             index_name, 'facility', str(facility.id))
         self.elastic_search_api.delete_index(index_name='test_index')
-
-    def test_update_document(self):
-        pass
-
-    def test_test_delete_document(self):
-        pass
 
 
 class TestSearchFunctions(ViewTestBase):

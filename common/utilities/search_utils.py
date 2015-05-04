@@ -18,6 +18,8 @@ class ElasticAPI(object):
     def setup_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
         result = requests.put(url)
+        import pdb
+        pdb.set_trace()
         return result
 
     def get_index(self, index_name):
