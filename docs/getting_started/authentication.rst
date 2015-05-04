@@ -66,7 +66,51 @@ message similar to the one below:
 
 Getting user details after login
 +++++++++++++++++++++++++++++++++++++
-TBD - getting user details after login
+After a user is logged in, a typical client ( such as a web application ) will
+need to get additional information about the user. This additional information
+includes permissions.
+
+If the user is logged in, a ``GET`` to ``/api/rest-auth/user/`` will get back
+a ``HTTP 200 OK`` response and a user details payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "id": 3,
+        "short_name": "Serikali",
+        "full_name": "Serikali Kuu ",
+        "all_permissions": [
+            "common.add_town",
+            "oauth2_provider.change_accesstoken",
+            "mfl_gis.delete_wardboundary",
+            "auth.add_permission",
+            "chul.change_approvalstatus",
+            "facilities.delete_facilitytype",
+            // a long list of permissions; truncated for brevity
+        ],
+        "user_permissions": [],
+        "groups": [],
+        "last_login": "2015-05-04T16:33:36.085065Z",
+        "is_superuser": true,
+        "email": "serikalikuu@mfltest.slade360.co.ke",
+        "first_name": "Serikali",
+        "last_name": "Kuu",
+        "other_names": "",
+        "username": "serikalikuu",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2015-05-03T02:39:03.440962Z",
+        "is_national": true
+    }
+
+If the user is not logged in, the return message will be a
+``HTTP 403 FORBIDDEN`` with the following message:
+
+.. code-block:: javascript
+
+    {
+        "detail": "Authentication credentials were not provided."
+    }
 
 OAuth2 Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~
