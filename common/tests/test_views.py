@@ -19,8 +19,11 @@ from ..models import (
 from ..serializers import (
     ContactSerializer,
     WardSerializer,
+    WardDetailSerializer,
     CountySerializer,
+    CountyDetailSerializer,
     ConstituencySerializer,
+    ConstituencyDetailSerializer,
     UserContactSerializer
 )
 from ..views import APIRoot
@@ -89,7 +92,7 @@ class TestViewCounties(LoginMixin, APITestCase):
         url = reverse('api:common:counties_list')
         url += "{}/".format(county.id)
         response = self.client.get(url)
-        expected_data = CountySerializer(county).data
+        expected_data = CountyDetailSerializer(county).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
@@ -141,7 +144,7 @@ class TestViewConstituencies(LoginMixin, APITestCase):
         url = reverse('api:common:constituencies_list')
         url += "{}/".format(constituency.id)
         response = self.client.get(url)
-        expected_data = ConstituencySerializer(constituency).data
+        expected_data = ConstituencyDetailSerializer(constituency).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
@@ -195,7 +198,7 @@ class TestViewWards(LoginMixin, APITestCase):
         url = reverse('api:common:wards_list')
         url += "{}/".format(ward.id)
         response = self.client.get(url)
-        expected_data = WardSerializer(ward).data
+        expected_data = WardDetailSerializer(ward).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
