@@ -1,5 +1,5 @@
 from django.conf.urls import url, patterns
-
+from django.views.decorators.cache import cache_page
 from .views import (
     GeoCodeSourceListView,
     GeoCodeSourceDetailView,
@@ -20,45 +20,52 @@ from .views import (
 
 urlpatterns = patterns(
     '',
-    url(r'^geo_code_sources/$', GeoCodeSourceListView.as_view(),
+    url(r'^geo_code_sources/$',
+        cache_page(60 * 60)(GeoCodeSourceListView.as_view()),
         name='geo_code_sources_list'),
     url(r'^geo_code_sources/(?P<pk>[^/]+)/$',
-        GeoCodeSourceDetailView.as_view(),
+        cache_page(60 * 60)(GeoCodeSourceDetailView.as_view()),
         name='geo_code_source_detail'),
 
-    url(r'^geo_code_methods/$', GeoCodeMethodListView.as_view(),
+    url(r'^geo_code_methods/$',
+        cache_page(60 * 60)(GeoCodeMethodListView.as_view()),
         name='geo_code_methods_list'),
     url(r'^geo_code_methods/(?P<pk>[^/]+)/$',
-        GeoCodeMethodDetailView.as_view(),
+        cache_page(60 * 60)(GeoCodeMethodDetailView.as_view()),
         name='geo_code_method_detail'),
 
-    url(r'^coordinates/$', FacilityCoordinatesListView.as_view(),
+    url(r'^coordinates/$',
+        cache_page(60 * 60)(FacilityCoordinatesListView.as_view()),
         name='facility_coordinates_list'),
     url(r'^coordinates/(?P<pk>[^/]+)/$',
-        FacilityCoordinatesDetailView.as_view(),
+        cache_page(60 * 60)(FacilityCoordinatesDetailView.as_view()),
         name='facility_coordinates_detail'),
 
-    url(r'^country_borders/$', WorldBorderListView.as_view(),
+    url(r'^country_borders/$',
+        cache_page(60 * 60)(WorldBorderListView.as_view()),
         name='world_borders_list'),
     url(r'^country_borders/(?P<pk>[^/]+)/$',
-        WorldBorderDetailView.as_view(),
+        cache_page(60 * 60)(WorldBorderDetailView.as_view()),
         name='world_border_detail'),
 
-    url(r'^county_boundaries/$', CountyBoundaryListView.as_view(),
+    url(r'^county_boundaries/$',
+        cache_page(60 * 60)(CountyBoundaryListView.as_view()),
         name='county_boundaries_list'),
     url(r'^county_boundaries/(?P<pk>[^/]+)/$',
-        CountyBoundaryDetailView.as_view(),
+        cache_page(60 * 60)(CountyBoundaryDetailView.as_view()),
         name='county_boundary_detail'),
 
-    url(r'^constituency_boundaries/$', ConstituencyBoundaryListView.as_view(),
+    url(r'^constituency_boundaries/$',
+        cache_page(60 * 60)(ConstituencyBoundaryListView.as_view()),
         name='constituency_boundaries_list'),
     url(r'^constituency_boundaries/(?P<pk>[^/]+)/$',
-        ConstituencyBoundaryDetailView.as_view(),
+        cache_page(60 * 60)(ConstituencyBoundaryDetailView.as_view()),
         name='constituency_boundary_detail'),
 
-    url(r'^ward_boundaries/$', WardBoundaryListView.as_view(),
+    url(r'^ward_boundaries/$',
+        cache_page(60 * 60)(WardBoundaryListView.as_view()),
         name='ward_boundaries_list'),
     url(r'^ward_boundaries/(?P<pk>[^/]+)/$',
-        WardBoundaryDetailView.as_view(),
+        cache_page(60 * 60)(WardBoundaryDetailView.as_view()),
         name='ward_boundary_detail'),
 )
