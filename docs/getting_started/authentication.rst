@@ -16,7 +16,35 @@ Session Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Logging in
 +++++++++++++
-TBD - example login / *loguut*, including notes about the use of email instead of username
+``POST`` the credentials to ``/api/rest-auth/login/``. The payload should be
+similar to the example below:
+
+.. code-block:: javascript
+
+    {
+        "username": "hakunaruhusa@mfltest.slade360.co.ke",
+        "password": "hakunaruhusa"
+    }
+
+A successful login will have a ``HTTP 200 OK`` response. The response payload
+will have a single ``key`` parameter: a Django Rest Framework `TokenAuthentication`_ key. For example:
+
+.. code-block:: javascript
+
+    {
+        "key": "f9a978cd00e9dc0ebfe97d633d98bde4b35f9279"
+    }
+
+.. _`TokenAuthentication`: http://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
+
+.. note::
+
+    Please note that the ``username`` is actually an email address.
+
+.. note::
+
+    We discourage the user of token authentication. Kindly see the section on
+    OAuth2 below.
 
 Logging out
 ++++++++++++++
