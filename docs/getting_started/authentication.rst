@@ -334,33 +334,106 @@ need to do anything ).
     ``GET`` similar to ``/api/common/user_counties/?user=4&active=true``. In
     this example, ``4`` is the user's ``id``.
 
-RBAC setup
---------------
+Setting up users, permissions and groups
+-------------------------------------------
 Permissions
 ~~~~~~~~~~~~~
-TBD - document custom permissions, if any, plus read only API
+
+API clients should treat permissions as "fixed" builtins. The server does not
+implement any endpoint that can be used to add, edit or remove a permission.
+
+The available permissions can be listed by issuing a ``GET`` to
+``/api/users/permissions/``. The results will look like this:
+
+.. code-block:: javascript
+
+    {
+        "count": 216,
+        "next": "http://localhost:8000/api/users/permissions/?page=2",
+        "previous": null,
+        "results": [
+            {
+                "id": 61,
+                "name": "Can add email address",
+                "codename": "add_emailaddress",
+                "content_type": 21
+            },
+            {
+                "id": 62,
+                "name": "Can change email address",
+                "codename": "change_emailaddress",
+                "content_type": 21
+            },
+            {
+                "id": 63,
+                "name": "Can delete email address",
+                "codename": "delete_emailaddress",
+                "content_type": 21
+            },
+            // truncated for brevity
+        ]
+    }
 
 Groups
 ~~~~~~~~
-TBD - document role setup ( read, write )
-TBD - comment about default roles
+The API server provides APIs that can be used to create roles, alter existing
+roles and retire roles.
 
-User registration
+Creating roles
++++++++++++++++++
+TBD
+
+Altering existing roles
+++++++++++++++++++++++++++
+TBD
+
+Retiring roles
++++++++++++++++++
+
+TBD - document role setup ( read, write )
+
+User management
 -------------------
+User registration ( sign up )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TBD - user creation / registration
-TBD - national vs county users at setup time
-TBD - email verification
-TBD - assigning permissions to users via groups
-TBD - assigning permisssions to users directly
-TBD - altering permissions via altering groups
-TBD - altering permissions assigned directly
-TBD - retiring a user
-TBD - moving a user between counties
-TBD - password reset
-TBD - password reset confirmation
-TBD - password change
-TBD - comment about future possibilities of social media auth
+TBD - national vs county users at setup time ( reference notes above )
 TBD - updating user details
+
+Email verification
+~~~~~~~~~~~~~~~~~~~~~~~
+TBD - email verification
+
+Linking users to groups
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - assigning permissions to users via groups
+TBD - changing the groups that a user is assigned to
+
+Assigning users direct permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - assigning permisssions to users directly
+TBD - altering permissions assigned directly
+
+Retiring users
+~~~~~~~~~~~~~~~~~~~
+TBD - retiring a user
+
+Password reset
+~~~~~~~~~~~~~~~~~~
+TBD - password reset
+
+Password reset confirmation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - password reset confirmation
+
+Password changes
+~~~~~~~~~~~~~~~~~~~
+TBD - password change
+
+.. note::
+
+    A future version of this server may add support for social authentication
+    e.g login via Facebook, Twitter or Google accounts.
 
 .. toctree::
     :maxdepth: 2
