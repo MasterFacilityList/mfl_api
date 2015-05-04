@@ -1,12 +1,16 @@
 Authentication and Authorization
 ==================================
 
-TBD - overview ( difference between authentication and authorization )
-TBD - repeat HTTPS caution
+`Authentication`_ is the process of associating an API request with a specific
+user, while `authorization`_ determines if the user has permission to perform
+the requested operation.
+
+.. _`Authentication`: http://www.django-rest-framework.org/api-guide/authentication/
+.. _`authorization`: http://www.django-rest-framework.org/api-guide/permissions/
 
 Authentication
 -----------------
-TBD
+The MFL API server supports both session ( cookie based ) and OAuth 2 ( token based ) authentication. For both approaches, the production API server **must be run over HTTPS**.
 
 Session Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~
