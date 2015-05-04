@@ -379,18 +379,15 @@ Groups
 The API server provides APIs that can be used to create roles, alter existing
 roles and retire roles.
 
-Creating roles
-+++++++++++++++++
-TBD
+Existing roles ( groups ) can be listed by issuing a ``GET`` to
+``/api/users/groups/``.
 
-Altering existing roles
-++++++++++++++++++++++++++
-TBD
-
-Retiring roles
-+++++++++++++++++
-
-TBD - document role setup ( read, write )
+TBD Implement custom create() and update()
+TBD Document creating roles
+TBD Document adding permissions to a role
+TBD Document removing permissions from a role
+TBD Document retiring a role
+TBD Document patching a role
 
 User management
 -------------------
