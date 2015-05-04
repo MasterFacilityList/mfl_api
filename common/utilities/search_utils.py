@@ -45,9 +45,6 @@ class ElasticAPI(object):
         result = requests.delete(url)
         return result
 
-    def update_document(self, index_name, instance_data):
-        return self.index_document(index_name, instance_data)
-
     def search_document(self, index_name, instance_type, query):
         url = "{}{}{}{}{}{}{}".format(
             ELASTIC_URL, index_name, "/", instance_type, "/",
