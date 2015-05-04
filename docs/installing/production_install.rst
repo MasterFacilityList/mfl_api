@@ -8,4 +8,4 @@ TODO - Can only be in a non-threaded server, because of ``GDAL``
 
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3

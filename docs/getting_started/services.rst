@@ -1,6 +1,6 @@
-Understanding the MFL 2 service catalog
+MFL APIs: The Service Catalogue
 =========================================
 TBD
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3

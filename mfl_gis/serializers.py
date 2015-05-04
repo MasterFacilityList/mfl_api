@@ -34,6 +34,14 @@ class WorldBorderSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
         model = WorldBorder
 
 
+class WorldBorderDetailSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    facility_coordinates = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = WorldBorder
+
+
 class CountyBoundarySerializer(AbstractFieldsMixin, GeoModelSerializer):
     class Meta(object):
         model = CountyBoundary

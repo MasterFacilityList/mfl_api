@@ -84,8 +84,7 @@ mfl_models_graph.png
 # It was a lazy fix; should have been better to debug the odd behavior
 /api/
 
-# Don't track collected static files and uploads in git
-*static*
+# Don't track uploads in git
 *media*
 
 # env files store config stuff
