@@ -214,6 +214,12 @@ class WorldBorder(AdministrativeUnitBoundary):
     longitude = gis_models.FloatField()
     latitude = gis_models.FloatField()
 
+    @property
+    def facility_coordinates(self):
+        from common.models.model_declarations import \
+            _lookup_facility_coordinates
+        return _lookup_facility_coordinates(self)
+
 
 @reversion.register
 class CountyBoundary(AdministrativeUnitBoundary):
