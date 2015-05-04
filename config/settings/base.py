@@ -152,6 +152,9 @@ SWAGGER_SETTINGS = {
     },
     'doc_expansion': 'full',
 }
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 60  # One hour
+}
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
