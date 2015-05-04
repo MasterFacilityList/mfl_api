@@ -46,8 +46,6 @@ class TestElasticSearchAPI(TestCase):
         response = self.elastic_search_api.setup_index(index_name=index_name)
         self.assertEquals(200, response.status_code)
         result = self.elastic_search_api.get_index(index_name)
-        import pdb
-        pdb.set_trace()
         self.assertEquals(200, result.status_code)
         self.elastic_search_api.delete_index(index_name)
         result = self.elastic_search_api.get_index(index_name)
@@ -55,7 +53,8 @@ class TestElasticSearchAPI(TestCase):
 
     def test_index_document(self):
         facility = mommy.make(Facility, name='Fig tree medical clinic')
-        result = search_utils.index_instance(facility)
+        self.elastic_search_api.setup_index(index_name='test_index')
+        result = search_utils.index_instance(facility, 'test_index')
         self.assertEquals(201, result.status_code)
 
     def test_search_document_no_instance_type(self):
@@ -63,7 +62,7 @@ class TestElasticSearchAPI(TestCase):
         response = self.elastic_search_api.setup_index(index_name=index_name)
         self.assertEquals(200, response.status_code)
         facility = mommy.make(Facility, name='Fig tree medical clinic')
-        result = search_utils.index_instance(facility)
+        result = search_utils.index_instance(facility, 'test_index')
         self.assertEquals(201, result.status_code)
         self.elastic_search_api.search_document(
             index_name=index_name, instance_type='facility', query='tree')
@@ -72,7 +71,7 @@ class TestElasticSearchAPI(TestCase):
         index_name = 'test_index'
         self.elastic_search_api.setup_index(index_name=index_name)
         facility = mommy.make(Facility, name='Fig tree medical clinic')
-        result = search_utils.index_instance(facility)
+        result = search_utils.index_instance(facility, 'test_index')
         self.assertEquals(201, result.status_code)
         self.elastic_search_api.remove_document(
             index_name, 'facility', str(facility.id))
@@ -94,8 +93,10 @@ class TestSearchFunctions(ViewTestBase):
 
     def test_search_facility(self):
         url = reverse('api:facilities:facilities_list')
+        self.elastic_search_api = search_utils.ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
         facility = mommy.make(Facility, name='Kanyakini')
-        search_utils.index_instance(facility)
+        search_utils.index_instance(facility, 'test_index')
         url = url + "?search={}".format('Kanyakini')
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
@@ -116,7 +117,7 @@ class TestSearchFilter(ViewTestBase):
         mommy.make(Facility)
         qs = Facility.objects.all()
 
-        search_filter = SearchFilter(name='search', model=Facility)
+        search_filter = SearchFilter(name='search')
         result = search_filter.filter(qs, 'test')
         # no documents have been indexed
         self.assertEquals(result, [])

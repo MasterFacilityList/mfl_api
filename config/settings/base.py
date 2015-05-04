@@ -235,5 +235,5 @@ ACCOUNT_SESSION_REMEMBER = True
 # django_rest_auth settings
 OLD_PASSWORD_FIELD_ENABLED = True
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer'
+    'USER_DETAILS_SERIALIZER': 'users.serializers.MflUserSerializer'
 }

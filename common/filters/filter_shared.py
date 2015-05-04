@@ -37,18 +37,19 @@ class IsoDateTimeFilter(django_filters.DateTimeFilter):
 
 class SearchFilter(django_filters.filters.Filter):
     """
+    Given a query searches elastic search index and returns a list of hits.
     """
 
     def filter(self, qs, value):
         api = ElasticAPI()
-        document_type = self.model.__name__.lower()
+        document_type = qs.model.__name__.lower()
         index_name = settings.SEARCH.get('INDEX_NAME')
         result = api.search_document(index_name, document_type, value)
         hits = result.json().get('hits').get('hits')
         hits_list = []
         for hit in hits:
             obj_id = hit.get('_id')
-            instance = self.model.objects.get(id=obj_id)
+            instance = qs.model.objects.get(id=obj_id)
             hits_list.append(instance)
         return hits_list
 

@@ -1,12 +1,13 @@
 import pydoc
 import json
 import uuid
+import requests
+
 
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-import requests
 
 ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
 INDEX_NAME = settings.SEARCH.get('INDEX_NAME')
@@ -21,8 +22,6 @@ class ElasticAPI(object):
     def setup_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
         result = requests.put(url)
-        import pdb
-        pdb.set_trace()
         return result
 
     def get_index(self, index_name):
@@ -69,15 +68,18 @@ def serialize_model(obj):
     they have been inlined in the serializer.
 
     For this to work, a model's serializer name has to follow this convention
-    '<model_name>Serializer'
-
+    '<model_name>Serializer' Failing to do so the function will through a
+    TypeError.
     Only apps in local apps will be indexed.
     """
     app_label = obj._meta.app_label
     serializer_path = "{}{}{}{}".format(
         app_label, ".serializers.", obj.__class__.__name__, 'Serializer')
     serializer_cls = pydoc.locate(serializer_path)
+    # if serializer_cls is None:
+
     serialized_data = serializer_cls(obj).data
+
     serialized_data = json.dumps(serialized_data, default=default)
     return {
         "data": serialized_data,
@@ -86,16 +88,16 @@ def serialize_model(obj):
     }
 
 
-def index_instance(obj):
+def index_instance(obj, index_name=INDEX_NAME):
     elastic_api = ElasticAPI()
     data = serialize_model(obj)
-    return elastic_api.index_document(INDEX_NAME, data)
+    return elastic_api.index_document(index_name, data)
 
 
 @receiver(post_save)
 def index_on_save(sender, instance, **kwargs):
     """
-    Listen for save signals and index them
+    Listen for save signals and index the insances being saved.
     """
     app_label = instance._meta.app_label
     if app_label in settings.LOCAL_APPS:

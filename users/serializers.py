@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import Group, Permission
-from common.serializers import InchargeCountiesSerializer
+from common.serializers import UserCountySerializer
 from .models import MflUser, MFLOAuthApplication
 
 
@@ -18,9 +18,9 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
 
 
-class UserSerializer(serializers.ModelSerializer):
+class MflUserSerializer(serializers.ModelSerializer):
     """This should allow everything about users to be managed"""
-    counties = InchargeCountiesSerializer(many=True, required=False)
+    counties = UserCountySerializer(many=True, required=False)
 
     short_name = serializers.ReadOnlyField(source='get_short_name')
     full_name = serializers.ReadOnlyField(source='get_full_name')
