@@ -43,12 +43,26 @@ will have a single ``key`` parameter: a Django Rest Framework `TokenAuthenticati
 
 .. note::
 
-    We discourage the user of token authentication. Kindly see the section on
+    We discourage the use of token authentication. Kindly see the section on
     OAuth2 below.
 
 Logging out
 ++++++++++++++
-TBD
+Send an empty ( no payload ) ``POST`` to ``/api/rest-auth/logout/``.
+
+A successful logout will get back a ``HTTP 200 OK`` response, and a success
+message similar to the one below:
+
+.. code-block:: javascript
+
+    {
+        "success": "Successfully logged out."
+    }
+
+.. note:
+
+    Logging out via this method will also delete the token that was assigned
+    at login.
 
 Getting user details after login
 +++++++++++++++++++++++++++++++++++++
