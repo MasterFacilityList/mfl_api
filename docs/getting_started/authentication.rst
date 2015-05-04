@@ -230,12 +230,109 @@ is a "national user" or a "county user". In certain list endpoints ( chiefly
 those that deal directly with facilities ), a "county" user will have their
 results limited to facilities that are located in their county.
 
-TBD - setting up a link between a user and a county
-TBD - getting and interpreting user permissions
-TBD - overview, how roles and permissions work
-TBD - note about there being no true unauthenticated access
-TBD - notes about facility approvers and data entry people
-TBD - the regulators systems are just one more set of API clients
+.. note::
+
+    This API server does not support "true" unauthenticated read-only access
+    For the public site, OAuth2 credentials ( that correspond to a role with
+    limited access ) will be used.
+
+.. note::
+
+    From the point of view of the MFL API, regulator systems are just one more
+    set of API clients.
+
+Users and counties
+~~~~~~~~~~~~~~~~~~~~~
+In 2010, Kenya got a new constitution. One of the major changes was the
+establishment of a devolved system of government.
+
+The second generation MFL API ( this server ) is designed for the era of
+devolution. In this system, facility record management should occur at the
+county level.
+
+The separation of privileges between data entry staff ( "makers" ) and those
+responsible for approval ( "checkers" ) can be modelled easily using the
+role based access control setup described above.
+
+The only additional need is the need to link county level users to counties,
+and use that information to limit their access. This has been achieved by
+adding an ``is_national`` boolean flag to the custom user model and adding a
+resource that links users to counties. The example user resource below
+represents a non-national ( county ) user ( note the ``is_national`` field ):
+
+.. code-block:: javascript
+
+    {
+        "id": 4,
+        "short_name": "Serikali",
+        "full_name": "Serikali Ndogo ",
+        "all_permissions": [
+            "common.add_town",
+            // many more permissions
+        ],
+        "user_permissions": [],
+        "groups": [],
+        "last_login": null,
+        "is_superuser": true,
+        "email": "serikalindogo@mfltest.slade360.co.ke",
+        "first_name": "Serikali",
+        "last_name": "Ndogo",
+        "other_names": "",
+        "username": "serikalindogo",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2015-05-03T02:39:03.443301Z",
+        "is_national": false
+    }
+
+In order to link a user to a county, you need to have two pieces of
+information:
+
+    * the user's ``id``
+    * the county's ``id`` - easily obtained from ``/api/common/counties/``
+
+With these two pieces of information in place, ``POST`` to ``/api/common/user_counties/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "user": 4,
+        "county": "d5f54838-8743-4774-a866-75d7744a9814"
+    }
+
+A successful operation will get back a ``HTTP 201 CREATED`` response and
+a representation of the newly created resource. For example:
+
+.. code-block:: javascript
+
+    {
+        "id": "073d8bfa-2a86-4f9a-9cbe-0b8ac6780c3a",
+        "created": "2015-05-04T17:44:56.441006Z",
+        "updated": "2015-05-04T17:44:56.441027Z",
+        "deleted": false,
+        "active": true,
+        "created_by": 3,
+        "updated_by": 3,
+        "user": 4,
+        "county": "d5f54838-8743-4774-a866-75d7744a9814"
+    }
+
+The filtering of results by county is transparent ( the API client does not
+need to do anything ).
+
+.. note::
+
+    A user can only have one active link to a county at any particular time.
+    Any attempt to link a user to more than one county at a time will get a
+    validation error.
+
+    If you'd like to change the county that a user is linked to, you will need
+    to first inactivate the existing record ( ``PATCH`` it and set ``active``
+    to ``false`` ).
+
+    In order to determine the role that a user is currently linked to, issue a
+    ``GET`` similar to ``/api/common/user_counties/?user=4&active=true``. In
+    this example, ``4`` is the user's ``id``.
 
 RBAC setup
 --------------
@@ -251,6 +348,7 @@ TBD - comment about default roles
 User registration
 -------------------
 TBD - user creation / registration
+TBD - national vs county users at setup time
 TBD - email verification
 TBD - assigning permissions to users via groups
 TBD - assigning permisssions to users directly
@@ -265,4 +363,4 @@ TBD - comment about future possibilities of social media auth
 TBD - updating user details
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
