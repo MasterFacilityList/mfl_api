@@ -214,7 +214,16 @@ TEMPLATES = [
         'APP_DIRS': True,
     },
 ]
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/django_cache',
+        'TIMEOUT': 60 * 60,
+        'OPTIONS': {
+            'MAX_ENTRIES': 10000
+        }
+    }
+}
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
