@@ -114,7 +114,97 @@ If the user is not logged in, the return message will be a
 
 OAuth2 Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - port documentation from docstring
+You can learn all that you need to know about OAuth2 by reading `rfc6749`_.
+
+.. _`rfc6749`: https://tools.ietf.org/html/rfc6749
+
+A simple OAuth2 workflow
++++++++++++++++++++++++++++++
+If you are in too much of a hurry to read all that, here is what you
+should do:
+
+Registering a new "application"
+***********************************
+You should know the user ID of the user that you'd like to register an
+application for. You can obtain that ID from the user details API described
+above or from ``/api/users/``.
+
+You need to know the ``authorization_grant_type`` that you'd like for the new
+application. For the example below, we will use ``password``. If you do not
+know what to choose, read `rfc6749`_ .
+
+The next decision is the choice of ``client_type``. For the example below,
+we will use ``confidential``. As always - consult `rfc6749`_ for more context.
+
+``POST`` to ``/api/users/applications/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "client_type": "confidential",
+        "authorization_grant_type": "password",
+        "name": "Demo / Docs Application",
+        "user": 3
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 CREATED`` response, and
+a representation of the new application. This example request got back
+this representation:
+
+.. code-block:: javascript
+
+    {
+        "id": 1,
+        "client_id": "<redacted>",
+        "redirect_uris": "",
+        "client_type": "confidential",
+        "authorization_grant_type": "password",
+        "client_secret": "<redacted>",
+        "name": "Demo / Docs Application",
+        "skip_authorization": false,
+        "user": 3
+    }
+
+.. note::
+    * The `client_id` and `client_secret` fields were automatically assigned.
+    * The `skip_authorization` and `redirect_urls` fields have default values.
+    * A single user can be associated with multiple applications.
+
+Authenticating using OAuth2 tokens
+*************************************
+First,  obtain an access token by ``POST``ing the user's credentials to
+``/o/token/``. For example:
+
+.. code-block:: text
+
+    curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/o/token/
+
+Which breaks down as:
+
+.. code-block:: text
+
+    curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/o/token/
+
+If you authenticate successfully, the reply from the server will be a `JSON`
+payload that has the issued access token, the refresh token, the access token
+type, expiry and scope. For example:
+
+.. code-block:: javascript
+
+    {
+        "access_token": "fKDvh2fFLR1iFPuB26RUEalbjYO4rx",
+        "token_type": "Bearer",
+        "expires_in": 36000,
+        "refresh_token": "jLwpCh3WbOXBeb01XMeZR5AQYedkj1",
+        "scope": "read write"
+    }
+
+Pick the ``access_token`` and send it in an ``Authorization: Bearer`` header
+e.g
+
+.. code-block:: text
+
+    curl -H "Authorization: Bearer ziBLqoXwVEA8lW9yEmE260AZ4lCJHq" http://localhost:8000/api/common/counties/
 
 Authorization
 ----------------
