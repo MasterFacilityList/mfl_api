@@ -129,7 +129,7 @@ class TestSearchFunctions(ViewTestBase):
         "ELASTIC_URL": "http://localhost:9200/",
         "INDEX_NAME": "test_index"})
 class TestSearchFilter(ViewTestBase):
-    def test_filter(self):
+    def test_filter_no_data(self):
         api = search_utils.ElasticAPI()
         api.setup_index('test_index')
         mommy.make(Facility, name='test facility')
@@ -140,3 +140,19 @@ class TestSearchFilter(ViewTestBase):
         result = search_filter.filter(qs, 'test')
         # no documents have been indexed
         self.assertEquals(result, [])
+        api.delete_index('test_index')
+
+    def test_filter_data(self):
+        api = search_utils.ElasticAPI()
+        api.setup_index('test_index')
+        test_facility = mommy.make(Facility, name='test facility')
+        search_utils.index_instance(test_facility, 'test_index')
+        mommy.make(Facility)
+        qs = Facility.objects.all()
+
+        search_filter = SearchFilter(name='search')
+        result = search_filter.filter(qs, 'test')
+        # no documents have been indexed
+        self.assertEquals(1, len(result))
+        self.assertEquals(test_facility, result[0])
+        api.delete_index('test_index')
