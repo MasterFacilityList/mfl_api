@@ -9,6 +9,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.permissions import IsAdminUser
+from rest_framework_extensions.cache.decorators import (
+    cache_response
+)
 
 from ..utilities.metadata_helpers import MODEL_VIEW_DICT, _lookup_metadata
 
@@ -128,6 +131,7 @@ class APIRoot(APIView):
     renderer_classes = (JSONRenderer, BrowsableAPIRenderer,)
     permission_classes = (IsAdminUser,)
 
+    @cache_response()
     def get(self, request, format=None):
         resp = OrderedDict()
         errors = []
