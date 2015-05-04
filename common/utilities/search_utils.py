@@ -3,6 +3,9 @@ import json
 import uuid
 
 from django.conf import settings
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
 import requests
 
 ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
@@ -87,3 +90,13 @@ def index_instance(obj):
     elastic_api = ElasticAPI()
     data = serialize_model(obj)
     return elastic_api.index_document(INDEX_NAME, data)
+
+
+@receiver(post_save)
+def index_on_save(sender, instance, **kwargs):
+    """
+    Listen for save signals and index them
+    """
+    app_label = instance._meta.app_label
+    if app_label in settings.LOCAL_APPS:
+        index_instance(instance)
