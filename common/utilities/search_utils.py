@@ -60,23 +60,23 @@ class ElasticAPI(object):
 
 def serialize_model(obj):
     """
-    Locates a models serializer and uses it to serializer a model instane
+    Locates a models serializer and uses it to serialize a model instance
     This allows us to search a document through all its important components.
-    If a attribute of model is important enough to appear in the serializer,
+    If a attribute of model is important enough to make it to the model
+    serializer,
     it means that the models should also be searched though that attribute
     as well. This will take care for all the child models of a model if
     they have been inlined in the serializer.
 
     For this to work, a model's serializer name has to follow this convention
-    '<model_name>Serializer' Failing to do so the function will through a
-    TypeError.
+    '<model_name>Serializer' Failing to do so the function will cause the
+    function throw a TypeError exception.
     Only apps in local apps will be indexed.
     """
     app_label = obj._meta.app_label
     serializer_path = "{}{}{}{}".format(
         app_label, ".serializers.", obj.__class__.__name__, 'Serializer')
     serializer_cls = pydoc.locate(serializer_path)
-    # if serializer_cls is None:
 
     serialized_data = serializer_cls(obj).data
 
@@ -97,7 +97,7 @@ def index_instance(obj, index_name=INDEX_NAME):
 @receiver(post_save)
 def index_on_save(sender, instance, **kwargs):
     """
-    Listen for save signals and index the insances being saved.
+    Listen for save signals and index the insances being created.
     """
     app_label = instance._meta.app_label
     if app_label in settings.LOCAL_APPS:

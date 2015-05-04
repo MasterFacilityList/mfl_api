@@ -45,7 +45,7 @@ class SearchFilter(django_filters.filters.Filter):
         document_type = qs.model.__name__.lower()
         index_name = settings.SEARCH.get('INDEX_NAME')
         result = api.search_document(index_name, document_type, value)
-        hits = result.json().get('hits').get('hits')
+        hits = result.json().get('hits').get('hits') if result.json() else []
         hits_list = []
         for hit in hits:
             obj_id = hit.get('_id')
