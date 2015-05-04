@@ -23,7 +23,7 @@ expect all participants in the MFL project to be respectful and considerate.
 You can find more information at our :doc:`code_of_conduct` page.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     workflow
     code_of_conduct

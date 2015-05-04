@@ -1,11 +1,13 @@
 from django.conf.urls import url, patterns, include
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 from common.views import APIRoot, root_redirect_view
 
 
 apipatterns = patterns(
     '',
-    url(r'^$', login_required(APIRoot.as_view()), name='root_listing'),
+    url(r'^$', login_required(
+        cache_page(60*60)(APIRoot.as_view())), name='root_listing'),
     url(r'^explore/', include('rest_framework_swagger.urls',
         namespace='swagger')),
     url(r'^common/', include('common.urls', namespace='common')),

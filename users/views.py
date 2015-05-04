@@ -144,45 +144,6 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
 
 
 class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """View, update and retire specific OAuth2 application authorizations"""
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
-
-# TODO GeoJSON REST serializers
-# TODO Document is_published, is_active, is_deleted
-# TODO Add and document APIs for role setup
-# Read only API for permissions
-# Read-write API for groups
-# Document adding permissions to users
-# Document adding groups to users / creating users
-# TODO Document is_national and county linkage
-# TODO Create in demo data default roles for each county and national
-# TODO Define general public role ( read only, no GIS )
-# TODO Define public role with GIS access ( read only perms, has GIS )
-# TODO Define template role for approval ( approver )
-# TODO Add notes on the need to run over HTTPS ( compulsory ) and OAuth
-# TODO Document API login vis session; email vs username
-# TODO Document API login via OAuth2
-# TODO Document API logout
-# TODO Document password reset
-# TODO Document password reset confirmation
-# TODO Document password change
-# TODO Document GET of user details ( if it overlaps with ours, remove one )
-# TODO Document updating user details vis PUT and PATCH
-# TODO Document user registration
-# TODO Document retrieval of user permisions and how to use them
-# TODO Document email verification in registration
-# TODO Document future possibility of social media auth
-# TODO Document national vs county stuff
-# TODO Document GIS ( map plotting APIs ); enhance if needed
-# TODO Borrow @ngash's introductory API docs
-# TODO Write out an overview of the goals and architecture of MFL v2
-# include the fact that it unifies three systems
-# talk about the service catalog
-# talk about future areas: practitioners, terminology server
-# TODO Write out a section of the docs that talks about how to use
-# e.g what client, what browser extension ( httpie, curl )
-# TODO Add Swagger compatible docstrings to every view
-# ( first line summary, detailed description, params from filters
-# including base filter )
-# TODO Make sandbox metadata more consumable, more predictable
-# ( see "inspiration" sandbox )

@@ -42,6 +42,12 @@ class PhysicalAddressSerializer(
 
 
 class CountySerializer(AbstractFieldsMixin, GeoModelSerializer):
+
+    class Meta(object):
+        model = County
+
+
+class CountyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     from mfl_gis.serializers import CountyBoundarySerializer
 
     county_boundary = CountyBoundarySerializer(
@@ -60,19 +66,30 @@ class TownSerializer(
 
 
 class WardSerializer(AbstractFieldsMixin, GeoModelSerializer):
+
+    class Meta(object):
+        model = Ward
+
+
+class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     from mfl_gis.serializers import WardBoundarySerializer
 
     ward_boundary = WardBoundarySerializer(
         source='wardboundary', read_only=True)
     facility_coordinates = serializers.ReadOnlyField()
-
-    county = serializers.CharField(read_only=True)
+    county = CountySerializer(read_only=True)
 
     class Meta(object):
         model = Ward
 
 
 class ConstituencySerializer(AbstractFieldsMixin, GeoModelSerializer):
+
+    class Meta(object):
+        model = Constituency
+
+
+class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     from mfl_gis.serializers import ConstituencyBoundarySerializer
 
     constituency_boundary = ConstituencyBoundarySerializer(

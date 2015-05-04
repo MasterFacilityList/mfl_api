@@ -120,12 +120,12 @@ class AdministrativeUnitBase(SequenceMixin, AbstractBase):
         abstract = True
 
 
-def _lookup_facility_coordinates(administrative_area_boundary):
+def _lookup_facility_coordinates(area_boundary):
     """A helper used by the County, Constituency and Ward classes"""
     from mfl_gis.models import FacilityCoordinates
     facility_coordinates = FacilityCoordinates.objects.filter(
-        coordinates__contained=administrative_area_boundary.mpoly
-    ) if administrative_area_boundary else []
+        coordinates__contained=area_boundary.mpoly
+    ) if area_boundary and area_boundary.mpoly else []
     return {
         facility_coordinate.facility.name:
         json.loads(facility_coordinate.coordinates.geojson)
