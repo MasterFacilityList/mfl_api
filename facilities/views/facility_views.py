@@ -82,7 +82,29 @@ from ..filters import (
     FacilityUpgradeFilter,
     RegulatingBodyContactFilter
 )
-from ..filter_backends import CountyAndNationalUserFilterBackend
+
+
+class QuerysetFilterMixin(object):
+    """
+    Filter that only allows users to list facilities in their county
+    if they are not a national user.
+
+    This complements the fairly standard ( django.contrib.auth )
+    permissions setup.
+
+    It is not intended to be applied to all views ( it should be used
+    only on views for resources that are directly linked to counties
+    e.g. facilities ).
+    """
+    def get_queryset(self, *args, **kwargs):
+        # The line below reflects the fact that geographic "attachment"
+        # will occur at the smallest unit i.e the ward
+        if not self.request.user.is_national and self.request.user.county \
+                and hasattr(self.queryset.model, 'ward'):
+            return self.queryset.filter(
+                ward__constituency__county=self.request.user.county)
+
+        return self.queryset
 
 
 class RegulatingBodyContactListView(generics.ListCreateAPIView):
@@ -315,11 +337,10 @@ class OwnerDetailView(
     serializer_class = OwnerSerializer
 
 
-class FacilityListView(generics.ListCreateAPIView):
+class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
     filter_class = FacilityFilter
-    filter_backends = (CountyAndNationalUserFilterBackend,)
     ordering_fields = (
         'name', 'code', 'number_of_beds', 'number_of_cots', 'operation_status',
         'ward', 'owner',
@@ -327,10 +348,10 @@ class FacilityListView(generics.ListCreateAPIView):
 
 
 class FacilityDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        QuerysetFilterMixin, AuditableDetailViewMixin,
+        generics.RetrieveUpdateDestroyAPIView):
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
-    filter_backends = (CountyAndNationalUserFilterBackend,)
 
 
 class FacilityContactListView(generics.ListCreateAPIView):
