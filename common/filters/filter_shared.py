@@ -41,18 +41,20 @@ class SearchFilter(django_filters.filters.Filter):
     """
 
     def filter(self, qs, value):
+        super(SearchFilter, self).filter(qs, value)
         api = ElasticAPI()
         document_type = qs.model.__name__.lower()
         index_name = settings.SEARCH.get('INDEX_NAME')
         result = api.search_document(index_name, document_type, value)
         hits = []
         hits = result.json().get('hits').get('hits') if result.json() else hits
-        hits_list = []
+        hits_ids_list = []
         for hit in hits:
             obj_id = hit.get('_id')
-            instance = qs.model.objects.get(id=obj_id)
-            hits_list.append(instance)
-        return hits_list
+            hits_ids_list.append(obj_id)
+        hits_qs = qs.model.objects.filter(id__in=hits_ids_list)
+
+        return hits_qs
 
 
 class TimeRangeFilter(django_filters.filters.Filter):
