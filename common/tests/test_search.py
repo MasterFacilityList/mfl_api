@@ -194,6 +194,7 @@ class TestSearchFilter(ViewTestBase):
         # handle cases where the index already exists
 
     def test_build_index(self):
+        call_command('setup_index')
         mommy.make(Facility, name='medical clinic two')
         mommy.make(Facility, name='medical clinic one')
         call_command('build_index')
