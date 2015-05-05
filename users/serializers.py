@@ -37,13 +37,13 @@ class GroupSerializer(serializers.ModelSerializer):
                 }
             ]
         }
+
+    # Updating the permissions of an existing group
+    This API **replaces** all the existing permissions.
     """
-    permissions = PermissionSerializer(many=True, required=False)
+    permissions = PermissionSerializer(many=True, required=True)
 
     def _lookup_permissions(self, validated_data):
-        if 'permissions' not in validated_data:
-            raise ValidationError('No "permissions" supplied')
-
         user_supplied_permissions = validated_data['permissions']
         try:
             return [
@@ -68,7 +68,15 @@ class GroupSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        pass
+        permissions = self._lookup_permissions(validated_data)
+        del validated_data['permissions']
+
+        instance.name = validated_data['name']
+        instance.save()
+
+        instance.permissions.clear()
+        instance.permissions.add(*permissions)
+        return instance
 
     class Meta(object):
         model = Group
