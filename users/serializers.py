@@ -71,7 +71,8 @@ class GroupSerializer(serializers.ModelSerializer):
         permissions = self._lookup_permissions(validated_data)
         del validated_data['permissions']
 
-        instance.name = validated_data['name']
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
         instance.save()
 
         instance.permissions.clear()
