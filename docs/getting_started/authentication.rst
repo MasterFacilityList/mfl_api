@@ -540,22 +540,28 @@ inactivated by ``PATCH``ing ``/api/users/9/`` with:
     The same general approach can be used for any other flag e.g
     ``is_superuser``.
 
-Password reset
-~~~~~~~~~~~~~~~~~~
-TBD - password reset
-
-Password reset confirmation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - password reset confirmation
-
 Password changes
 ~~~~~~~~~~~~~~~~~~~
-TBD - password change
+The password of the **logged in user** can be changed by ``POST``ing to
+``/api/rest-auth/password/change/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "old_password": "oldanddonewith",
+        "new_password1": "newhotness",
+        "new_password2": "newhotness"
+    }
 
 .. note::
 
     A future version of this server may add support for social authentication
     e.g login via Facebook, Twitter or Google accounts.
+
+.. note::
+
+    A future version of this server may add support for API based password
+    reset.
 
 .. toctree::
     :maxdepth: 2
