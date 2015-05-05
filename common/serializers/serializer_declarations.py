@@ -100,7 +100,7 @@ class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
         model = Constituency
 
 
-class InchargeCountiesSerializer(
+class UserCountySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = UserCounty

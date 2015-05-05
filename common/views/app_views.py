@@ -21,7 +21,7 @@ from ..serializers import (
     ConstituencySerializer,
     ConstituencyDetailSerializer,
     ContactTypeSerializer,
-    InchargeCountiesSerializer,
+    UserCountySerializer,
     UserContactSerializer,
     TownSerializer
 )
@@ -119,7 +119,7 @@ class ContactTypeDetailView(
 
 class UserCountyView(generics.ListCreateAPIView):
     queryset = UserCounty.objects.all()
-    serializer_class = InchargeCountiesSerializer
+    serializer_class = UserCountySerializer
     filter_class = UserCountyFilter
     ordering_fields = ('user', 'county',)
 
@@ -127,7 +127,7 @@ class UserCountyView(generics.ListCreateAPIView):
 class UserCountyDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = UserCounty.objects.all()
-    serializer_class = InchargeCountiesSerializer
+    serializer_class = UserCountySerializer
 
 
 class UserContactListView(generics.ListCreateAPIView):

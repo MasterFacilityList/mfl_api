@@ -89,8 +89,27 @@ def load_gis_data(*args, **kwargs):
     manage('load_kenyan_administrative_boundaries')
 
 
+def create_search_index(*args, **kwargs):
+    """
+    Creates the search index in elastic search
+    """
+    manage('setup_index')
+
+
+def create_test_index(*args, **kwargs):
+    """Indexes only a few documents for testing searcg only"""
+    manage('build_index', '--test')
+
+
+def create_entire_index(*args, **kwargs):
+    """Creates the entire search index"""
+    manage('build_index')
+
+
 def setup(*args, **kwargs):
     """Dev only - clear and recreate the entire database"""
+    # needs to come first to as to index data as it is being loaded
+    create_search_index()
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
@@ -108,6 +127,7 @@ def setup(*args, **kwargs):
 
     if base.DEBUG:
         load_demo_data()
+        create_test_index()
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()

@@ -235,6 +235,13 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 LOGIN_REDIRECT_URL = '/api/'
+
+SEARCH = {
+    "ELASTIC_URL": "http://localhost:9200/",
+    "INDEX_NAME": "mfl_index",
+    "REALTIME_INDEX": False
+}
+
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'users.MFLOAuthApplication'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
@@ -248,7 +255,7 @@ ACCOUNT_SESSION_REMEMBER = True
 # django_rest_auth settings
 OLD_PASSWORD_FIELD_ENABLED = True
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer'
+    'USER_DETAILS_SERIALIZER': 'users.serializers.MflUserSerializer'
 }
 
 # django-allauth forces this atrocity on us ( true at the time of writing )

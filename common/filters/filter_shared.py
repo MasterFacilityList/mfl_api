@@ -1,12 +1,16 @@
 import django_filters
+
 from datetime import timedelta, datetime
 
 from django import forms
 from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
+from django.conf import settings
 
 from rest_framework import ISO_8601
+
+from common.utilities.search_utils import ElasticAPI
 
 
 class IsoDateTimeField(forms.DateTimeField):
@@ -29,6 +33,38 @@ class IsoDateTimeField(forms.DateTimeField):
 class IsoDateTimeFilter(django_filters.DateTimeFilter):
     """ Extend ``DateTimeFilter`` to filter by ISO 8601 formated dates too"""
     field_class = IsoDateTimeField
+
+
+class SearchFilter(django_filters.filters.Filter):
+    """
+    Given a query searches elastic search index and returns a queryset of hits.
+    """
+
+    def filter(self, qs, value):
+        super(SearchFilter, self).filter(qs, value)
+        api = ElasticAPI()
+
+        document_type = qs.model.__name__.lower()
+        index_name = settings.SEARCH.get('INDEX_NAME')
+        result = api.search_document(index_name, document_type, value)
+
+        hits = []
+        hits = result.json().get('hits').get('hits') if result.json() else hits
+        hits_ids_list = []
+
+        for hit in hits:
+            obj_id = hit.get('_id')
+            hits_ids_list.append(obj_id)
+
+        hits_qs = qs.model.objects.filter(id__in=hits_ids_list)
+
+        # the filter function expects a queryset and not a list
+        # hence the need to convert the list back to queryset
+        combined_results = list(set(hits_qs).intersection(qs))
+        combined_results_ids = [obj.id for obj in combined_results]
+        final_queryset = qs.model.objects.filter(id__in=combined_results_ids)
+
+        return final_queryset
 
 
 class TimeRangeFilter(django_filters.filters.Filter):
@@ -124,3 +160,4 @@ class CommonFieldsFilterset(django_filters.FilterSet):
         name='created', alias='last_one_quarter')
     last_one_month = TimeRangeFilter(
         name='created', alias='last_one_month')
+    search = SearchFilter(name='search')

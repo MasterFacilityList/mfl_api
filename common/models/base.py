@@ -72,6 +72,10 @@ class AbstractBase(models.Model):
         default=True,
         help_text="Indicates whether the record has been retired?")
 
+    # place holder to enable implementation of a search filter.
+    # Will be replaced in future
+    search = models.CharField(max_length=255, null=True, blank=True)
+
     objects = CustomDefaultManager()
     everything = models.Manager()
 
