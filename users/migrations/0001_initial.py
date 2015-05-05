@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('last_login', models.DateTimeField(null=True, verbose_name='last login', blank=True)),
                 ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
                 ('email', models.EmailField(unique=True, max_length=254)),
-                ('first_name', models.CharField(max_length=60)),
+                ('first_name', models.CharField(max_length=60, blank=True)),
                 ('last_name', models.CharField(max_length=60, blank=True)),
                 ('other_names', models.CharField(default=b'', max_length=80, blank=True)),
                 ('username', models.CharField(unique=True, max_length=60, validators=[django.core.validators.RegexValidator(regex=b'^\\w+$', message=b'Preferred name contain only letters numbers or underscores')])),

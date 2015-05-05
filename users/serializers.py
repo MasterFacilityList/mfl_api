@@ -6,6 +6,34 @@ from common.serializers import InchargeCountiesSerializer
 from .models import MflUser, MFLOAuthApplication
 
 
+def _lookup_permissions(validated_data):
+    user_supplied_permissions = validated_data.get('permissions', [])
+    try:
+        return [
+            Permission.objects.get(**user_supplied_permission)
+            for user_supplied_permission in user_supplied_permissions
+        ]
+    except Exception as ex:  # Will reraise a more API friendly exception
+        raise ValidationError(
+            '"{}"" when retrieving permissions corresponding to "{}"'
+            .format(ex, user_supplied_permissions)
+        )
+
+
+def _lookup_groups(validated_data):
+    user_supplied_groups = validated_data.get('groups', [])
+    try:
+        return [
+            Group.objects.get(**user_supplied_group)
+            for user_supplied_group in user_supplied_groups
+        ]
+    except Exception as ex:  # Will reraise a more API friendly exception
+        raise ValidationError(
+            '"{}"" when retrieving groups corresponding to "{}"'
+            .format(ex, user_supplied_groups)
+        )
+
+
 class PermissionSerializer(serializers.ModelSerializer):
     """This is intended to power a read-only view"""
     class Meta(object):
@@ -41,24 +69,14 @@ class GroupSerializer(serializers.ModelSerializer):
     # Updating the permissions of an existing group
     This API **replaces** all the existing permissions.
     """
-    permissions = PermissionSerializer(many=True, required=True)
-
-    def _lookup_permissions(self, validated_data):
-        user_supplied_permissions = validated_data['permissions']
-        try:
-            return [
-                Permission.objects.get(**user_supplied_permission)
-                for user_supplied_permission in user_supplied_permissions
-            ]
-        except Exception as ex:  # Will reraise a more API friendly exception
-            raise ValidationError(
-                '"{}"" when retrieving permissions corresponding to "{}"'
-                .format(ex, user_supplied_permissions)
-            )
+    # Don't even ask; in order for the manual create() in the user serializer
+    # to work, the UniqueValidator on this name had to be silenced
+    name = serializers.CharField(validators=[])
+    permissions = PermissionSerializer(many=True, required=False)
 
     @transaction.atomic
     def create(self, validated_data):
-        permissions = self._lookup_permissions(validated_data)
+        permissions = _lookup_permissions(validated_data)
         del validated_data['permissions']
 
         new_group = Group(**validated_data)
@@ -68,7 +86,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        permissions = self._lookup_permissions(validated_data)
+        permissions = _lookup_permissions(validated_data)
         del validated_data['permissions']
 
         for attr, value in validated_data.items():
@@ -93,6 +111,35 @@ class UserSerializer(serializers.ModelSerializer):
 
     user_permissions = PermissionSerializer(many=True, required=False)
     groups = GroupSerializer(many=True, required=False)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        groups = _lookup_groups(validated_data)
+
+        if 'groups' in validated_data:
+            del validated_data['groups']
+
+        new_user = MflUser(**validated_data)
+        new_user.save()
+        new_user.groups.add(*groups)
+
+        return new_user
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        groups = _lookup_groups(validated_data)
+
+        if 'groups' in validated_data:
+            del validated_data['groups']
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        instance.groups.clear()
+        instance.groups.add(*groups)
+
+        return instance
 
     class Meta(object):
         model = MflUser
