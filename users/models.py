@@ -53,7 +53,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     ``User`` is the one model that cannot descend from AbstractBase.
     """
     email = models.EmailField(null=False, blank=False, unique=True)
-    first_name = models.CharField(max_length=60, null=False, blank=False)
+    first_name = models.CharField(max_length=60, null=False, blank=True)
     last_name = models.CharField(max_length=60, blank=True)
     other_names = models.CharField(max_length=80, null=False, blank=True,
                                    default="")
