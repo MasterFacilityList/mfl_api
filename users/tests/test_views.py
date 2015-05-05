@@ -87,9 +87,10 @@ class TestGroupViews(LoginMixin, APITestCase):
         new_group_id = response.data['id']
         update_url = reverse(
             'api:users:group_detail', kwargs={'pk': new_group_id})
-        update_response = self.client.patch(
+        update_response = self.client.put(
             update_url,
             {
+                "name": "Documentation Example Group Updated",
                 "permissions": [
                     {
                         "id": 61,
@@ -101,3 +102,17 @@ class TestGroupViews(LoginMixin, APITestCase):
         )
         self.assertEqual(update_response.status_code, 200)
         self.assertEqual(len(update_response.data['permissions']), 1)
+
+    def test_failed_create(self):
+        data = {
+            "name": "Documentation Example Group",
+            "permissions": [
+                {
+                    "id": 67897,
+                    "name": "does not exist",
+                    "codename": "query should raise an exception"
+                }
+            ]
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(400, response.status_code)
