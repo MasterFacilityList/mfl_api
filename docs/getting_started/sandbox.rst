@@ -9,4 +9,4 @@ TBD - Swagger compatible docstrings for every single view
 ( first line summary, detailed description, params from filters including base filter)
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2

@@ -1,61 +1,436 @@
 Authentication and Authorization
 ==================================
 
-TBD - overview ( difference between authentication and authorization )
-TBD - repeat HTTPS caution
+`Authentication`_ is the process of associating an API request with a specific
+user, while `authorization`_ determines if the user has permission to perform
+the requested operation.
+
+.. _`Authentication`: http://www.django-rest-framework.org/api-guide/authentication/
+.. _`authorization`: http://www.django-rest-framework.org/api-guide/permissions/
 
 Authentication
 -----------------
-TBD
+The MFL API server supports both session ( cookie based ) and OAuth 2 ( token based ) authentication. For both approaches, the production API server **must be run over HTTPS**.
 
 Session Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - example login / *loguut*, including notes about the use of email instead of username
-TBD - getting user details after login
-TBD - getting and interpreting user permissions
+Logging in
++++++++++++++
+``POST`` the credentials to ``/api/rest-auth/login/``. The payload should be
+similar to the example below:
+
+.. code-block:: javascript
+
+    {
+        "username": "hakunaruhusa@mfltest.slade360.co.ke",
+        "password": "hakunaruhusa"
+    }
+
+A successful login will have a ``HTTP 200 OK`` response. The response payload
+will have a single ``key`` parameter: a Django Rest Framework `TokenAuthentication`_ key. For example:
+
+.. code-block:: javascript
+
+    {
+        "key": "f9a978cd00e9dc0ebfe97d633d98bde4b35f9279"
+    }
+
+.. _`TokenAuthentication`: http://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
+
+.. note::
+
+    Please note that the ``username`` is actually an email address.
+
+.. note::
+
+    We discourage the use of token authentication. Kindly see the section on
+    OAuth2 below.
+
+Logging out
+++++++++++++++
+Send an empty ( no payload ) ``POST`` to ``/api/rest-auth/logout/``.
+
+A successful logout will get back a ``HTTP 200 OK`` response, and a success
+message similar to the one below:
+
+.. code-block:: javascript
+
+    {
+        "success": "Successfully logged out."
+    }
+
+.. note:
+
+    Logging out via this method will also delete the token that was assigned
+    at login.
+
+Getting user details after login
++++++++++++++++++++++++++++++++++++++
+After a user is logged in, a typical client ( such as a web application ) will
+need to get additional information about the user. This additional information
+includes permissions.
+
+If the user is logged in, a ``GET`` to ``/api/rest-auth/user/`` will get back
+a ``HTTP 200 OK`` response and a user details payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "id": 3,
+        "short_name": "Serikali",
+        "full_name": "Serikali Kuu ",
+        "all_permissions": [
+            "common.add_town",
+            "oauth2_provider.change_accesstoken",
+            "mfl_gis.delete_wardboundary",
+            "auth.add_permission",
+            "chul.change_approvalstatus",
+            "facilities.delete_facilitytype",
+            // a long list of permissions; truncated for brevity
+        ],
+        "user_permissions": [],
+        "groups": [],
+        "last_login": "2015-05-04T16:33:36.085065Z",
+        "is_superuser": true,
+        "email": "serikalikuu@mfltest.slade360.co.ke",
+        "first_name": "Serikali",
+        "last_name": "Kuu",
+        "other_names": "",
+        "username": "serikalikuu",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2015-05-03T02:39:03.440962Z",
+        "is_national": true
+    }
+
+If the user is not logged in, the return message will be a
+``HTTP 403 FORBIDDEN`` with the following message:
+
+.. code-block:: javascript
+
+    {
+        "detail": "Authentication credentials were not provided."
+    }
 
 OAuth2 Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+You can learn all that you need to know about OAuth2 by reading `rfc6749`_.
 
+.. _`rfc6749`: https://tools.ietf.org/html/rfc6749
+
+A simple OAuth2 workflow
++++++++++++++++++++++++++++++
+If you are in too much of a hurry to read all that, here is what you
+should do:
+
+Registering a new "application"
+***********************************
+You should know the user ID of the user that you'd like to register an
+application for. You can obtain that ID from the user details API described
+above or from ``/api/users/``.
+
+You need to know the ``authorization_grant_type`` that you'd like for the new
+application. For the example below, we will use ``password``. If you do not
+know what to choose, read `rfc6749`_ .
+
+The next decision is the choice of ``client_type``. For the example below,
+we will use ``confidential``. As always - consult `rfc6749`_ for more context.
+
+``POST`` to ``/api/users/applications/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "client_type": "confidential",
+        "authorization_grant_type": "password",
+        "name": "Demo / Docs Application",
+        "user": 3
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 CREATED`` response, and
+a representation of the new application. This example request got back
+this representation:
+
+.. code-block:: javascript
+
+    {
+        "id": 1,
+        "client_id": "<redacted>",
+        "redirect_uris": "",
+        "client_type": "confidential",
+        "authorization_grant_type": "password",
+        "client_secret": "<redacted>",
+        "name": "Demo / Docs Application",
+        "skip_authorization": false,
+        "user": 3
+    }
+
+.. note::
+    * The `client_id` and `client_secret` fields were automatically assigned.
+    * The `skip_authorization` and `redirect_urls` fields have default values.
+    * A single user can be associated with multiple applications.
+
+Authenticating using OAuth2 tokens
+*************************************
+First,  obtain an access token by ``POST``ing the user's credentials to
+``/o/token/``. For example:
+
+.. code-block:: text
+
+    curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/o/token/
+
+Which breaks down as:
+
+.. code-block:: text
+
+    curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/o/token/
+
+If you authenticate successfully, the reply from the server will be a `JSON`
+payload that has the issued access token, the refresh token, the access token
+type, expiry and scope. For example:
+
+.. code-block:: javascript
+
+    {
+        "access_token": "fKDvh2fFLR1iFPuB26RUEalbjYO4rx",
+        "token_type": "Bearer",
+        "expires_in": 36000,
+        "refresh_token": "jLwpCh3WbOXBeb01XMeZR5AQYedkj1",
+        "scope": "read write"
+    }
+
+Pick the ``access_token`` and send it in an ``Authorization: Bearer`` header
+e.g
+
+.. code-block:: text
+
+    curl -H "Authorization: Bearer ziBLqoXwVEA8lW9yEmE260AZ4lCJHq" http://localhost:8000/api/common/counties/
 
 Authorization
 ----------------
-TBD - overview, how roles and permissions work
-TBD - access control for GIS ( standard public role cannot get coordinates )
-TBD - default data; GIS enabled public role
-TBD - facility life cycle: approvals and interaction with access control
-TBD - facility life cycle: regulation and interaction with access control
+This server's `Role Based Access Control`_ setup is based on the
+`Django framework permissions and authorization`_ system.
 
+.. _`Role Based Access Control`: http://en.wikipedia.org/wiki/Role-based_access_control
+.. _`Django framework permissions and authorization`: https://docs.djangoproject.com/en/1.8/topics/auth/default/#topic-authorization
+
+Understanding the role based access control setup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The user details API endpoint ( explained above ) returns the logged in user's
+permissions.
+
+A user's permissions come from three "sources":
+
+    * the permissions assigned to the group ( role ) that the user belongs to
+    * the permissions assigned directly to the user
+    * the ``is_superuser`` boolean flag; a user who is a "superuser" automatically gets all permissions
+
+The MFL API server has an additional "layer" of authorization: whether a user
+is a "national user" or a "county user". In certain list endpoints ( chiefly
+those that deal directly with facilities ), a "county" user will have their
+results limited to facilities that are located in their county.
+
+.. note::
+
+    This API server does not support "true" unauthenticated read-only access
+    For the public site, OAuth2 credentials ( that correspond to a role with
+    limited access ) will be used.
+
+.. note::
+
+    From the point of view of the MFL API, regulator systems are just one more
+    set of API clients.
+
+Users and counties
+~~~~~~~~~~~~~~~~~~~~~
+In 2010, Kenya got a new constitution. One of the major changes was the
+establishment of a devolved system of government.
+
+The second generation MFL API ( this server ) is designed for the era of
+devolution. In this system, facility record management should occur at the
+county level.
+
+The separation of privileges between data entry staff ( "makers" ) and those
+responsible for approval ( "checkers" ) can be modelled easily using the
+role based access control setup described above.
+
+The only additional need is the need to link county level users to counties,
+and use that information to limit their access. This has been achieved by
+adding an ``is_national`` boolean flag to the custom user model and adding a
+resource that links users to counties. The example user resource below
+represents a non-national ( county ) user ( note the ``is_national`` field ):
+
+.. code-block:: javascript
+
+    {
+        "id": 4,
+        "short_name": "Serikali",
+        "full_name": "Serikali Ndogo ",
+        "all_permissions": [
+            "common.add_town",
+            // many more permissions
+        ],
+        "user_permissions": [],
+        "groups": [],
+        "last_login": null,
+        "is_superuser": true,
+        "email": "serikalindogo@mfltest.slade360.co.ke",
+        "first_name": "Serikali",
+        "last_name": "Ndogo",
+        "other_names": "",
+        "username": "serikalindogo",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2015-05-03T02:39:03.443301Z",
+        "is_national": false
+    }
+
+In order to link a user to a county, you need to have two pieces of
+information:
+
+    * the user's ``id``
+    * the county's ``id`` - easily obtained from ``/api/common/counties/``
+
+With these two pieces of information in place, ``POST`` to ``/api/common/user_counties/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "user": 4,
+        "county": "d5f54838-8743-4774-a866-75d7744a9814"
+    }
+
+A successful operation will get back a ``HTTP 201 CREATED`` response and
+a representation of the newly created resource. For example:
+
+.. code-block:: javascript
+
+    {
+        "id": "073d8bfa-2a86-4f9a-9cbe-0b8ac6780c3a",
+        "created": "2015-05-04T17:44:56.441006Z",
+        "updated": "2015-05-04T17:44:56.441027Z",
+        "deleted": false,
+        "active": true,
+        "created_by": 3,
+        "updated_by": 3,
+        "user": 4,
+        "county": "d5f54838-8743-4774-a866-75d7744a9814"
+    }
+
+The filtering of results by county is transparent ( the API client does not
+need to do anything ).
+
+.. note::
+
+    A user can only have one active link to a county at any particular time.
+    Any attempt to link a user to more than one county at a time will get a
+    validation error.
+
+    If you'd like to change the county that a user is linked to, you will need
+    to first inactivate the existing record ( ``PATCH`` it and set ``active``
+    to ``false`` ).
+
+    In order to determine the role that a user is currently linked to, issue a
+    ``GET`` similar to ``/api/common/user_counties/?user=4&active=true``. In
+    this example, ``4`` is the user's ``id``.
+
+Setting up users, permissions and groups
+-------------------------------------------
 Permissions
 ~~~~~~~~~~~~~
-TBD - document custom permissions, if any, plus read only API
+
+API clients should treat permissions as "fixed" builtins. The server does not
+implement any endpoint that can be used to add, edit or remove a permission.
+
+The available permissions can be listed by issuing a ``GET`` to
+``/api/users/permissions/``. The results will look like this:
+
+.. code-block:: javascript
+
+    {
+        "count": 216,
+        "next": "http://localhost:8000/api/users/permissions/?page=2",
+        "previous": null,
+        "results": [
+            {
+                "id": 61,
+                "name": "Can add email address",
+                "codename": "add_emailaddress",
+                "content_type": 21
+            },
+            {
+                "id": 62,
+                "name": "Can change email address",
+                "codename": "change_emailaddress",
+                "content_type": 21
+            },
+            {
+                "id": 63,
+                "name": "Can delete email address",
+                "codename": "delete_emailaddress",
+                "content_type": 21
+            },
+            // truncated for brevity
+        ]
+    }
 
 Groups
 ~~~~~~~~
-TBD - document role setup ( read, write )
-TBD - comment about default roles
+The API server provides APIs that can be used to create roles, alter existing
+roles and retire roles.
 
-Registering users
+Existing roles ( groups ) can be listed by issuing a ``GET`` to
+``/api/users/groups/``.
+
+TBD Implement custom create() and update()
+TBD Document creating roles
+TBD Document adding permissions to a role
+TBD Document removing permissions from a role
+TBD Document retiring a role
+TBD Document patching a role
+
+User management
+-------------------
+User registration ( sign up )
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TBD - user creation / registration
-TBD - email verification
-TBD - assigning permissions to users via groups
-TBD - assigning permisssions to users directly
-TBD - altering permissions via altering groups
-TBD - altering permissions assigned directly
-TBD - retiring a user
-TBD - moving a user between counties
-TBD - password reset
-TBD - password reset confirmation
-TBD - password change
-TBD - comment about future possibilities of social media auth
-
-National and county users
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - national users, including documenting sandbox
-TBD - county users, including documenting sandbox
+TBD - national vs county users at setup time ( reference notes above )
 TBD - updating user details
 
+Email verification
+~~~~~~~~~~~~~~~~~~~~~~~
+TBD - email verification
+
+Linking users to groups
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - assigning permissions to users via groups
+TBD - changing the groups that a user is assigned to
+
+Assigning users direct permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - assigning permisssions to users directly
+TBD - altering permissions assigned directly
+
+Retiring users
+~~~~~~~~~~~~~~~~~~~
+TBD - retiring a user
+
+Password reset
+~~~~~~~~~~~~~~~~~~
+TBD - password reset
+
+Password reset confirmation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - password reset confirmation
+
+Password changes
+~~~~~~~~~~~~~~~~~~~
+TBD - password change
+
+.. note::
+
+    A future version of this server may add support for social authentication
+    e.g login via Facebook, Twitter or Google accounts.
+
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2

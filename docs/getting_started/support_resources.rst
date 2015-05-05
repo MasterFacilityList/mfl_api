@@ -95,4 +95,4 @@ TBD - Document filters found in every resource
 TBD - examples for GET, POST, PUT, PATCH, DELETE ( could be elsewhere )
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
