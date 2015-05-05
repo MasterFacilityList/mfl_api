@@ -27,12 +27,13 @@ class TestElasticSearchAPI(TestCase):
         self.assertEquals(200, result.status_code)
         self.elastic_search_api.delete_index(index_name='test_index')
 
-    def test_get_index_does_not_exists(self):
+    def test_get_non_existing_index(self):
         index_name = 'test_index'
+        self.elastic_search_api.delete_index(index_name)
         result = self.elastic_search_api.get_index(index_name)
         self.assertEquals(404, result.status_code)
 
-    def test_get_index_does_exists(self):
+    def test_get_exsting_index(self):
         index_name = 'test_index'
         self.elastic_search_api.setup_index(index_name=index_name)
         result = self.elastic_search_api.get_index(index_name)
@@ -44,8 +45,6 @@ class TestElasticSearchAPI(TestCase):
         response = self.elastic_search_api.setup_index(index_name=index_name)
         self.assertEquals(200, response.status_code)
         self.elastic_search_api.delete_index(index_name)
-        result = self.elastic_search_api.get_index(index_name)
-        self.assertEquals(404, result.status_code)
 
     def test_index_document(self):
         facility = mommy.make(Facility, name='Fig tree medical clinic')
@@ -152,7 +151,6 @@ class TestSearchFilter(ViewTestBase):
 
         search_filter = SearchFilter(name='search')
         result = search_filter.filter(qs, 'test')
-        # some error in getting result
         self.assertEquals(0, len(result))
         api.delete_index('test_index')
 
