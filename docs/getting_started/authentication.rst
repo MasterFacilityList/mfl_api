@@ -404,9 +404,11 @@ Creating a new role
         ]
     }
 
+A successful operation will get back a ``HTTP 201 CREATED`` status.
+
 .. note::
 
-    You must supply both a ``name`` ``permissions``.
+    You must supply both a ``name`` and ``permissions``.
 
 Updating an existing role
 ++++++++++++++++++++++++++++
@@ -430,6 +432,8 @@ permission, the following ``PATCH`` request should be sent:
 
 A similar approach will be followed to add permissions.
 
+A successful operation will get back a ``HTTP 200 OK`` status.
+
 .. note::
 
     **Permissions will always be overwritten** when you perform an update.
@@ -438,13 +442,59 @@ User management
 -------------------
 User registration ( sign up )
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - user creation / registration
-TBD - national vs county users at setup time ( reference notes above )
-TBD - updating user details
 
-Email verification
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD - email verification
+``POST`` to ``/api/rest-auth/registration/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "username": "likeforreal",
+        "email": "likeforreal@yodawg.dawg",
+        "password1": "most_secure_password_in_the_world_like_for_real",
+        "password2": "most_secure_password_in_the_world_like_for_real"
+    }
+
+A successful operation will get back a ``HTTP 201 CREATED`` response and
+a representation of the new user. For example:
+
+.. code-block:: text
+
+    HTTP 201 CREATED
+    Content-Type: application/json
+    Vary: Accept
+    Allow: POST, OPTIONS, HEAD
+
+    {
+        "id": 9,
+        "short_name": "",
+        "full_name": "  ",
+        "all_permissions": [],
+        "user_permissions": [],
+        "groups": [],
+        "last_login": "2015-05-05T09:12:01.888514Z",
+        "is_superuser": false,
+        "email": "likeforreal1@yodawg.dawg",
+        "first_name": "",
+        "last_name": "",
+        "other_names": "",
+        "username": "likeforreal1",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2015-05-05T09:12:01.790167Z",
+        "is_national": false
+    }
+
+.. note::
+
+    This API server does not implement email address confirmation.
+    A future release might implement that.
+
+.. note::
+
+    The registration operation described above suffices, for public users.
+
+The manner in which users should be linked to counties has already been
+discussed in the Authorization section.
 
 Linking users to groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -456,9 +506,28 @@ Assigning users direct permissions
 TBD - assigning permisssions to users directly
 TBD - altering permissions assigned directly
 
-Retiring users
-~~~~~~~~~~~~~~~~~~~
-TBD - retiring a user
+Updating user details
+~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - updating user details
+
+Suspending or retiring users
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``PATCH`` the user's ( detail ) record and set ``is_active`` to ``false``.
+
+For example: if the detail record for the user we registered above
+( ``likeforreal`` ) is to be found at ``/api/users/9/``, the user can be
+inactivated by ``PATCH``ing ``/api/users/9/`` with:
+
+.. code-block:: javascript
+
+    {
+        "active": false
+    }
+
+.. note::
+
+    The same general approach can be used for any other flag e.g
+    ``is_superuser``.
 
 Password reset
 ~~~~~~~~~~~~~~~~~~
