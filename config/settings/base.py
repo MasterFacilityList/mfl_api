@@ -234,7 +234,8 @@ LOGIN_REDIRECT_URL = '/api/'
 
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
-    "INDEX_NAME": "mfl_index"
+    "INDEX_NAME": "mfl_index",
+    "REALTIME_INDEX": False
 }
 
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'users.MFLOAuthApplication'

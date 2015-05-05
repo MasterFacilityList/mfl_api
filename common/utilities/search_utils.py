@@ -100,5 +100,6 @@ def index_on_save(sender, instance, **kwargs):
     Listen for save signals and index the insances being created.
     """
     app_label = instance._meta.app_label
+    index_in_realtime = settings.SEARCH.get("REALTIME_INDEX")
     if app_label in settings.LOCAL_APPS:
-        index_instance(instance)
+        index_instance(instance) if index_in_realtime else None
