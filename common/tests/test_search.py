@@ -135,7 +135,7 @@ class TestSearchFilter(ViewTestBase):
         search_filter = SearchFilter(name='search')
         result = search_filter.filter(qs, 'test')
         # no documents have been indexed
-        self.assertEquals(result, [])
+        self.assertEquals(len[result], 0)
         api.delete_index('test_index')
 
     def test_filter_data(self):
