@@ -36,7 +36,7 @@ class AbstractBaseModelTest(TestCase):
 
         class TestModel(AbstractBase):
             class Meta:
-                abtract = True
+                abstract = True
 
         ct = TestModel(id=uuid.uuid4())
         self.assertEqual(str(ct), 'test model ' + str(ct.pk))
