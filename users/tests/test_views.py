@@ -85,7 +85,8 @@ class TestGroupViews(LoginMixin, APITestCase):
         self.assertEqual(len(response.data['permissions']), 2)
 
         new_group_id = response.data['id']
-        update_url = '{}/{}/'.format(self.url, new_group_id)
+        update_url = reverse(
+            'api:users:group_detail', kwargs={'pk': new_group_id})
         update_response = self.client.patch(
             update_url,
             {
