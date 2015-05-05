@@ -74,7 +74,7 @@ class TestUserViews(LoginMixin, APITestCase):
             "username": "hakunaruhusa",
         }
         response = self.client.post(create_url, post_data)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(201, response.status_code)
         self.assertEqual("Hakuna Ruhusa", response.data["full_name"])
 
     def test_update_user(self):
@@ -93,7 +93,7 @@ class TestUserViews(LoginMixin, APITestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(
             json.loads(json.dumps(response.data['groups'])),
-            json.loads(json.dumps(patch_data))
+            {'id': group.id, 'name': group.name, 'permissions': []}
         )
 
     def test_failed_create(self):
