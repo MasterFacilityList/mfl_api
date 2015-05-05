@@ -43,8 +43,6 @@ class TestElasticSearchAPI(TestCase):
         index_name = 'test_index_3'
         response = self.elastic_search_api.setup_index(index_name=index_name)
         self.assertEquals(200, response.status_code)
-        result = self.elastic_search_api.get_index(index_name)
-        self.assertEquals(200, result.status_code)
         self.elastic_search_api.delete_index(index_name)
         result = self.elastic_search_api.get_index(index_name)
         self.assertEquals(404, result.status_code)
