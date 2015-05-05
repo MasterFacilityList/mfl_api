@@ -75,7 +75,7 @@ class TestUserViews(LoginMixin, APITestCase):
         }
         response = self.client.post(create_url, post_data)
         self.assertEqual(201, response.status_code)
-        self.assertEqual("Hakuna Ruhusa", response.data["full_name"])
+        self.assertEqual("Ruhusa", response.data["last_name"])
 
     def test_update_user(self):
         user = MflUser.objects.create(
@@ -85,6 +85,7 @@ class TestUserViews(LoginMixin, APITestCase):
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
         patch_data = {
+            "other_names": "Majina Mengine",
             "groups": [
                 {"id": group.id, "name": "Test Group"}
             ]
@@ -92,8 +93,8 @@ class TestUserViews(LoginMixin, APITestCase):
         response = self.client.patch(update_url, patch_data)
         self.assertEqual(200, response.status_code)
         self.assertEqual(
-            json.loads(json.dumps(response.data['groups'])),
-            {'id': group.id, 'name': group.name, 'permissions': []}
+            json.loads(json.dumps(response.data['groups']))[0]['name'],
+            group.name
         )
 
     def test_failed_create(self):
