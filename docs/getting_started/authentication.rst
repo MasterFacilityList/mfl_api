@@ -498,8 +498,8 @@ discussed in the Authorization section.
 
 Linking users to groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-In order to assign a user to a group, you will need to know the group's
-ID ( which you can obtain from ```/api/groups/` ).
+In order to assign a user to a group, you will need to know the group
+ID ( which you can obtain from ```/api/groups/``.
 
 ``PATCH`` an already existing user with a payload similar to this example:
 
