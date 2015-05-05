@@ -404,9 +404,11 @@ Creating a new role
         ]
     }
 
+A successful operation will get back a ``HTTP 201 CREATED`` status.
+
 .. note::
 
-    You must supply both a ``name`` ``permissions``.
+    You must supply both a ``name`` and ``permissions``.
 
 Updating an existing role
 ++++++++++++++++++++++++++++
@@ -429,6 +431,8 @@ permission, the following ``PATCH`` request should be sent:
     }
 
 A similar approach will be followed to add permissions.
+
+A successful operation will get back a ``HTTP 200 OK`` status.
 
 .. note::
 
@@ -489,6 +493,9 @@ a representation of the new user. For example:
 
     The registration operation described above suffices, for public users.
 
+The manner in which users should be linked to counties has already been
+discussed in the Authorization section.
+
 Linking users to groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 TBD - assigning permissions to users via groups
@@ -502,10 +509,6 @@ TBD - altering permissions assigned directly
 Updating user details
 ~~~~~~~~~~~~~~~~~~~~~~~~
 TBD - updating user details
-
-Linking users to counties
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - National vs county
 
 Suspending or retiring users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
