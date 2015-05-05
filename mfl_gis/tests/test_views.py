@@ -19,6 +19,6 @@ class TestCountryBoundariesView(LoginMixin, APITestCase):
         # Silly issues with floats being rounded to different precisions
         # between the serializer and the "round trip through the view" version
         self.assertEqual(
-            expected_data['properies']['code'],
-            response.data['properies']['code']
+            expected_data['properties']['code'],
+            response.data['properties']['code']
         )
