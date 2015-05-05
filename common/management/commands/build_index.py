@@ -21,11 +21,16 @@ class Command(BaseCommand):
         for app_name in apps_lists:
             app = get_app(app_name)
             for model in get_models(app):
-                all_instances = model.objects.all()[0:3] \
-                    if options.get('test') else model.objects.all()
-                [index_instance(obj) for obj in all_instances]
-                message = "Indexed {} {}".format(
-                    all_instances.count(),
-                    model._meta.verbose_name_plural.capitalize())
-                self.stdout.write(message)
+                if model.__name__.lower() != 'testmodel':
+                    all_instances = model.objects.all()[0:3] \
+                        if options.get('test') else model.objects.all()
+                    [index_instance(obj) for obj in all_instances]
+                    message = "Indexed {} {}".format(
+                        all_instances.count(),
+                        model._meta.verbose_name_plural.capitalize())
+                    self.stdout.write(message)
+                else:
+                    # relation "common_testmodel" does not exist
+                    # Will be fixed
+                    pass
         self.stdout.write("Finished indexing")
