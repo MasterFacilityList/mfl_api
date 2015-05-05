@@ -92,7 +92,6 @@ class TestSearchFunctions(ViewTestBase):
         result = json.dumps(data, default=search_utils.default)
         self.assertIsInstance(result, str)
 
-    # this test is failing wieirdly one has to get the url twice
     def test_search_facility(self):
         url = reverse('api:facilities:facilities_list')
         self.elastic_search_api = search_utils.ElasticAPI()
@@ -101,7 +100,7 @@ class TestSearchFunctions(ViewTestBase):
         search_utils.index_instance(facility, 'test_index')
         url = url + "?search={}".format('Kanyakini')
         response = ""
-        # temporary hack
+        # temporary hack there is a delay in getting the search results
         for x in range(0, 100):
             response = self.client.get(url)
 
@@ -113,6 +112,41 @@ class TestSearchFunctions(ViewTestBase):
             "previous": None,
             "results": [
                 FacilitySerializer(facility).data
+            ]
+        }
+        self._assert_response_data_equality(expected_data, response.data)
+        self.elastic_search_api.delete_index('test_index')
+
+    def test_search_facility_multiple_filters(self):
+        url = reverse('api:facilities:facilities_list')
+        self.elastic_search_api = search_utils.ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
+        facility = mommy.make(
+            Facility, name='Mordal mountains medical clinic',
+            is_published=True)
+        facility_2 = mommy.make(
+            Facility,
+            name='Eye of mordal health center',
+            is_published=False)
+        search_utils.index_instance(facility, 'test_index')
+
+        search_utils.index_instance(facility_2, 'test_index')
+
+        url = url + "?search={}&is_published={}".format('mordal', 'false')
+        response = ""
+        # temporary hack there is a delay in getting the search results
+
+        for x in range(0, 100):
+            response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility_2).data
             ]
         }
         self._assert_response_data_equality(expected_data, response.data)
@@ -135,7 +169,7 @@ class TestSearchFilter(ViewTestBase):
         search_filter = SearchFilter(name='search')
         result = search_filter.filter(qs, 'test')
         # no documents have been indexed
-        self.assertEquals(len[result], 0)
+        self.assertEquals(result.count(), 0)
         api.delete_index('test_index')
 
     def test_filter_data(self):
@@ -148,8 +182,10 @@ class TestSearchFilter(ViewTestBase):
         qs = Facility.objects.all()
 
         search_filter = SearchFilter(name='search')
-        result = search_filter.filter(qs, 'test')
-        self.assertEquals(0, len(result))
+        # some weird bug there is a delay in getting the search results
+        for x in range(0, 100):
+            result = search_filter.filter(qs, 'test')
+        self.assertEquals(1, len(result))
         api.delete_index('test_index')
 
     def test_create_index(self):
