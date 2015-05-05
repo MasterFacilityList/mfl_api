@@ -489,14 +489,6 @@ a representation of the new user. For example:
 
     The registration operation described above suffices, for public users.
 
-Updating user details
-~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - updating user details
-
-Email verification
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD - email verification
-
 Linking users to groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 TBD - assigning permissions to users via groups
@@ -507,17 +499,32 @@ Assigning users direct permissions
 TBD - assigning permisssions to users directly
 TBD - altering permissions assigned directly
 
+Updating user details
+~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - updating user details
+
 Linking users to counties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TBD - National vs county
 
-Retiring users
-~~~~~~~~~~~~~~~~~~~
-TBD - retiring a user
+Suspending or retiring users
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``PATCH`` the user's ( detail ) record and set ``is_active`` to ``false``.
 
-Suspending users
-~~~~~~~~~~~~~~~~~~~
-TBD - unusable password
+For example: if the detail record for the user we registered above
+( ``likeforreal`` ) is to be found at ``/api/users/9/``, the user can be
+inactivated by ``PATCH``ing ``/api/users/9/`` with:
+
+.. code-block:: javascript
+
+    {
+        "active": false
+    }
+
+.. note::
+
+    The same general approach can be used for any other flag e.g
+    ``is_superuser``.
 
 Password reset
 ~~~~~~~~~~~~~~~~~~
