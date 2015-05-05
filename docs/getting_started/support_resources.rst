@@ -4,6 +4,8 @@ MFL APIs: Shared Resources and properties
 
 TBD - support resources
 TBD - audit support
+TBD - filters, including using allvaluesfilter
+TBD - pagination; specifying page_size
 
 Common properties
 --------------------
