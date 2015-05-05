@@ -193,3 +193,8 @@ class TestSearchFilter(ViewTestBase):
         api = search_utils.ElasticAPI()
         api.get_index('mfl_index')
         # handle cases where the index already exists
+
+    def test_build_index(self):
+        mommy.make(Facility, name='medical clinic two')
+        mommy.make(Facility, name='medical clinic one')
+        call_command('build_index')
