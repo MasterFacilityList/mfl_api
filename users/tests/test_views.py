@@ -65,19 +65,19 @@ class TestGroupViews(LoginMixin, APITestCase):
 
     def test_create_and_update_group(self):
         data = {
-                "name": "Documentation Example Group",
-                "permissions": [
-                    {
-                        "id": 61,
-                        "name": "Can add email address",
-                        "codename": "add_emailaddress"
-                    },
-                    {
-                        "id": 62,
-                        "name": "Can change email address",
-                        "codename": "change_emailaddress"
-                    }
-                ]
+            "name": "Documentation Example Group",
+            "permissions": [
+                {
+                    "id": 61,
+                    "name": "Can add email address",
+                    "codename": "add_emailaddress"
+                },
+                {
+                    "id": 62,
+                    "name": "Can change email address",
+                    "codename": "change_emailaddress"
+                }
+            ]
         }
         response = self.client.post(self.url, data)
         self.assertEqual(201, response.status_code)
@@ -100,4 +100,4 @@ class TestGroupViews(LoginMixin, APITestCase):
             }
         )
         self.assertEqual(update_response.status_code, 200)
-        self.assertEqual(len(update_response['permissions']), 1)
+        self.assertEqual(len(update_response.data['permissions']), 1)
