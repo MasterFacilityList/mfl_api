@@ -382,12 +382,57 @@ roles and retire roles.
 Existing roles ( groups ) can be listed by issuing a ``GET`` to
 ``/api/users/groups/``.
 
-TBD Implement custom create() and update()
-TBD Document creating roles
-TBD Document adding permissions to a role
-TBD Document removing permissions from a role
-TBD Document retiring a role
-TBD Document patching a role
+Creating a new role
++++++++++++++++++++++++
+``POST`` to ``/api/users/groups/`` a payload that similar to the one below:
+
+.. code-block:: javascript
+
+    {
+        "name": "Documentation Example Group",
+        "permissions": [
+            {
+                "id": 61,
+                "name": "Can add email address",
+                "codename": "add_emailaddress"
+            },
+            {
+                "id": 62,
+                "name": "Can change email address",
+                "codename": "change_emailaddress"
+            }
+        ]
+    }
+
+.. note::
+
+    You must supply both a ``name`` ``permissions``.
+
+Updating an existing role
+++++++++++++++++++++++++++++
+
+``PUT`` or ``PATCH`` to a group **detail URL** e.g ``/api/users/groups/1/``.
+
+For example, to take away from the example role the "Can change email address"
+permission, the following ``PATCH`` request should be sent:
+
+.. code-block:: javascript
+
+    {
+        "permissions": [
+            {
+                "id": 61,
+                "name": "Can add email address",
+                "codename": "add_emailaddress"
+            }
+        ]
+    }
+
+A similar approach will be followed to add permissions.
+
+.. note::
+
+    **Permissions will always be overwritten** when you perform an update.
 
 User management
 -------------------
