@@ -108,5 +108,6 @@ setup(
         "django-rest-auth>=0.3.4",
         "django-allauth>=0.19.1",
         "django-oauth-toolkit>=0.8.1",
+        "drf-extensions>=0.2.7",
     ],
 )

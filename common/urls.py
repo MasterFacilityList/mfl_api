@@ -1,5 +1,5 @@
 from django.conf.urls import url, patterns
-
+from django.views.decorators.cache import cache_page
 from .views import (
     ContactView,
     ContactDetailView,
@@ -37,27 +37,36 @@ urlpatterns = patterns(
     url(r'^contacts/(?P<pk>[^/]+)/$', ContactDetailView.as_view(),
         name='contact_detail'),
 
-    url(r'^counties/$', CountyView.as_view(), name='counties_list'),
-    url(r'^counties/(?P<pk>[^/]+)/$', CountyDetailView.as_view(),
+    url(r'^counties/$',
+        CountyView.as_view(),
+        name='counties_list'),
+    url(r'^counties/(?P<pk>[^/]+)/$',
+        cache_page(60*60*12)(CountyDetailView.as_view()),
         name='county_detail'),
 
     url(r'^user_counties/$',
-        UserCountyView.as_view(), name='user_counties_list'),
+        UserCountyView.as_view(),
+        name='user_counties_list'),
     url(r'^user_counties/(?P<pk>[^/]+)/$',
         UserCountyDetailView.as_view(),
         name='user_county_detail'),
 
-    url(r'^wards/$', WardView.as_view(), name='wards_list'),
-    url(r'^wards/(?P<pk>[^/]+)/$', WardDetailView.as_view(),
+    url(r'^wards/$',
+        WardView.as_view(),
+        name='wards_list'),
+    url(r'^wards/(?P<pk>[^/]+)/$',
+        cache_page(60*60*12)(WardDetailView.as_view()),
         name='ward_detail'),
 
     url(r'^towns/$', TownListView.as_view(), name='towns_list'),
     url(r'^towns/(?P<pk>[^/]+)/$', TownDetailView.as_view(),
         name='town_detail'),
 
-    url(r'^constituencies/$', ConstituencyView.as_view(),
+    url(r'^constituencies/$',
+        ConstituencyView.as_view(),
         name='constituencies_list'),
-    url(r'^constituencies/(?P<pk>[^/]+)/$', ConstituencyDetailView.as_view(),
+    url(r'^constituencies/(?P<pk>[^/]+)/$',
+        cache_page(60*60*12)(ConstituencyDetailView.as_view()),
         name='constituency_detail'),
 
     url(r'^address/$', PhysicalAddressView.as_view(),

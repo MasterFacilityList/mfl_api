@@ -81,6 +81,7 @@ LOCAL_APPS = [
     'data_bootstrap',
     'data',
 ]
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.MflUser'
 ROOT_URLCONF = 'config.urls'
@@ -120,7 +121,8 @@ REST_FRAMEWORK = {
     'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
     'PAGINATE_BY': 25,
     'PAGINATE_BY_PARAM': 'page_size',
-    'MAX_PAGINATE_BY': 100,
+    # Should be able to opt in to see all wards at once
+    'MAX_PAGINATE_BY': 1500,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -151,6 +153,9 @@ SWAGGER_SETTINGS = {
         'title': 'MFL v2 API',
     },
     'doc_expansion': 'full',
+}
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 60  # One hour
 }
 LOGGING = {
     'version': 1,
@@ -211,7 +216,16 @@ TEMPLATES = [
         'APP_DIRS': True,
     },
 ]
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/django_cache',
+        'TIMEOUT': 60 * 60,
+        'OPTIONS': {
+            'MAX_ENTRIES': 10000
+        }
+    }
+}
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy

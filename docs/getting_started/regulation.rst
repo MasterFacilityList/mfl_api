@@ -1,5 +1,5 @@
-Understanding the interaction between MFL 2 and regulators
-============================================================
+MFL APIs: Regulation
+=======================
 TBD
 
 .. toctree::

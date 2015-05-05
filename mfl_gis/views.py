@@ -25,6 +25,7 @@ from .serializers import (
     GeoCodeMethodSerializer,
     FacilityCoordinatesSerializer,
     WorldBorderSerializer,
+    WorldBorderDetailSerializer,
     CountyBoundarySerializer,
     ConstituencyBoundarySerializer,
     WardBoundarySerializer
@@ -89,7 +90,7 @@ class WorldBorderListView(generics.ListCreateAPIView):
 class WorldBorderDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = WorldBorder.objects.all()
-    serializer_class = WorldBorderSerializer
+    serializer_class = WorldBorderDetailSerializer
 
 
 class CountyBoundaryListView(generics.ListCreateAPIView):

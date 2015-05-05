@@ -14,9 +14,12 @@ from ..models import (
 from ..serializers import (
     ContactSerializer,
     CountySerializer,
+    CountyDetailSerializer,
     WardSerializer,
+    WardDetailSerializer,
     PhysicalAddressSerializer,
     ConstituencySerializer,
+    ConstituencyDetailSerializer,
     ContactTypeSerializer,
     UserCountySerializer,
     UserContactSerializer,
@@ -72,7 +75,7 @@ class CountyView(generics.ListCreateAPIView):
 class CountyDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = County.objects.all()
-    serializer_class = CountySerializer
+    serializer_class = CountyDetailSerializer
 
 
 class WardView(generics.ListCreateAPIView):
@@ -85,7 +88,7 @@ class WardView(generics.ListCreateAPIView):
 class WardDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Ward.objects.all()
-    serializer_class = WardSerializer
+    serializer_class = WardDetailSerializer
 
 
 class ConstituencyView(generics.ListCreateAPIView):
@@ -98,7 +101,7 @@ class ConstituencyView(generics.ListCreateAPIView):
 class ConstituencyDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Constituency.objects.all()
-    serializer_class = ConstituencySerializer
+    serializer_class = ConstituencyDetailSerializer
 
 
 class ContactTypeListView(generics.ListCreateAPIView):

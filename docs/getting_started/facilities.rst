@@ -1,6 +1,9 @@
-Understanding the facilities APIs
+MFL APIs: Facilities
 ===================================
-TBD
+
+TBD - Publishing workflow; public vs private, ``is_published``
+TBD - Search
+TBD - Downloading
 
 .. toctree::
     :maxdepth: 2

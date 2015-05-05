@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework_gis.serializers import GeoModelSerializer
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from common.serializers import AbstractFieldsMixin
 from .models import (
     GeoCodeSource,
@@ -24,26 +24,45 @@ class GeoCodeMethodSerializer(
         model = GeoCodeMethod
 
 
-class FacilityCoordinatesSerializer(AbstractFieldsMixin, GeoModelSerializer):
+class FacilityCoordinatesSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     class Meta(object):
         model = FacilityCoordinates
+        geo_field = "coordinates"
 
 
-class WorldBorderSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+class WorldBorderSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     class Meta(object):
         model = WorldBorder
+        geo_field = "mpoly"
 
 
-class CountyBoundarySerializer(AbstractFieldsMixin, GeoModelSerializer):
+class WorldBorderDetailSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
+    facility_coordinates = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = WorldBorder
+        geo_field = "mpoly"
+
+
+class CountyBoundarySerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     class Meta(object):
         model = CountyBoundary
+        geo_field = "mpoly"
 
 
-class ConstituencyBoundarySerializer(AbstractFieldsMixin, GeoModelSerializer):
+class ConstituencyBoundarySerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     class Meta(object):
         model = ConstituencyBoundary
+        geo_field = "mpoly"
 
 
-class WardBoundarySerializer(AbstractFieldsMixin, GeoModelSerializer):
+class WardBoundarySerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     class Meta(object):
         model = WardBoundary
+        geo_field = "mpoly"
