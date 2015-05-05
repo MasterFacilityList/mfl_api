@@ -115,9 +115,7 @@ class UserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         groups = _lookup_groups(validated_data)
-
-        if 'groups' in validated_data:
-            del validated_data['groups']
+        del validated_data['groups']
 
         new_user = MflUser(**validated_data)
         new_user.save()
@@ -128,9 +126,7 @@ class UserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         groups = _lookup_groups(validated_data)
-
-        if 'groups' in validated_data:
-            del validated_data['groups']
+        del validated_data['groups']
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)

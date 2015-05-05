@@ -1,4 +1,7 @@
+import json
+
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import Group
 from common.tests.test_views import LoginMixin
 from rest_framework.test import APITestCase
 
@@ -56,6 +59,57 @@ class TestLogin(APITestCase):
             },
             response.data
         )
+
+
+class TestUserViews(LoginMixin, APITestCase):
+    def test_create_user(self):
+        create_url = reverse('api:users:mfl_users_list')
+        group = Group.objects.create(name="Test Group")
+        post_data = {
+            "groups": [{"id": group.id, "name": "Test Group"}],
+            "email": "hakunaruhusa@mfltest.slade360.co.ke",
+            "first_name": "Hakuna",
+            "last_name": "Ruhusa",
+            "other_names": "",
+            "username": "hakunaruhusa",
+        }
+        response = self.client.post(create_url, post_data)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("Hakuna Ruhusa", response.data["full_name"])
+
+    def test_update_user(self):
+        user = MflUser.objects.create(
+            'user@test.com', 'pass', 'pass', 'pass'
+        )
+        group = Group.objects.create(name="Test Group")
+        update_url = reverse(
+            'api:users:mfl_user_detail', kwargs={'pk': user.id})
+        patch_data = {
+            "groups": [
+                {"id": group.id, "name": "Test Group"}
+            ]
+        }
+        response = self.client.patch(update_url, patch_data)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            json.loads(json.dumps(response.data['groups'])),
+            json.loads(json.dumps(patch_data))
+        )
+
+    def test_failed_create(self):
+        create_url = reverse('api:users:mfl_users_list')
+        data = {
+            "username": "yusa",
+            "email": "yusa@yusa.com",
+            "groups": [
+                {
+                    "id": 67897,
+                    "name": "does not exist, should blow up nicely"
+                }
+            ]
+        }
+        response = self.client.post(create_url, data)
+        self.assertEqual(400, response.status_code)
 
 
 class TestGroupViews(LoginMixin, APITestCase):
