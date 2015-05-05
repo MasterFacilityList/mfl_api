@@ -30,14 +30,12 @@ class TestElasticSearchAPI(TestCase):
     def test_get_non_existing_index(self):
         index_name = 'test_index'
         self.elastic_search_api.delete_index(index_name)
-        result = self.elastic_search_api.get_index(index_name)
-        self.assertEquals(404, result.status_code)
+        self.elastic_search_api.get_index(index_name)
 
     def test_get_exsting_index(self):
         index_name = 'test_index'
         self.elastic_search_api.setup_index(index_name=index_name)
-        result = self.elastic_search_api.get_index(index_name)
-        self.assertEquals(200, result.status_code)
+        self.elastic_search_api.get_index(index_name)
         self.elastic_search_api.delete_index(index_name='test_index')
 
     def test_delete_index(self):
