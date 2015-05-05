@@ -438,8 +438,59 @@ User management
 -------------------
 User registration ( sign up )
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - user creation / registration
-TBD - national vs county users at setup time ( reference notes above )
+
+``POST`` to ``/api/rest-auth/registration/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "username": "likeforreal",
+        "email": "likeforreal@yodawg.dawg",
+        "password1": "most_secure_password_in_the_world_like_for_real",
+        "password2": "most_secure_password_in_the_world_like_for_real"
+    }
+
+A successful operation will get back a ``HTTP 201 CREATED`` response and
+a representation of the new user. For example:
+
+.. code-block:: text
+
+    HTTP 201 CREATED
+    Content-Type: application/json
+    Vary: Accept
+    Allow: POST, OPTIONS, HEAD
+
+    {
+        "id": 9,
+        "short_name": "",
+        "full_name": "  ",
+        "all_permissions": [],
+        "user_permissions": [],
+        "groups": [],
+        "last_login": "2015-05-05T09:12:01.888514Z",
+        "is_superuser": false,
+        "email": "likeforreal1@yodawg.dawg",
+        "first_name": "",
+        "last_name": "",
+        "other_names": "",
+        "username": "likeforreal1",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2015-05-05T09:12:01.790167Z",
+        "is_national": false
+    }
+
+.. note::
+
+    This API server does not implement email address confirmation.
+    A future release might implement that.
+
+.. note::
+
+    The registration operation described above suffices, for public users.
+
+Updating user details
+~~~~~~~~~~~~~~~~~~~~~~~~
 TBD - updating user details
 
 Email verification
@@ -456,9 +507,17 @@ Assigning users direct permissions
 TBD - assigning permisssions to users directly
 TBD - altering permissions assigned directly
 
+Linking users to counties
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD - National vs county
+
 Retiring users
 ~~~~~~~~~~~~~~~~~~~
 TBD - retiring a user
+
+Suspending users
+~~~~~~~~~~~~~~~~~~~
+TBD - unusable password
 
 Password reset
 ~~~~~~~~~~~~~~~~~~
