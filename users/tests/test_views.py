@@ -84,7 +84,7 @@ class TestGroupViews(LoginMixin, APITestCase):
         self.assertEqual(response.data['name'], 'Documentation Example Group')
         self.assertEqual(len(response.data['permissions']), 2)
 
-        new_group_id = response.data('id')
+        new_group_id = response.data['id']
         update_url = '{}/{}/'.format(self.url, new_group_id)
         update_response = self.client.patch(
             update_url,
