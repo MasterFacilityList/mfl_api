@@ -1,1 +1,1 @@
-from .excel_renderers import ExcelRenderer  # noqa
+from .excel_renderer import ExcelRenderer  # noqa

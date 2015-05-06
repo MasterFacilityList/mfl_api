@@ -1,5 +1,11 @@
 import logging
 import reversion
+import os
+
+from django.core.servers.basehttp import FileWrapper
+from django.utils.encoding import smart_str
+from django.conf import settings
+from django.http import HttpResponse
 
 from collections import OrderedDict
 from django.shortcuts import redirect
@@ -152,3 +158,15 @@ class APIRoot(APIView):
 
 def root_redirect_view(request):
     return redirect('api:root_listing', permanent=True)
+
+
+def download_file(request, file_name, file_extension):
+        full_file_name = file_name + "." + file_extension
+        file_path = os.path.join(settings.BASE_DIR, full_file_name)
+        my_file = open(file_path)
+        response = HttpResponse(FileWrapper(my_file), content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+            os.path.basename(file_path)
+        )
+        response['X-Sendfile'] = smart_str(file_path)
+        return response
