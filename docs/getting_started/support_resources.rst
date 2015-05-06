@@ -117,33 +117,151 @@ can be retrieved at ``/api/common/wards/<pk>/`` e.g ``/api/common/wards/41ae635c
 
 Facility Types
 -----------------
-TBD
+The purpose of this resource is to populate dropdowns used in facility creation
+and edit screens. The API also supports the creation of an administrative
+interface that can be used to add new facility types and retire old ones.
+
+Facility types can be listed at ``/api/facilities/facility_types/``. Individual
+facility details can be listed at ``/api/facilities/facility_types/<pk>/`` e.g
+``/api/facilities/facility_types/ccf14e50-2606-40b9-96fd-0dc5b3ed4a15/`` for
+the facility whose ``id`` is ``ccf14e50-2606-40b9-96fd-0dc5b3ed4a15``.
+
+The only required fields when creating a new facility type are ``name``
+( which should be set to something meaningful ) and ``sub_division`` ( which
+can be null ). The following is a minimal but valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "name": "Test facility type for docs",
+        "sub_division": null
+    }
 
 Facility owners and owner types
 -----------------------------------
-Facility owners
-++++++++++++++++++
-TBD
+Facility owner types provide a mechanism by which the owners of facilities
+can be classified, arbitrarily. Examples are "Non Governmental Organizations",
+"Faith Based Organizations" and the "Ministry of Health". These owner types
+can be changed at will.
+
+In the MFL 1 era, facility owners were set up in a very general manner e.g
+"Private Enterprise (Institution)" and "Private Practice - Unspecified". There
+is no technical reason why these facility owners cannot be more specific e.g
+names of specific private sector organizations.
 
 Facility owner types
 +++++++++++++++++++++++
-TBD
+Facility owner types can be listed at ``/api/facilities/owner_types/``.
+Predictably, the detailed representations will be found at
+``7ce5a7b1-9a5e-476c-a01c-8f52c4233926``.
 
-TBD - comment about analytics impact of all this
-TBD - comment about a potential move to full detail
+When creating a new facility owner type, the only mandatory field is the
+``name``. For example: the following is a perfectly valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "name": "Owner type for docs"
+    }
+
+Facility owners
+++++++++++++++++++
+Facility owners can be listed at ``/api/facilities/owners/``. Detail
+representations can be obtained from ``/api/facilities/owners/<pk>/``
+e.g ``/api/facilities/owners/f770a132-f62a-418a-96b4-062c3cc7860c/``.
+
+When registering a new facility owner, the ``POST`` payload should contain
+at least the ``name``, ``description`` and ``abbreviation``. For example:
+
+.. code-block:: javascript
+
+    {
+        "name": "Imaginary BigCorp.",
+        "description": "BigCorp owns everything",
+        "abbreviation": "BIG",
+    }
+
+.. note::
+
+    The setup of owners and owner types should be performed with care, because
+    of the importance of this metadata in analysis / reporting.
 
 Job titles
 --------------
-TBD
+The job titles that are available to be assigned to facility officers can be
+listed at ``/api/facilities/job_titles/``. Individual job title detail
+resources will be at ``/api/facilities/job_titles/<pk>`` e.g
+``/api/facilities/job_titles/7ec51365-75b7-45e5-873b-8bb3c97bbe21``.
+
+When creating a new job title, the ``name`` and ``description`` should be
+``POST``ed to the list endpoint. The example below is a valid payload::
+
+.. code-block:: javascript
+
+    {
+        "name": "Boss",
+        "description": "Big Cahunna"
+    }
 
 Regulating bodies
 --------------------
-TBD
+The regulators that are known to the server can be listed by ``GET``ting
+``/api/facilities/regulating_bodies/``. Predictaby, the detail of each can
+be retrieved at ``/api/facilities/regulating_bodies/<pk>/`` e.g
+``/api/facilities/regulating_bodies/07f8302f-042a-4a9c-906b-10d69092b43e/``.
+
+When registering a new regulating body, you should set the ``name``,
+``abbreviation`` and ``regulation_verb`` fields. For example:
+
+.. code-block:: javascript
+
+    {
+        "name": "A newly legislated regulator",
+        "abbreviation": "ANLR",
+        "regulation_verb": "Gazettment"
+    }
 
 Regulating body contacts
 ++++++++++++++++++++++++++
-TBD
+After creating a regulating body, one or more contacts can be associated with
+it by ``POST``ing to ``/api/facilities/regulating_body_contacts/`` the ``id``
+of the ``regulating_body`` ( returned by the API after creating the body or
+retrieved from the relevant list / detail endpoint ) and the ``id`` of the
+``contact`` ( obtained in a similar manner ).
 
+Suppose that the ``id`` for the newly created regulating body is
+``5763a053-668e-4ca7-bab4-cda3da396453``. Suppose also that we have just
+created a contact with ``id`` ``7dd62ab9-94c2-48d6-a10f-d903bd57acd5``.
+
+We can associate that contact and the regulating body by ``POST``ing to
+``/api/facilities/regulating_body_contacts/`` the following payload:
+
+.. code-block:: javascript
+
+    {
+        "regulating_body": "5763a053-668e-4ca7-bab4-cda3da396453",
+        "contact": "7dd62ab9-94c2-48d6-a10f-d903bd57acd5"
+    }
+
+The regulating body contacts that already exist can be listed by issuing a
+``GET`` to ``/api/facilities/regulating_body_contacts/``. If you would like to
+filter those that belong to a known regulating body, use a ``regulating_body``
+query parameter, with the ``id`` of the regulating body as the filter value
+e.g ``/api/facilities/regulating_body_contacts/?regulating_body=5763a053-668e-4ca7-bab4-cda3da396453``. You could also filter the regulating body contacts using the ``id`` of a
+known contact, although the use cases for that are more limited.
+
+.. note::
+
+    This section introduces some patterns that will recur in this API:
+
+    *   The use of filters: the list APIs are filterably by most of the
+        fields that they list. You can explore this further in the sandbox.
+    *   The use of **explicit join tables** for many to many relationships.
+    The ``regulating_body_contact`` resource that is the subject of this
+    section is an example. That is a deliberate choice - we find that, even
+    though it makes the API clients do a little more work, it leads to more
+    **reliable** APIs. In RESTful APIs, nested serialization / deserialization
+    is a massive pain. We'd rather not deal with it.
 
 .. toctree::
     :maxdepth: 2
