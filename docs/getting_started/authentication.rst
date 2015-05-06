@@ -112,6 +112,15 @@ If the user is not logged in, the return message will be a
         "detail": "Authentication credentials were not provided."
     }
 
+.. note::
+
+    If a user needs to change their password e.g because it was created by an
+    admin and must be changed on first login, the ``requires_password_change``
+    boolean property will be set to ``true``.
+
+    **Every well behaved web client should observe this property** and
+    implement the appropriate "roadblock".
+
 OAuth2 Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 You can learn all that you need to know about OAuth2 by reading `rfc6749`_.
