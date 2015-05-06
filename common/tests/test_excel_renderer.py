@@ -8,6 +8,7 @@ from .test_views import LoginMixin
 
 from rest_framework.exceptions import ValidationError
 from common.models import County
+from facilities.models import Facility, FacilityContact
 from model_mommy import mommy
 from common.renderers import _write_excel_file
 
@@ -56,6 +57,10 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         self.assertFalse(os.path.exists(file_path))
 
     def test_download_view_file_does_not_exist(self):
+        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        self.assertFalse(os.path.exists(file_path))
         file_name = "download"
         file_extension = "xlsx"
         kwargs = {
@@ -65,3 +70,15 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         url = reverse("api:common:download_file", kwargs=kwargs)
         with self.assertRaises(ValidationError):
             self.client.get(url)
+
+    def test_nested_list_in_excel_renderer(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityContact, facility=facility)
+        url = reverse('api:facilities:facilities_list')
+        url = url + "?format=excel"
+        response = self.client.get(url)
+        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
+        self.assertTrue(os.path.exists(file_path))
+        self.assertEquals(200, response.status_code)
+        os.remove(file_path)
+        self.assertFalse(os.path.exists(file_path))
