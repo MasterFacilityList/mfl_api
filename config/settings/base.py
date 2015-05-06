@@ -41,6 +41,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
+    'django.contrib.sites',
     'users',
     'django.contrib.admin',
     'common',
@@ -49,7 +50,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'oauth2_provider',
     'rest_framework',
     'rest_framework.authtoken',
