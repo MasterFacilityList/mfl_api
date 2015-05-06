@@ -100,7 +100,8 @@ a ``HTTP 200 OK`` response and a user details payload similar to this example:
         "is_staff": true,
         "is_active": true,
         "date_joined": "2015-05-03T02:39:03.440962Z",
-        "is_national": true
+        "is_national": true,
+        "requires_password_change": false
     }
 
 If the user is not logged in, the return message will be a
