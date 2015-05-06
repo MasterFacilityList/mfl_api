@@ -53,6 +53,8 @@ TBD
 Downloadable facility reports
 +++++++++++++++++++++++++++++++
 TBD - explain the "filterable report" approach
+TBD - templates for this should live in data ( no static stuff )
+TBD - create in data the starter templates
 
 Facility rating reports
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
