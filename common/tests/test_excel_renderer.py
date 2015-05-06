@@ -8,7 +8,6 @@ from .test_views import LoginMixin
 
 from rest_framework.exceptions import ValidationError
 from common.models import County
-from facilities.models import Facility, FacilityContact
 from model_mommy import mommy
 from common.renderers import _write_excel_file
 
