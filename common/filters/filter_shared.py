@@ -1,11 +1,8 @@
 import django_filters
 
-from datetime import timedelta, datetime
-
 from django import forms
 from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
-from django.utils import timezone
 from django.conf import settings
 
 from rest_framework import ISO_8601
@@ -71,57 +68,6 @@ class SearchFilter(django_filters.filters.Filter):
         return final_queryset
 
 
-class TimeRangeFilter(django_filters.filters.Filter):
-    """
-    Filters a queryset based on the number of days needed. eg a week, a month
-    or a quarter (3 months)
-
-    It is a very naive implementation as it does not cater for the fact that
-    months do not have equal number of days
-    """
-
-    def __init__(self, *args, **kwargs):
-        self.alias = kwargs.get('alias')
-        self.last_one_week = True if self.alias == 'last_one_week' else False
-        self.last_one_quarter = True if self.alias == 'last_one_quarter' \
-            else False
-        self.last_one_month = True if self.alias == 'last_one_month' else False
-        kwargs.pop('alias')
-        super(TimeRangeFilter, self).__init__(*args, **kwargs)
-
-    def filter(self, qs, value):
-        super(TimeRangeFilter, self).filter(qs, value)
-        today = timezone.now()
-        today_end = datetime(
-            today.year, today.month, today.day, 23, 59, 59, 999999)
-        if self.last_one_week:
-            week_start = today - timedelta(days=7)
-            week_start_midnight = datetime(
-                week_start.year, week_start.month, week_start.day, 0, 0, 0, 0)
-            return qs.filter(
-                created__gte=week_start_midnight,
-                created__lte=today_end)
-        if self.last_one_quarter:
-            quarter_start = today - timedelta(days=90)
-            quarter_start_midnight = datetime(
-                quarter_start.year, quarter_start.month,
-                quarter_start.day, 0, 0, 0, 0)
-            return qs.filter(
-                created__gte=quarter_start_midnight,
-                created__lte=today_end)
-
-        if self.last_one_month:
-            month_start = today - timedelta(days=30)
-            month_start_midnight = datetime(
-                month_start.year, month_start.month,
-                month_start.day, 0, 0, 0, 0)
-            return qs.filter(
-                created__gte=month_start_midnight,
-                created__lte=today_end)
-
-        return qs
-
-
 class CommonFieldsFilterset(django_filters.FilterSet):
     """Every model that descends from AbstractBase should have this
 
@@ -158,10 +104,4 @@ class CommonFieldsFilterset(django_filters.FilterSet):
         name='deleted', lookup_type='exact')
     is_active = django_filters.BooleanFilter(
         name='active', lookup_type='exact')
-    last_one_week = TimeRangeFilter(
-        name='created', alias='last_one_week')
-    last_one_quarter = TimeRangeFilter(
-        name='created', alias='last_one_quarter')
-    last_one_month = TimeRangeFilter(
-        name='created', alias='last_one_month')
     search = SearchFilter(name='search')

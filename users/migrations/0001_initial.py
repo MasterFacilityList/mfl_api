@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.contrib.postgres.fields
 import oauth2_provider.validators
 import oauth2_provider.generators
 import django.utils.timezone
@@ -33,6 +34,7 @@ class Migration(migrations.Migration):
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now)),
                 ('is_national', models.BooleanField(default=False)),
                 ('search', models.CharField(max_length=255, null=True, blank=True)),
+                ('password_history', django.contrib.postgres.fields.ArrayField(size=None, null=True, base_field=models.TextField(null=True, blank=True), blank=True)),
                 ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],

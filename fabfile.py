@@ -96,11 +96,6 @@ def create_search_index(*args, **kwargs):
     manage('setup_index')
 
 
-def create_test_index(*args, **kwargs):
-    """Indexes only a few documents for testing searcg only"""
-    manage('build_index', '--test')
-
-
 def create_entire_index(*args, **kwargs):
     """Creates the entire search index"""
     manage('build_index')
@@ -126,7 +121,7 @@ def setup(*args, **kwargs):
 
     if base.DEBUG:
         load_demo_data()
-        create_test_index()
+        create_entire_index()
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()

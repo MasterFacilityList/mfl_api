@@ -100,7 +100,8 @@ a ``HTTP 200 OK`` response and a user details payload similar to this example:
         "is_staff": true,
         "is_active": true,
         "date_joined": "2015-05-03T02:39:03.440962Z",
-        "is_national": true
+        "is_national": true,
+        "requires_password_change": false
     }
 
 If the user is not logged in, the return message will be a
@@ -111,6 +112,15 @@ If the user is not logged in, the return message will be a
     {
         "detail": "Authentication credentials were not provided."
     }
+
+.. note::
+
+    If a user needs to change their password e.g because it was created by an
+    admin and must be changed on first login, the ``requires_password_change``
+    boolean property will be set to ``true``.
+
+    **Every well behaved web client should observe this property** and
+    implement the appropriate "roadblock".
 
 OAuth2 Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~
