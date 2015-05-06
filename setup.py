@@ -109,7 +109,7 @@ setup(
         "django-allauth>=0.19.1",
         "django-oauth-toolkit>=0.8.1",
         "drf-extensions>=0.2.7",
-        "xlsxwriter"
+        "xlsxwriter>=0.7.2",
         "mock>=1.0.1",
     ],
 )
