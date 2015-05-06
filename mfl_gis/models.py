@@ -198,6 +198,10 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     # loaded and tested during each build
     mpoly = gis_models.MultiPolygonField(null=True, blank=True)
 
+    @property
+    def center(self):
+        return self.mpoly.centroid if self.mpoly else None
+
     def __unicode__(self):
         return self.name
 
