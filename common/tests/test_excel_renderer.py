@@ -20,7 +20,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         mommy.make(County)
         response = self.client.get(excel_url)
         self.assertEquals(200, response.status_code)
-        file_path = os.path.join(settings.BASE_DIR, 'human.xlsx')
+        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
         self.assertTrue(os.path.exists(file_path))
         os.remove(file_path)
         self.assertFalse(os.path.exists(file_path))
@@ -31,7 +31,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         url = reverse('api:common:counties_list')
         response = self.client.get(url)
         _write_excel_file(response.data)
-        file_path = os.path.join(settings.BASE_DIR, 'human.xlsx')
+        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
         self.assertTrue(os.path.exists(file_path))
         os.remove(file_path)
         self.assertFalse(os.path.exists(file_path))
@@ -42,7 +42,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         url = reverse('api:common:counties_list')
         response = self.client.get(url)
         _write_excel_file(response.data)
-        file_name = "human"
+        file_name = "download"
         file_extension = "xlsx"
         kwargs = {
             "file_name": file_name,
@@ -51,12 +51,12 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         url = reverse("api:common:download_file", kwargs=kwargs)
         resp = self.client.get(url)
         self.assertEquals(200, resp.status_code)
-        file_path = os.path.join(settings.BASE_DIR, 'human.xlsx')
+        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
         os.remove(file_path)
         self.assertFalse(os.path.exists(file_path))
 
     def test_download_view_file_does_not_exist(self):
-        file_name = "human"
+        file_name = "download"
         file_extension = "xlsx"
         kwargs = {
             "file_name": file_name,
