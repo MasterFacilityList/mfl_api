@@ -33,6 +33,8 @@ class FacilityCoordinatesSerializer(
 
 class WorldBorderSerializer(
         AbstractFieldsMixin, GeoFeatureModelSerializer):
+    center = serializers.ReadOnlyField()
+
     class Meta(object):
         model = WorldBorder
         geo_field = "mpoly"

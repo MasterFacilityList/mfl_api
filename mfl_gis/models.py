@@ -1,5 +1,6 @@
 import reversion
 import logging
+import json
 
 from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
@@ -200,7 +201,7 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
     @property
     def center(self):
-        return self.mpoly.centroid if self.mpoly else None
+        return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
     def __unicode__(self):
         return self.name
