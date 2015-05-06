@@ -58,9 +58,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
 
     def test_download_view_file_does_not_exist(self):
         file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        self.assertFalse(os.path.exists(file_path))
+        os.remove(file_path) if os.path.exists(file_path) else None
         file_name = "download"
         file_extension = "xlsx"
         kwargs = {
@@ -72,13 +70,30 @@ class TestExcelRenderer(LoginMixin, APITestCase):
             self.client.get(url)
 
     def test_nested_list_in_excel_renderer(self):
-        facility = mommy.make(Facility)
-        mommy.make(FacilityContact, facility=facility)
-        url = reverse('api:facilities:facilities_list')
-        url = url + "?format=excel"
-        response = self.client.get(url)
+        data = {
+            "results": [
+                {
+                    "key_a": "data",
+                    "key_b": "data"
+                },
+                {
+                    "key_a": "data",
+                    "key_b": "data"
+                },
+                {
+                    "key_a": "data",
+                    "key_b": [
+                        {
+                            "key_a": "data",
+                            "key_b": "data"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        _write_excel_file(data)
         file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
         self.assertTrue(os.path.exists(file_path))
-        self.assertEquals(200, response.status_code)
         os.remove(file_path)
         self.assertFalse(os.path.exists(file_path))
