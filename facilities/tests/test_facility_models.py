@@ -228,7 +228,8 @@ class TestRegulatingBodyModel(BaseTestCase):
     def test_save(self):
         data = {
             "name": "Director of Medical Services",
-            "abbreviation": "DMS"
+            "abbreviation": "DMS",
+            "regulation_verb": "Gazette"
         }
         data = self.inject_audit_fields(data)
         regulating_body = RegulatingBody.objects.create(**data)
