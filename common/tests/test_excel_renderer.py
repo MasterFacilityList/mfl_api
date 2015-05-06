@@ -49,6 +49,8 @@ class TestExcelRenderer(LoginMixin, APITestCase):
             "file_extension": file_extension
         }
         url = reverse("api:common:download_file", kwargs=kwargs)
+        resp = self.client.get(url)
+        self.assertEquals(200, resp.status_code)
         file_path = os.path.join(settings.BASE_DIR, 'human.xlsx')
         os.remove(file_path)
         self.assertFalse(os.path.exists(file_path))
