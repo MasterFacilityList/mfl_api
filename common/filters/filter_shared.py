@@ -49,7 +49,11 @@ class SearchFilter(django_filters.filters.Filter):
         result = api.search_document(index_name, document_type, value)
 
         hits = []
-        hits = result.json().get('hits').get('hits') if result.json() else hits
+        try:
+            hits = result.json().get('hits').get('hits') if result.json() \
+                else hits
+        except AttributeError:
+            hits = hits
         hits_ids_list = []
 
         for hit in hits:
