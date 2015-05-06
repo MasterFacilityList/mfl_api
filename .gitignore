@@ -92,3 +92,6 @@ mfl_models_graph.png
 
 # IPython notebooks, used to experiment on stuff
 *.ipynb
+
+# Temp file
+.fab_tasks~

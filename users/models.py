@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import validate_email, RegexValidator
 from django.contrib.auth.models import make_password
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -53,7 +54,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     ``User`` is the one model that cannot descend from AbstractBase.
     """
     email = models.EmailField(null=False, blank=False, unique=True)
-    first_name = models.CharField(max_length=60, null=False, blank=False)
+    first_name = models.CharField(max_length=60, null=False, blank=True)
     last_name = models.CharField(max_length=60, blank=True)
     other_names = models.CharField(max_length=80, null=False, blank=True,
                                    default="")
@@ -71,11 +72,30 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_national = models.BooleanField(default=False)
+    search = models.CharField(max_length=255, null=True, blank=True)
+
+    password_history = ArrayField(
+        models.TextField(null=True, blank=True),
+        null=True, blank=True
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     objects = MflUserManager()
+
+    def set_password(self, raw_password):
+        """Overridden so that we can keep track of password age"""
+        super(MflUser, self).set_password(raw_password)
+
+        # Exclude new users ( who have never logged in before ) from this
+        # We rely on this to implement a "change password on first login"
+        # roadblock
+        if self.last_login:
+            if self.password_history:
+                self.password_history.append(make_password(raw_password))
+            else:
+                self.password_history = [make_password(raw_password)]
 
     def __unicode__(self):
         return self.email
@@ -83,6 +103,10 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     @property
     def get_short_name(self):
         return self.first_name
+
+    @property
+    def requires_password_change(self):
+        return True if not self.password_history else False
 
     @property
     def get_full_name(self):

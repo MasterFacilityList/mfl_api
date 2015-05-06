@@ -1,5 +1,8 @@
 MFL APIs: GIS Support
 =======================
+This chapter assumes that the reader is familiar with the general
+principles explained in the :doc:`api` chapter.
+
 TBD - administrative units and their boundaries
 TBD - notes about points ( coordinates )
 TBD - geoJSON, openlayers

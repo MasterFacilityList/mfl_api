@@ -1,8 +1,8 @@
-import django_filters
-
+# import django_filters
+from common.filters import CommonFieldsFilterset
 from .models import MflUser
 
 
-class MFLUserFilter(django_filters.FilterSet):
+class MFLUserFilter(CommonFieldsFilterset):
     class Meta(object):
         model = MflUser

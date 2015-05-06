@@ -109,7 +109,7 @@ the :doc:`gis` page.
 .. _`PostGIS`: http://postgis.net/
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
     the_big_picture
     api

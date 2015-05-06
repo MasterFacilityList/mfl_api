@@ -41,6 +41,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
+    'django.contrib.sites',
     'users',
     'django.contrib.admin',
     'common',
@@ -121,7 +122,8 @@ REST_FRAMEWORK = {
     'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
     'PAGINATE_BY': 25,
     'PAGINATE_BY_PARAM': 'page_size',
-    'MAX_PAGINATE_BY': 100,
+    # Should be able to opt in to see all wards at once
+    'MAX_PAGINATE_BY': 1500,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -228,12 +230,23 @@ CACHES = {
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 LOGIN_REDIRECT_URL = '/api/'
+
+SEARCH = {
+    "ELASTIC_URL": "http://localhost:9200/",
+    "INDEX_NAME": "mfl_index",
+    "REALTIME_INDEX": False
+}
+
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'users.MFLOAuthApplication'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Master Facilities List]'
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_LOGOUT_REDIRECT_URL = '/api/'
@@ -242,5 +255,8 @@ ACCOUNT_SESSION_REMEMBER = True
 # django_rest_auth settings
 OLD_PASSWORD_FIELD_ENABLED = True
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer'
+    'USER_DETAILS_SERIALIZER': 'users.serializers.MflUserSerializer'
 }
+
+# django-allauth forces this atrocity on us ( true at the time of writing )
+SITE_ID = 1

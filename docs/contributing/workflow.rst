@@ -17,4 +17,4 @@ The credentials are not stored on GitHub - for obvious reasons.
 
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2

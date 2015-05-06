@@ -16,4 +16,4 @@ You will need to have the vagrant-env plugin - https://github.com/gosuri/vagrant
 
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2

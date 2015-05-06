@@ -2,7 +2,7 @@ from rest_framework import generics
 from django.contrib.auth.models import Group, Permission
 from .models import MflUser, MFLOAuthApplication
 from .serializers import (
-    UserSerializer,
+    MflUserSerializer,
     MFLOAuthApplicationSerializer,
     PermissionSerializer,
     GroupSerializer
@@ -34,14 +34,14 @@ class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class UserList(generics.ListCreateAPIView):
     queryset = MflUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = MflUserSerializer
     filter_class = MFLUserFilter
     ordering_fields = ('first_name', 'last_name', 'email', 'username',)
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MflUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = MflUserSerializer
 
 
 class MFLOauthApplicationListView(generics.ListCreateAPIView):

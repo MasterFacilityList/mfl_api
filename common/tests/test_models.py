@@ -35,7 +35,8 @@ class AbstractBaseModelTest(TestCase):
         from ..models import AbstractBase
 
         class TestModel(AbstractBase):
-            pass
+            class Meta:
+                abstract = True
 
         ct = TestModel(id=uuid.uuid4())
         self.assertEqual(str(ct), 'test model ' + str(ct.pk))

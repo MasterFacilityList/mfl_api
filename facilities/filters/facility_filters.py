@@ -1,3 +1,5 @@
+from distutils.util import strtobool
+
 import django_filters
 
 
@@ -27,6 +29,19 @@ from ..models import (
     RegulatingBodyContact
 )
 from common.filters.filter_shared import CommonFieldsFilterset
+
+BOOLEAN_CHOICES = (
+    ('false', 'False'),
+    ('true', 'True'),
+    ('yes', 'True'),
+    ('no', 'False'),
+    ('Yes', 'True'),
+    ('No', 'False'),
+    ('y', 'True'),
+    ('n', 'False'),
+    ('Y', 'True'),
+    ('N', 'False')
+)
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):
@@ -58,9 +73,15 @@ class FacilityApprovalFilter(CommonFieldsFilterset):
 
 class ServiceRatingFilter(CommonFieldsFilterset):
     facility_service = django_filters.AllValuesFilter(lookup_type='exact')
-    cleanliness = django_filters.BooleanFilter(lookup_type='exact')
-    attitude = django_filters.BooleanFilter(lookup_type='exact')
-    will_return = django_filters.BooleanFilter(lookup_type='exact')
+    cleanliness = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    attitude = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    will_return = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
     occupation = django_filters.CharFilter(lookup_type='icontains')
     comment = django_filters.CharFilter(lookup_type='icontains')
     service = django_filters.AllValuesFilter(
@@ -84,7 +105,9 @@ class OptionFilter(CommonFieldsFilterset):
     value = django_filters.CharFilter(lookup_type='icontains')
     display_text = django_filters.CharFilter(lookup_type='icontains')
     option_type = django_filters.CharFilter(lookup_type='icontains')
-    is_exclusive_option = django_filters.BooleanFilter(lookup_type='exact')
+    is_exclusive_option = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
 
     class Meta(object):
         model = Option
@@ -224,10 +247,18 @@ class FacilityFilter(CommonFieldsFilterset):
     number_of_beds = django_filters.NumberFilter(lookup_type='exact')
     number_of_cots = django_filters.NumberFilter(lookup_type='exact')
 
-    open_whole_day = django_filters.BooleanFilter(lookup_type='exact')
-    open_whole_week = django_filters.BooleanFilter(lookup_type='exact')
-    is_classified = django_filters.BooleanFilter(lookup_type='exact')
-    is_published = django_filters.BooleanFilter(lookup_type='exact')
+    open_whole_day = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    open_whole_week = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    is_classified = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    is_published = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
 
     class Meta(object):
         model = Facility

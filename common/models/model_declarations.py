@@ -140,7 +140,8 @@ class County(AdministrativeUnitBase):
 
     Kenya is divided in 47 different counties.
 
-    Code generation is handled by the custom save method in RegionAbstractBase
+    Code generation is handled by the custom save method in
+    AdministrativeUnitBase
     """
     @property
     def facility_coordinates(self):
@@ -164,7 +165,8 @@ class Constituency(AdministrativeUnitBase):
     There are 290 constituencies in total.
     In most cases they coincide with sub counties.
 
-    Code generation is handled by the custom save method in RegionAbstractBase
+    Code generation is handled by the custom save method in
+    AdministrativeUnitBase
     """
     county = models.ForeignKey(
         County,
@@ -194,7 +196,8 @@ class Ward(AdministrativeUnitBase):
     A constituency can have one or more wards.
     In most cases the sub county is also the constituency.
 
-    Code generation is handled by the custom save method in RegionAbstractBase
+    Code generation is handled by the custom save method in
+    AdministrativeUnitBase
     """
     constituency = models.ForeignKey(
         Constituency,
