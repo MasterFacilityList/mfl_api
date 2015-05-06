@@ -11,8 +11,27 @@ and other types of choosers in the web / mobile front-ends.
 
 Contact Types
 ---------------
-TBD - comment about flexibility of contact types
-TBD - comment about contacts and M2M ( give an example of regulating body contacts from below )
+The contact type resource allows us to move the configuration of contact types
+that are recognized by the server from code to configuration.
+
+This API will typically be used by web front-ends that need to populate
+contact type selection dropdowns during the creation of contacts/
+
+The contact type list endpoint is at ``/api/common/contact_types/`` while the
+detail endpoint will be at ``/api/common/contact_types/<pk>/`` ( for example,
+the contact whose id is ``3a05b4e7-fb8e-4c23-ac95-4e36ac2b99fa`` can be
+retrieved by ``GET``ting
+``/api/common/contact_types/3a05b4e7-fb8e-4c23-ac95-4e36ac2b99fa/`` ).
+
+When creating a new contact, the only necessary fields are the ``name`` and
+``description``. The following is a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "name": "KONTACT TYPE",
+        "description": "Documentation Example"
+    }
 
 Towns
 -------
