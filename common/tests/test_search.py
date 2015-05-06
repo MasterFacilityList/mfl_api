@@ -1,9 +1,11 @@
 import json
+from mock import patch
 
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.core.urlresolvers import reverse
 from django.core.management import call_command
+
 
 from model_mommy import mommy
 
@@ -171,6 +173,26 @@ class TestSearchFilter(ViewTestBase):
         # no documents have been indexed
         self.assertEquals(result.count(), 0)
         api.delete_index('test_index')
+
+    def test_filter_elastic_not_available(self):
+        from ..filters.filter_shared import ElasticAPI
+        with patch.object(
+                ElasticAPI,
+                'search_document') as mock_search:
+            mock_search.return_value = None
+
+            api = search_utils.ElasticAPI()
+            api.delete_index('test_index')
+            api.setup_index('test_index')
+            mommy.make(Facility, name='test facility')
+            mommy.make(Facility)
+            qs = Facility.objects.all()
+
+            search_filter = SearchFilter(name='search')
+            result = search_filter.filter(qs, 'test')
+            # no documents have been indexed
+            self.assertEquals(result.count(), 0)
+            api.delete_index('test_index')
 
     def test_filter_data(self):
         api = search_utils.ElasticAPI()
