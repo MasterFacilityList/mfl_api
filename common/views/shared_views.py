@@ -163,10 +163,17 @@ def root_redirect_view(request):
 def download_file(request, file_name, file_extension):
         full_file_name = file_name + "." + file_extension
         file_path = os.path.join(settings.BASE_DIR, full_file_name)
-        my_file = open(file_path)
-        response = HttpResponse(FileWrapper(my_file), content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="{}"'.format(
-            os.path.basename(file_path)
-        )
-        response['X-Sendfile'] = smart_str(file_path)
-        return response
+        if os.path.exists(file_path):
+            my_file = open(file_path)
+            response = HttpResponse(
+                FileWrapper(my_file), content_type='text/csv')
+            response[
+                'Content-Disposition'] = 'attachment; filename="{}"'.format(
+                os.path.basename(file_path)
+            )
+            response['X-Sendfile'] = smart_str(file_path)
+            return response
+        else:
+
+            data = "The file does not exist"
+            raise ValidationError(detail=data)
