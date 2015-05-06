@@ -159,16 +159,15 @@ The example listing below clearly shows the shared fields:
 These fields are exposed via filters in most list endpoints. The examples
 below show those filters in use:
 
-============= ===============================================================================
+==================== ===============================================================================
  Filter                 Example and examples
-============= ===============================================================================
+==================== ===============================================================================
  ``updated_before``     Returns results where the date is less than or equal to the supplied timestamp. An example of a valid query is ``GET`` ``/api/facilities/facilities/?updated_before=2014-05-06T10:36:45.112488Z``
  ``updated_after``      Returns results where the date is greater than or equal to the supplied timestamp. An example of a valid query is ``GET`` ``/api/facilities/facilities/?updated_after=2014-05-06T10:36:45.112488Z``
  ``created_before``     Same as for ``updated_before``, but operates on creation timestamps
- ``created_after``      Same as for ``created_before``, but operates on creation timestamps
+ ``created_after``      Same as for ``updated_after``, but operates on creation timestamps
  ``is_active``          Can be used to retrieve active or inactive results only e.g ``GET`` ``/api/facilities/facilities/?is_active=false``
- ``search``
-============= ===============================================================================
+==================== ===============================================================================
 
 .. note::
 
