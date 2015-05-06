@@ -369,5 +369,13 @@ For example, if there was a contact with `id`
 would return a payload that has a `revisions` key that contains a
 representation of every past revision of that specific contact.
 
+Search
+--------
+Every **list** endpoint supports **full text** search. Search is implemented
+as a filter, using the `search` query parameter.
+
+For example, to search for contacts that have the word "meru" in them, the
+query would be `/api/common/contacts/?search=meru`.
+
 .. toctree::
     :maxdepth: 2
