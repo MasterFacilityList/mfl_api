@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-
+from django.contrib.auth import get_user_model
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
@@ -19,11 +19,16 @@ from ..models import (
     FacilityRegulationStatus,
     FacilityContact,
     FacilityUnit,
+    ServiceCategory,
     Service,
+    ServiceOption,
+    FacilityService,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    RegulatingBodyContact
+    RegulatingBodyContact,
+    Option,
+    ServiceRating
 )
 
 
@@ -198,6 +203,55 @@ class TestFacilityOperationState(BaseTestCase):
             mommy.make(
                 FacilityOperationState, facility=facility,
                 operation_status=status_2)
+
+
+class TestServiceCategory(BaseTestCase):
+    def test_unicode(self):
+        instance = ServiceCategory(name='test name')
+        self.assertEqual(str(instance), 'test name')
+
+
+class TestOption(BaseTestCase):
+    def test_unicode(self):
+        instance = Option(option_type='BOOLEAN', display_text='Yes/No')
+        self.assertEqual(str(instance), 'BOOLEAN: Yes/No')
+
+
+class TestServiceOption(BaseTestCase):
+    def test_unicode(self):
+        service = Service(name='savis')
+        option = Option(option_type='BOOLEAN', display_text='Yes/No')
+        service_option = ServiceOption(service=service, option=option)
+        self.assertEqual(str(service_option), 'savis: BOOLEAN: Yes/No')
+
+
+class TestFacilityService(BaseTestCase):
+    def test_unicode(self):
+        facility = Facility(name='thifitari')
+        service = Service(name='savis')
+        option = Option(option_type='BOOLEAN', display_text='Yes/No')
+        service_option = ServiceOption(service=service, option=option)
+        facility_service = FacilityService(
+            facility=facility, selected_option=service_option)
+        self.assertEqual(
+            str(facility_service), 'thifitari: savis: BOOLEAN: Yes/No')
+
+
+class TestServiceRating(BaseTestCase):
+    def test_unicode(self):
+        service = Service(name='savis')
+        facility = Facility(name='thifitari')
+        option = Option(option_type='BOOLEAN', display_text='Yes/No')
+        service_option = ServiceOption(service=service, option=option)
+        facility_service = FacilityService(
+            facility=facility, selected_option=service_option)
+        service_rating = ServiceRating(
+            facility_service=facility_service,
+            created_by=mommy.make(get_user_model(), email='yusa@yusas.org')
+        )
+        self.assertEqual(
+            str(service_rating),
+            'thifitari: savis: BOOLEAN: Yes/No: yusa@yusas.org')
 
 
 class TestServiceModel(BaseTestCase):
