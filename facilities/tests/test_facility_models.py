@@ -25,7 +25,6 @@ from ..models import (
     FacilityService,
     FacilityApproval,
     FacilityOperationState,
-    FacilityUpgrade,
     RegulatingBodyContact,
     Option,
     ServiceRating
