@@ -71,12 +71,19 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_national = models.BooleanField(default=False)
+    last_password_change_timestamp = models.DateTimeField(
+        null=True, blank=True)
     search = models.CharField(max_length=255, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     objects = MflUserManager()
+
+    def set_password(self, raw_password):
+        """Overridden so that we can keep track of password age"""
+        super(MflUser, self).set_password(raw_password)
+        self.last_password_change_timestamp = timezone.now()
 
     def __unicode__(self):
         return self.email
