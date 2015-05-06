@@ -15,9 +15,6 @@ class ViewTestBase(APITestCase):
         self.maxDiff = None
         super(ViewTestBase, self).setUp()
 
-    def _dump_data_with_uuid_objects(self, data):
-        return json.loads(json.dumps(data, default=default))
-
     def _assert_response_data_equality(self, data_1, data_2):
         self.assertEquals(
             json.loads(json.dumps(data_1, default=default)),
