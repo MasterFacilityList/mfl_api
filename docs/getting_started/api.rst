@@ -353,6 +353,10 @@ format:
         ]
     }
 
+A client can request a larger page size by specifying the `page_size` parameter
+e.g `/api/common/contacts/?page_size=100`. There page size limit is selected at
+server configuration time; it will usually be around 1000 items.
+
 Audit trail
 -------------
 The API server provides an audit trail for all non third-party resources.
