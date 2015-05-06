@@ -42,7 +42,9 @@ TBD
 
 The facility upgrade workflow
 +++++++++++++++++++++++++++++++
-TBD
+TBD - implement a transitions graph in the database ( setup ); owner type linked
+TBD - add data for that
+TBD - document!
 
 The facility downgrade workflow
 ++++++++++++++++++++++++++++++++++
