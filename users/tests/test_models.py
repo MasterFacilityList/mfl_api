@@ -1,3 +1,5 @@
+from django.utils import timezone
+from model_mommy import mommy
 from common.tests.test_models import BaseTestCase
 
 from ..models import MflUser
@@ -50,6 +52,35 @@ class TestMflUserModel(BaseTestCase):
             "password": "pass",
         }
         MflUser.objects.create_superuser(**data)
-        # misterious error here
+        # mysterious error here
         # self.assertTrue(len(user.permissions) > 0)
         # self.assertTrue("common.add_constituency" in user.permissions)
+
+    def test_set_password_does_not_set_for_new_users(self):
+        user = mommy.make(MflUser)
+        user.set_password('does not really matter')
+        self.assertFalse(user.password_history)
+
+    def test_set_password_sets_for_existing_users(self):
+        user = mommy.make(MflUser)
+        user.last_login = timezone.now()
+        user.set_password('we now expect the change history to be saved')
+        self.assertTrue(user.password_history)
+        self.assertEqual(len(user.password_history), 1)
+
+    def test_requires_password_change_new_user(self):
+        user = mommy.make(MflUser)
+        self.assertTrue(user.requires_password_change)
+
+    def test_requires_password_change_new_user_with_prior_login(self):
+        user = mommy.make(MflUser)
+        user.last_login = timezone.now()
+        self.assertTrue(user.requires_password_change)
+
+    def test_doesnt_require_password_change_user_with_prior_passwords(self):
+        user = mommy.make(MflUser)
+        user.last_login = timezone.now()
+        user.set_password('we now expect the change history to be saved')
+        self.assertFalse(user.requires_password_change)
+        user.set_password('we now expect the change history to be saved')
+        self.assertEqual(len(user.password_history), 2)

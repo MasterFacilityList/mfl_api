@@ -111,6 +111,8 @@ class MflUserSerializer(serializers.ModelSerializer):
     full_name = serializers.ReadOnlyField(source='get_full_name')
     all_permissions = serializers.ReadOnlyField(source='permissions')
 
+    requires_password_change = serializers.ReadOnlyField()
+
     user_permissions = PermissionSerializer(many=True, required=False)
     groups = GroupSerializer(many=True, required=False)
 
@@ -141,7 +143,7 @@ class MflUserSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password',)
+        exclude = ('password', 'password_history',)
 
 
 class MFLOAuthApplicationSerializer(serializers.ModelSerializer):

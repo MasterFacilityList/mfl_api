@@ -150,6 +150,7 @@ class FacilitySerializer(
 
     class Meta(object):
         model = Facility
+        exclude = ('attributes',)
 
 
 class FacilityContactSerializer(
