@@ -8,7 +8,7 @@ from rest_framework import renderers
 
 def _write_excel_file(data):
         result = data.get('results')
-        work_book_name = 'human.xlsx'
+        work_book_name = 'download.xlsx'
         workbook = xlsxwriter.Workbook(work_book_name)
         worksheet = workbook.add_worksheet()
         row = 0
@@ -22,8 +22,12 @@ def _write_excel_file(data):
         col = 0
         for data_dict in result:
             for key in data_keys:
-                worksheet.write(row, col, data_dict[key])
-                col = col + 1
+                if not isinstance(data[key], list):
+                    worksheet.write(row, col, data_dict[key])
+                    col = col + 1
+                else:
+                    _write_excel_file()
+
             row = row + 1
         workbook.close()
         return work_book_name
