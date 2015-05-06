@@ -42,18 +42,6 @@ class TestFacilityOperationState(BaseTestCase):
             operation_status=status_2)
         self.assertEquals(1, FacilityOperationState.objects.count())
         self.assertEquals(facility_operation_state.facility, facility)
-        facility_refetched = Facility.objects.get(name='Nai hosi')
-        self.assertEquals(status_2, facility_refetched.operation_status)
-
-    def test_save_errorneous_transition(self):
-        status = mommy.make(FacilityStatus, name='PENDING_OPENING')
-        facility = mommy.make(
-            Facility, name='Nai hosi', operation_status=status)
-        status_2 = mommy.make(FacilityStatus, name='CLOSED')
-        with self.assertRaises(ValidationError):
-            mommy.make(
-                FacilityOperationState, facility=facility,
-                operation_status=status_2)
 
 
 class TestServiceCategory(BaseTestCase):
