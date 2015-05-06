@@ -230,6 +230,10 @@ CACHES = {
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 LOGIN_REDIRECT_URL = '/api/'
 
 SEARCH = {

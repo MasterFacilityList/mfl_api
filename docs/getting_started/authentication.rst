@@ -498,21 +498,32 @@ discussed in the Authorization section.
 
 Linking users to groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - assigning permissions to users via groups
-TBD - changing the groups that a user is assigned to
+In order to assign a user to a group, you will need to know the group
+ID ( which you can obtain from ```/api/groups/``.
 
-Assigning users direct permissions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - assigning permisssions to users directly
-TBD - altering permissions assigned directly
+``PATCH`` an already existing user with a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "groups": [
+            {"id": 1, "name": "Documentation Example Group"}
+        ]
+    }
+
+In order to remove them from their assigned roles, ``PATCH`` with an empty
+``groups`` list.
+
+.. note::
+
+    This server does not support the direct assignment of permissions to users.
+    That is deliberate.
 
 Updating user details
-~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - updating user details
-
-Suspending or retiring users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-``PATCH`` the user's ( detail ) record and set ``is_active`` to ``false``.
+Every writable attribute of a user record can be ``PATCH``ed. For example,
+to inactivate or retire a user, ``PATCH`` the user's ( detail ) record and set
+``is_active`` to ``false``.
 
 For example: if the detail record for the user we registered above
 ( ``likeforreal`` ) is to be found at ``/api/users/9/``, the user can be
@@ -529,22 +540,28 @@ inactivated by ``PATCH``ing ``/api/users/9/`` with:
     The same general approach can be used for any other flag e.g
     ``is_superuser``.
 
-Password reset
-~~~~~~~~~~~~~~~~~~
-TBD - password reset
-
-Password reset confirmation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD - password reset confirmation
-
 Password changes
 ~~~~~~~~~~~~~~~~~~~
-TBD - password change
+The password of the **logged in user** can be changed by ``POST``ing to
+``/api/rest-auth/password/change/`` a payload similar to this example:
+
+.. code-block:: javascript
+
+    {
+        "old_password": "oldanddonewith",
+        "new_password1": "newhotness",
+        "new_password2": "newhotness"
+    }
 
 .. note::
 
     A future version of this server may add support for social authentication
     e.g login via Facebook, Twitter or Google accounts.
+
+.. note::
+
+    A future version of this server may add support for API based password
+    reset.
 
 .. toctree::
     :maxdepth: 2
