@@ -1,5 +1,6 @@
 import reversion
 import logging
+import json
 
 from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
@@ -197,6 +198,10 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     # The impact of this is minimal; these models hold setup data that is
     # loaded and tested during each build
     mpoly = gis_models.MultiPolygonField(null=True, blank=True)
+
+    @property
+    def center(self):
+        return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
     def __unicode__(self):
         return self.name
