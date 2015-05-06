@@ -270,5 +270,17 @@ format:
         ]
     }
 
+Audit trail
+-------------
+The API server provides an audit trail for all non third-party resources.
+This audit trail can be accessed on **detail endpoints** by appending an
+`include_audit=true` query parameter.
+
+For example, if there was a contact with `id`
+`28d2a0c8-40f4-4686-97d0-d7c6f453fcb3`, a `GET` request to
+`/api/common/contacts/28d2a0c8-40f4-4686-97d0-d7c6f453fcb3/?include_audit=true`
+would return a payload that has a `revisions` key that contains a
+representation of every past revision of that specific contact.
+
 .. toctree::
     :maxdepth: 2
