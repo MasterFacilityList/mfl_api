@@ -10,26 +10,31 @@ def _write_excel_file(data):
         result = data.get('results')
         work_book_name = 'download.xlsx'
         workbook = xlsxwriter.Workbook(work_book_name)
-        worksheet = workbook.add_worksheet()
-        row = 0
-        col = 0
-        data_dict = result[0]
-        data_keys = data_dict.keys()
-        for key in data_keys:
-            worksheet.write(row, col, key)
-            col = col + 1
-        row = 1
-        col = 0
-        for data_dict in result:
-            for key in data_keys:
-                if not isinstance(data[key], list):
-                    worksheet.write(row, col, data_dict[key])
-                    col = col + 1
-                else:
-                    _write_excel_file()
 
-            row = row + 1
+        def _add_data_to_worksheet(work_sheet_data):
+            worksheet = workbook.add_worksheet()
+            row = 0
+            col = 0
+            data_dict = result[0]
+            data_keys = data_dict.keys()
+            for key in data_keys:
+                worksheet.write(row, col, key)
+                col = col + 1
+            row = 1
+            col = 0
+            for data_dict in result:
+                for key in data_keys:
+                    if not isinstance(data[key], list):
+                        worksheet.write(row, col, data_dict[key])
+                        col = col + 1
+                    else:
+                        # wirte the nested lists to their own sheets
+                        _add_data_to_worksheet(data[key])
+
+                row = row + 1
         workbook.close()
+        _add_data_to_worksheet(result)
+
         return work_book_name
 
 
