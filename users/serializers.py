@@ -23,8 +23,8 @@ def _lookup_permissions(validated_data):
 
 
 def _lookup_groups(validated_data):
-    user_supplied_groups = validated_data.get('groups', [])
     try:
+        user_supplied_groups = validated_data.get('groups', [])
         return [
             Group.objects.get(**user_supplied_group)
             for user_supplied_group in user_supplied_groups

@@ -6,6 +6,7 @@ from common.tests.test_views import LoginMixin
 from rest_framework.test import APITestCase
 
 from ..models import MflUser
+from ..serializers import _lookup_groups
 
 
 class TestLogin(APITestCase):
@@ -118,6 +119,10 @@ class TestGroupViews(LoginMixin, APITestCase):
     def setUp(self):
         super(TestGroupViews, self).setUp()
         self.url = reverse('api:users:groups_list')
+
+    def test_invalid_group_lookup(self):
+        with self.assertRaises(ValidationError):
+            _lookup_groups(None)
 
     def test_create_and_update_group(self):
         data = {
