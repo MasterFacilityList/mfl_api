@@ -43,8 +43,8 @@ class Command(BaseCommand):
                         model._meta.verbose_name_plural.capitalize())
                     self.stdout.write(message)
                 else:
-                    message = "model has been skipped it should {} should not"
-                    " be indexed. ".format(model.__name__)
+                    message = "Not indexing model {}".format(
+                        model.__name__)
                     self.stdout.write(message)
 
         self.stdout.write("Finished indexing")
