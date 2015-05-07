@@ -241,8 +241,8 @@ class RegulationStatus(AbstractBase):
     Indicates whether the facililty has been approved.
 
     The regulation states could be
-            A facility that has been recommended by the DHMT but is
-            waiting for the license from the National Regulatory Body.
+        1. Pending Licensing: A facility that has been recommended by the DHMT
+            but is  waiting for the license from the National Regulatory Body.
 
         2: Licensed:
             A facility that has been approved and issued a license by the
@@ -278,6 +278,12 @@ class RegulationStatus(AbstractBase):
         help_text="A short description of the regulation state or state e.g"
         "PENDING_OPENING could be descriped as 'waiting for the license to"
         "begin operating' ")
+    previous = models.ForeignKey(
+        'self', related_name='previous_status', null=True, blank=True,
+        help_text='The regulation_status preceding this regulation status.')
+    next = models.ForeignKey(
+        'self', related_name='next_status', null=True, blank=True,
+        help_text='The regulation_status suceedding this regulation status.')
 
     def __unicode__(self):
         return self.name
