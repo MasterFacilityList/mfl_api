@@ -279,11 +279,11 @@ class RegulationStatus(AbstractBase):
             This is last state of the of the workflow state.
             Just like the is_initial_state is should be the only one in the
             entire workflow
-        previous:
+        previous_status:
             If status has a a preceding status, it should added here.
             If does not then leave it blank.
             A status can have only one previous state.
-        next:
+        next_status:
             If the status has a suceedding status, it should be added here,
             If does not not leave it blank
             Again just the 'previous' field,  a status can have only one
@@ -298,11 +298,11 @@ class RegulationStatus(AbstractBase):
         help_text="A short description of the regulation state or state e.g"
         "PENDING_LINCENSING could be descriped as 'waiting for the license to"
         "begin operating' ")
-    previous = models.ForeignKey(
-        'self', related_name='previous_status', null=True, blank=True,
+    previous_status = models.ForeignKey(
+        'self', related_name='previous_state', null=True, blank=True,
         help_text='The regulation_status preceding this regulation status.')
-    next = models.ForeignKey(
-        'self', related_name='next_status', null=True, blank=True,
+    next_status = models.ForeignKey(
+        'self', related_name='next_state', null=True, blank=True,
         help_text='The regulation_status suceedding this regulation status.')
     is_initial_state = models.BooleanField(
         default=False,
@@ -325,14 +325,16 @@ class RegulationStatus(AbstractBase):
             raise ValidationError("Only one Initial state is allowed.")
 
     def validate_only_one_previous_state_per_status(self):
-        previous_states = self.__class__.objects.filter(previous=self.previous)
-        if previous_states.count() > 0 and self.previous:
+        previous_states = self.__class__.objects.filter(
+            previous_status=self.previous_status)
+        if previous_states.count() > 0 and self.previous_status:
             raise ValidationError(
                 "A regulation status can only preceed one status")
 
     def validate_only_one_next_state_per_status(self):
-        next_states = self.__class__.objects.filter(next=self.next)
-        if next_states.count() > 0 and self.next:
+        next_states = self.__class__.objects.filter(
+            next_status=self.next_status)
+        if next_states.count() > 0 and self.next_status:
             raise ValidationError("A status can only succeed one status")
 
     def clean(self, *args, **kwargs):

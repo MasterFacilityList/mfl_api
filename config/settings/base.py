@@ -100,7 +100,7 @@ CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
