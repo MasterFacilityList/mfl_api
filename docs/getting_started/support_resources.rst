@@ -193,8 +193,9 @@ listed at ``/api/facilities/job_titles/``. Individual job title detail
 resources will be at ``/api/facilities/job_titles/<pk>`` e.g
 ``/api/facilities/job_titles/7ec51365-75b7-45e5-873b-8bb3c97bbe21``.
 
-When creating a new job title, the ``name`` and ``description`` should be
-``POST``ed to the list endpoint. The example below is a valid payload::
+When creating a new job title, the ``name`` and ``description`` should be sent
+as a ``POST`` payload to the list endpoint. The example below is a valid
+payload:
 
 .. code-block:: javascript
 
@@ -257,6 +258,7 @@ known contact, although the use cases for that are more limited.
     *   The use of filters: the list APIs are filterably by most of the
         fields that they list. You can explore this further in the sandbox.
     *   The use of **explicit join tables** for many to many relationships.
+
     The ``regulating_body_contact`` resource that is the subject of this
     section is an example. That is a deliberate choice - we find that, even
     though it makes the API clients do a little more work, it leads to more
