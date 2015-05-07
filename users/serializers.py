@@ -23,8 +23,8 @@ def _lookup_permissions(validated_data):
 
 
 def _lookup_groups(validated_data):
-    user_supplied_groups = validated_data.get('groups', [])
     try:
+        user_supplied_groups = validated_data.get('groups', [])
         return [
             Group.objects.get(**user_supplied_group)
             for user_supplied_group in user_supplied_groups
@@ -32,7 +32,7 @@ def _lookup_groups(validated_data):
     except Exception as ex:  # Will reraise a more API friendly exception
         raise ValidationError(
             '"{}"" when retrieving groups corresponding to "{}"'
-            .format(ex, user_supplied_groups)
+            .format(ex, validated_data)
         )
 
 
@@ -79,7 +79,7 @@ class GroupSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         permissions = _lookup_permissions(validated_data)
-        del validated_data['permissions']
+        validated_data.pop('permissions', None)
 
         new_group = Group(**validated_data)
         new_group.save()
@@ -89,7 +89,7 @@ class GroupSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         permissions = _lookup_permissions(validated_data)
-        del validated_data['permissions']
+        validated_data.pop('permissions', None)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -119,9 +119,9 @@ class MflUserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         groups = _lookup_groups(validated_data)
-        del validated_data['groups']
+        validated_data.pop('groups', None)
 
-        new_user = MflUser(**validated_data)
+        new_user = MflUser.objects.create(**validated_data)
         new_user.save()
         new_user.groups.add(*groups)
 
@@ -130,8 +130,11 @@ class MflUserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         groups = _lookup_groups(validated_data)
-        del validated_data['groups']
+        validated_data.pop('groups', None)
 
+        # This does not handle password changes intelligently
+        # Use the documented password change endpoints
+        # Also: teach your API consumers to always prefer PATCH to PUT
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
@@ -143,7 +146,8 @@ class MflUserSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password', 'password_history',)
+        exclude = ('password_history',)
+        extra_kwargs = {'password': {'write_only': True}}
 
 
 class MFLOAuthApplicationSerializer(serializers.ModelSerializer):

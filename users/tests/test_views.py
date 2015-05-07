@@ -4,8 +4,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
 from common.tests.test_views import LoginMixin
 from rest_framework.test import APITestCase
+from rest_framework.exceptions import ValidationError
 
 from ..models import MflUser
+from ..serializers import _lookup_groups
 
 
 class TestLogin(APITestCase):
@@ -72,6 +74,7 @@ class TestUserViews(LoginMixin, APITestCase):
             "last_name": "Ruhusa",
             "other_names": "",
             "username": "hakunaruhusa",
+            "password": "rubbishpass"
         }
         response = self.client.post(create_url, post_data)
         self.assertEqual(201, response.status_code)
@@ -117,6 +120,10 @@ class TestGroupViews(LoginMixin, APITestCase):
     def setUp(self):
         super(TestGroupViews, self).setUp()
         self.url = reverse('api:users:groups_list')
+
+    def test_invalid_group_lookup(self):
+        with self.assertRaises(ValidationError):
+            _lookup_groups(None)
 
     def test_create_and_update_group(self):
         data = {
