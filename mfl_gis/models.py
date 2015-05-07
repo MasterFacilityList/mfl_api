@@ -203,6 +203,32 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     def center(self):
         return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
+    @property
+    def surface_area(self):
+        return self.mpoly.area if self.mpoly else 0
+
+    @property
+    def facility_count(self):
+        return FacilityCoordinates.objects.filter(
+            coordinates__contained=self.mpoly
+        ).count() if self and self.mpoly else 0
+
+    @property
+    def density(self):
+        """This is a synthetic value
+
+        The units matter less than the relative density compared to other
+        administrative units
+        """
+        return self.facility_count / (self.surface_area * 10000) \
+            if self.surface_area else 0
+
+    @property
+    def facility_coordinates(self):
+        from common.models.model_declarations import \
+            _lookup_facility_coordinates
+        return _lookup_facility_coordinates(self)
+
     def __unicode__(self):
         return self.name
 
@@ -218,12 +244,6 @@ class WorldBorder(AdministrativeUnitBoundary):
     """
     longitude = gis_models.FloatField()
     latitude = gis_models.FloatField()
-
-    @property
-    def facility_coordinates(self):
-        from common.models.model_declarations import \
-            _lookup_facility_coordinates
-        return _lookup_facility_coordinates(self)
 
 
 @reversion.register

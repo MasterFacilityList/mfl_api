@@ -31,47 +31,62 @@ class FacilityCoordinatesSerializer(
         geo_field = "coordinates"
 
 
-class WorldBorderSerializer(
+class AbstractBoundarySerializer(
         AbstractFieldsMixin, GeoFeatureModelSerializer):
     center = serializers.ReadOnlyField()
+    facility_count = serializers.ReadOnlyField()
+    density = serializers.ReadOnlyField()
 
     class Meta(object):
+        geo_field = 'mpoly'
+
+
+class WorldBorderSerializer(AbstractBoundarySerializer):
+    center = serializers.ReadOnlyField()
+
+    class Meta(AbstractBoundarySerializer.Meta):
         model = WorldBorder
-        geo_field = "mpoly"
 
 
-class WorldBorderDetailSerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
+class WorldBorderDetailSerializer(AbstractBoundarySerializer):
     facility_coordinates = serializers.ReadOnlyField()
     center = serializers.ReadOnlyField()
 
-    class Meta(object):
+    class Meta(AbstractBoundarySerializer.Meta):
         model = WorldBorder
-        geo_field = "mpoly"
 
 
-class CountyBoundarySerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
-
-    class Meta(object):
+class CountyBoundarySerializer(AbstractBoundarySerializer):
+    class Meta(AbstractBoundarySerializer.Meta):
         model = CountyBoundary
-        geo_field = "mpoly"
 
 
-class ConstituencyBoundarySerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
+class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
+    facility_coordinates = serializers.ReadOnlyField()
 
-    class Meta(object):
+    class Meta(AbstractBoundarySerializer.Meta):
+        model = CountyBoundary
+
+
+class ConstituencyBoundarySerializer(AbstractBoundarySerializer):
+    class Meta(AbstractBoundarySerializer.Meta):
         model = ConstituencyBoundary
-        geo_field = "mpoly"
 
 
-class WardBoundarySerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
+class ConstituencyBoundaryDetailSerializer(AbstractBoundarySerializer):
+    facility_coordinates = serializers.ReadOnlyField()
 
-    class Meta(object):
+    class Meta(AbstractBoundarySerializer.Meta):
+        model = ConstituencyBoundary
+
+
+class WardBoundarySerializer(AbstractBoundarySerializer):
+    class Meta(AbstractBoundarySerializer.Meta):
         model = WardBoundary
-        geo_field = "mpoly"
+
+
+class WardBoundaryDetailSerializer(AbstractBoundarySerializer):
+    facility_coordinates = serializers.ReadOnlyField()
+
+    class Meta(AbstractBoundarySerializer.Meta):
+        model = WardBoundary
