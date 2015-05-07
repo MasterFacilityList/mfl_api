@@ -512,13 +512,13 @@ class Facility(SequenceMixin, AbstractBase):
         return self.ward.constituency.name
 
     @property
-    def operations_status_name(self):
+    def operation_status_name(self):
         return self.operation_status.name
 
     @property
     def regulary_status_name(self):
         if self.current_regulatory_status:
-            return self.current_regulatory_status.name
+            return self.current_regulatory_status.regulation_status.name
 
     @property
     def facility_type_name(self):
@@ -688,7 +688,7 @@ class Service(SequenceMixin, AbstractBase):
         super(Service, self).save(*args, **kwargs)
 
     @property
-    def catagory_name(self):
+    def category_name(self):
         return self.category.name
 
     def __unicode__(self):

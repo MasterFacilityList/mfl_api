@@ -113,8 +113,8 @@ class TestServiceModel(BaseTestCase):
 
     def test_service_category_name(self):
         category = mommy.make(ServiceCategory)
-        service = mommy.make(Service)
-        self.assertEquals(category.name, service.catagory_name)
+        service = mommy.make(Service, category=category)
+        self.assertEquals(category.name, service.category_name)
 
 
 class TestOwnerTypes(BaseTestCase):
@@ -478,9 +478,9 @@ class TestRegulationStatusModel(BaseTestCase):
     def test_previous_state_name(self):
         status = mommy.make(RegulationStatus, is_final_state=True)
         prev_state = mommy.make(RegulationStatus, previous_status=status)
-        self.assertEquals(status, prev_state.previous_state_name)
+        self.assertEquals(status.name, prev_state.previous_state_name)
 
     def test_next_state_name(self):
         status = mommy.make(RegulationStatus, is_initial_state=True)
         next_state = mommy.make(RegulationStatus, next_status=status)
-        self.assertEquals(status, next_state.next_state_name)
+        self.assertEquals(status.name, next_state.next_state_name)
