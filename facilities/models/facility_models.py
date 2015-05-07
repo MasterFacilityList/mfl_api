@@ -355,15 +355,32 @@ class RegulationStatus(AbstractBase):
         if next_states.count() > 0 and self.next_status:
             raise ValidationError("A status can only succeed one status")
 
-    # validate a final state needs a previouos tsate
-    # validata an initial state needs a next state
-    # # validate if not initial and not final then provice both next
-    # nd previous states
+    def validate_next_state_provided_for_initial_state(self):
+        if self.is_initial_state and not self.next_status:
+            message = "A initial status needs a next status"
+            raise ValidationError(message)
+
+    def validate_final_state_requires_previous_state(self):
+        if self.is_final_state and not self.previous_status:
+            message = "A final state  needs a previous status"
+            raise ValidationError(message)
+
+    def validate_next_and_previous_status_for_itermediate_states(self):
+        if (
+            not self.is_initial_state and not self.is_final_state and not
+                self.next_status and not self.previous_status):
+            message = "Next status and previous status is required for"
+            "intermediate states "
+            raise ValidationError(message)
+
     def clean(self, *args, **kwargs):
         self.validate_only_one_final_state()
         self.validate_only_one_initial_state()
         self.validate_only_one_previous_state_per_status()
         self.validate_only_one_next_state_per_status()
+        self.validate_final_state_requires_previous_state()
+        self.validate_next_state_provided_for_initial_state()
+        self.validate_next_and_previous_status_for_itermediate_states()
         super(RegulationStatus, self).clean(*args, **kwargs)
 
     def __unicode__(self):
@@ -400,21 +417,6 @@ class FacilityRegulationStatus(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(
             self.facility.name, self.regulation_status.name)
-
-    # # validate that the facilities current regulation status has
-    # # self.regulation_status as next state
-
-    # def validate_regulation_transition(self):
-    #     # get the current regulation status
-    #     # get the trasnsition to status
-    #     # check if it is a next or previous
-    #     # check if the transition is allowed else raise validation error
-    #     facility_current_regulation = self.facility.current_regulatory_status
-    #     if facility_current_regulation:
-    #         if (
-    #             facility_current_regulation.next_status != \
-    #             self.regulation_status and self.is_upgrade):
-    # raise ValidationError
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility regulation statuses'
