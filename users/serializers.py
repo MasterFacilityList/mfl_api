@@ -121,7 +121,7 @@ class MflUserSerializer(serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         del validated_data['groups']
 
-        new_user = MflUser(**validated_data)
+        new_user = MflUser.objects.create(**validated_data)
         new_user.save()
         new_user.groups.add(*groups)
 
@@ -132,6 +132,9 @@ class MflUserSerializer(serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         del validated_data['groups']
 
+        # This does not handle password changes intelligently
+        # Use the documented password change endpoints
+        # Also: teach your API consumers to always prefer PATCH to PUT
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
