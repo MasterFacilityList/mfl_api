@@ -221,6 +221,10 @@ class RegulatingBody(AbstractBase):
         Contact, through='RegulatingBodyContact')
     regulation_verb = models.CharField(
         max_length=100)
+    regulatory_body_type = models.ForeignKey(
+        OwnerType, null=True, blank=True,
+        help_text='Show the kind of institutions that the body regulates e.g'
+        ' private facilities')
 
     @property
     def postal_address(self):
@@ -386,7 +390,8 @@ class FacilityRegulationStatus(AbstractBase):
         RegulationStatus, on_delete=models.PROTECT)
     reason = models.TextField(
         null=True, blank=True,
-        help_text="e.g Why has a facility been suspended")
+        help_text="An explanation for as to why is the facility is being"
+        "put in the particular status")
     license_number = models.CharField(
         max_length=100, null=True, blank=True,
         help_text='The license number that the facility has been '
@@ -396,8 +401,20 @@ class FacilityRegulationStatus(AbstractBase):
         return "{}: {}".format(
             self.facility.name, self.regulation_status.name)
 
-    # validate that the facilities current regulation status has
-    # self.regulation_status as next state
+    # # validate that the facilities current regulation status has
+    # # self.regulation_status as next state
+
+    # def validate_regulation_transition(self):
+    #     # get the current regulation status
+    #     # get the trasnsition to status
+    #     # check if it is a next or previous
+    #     # check if the transition is allowed else raise validation error
+    #     facility_current_regulation = self.facility.current_regulatory_status
+    #     if facility_current_regulation:
+    #         if (
+    #             facility_current_regulation.next_status != \
+    #             self.regulation_status and self.is_upgrade):
+    # raise ValidationError
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility regulation statuses'
