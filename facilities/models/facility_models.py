@@ -218,10 +218,8 @@ class RegulatingBody(AbstractBase):
         "Council of Kenya could be abbreviated as NCK.")
     contacts = models.ManyToManyField(
         Contact, through='RegulatingBodyContact')
-    regulation_function = models.CharField(
-        max_length=100, null=True, blank=True)
     regulation_verb = models.CharField(
-        max_length=100, null=True, blank=True)
+        max_length=100)
 
     @property
     def postal_address(self):
