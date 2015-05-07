@@ -96,3 +96,38 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         self.assertTrue(os.path.exists(file_path))
         os.remove(file_path)
         self.assertFalse(os.path.exists(file_path))
+
+    def test_nested_empty_list_in_excel_renderer(self):
+            data = {
+                "results": [
+                    {
+                        "key_a": "data",
+                        "key_b": "data"
+                    },
+                    {
+                        "key_a": "data",
+                        "key_b": "data"
+                    },
+                    {
+                        "key_a": "data",
+                        "key_b": []
+                    }
+                ]
+            }
+
+            _write_excel_file(data)
+            file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
+            self.assertTrue(os.path.exists(file_path))
+            os.remove(file_path)
+            self.assertFalse(os.path.exists(file_path))
+
+    def test_empty_list(self):
+        data = {
+            "results": []
+        }
+
+        _write_excel_file(data)
+        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
+        self.assertTrue(os.path.exists(file_path))
+        os.remove(file_path)
+        self.assertFalse(os.path.exists(file_path))
