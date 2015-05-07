@@ -203,6 +203,12 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     def center(self):
         return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
+    @property
+    def facility_coordinates(self):
+        from common.models.model_declarations import \
+            _lookup_facility_coordinates
+        return _lookup_facility_coordinates(self)
+
     def __unicode__(self):
         return self.name
 
@@ -218,12 +224,6 @@ class WorldBorder(AdministrativeUnitBoundary):
     """
     longitude = gis_models.FloatField()
     latitude = gis_models.FloatField()
-
-    @property
-    def facility_coordinates(self):
-        from common.models.model_declarations import \
-            _lookup_facility_coordinates
-        return _lookup_facility_coordinates(self)
 
 
 @reversion.register

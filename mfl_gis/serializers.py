@@ -59,6 +59,16 @@ class CountyBoundarySerializer(
         geo_field = "mpoly"
 
 
+class CountyBoundaryDetailSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
+    center = serializers.ReadOnlyField()
+    facility_coordinates = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = CountyBoundary
+        geo_field = "mpoly"
+
+
 class ConstituencyBoundarySerializer(
         AbstractFieldsMixin, GeoFeatureModelSerializer):
     center = serializers.ReadOnlyField()
@@ -68,9 +78,29 @@ class ConstituencyBoundarySerializer(
         geo_field = "mpoly"
 
 
+class ConstituencyBoundaryDetailSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
+    center = serializers.ReadOnlyField()
+    facility_coordinates = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = ConstituencyBoundary
+        geo_field = "mpoly"
+
+
 class WardBoundarySerializer(
         AbstractFieldsMixin, GeoFeatureModelSerializer):
     center = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = WardBoundary
+        geo_field = "mpoly"
+
+
+class WardBoundaryDetailSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
+    center = serializers.ReadOnlyField()
+    facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(object):
         model = WardBoundary

@@ -28,7 +28,10 @@ from .serializers import (
     WorldBorderDetailSerializer,
     CountyBoundarySerializer,
     ConstituencyBoundarySerializer,
-    WardBoundarySerializer
+    WardBoundarySerializer,
+    CountyBoundaryDetailSerializer,
+    ConstituencyBoundaryDetailSerializer,
+    WardBoundaryDetailSerializer
 )
 
 
@@ -103,7 +106,7 @@ class CountyBoundaryListView(generics.ListCreateAPIView):
 class CountyBoundaryDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = CountyBoundary.objects.all()
-    serializer_class = CountyBoundarySerializer
+    serializer_class = CountyBoundaryDetailSerializer
 
 
 class ConstituencyBoundaryListView(generics.ListCreateAPIView):
@@ -116,7 +119,7 @@ class ConstituencyBoundaryListView(generics.ListCreateAPIView):
 class ConstituencyBoundaryDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = ConstituencyBoundary.objects.all()
-    serializer_class = ConstituencyBoundarySerializer
+    serializer_class = ConstituencyBoundaryDetailSerializer
 
 
 class WardBoundaryListView(generics.ListCreateAPIView):
@@ -129,4 +132,4 @@ class WardBoundaryListView(generics.ListCreateAPIView):
 class WardBoundaryDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = WardBoundary.objects.all()
-    serializer_class = WardBoundarySerializer
+    serializer_class = WardBoundaryDetailSerializer
