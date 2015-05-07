@@ -210,7 +210,8 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     @property
     def facility_count(self):
         return FacilityCoordinates.objects.filter(
-            coordinates__contained=self.mpoly).count()
+            coordinates__contained=self.mpoly
+        ).count() if self and self.mpoly else 0
 
     @property
     def density(self):
