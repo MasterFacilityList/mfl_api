@@ -81,7 +81,7 @@ class TestElasticSearchAPI(TestCase):
     SEARCH={
         "ELASTIC_URL": "http://localhost:9200/",
         "INDEX_NAME": "test_index",
-        "NON_INDEXABLE_MODELs": [
+        "NON_INDEXABLE_MODELS": [
             "mfl_gis.FacilityCoordinates",
             "mfl_gis.WorldBorder",
             "mfl_gis.CountyBoundary",
@@ -166,7 +166,7 @@ class TestSearchFunctions(ViewTestBase):
     SEARCH={
         "ELASTIC_URL": "http://localhost:9200/",
         "INDEX_NAME": "test_index",
-        "NON_INDEXABLE_MODELs": [
+        "NON_INDEXABLE_MODELS": [
             "mfl_gis.FacilityCoordinates",
             "mfl_gis.WorldBorder",
             "mfl_gis.CountyBoundary",
