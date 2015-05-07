@@ -241,7 +241,7 @@ SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
     "REALTIME_INDEX": False,
-    "NON_INDEXABLE_MODELs": [
+    "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
         "mfl_gis.WorldBorder",
         "mfl_gis.CountyBoundary",

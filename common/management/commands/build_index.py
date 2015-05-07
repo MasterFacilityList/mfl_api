@@ -17,7 +17,7 @@ class Command(BaseCommand):
         # optimize this to index in bulk
 
         apps_lists = settings.LOCAL_APPS
-        non_indexable_models = settings.SEARCH.get('NON_INDEXABLE_MODELs')
+        non_indexable_models = settings.SEARCH.get('NON_INDEXABLE_MODELS')
         non_indexable_models_classes = []
         non_indexable_models_names = []
         for app_model in non_indexable_models:
