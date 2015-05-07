@@ -201,7 +201,7 @@ class RegulatingBodyContact(AbstractBase):
 @reversion.register
 class RegulatingBody(AbstractBase):
     """
-    Bodies responsible for licensing or gazettement of facilites.
+    Bodies responsible for licensing of facilities.
 
     This is normally based on the relationship between the facility
     owner and the Regulator. For example, MOH-owned facilities are
@@ -239,7 +239,7 @@ class RegulatingBody(AbstractBase):
 @reversion.register
 class RegulationStatus(AbstractBase):
     """
-    Indicates whether the facililty has been approved.
+    A Regulation state.
 
     The regulation states could be
         1. Pending Licensing: A facility that has been recommended by the DHMT
@@ -296,7 +296,7 @@ class RegulationStatus(AbstractBase):
     description = models.TextField(
         null=True, blank=True,
         help_text="A short description of the regulation state or state e.g"
-        "PENDING_OPENING could be descriped as 'waiting for the license to"
+        "PENDING_LINCENSING could be descriped as 'waiting for the license to"
         "begin operating' ")
     previous = models.ForeignKey(
         'self', related_name='previous_status', null=True, blank=True,
@@ -315,32 +315,32 @@ class RegulationStatus(AbstractBase):
 
     def validate_only_one_final_state(self):
         final_state = self.__class__.objects.filter(
-            is_final_state=True).count()
-        if final_state.count() > 1:
+            is_final_state=True)
+        if final_state.count() > 0 and self.is_final_state:
             raise ValidationError("Only one final state is allowed.")
 
     def validate_only_one_initial_state(self):
-        initial_state = self.__class__.objects.filter(
-            is_initial_state=True).count()
-        if initial_state.count() > 1:
+        initial_state = self.__class__.objects.filter(is_initial_state=True)
+        if initial_state.count() > 0 and self.is_initial_state:
             raise ValidationError("Only one Initial state is allowed.")
 
     def validate_only_one_previous_state_per_status(self):
-        previous_states = self.__class__.objects.filter(previous=self)
-        if previous_states.count() > 1:
+        previous_states = self.__class__.objects.filter(previous=self.previous)
+        if previous_states.count() > 0 and self.previous:
             raise ValidationError(
                 "A regulation status can only preceed one status")
 
     def validate_only_one_next_state_per_status(self):
-        next_states = self.__class__.objects.filter(next=self)
-        if next_states.count() > 1:
+        next_states = self.__class__.objects.filter(next=self.next)
+        if next_states.count() > 0 and self.next:
             raise ValidationError("A status can only succeed one status")
 
     def clean(self, *args, **kwargs):
         self.validate_only_one_final_state()
         self.validate_only_one_initial_state()
-        self.validate_only_one_previous_state_per_status
+        self.validate_only_one_previous_state_per_status()
         self.validate_only_one_next_state_per_status()
+        super(RegulationStatus, self).clean(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -375,6 +375,9 @@ class FacilityRegulationStatus(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(
             self.facility.name, self.regulation_status.name)
+
+    # validate that the facilities current regulation status has
+    # self.regulation_status as next state
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility regulation statuses'

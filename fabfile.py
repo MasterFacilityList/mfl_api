@@ -119,9 +119,9 @@ def setup(*args, **kwargs):
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
 
-    if base.DEBUG:
-        load_demo_data()
-        create_entire_index()
+    # if base.DEBUG:
+    #     load_demo_data()
+    #     create_entire_index()
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()
