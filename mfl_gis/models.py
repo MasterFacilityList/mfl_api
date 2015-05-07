@@ -204,6 +204,20 @@ class AdministrativeUnitBoundary(GISAbstractBase):
         return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
     @property
+    def area(self):
+        return self.mpoly.area if self.mpoly else 0
+
+    @property
+    def facility_count(self):
+        from common.models.model_declarations import \
+            _lookup_facility_coordinates
+        return len(_lookup_facility_coordinates(self))
+
+    @property
+    def density(self):
+        return self.facility_count / self.area if self.area else 0
+
+    @property
     def facility_coordinates(self):
         from common.models.model_declarations import \
             _lookup_facility_coordinates

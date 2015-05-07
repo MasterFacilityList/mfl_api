@@ -50,9 +50,14 @@ class WorldBorderDetailSerializer(
         geo_field = "mpoly"
 
 
-class CountyBoundarySerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
+class AbstractBoundarySerializer(GeoFeatureModelSerializer):
     center = serializers.ReadOnlyField()
+    facility_count = serializers.ReadOnlyField()
+    density = serializers.ReadOnlyField()
+
+
+class CountyBoundarySerializer(
+        AbstractFieldsMixin, AbstractBoundarySerializer):
 
     class Meta(object):
         model = CountyBoundary
@@ -60,8 +65,7 @@ class CountyBoundarySerializer(
 
 
 class CountyBoundaryDetailSerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
+        AbstractFieldsMixin, AbstractBoundarySerializer):
     facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(object):
