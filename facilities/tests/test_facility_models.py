@@ -1,8 +1,15 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
-from common.models import Contact, Ward, PhysicalAddress, ContactType
+from common.models import (
+    Contact,
+    Ward,
+    PhysicalAddress,
+    ContactType,
+    County,
+    Constituency)
 
 from ..models import (
     OwnerType,
@@ -103,6 +110,11 @@ class TestServiceModel(BaseTestCase):
     def test_save_with_code(self):
         service = mommy.make(Service, code='1341')
         self.assertEquals(1341, service.code)
+
+    def test_service_category_name(self):
+        category = mommy.make(ServiceCategory)
+        service = mommy.make(Service, category=category)
+        self.assertEquals(category.name, service.category_name)
 
 
 class TestOwnerTypes(BaseTestCase):
@@ -315,6 +327,51 @@ class TestFacility(BaseTestCase):
             facility_approval.comment,
             'It meets all the registration requirements')
 
+    def test_county(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility = mommy.make(Facility, ward=ward)
+        self.assertEquals(county.name, facility.county)
+
+    def test_constituency(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility = mommy.make(Facility, ward=ward)
+        self.assertEquals(constituency.name, facility.constituency)
+
+    def test_operations_status_name(self):
+        operation_status = mommy.make(FacilityStatus)
+        facility = mommy.make(Facility, operation_status=operation_status)
+        self.assertEquals(
+            facility.operation_status_name, operation_status.name)
+
+    def test_regulatory_status_name(self):
+        facility = mommy.make(Facility)
+        facility_reg_status = mommy.make(
+            FacilityRegulationStatus, facility=facility)
+        self.assertEquals(
+            facility.regulary_status_name,
+            facility_reg_status.regulation_status.name)
+
+    def test_owner_type_name(self):
+        owner_type = mommy.make(OwnerType, name='GAVA')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility = mommy.make(Facility, owner=owner)
+        self.assertEquals(owner.name, facility.owner_name)
+
+    def test_owner_name(self):
+        owner_type = mommy.make(OwnerType, name='GAVA')
+        owner = mommy.make(Owner, owner_type=owner_type)
+        facility = mommy.make(Facility, owner=owner)
+        self.assertEquals(owner_type.name, facility.owner_type_name)
+
+    def test_facility_type_name(self):
+        facility_type = mommy.make(FacilityType, name='District')
+        facility = mommy.make(Facility, facility_type=facility_type)
+        self.assertEquals(facility.facility_type_name, facility_type.name)
+
 
 class TestFacilityContact(BaseTestCase):
     def test_save(self):
@@ -379,3 +436,59 @@ class TestFacilityUnitModel(BaseTestCase):
         facility_unit = FacilityUnit.objects.create(**data)
         self.assertEquals(1, FacilityUnit.objects.count())
         self.assertEquals(str(facility_unit), 'AKUH: Pharmacy')
+
+
+class TestRegulationStatusModel(BaseTestCase):
+    def test_save(self):
+        mommy.make(RegulationStatus)
+        self.assertEquals(1, RegulationStatus.objects.count())
+
+    def test_validate_only_one_initial_state(self):
+        mommy.make(
+            RegulationStatus, is_initial_state=True, is_final_state=False)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                RegulationStatus, is_initial_state=True, is_final_state=False)
+
+    def test_only_one_final_state(self):
+        mommy.make(RegulationStatus, is_final_state=True)
+        with self.assertRaises(ValidationError):
+            mommy.make(RegulationStatus, is_final_state=True)
+
+    def test_only_previous_state_of_another_model(self):
+        regulation_status = mommy.make(RegulationStatus)
+        status = mommy.make(RegulationStatus)
+        status.previous_status = regulation_status
+        status.save()
+        with self.assertRaises(ValidationError):
+            status_2 = mommy.make(RegulationStatus)
+            status_2.previous_status = regulation_status
+            status_2.save()
+
+    def test_only_one_next_state_of_a_model(self):
+        regulation_status = mommy.make(RegulationStatus)
+        status = mommy.make(RegulationStatus)
+        status.next_status = regulation_status
+        status.save()
+        with self.assertRaises(ValidationError):
+            status_2 = mommy.make(RegulationStatus)
+            status_2.next_status = regulation_status
+            status_2.save()
+
+    def test_previous_state_name(self):
+        status = mommy.make(RegulationStatus, is_final_state=True)
+        prev_state = mommy.make(RegulationStatus, previous_status=status)
+        self.assertEquals(status.name, prev_state.previous_state_name)
+
+    def test_next_state_name(self):
+        status = mommy.make(RegulationStatus, is_initial_state=True)
+        next_state = mommy.make(RegulationStatus, next_status=status)
+        self.assertEquals(status.name, next_state.next_state_name)
+
+    def test_previous_state_name_is_null(self):
+        status = mommy.make(RegulationStatus, is_initial_state=True)
+        self.assertEquals("", status.previous_state_name)
+
+    def test_next_state_name_is_null(self):
+        status = mommy.make(RegulationStatus, is_final_state=True)
+        self.assertEquals("", status.next_state_name)

@@ -1,6 +1,7 @@
 import reversion
 
 from django.db import models
+from django.core.exceptions import ValidationError
 
 from common.models import (
     AbstractBase,
@@ -200,7 +201,7 @@ class RegulatingBodyContact(AbstractBase):
 @reversion.register
 class RegulatingBody(AbstractBase):
     """
-    Bodies responsible for licensing or gazettement of facilites.
+    Bodies responsible for licensing of facilities.
 
     This is normally based on the relationship between the facility
     owner and the Regulator. For example, MOH-owned facilities are
@@ -220,6 +221,10 @@ class RegulatingBody(AbstractBase):
         Contact, through='RegulatingBodyContact')
     regulation_verb = models.CharField(
         max_length=100)
+    regulatory_body_type = models.ForeignKey(
+        OwnerType, null=True, blank=True,
+        help_text='Show the kind of institutions that the body regulates e.g'
+        'private facilities')
 
     @property
     def postal_address(self):
@@ -238,11 +243,11 @@ class RegulatingBody(AbstractBase):
 @reversion.register
 class RegulationStatus(AbstractBase):
     """
-    Indicates whether the facililty has been approved.
+    A Regulation state.
 
     The regulation states could be
-            A facility that has been recommended by the DHMT but is
-            waiting for the license from the National Regulatory Body.
+        1. Pending Licensing: A facility that has been recommended by the DHMT
+            but is  waiting for the license from the National Regulatory Body.
 
         2: Licensed:
             A facility that has been approved and issued a license by the
@@ -268,6 +273,25 @@ class RegulationStatus(AbstractBase):
         8. Gazetted:
             A facility that has been gazetted and the notice published in the
             Kenya Gazette.
+
+    There are number of fields that are worth looking at:
+        is_initial_state:
+            This is the state that shows whether the state is the
+            first state
+            Is should be only one for the entire api
+        is_final_state:
+            This is last state of the of the workflow state.
+            Just like the is_initial_state is should be the only one in the
+            entire workflow
+        previous_status:
+            If status has a a preceding status, it should added here.
+            If does not then leave it blank.
+            A status can have only one previous state.
+        next_status:
+            If the status has a suceedding status, it should be added here,
+            If does not not leave it blank
+            Again just the 'previous' field,  a status can have only one
+            'next' field.
     """
     name = models.CharField(
         max_length=100, unique=True,
@@ -276,8 +300,67 @@ class RegulationStatus(AbstractBase):
     description = models.TextField(
         null=True, blank=True,
         help_text="A short description of the regulation state or state e.g"
-        "PENDING_OPENING could be descriped as 'waiting for the license to"
+        "PENDING_LINCENSING could be descriped as 'waiting for the license to"
         "begin operating' ")
+    previous_status = models.ForeignKey(
+        'self', related_name='previous_state', null=True, blank=True,
+        help_text='The regulation_status preceding this regulation status.')
+    next_status = models.ForeignKey(
+        'self', related_name='next_state', null=True, blank=True,
+        help_text='The regulation_status suceedding this regulation status.')
+    is_initial_state = models.BooleanField(
+        default=False,
+        help_text='Indicates whether it is the very first state'
+        'in the regulation workflow.')
+    is_final_state = models.BooleanField(
+        default=False,
+        help_text='Indicates whether it is the last state'
+        ' in the regulation work-flow')
+
+    @property
+    def previous_state_name(self):
+        if self.previous_status:
+            return self.previous_status.name
+        else:
+            return ""
+
+    @property
+    def next_state_name(self):
+        if self.next_status:
+            return self.next_status.name
+        else:
+            return ""
+
+    def validate_only_one_final_state(self):
+        final_state = self.__class__.objects.filter(
+            is_final_state=True)
+        if final_state.count() > 0 and self.is_final_state:
+            raise ValidationError("Only one final state is allowed.")
+
+    def validate_only_one_initial_state(self):
+        initial_state = self.__class__.objects.filter(is_initial_state=True)
+        if initial_state.count() > 0 and self.is_initial_state:
+            raise ValidationError("Only one Initial state is allowed.")
+
+    def validate_only_one_previous_state_per_status(self):
+        previous_states = self.__class__.objects.filter(
+            previous_status=self.previous_status)
+        if previous_states.count() > 0 and self.previous_status:
+            raise ValidationError(
+                "A regulation status can only preceed one status")
+
+    def validate_only_one_next_state_per_status(self):
+        next_states = self.__class__.objects.filter(
+            next_status=self.next_status)
+        if next_states.count() > 0 and self.next_status:
+            raise ValidationError("A status can only succeed one status")
+
+    def clean(self, *args, **kwargs):
+        self.validate_only_one_final_state()
+        self.validate_only_one_initial_state()
+        self.validate_only_one_previous_state_per_status()
+        self.validate_only_one_next_state_per_status()
+        super(RegulationStatus, self).clean(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -289,7 +372,7 @@ class RegulationStatus(AbstractBase):
 @reversion.register
 class FacilityRegulationStatus(AbstractBase):
     """
-    Shows the regulation status of facility.
+    Shows the regulation status of a facility.
 
     It adds the extra reason field that makes it possible to give
     an explanation as to why a facility is in a certain regulation status.
@@ -303,7 +386,8 @@ class FacilityRegulationStatus(AbstractBase):
         RegulationStatus, on_delete=models.PROTECT)
     reason = models.TextField(
         null=True, blank=True,
-        help_text="e.g Why has a facility been suspended")
+        help_text="An explanation for as to why is the facility is being"
+        "put in the particular status")
     license_number = models.CharField(
         max_length=100, null=True, blank=True,
         help_text='The license number that the facility has been '
@@ -414,9 +498,39 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def current_regulatory_status(self):
         try:
+            # returns in reverse chronological order so just pick the first one
             return self.regulatory_details.all()[0]
         except IndexError:
             return []
+
+    @property
+    def county(self):
+        return self.ward.constituency.county.name
+
+    @property
+    def constituency(self):
+        return self.ward.constituency.name
+
+    @property
+    def operation_status_name(self):
+        return self.operation_status.name
+
+    @property
+    def regulary_status_name(self):
+        if self.current_regulatory_status:
+            return self.current_regulatory_status.regulation_status.name
+
+    @property
+    def facility_type_name(self):
+        return self.facility_type.name
+
+    @property
+    def owner_name(self):
+        return self.owner.name
+
+    @property
+    def owner_type_name(self):
+        return self.owner.owner_type.name
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -572,6 +686,10 @@ class Service(SequenceMixin, AbstractBase):
         if not self.code:
             self.code = self.generate_next_code_sequence()
         super(Service, self).save(*args, **kwargs)
+
+    @property
+    def category_name(self):
+        return self.category.name
 
     def __unicode__(self):
         return self.name

@@ -77,6 +77,8 @@ class ServiceOptionSerializer(
 
 
 class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    category_name = serializers.CharField(read_only=True)
+
     class Meta(object):
         model = Service
 
@@ -129,6 +131,9 @@ class JobTitleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class RegulationStatusSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    next_state_name = serializers.CharField(read_only=True)
+    previous_state_name = serializers.CharField(read_only=True)
+
     class Meta(object):
         model = RegulationStatus
 
@@ -147,6 +152,13 @@ class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class FacilitySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    regulary_status_name = serializers.CharField(read_only=True)
+    facility_type_name = serializers.CharField(read_only=True)
+    owner_name = serializers.CharField(read_only=True)
+    owner_type_name = serializers.CharField(read_only=True)
+    operations_status_name = serializers.CharField(read_only=True)
+    county = serializers.CharField(read_only=True)
+    constituency = serializers.CharField(read_only=True)
 
     class Meta(object):
         model = Facility
