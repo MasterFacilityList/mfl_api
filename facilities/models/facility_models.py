@@ -1,6 +1,7 @@
 import reversion
 
 from django.db import models
+from django.core.exceptions import ValidationError
 
 from common.models import (
     AbstractBase,
@@ -303,7 +304,7 @@ class RegulationStatus(AbstractBase):
     next = models.ForeignKey(
         'self', related_name='next_status', null=True, blank=True,
         help_text='The regulation_status suceedding this regulation status.')
-    is_initial_state = models = models.BooleanField(
+    is_initial_state = models.BooleanField(
         default=False,
         help_text='Indicates whether it is the very first state'
         'in the regulation workflow.')
@@ -311,6 +312,35 @@ class RegulationStatus(AbstractBase):
         default=False,
         help_text='Indicates whether it is the last state'
         ' in the regulation work-flow')
+
+    def validate_only_one_final_state(self):
+        final_state = self.__class__.objects.filter(
+            is_final_state=True).count()
+        if final_state.count() > 1:
+            raise ValidationError("Only one final state is allowed.")
+
+    def validate_only_one_initial_state(self):
+        initial_state = self.__class__.objects.filter(
+            is_initial_state=True).count()
+        if initial_state.count() > 1:
+            raise ValidationError("Only one Initial state is allowed.")
+
+    def validate_only_one_previous_state_per_status(self):
+        previous_states = self.__class__.objects.filter(previous=self)
+        if previous_states.count() > 1:
+            raise ValidationError(
+                "A regulation status can only preceed one status")
+
+    def validate_only_one_next_state_per_status(self):
+        next_states = self.__class__.objects.filter(next=self)
+        if next_states.count() > 1:
+            raise ValidationError("A status can only succeed one status")
+
+    def clean(self, *args, **kwargs):
+        self.validate_only_one_final_state()
+        self.validate_only_one_initial_state()
+        self.validate_only_one_previous_state_per_status
+        self.validate_only_one_next_state_per_status()
 
     def __unicode__(self):
         return self.name
