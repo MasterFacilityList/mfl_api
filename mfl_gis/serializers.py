@@ -50,22 +50,20 @@ class WorldBorderDetailSerializer(
         geo_field = "mpoly"
 
 
-class AbstractBoundarySerializer(GeoFeatureModelSerializer):
+class AbstractBoundarySerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     center = serializers.ReadOnlyField()
     facility_count = serializers.ReadOnlyField()
     density = serializers.ReadOnlyField()
 
 
-class CountyBoundarySerializer(
-        AbstractFieldsMixin, AbstractBoundarySerializer):
-
+class CountyBoundarySerializer(AbstractBoundarySerializer):
     class Meta(object):
         model = CountyBoundary
         geo_field = "mpoly"
 
 
-class CountyBoundaryDetailSerializer(
-        AbstractFieldsMixin, AbstractBoundarySerializer):
+class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
     facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(object):
@@ -73,18 +71,13 @@ class CountyBoundaryDetailSerializer(
         geo_field = "mpoly"
 
 
-class ConstituencyBoundarySerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
-
+class ConstituencyBoundarySerializer(AbstractBoundarySerializer):
     class Meta(object):
         model = ConstituencyBoundary
         geo_field = "mpoly"
 
 
-class ConstituencyBoundaryDetailSerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
+class ConstituencyBoundaryDetailSerializer(AbstractBoundarySerializer):
     facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(object):
@@ -92,18 +85,13 @@ class ConstituencyBoundaryDetailSerializer(
         geo_field = "mpoly"
 
 
-class WardBoundarySerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
-
+class WardBoundarySerializer(AbstractBoundarySerializer):
     class Meta(object):
         model = WardBoundary
         geo_field = "mpoly"
 
 
-class WardBoundaryDetailSerializer(
-        AbstractFieldsMixin, GeoFeatureModelSerializer):
-    center = serializers.ReadOnlyField()
+class WardBoundaryDetailSerializer(AbstractBoundarySerializer):
     facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(object):
