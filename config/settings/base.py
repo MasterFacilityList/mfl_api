@@ -4,14 +4,15 @@ import environ
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# The env based settings are non-forgiving, intentionally
-# If you do not have a setting...a kinder outcome will be had if the app
-# blows up at the first opportunity
+# Override in production via env
 env = environ.Env()
+env = environ.Env(
+    DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),)
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
-DEBUG = env('DEBUG')
-SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG', default=True)
+SECRET_KEY = env(
+    'SECRET_KEY', default='p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8')
 ENV_DB = env.db()
 DATABASES = {
     'default': {
@@ -34,9 +35,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = env('EMAIL_HOST', default='localhost')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default=487)
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='notarealpassword')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
