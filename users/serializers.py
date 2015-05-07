@@ -79,6 +79,7 @@ class GroupSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         permissions = _lookup_permissions(validated_data)
+        assert 'permissions' in validated_data
         del validated_data['permissions']
 
         new_group = Group(**validated_data)
@@ -89,6 +90,7 @@ class GroupSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         permissions = _lookup_permissions(validated_data)
+        assert 'permissions' in validated_data
         del validated_data['permissions']
 
         for attr, value in validated_data.items():
@@ -119,9 +121,11 @@ class MflUserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         groups = _lookup_groups(validated_data)
+        assert 'groups' in validated_data
         del validated_data['groups']
 
-        new_user = MflUser.objects.create(**validated_data)
+        new_user = MflUser(**validated_data)
+        new_user.set_password(validated_data.get('password', None))
         new_user.save()
         new_user.groups.add(*groups)
 
@@ -130,6 +134,7 @@ class MflUserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         groups = _lookup_groups(validated_data)
+        assert 'groups' in validated_data
         del validated_data['groups']
 
         # This does not handle password changes intelligently
