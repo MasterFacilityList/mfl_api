@@ -484,3 +484,11 @@ class TestRegulationStatusModel(BaseTestCase):
         status = mommy.make(RegulationStatus, is_initial_state=True)
         next_state = mommy.make(RegulationStatus, next_status=status)
         self.assertEquals(status.name, next_state.next_state_name)
+
+    def test_previous_state_name_is_null(self):
+        status = mommy.make(RegulationStatus, is_initial_state=True)
+        self.assertEquals("", status.previous_state_name)
+
+    def test_next_state_name_is_null(self):
+        status = mommy.make(RegulationStatus, is_final_state=True)
+        self.assertEquals("", status.next_state_name)
