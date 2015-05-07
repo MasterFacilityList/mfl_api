@@ -112,7 +112,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('reason', models.TextField(help_text=b'e.g Why has a facility been suspended', null=True, blank=True)),
+                ('reason', models.TextField(help_text=b'An explanation for as to why is the facility is beingput in the particular status', null=True, blank=True)),
                 ('license_number', models.CharField(help_text=b'The license number that the facility has been given by the regulator', max_length=100, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='regulatory_details', on_delete=django.db.models.deletion.PROTECT, to='facilities.Facility')),
@@ -512,6 +512,11 @@ class Migration(migrations.Migration):
             model_name='regulatingbody',
             name='created_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='regulatingbody',
+            name='regulatory_body_type',
+            field=models.ForeignKey(blank=True, to='facilities.OwnerType', help_text=b'Show the kind of institutions that the body regulates e.g private facilities', null=True),
         ),
         migrations.AddField(
             model_name='regulatingbody',

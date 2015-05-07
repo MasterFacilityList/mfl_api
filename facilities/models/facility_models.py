@@ -355,32 +355,11 @@ class RegulationStatus(AbstractBase):
         if next_states.count() > 0 and self.next_status:
             raise ValidationError("A status can only succeed one status")
 
-    def validate_next_state_provided_for_initial_state(self):
-        if self.is_initial_state and not self.next_status:
-            message = "A initial status needs a next status"
-            raise ValidationError(message)
-
-    def validate_final_state_requires_previous_state(self):
-        if self.is_final_state and not self.previous_status:
-            message = "A final state  needs a previous status"
-            raise ValidationError(message)
-
-    def validate_next_and_previous_status_for_itermediate_states(self):
-        if (
-            not self.is_initial_state and not self.is_final_state and not
-                self.next_status and not self.previous_status):
-            message = "Next status and previous status is required for"
-            "intermediate states "
-            raise ValidationError(message)
-
     def clean(self, *args, **kwargs):
         self.validate_only_one_final_state()
         self.validate_only_one_initial_state()
         self.validate_only_one_previous_state_per_status()
         self.validate_only_one_next_state_per_status()
-        self.validate_final_state_requires_previous_state()
-        self.validate_next_state_provided_for_initial_state()
-        self.validate_next_and_previous_status_for_itermediate_states()
         super(RegulationStatus, self).clean(*args, **kwargs)
 
     def __unicode__(self):
