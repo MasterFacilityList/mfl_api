@@ -268,6 +268,25 @@ class RegulationStatus(AbstractBase):
         8. Gazetted:
             A facility that has been gazetted and the notice published in the
             Kenya Gazette.
+
+    There are number of fields that are worth looking at:
+        is_initial_state:
+            This is the state that shows whether the state is the
+            first state
+            Is should be only one for the entire api
+        is_final_state:
+            This is last state of the of the workflow state.
+            Just like the is_initial_state is should be the only one in the
+            entire workflow
+        previous:
+            If status has a a preceding status, it should added here.
+            If does not then leave it blank.
+            A status can have only one previous state.
+        next:
+            If the status has a suceedding status, it should be added here,
+            If does not not leave it blank
+            Again just the 'previous' field,  a status can have only one
+            'next' field.
     """
     name = models.CharField(
         max_length=100, unique=True,
@@ -284,6 +303,14 @@ class RegulationStatus(AbstractBase):
     next = models.ForeignKey(
         'self', related_name='next_status', null=True, blank=True,
         help_text='The regulation_status suceedding this regulation status.')
+    is_initial_state = models = models.BooleanField(
+        default=False,
+        help_text='Indicates whether it is the very first state'
+        'in the regulation workflow.')
+    is_final_state = models.BooleanField(
+        default=False,
+        help_text='Indicates whether it is the last state'
+        ' in the regulation work-flow')
 
     def __unicode__(self):
         return self.name
