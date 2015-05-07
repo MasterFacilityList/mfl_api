@@ -18,11 +18,15 @@ from .views import (
     TownListView,
     TownDetailView,
     PhysicalAddressView,
-    PhysicalAddressDetailView
+    PhysicalAddressDetailView,
+    download_file
 )
 
 urlpatterns = patterns(
     '',
+    url(r'^download/(?P<file_name>\w+)/(?P<file_extension>\w+)/$',
+        download_file, name='download_file'),
+
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),
     url(r'^contact_types/(?P<pk>[^/]+)/$', ContactTypeDetailView.as_view(),
