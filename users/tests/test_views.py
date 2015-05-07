@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
 from common.tests.test_views import LoginMixin
 from rest_framework.test import APITestCase
+from rest_framework.exceptions import ValidationError
 
 from ..models import MflUser
 from ..serializers import _lookup_groups
