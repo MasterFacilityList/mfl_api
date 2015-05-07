@@ -45,6 +45,6 @@ class Command(BaseCommand):
                 else:
                     message = "model has been skipped it should {} should not"
                     " be indexed. ".format(model.__name__)
-                    self.stdout.write()
+                    self.stdout.write(message)
 
         self.stdout.write("Finished indexing")
