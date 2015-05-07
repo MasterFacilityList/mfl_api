@@ -240,7 +240,15 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": False
+    "REALTIME_INDEX": False,
+    "NON_INDEXABLE_MODELs": [
+        "mfl_gis.FacilityCoordinates",
+        "mfl_gis.WorldBorder",
+        "mfl_gis.CountyBoundary",
+        "mfl_gis.ConstituencyBoundary",
+        "mfl_gis.WardBoundary",
+
+    ]
 }
 
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'users.MFLOAuthApplication'

@@ -80,7 +80,14 @@ class TestElasticSearchAPI(TestCase):
 @override_settings(
     SEARCH={
         "ELASTIC_URL": "http://localhost:9200/",
-        "INDEX_NAME": "test_index"})
+        "INDEX_NAME": "test_index",
+        "NON_INDEXABLE_MODELs": [
+            "mfl_gis.FacilityCoordinates",
+            "mfl_gis.WorldBorder",
+            "mfl_gis.CountyBoundary",
+            "mfl_gis.ConstituencyBoundary",
+            "mfl_gis.WardBoundary"]
+    })
 class TestSearchFunctions(ViewTestBase):
     def test_serialize_model(self):
         facility = mommy.make(Facility)
@@ -158,7 +165,14 @@ class TestSearchFunctions(ViewTestBase):
 @override_settings(
     SEARCH={
         "ELASTIC_URL": "http://localhost:9200/",
-        "INDEX_NAME": "test_index"})
+        "INDEX_NAME": "test_index",
+        "NON_INDEXABLE_MODELs": [
+            "mfl_gis.FacilityCoordinates",
+            "mfl_gis.WorldBorder",
+            "mfl_gis.CountyBoundary",
+            "mfl_gis.ConstituencyBoundary",
+            "mfl_gis.WardBoundary"]
+    })
 class TestSearchFilter(ViewTestBase):
     def test_filter_no_data(self):
         api = search_utils.ElasticAPI()

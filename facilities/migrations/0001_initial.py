@@ -516,7 +516,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='regulatingbody',
             name='regulatory_body_type',
-            field=models.ForeignKey(blank=True, to='facilities.OwnerType', help_text=b'Show the kind of institutions that the body regulates e.g private facilities', null=True),
+            field=models.ForeignKey(blank=True, to='facilities.OwnerType', help_text=b'Show the kind of institutions that the body regulates e.gprivate facilities', null=True),
         ),
         migrations.AddField(
             model_name='regulatingbody',

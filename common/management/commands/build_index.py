@@ -17,10 +17,24 @@ class Command(BaseCommand):
         # optimize this to index in bulk
 
         apps_lists = settings.LOCAL_APPS
+        non_indexable_models = settings.SEARCH.get('NON_INDEXABLE_MODELs')
+        non_indexable_models_classes = []
+        non_indexable_models_names = []
+        for app_model in non_indexable_models:
+            app_name, cls_name = app_model.split('.')
+            non_indexable_models_names.append(cls_name)
+            app = get_app(app_name)
+            app_models = get_models(app)
+
+            for model_cls in app_models:
+                if model_cls.__name__ in non_indexable_models_names:
+                    non_indexable_models_classes.append(model_cls)
+        non_indexable_models_classes = list(set(non_indexable_models_classes))
 
         for app_name in apps_lists:
             app = get_app(app_name)
             for model in get_models(app):
+                if model not in non_indexable_models_classes:
                     all_instances = model.objects.all()[0:3] \
                         if options.get('test') else model.objects.all()
                     [index_instance(obj) for obj in all_instances]
@@ -28,5 +42,9 @@ class Command(BaseCommand):
                         all_instances.count(),
                         model._meta.verbose_name_plural.capitalize())
                     self.stdout.write(message)
+                else:
+                    message = "model has been skipped it should {} should not"
+                    " be indexed. ".format(model.__name__)
+                    self.stdout.write()
 
         self.stdout.write("Finished indexing")

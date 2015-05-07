@@ -224,7 +224,7 @@ class RegulatingBody(AbstractBase):
     regulatory_body_type = models.ForeignKey(
         OwnerType, null=True, blank=True,
         help_text='Show the kind of institutions that the body regulates e.g'
-        ' private facilities')
+        'private facilities')
 
     @property
     def postal_address(self):
@@ -498,7 +498,7 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def current_regulatory_status(self):
         try:
-            # returns in reverse chronological order
+            # returns in reverse chronological order so just pick the first one
             return self.regulatory_details.all()[0]
         except IndexError:
             return []
