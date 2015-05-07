@@ -1,5 +1,5 @@
-Welcome to the Master Facility List API server documentation
-==============================================================
+Master Facility List API server documentation
+===============================================
 
 This is documentation for the API server for the second generation Kenyan Ministry of Health Master Facility List ( MFL ).
 
