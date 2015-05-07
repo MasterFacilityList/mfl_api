@@ -32,7 +32,7 @@ def _lookup_groups(validated_data):
     except Exception as ex:  # Will reraise a more API friendly exception
         raise ValidationError(
             '"{}"" when retrieving groups corresponding to "{}"'
-            .format(ex, user_supplied_groups)
+            .format(ex, validated_data)
         )
 
 
