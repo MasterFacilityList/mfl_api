@@ -72,6 +72,7 @@ class TestUserViews(LoginMixin, APITestCase):
             "last_name": "Ruhusa",
             "other_names": "",
             "username": "hakunaruhusa",
+            "password": "rubbishpass"
         }
         response = self.client.post(create_url, post_data)
         self.assertEqual(201, response.status_code)
