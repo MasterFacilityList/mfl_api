@@ -3,17 +3,8 @@
         "model": "facilities.RegulationStatus",
         "records": [
             {
-                "name": "Gazettment"
-            },
-            {
                 "name": "Registration"
-            },
-            {
-                "name": "Licensing"
-            },
-            {
-                "name": "Pending Licensing"
-            },
+            },  
             {
                 "name": "License Suspended"
             },
@@ -21,11 +12,15 @@
                 "name": "Pending Registration"
             },
             {
-                "name": "Registered"
+                "name": "Pending Gazettment"
             },
             {
-                "name": "Pending Gazettment"
+                "name": "Pending Licensing"
+            },
+            {
+                    "name": "Licensing"
             }
+
         ],
         "unique_fields": [
             "name"
@@ -47,20 +42,7 @@
                 "previous_status":{
                     "name": "Pending Registration"
                 }
-            },
-            {
-                "name": "Licensing",
-                "previous_status": {
-                "name": "Pending Licensing"
-            },
-            },
-            {
-                "name": "Pending Licensing",
-                "next": {
-                    "name": "Licensing"
-                },
-                "is_initial_state": true
-            }
+            }            
            
         ],
         "unique_fields": [

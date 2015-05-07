@@ -129,6 +129,9 @@ class JobTitleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class RegulationStatusSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    next_state_name = serializers.CharField(read_only=True)
+    previous_state_name = serializers.CharField(read_only=True)
+
     class Meta(object):
         model = RegulationStatus
 

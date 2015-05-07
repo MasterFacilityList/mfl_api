@@ -313,6 +313,20 @@ class RegulationStatus(AbstractBase):
         help_text='Indicates whether it is the last state'
         ' in the regulation work-flow')
 
+    @property
+    def previous_state_name(self):
+        if self.previous_status:
+            return self.previous_status.name
+        else:
+            return ""
+
+    @property
+    def next_state_name(self):
+        if self.next_status:
+            return self.next_status.name
+        else:
+            return ""
+
     def validate_only_one_final_state(self):
         final_state = self.__class__.objects.filter(
             is_final_state=True)
@@ -337,6 +351,10 @@ class RegulationStatus(AbstractBase):
         if next_states.count() > 0 and self.next_status:
             raise ValidationError("A status can only succeed one status")
 
+    # validate a final state needs a previouos tsate
+    # validata an initial state needs a next state
+    # # validate if not initial and not final then provice both next
+    # nd previous states
     def clean(self, *args, **kwargs):
         self.validate_only_one_final_state()
         self.validate_only_one_initial_state()
