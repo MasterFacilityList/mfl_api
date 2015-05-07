@@ -376,7 +376,7 @@ class RegulationStatus(AbstractBase):
 @reversion.register
 class FacilityRegulationStatus(AbstractBase):
     """
-    Shows the regulation status of facility.
+    Shows the regulation status of a facility.
 
     It adds the extra reason field that makes it possible to give
     an explanation as to why a facility is in a certain regulation status.
@@ -517,9 +517,39 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def current_regulatory_status(self):
         try:
+            # returns in reverse chronological order
             return self.regulatory_details.all()[0]
         except IndexError:
             return []
+
+    @property
+    def county(self):
+        return self.ward.constituency.county.name
+
+    @property
+    def constituency(self):
+        return self.ward.constituency.name
+
+    @property
+    def operations_status_name(self):
+        return self.operation_status.name
+
+    @property
+    def regulary_status_name(self):
+        if self.current_regulatory_status:
+            return self.current_regulatory_status.name
+
+    @property
+    def facility_type_name(self):
+        return self.facility_type.name
+
+    @property
+    def owner_name(self):
+        return self.owner.name
+
+    @property
+    def owner_type_name(self):
+        return self.owner.owner_type.name
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -675,6 +705,10 @@ class Service(SequenceMixin, AbstractBase):
         if not self.code:
             self.code = self.generate_next_code_sequence()
         super(Service, self).save(*args, **kwargs)
+
+    @property
+    def catagory_name(self):
+        return self.category.name
 
     def __unicode__(self):
         return self.name
