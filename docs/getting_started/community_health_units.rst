@@ -40,12 +40,27 @@ facilities.
 
 Community Health Unit Approvers
 ----------------------------------
-TBD - also explain that it is a setup style table
+The community health approvers resource holds the details of entities that are
+involved in approval of community health units.
+
+The known approvers can be listed by issuing a ``GET`` to ``/api/chul/approvers/``. To register a new approving entity, you need to supply a
+``name``, ``description`` and ``abbreviation``. The following example
+illustrates that:
+
+.. code-block:: javascript
+
+    {
+        "name": "Division of Community Health Services",
+        "description": "Division of Community Health Services, Ministry of Health",
+        "abbreviation": "DCHS"
+    }
 
 Community Health Unit Statuses
 --------------------------------
 The community health unit statuses that are known / available can be listed at
-``/api/chul/statuses/`` via ``GET``.
+``/api/chul/statuses/`` via ``GET``. These will be used to mark the current
+status of a community health unit, and when analysing the status of registered
+community health units.
 
 To create a new status, you need to ``POST`` a ``name`` and a ``description``.
 Here is an example payload:
