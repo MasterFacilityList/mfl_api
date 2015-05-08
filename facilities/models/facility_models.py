@@ -517,6 +517,13 @@ class Facility(SequenceMixin, AbstractBase):
             return []
 
     @property
+    def is_regulated(self):
+        if self.current_regulatory_status:
+            return True
+        else:
+            return False
+
+    @property
     def county(self):
         return self.ward.constituency.county.name
 

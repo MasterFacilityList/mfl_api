@@ -234,6 +234,15 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 
 class FacilityFilter(CommonFieldsFilterset):
+    def filter_regulated_facilities(self, value):
+        matching_facilities = []
+        for obj in Facility.objects.all():
+
+            # bool is operating in reverse
+            if obj.is_regulated is not bool(value):
+                matching_facilities.append(obj)
+        return matching_facilities
+
     name = django_filters.CharFilter(lookup_type='icontains')
     code = django_filters.NumberFilter(lookup_type='exact')
     description = django_filters.CharFilter(lookup_type='icontains')
@@ -259,6 +268,8 @@ class FacilityFilter(CommonFieldsFilterset):
     is_published = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
+    is_regulated = django_filters.MethodFilter(
+        action=filter_regulated_facilities)
 
     class Meta(object):
         model = Facility
