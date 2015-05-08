@@ -3,7 +3,7 @@ MFL APIs: GIS Support
 This chapter assumes that the reader is familiar with the general
 principles explained in the :doc:`api` chapter.
 
-What is GIS
+What is GIS?
 -------------
 A geographic information system (GIS) lets us visualize, question, analyze, and interpret data to understand relationships, patterns, and trends.
 
