@@ -67,7 +67,7 @@ Expected HTTP Response code
     ``HTTP 200 OK``
 
 
-Sample response data
+Sample response data:
 
 .. code-block:: JavaScript
 
@@ -337,7 +337,7 @@ Here is an example:
 Expected response
     ``HTTP 201 CREATED``
 
-sample Reponse data
+sample Reponse data:
 
 .. code-block:: javascript
 
