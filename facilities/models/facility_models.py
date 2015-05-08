@@ -342,24 +342,9 @@ class RegulationStatus(AbstractBase):
         if initial_state.count() > 0 and self.is_initial_state:
             raise ValidationError("Only one Initial state is allowed.")
 
-    def validate_only_one_previous_state_per_status(self):
-        previous_states = self.__class__.objects.filter(
-            previous_status=self.previous_status)
-        if previous_states.count() > 0 and self.previous_status:
-            raise ValidationError(
-                "A regulation status can only preceed one status")
-
-    def validate_only_one_next_state_per_status(self):
-        next_states = self.__class__.objects.filter(
-            next_status=self.next_status)
-        if next_states.count() > 0 and self.next_status:
-            raise ValidationError("A status can only succeed one status")
-
     def clean(self, *args, **kwargs):
         self.validate_only_one_final_state()
         self.validate_only_one_initial_state()
-        self.validate_only_one_previous_state_per_status()
-        self.validate_only_one_next_state_per_status()
         super(RegulationStatus, self).clean(*args, **kwargs)
 
     def __unicode__(self):
