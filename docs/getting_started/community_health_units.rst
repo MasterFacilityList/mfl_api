@@ -72,13 +72,30 @@ Here is an example payload:
         "description": "Actively Deployed"
     }
 
-Communities
--------------
-TBD - setup style table
 
 Community Health Units
 ------------------------
-TBD
+Community health units can be listed via ``GET`` to ``/api/chul/units/``.
+
+To add a new community health unit, ``POST`` to ``/api/chul/units/``, ``POST``
+a payload that has a ``name``, ``facility`` and ``status``. For the facility
+and status, the ``id`` s are sent ( foreign keys ).
+
+For example:
+
+.. code-block:: javascript
+
+    {
+        "name": "Gachie Health Unit",
+        "facility": "c4169b23-5cbb-4ed8-a556-8a4fc43af17e",
+        "status": "d33775cc-c5e4-4d0e-b36a-890812189107"
+    }
+
+.. note::
+
+    The community health unit ``code`` is auto-assigned. Immediately after
+    creating the facility record, the code ( and other auto-assigned fields )
+    will be inserted in the response.
 
 Community Health Unit Contacts
 +++++++++++++++++++++++++++++++++

@@ -81,6 +81,7 @@ class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = Service
+        read_only_fields = ('code',)
 
 
 class FacilityServiceSerializer(
@@ -148,6 +149,7 @@ class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = Owner
+        read_only_fields = ('code',)
 
 
 class FacilitySerializer(
@@ -163,6 +165,7 @@ class FacilitySerializer(
     class Meta(object):
         model = Facility
         exclude = ('attributes',)
+        read_only_fields = ('owner',)
 
 
 class FacilityContactSerializer(

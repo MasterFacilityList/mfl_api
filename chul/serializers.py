@@ -58,7 +58,8 @@ class CommunityHealthUnitSerializer(
 
     class Meta(object):
         model = CommunityHealthUnit
-        read_only_fields = ('health_unit_workers', 'health_unit_approvals', )
+        read_only_fields = (
+            'health_unit_workers', 'health_unit_approvals', 'code',)
 
 
 class CommunityHealthWorkerContactSerializer(
