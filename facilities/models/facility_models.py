@@ -341,24 +341,9 @@ class RegulationStatus(AbstractBase):
         if initial_state.count() > 0 and self.is_initial_state:
             raise ValidationError("Only one Initial state is allowed.")
 
-    def validate_only_one_previous_state_per_status(self):
-        previous_states = self.__class__.objects.filter(
-            previous_status=self.previous_status)
-        if previous_states.count() > 0 and self.previous_status:
-            raise ValidationError(
-                "A regulation status can only preceed one status")
-
-    def validate_only_one_next_state_per_status(self):
-        next_states = self.__class__.objects.filter(
-            next_status=self.next_status)
-        if next_states.count() > 0 and self.next_status:
-            raise ValidationError("A status can only succeed one status")
-
     def clean(self, *args, **kwargs):
         self.validate_only_one_final_state()
         self.validate_only_one_initial_state()
-        self.validate_only_one_previous_state_per_status()
-        self.validate_only_one_next_state_per_status()
         super(RegulationStatus, self).clean(*args, **kwargs)
 
     def __unicode__(self):
@@ -391,6 +376,14 @@ class FacilityRegulationStatus(AbstractBase):
         max_length=100, null=True, blank=True,
         help_text='The license number that the facility has been '
         'given by the regulator')
+    is_confirmed = models.BooleanField(
+        default=False,
+        help_text='Has the proposed change been confirmed by higher'
+        ' authorities')
+    is_cancelled = models.BooleanField(
+        default=False,
+        help_text='Has the proposed change been cancelled by a higher'
+        ' authority')
 
     def __unicode__(self):
         return "{}: {}".format(
@@ -458,10 +451,11 @@ class Facility(SequenceMixin, AbstractBase):
         default=False,
         help_text="Should the facility geo-codes be visible to the public?"
         "Certain facilities are kept 'off-the-map'")
+
+    # publishing is done at the county level
     is_published = models.BooleanField(
         default=False,
-        help_text="Should be True if the facility is to be seen on the "
-        "public MFL site")
+        help_text="COnfirmation by the CHRIO that the facility is okay")
     facility_type = models.ForeignKey(
         FacilityType,
         help_text="This depends on who owns the facilty. For MOH facilities,"
@@ -494,13 +488,24 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
 
+    # synchronization is done at the national level.
+    is_synchronized = models.BooleanField(
+        default=False, help_text='Allow the facility to been seen the public')
+
     @property
     def current_regulatory_status(self):
         try:
             # returns in reverse chronological order so just pick the first one
-            return self.regulatory_details.all()[0]
+            return self.regulatory_details.filter(is_confirmed=True)[0]
         except IndexError:
             return []
+
+    @property
+    def is_regulated(self):
+        if self.current_regulatory_status:
+            return True
+        else:
+            return False
 
     @property
     def county(self):
@@ -574,6 +579,14 @@ class FacilityUpgrade(AbstractBase):
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
     reason = models.TextField()
+    is_confirmed = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a facility upgrade or downgrade has been'
+        ' confirmed')
+    is_cancelled = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a facility upgrade or downgrade has been'
+        'cancelled or not')
 
 
 @reversion.register
@@ -715,6 +728,13 @@ class FacilityService(AbstractBase):
     """
     facility = models.ForeignKey(Facility)
     selected_option = models.ForeignKey(ServiceOption)
+    is_confirmed = models.BooleanField(
+        default=False,
+        help_text='Indiates whether a service has been approved by the CHRIO')
+    is_cancelled = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a service has been cancelled by the '
+        'CHRIO')
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)

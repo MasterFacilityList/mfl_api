@@ -23,7 +23,8 @@ from ..models import (
     Owner,
     FacilityStatus,
     Facility,
-    FacilityUnit
+    FacilityUnit,
+    FacilityRegulationStatus
 )
 
 
@@ -150,6 +151,49 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
+
+    def test_facilties_that_need_regulation_or_not(self):
+        facility_1 = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        facility_3 = mommy.make(Facility)
+        mommy.make(
+            FacilityRegulationStatus, facility=facility_1, is_confirmed=True)
+        mommy.make(
+            FacilityRegulationStatus, facility=facility_2, is_confirmed=False)
+        # the value for the param comes as unicode hence the u
+        url = self.url + "?is_regulated=True"
+        regulated_expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility_1).data
+            ]
+        }
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(regulated_expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+        # get unregulated
+        # the value for the param comes as unicode hence the u
+        url = self.url + "?is_regulated=False"
+        response_2 = self.client.get(url)
+        unregulated_data = regulated_expected_data = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility_3).data,
+                FacilitySerializer(facility_2).data
+
+            ]
+        }
+        self.assertEquals(200, response_2.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(unregulated_data, default=default)),
+            json.loads(json.dumps(response_2.data, default=default)))
 
     def test_retrieve_facility(self):
         facility = mommy.make(Facility)

@@ -290,7 +290,7 @@ class TestFacility(BaseTestCase):
         facility = Facility.objects.create(**data)
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility,
-            regulating_body=regulating_body)
+            regulating_body=regulating_body, is_confirmed=True)
         self.assertEquals(1, Facility.objects.count())
 
         # Bloody branch misses
@@ -350,7 +350,7 @@ class TestFacility(BaseTestCase):
     def test_regulatory_status_name(self):
         facility = mommy.make(Facility)
         facility_reg_status = mommy.make(
-            FacilityRegulationStatus, facility=facility)
+            FacilityRegulationStatus, facility=facility, is_confirmed=True)
         self.assertEquals(
             facility.regulary_status_name,
             facility_reg_status.regulation_status.name)
@@ -371,6 +371,18 @@ class TestFacility(BaseTestCase):
         facility_type = mommy.make(FacilityType, name='District')
         facility = mommy.make(Facility, facility_type=facility_type)
         self.assertEquals(facility.facility_type_name, facility_type.name)
+
+    def test_is_regulated_is_true(self):
+        facility = mommy.make(Facility)
+        mommy.make(
+            FacilityRegulationStatus, is_confirmed=True, facility=facility)
+        self.assertTrue(facility.is_regulated)
+
+    def test_is_regulated_is_false(self):
+        facility = mommy.make(Facility)
+        mommy.make(
+            FacilityRegulationStatus, is_confirmed=False, facility=facility)
+        self.assertFalse(facility.is_regulated)
 
 
 class TestFacilityContact(BaseTestCase):
@@ -454,26 +466,6 @@ class TestRegulationStatusModel(BaseTestCase):
         mommy.make(RegulationStatus, is_final_state=True)
         with self.assertRaises(ValidationError):
             mommy.make(RegulationStatus, is_final_state=True)
-
-    def test_only_previous_state_of_another_model(self):
-        regulation_status = mommy.make(RegulationStatus)
-        status = mommy.make(RegulationStatus)
-        status.previous_status = regulation_status
-        status.save()
-        with self.assertRaises(ValidationError):
-            status_2 = mommy.make(RegulationStatus)
-            status_2.previous_status = regulation_status
-            status_2.save()
-
-    def test_only_one_next_state_of_a_model(self):
-        regulation_status = mommy.make(RegulationStatus)
-        status = mommy.make(RegulationStatus)
-        status.next_status = regulation_status
-        status.save()
-        with self.assertRaises(ValidationError):
-            status_2 = mommy.make(RegulationStatus)
-            status_2.next_status = regulation_status
-            status_2.save()
 
     def test_previous_state_name(self):
         status = mommy.make(RegulationStatus, is_final_state=True)
