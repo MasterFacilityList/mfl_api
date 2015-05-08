@@ -16,7 +16,7 @@ They also determine the KEPH level of operation of a facility.
 
 Creation
 ----------
-`POST` to `/api/facilities/regulating_bodies/` a payload  similar  to the one shown below:
+``POST`` to ``/api/facilities/regulating_bodies/`` a payload  similar  to the one shown below:
 
 .. code-block:: javascript
 
@@ -24,13 +24,13 @@ Creation
         "name": "Kenya Medical Practitioners Pharmacists  and Dentists Board",
         "abbreviation": "KMPPDB",
         "regulation_verb": "license", // e .g gazette license register
-        "regulatory_body_type": "d195219b-7b5b-4395-889b-3dbcb7bfccf6" // this is the id of the onwer type of facilities they regulate
+        "regulatory_body_type": "d195219b-7b5b-4395-889b-3dbcb7bfccf6" // this is the id of the owwer type of facilities they regulate
     }
 
 Expected Response code
-    HTTP 201 CREATED
+    ``HTTP 201 CREATED``
 
-sample response data
+Sample response data:
 
 .. code-block:: javascript
 
@@ -42,7 +42,7 @@ sample response data
         "active": true,
         "search": null,
         "name": "Kenya Medical Practitioners Pharmacists  and Dentists Board",
-        "abbreviation": "KMPPDB",
+        "abbreviation": "KMPDB",
         "regulation_verb": "license",
         "created_by": 3,
         "updated_by": 3,
@@ -52,8 +52,10 @@ sample response data
 
 Updating
 -----------
-``PATCH``  ``/api/facilities/regulating_bodies/<id>`` with payload containing only the fields that are to be modified.
-For example
+
+Do a ``PATCH`` to  ``/api/facilities/regulating_bodies/<id>`` with a payload containing only the fields that are to be modified.
+
+For example:
 
 .. code-block:: JavaScript
 
@@ -62,7 +64,7 @@ For example
     }
 
 Expected HTTP Response code
-    HTTP 200 OK
+    ``HTTP 200 OK``
 
 
 Sample response data
@@ -135,6 +137,7 @@ Below is a sample response data from the endpoint:
 
 Retrieving
 ----------------
+
 To retrieve a single regulatory body do a ``GET`` to the url ``api/facilities/regulating_bodies/<id>/``
 Id being the id of the regulatory body. The response data will be similar to the data shown below:
 
@@ -224,6 +227,7 @@ Example response
 
 Creation
 ----------
+
 Creating a regulation status requires one to know the entire regulation workflow of a facility from the first state to the last state.
 This is so since as one configures a state they have to know whether it is the initial state, the final state or an intermediary state.
 
@@ -245,7 +249,7 @@ To create the very first regulation state. To create it do a ``POST`` to the ``a
     }
 
 Expected response code.
-    HTTP 201 CREATED
+    ``HTTP 201 CREATED``
 
 Sample Response data
 
@@ -289,9 +293,9 @@ The only change will be to substitute the is_initial_state with is_final_state a
     }
 
 Expected response code:
-    HTTP 201 CREATED
+    ``HTTP 201 CREATED``
 
-Sample Response data
+Sample Response data:
 
 .. code-block:: javascript
 
@@ -332,7 +336,7 @@ Here is an example:
     }
 
 Expected response
-    HTTP 201 CREATED
+    ``HTTP 201 CREATED``
 
 sample Reponse data
 
@@ -386,7 +390,7 @@ Do a ``GET`` to the url ``/api/facilities/regulation_status/<id>`` where id is t
 
 
 Expected Response 
-    HTTP 200 OK
+    ``HTTP 200 OK``
 
 
 Updating a regulatory state
@@ -404,7 +408,7 @@ Here is a sample payload
 The above payload will update the details of the state whose id is the url.
 
 Expected Response code:
-    HTTP 200 OK
+    ``HTTP 200 OK``
 
 
 Sample Response data

@@ -467,26 +467,6 @@ class TestRegulationStatusModel(BaseTestCase):
         with self.assertRaises(ValidationError):
             mommy.make(RegulationStatus, is_final_state=True)
 
-    def test_only_previous_state_of_another_model(self):
-        regulation_status = mommy.make(RegulationStatus)
-        status = mommy.make(RegulationStatus)
-        status.previous_status = regulation_status
-        status.save()
-        with self.assertRaises(ValidationError):
-            status_2 = mommy.make(RegulationStatus)
-            status_2.previous_status = regulation_status
-            status_2.save()
-
-    def test_only_one_next_state_of_a_model(self):
-        regulation_status = mommy.make(RegulationStatus)
-        status = mommy.make(RegulationStatus)
-        status.next_status = regulation_status
-        status.save()
-        with self.assertRaises(ValidationError):
-            status_2 = mommy.make(RegulationStatus)
-            status_2.next_status = regulation_status
-            status_2.save()
-
     def test_previous_state_name(self):
         status = mommy.make(RegulationStatus, is_final_state=True)
         prev_state = mommy.make(RegulationStatus, previous_status=status)
