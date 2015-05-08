@@ -5,7 +5,6 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    Community,
     CommunityHealthUnitContact,
     Approver,
     CommunityHealthUnitApproval,
@@ -44,17 +43,6 @@ class StatusFilter(CommonFieldsFilterset):
         model = Status
 
 
-class CommunityFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
-    ward = django_filters.AllValuesFilter(lookup_type='exact')
-    constituency = django_filters.CharFilter(name='ward__constituency')
-    county = django_filters.CharFilter(name='ward__constituency__county')
-
-    class Meta(object):
-        model = Community
-
-
 class CommunityHealthUnitContactFilter(CommonFieldsFilterset):
     health_unit = django_filters.AllValuesFilter(lookup_type='exact')
     contact = django_filters.AllValuesFilter(lookup_type='exact')
@@ -66,7 +54,6 @@ class CommunityHealthUnitContactFilter(CommonFieldsFilterset):
 class CommunityHealthUnitFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     facility = django_filters.AllValuesFilter(lookup_type='exact')
-    community = django_filters.AllValuesFilter(lookup_type='exact')
     ward = django_filters.CharFilter(name='community__ward')
     constituency = django_filters.CharFilter(
         name='community_ward__constituency')
@@ -82,7 +69,6 @@ class CommunityHealthWorkerFilter(CommonFieldsFilterset):
     last_name = django_filters.CharFilter(lookup_type='icontains')
     username = django_filters.CharFilter(lookup_type='icontains')
     id_number = django_filters.CharFilter(lookup_type='exact')
-    community = django_filters.CharFilter(name='health_unit__community')
     ward = django_filters.CharFilter(name='health_unit__community__ward')
     constituency = django_filters.CharFilter(
         name='health_unit__community_ward__constituency')

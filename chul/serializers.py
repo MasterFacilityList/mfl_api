@@ -7,7 +7,6 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    Community,
     CommunityHealthUnitContact,
     Approver,
     CommunityHealthUnitApproval,
@@ -71,11 +70,6 @@ class CommunityHealthWorkerContactSerializer(
 class StatusSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = Status
-
-
-class CommunitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = Community
 
 
 class CommunityHealthUnitContactSerializer(

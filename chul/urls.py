@@ -9,8 +9,6 @@ from .views import(
     CommunityHealthWorkerContactDetailView,
     StatusListView,
     StatusDetailView,
-    CommunityListView,
-    CommunityDetailView,
     CommunityHealthUnitContactListView,
     CommunityHealthUnitContactDetailView,
     ApproverListView,
@@ -31,12 +29,6 @@ urlpatterns = patterns(
     url(r'^statuses/(?P<pk>[^/]+)/$',
         StatusDetailView.as_view(),
         name="status_detail"),
-
-    url(r'^communities/$', CommunityListView.as_view(),
-        name='communities_list'),
-    url(r'^communities/(?P<pk>[^/]+)/$',
-        CommunityDetailView.as_view(),
-        name="community_detail"),
 
     url(r'^unit_contacts/$', CommunityHealthUnitContactListView.as_view(),
         name='community_health_unit_contacts_list'),
