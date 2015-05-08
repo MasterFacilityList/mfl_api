@@ -290,7 +290,7 @@ class TestFacility(BaseTestCase):
         facility = Facility.objects.create(**data)
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility,
-            regulating_body=regulating_body)
+            regulating_body=regulating_body, is_confirmed=True)
         self.assertEquals(1, Facility.objects.count())
 
         # Bloody branch misses
@@ -350,7 +350,7 @@ class TestFacility(BaseTestCase):
     def test_regulatory_status_name(self):
         facility = mommy.make(Facility)
         facility_reg_status = mommy.make(
-            FacilityRegulationStatus, facility=facility)
+            FacilityRegulationStatus, facility=facility, is_confirmed=True)
         self.assertEquals(
             facility.regulary_status_name,
             facility_reg_status.regulation_status.name)
