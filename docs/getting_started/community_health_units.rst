@@ -99,7 +99,21 @@ For example:
 
 Community Health Unit Contacts
 +++++++++++++++++++++++++++++++++
-TBD
+A community health unit may be linked to zero or more contacts. The contacts
+will have been created at ``/api/common/contacts/`` using APIs that are
+discussed in the :doc:`support_resources` chapter.
+
+Community health unit contacts can be listed and created at
+``/api/common/contacts/``. To list a community health unit to a contact,
+``POST`` to that endpoint the ``id`` of the contact and the ``id`` of the
+community health unit. The example payload below illustrates that:
+
+.. code-block:: javascript
+
+    {
+        "health_unit": "2d425ab7-0002-4b95-9cd1-638972efb75d",
+        "contact": "7dd62ab9-94c2-48d6-a10f-d903bd57acd5"
+    }
 
 Community Health Unit Approvals
 ++++++++++++++++++++++++++++++++++
