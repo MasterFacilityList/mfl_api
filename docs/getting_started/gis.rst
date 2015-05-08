@@ -32,8 +32,8 @@ A brief note about points
 ----------------------------
 In "day to day language", we might be accustomed to expressing points as
 `(latitude, longitude)` pairs e.g `(-1.300462, 36.791533)` for the location of
-this writer's office at the time of writing. When expression that location as
-a GeoJSON "point", we'll need to "flip" the coordinates, so the GeoJSON
+this writer's office at the time of writing. When expressing that location as
+a GeoJSON "point", we'll need to "flip" the coordinates, so that the GeoJSON
 for this author's office would be:
 
 .. code-block:: javascript
@@ -46,7 +46,7 @@ for this author's office would be:
         ]
     }
 
-How do I move from GeoJSON to a map
+How do I move from GeoJSON to a map?
 -------------------------------------
 If you are building a web application, take a look at `Leaflet`_ and
 `OpenLayers`_.
@@ -77,10 +77,8 @@ follow this administrative structure.
 
     We have not documented the country boundary APIs for the following reasons:
 
-     1. The county, constituency and ward boundary APIs meet all of the Kenyan
-     MFL needs.
-     2. The borders in the World Borders Dataset are inaccurate - sometimes
-     lopping off several square kilometers around the borders.
+     * The county, constituency and ward boundary APIs meet all of the Kenyan MFL needs.
+     * The borders in the World Borders Dataset are inaccurate - sometimes lopping off several square kilometers around the borders.
 
 .. note::
 
@@ -90,7 +88,7 @@ follow this administrative structure.
 The administrative unit data is considered "setup data" - loaded at
 server install time, rarely changed afterward. For that reason, the
 documentation will focus on retrieval and interpretation. If you need to change
-or add, the basic principles explained in the :doc:`api` page still apply.
+or add, the basic principles explained in the :doc:`api` chapter still apply.
 
 Counties
 ++++++++++++
@@ -100,7 +98,7 @@ Every county is identified by a ``name`` and ``code``.
 An individual county's detail record is available at
 ``/api/common/counties/<pk>/`` e.g
 ``/api/common/counties/dd999449-d36b-47f2-a958-1f5bb52951d4/`` for the county
-whose ``pk`` is ``dd999449-d36b-47f2-a958-1f5bb52951d4``.
+whose ``id`` is ``dd999449-d36b-47f2-a958-1f5bb52951d4``.
 
 .. note::
 
@@ -136,7 +134,7 @@ whose ``pk`` is ``dd999449-d36b-47f2-a958-1f5bb52951d4``.
 County Boundaries
 +++++++++++++++++++
 County boundaries can be listed at ``/api/gis/county_boundaries/``. The list
-view is a GeoJSON "FeatureCollection", while the detail view is a "GeoJSON"
+view is a GeoJSON "FeatureCollection", while the detail view is a GeoJSON
 "Feature".
 
 .. note::
@@ -147,8 +145,8 @@ view is a GeoJSON "FeatureCollection", while the detail view is a "GeoJSON"
      * ``center`` - a ``Point`` that represents the **geometric centre** of the area
      * ``facility_count`` - the number of facilities in that geographic area
      * ``density`` - a **synthetic value** ( roughly comparable to facilities per square kilometer, although it is not actually facilities / sq.km ). This is used by front-end clients to color-code maps.
-     * ``constituency_ids`` - a list of the ``id`` s ( primary keys ) of the constituencies under that county. These can be appended to the ``/api/common/constituencies/`` endpoint i.e ``/api/constituencies/<id>`` in order to retrieve the details of each constituency in the county.
-     * ``constituency_boundary_ids`` - a list of the ``id`` s of the constituency boundary objects for the constituencies under
+     * ``constituency_ids`` - a list of the ``id`` s ( primary keys ) of the constituencies under that county. These can be appended to the ``/api/common/constituencies/`` endpoint i.e ``/api/constituencies/<id>/`` in order to retrieve the details of each constituency in the county.
+     * ``constituency_boundary_ids`` - a list of the ``id`` s of the constituency boundary objects for the constituencies under the county in question. These can be used to retrieve the constituency boundaries at ``/api/gis/constituency_boundaries/<pk>/``.
 
 Constituencies
 +++++++++++++++++
