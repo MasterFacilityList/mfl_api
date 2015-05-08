@@ -4,6 +4,7 @@ import json
 
 from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
 
@@ -250,6 +251,21 @@ class WorldBorder(AdministrativeUnitBoundary):
 class CountyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(County)
 
+    @property
+    def constituency_boundary_urls(self):
+        constituency_ids = Constituency.objects.filter(
+            county=self.area).values_list('id', flat=True)
+        constituency_boundary_ids = ConstituencyBoundary.objects.filter(
+            area__id__in=constituency_ids
+        ).values_list('id', flat=True)
+        return [
+            reverse(
+                'api:mfl_gis:constituency_boundary_detail',
+                kwargs={'pk': pk}
+            )
+            for pk in constituency_boundary_ids
+        ]
+
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'county boundaries'
 
@@ -257,6 +273,10 @@ class CountyBoundary(AdministrativeUnitBoundary):
 @reversion.register
 class ConstituencyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Constituency)
+
+    @property
+    def ward_boundary_urls(self):
+        pass
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'constituency boundaries'

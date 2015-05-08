@@ -57,11 +57,14 @@ class WorldBorderDetailSerializer(AbstractBoundarySerializer):
 
 
 class CountyBoundarySerializer(AbstractBoundarySerializer):
+    constituency_boundary_urls = serializers.ReadOnlyField()
+
     class Meta(AbstractBoundarySerializer.Meta):
         model = CountyBoundary
 
 
 class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
+    constituency_boundary_urls = serializers.ReadOnlyField()
     facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(AbstractBoundarySerializer.Meta):
