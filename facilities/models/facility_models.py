@@ -467,10 +467,11 @@ class Facility(SequenceMixin, AbstractBase):
         default=False,
         help_text="Should the facility geo-codes be visible to the public?"
         "Certain facilities are kept 'off-the-map'")
+
+    # publishing is done at the county level
     is_published = models.BooleanField(
         default=False,
-        help_text="Should be True if the facility is to be seen on the "
-        "public MFL site")
+        help_text="COnfirmation by the CHRIO that the facility is okay")
     facility_type = models.ForeignKey(
         FacilityType,
         help_text="This depends on who owns the facilty. For MOH facilities,"
@@ -502,6 +503,10 @@ class Facility(SequenceMixin, AbstractBase):
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
+
+    # synchronization is done at the national level.
+    is_synchronized = models.BooleanField(
+        default=False, help_text='Allow the facility to been seen the public')
 
     @property
     def current_regulatory_status(self):
@@ -583,6 +588,14 @@ class FacilityUpgrade(AbstractBase):
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
     reason = models.TextField()
+    is_confirmed = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a facility upgrade or downgrade has been'
+        ' confirmed')
+    is_cancelled = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a facility upgrade or downgrade has been'
+        'cancelled or not')
 
 
 @reversion.register
@@ -724,6 +737,13 @@ class FacilityService(AbstractBase):
     """
     facility = models.ForeignKey(Facility)
     selected_option = models.ForeignKey(ServiceOption)
+    is_confirmed = models.BooleanField(
+        default=False,
+        help_text='Indiates whether a service has been approved by the CHRIO')
+    is_cancelled = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a service has been cancelled by the '
+        'CHRIO')
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)

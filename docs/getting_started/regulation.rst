@@ -5,6 +5,8 @@ principles explained in the :doc:`api` chapter
 
 TBD - Adding regulatory bodies
 
+TBD creating regulation status
+
 
 TBD - fetching recently changed facilities
 
