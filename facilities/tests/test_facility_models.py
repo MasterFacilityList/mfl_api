@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase

@@ -1,8 +1,7 @@
 import reversion
 
 from django.db import models
-from django.core.exceptions import ValidationError
-
+from rest_framework.exceptions import ValidationError
 from common.models import (
     AbstractBase,
     Ward,

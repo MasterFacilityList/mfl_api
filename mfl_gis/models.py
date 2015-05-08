@@ -3,7 +3,7 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
-from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
 

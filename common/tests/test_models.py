@@ -3,7 +3,7 @@ import uuid
 from datetime import timedelta, datetime
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 from django.conf import settings
 from django.utils import timezone
 from model_mommy import mommy

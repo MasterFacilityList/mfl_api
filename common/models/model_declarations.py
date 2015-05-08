@@ -3,8 +3,9 @@ import reversion
 import json
 
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.conf import settings
+
+from rest_framework.exceptions import ValidationError
 
 from ..fields import SequenceField
 from .base import AbstractBase, SequenceMixin
