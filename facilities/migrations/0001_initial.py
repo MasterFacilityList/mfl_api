@@ -114,6 +114,8 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('reason', models.TextField(help_text=b'An explanation for as to why is the facility is beingput in the particular status', null=True, blank=True)),
                 ('license_number', models.CharField(help_text=b'The license number that the facility has been given by the regulator', max_length=100, null=True, blank=True)),
+                ('is_confirmed', models.BooleanField(default=False, help_text=b'Has the proposed change been confirmed by higher authorities')),
+                ('is_cancelled', models.BooleanField(default=False, help_text=b'Has the proposed change been cancelled by a higher authority')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='regulatory_details', on_delete=django.db.models.deletion.PROTECT, to='facilities.Facility')),
             ],

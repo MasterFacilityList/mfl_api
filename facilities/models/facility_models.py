@@ -392,6 +392,14 @@ class FacilityRegulationStatus(AbstractBase):
         max_length=100, null=True, blank=True,
         help_text='The license number that the facility has been '
         'given by the regulator')
+    is_confirmed = models.BooleanField(
+        default=False,
+        help_text='Has the proposed change been confirmed by higher'
+        ' authorities')
+    is_cancelled = models.BooleanField(
+        default=False,
+        help_text='Has the proposed change been cancelled by a higher'
+        ' authority')
 
     def __unicode__(self):
         return "{}: {}".format(
@@ -499,7 +507,7 @@ class Facility(SequenceMixin, AbstractBase):
     def current_regulatory_status(self):
         try:
             # returns in reverse chronological order so just pick the first one
-            return self.regulatory_details.all()[0]
+            return self.regulatory_details.filter(is_confirmed=True)[0]
         except IndexError:
             return []
 
