@@ -48,7 +48,7 @@ class AbstractBaseModelTest(TestCase):
             fake.validate_updated_date_greater_than_created()
         self.assertTrue(
             'The updated date cannot be less than the created date'
-            in ve.exception.messages)
+            in ve.exception.detail)
 
     def test_preserve_created_and_created_by(self):
         # Create  a new instance
