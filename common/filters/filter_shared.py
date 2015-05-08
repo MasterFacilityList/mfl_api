@@ -68,6 +68,53 @@ class SearchFilter(django_filters.filters.Filter):
         return final_queryset
 
 
+class ListFilterMixin(object):
+    """
+    Enable filtering by comma separated values.
+
+    eg ?number=1,2,3&name=a,b
+
+    Apply this mixin to a type of django_filters.Filter that
+    filters character strings. To filter a different type,
+    override the customize method in the filter that this
+    mixin is mixed into.
+
+    For an example, look at ListCharFilter, ListIntegerFilter below.
+    """
+
+    def sanitize(self, value_list):
+        """
+        remove empty items
+        """
+        return [v for v in value_list if v != u'']
+
+    def customize(self, value):
+        return value
+
+    def filter(self, qs, value):
+        multiple_vals = value.split(u",")
+        multiple_vals = self.sanitize(multiple_vals)
+        multiple_vals = map(self.customize, multiple_vals)
+        actual_filter = django_filters.fields.Lookup(multiple_vals, 'in')
+        return super(ListFilterMixin, self).filter(qs, actual_filter)
+
+
+class ListCharFilter(ListFilterMixin, django_filters.CharFilter):
+    """
+    Enable filtering of comma separated strings.
+    """
+    pass
+
+
+class ListIntegerFilter(ListCharFilter):
+    """
+    Enable filtering of comma separated integers.
+    """
+
+    def customize(self, value):
+        return int(value)
+
+
 class CommonFieldsFilterset(django_filters.FilterSet):
     """Every model that descends from AbstractBase should have this
 
