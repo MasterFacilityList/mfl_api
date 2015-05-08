@@ -44,7 +44,18 @@ TBD - also explain that it is a setup style table
 
 Community Health Unit Statuses
 --------------------------------
-TBD - setup style table
+The community health unit statuses that are known / available can be listed at
+``/api/chul/statuses/`` via ``GET``.
+
+To create a new status, you need to ``POST`` a ``name`` and a ``description``.
+Here is an example payload:
+
+.. code-block:: javascript
+
+    {
+        "name": "ACTIVE",
+        "description": "Actively Deployed"
+    }
 
 Communities
 -------------
