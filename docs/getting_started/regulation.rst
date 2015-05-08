@@ -131,7 +131,7 @@ Below is a sample response data from the endpoint:
                     "contacts": []
                 }
            ]
-    }
+        }
 
 
 Retrieving
