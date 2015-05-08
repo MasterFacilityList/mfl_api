@@ -62,7 +62,6 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django.contrib.gis',
     'reversion',
-    'django_extensions',
     'gunicorn',
     'facilities',
     'data_bootstrap',

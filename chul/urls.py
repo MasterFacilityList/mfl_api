@@ -26,7 +26,7 @@ from .views import(
 
 urlpatterns = patterns(
     '',
-    url(r'^statuses_list/$', StatusListView.as_view(),
+    url(r'^statuses/$', StatusListView.as_view(),
         name='statuses_list'),
     url(r'^statuses/(?P<pk>[^/]+)/$',
         StatusDetailView.as_view(),

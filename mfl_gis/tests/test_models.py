@@ -1,6 +1,6 @@
 from model_mommy import mommy
-from django.core.exceptions import ValidationError
 from django.contrib.gis.geos import Point
+from rest_framework.exceptions import ValidationError
 from common.tests.test_models import BaseTestCase
 
 from ..models import GeoCodeSource, GeoCodeMethod, FacilityCoordinates
@@ -101,7 +101,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
 
         self.assertTrue(
             'Setup error: Kenyan boundaries not loaded'
-            in c.exception.message
+            in c.exception.detail
         )
 
     def test_validate_longitude_and_latitude_no_county_boundaries(self):
@@ -110,7 +110,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
 
         self.assertTrue(
             'No boundary for ' + str(self.test_county)
-            in c.exception.message
+            in c.exception.detail
         )
 
     def test_validate_longitude_and_latitude_no_constituency_boundaries(self):
@@ -120,7 +120,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
 
         self.assertTrue(
             'No boundary for ' + str(self.test_constituency)
-            in c.exception.message
+            in c.exception.detail
         )
 
     def test_validate_longitude_and_latitude_no_ward_boundaries(self):

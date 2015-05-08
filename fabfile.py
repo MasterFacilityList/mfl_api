@@ -55,15 +55,6 @@ def reset_migrations():
     local('git add . --all')
 
 
-def graph_models():
-    """Dev only - visualize the current model relationships"""
-    manage(
-        'graph_models common facilities chul mfl_gis -d '
-        '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
-        '-o  mfl_models_graph.png')
-    local('eog mfl_models_graph.png')
-
-
 def psql(query, no_sudo=False, is_file=False):
     """Dev only - used by the setup function below"""
     sudo = 'sudo -u postgres'

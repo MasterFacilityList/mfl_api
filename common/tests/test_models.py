@@ -3,7 +3,7 @@ import uuid
 from datetime import timedelta, datetime
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 from django.conf import settings
 from django.utils import timezone
 from model_mommy import mommy
@@ -48,7 +48,7 @@ class AbstractBaseModelTest(TestCase):
             fake.validate_updated_date_greater_than_created()
         self.assertTrue(
             'The updated date cannot be less than the created date'
-            in ve.exception.messages)
+            in ve.exception.detail)
 
     def test_preserve_created_and_created_by(self):
         # Create  a new instance

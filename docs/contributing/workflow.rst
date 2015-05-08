@@ -1,6 +1,8 @@
 Workflow
 ==========
-TBD - **all the content below is preliminary**
+This project uses the `GitFlow Workflow`_.
+
+ .. _`GitFlow Workflow`: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 
 In summary:
 

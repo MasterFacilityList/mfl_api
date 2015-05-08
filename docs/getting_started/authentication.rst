@@ -384,6 +384,15 @@ The available permissions can be listed by issuing a ``GET`` to
         ]
     }
 
+.. note::
+
+    The `content_type` keys in the example above originate from
+    `Django's contenttypes framework`_. For an API consumer, they are an
+    implementation detail / curiosity; API clients will nto need to know more
+    about them.
+
+.. _`Django's contenttypes framework`: https://docs.djangoproject.com/en/1.8/ref/contrib/contenttypes/
+
 Groups
 ~~~~~~~~
 The API server provides APIs that can be used to create roles, alter existing
