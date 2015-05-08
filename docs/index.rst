@@ -11,7 +11,7 @@ Contents
 ===========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
    installing/index
    getting_started/index

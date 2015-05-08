@@ -1,4 +1,4 @@
-Getting started
+Using the API
 =================
 The MFL v2 project subscribes to the `API First`_ approach. It is **built to
 interoperate**. We "eat our own dog food" by insisting that the official
