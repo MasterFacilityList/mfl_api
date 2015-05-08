@@ -57,11 +57,16 @@ class WorldBorderDetailSerializer(AbstractBoundarySerializer):
 
 
 class CountyBoundarySerializer(AbstractBoundarySerializer):
+    constituency_ids = serializers.ReadOnlyField()
+    constituency_boundary_ids = serializers.ReadOnlyField()
+
     class Meta(AbstractBoundarySerializer.Meta):
         model = CountyBoundary
 
 
 class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
+    constituency_ids = serializers.ReadOnlyField()
+    constituency_boundary_ids = serializers.ReadOnlyField()
     facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(AbstractBoundarySerializer.Meta):
@@ -69,11 +74,16 @@ class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
 
 
 class ConstituencyBoundarySerializer(AbstractBoundarySerializer):
+    ward_ids = serializers.ReadOnlyField()
+    ward_boundary_ids = serializers.ReadOnlyField()
+
     class Meta(AbstractBoundarySerializer.Meta):
         model = ConstituencyBoundary
 
 
 class ConstituencyBoundaryDetailSerializer(AbstractBoundarySerializer):
+    ward_ids = serializers.ReadOnlyField()
+    ward_boundary_ids = serializers.ReadOnlyField()
     facility_coordinates = serializers.ReadOnlyField()
 
     class Meta(AbstractBoundarySerializer.Meta):

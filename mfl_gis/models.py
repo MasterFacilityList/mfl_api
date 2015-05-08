@@ -190,6 +190,8 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     All common operations and fields are here.
     We retain the default SRID ( 4326 - WGS84 ).
     """
+    # These two fields should mirror the contents of the relevant admin
+    # area model
     name = gis_models.CharField(max_length=100)
     code = gis_models.CharField(max_length=10, unique=True)
 
@@ -250,6 +252,18 @@ class WorldBorder(AdministrativeUnitBoundary):
 class CountyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(County)
 
+    @property
+    def constituency_ids(self):
+        return Constituency.objects.filter(
+            county=self.area).values_list('id', flat=True)
+
+    @property
+    def constituency_boundary_ids(self):
+        constituency_boundary_ids = ConstituencyBoundary.objects.filter(
+            area__id__in=self.constituency_ids
+        ).values_list('id', flat=True)
+        return constituency_boundary_ids
+
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'county boundaries'
 
@@ -257,6 +271,18 @@ class CountyBoundary(AdministrativeUnitBoundary):
 @reversion.register
 class ConstituencyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Constituency)
+
+    @property
+    def ward_ids(self):
+        return Ward.objects.filter(
+            constituency=self.area).values_list('id', flat=True)
+
+    @property
+    def ward_boundary_ids(self):
+        ward_boundary_ids = WardBoundary.objects.filter(
+            area__id__in=self.ward_ids
+        ).values_list('id', flat=True)
+        return ward_boundary_ids
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'constituency boundaries'

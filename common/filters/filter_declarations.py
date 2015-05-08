@@ -11,7 +11,11 @@ from ..models import (
     UserContact,
     Town
 )
-from .filter_shared import CommonFieldsFilterset
+from .filter_shared import (
+    CommonFieldsFilterset,
+    ListCharFilter,
+    ListIntegerFilter
+)
 
 
 class ContactTypeFilter(CommonFieldsFilterset):
@@ -41,24 +45,24 @@ class PhysicalAddressFilter(CommonFieldsFilterset):
 
 
 class CountyFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListIntegerFilter(lookup_type='exact')
 
     class Meta(object):
         model = County
 
 
 class ConstituencyFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListIntegerFilter(lookup_type='exact')
 
     class Meta(object):
         model = Constituency
 
 
 class WardFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListIntegerFilter(lookup_type='exact')
 
     class Meta(object):
         model = Ward

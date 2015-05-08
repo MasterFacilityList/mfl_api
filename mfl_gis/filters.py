@@ -10,7 +10,10 @@ from .models import (
     WardBoundary
 )
 
-from common.filters.filter_shared import CommonFieldsFilterset
+from common.filters.filter_shared import (
+    CommonFieldsFilterset,
+    ListCharFilter
+)
 
 
 class GeoCodeSourceFilter(CommonFieldsFilterset):
@@ -37,35 +40,38 @@ class FacilityCoordinatesFilter(CommonFieldsFilterset):
 
 
 class WorldBorderFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.CharFilter(lookup_type='icontains')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListCharFilter(lookup_type='icontains')
 
     class Meta(object):
         model = WorldBorder
 
 
 class CountyBoundaryFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.CharFilter(lookup_type='icontains')
-    area = django_filters.AllValuesFilter(lookup_type='exact')
+    id = ListCharFilter(lookup_type='icontains')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListCharFilter(lookup_type='icontains')
+    area = ListCharFilter(lookup_type='icontains')
 
     class Meta(object):
         model = CountyBoundary
 
 
 class ConstituencyBoundaryFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.CharFilter(lookup_type='icontains')
-    area = django_filters.AllValuesFilter(lookup_type='exact')
+    id = ListCharFilter(lookup_type='icontains')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListCharFilter(lookup_type='icontains')
+    area = ListCharFilter(lookup_type='icontains')
 
     class Meta(object):
         model = ConstituencyBoundary
 
 
 class WardBoundaryFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.CharFilter(lookup_type='icontains')
-    area = django_filters.AllValuesFilter(lookup_type='exact')
+    id = ListCharFilter(lookup_type='icontains')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListCharFilter(lookup_type='icontains')
+    area = ListCharFilter(lookup_type='icontains')
 
     class Meta(object):
         model = WardBoundary
