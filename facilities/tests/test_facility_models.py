@@ -372,6 +372,18 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility, facility_type=facility_type)
         self.assertEquals(facility.facility_type_name, facility_type.name)
 
+    def test_is_regulated_is_true(self):
+        facility = mommy.make(Facility)
+        mommy.make(
+            FacilityRegulationStatus, is_confirmed=True, facility=facility)
+        self.assertTrue(facility.is_regulated)
+
+    def test_is_regulated_is_false(self):
+        facility = mommy.make(Facility)
+        mommy.make(
+            FacilityRegulationStatus, is_confirmed=False, facility=facility)
+        self.assertFalse(facility.is_regulated)
+
 
 class TestFacilityContact(BaseTestCase):
     def test_save(self):

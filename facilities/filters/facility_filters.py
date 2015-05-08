@@ -238,9 +238,12 @@ class FacilityFilter(CommonFieldsFilterset):
         matching_facilities = []
         for obj in Facility.objects.all():
 
-            # bool is operating in reverse
-            if obj.is_regulated is not bool(value):
+            truth_ness = 'True'
+            false_ness = 'False'
+            if value.find(truth_ness) > -1 and obj.is_regulated:
                 matching_facilities.append(obj)
+            if value.find(false_ness) > -1 and not obj.is_regulated:
+                    matching_facilities.append(obj)
         return matching_facilities
 
     name = django_filters.CharFilter(lookup_type='icontains')
