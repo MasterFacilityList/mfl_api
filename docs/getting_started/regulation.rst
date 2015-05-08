@@ -24,7 +24,7 @@ Creation
         "name": "Kenya Medical Practitioners Pharmacists  and Dentists Board",
         "abbreviation": "KMPPDB",
         "regulation_verb": "license", // e .g gazette license register
-        "regulatory_body_type": "d195219b-7b5b-4395-889b-3dbcb7bfccf6" // this is the id of the owwer type of facilities they regulate
+        "regulatory_body_type": "d195219b-7b5b-4395-889b-3dbcb7bfccf6" // this is the id of the owner type of facilities they regulate
     }
 
 Expected Response code
@@ -130,9 +130,8 @@ Below is a sample response data from the endpoint:
                     "regulatory_body_type": null,
                     "contacts": []
                 }
-        ]
-
-}
+           ]
+    }
 
 
 Retrieving
@@ -251,7 +250,7 @@ To create the very first regulation state. To create it do a ``POST`` to the ``a
 Expected response code.
     ``HTTP 201 CREATED``
 
-Sample Response data
+Sample Response data:
 
 .. code-block:: javascript
 
@@ -411,7 +410,7 @@ Expected Response code:
     ``HTTP 200 OK``
 
 
-Sample Response data
+Sample Response data:
 
 .. code-block:: javascript
 
@@ -541,9 +540,9 @@ Regulate a facility
     }
 
 Expected Reponse Code
-    HTTP 201 Created
+    ``HTTP 201 Created``
 
-Sample Reponse data
+Sample Reponse data:
 
 .. code-block:: javascript
 
