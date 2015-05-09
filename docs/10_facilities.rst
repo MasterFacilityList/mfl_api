@@ -110,6 +110,8 @@ search               Perform a full text search that looks through all fields. e
 
     These filters can be combined / chained.
 
+    For example: ``/api/facilities/facilities/?ward=353404d7-02e6-422f-b64f-b1c7d0f1bcf0&open_whole_day=true``
+
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
 TBD
