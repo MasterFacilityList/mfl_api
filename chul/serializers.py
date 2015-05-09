@@ -40,8 +40,6 @@ class CommunityHealthWorkerApprovalSerializer(
 
 class CommunityHealthWorkerSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    health_worker_approvals = CommunityHealthWorkerApprovalSerializer(
-        many=True)
 
     class Meta(object):
         model = CommunityHealthWorker
@@ -50,11 +48,6 @@ class CommunityHealthWorkerSerializer(
 
 class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-
-    health_unit_approvals = CommunityHealthWorkerApprovalSerializer(
-        many=True, read_only=True)
-    health_unit_workers = CommunityHealthWorkerSerializer(
-        many=True, read_only=True)
 
     class Meta(object):
         model = CommunityHealthUnit

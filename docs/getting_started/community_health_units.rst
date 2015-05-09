@@ -72,6 +72,9 @@ Here is an example payload:
         "description": "Actively Deployed"
     }
 
+.. note::
+
+    This reflects the operational status of the Community Health Unit.
 
 Community Health Units
 ------------------------
@@ -133,7 +136,7 @@ represents the date when the approval occured.
 
 The following example is a valid ``POST`` payload:
 
-.. code-block:: python
+.. code-block:: javascript
 
     {
         "comment": "For documentation / training purposes",
@@ -143,9 +146,29 @@ The following example is a valid ``POST`` payload:
         "health_unit": "96645d26-8e4e-4078-9e10-a5176f5432df"
     }
 
+.. note::
+
+    This reflects the approval status of the Community Health Unit.
+
 Community Health Workers
 --------------------------
-TBD
+Community health workers are attached to community health units. They are
+listed and maintained at ``/api/chul/workers/``.
+
+When registering a new community health worker, supply a ``first_name``,
+``last_name``, ``surname``, ``id_number`` and ``health_unit``. The
+``health_unit`` is the ``id`` of the community health unit that the worker
+is attached to, and can be retrieved from ``/api/chul/units/``.
+
+.. code-block:: javascript
+
+    {
+        "first_name": "Does",
+        "last_name": "Not",
+        "surname": "Exist",
+        "id_number": 545432,
+        "health_unit": "96645d26-8e4e-4078-9e10-a5176f5432df"
+    }
 
 Community Health Workers Contacts
 ------------------------------------
