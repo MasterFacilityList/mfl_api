@@ -9,7 +9,7 @@ from django.core.management import call_command
 
 from model_mommy import mommy
 
-from facilities.models import Facility
+from facilities.models import Facility, FacilityApproval
 from facilities.serializers import FacilitySerializer
 from common.tests import ViewTestBase
 
@@ -130,9 +130,11 @@ class TestSearchFunctions(ViewTestBase):
         url = reverse('api:facilities:facilities_list')
         self.elastic_search_api = search_utils.ElasticAPI()
         self.elastic_search_api.setup_index(index_name='test_index')
+
         facility = mommy.make(
             Facility, name='Mordal mountains medical clinic',
             is_published=True)
+        mommy.make(FacilityApproval, facility=facility)
         facility_2 = mommy.make(
             Facility,
             name='Eye of mordal health center',
