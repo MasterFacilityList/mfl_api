@@ -492,6 +492,11 @@ class Facility(SequenceMixin, AbstractBase):
     is_synchronized = models.BooleanField(
         default=False, help_text='Allow the facility to been seen the public')
 
+    def validate_synchronization(self):
+        if self.is_synchronized and not self.is_published:
+            raise ValidationError(
+                "Only published facilities can be synchronized")
+
     @property
     def current_regulatory_status(self):
         try:

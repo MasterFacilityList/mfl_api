@@ -384,6 +384,10 @@ class TestFacility(BaseTestCase):
             FacilityRegulationStatus, is_confirmed=False, facility=facility)
         self.assertFalse(facility.is_regulated)
 
+    def test_validatesynchronization(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(Facility, is_published=False, is_synchronized=True)
+
 
 class TestFacilityContact(BaseTestCase):
     def test_save(self):
