@@ -6,14 +6,53 @@ principles explained in the :doc:`06_api` chapter.
 The MFL is not merely a "list" of facilities; it has rich APIs to manage their
 life cycles and to support interaction with other healthcare systems. This
 chapter concerns itself with what is arguably the "core" of the MFL system
-- the maintenance of facility information.
+- the maintenance of facility information. Facilities APIs fall into the
+following groups:
 
-TBD - Big picture
+============================== ================================================
+Function                       Resources / APIs
+============================== ================================================
+Facility Information storage    * Facility
+                                * Facility Physical Addresses
+                                * Facility Contacts
+                                * Facility Units
+                                * Facility Services
 
-    * unique, auto-assigned code
+Facility Workflow / Life cycle  * Approval
+                                * Publishing ( synchronization )
+                                * Regulation
+                                * Upgrade
+                                * Downgrade
 
+Facility ratings                * Facility service ratings
+                                * Facility ratings report
+
+Facility downloads              * Facility cover letters
+                                * Facility correction templates
+                                * Facility excel exports
+
+Facility dashboard ( summary )  * Analysis by administrative units
+                                * Analysis by type
+                                * Analysis by owner and owner category
+                                * Analysis by regulator and regulation status
+============================== ================================================
+
+.. note::
+
+    One of the things associated with facilities that are registered on the
+    Master Facilities List is a **Master Facilities List ( MFL ) Code**.
+
+    The MFL code is a unique number ( integral ) that is *sequential* and
+    *immutable*. The immutability is taken seriously - the MFL codes that
+    were issued under the first generation system will not be re-issued under
+    the second generation MFL system.
+
+    Codes that are issued under MFL 2 will start at `100000`.
+
+Facility Information Storage
+-------------------------------
 Facilities
--------------
++++++++++++++
 TBD
 
 Facility Physical Addresses
@@ -30,10 +69,6 @@ TBD
 
 Facility Services
 ++++++++++++++++++++
-TBD
-
-Facility service ratings
-+++++++++++++++++++++++++++
 TBD
 
 The Facility approval workflow
@@ -56,6 +91,10 @@ TBD - document!
 
 The facility downgrade workflow
 ++++++++++++++++++++++++++++++++++
+TBD
+
+Facility service ratings
++++++++++++++++++++++++++++
 TBD
 
 Downloadable facility reports
