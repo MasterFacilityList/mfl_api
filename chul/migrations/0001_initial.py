@@ -69,7 +69,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('code', common.fields.SequenceField(unique=True, blank=True)),
                 ('households_monitored', models.PositiveIntegerField(default=0)),
-                ('date_established', models.DateField(default=django.utils.timezone.now)),
+                ('date_established', models.CharField(max_length=100, null=True, blank=True)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -127,9 +127,8 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('first_name', models.CharField(max_length=50)),
-                ('last_name', models.CharField(max_length=50)),
-                ('surname', models.CharField(max_length=50)),
-                ('id_number', models.PositiveIntegerField(unique=True)),
+                ('last_name', models.CharField(max_length=50, null=True, blank=True)),
+                ('id_number', models.PositiveIntegerField(unique=True, null=True, blank=True)),
             ],
         ),
         migrations.CreateModel(

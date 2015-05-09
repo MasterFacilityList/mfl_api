@@ -38,6 +38,13 @@ class TestCommunityHealthWorkerModel(TestCase):
         # test unicode
         self.assertEquals('12345678', health_worker.__unicode__())
 
+    def test_name(self):
+        worker = mommy.make(
+            CommunityHealthWorker,
+            first_name='Dorcas',
+            last_name='Omwansa')
+        self.assertEquals('Dorcas Omwansa', worker.name)
+
 
 class TestCommunityHealthWorkerContact(TestCase):
     def test_save(self):

@@ -1,0 +1,19 @@
+
+[
+    {
+        "model": "chul.Status",
+        "unique_fields": ["name"],
+        "records": [
+            {
+                "name": "Fully-functional"
+            },
+            {
+                "name": "semi-functional"
+            },
+            {
+                "name": "non-operational"
+            }            
+            
+        ]
+    }
+]

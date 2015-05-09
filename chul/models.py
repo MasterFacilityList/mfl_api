@@ -77,7 +77,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
     households_monitored = models.PositiveIntegerField(default=0)
-    date_established = models.DateField(default=timezone.now)
+    date_established = models.CharField(max_length=100, null=True, blank=True)
     contacts = models.ManyToManyField(
         Contact, through=CommunityHealthUnitContact)
 
@@ -137,9 +137,8 @@ class CommunityHealthWorker(AbstractBase):
     shown by the active field inherited from abstract base.
     """
     first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
-    id_number = models.PositiveIntegerField(unique=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
+    id_number = models.PositiveIntegerField(unique=True, null=True, blank=True)
     health_unit = models.ForeignKey(
         CommunityHealthUnit,
         help_text='The health unit the worker is incharge of',
@@ -152,6 +151,11 @@ class CommunityHealthWorker(AbstractBase):
 
     class Meta(object):
         unique_together = ('id_number', 'health_unit')
+
+    @property
+    def name(self):
+        return "{} {}".format(
+            self.first_name, self.last_name)
 
 
 class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):

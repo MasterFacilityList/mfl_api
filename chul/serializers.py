@@ -40,6 +40,7 @@ class CommunityHealthWorkerApprovalSerializer(
 
 class CommunityHealthWorkerSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    name = serializers.CharField(read_only=True)
 
     class Meta(object):
         model = CommunityHealthWorker
