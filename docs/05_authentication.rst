@@ -10,6 +10,10 @@ the requested operation.
 
 Authentication
 -----------------
+A system like this has to consider the needs of programmatic clients
+( like integrations into other systems ) and the needs of "actual users"
+( in this case people logged in to the web interfaces ).
+
 The MFL API server supports both session ( cookie based ) and OAuth 2 ( token based ) authentication. For both approaches, the production API server **must be run over HTTPS**.
 
 Session Authentication

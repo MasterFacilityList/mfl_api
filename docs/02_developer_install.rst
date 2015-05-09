@@ -1,9 +1,31 @@
 Installing for development
 ============================
-TBD - **everything here is work in progress**
 
-TODO - Add notes about removing LC forwarding from SSH config
+You'll have an easier time if you are on a current Ubuntu. On Ubuntu, the
+key dependencies can be installed with:
 
+::
+
+    sudo apt-get install postgresql binutils postgis gdal-bin libproj-dev
+    libgeoip1 graphviz libgraphviz-dev
+
+**You may need to install distribution specific packages** e.g on Ubuntu 14.04
+with the default PosgreSQL 9.3:
+
+::
+
+    sudo apt-get install postgresql-9.3-postgis-2.1
+
+In order to build some of the Python dependencies in the `virtualenv`, some
+libraries will need to be in place. Again, if you are on a recent Ubuntu, you
+can get them at once with:
+
+::
+
+    sudo apt-get build-dep python-shapely python-numpy cython python-psycopg2
+
+
+.. _virtualenv: https://virtualenv.pypa.io/en/latest/
 
 Getting started
 ----------------

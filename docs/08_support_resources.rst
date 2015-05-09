@@ -5,6 +5,12 @@ MFL APIs: Shared Resources and properties
 This chapter assumes that the reader is familiar with the general
 principles explained in the :doc:`06_api` chapter.
 
+The MFL's job description is to standardize the management of information
+relating to facilities ( including community health units ), provide a standard
+catalogue of available healthcare 09_services and act as a central ingress
+point for regulation. However, in order to do this, the MFL needs to have a
+constellation of support resources in its data model.
+
 This chapter concerns itself with the resources that hold "setup" type
 information. These resources wil often be used to populate drop-downs
 and other types of choosers in the web / mobile front-ends.

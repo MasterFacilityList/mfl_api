@@ -3,8 +3,10 @@ MFL APIs: Facilities
 This chapter assumes that the reader is familiar with the general
 principles explained in the :doc:`06_api` chapter.
 
-It concerns itself with what is arguably the "core" of the MFL system - the
-maintenance of facility information.
+The MFL is not merely a "list" of facilities; it has rich APIs to manage their
+life cycles and to support interaction with other healthcare systems. This
+chapter concerns itself with what is arguably the "core" of the MFL system
+- the maintenance of facility information.
 
 TBD - Big picture
 

@@ -1,8 +1,8 @@
 MFL 2: The Big Picture
 =========================
-
-The second edition of the MFL is focused on interoperability, standardization
-and unification.
+The Master Facilities List is one of the building blocks of the Kenyan
+national health information system. The second edition of the MFL is focused
+on interoperability, standardization and unification.
 
 Interoperability
 ------------------

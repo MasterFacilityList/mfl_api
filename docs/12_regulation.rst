@@ -1,12 +1,19 @@
 MFL APIs: Regulation
 =======================
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`06_api` chapter
+principles explained in the :doc:`06_api` chapter.
+
+Every healthcare facility falls under the regulatory scope of at least one
+regulator. For example - at the time of writing, most healthcare facilities
+are licensed by the Kenya Medical Practitioners and Dentists Board.
+
+Regulators have their own information systems. The MFL provides APIs that can
+facilitate two way data flow between the regulators' systems and the Master
+Facilities List.
 
 For regulation of facilities to occur in the system two entities are required:
     1. The regulating body
     2. The regulation status
-
 
 Regulatory Bodies
 ------------------

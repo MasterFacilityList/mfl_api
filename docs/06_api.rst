@@ -8,6 +8,24 @@ MFL test environment.
 See :doc:`07_sandbox` and :doc:`01_evaluator_install` or :doc:`02_developer_install`
 for information on how to get access to a test environment.
 
+The MFL v2 project subscribes to the `API First`_ approach. It is **built to
+interoperate**. We "eat our own dog food" by insisting that the official
+user interfaces be just one more set of API clients, with no special
+privileges.
+
+This guide is for the authors of client applications ( applications that
+consume the RESTful web 09_services ). Those who would like to make changes to
+the MFL API server code itself should refer to the :doc:`14_workflow` guide.
+
+The MFL 2 API is "RESTish". We subscribe to the principles of `REST`_ but
+are not pedantic about it. It is built using the excellent
+`Django REST Framework`_.
+
+.. _`REST`: http://en.wikipedia.org/wiki/Representational_state_transfer
+.. _`Django REST Framework`: http://www.django-rest-framework.org/
+
+.. _`API First`: http://www.api-first.com/
+
 HTTP and HTTPS
 ---------------
 All API actions are based on HTTP and its verbs e.g. ``GET`` and ``POST``.

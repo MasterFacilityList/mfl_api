@@ -3,6 +3,11 @@ MFL APIs: Community Health Units
 This chapter assumes that the reader is familiar with the general
 principles explained in the :doc:`06_api` chapter.
 
+Kenya's community health strategy relies on community health workers for
+outreach at the lowest levels ( embedded into communities ). These workers are
+organized into community health units. The second edition of the Master
+Facilities List provides APIs for the management of community health units.
+
 This chapter concerns itself with the resources that model community health
 units and link them to facilities.
 

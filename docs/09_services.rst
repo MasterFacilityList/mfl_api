@@ -3,6 +3,13 @@ MFL APIs: The Service Catalogue
 This chapter assumes that the reader is familiar with the general
 principles explained in the :doc:`06_api` chapter.
 
+In order for the MFL to do its job as the keystone of the Kenyan national
+health information system, there needs to be a standard registry of
+services.
+
+At the time when this edition of the MFL was built, no such thing existed.
+The MFL therefore took on the responsibility of providing that registry.
+
 This chapter concerns itself with the setup of the **service catalog**.
 The service catalog has two primary goals:
 
