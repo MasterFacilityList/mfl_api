@@ -11,8 +11,8 @@ There is a `downloadable PDF version`_ of this documentation, a
 .. _`mobile friendly EPUB version`: http://readthedocs.org/projects/mfl-api/downloads/epub/latest/
 .. _`downloadable HTML version`: http://readthedocs.org/projects/mfl-api/downloads/htmlzip/latest/
 
-Contents
-===========
+Developers guide
+====================
 
 .. toctree::
     :maxdepth: 2
