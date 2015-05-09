@@ -31,7 +31,7 @@ Facility downloads              * Facility cover letters
                                 * Facility correction templates
                                 * Facility excel exports
 
-Facility dashboard ( summary )  * Analysis by administrative units
+Facility dashboard APIS         * Analysis by administrative units
                                 * Analysis by type
                                 * Analysis by owner and owner category
                                 * Analysis by regulator and regulation status
@@ -71,6 +71,8 @@ Facility Services
 ++++++++++++++++++++
 TBD
 
+Facility Workflows
+---------------------
 The Facility approval workflow
 +++++++++++++++++++++++++++++++++
 TBD - Makers, checkers
@@ -93,30 +95,32 @@ The facility downgrade workflow
 ++++++++++++++++++++++++++++++++++
 TBD
 
+Facility ratings
+-------------------
 Facility service ratings
 +++++++++++++++++++++++++++
 TBD
 
-Downloadable facility reports
-+++++++++++++++++++++++++++++++
+Facility rating reports
+++++++++++++++++++++++++++
+TBD
+
+Facility downloads
+-----------------------
 TBD - explain the "filterable report" approach
 TBD - templates for this should live in data ( no static stuff )
 TBD - create in data the starter templates
 
-Facility rating reports
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
 Facility cover letters
-~~~~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++++++
 TBD
 
 Facility correction templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++++++++++++
 TBD
 
-Published facility export
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Facility Excel reports
++++++++++++++++++++++++++
 TBD
 
 Facility dashboard APIs
