@@ -61,22 +61,169 @@ Facility information storage
 
 Facilities
 +++++++++++++
+Listing multiple records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The facilities that are currently registered can be listed at
+``/api/facilities/facilities/``.
+
+Retrieving a single record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Each facility has a UUID ``id``. A facility's detail record can be listed
+at ``/api/facilities/facilities/<id>/``. For example: if a facility
+record's ``id`` is ``2927d31f-b1a0-4d17-93b0-ea648af7b9f0``, the detail
+URL for the facility record will be ``/api/facilities/facilities/2927d31f-b1a0-4d17-93b0-ea648af7b9f0/``.
+
+Filtering and search
+~~~~~~~~~~~~~~~~~~~~~~~
+Facilities - as listed at ``/api/facilities/facilities/`` can be filtered using
+the following:
+
+==================== ==========================================================
+Filter               Explanation
+==================== ==========================================================
+name                 This does a *case insensitive partial match* but accepts only one name to filter by e.g ``/api/facilities/facilities/?name=molo``.
+code                 Filter by **one or more** facility codes e.g ``/api/facilities/facilities/?code=15003,15002``. The ``,`` is used to separate individual parameters. This does exact matches.
+description          Similar to ``name`` but operating on descriptions e.g ``/api/facilities/facilities/?name=molo``
+facility_type        Filter by the ``id``s of one or more facility types e.g ``/api/facilities/facilities/?facility_type=f25ba517-3b8d-4692-ba7b-3524f6ec58e5,b2225473-08f1-4e86-a47a-0a61cf75e731``. Facility types can be listed at ``/api/facilities/facility_types/``.
+operation_status    Filter by the ``id`` of one or more operation statuses from ``/api/facilities/facility_status/``
+ward
+owner
+officer_in_charge
+number_of_beds
+number_of_cots
+open_whole_day
+open_whole_week
+is_classified
+is_published
+is_regulated
+updated_before
+created_before
+updated_after
+created_after
+updated_on
+created_on
+is_active
+search               Perform a full text search that looks through all fields. e.g ``/api/facilities/facilities/?search=endebess`` gives back all facilities that have "endebess" anywhere in their name, description or attributes.
+==================== ==========================================================
+
+.. note::
+
+    These filters can be combined / chained.
+
+Adding a new record
+~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Updating an existing record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Deleting a record
+~~~~~~~~~~~~~~~~~~~~~
 TBD
 
 Facility physical addresses
 ++++++++++++++++++++++++++++++
+Listing multiple records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Retrieving a single record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Filtering and search
+~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Adding a new record
+~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Updating an existing record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Deleting a record
+~~~~~~~~~~~~~~~~~~~~~
 TBD
 
 Facility contacts
 +++++++++++++++++++
+Listing multiple records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Retrieving a single record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Filtering and search
+~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Adding a new record
+~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Updating an existing record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Deleting a record
+~~~~~~~~~~~~~~~~~~~~~
 TBD
 
 Facility units
 ++++++++++++++++
+Listing multiple records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Retrieving a single record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Filtering and search
+~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Adding a new record
+~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Updating an existing record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Deleting a record
+~~~~~~~~~~~~~~~~~~~~~
 TBD
 
 Facility services
 ++++++++++++++++++++
+Listing multiple records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Retrieving a single record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Filtering and search
+~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Adding a new record
+~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Updating an existing record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TBD
+
+Deleting a record
+~~~~~~~~~~~~~~~~~~~~~
 TBD
 
 Facility workflows
@@ -88,6 +235,8 @@ Facility workflows
     system. A well behaved front-end should integrate them into the facility
     information screens that handle the facility information services mentioned
     above, rather than give each of these its own set of screens.
+
+TBD Draw state diagram
 
 The Facility approval workflow
 +++++++++++++++++++++++++++++++++
