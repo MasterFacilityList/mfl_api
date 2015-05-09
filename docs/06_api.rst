@@ -1,4 +1,4 @@
-Using the API - Basic Principles
+Using the API - basic principles
 ==================================
 .. include:: substitutes.txt
 

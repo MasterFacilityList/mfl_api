@@ -28,7 +28,11 @@ from ..models import (
     FacilityUpgrade,
     RegulatingBodyContact
 )
-from common.filters.filter_shared import CommonFieldsFilterset
+from common.filters.filter_shared import (
+    CommonFieldsFilterset,
+    ListIntegerFilter,
+    ListCharFilter
+)
 
 BOOLEAN_CHOICES = (
     ('false', 'False'),
@@ -247,17 +251,17 @@ class FacilityFilter(CommonFieldsFilterset):
         return matching_facilities
 
     name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
-    description = django_filters.CharFilter(lookup_type='icontains')
+    code = ListIntegerFilter(lookup_type='exact')
+    description = ListCharFilter(lookup_type='icontains')
 
-    facility_type = django_filters.AllValuesFilter(lookup_type='exact')
-    operation_status = django_filters.AllValuesFilter(lookup_type='exact')
-    ward = django_filters.AllValuesFilter(lookup_type='exact')
-    owner = django_filters.AllValuesFilter(lookup_type='exact')
-    officer_in_charge = django_filters.AllValuesFilter(lookup_type='exact')
+    facility_type = ListCharFilter(lookup_type='icontains')
+    operation_status = ListCharFilter(lookup_type='icontains')
+    ward = ListCharFilter(lookup_type='icontains')
+    owner = ListCharFilter(lookup_type='icontains')
+    officer_in_charge = ListCharFilter(lookup_type='icontains')
 
-    number_of_beds = django_filters.NumberFilter(lookup_type='exact')
-    number_of_cots = django_filters.NumberFilter(lookup_type='exact')
+    number_of_beds = ListIntegerFilter(lookup_type='exact')
+    number_of_cots = ListIntegerFilter(lookup_type='exact')
 
     open_whole_day = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
