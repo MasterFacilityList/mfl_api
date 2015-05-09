@@ -8,9 +8,7 @@ maintenance of facility information.
 
 TBD - Big picture
 
-TBD - Publishing workflow; public vs private, ``is_published``
-
-TBD - Downloading
+    * unique, auto-assigned code
 
 Facilities
 -------------
@@ -26,6 +24,14 @@ TBD
 
 Facility Units
 ++++++++++++++++
+TBD
+
+Facility Services
+++++++++++++++++++++
+TBD
+
+Facility service ratings
++++++++++++++++++++++++++++
 TBD
 
 The Facility approval workflow

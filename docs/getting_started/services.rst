@@ -60,6 +60,12 @@ When creating a new service, ``POST`` the ``name``, ``description``,
         "category": "2bdfd814-5cba-4673-916e-96b6a98cf1c9"
     }
 
+.. note::
+
+    Services get auto-assigned ``code`` s. A service code is immutable once
+    issued. The service codes are expected to become a standard identifier for
+    services.
+
 Options and service options
 -----------------------------
 In order to understand the options API, we'll take a look at the Facility
