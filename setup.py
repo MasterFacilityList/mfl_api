@@ -52,6 +52,7 @@ setup(
     url='https://github.com/MasterFacilityList/mfl_api',
     packages=find_packages(),
     include_package_data=True,
+    zip_safe=False,
     platforms='any',
     classifiers=[
         'Programming Language :: Python',
@@ -110,5 +111,6 @@ setup(
         "drf-extensions>=0.2.7",
         "xlsxwriter>=0.7.2",
         "mock>=1.0.1",
+        "recommonmark>=0.1.1",
     ],
 )

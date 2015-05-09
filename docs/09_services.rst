@@ -1,7 +1,14 @@
-MFL APIs: The Service Catalogue
-=========================================
+The service catalog
+=======================
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`api` chapter.
+principles explained in the :doc:`06_api` chapter.
+
+In order for the MFL to do its job as the keystone of the Kenyan national
+health information system, there needs to be a standard registry of
+services.
+
+At the time when this edition of the MFL was built, no such thing existed.
+The MFL therefore took on the responsibility of providing that registry.
 
 This chapter concerns itself with the setup of the **service catalog**.
 The service catalog has two primary goals:
@@ -60,13 +67,19 @@ When creating a new service, ``POST`` the ``name``, ``description``,
         "category": "2bdfd814-5cba-4673-916e-96b6a98cf1c9"
     }
 
+.. note::
+
+    Services get auto-assigned ``code`` s. A service code is immutable once
+    issued. The service codes are expected to become a standard identifier for
+    services.
+
 Options and service options
 -----------------------------
 In order to understand the options API, we'll take a look at the Facility
 Creation Form from the 2010 Master Facility List Implementation Guide
 ( the guiding document for the previous edition of the MFL ).
 
-.. figure:: ../_images/new_facility_form.png
+.. figure:: /_images/new_facility_form.png
     :scale: 50%
     :alt: New Facility Addition Form (from the MFL Implementation Guide, 2010)
 

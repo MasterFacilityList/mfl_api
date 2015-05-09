@@ -1,12 +1,19 @@
-MFL APIs: Regulation
-=======================
+Regulation
+============
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`api` chapter
+principles explained in the :doc:`06_api` chapter.
+
+Every healthcare facility falls under the regulatory scope of at least one
+regulator. For example - at the time of writing, most healthcare facilities
+are licensed by the Kenya Medical Practitioners and Dentists Board.
+
+Regulators have their own information systems. The MFL provides APIs that can
+facilitate two way data flow between the regulators' systems and the Master
+Facilities List.
 
 For regulation of facilities to occur in the system two entities are required:
     1. The regulating body
     2. The regulation status
-
 
 Regulatory Bodies
 ------------------
@@ -162,10 +169,10 @@ Regulatory Statuses
 ---------------------
 A regulation state is a state in which the facility will be after the regulator has assessed a facility's suitability for that state.
 
-The default states are as provided in the implementation guide. 
+The default states are as provided in the implementation guide.
     1. PENDING_LICENSING
     2. LICENSED
-    3. LICENSE_SUSPENDED 
+    3. LICENSE_SUSPENDED
     4. LICENSE_CANCELLED
     5. PENDING_REGISTRATION
     6. REGISTERED
@@ -244,7 +251,7 @@ To create the very first regulation state. To create it do a ``POST`` to the ``a
         "name": "PENDING_LICENSING",
         "description": "This is the very first state after a facility has been approved by the CHRIO",
         "is_initial_state": true,
-     
+
     }
 
 Expected response code.
@@ -288,7 +295,7 @@ The only change will be to substitute the is_initial_state with is_final_state a
         "name": "LICENSED",
         "description": "This is the final state after a  facility has been given a license by the regulating body",
         "is_final_state": true,
-        'previous_state': "1938861f-2c34-49c5-808f-caa0ed1c3681" // id of the preceding state     
+        'previous_state': "1938861f-2c34-49c5-808f-caa0ed1c3681" // id of the preceding state
     }
 
 Expected response code:
@@ -320,7 +327,7 @@ Sample Response data:
 3. Creating an intermediary State.
 ------------------------------------
 
-An intermediary should have a preceding and succeeding state. 
+An intermediary should have a preceding and succeeding state.
 Here is an example:
 
 ``POST`` to  ``/api/facilities/regulation_status/``
@@ -388,7 +395,7 @@ Do a ``GET`` to the url ``/api/facilities/regulation_status/<id>`` where id is t
     }
 
 
-Expected Response 
+Expected Response
     ``HTTP 200 OK``
 
 
@@ -400,7 +407,7 @@ Here is a sample payload
 .. code-block:: javascript
 
     {
-        
+
         "name": "Registered Edited"
     }
 
@@ -522,7 +529,7 @@ The response data will be similar to the sample response data below:
             }
         ]
     }
- 
+
 
 Regulate a facility
 ---------------------
@@ -531,7 +538,7 @@ Regulate a facility
 .. code-block:: javascript
 
     {
-    
+
         "reason": "The facility has met all the requirements",
         "license_number": "F135/2015",
         "facility": "d0cf7632-2854-464f-8638-03d1c021f519",
@@ -562,7 +569,7 @@ Sample Reponse data:
         "facility": "d0cf7632-2854-464f-8638-03d1c021f519",
         "regulating_body": "ed3ac8af-c1a7-42f4-9f0d-a9c5e4cf3c13",
         "regulation_status": "5287dbfc-e2c0-410f-80e3-7ec20ac4dc79"
-    }   
+    }
 
 
 .. toctree::

@@ -1,7 +1,12 @@
-MFL APIs: Community Health Units
-==================================
+Community Health Units
+=========================
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`api` chapter.
+principles explained in the :doc:`06_api` chapter.
+
+Kenya's community health strategy relies on community health workers for
+outreach at the lowest levels ( embedded into communities ). These workers are
+organized into community health units. The second edition of the Master
+Facilities List provides APIs for the management of community health units.
 
 This chapter concerns itself with the resources that model community health
 units and link them to facilities.
@@ -104,7 +109,7 @@ Community Health Unit Contacts
 +++++++++++++++++++++++++++++++++
 A community health unit may be linked to zero or more contacts. The contacts
 will have been created at ``/api/common/contacts/`` using APIs that are
-discussed in the :doc:`support_resources` chapter.
+discussed in the :doc:`08_support_resources` chapter.
 
 Community health unit contacts can be listed and created at
 ``/api/common/contacts/``. To list a community health unit to a contact,
