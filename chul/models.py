@@ -154,8 +154,8 @@ class CommunityHealthWorker(AbstractBase):
 
     @property
     def name(self):
-        return "{} {} {}".format(
-            self.first_name, self.last_name, self.surname)
+        return "{} {}".format(
+            self.first_name, self.last_name)
 
 
 class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
