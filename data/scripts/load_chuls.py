@@ -17,7 +17,7 @@ table_columns = [
     "Date_modified", "Delete_comments"]
 
 
-def create_chuls_file():
+def create_chuls_file():  # noqa
     chul = []
     chews = []
     chu_contacts = []
