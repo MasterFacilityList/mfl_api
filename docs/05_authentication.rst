@@ -1,4 +1,4 @@
-Authentication and Authorization
+Authentication and authorization
 ==================================
 
 `Authentication`_ is the process of associating an API request with a specific

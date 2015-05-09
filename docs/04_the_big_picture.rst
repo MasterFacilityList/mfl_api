@@ -1,4 +1,4 @@
-MFL 2: The Big Picture
+The big picture
 =========================
 The Master Facilities List is one of the building blocks of the Kenyan
 national health information system. The second edition of the MFL is focused

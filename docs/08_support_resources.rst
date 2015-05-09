@@ -1,5 +1,5 @@
-MFL APIs: Shared Resources and properties
-===========================================
+Metadata resources
+=====================
 .. include:: substitutes.txt
 
 This chapter assumes that the reader is familiar with the general

@@ -1,4 +1,4 @@
-The API Sandbox
+The API sandbox
 ============================
 Our experience teaches us that the biggest roadblock to systems integration
 is usually communication. Developers operate at a level of precision and

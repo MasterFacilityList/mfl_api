@@ -1,5 +1,5 @@
-MFL APIs: GIS Support
-=======================
+GIS Support
+==============
 This chapter assumes that the reader is familiar with the general
 principles explained in the :doc:`06_api` chapter.
 
