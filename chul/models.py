@@ -136,9 +136,8 @@ class CommunityHealthWorker(AbstractBase):
     The status of the worker that is whether still active or not will be
     shown by the active field inherited from abstract base.
     """
-    first_name = models.CharField(max_length=50, null=True, blank=True)
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    surname = models.CharField(max_length=50, null=True, blank=True)
     id_number = models.PositiveIntegerField(unique=True, null=True, blank=True)
     health_unit = models.ForeignKey(
         CommunityHealthUnit,

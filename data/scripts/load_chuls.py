@@ -47,14 +47,14 @@ def create_chuls_file():  # noqa
             mobile_dict = {
                 "contact": mobile,
                 "contact_type": {
-                    "PHONE"
+                    "name": "PHONE"
                 }
             }
             email = row[8]
             email_dict = {
                 "contact": email,
                 "contact_type": {
-                    "EMAIL"
+                    "name": "EMAIL"
                 }
             }
             if email_dict not in chu_contacts:
@@ -94,17 +94,25 @@ def create_chuls_file():  # noqa
                 chul.append(chu)
 
             chul_codes.append(code)
+            names = first_name.split()
+            if len(names) > 1:
+                first_name = names[0]
+                last_name = names[1]
+            else:
+                first_name = name[0]
+                last_name = ""
 
             chew = {
                 "first_name": first_name,
-                "heath_unit": {
+                "last_name": last_name,
+                "health_unit": {
                     "code": code
                 }
             }
             if chew not in chews:
                 chews.append(chew)
 
-    return chul, chews
+    return chul, chews, chu_contacts
 
 
 def write_file(file_name, data):
@@ -123,6 +131,7 @@ def write_file(file_name, data):
 
 
 def write_chuls_and_chews():
-    chus, chews = create_chuls_file()
+    chus, chews, chu_contacts = create_chuls_file()
     write_file('chul.txt', chus)
     write_file('chew.txt', chews)
+    write_file('chu_contacts.txt', chu_contacts)

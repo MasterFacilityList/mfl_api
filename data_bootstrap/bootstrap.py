@@ -131,6 +131,7 @@ def _process_model_spec(model_spec):
     """For each model spec, instantiate but do not save ( bulk save later )"""
     model = model_spec['model']
     unique_fields = model_spec['unique_fields']
+
     records = model_spec['records']
 
     assert isinstance(model, str) or isinstance(model, unicode)
