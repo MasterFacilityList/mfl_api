@@ -1,13 +1,12 @@
 Using the API - Basic Principles
 ==================================
-.. include:: ../substitutes.txt
+.. include:: substitutes.txt
 
 All the material here assumes that you already have access to an
 MFL test environment.
 
-See :doc:`sandbox` and :doc:`../installing/evaluator_install` or
-:doc:`../installing/developer_install` for information on how to get
-access to a test environment.
+See :doc:`sandbox` and :doc:`evaluator_install` or :doc:`developer_install`
+for information on how to get access to a test environment.
 
 HTTP and HTTPS
 ---------------

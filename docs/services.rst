@@ -72,7 +72,7 @@ In order to understand the options API, we'll take a look at the Facility
 Creation Form from the 2010 Master Facility List Implementation Guide
 ( the guiding document for the previous edition of the MFL ).
 
-.. figure:: ../_images/new_facility_form.png
+.. figure:: /_images/new_facility_form.png
     :scale: 50%
     :alt: New Facility Addition Form (from the MFL Implementation Guide, 2010)
 
