@@ -6,7 +6,7 @@ and unification.
 
 Interoperability
 ------------------
-This system adopts an **API First** approach, as explained in the :doc:`api`
+This system adopts an **API First** approach, as explained in the :doc:`06_api`
 chapter.
 
 The authors have gone to great lengths to make it easy for other systems
@@ -16,7 +16,7 @@ Standardization
 -----------------
 The MFL's core mission includes the standardization of facility codes. In this
 edition, the core mission has been expanded to include the standardization of
-service codes. You can read more about that in the :doc:`services` chapter.
+service codes. You can read more about that in the :doc:`09_services` chapter.
 
 Unification
 --------------

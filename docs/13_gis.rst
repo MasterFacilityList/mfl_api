@@ -1,7 +1,7 @@
 MFL APIs: GIS Support
 =======================
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`api` chapter.
+principles explained in the :doc:`06_api` chapter.
 
 What is GIS?
 -------------
@@ -88,7 +88,8 @@ follow this administrative structure.
 The administrative unit data is considered "setup data" - loaded at
 server install time, rarely changed afterward. For that reason, the
 documentation will focus on retrieval and interpretation. If you need to change
-or add, the basic principles explained in the :doc:`api` chapter still apply.
+or add, the basic principles explained in the :doc:`06_api` chapter still
+apply.
 
 Counties
 ++++++++++++

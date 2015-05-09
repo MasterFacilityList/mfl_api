@@ -18,11 +18,6 @@ Master Facility List API
      :target: https://requires.io/github/MasterFacilityList/mfl_api/requirements/?branch=develop
      :alt: Requirements Status
 
-.. image:: https://landscape.io/github/MasterFacilityList/mfl_api/develop/landscape.svg?style=flat
-   :target: https://landscape.io/github/MasterFacilityList/mfl_api/develop
-   :alt: Code Health
-
-
 This is the API server for the second generation Kenyan Ministry of Health Master Facility List ( MFL ).
 
 The "home" of the canonical / production version is at http://ehealth.or.ke/facilities/ . The latest documentation can always be found at http://mfl-api.readthedocs.org/en/latest/ . That includes installation instructions, guidance for contributors and API documentation.

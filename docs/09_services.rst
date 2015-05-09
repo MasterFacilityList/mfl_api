@@ -1,7 +1,7 @@
 MFL APIs: The Service Catalogue
 =========================================
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`api` chapter.
+principles explained in the :doc:`06_api` chapter.
 
 This chapter concerns itself with the setup of the **service catalog**.
 The service catalog has two primary goals:

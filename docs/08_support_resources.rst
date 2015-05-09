@@ -3,7 +3,7 @@ MFL APIs: Shared Resources and properties
 .. include:: substitutes.txt
 
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`api` chapter.
+principles explained in the :doc:`06_api` chapter.
 
 This chapter concerns itself with the resources that hold "setup" type
 information. These resources wil often be used to populate drop-downs
@@ -256,7 +256,7 @@ known contact, although the use cases for that are more limited.
     This section introduces some patterns that will recur in this API:
 
     *   The use of filters: the list APIs are filterably by most of the
-        fields that they list. You can explore this further in the sandbox.
+        fields that they list. You can explore this further in the 07_sandbox.
     *   The use of **explicit join tables** for many to many relationships.
 
     The ``regulating_body_contact`` resource that is the subject of this

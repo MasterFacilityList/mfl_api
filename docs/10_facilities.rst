@@ -1,7 +1,7 @@
 MFL APIs: Facilities
 ===================================
 This chapter assumes that the reader is familiar with the general
-principles explained in the :doc:`api` chapter.
+principles explained in the :doc:`06_api` chapter.
 
 It concerns itself with what is arguably the "core" of the MFL system - the
 maintenance of facility information.
