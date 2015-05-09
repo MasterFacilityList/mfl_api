@@ -488,16 +488,6 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
 
-    # synchronization is done at the national level.
-    is_synchronized = models.BooleanField(
-        default=False,
-        help_text='Allow the facility to been seen by the public')
-
-    def validate_synchronization(self):
-        if self.is_synchronized and not self.is_published:
-            raise ValidationError(
-                "Only published facilities can be synchronized")
-
     def validate_publish(self):
         if self.is_published and not self.is_approved:
             message = "A facility has to be approved for it to be published"

@@ -384,10 +384,6 @@ class TestFacility(BaseTestCase):
             FacilityRegulationStatus, is_confirmed=False, facility=facility)
         self.assertFalse(facility.is_regulated)
 
-    def test_validatesynchronization(self):
-        with self.assertRaises(ValidationError):
-            mommy.make(Facility, is_published=False, is_synchronized=True)
-
     def test_publishing(self):
         with self.assertRaises(ValidationError):
             mommy.make(Facility, is_published=True)

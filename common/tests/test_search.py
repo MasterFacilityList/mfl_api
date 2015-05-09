@@ -132,9 +132,10 @@ class TestSearchFunctions(ViewTestBase):
         self.elastic_search_api.setup_index(index_name='test_index')
 
         facility = mommy.make(
-            Facility, name='Mordal mountains medical clinic',
-            is_published=True)
+            Facility, name='Mordal mountains medical clinic')
         mommy.make(FacilityApproval, facility=facility)
+        facility.is_published = True
+        facility.save()
         facility_2 = mommy.make(
             Facility,
             name='Eye of mordal health center',
