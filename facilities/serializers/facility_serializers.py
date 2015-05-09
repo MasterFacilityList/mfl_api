@@ -165,7 +165,6 @@ class FacilitySerializer(
     class Meta(object):
         model = Facility
         exclude = ('attributes',)
-        read_only_fields = ('owner',)
 
 
 class FacilityContactSerializer(
