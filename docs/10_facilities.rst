@@ -49,30 +49,46 @@ Facility dashboard APIS         * Analysis by administrative units
 
     Codes that are issued under MFL 2 will start at `100000`.
 
-Facility Information Storage
+Facility information storage
 -------------------------------
+
+.. note::
+
+    These APIs are the "heart" of the MFL system. A well-behaved front-end
+    should take an integrated approach, presenting output from these APIs
+    under one set of screens ( instead of five sets, one for each resource
+    type ).
+
 Facilities
 +++++++++++++
 TBD
 
-Facility Physical Addresses
+Facility physical addresses
 ++++++++++++++++++++++++++++++
 TBD
 
-Facility Contacts
+Facility contacts
 +++++++++++++++++++
 TBD
 
-Facility Units
+Facility units
 ++++++++++++++++
 TBD
 
-Facility Services
+Facility services
 ++++++++++++++++++++
 TBD
 
-Facility Workflows
+Facility workflows
 ---------------------
+
+.. note::
+
+    These five workflows are the day-to-day operations performed on the MFL
+    system. A well behaved front-end should integrate them into the facility
+    information screens that handle the facility information services mentioned
+    above, rather than give each of these its own set of screens.
+
 The Facility approval workflow
 +++++++++++++++++++++++++++++++++
 TBD - Makers, checkers
@@ -97,6 +113,14 @@ TBD
 
 Facility ratings
 -------------------
+
+.. note::
+
+    The facility ratings APIs will be used by both the public and
+    administration user interfaces. The public interface's concern is to
+    facilitate ratings by the general public. The admninistration interface
+    will present read-only summary information.
+
 Facility service ratings
 +++++++++++++++++++++++++++
 TBD
@@ -107,9 +131,13 @@ TBD
 
 Facility downloads
 -----------------------
-TBD - explain the "filterable report" approach
-TBD - templates for this should live in data ( no static stuff )
-TBD - create in data the starter templates
+
+.. note::
+
+    Some of these downloads e.g the facility correction template are there for
+    historical reasons. A better approach would involve the use of mobile
+    interfaces ( supported by this server's APIs ) to facilitate data
+    collection and data updates in the field.
 
 Facility cover letters
 ++++++++++++++++++++++++++
@@ -121,6 +149,17 @@ TBD
 
 Facility Excel reports
 +++++++++++++++++++++++++
+
+.. note::
+
+    The authors of this API treated Excel and CSV output as simply **one more
+    format that data can be exported into**. Excel and CSV data comes from the
+    same serializers that produce the standard API JSON and XML output. This
+    has two positive effects:
+
+        * it can use all the available filters
+        * every API ( not just the facilities API ) can produce CSV and Excel
+
 TBD
 
 Facility dashboard APIs
