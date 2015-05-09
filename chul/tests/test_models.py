@@ -42,9 +42,8 @@ class TestCommunityHealthWorkerModel(TestCase):
         worker = mommy.make(
             CommunityHealthWorker,
             first_name='Dorcas',
-            last_name='Omwansa',
-            surname='Kibukosya')
-        self.assertEquals('Dorcas Omwansa Kibukosya', worker.name)
+            last_name='Omwansa')
+        self.assertEquals('Dorcas Omwansa', worker.name)
 
 
 class TestCommunityHealthWorkerContact(TestCase):
