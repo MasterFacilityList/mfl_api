@@ -52,6 +52,7 @@ setup(
     url='https://github.com/MasterFacilityList/mfl_api',
     packages=find_packages(),
     include_package_data=True,
+    zip_safe=False,
     platforms='any',
     classifiers=[
         'Programming Language :: Python',
