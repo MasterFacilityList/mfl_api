@@ -58,26 +58,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Community',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('deleted', models.BooleanField(default=False)),
-                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('name', models.CharField(max_length=100)),
-                ('code', common.fields.SequenceField(unique=True, blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('ward', models.ForeignKey(to='common.Ward')),
-            ],
-            options={
-                'verbose_name_plural': 'communities',
-            },
-            bases=(common.models.base.SequenceMixin, models.Model),
-        ),
-        migrations.CreateModel(
             name='CommunityHealthUnit',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
@@ -90,7 +70,6 @@ class Migration(migrations.Migration):
                 ('code', common.fields.SequenceField(unique=True, blank=True)),
                 ('households_monitored', models.PositiveIntegerField(default=0)),
                 ('date_established', models.DateField(default=django.utils.timezone.now)),
-                ('community', models.ForeignKey(help_text=b'Community area within which the health unit is located', to='chul.Community')),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -259,9 +238,5 @@ class Migration(migrations.Migration):
         migrations.AlterUniqueTogether(
             name='communityhealthworker',
             unique_together=set([('id_number', 'health_unit')]),
-        ),
-        migrations.AlterUniqueTogether(
-            name='community',
-            unique_together=set([('name', 'ward')]),
         ),
     ]
