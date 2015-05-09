@@ -85,24 +85,24 @@ name                 This does a *case insensitive partial match* but accepts on
 code                 Filter by **one or more** facility codes e.g ``/api/facilities/facilities/?code=15003,15002``. The ``,`` is used to separate individual parameters. This does exact matches.
 description          Similar to ``name`` but operating on descriptions e.g ``/api/facilities/facilities/?name=molo``
 facility_type        Filter by the ``id``s of one or more facility types e.g ``/api/facilities/facilities/?facility_type=f25ba517-3b8d-4692-ba7b-3524f6ec58e5,b2225473-08f1-4e86-a47a-0a61cf75e731``. Facility types can be listed at ``/api/facilities/facility_types/``.
-operation_status    Filter by the ``id`` of one or more operation statuses from ``/api/facilities/facility_status/``
-ward
-owner
-officer_in_charge
-number_of_beds
-number_of_cots
-open_whole_day
-open_whole_week
-is_classified
-is_published
-is_regulated
-updated_before
-created_before
-updated_after
-created_after
-updated_on
-created_on
-is_active
+operation_status     Filter by the ``id`` of one or more operation statuses from ``/api/facilities/facility_status/``
+ward                 Filter by the ``id`` of wards ( from ``/api/common/wards/`` e.g ``/api/facilities/facilities/?ward=353404d7-02e6-422f-b64f-b1c7d0f1bcf0`` )
+owner                Filter by the ``id`` of one or more owners. Owners can be listed at ``/api/facilities/owners/``
+officer_in_charge    Filter by the ``id`` of one or more officers-in-charge. The officers can be listed at ``/api/facilities/officers/``
+number_of_beds       Filter by the number of beds, supplying one or more filter parameters e.g ``/api/facilities/facilities/?number_of_beds=20,21,22,23,24``
+number_of_cots       Filter by the number of cots, supplying one ormore filter parameters e.g ``/api/facilities/facilities/?number_of_cots=10,11,12``
+open_whole_day       A boolean filter e.g ``/api/facilities/facilities/?open_whole_day=true``
+open_whole_week      Another boolean filter e.g ``/api/facilities/facilities/?open_whole_week=true``
+is_classified        A boolean filter that determines if a facility's coordinates should be shown or not. The public front-end should omit classified facilities by default. i.e. publish those that can be listed with ``/api/facilities/facilities/?is_classified=false``
+is_published         A boolean filter that determines if a facility has been cleared for display on the public site. The public site should only display facilities that can be listed with ``/api/facilities/facilities/?is_published=true``
+is_regulated         The facilities that are pending action from the regulators can be listed with ``/api/facilities/facilities/?is_regulated=False``
+updated_before       The most recently updated facilities can be listed with a query similar to ``/api/facilities/facilities/?updated_before=2015-05-09T08:57:48.094112Z``. The datetime is in ISO 8601 format.
+created_before       Similar to ``updated_before``, but operating on creation dates. Creation dates are not "touched" after the initial creation of the resource.
+updated_after        Similar to ``updated_before``, but returns records newer than the specified datetime
+created_after        Similar to ``updated_after``, but works with creation dates.
+updated_on           This is similar to the date filters above but performs **exact matches** on the update date.
+created_on           This is also performas exact matches.
+is_active            For all resources in this server, the preferred way to "retire" records is to mark them as inactive. This allows the API client to request only active or only inactive records.
 search               Perform a full text search that looks through all fields. e.g ``/api/facilities/facilities/?search=endebess`` gives back all facilities that have "endebess" anywhere in their name, description or attributes.
 ==================== ==========================================================
 
