@@ -39,7 +39,6 @@ class Migration(migrations.Migration):
                 ('is_classified', models.BooleanField(default=False, help_text=b"Should the facility geo-codes be visible to the public?Certain facilities are kept 'off-the-map'")),
                 ('is_published', models.BooleanField(default=False, help_text=b'COnfirmation by the CHRIO that the facility is okay')),
                 ('attributes', models.TextField(null=True, blank=True)),
-                ('is_synchronized', models.BooleanField(default=False, help_text=b'Allow the facility to been seen the public')),
             ],
             options={
                 'ordering': ('-updated', '-created'),
