@@ -27,6 +27,12 @@ can get them at once with:
 
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
 
+.. note::
+
+    You must ensure that ElasticSearch is running. In a typical Ubuntu install
+    ( from the `.deb` supplied by ElasticSearch ), the search server is not
+    started by default.
+
 Getting started
 ----------------
 **A: Running the system from source code**
