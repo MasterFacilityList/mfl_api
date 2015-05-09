@@ -388,6 +388,10 @@ class TestFacility(BaseTestCase):
         with self.assertRaises(ValidationError):
             mommy.make(Facility, is_published=False, is_synchronized=True)
 
+    def test_publishing(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(Facility, is_published=True)
+
 
 class TestFacilityContact(BaseTestCase):
     def test_save(self):

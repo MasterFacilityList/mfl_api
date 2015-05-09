@@ -490,12 +490,18 @@ class Facility(SequenceMixin, AbstractBase):
 
     # synchronization is done at the national level.
     is_synchronized = models.BooleanField(
-        default=False, help_text='Allow the facility to been seen the public')
+        default=False,
+        help_text='Allow the facility to been seen by the public')
 
     def validate_synchronization(self):
         if self.is_synchronized and not self.is_published:
             raise ValidationError(
                 "Only published facilities can be synchronized")
+
+    def validate_publish(self):
+        if self.is_published and not self.is_approved:
+            message = "A facility has to be approved for it to be published"
+            raise ValidationError(message)
 
     @property
     def current_regulatory_status(self):
@@ -554,6 +560,10 @@ class Facility(SequenceMixin, AbstractBase):
         else:
             False
 
+    def clean(self, *args, **kwargs):
+        self.validate_synchronization(*args, **kwargs)
+        self.validate_publish(*args, **kwargs)
+
     def __unicode__(self):
         return self.name
 
@@ -561,6 +571,7 @@ class Facility(SequenceMixin, AbstractBase):
         verbose_name_plural = 'facilities'
 
 
+@reversion.register
 class FacilityOperationState(AbstractBase):
     """
     logs chages to the operation_status of a facility.
@@ -577,6 +588,7 @@ class FacilityOperationState(AbstractBase):
         help_text='Additional information for the transition')
 
 
+@reversion.register
 class FacilityUpgrade(AbstractBase):
     """
     Logs the upgrades and the downgrades of a facility.
