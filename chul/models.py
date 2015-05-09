@@ -136,10 +136,10 @@ class CommunityHealthWorker(AbstractBase):
     The status of the worker that is whether still active or not will be
     shown by the active field inherited from abstract base.
     """
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
-    id_number = models.PositiveIntegerField(unique=True)
+    first_name = models.CharField(max_length=50, null=True, blank=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
+    surname = models.CharField(max_length=50, null=True, blank=True)
+    id_number = models.PositiveIntegerField(unique=True, null=True, blank=True)
     health_unit = models.ForeignKey(
         CommunityHealthUnit,
         help_text='The health unit the worker is incharge of',
@@ -152,6 +152,10 @@ class CommunityHealthWorker(AbstractBase):
 
     class Meta(object):
         unique_together = ('id_number', 'health_unit')
+
+    def name(self):
+        return "{} {} {}".format(
+            self.first_name, self.last_name, self.surname)
 
 
 class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
