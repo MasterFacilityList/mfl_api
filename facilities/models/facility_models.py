@@ -551,7 +551,6 @@ class Facility(SequenceMixin, AbstractBase):
             False
 
     def clean(self, *args, **kwargs):
-        self.validate_synchronization(*args, **kwargs)
         self.validate_publish(*args, **kwargs)
 
     def __unicode__(self):
