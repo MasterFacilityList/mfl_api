@@ -7,7 +7,6 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    Community,
     CommunityHealthUnitContact,
     Approver,
     CommunityHealthUnitApproval,
@@ -41,8 +40,6 @@ class CommunityHealthWorkerApprovalSerializer(
 
 class CommunityHealthWorkerSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    health_worker_approvals = CommunityHealthWorkerApprovalSerializer(
-        many=True)
 
     class Meta(object):
         model = CommunityHealthWorker
@@ -52,14 +49,10 @@ class CommunityHealthWorkerSerializer(
 class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
-    health_unit_approvals = CommunityHealthWorkerApprovalSerializer(
-        many=True)
-    health_unit_workers = CommunityHealthWorkerSerializer(
-        many=True)
-
     class Meta(object):
         model = CommunityHealthUnit
-        read_only_fields = ('health_unit_workers', 'health_unit_approvals', )
+        read_only_fields = (
+            'health_unit_workers', 'health_unit_approvals', 'code',)
 
 
 class CommunityHealthWorkerContactSerializer(
@@ -71,11 +64,6 @@ class CommunityHealthWorkerContactSerializer(
 class StatusSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = Status
-
-
-class CommunitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = Community
 
 
 class CommunityHealthUnitContactSerializer(

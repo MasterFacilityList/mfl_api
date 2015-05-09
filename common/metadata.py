@@ -63,6 +63,8 @@ class CustomMetadata(SimpleMetadata):
         if hasattr(field, 'queryset'):
             # Late import ( cyclic import issues )
             from .utilities.metadata_helpers import MODEL_VIEW_DICT
+            assert hasattr(field.queryset, 'model'), \
+                '{} has no queryset'.format(field)
             field_info['relational_choices'] = [
                 {
                     'value': reverse(

@@ -72,33 +72,142 @@ Here is an example payload:
         "description": "Actively Deployed"
     }
 
-Communities
--------------
-TBD - setup style table
+.. note::
+
+    This reflects the operational status of the Community Health Unit.
 
 Community Health Units
 ------------------------
-TBD
+Community health units can be listed via ``GET`` to ``/api/chul/units/``.
+
+To add a new community health unit, ``POST`` to ``/api/chul/units/``, ``POST``
+a payload that has a ``name``, ``facility`` and ``status``. For the facility
+and status, the ``id`` s are sent ( foreign keys ).
+
+For example:
+
+.. code-block:: javascript
+
+    {
+        "name": "Gachie Health Unit",
+        "facility": "2927d31f-b1a0-4d17-93b0-ea648af7b9f0",
+        "status": "0e2ba3fc-9c81-4c30-b52e-b62664462cb7"
+    }
+
+.. note::
+
+    The community health unit ``code`` is auto-assigned. Immediately after
+    creating the facility record, the code ( and other auto-assigned fields )
+    will be inserted in the response.
 
 Community Health Unit Contacts
 +++++++++++++++++++++++++++++++++
-TBD
+A community health unit may be linked to zero or more contacts. The contacts
+will have been created at ``/api/common/contacts/`` using APIs that are
+discussed in the :doc:`support_resources` chapter.
+
+Community health unit contacts can be listed and created at
+``/api/common/contacts/``. To list a community health unit to a contact,
+``POST`` to that endpoint the ``id`` of the contact and the ``id`` of the
+community health unit. The example payload below illustrates that:
+
+.. code-block:: javascript
+
+    {
+        "health_unit": "2d425ab7-0002-4b95-9cd1-638972efb75d",
+        "contact": "7dd62ab9-94c2-48d6-a10f-d903bd57acd5"
+    }
 
 Community Health Unit Approvals
 ++++++++++++++++++++++++++++++++++
-TBD
+The approval status of community health units is listed / maintained at
+``/api/chul/unit_approvals/``.
+
+To record a new approval, you should supply a ``comment``, ``approval_date``,
+``approver``, ``approval_status`` and ``health_unit``.
+
+The ``approver`` is the ``id`` of an approver registered at
+``/api/chul/approvers/``. The ``approval_status`` is the ``id`` of an
+approval status registered at ``/api/chul/approval_statuses/``.
+The ``health_unit`` is the ``id`` of a community health unit registered at
+``/api/chul/units/``. The ``comment`` is a free-text explanation, while the
+``approval_date`` is an ISO 8601 **date** ( not datetime ) string that
+represents the date when the approval occured.
+
+The following example is a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "comment": "For documentation / training purposes",
+        "approval_date": "2015-05-09",
+        "approver": "02b610c1-067f-4e0c-9bad-31cc029f6ee3",
+        "approval_status": "44c2abfd-3944-484f-ae4c-b30778e25398",
+        "health_unit": "96645d26-8e4e-4078-9e10-a5176f5432df"
+    }
+
+.. note::
+
+    This reflects the approval status of the Community Health Unit.
 
 Community Health Workers
 --------------------------
-TBD
+Community health workers are attached to community health units. They are
+listed and maintained at ``/api/chul/workers/``.
+
+When registering a new community health worker, supply a ``first_name``,
+``last_name``, ``surname``, ``id_number`` and ``health_unit``. The
+``health_unit`` is the ``id`` of the community health unit that the worker
+is attached to, and can be retrieved from ``/api/chul/units/``.
+
+.. code-block:: javascript
+
+    {
+        "first_name": "Does",
+        "last_name": "Not",
+        "surname": "Exist",
+        "id_number": 545432,
+        "health_unit": "96645d26-8e4e-4078-9e10-a5176f5432df"
+    }
 
 Community Health Workers Contacts
 ------------------------------------
-TBD
+A community health worker can be linked to a contact that has already been
+registered at ``/api/common/contacts/`` by ``POST`` ing to
+``/api/chul/workers_contacts/`` the ``id`` of the worker and the ``id`` of the
+contact.
+
+For example:
+
+.. code-block:: javascript
+
+    {
+        "health_worker": "db04b653-b0f7-434f-a224-3ea4d93b69c1",
+        "contact": "2d04afdc-46a8-4b11-85b8-63f5c035366f"
+    }
 
 Community Health Workers Approvals
 -------------------------------------
-TBD
+The approval status of community health workers is maintained at
+``/api/chul/worker_approvals/``.
+
+The key pieces of information to maintain about each approval are
+the ``approver`` ( an ``id`` of an approver registered at
+``/api/chul/approvers/`` ), ``approval_status`` ( ``id`` of an
+approval status registered at ``/api/chul/approval_statuses/`` )
+and ``health_worker`` ( ``id`` of a health worker registered at
+``/api/chul/workers/`` ) and a free-form ``comment``.
+
+The example below is a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "approver": "02b610c1-067f-4e0c-9bad-31cc029f6ee3",
+        "approval_status": "44c2abfd-3944-484f-ae4c-b30778e25398",
+        "health_worker": "db04b653-b0f7-434f-a224-3ea4d93b69c1",
+        "comment": "Documentation example"
+    }
 
 .. toctree::
     :maxdepth: 2

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-from common.models import AbstractBase, Contact, SequenceMixin, Ward
+from common.models import AbstractBase, Contact, SequenceMixin
 from common.fields import SequenceField
 from facilities.models import Facility
 
@@ -50,24 +50,6 @@ class ApprovalStatus(AbstractBase):
         verbose_name_plural = 'approval_statuses'
 
 
-class Community(SequenceMixin, AbstractBase):
-    """
-    A certain area within a ward.
-    """
-    name = models.CharField(max_length=100)
-    code = SequenceField(unique=True)
-    ward = models.ForeignKey(Ward)
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_next_code_sequence()
-        super(Community, self).save(*args, **kwargs)
-
-    class Meta(object):
-        verbose_name_plural = 'communities'
-        unique_together = ('name', 'ward', )
-
-
 class CommunityHealthUnitContact(AbstractBase):
     """
     The contacts of the health unit may be email, fax mobile etc.
@@ -94,9 +76,6 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         Facility,
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
-    community = models.ForeignKey(
-        Community,
-        help_text='Community area within which the health unit is located')
     households_monitored = models.PositiveIntegerField(default=0)
     date_established = models.DateField(default=timezone.now)
     contacts = models.ManyToManyField(

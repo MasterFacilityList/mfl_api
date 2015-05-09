@@ -7,7 +7,6 @@ from ..models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    Community,
     CommunityHealthUnitContact,
     Approver,
     CommunityHealthUnitApproval,
@@ -51,18 +50,11 @@ class TestCommunityHealthWorkerContact(TestCase):
         self.assertEquals(expected_unicode, hw_contact.__unicode__())
 
 
-class TestCommunityModel(TestCase):
-    def test_save_community_with_code(self):
-        community = mommy.make(Community, code=1344)
-        self.assertEquals(1, Community.objects.count())
-        self.assertEquals(1344, community.code)
-
-
 class TestModels(TestCase):
     def test_save(self):
         models = [
             CommunityHealthUnit, CommunityHealthWorker,
-            CommunityHealthWorkerContact, Status, Community,
+            CommunityHealthWorkerContact, Status,
             CommunityHealthUnitContact, Approver, CommunityHealthUnitApproval,
             CommunityHealthWorkerApproval, ApprovalStatus
         ]
