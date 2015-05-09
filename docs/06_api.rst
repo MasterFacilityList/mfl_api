@@ -1,13 +1,12 @@
 Using the API - Basic Principles
 ==================================
-.. include:: ../substitutes.txt
+.. include:: substitutes.txt
 
 All the material here assumes that you already have access to an
 MFL test environment.
 
-See :doc:`sandbox` and :doc:`../installing/evaluator_install` or
-:doc:`../installing/developer_install` for information on how to get
-access to a test environment.
+See :doc:`07_sandbox` and :doc:`01_evaluator_install` or :doc:`02_developer_install`
+for information on how to get access to a test environment.
 
 HTTP and HTTPS
 ---------------
@@ -62,7 +61,7 @@ Send the correct ``Accept`` header. For example:
 
     curl -i -H "Accept: application/xlsx" -H "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" http://localhost:8000/api/common/contacts/
 
-Please note that the examples above do not factor in :doc:`authentication`.
+Please note that the examples above do not factor in :doc:`05_authentication`.
 
 Content negotiation using query parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -333,10 +332,10 @@ HTTP Errors
     This error occurs if the request given to the server is malformed or does not meet certain criteria e.g. invalid data.
 
 401 (Unauthorized)
-    The request to access a resource was unauthorized. (:doc:`authentication`)
+    The request to access a resource was unauthorized. (:doc:`05_authentication`)
 
 403 (Forbidden)
-    The authorized user does not have permission to access a resource (:doc:`authentication`)
+    The authorized user does not have permission to access a resource (:doc:`05_authentication`)
 
 404 (Not found)
     The requested resource was not found
