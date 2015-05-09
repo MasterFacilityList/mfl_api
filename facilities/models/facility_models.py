@@ -536,11 +536,6 @@ class Facility(SequenceMixin, AbstractBase):
     def owner_type_name(self):
         return self.owner.owner_type.name
 
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_next_code_sequence()
-        super(Facility, self).save(*args, **kwargs)
-
     @property
     def is_approved(self):
         approvals = FacilityApproval.objects.filter(facility=self).count()
@@ -548,6 +543,11 @@ class Facility(SequenceMixin, AbstractBase):
             return True
         else:
             False
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name

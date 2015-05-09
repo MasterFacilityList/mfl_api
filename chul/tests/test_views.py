@@ -40,7 +40,7 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.assertEquals(200, response.status_code)
         self._assert_response_data_equality(expected_data, response.data)
 
-    def test_retrieve_single_healt_unit(self):
+    def test_retrieve_single_health_unit(self):
         health_unit = mommy.make(CommunityHealthUnit)
         url = self.url + "{}/".format(health_unit.id)
         expected_data = CommunityHealthUnitSerializer(health_unit).data
@@ -49,10 +49,10 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self._assert_response_data_equality(expected_data, response.data)
 
 
-class TestCommunitHealthWorkerView(ViewTestBase):
+class TestCommunityHealthWorkerView(ViewTestBase):
     def setUp(self):
         self.url = reverse("api:chul:community_health_workers_list")
-        super(TestCommunitHealthWorkerView, self).setUp()
+        super(TestCommunityHealthWorkerView, self).setUp()
 
     def test_health_workers_listing(self):
         worker_1 = mommy.make(CommunityHealthWorker)

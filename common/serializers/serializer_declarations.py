@@ -45,6 +45,7 @@ class CountySerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
         model = County
+        read_only_fields = ('code',)
 
 
 class CountyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
@@ -56,6 +57,7 @@ class CountyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
         model = County
+        read_only_fields = ('code',)
 
 
 class TownSerializer(
@@ -69,6 +71,7 @@ class WardSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
         model = Ward
+        read_only_fields = ('code',)
 
 
 class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
@@ -81,12 +84,14 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
         model = Ward
+        read_only_fields = ('code',)
 
 
 class ConstituencySerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
         model = Constituency
+        read_only_fields = ('code',)
 
 
 class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
@@ -98,6 +103,7 @@ class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
         model = Constituency
+        read_only_fields = ('code',)
 
 
 class UserCountySerializer(

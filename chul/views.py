@@ -5,7 +5,6 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    Community,
     CommunityHealthUnitContact,
     Approver,
     CommunityHealthUnitApproval,
@@ -18,7 +17,6 @@ from .serializers import (
     CommunityHealthWorkerSerializer,
     CommunityHealthWorkerContactSerializer,
     StatusSerializer,
-    CommunitySerializer,
     CommunityHealthUnitContactSerializer,
     ApproverSerializer,
     CommunityHealthUnitApprovalSerializer,
@@ -31,7 +29,6 @@ from .filters import (
     CommunityHealthWorkerFilter,
     CommunityHealthWorkerContactFilter,
     StatusFilter,
-    CommunityFilter,
     CommunityHealthUnitContactFilter,
     ApproverFilter,
     CommunityHealthUnitApprovalFilter,
@@ -51,19 +48,6 @@ class StatusDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
-
-
-class CommunityListView(generics.ListCreateAPIView):
-    queryset = Community.objects.all()
-    serializer_class = CommunitySerializer
-    filter_class = CommunityFilter
-    ordering_fields = ('name', 'code', )
-
-
-class CommunityDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = Community.objects.all()
-    serializer_class = CommunitySerializer
 
 
 class CommunityHealthUnitContactListView(generics.ListCreateAPIView):
