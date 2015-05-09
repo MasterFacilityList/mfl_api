@@ -111,5 +111,6 @@ setup(
         "drf-extensions>=0.2.7",
         "xlsxwriter>=0.7.2",
         "mock>=1.0.1",
+        "recommonmark>=0.1.1",
     ],
 )
