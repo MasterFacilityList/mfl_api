@@ -153,6 +153,7 @@ class CommunityHealthWorker(AbstractBase):
     class Meta(object):
         unique_together = ('id_number', 'health_unit')
 
+    @property
     def name(self):
         return "{} {} {}".format(
             self.first_name, self.last_name, self.surname)
