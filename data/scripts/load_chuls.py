@@ -2,6 +2,7 @@ import os
 import csv
 import json
 from django.conf import settings
+from facilities.models import Facility
 
 
 chul_file = os.path.join(
@@ -20,14 +21,23 @@ def create_chuls_file():
     chul = []
     chews = []
     chu_contacts = []
+    non_existing_facilities = []
+    chul_codes = []
+
     with open(chul_file, 'r') as csv_file:
         chul_reader = csv.reader(csv_file)
 
         for row in chul_reader:
+            try:
+                Facility.objects.get(code=row[6])
+            except:
+                non_existing_facilities.append(row[6])
+                continue
+
             code = row[1]
             name = row[2]
             date_established = row[3]
-            facility_code = row[7]
+            facility_code = row[6]
             households_monitored = row[11]
             status = row[12]
             #  approval = row[13]
@@ -54,7 +64,21 @@ def create_chuls_file():
 
             # chew
             first_name = row[10]
+            if status == '1':
+                status = {
+                    "name": "Fully-functional"
+                }
+            if status == '2':
+                status = {
+                    "name": "semi-functional"
+                }
 
+            if status == '3':
+                status = {
+                    "name": "non-operational"
+                }
+            if date_established == "":
+                date_established = "2000-01-01"
             chu = {
                 "code": code,
                 "name": name,
@@ -65,8 +89,11 @@ def create_chuls_file():
                 "households_monitored": households_monitored,
                 "status": status,
             }
-            if chu not in chul:
+
+            if chu not in chul and code not in chul_codes:
                 chul.append(chu)
+
+            chul_codes.append(code)
 
             chew = {
                 "first_name": first_name,

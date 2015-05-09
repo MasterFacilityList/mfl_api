@@ -77,7 +77,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
     households_monitored = models.PositiveIntegerField(default=0)
-    date_established = models.DateField(default=timezone.now)
+    date_established = models.CharField(max_length=100, null=True, blank=True)
     contacts = models.ManyToManyField(
         Contact, through=CommunityHealthUnitContact)
 

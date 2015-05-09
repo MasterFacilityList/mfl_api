@@ -69,7 +69,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('code', common.fields.SequenceField(unique=True, blank=True)),
                 ('households_monitored', models.PositiveIntegerField(default=0)),
-                ('date_established', models.DateField(default=django.utils.timezone.now)),
+                ('date_established', models.DateField(null=True, blank=True)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
