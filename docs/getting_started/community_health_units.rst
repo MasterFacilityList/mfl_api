@@ -87,8 +87,8 @@ For example:
 
     {
         "name": "Gachie Health Unit",
-        "facility": "c4169b23-5cbb-4ed8-a556-8a4fc43af17e",
-        "status": "d33775cc-c5e4-4d0e-b36a-890812189107"
+        "facility": "2927d31f-b1a0-4d17-93b0-ea648af7b9f0",
+        "status": "0e2ba3fc-9c81-4c30-b52e-b62664462cb7"
     }
 
 .. note::
@@ -117,7 +117,31 @@ community health unit. The example payload below illustrates that:
 
 Community Health Unit Approvals
 ++++++++++++++++++++++++++++++++++
-TBD
+The approval status of community health units is listed / maintained at
+``/api/chul/unit_approvals/``.
+
+To record a new approval, you should supply a ``comment``, ``approval_date``,
+``approver``, ``approval_status`` and ``health_unit``.
+
+The ``approver`` is the ``id`` of an approver registered at
+``/api/chul/approvers/``. The ``approval_status`` is the ``id`` of an
+approval status registered at ``/api/chul/approval_statuses/``.
+The ``health_unit`` is the ``id`` of a community health unit registered at
+``/api/chul/units/``. The ``comment`` is a free-text explanation, while the
+``approval_date`` is an ISO 8601 **date** ( not datetime ) string that
+represents the date when the approval occured.
+
+The following example is a valid ``POST`` payload:
+
+.. code-block:: python
+
+    {
+        "comment": "For documentation / training purposes",
+        "approval_date": "2015-05-09",
+        "approver": "02b610c1-067f-4e0c-9bad-31cc029f6ee3",
+        "approval_status": "44c2abfd-3944-484f-ae4c-b30778e25398",
+        "health_unit": "96645d26-8e4e-4078-9e10-a5176f5432df"
+    }
 
 Community Health Workers
 --------------------------

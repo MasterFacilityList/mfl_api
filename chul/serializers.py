@@ -52,9 +52,9 @@ class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
     health_unit_approvals = CommunityHealthWorkerApprovalSerializer(
-        many=True)
+        many=True, read_only=True)
     health_unit_workers = CommunityHealthWorkerSerializer(
-        many=True)
+        many=True, read_only=True)
 
     class Meta(object):
         model = CommunityHealthUnit
