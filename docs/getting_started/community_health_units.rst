@@ -179,7 +179,7 @@ contact.
 
 For example:
 
-..code-block:: javascript
+.. code-block:: javascript
 
     {
         "health_worker": "db04b653-b0f7-434f-a224-3ea4d93b69c1",
