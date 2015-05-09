@@ -172,11 +172,42 @@ is attached to, and can be retrieved from ``/api/chul/units/``.
 
 Community Health Workers Contacts
 ------------------------------------
-TBD
+A community health worker can be linked to a contact that has already been
+registered at ``/api/common/contacts/`` by ``POST`` ing to
+``/api/chul/workers_contacts/`` the ``id`` of the worker and the ``id`` of the
+contact.
+
+For example:
+
+..code-block:: javascript
+
+    {
+        "health_worker": "db04b653-b0f7-434f-a224-3ea4d93b69c1",
+        "contact": "2d04afdc-46a8-4b11-85b8-63f5c035366f"
+    }
 
 Community Health Workers Approvals
 -------------------------------------
-TBD
+The approval status of community health workers is maintained at
+``/api/chul/worker_approvals/``.
+
+The key pieces of information to maintain about each approval are
+the ``approver`` ( an ``id`` of an approver registered at
+``/api/chul/approvers/`` ), ``approval_status`` ( ``id`` of an
+approval status registered at ``/api/chul/approval_statuses/`` )
+and ``health_worker`` ( ``id`` of a health worker registered at
+``/api/chul/workers/`` ) and a free-form ``comment``.
+
+The example below is a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "approver": "02b610c1-067f-4e0c-9bad-31cc029f6ee3",
+        "approval_status": "44c2abfd-3944-484f-ae4c-b30778e25398",
+        "health_worker": "db04b653-b0f7-434f-a224-3ea4d93b69c1",
+        "comment": "Documentation example"
+    }
 
 .. toctree::
     :maxdepth: 2
