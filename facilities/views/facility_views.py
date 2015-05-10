@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 from django.utils import timezone
 
+from rest_framework.views import APIView, Response
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
 
@@ -451,3 +452,33 @@ def get_correction_template(request, facility_id):
         }
     )
     return HttpResponse(template.render(context))
+
+
+class DashBoardView(APIView):
+    def get(self, *args, **kwargs):
+        facilities = Facility.objects.all()
+        wards = Ward.objects.all()
+        constituencies = Constituency.objects.all()
+        counties = County.objects.all()
+        owners = Owner.objects.all()
+        facility_types = FacilityType.objects.all()
+        all_summary = {}
+
+        facility_wards_summary = {}
+        for ward in wards:
+            ward_facility_count = facilities.filter(ward=ward).count()
+            facility_wards_summary[ward.name] = ward_facility_count
+        facility_county_summary = {}
+        for county in counties:
+            facility_county_count = facilities.filter(
+                ward__county=county).count()
+            facility_county_summary[county.name] = facility_county_count
+        constituencies_summary = {}
+        for const in Constituency.objects.all():
+            constituencies_summary[const.name] = facilities.filter(
+                ward__constituency=ward)
+        facility_owners_summary = {}
+        for owner in Owner.objects.all():
+            owner_count = facilities.filter(owner=owner).count()
+
+        return Response(data)
