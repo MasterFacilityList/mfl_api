@@ -114,7 +114,27 @@ search               Perform a full text search that looks through all fields. e
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The following are the important fields when adding a new facility:
+
+=================== ===========================================================
+Field               Notes
+=================== ===========================================================
+name                The name of the faciity e.g "Musembe Dispensary (Lugari)"
+abbreviation        A shortened name
+description         Free text that supplies any additional detail that is required
+location_desc       An explanation of the location, in "plain" language e.g "Eldoret - Webuye Highway (at Musembe Mkt junction)"
+number_of_beds      The number of beds as per the facility's license
+number_of_cots      The number of cots as per the facility's license
+open_whole_day      `true` if the facility is a 24 hour operation
+open_whole_week     `true` if the facility is a 7 day operation
+facility_type       An ``id``, obtained by listing ``/api/facilities/facility_types/``
+operation_status    An ``id``, obtained from ``/api/facilities/facility_status/``. This is the overall state of the facility e.g "Operational" or "Not Operational"
+ward                An ``id``, obtained from ``/api/common/wards/``. Facilities are attached at the level of the smallest administrative area ( the ward ).
+owner               An ``id``, obtained from ``/api/facilities/owners/``.
+officer_in_charge   An ``id``, obtained from ``/api/facilities/officers/``
+physical_address    An ``id``, obtained from ``/api/common/address/``
+parent              Optional. If a facility is a "branch" of a larger facility, the ``id`` of the parent facility should be supplied here.
+=================== ===========================================================
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
