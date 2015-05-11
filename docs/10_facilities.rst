@@ -136,13 +136,59 @@ physical_address    An ``id``, obtained from ``/api/common/address/``
 parent              Optional. If a facility is a "branch" of a larger facility, the ``id`` of the parent facility should be supplied here.
 =================== ===========================================================
 
+The following example illustrates a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "name": "Demo Facility",
+        "abbreviation": "DEMOFAC",
+        "description": "This is an example in the documentation",
+        "location_desc": "Planet: Mars",
+        "number_of_beds": 20,
+        "number_of_cots": 0,
+        "open_whole_day": true,
+        "open_whole_week": true,
+        "facility_type": "db8f93ad-b558-405a-89b5-a0cdb318ee6e",
+        "operation_status": "ee194a52-db9d-401c-a2ef-9c8225e501cd",
+        "ward": "a64d930d-883e-4b96-ba39-c792a1cd04f2",
+        "owner": "f4c7ca47-7ee6-4795-ac1c-a5d219e329ad",
+        "officer_in_charge": "972c9c96-fe27-4803-b6f8-c933310e2f44",
+        "physical_address": "88dde94b-dc42-4b13-b1cb-05eca047678c",
+        "parent": null
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
+
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+In order to update an existing record, ``PATCH`` the appropriate field from
+the record's detail view.
+
+For exampple: if the facility that we created above got the ``id`` set to
+``e88f0c1a-e1e4-44ff-8db1-8c4135abb080`` ( this will be returned to the client
+in the resource returned after successful creation ), we can change its
+``location_desc`` from "Planet: Mars" to "Planet: Venus" by sending the
+following request in a ``PATCH`` to ``/api/facilities/facilities/e88f0c1a-e1e4-44ff-8db1-8c4135abb080/``:
+
+.. code-block:: javascript
+
+    {
+        "location_desc": "Planet: Venus"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+In order to delete the record that we just created, send a ``DELETE`` with an
+empty payload to the detail URL i.e. to ``/api/facilities/facilities/e88f0c1a-e1e4-44ff-8db1-8c4135abb080/`` in the example above.
+
+A successful deletion will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility physical addresses
 ++++++++++++++++++++++++++++++
