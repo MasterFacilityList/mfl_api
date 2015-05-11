@@ -489,12 +489,22 @@ class DashBoard(APIView):
                 facility_type=facility_type).count()
 
             facility_type_summary[facility_type.name] = facility_type_count
+        regulation_status = FacilityRegulationStatus.objects.all()
+        regulatory_bodies = RegulatingBody.objects.all()
+        regulator_summary = {}
+
+        for body in regulatory_bodies:
+            facility_regulator_count = regulation_status.filter(
+                regulating_body=body).count()
+            regulator_summary[body.name] = facility_regulator_count
+
         data = {
             "wards_summary": facility_wards_summary,
             "county_summary": facility_county_summary,
             "constituencies_summary": constituencies_summary,
             "owners_summary": facility_owners_summary,
-            "types_summary": facility_type_summary
+            "types_summary": facility_type_summary,
+            "regulator_summry": regulator_summary
         }
 
         return Response(data)

@@ -25,7 +25,8 @@ from ..models import (
     Facility,
     FacilityUnit,
     FacilityRegulationStatus,
-    FacilityType
+    FacilityType,
+    RegulatingBody,
 )
 
 
@@ -342,7 +343,13 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         ward = mommy.make(Ward, constituency=constituency)
         facility_type = mommy.make(FacilityType)
         owner = mommy.make(Owner)
-        mommy.make(
+
+        facility = mommy.make(
             Facility, ward=ward, facility_type=facility_type, owner=owner)
+        regulating_body = mommy.make(RegulatingBody)
+        mommy.make(
+            FacilityRegulationStatus,
+            regulating_body=regulating_body,
+            facility=facility)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
