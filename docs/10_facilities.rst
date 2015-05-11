@@ -96,6 +96,14 @@ open_whole_week      Another boolean filter e.g ``/api/facilities/facilities/?op
 is_classified        A boolean filter that determines if a facility's coordinates should be shown or not. The public front-end should omit classified facilities by default. i.e. publish those that can be listed with ``/api/facilities/facilities/?is_classified=false``
 is_published         A boolean filter that determines if a facility has been cleared for display on the public site. The public site should only display facilities that can be listed with ``/api/facilities/facilities/?is_published=true``
 is_regulated         The facilities that are pending action from the regulators can be listed with ``/api/facilities/facilities/?is_regulated=False``
+==================== ==========================================================
+
+The following filters are common to **all** list endpoints in this API,
+other than ``/api/users/``.
+
+==================== ==========================================================
+Filter               Explanation
+==================== ==========================================================
 updated_before       The most recently updated facilities can be listed with a query similar to ``/api/facilities/facilities/?updated_before=2015-05-09T08:57:48.094112Z``. The datetime is in ISO 8601 format.
 created_before       Similar to ``updated_before``, but operating on creation dates. Creation dates are not "touched" after the initial creation of the resource.
 updated_after        Similar to ``updated_before``, but returns records newer than the specified datetime
@@ -117,7 +125,7 @@ Adding a new record
 The following are the important fields when adding a new facility:
 
 =================== ===========================================================
-Field               Notes
+Field               Explanation
 =================== ===========================================================
 name                The name of the faciity e.g "Musembe Dispensary (Lugari)"
 abbreviation        A shortened name
@@ -190,31 +198,82 @@ empty payload to the detail URL i.e. to ``/api/facilities/facilities/e88f0c1a-e1
 
 A successful deletion will get back a ``HTTP 204 NO CONTENT`` response.
 
-Facility physical addresses
+Physical addresses
 ++++++++++++++++++++++++++++++
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The physical addresses known to the system can be listed at
+``/api/common/address/``.
+
+In addition to the common filters that are already explained above,
+physical addresses have the following extra filters:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+town                Filter by the ``id`` of a town. Towns can be listed at ``/api/common/towns/`` e.g ``/api/common/address/?town=b2af0361-c924-4ba2-9bc6-82333fc0a26f``
+postal_code         Filter by the ``postal_code`` e.g ``/api/common/address/?postal_code=00100``
+address             Filter by the actual text of the address itself e.g ``/api/common/address/?address=P.O.%20Box%201``
+nearest_landmark    Filter by the contents of the ``nearest_landmark`` field e.g ``/api/common/address/?nearest_landmark=kicc``
+plot_number         Filter by the ``plot_number`` field e.g ``/api/common/address/?plot_number=940``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The detail endpoint is ``/api/common/address/<id>/`` e.g
+``/api/common/address/20d01a89-f6b5-4a4d-b788-32182d427c18/`` for the address
+whose ``id`` is ``20d01a89-f6b5-4a4d-b788-32182d427c18``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+Supply the following fields:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+postal_code         A valid postal code e.g "00100"
+address             An address e.g "No. 11A, Kabarnet Court, off Kabarnet Road" or "P.O. Box 5980"
+nearest_landmark    Free text, left to the discretion of the person creating the record
+plot_number         Free text, left to the discretion of the person entering the record
+town                The ``id`` of a town, as listed at ``/api/common/towns/``
+=================== ===========================================================
+
+.. code-block:: javascript
+
+    {
+        "postal_code": "00100",
+        "address": "No. 11A, Kabarnet Court, off Kabarnet Road",
+        "nearest_landmark": "Kingdom Business Centre",
+        "plot_number": "-",
+        "town": "b2af0361-c924-4ba2-9bc6-82333fc0a26f"
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+``PATCH`` the detail endpoint above e.g to set the ``plot_number`` for the
+example record above, send the following ``PATCH`` payload to
+``/api/common/address/20d01a89-f6b5-4a4d-b788-32182d427c18/``:
+
+.. code-block:: javascript
+
+    {
+        "plot_number": "250"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Send a ``DELETE`` request to the detail endpoint. In the example above,
+the ``DELETE`` would be sent to ``/api/common/address/20d01a89-f6b5-4a4d-b788-32182d427c18/``.
+
+A successful deletion will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility contacts
 +++++++++++++++++++
@@ -224,10 +283,6 @@ TBD
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
 TBD
 
 Adding a new record
@@ -252,10 +307,6 @@ Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TBD
 
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
 TBD
@@ -276,10 +327,6 @@ TBD
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
 TBD
 
 Adding a new record

@@ -34,7 +34,7 @@ class ContactFilter(CommonFieldsFilterset):
 
 
 class PhysicalAddressFilter(CommonFieldsFilterset):
-    town = django_filters.AllValuesFilter(lookup_type='exact')
+    town = django_filters.CharFilter(lookup_type='exact')
     postal_code = django_filters.CharFilter(lookup_type='icontains')
     address = django_filters.CharFilter(lookup_type='icontains')
     nearest_landmark = django_filters.CharFilter(lookup_type='icontains')
