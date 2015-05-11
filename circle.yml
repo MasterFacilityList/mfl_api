@@ -1,22 +1,32 @@
 machine:
-  environment:
-    DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
-    COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
-  services:
-    - elasticsearch
+    environment:
+        DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
+        COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
+
+    services:
+        - elasticsearch
+
 
 checkout:
-  post:
-    - cp .env-example .env
+    post:
+        - cp .env-example .env
+
 
 dependencies:
-  post:
-    - pip install fabric
+    post:
+        - pip install fabric
+
 
 test:
-  override:
-    - fab test
+    override:
+        # test code
+        - fab test
+
+        # test playbooks
+        - ansible-playbook -i hosts/test testing.yml --connection=local:
+            pwd: playbooks
+
 
 general:
-  artifacts:
-    - "htmlcov"
+    artifacts:
+        - "htmlcov"
