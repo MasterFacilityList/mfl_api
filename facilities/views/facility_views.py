@@ -6,6 +6,7 @@ from django.utils import timezone
 from rest_framework.views import APIView, Response
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
+from common.models import Ward, County, Constituency
 
 from ..models import (
     OwnerType,
@@ -454,7 +455,9 @@ def get_correction_template(request, facility_id):
     return HttpResponse(template.render(context))
 
 
-class DashBoardView(APIView):
+class DashBoard(APIView):
+    queryset = Facility.objects.all()
+
     def get(self, *args, **kwargs):
         facilities = Facility.objects.all()
         wards = Ward.objects.all()
@@ -462,8 +465,6 @@ class DashBoardView(APIView):
         counties = County.objects.all()
         owners = Owner.objects.all()
         facility_types = FacilityType.objects.all()
-        all_summary = {}
-
         facility_wards_summary = {}
         for ward in wards:
             ward_facility_count = facilities.filter(ward=ward).count()
@@ -471,14 +472,29 @@ class DashBoardView(APIView):
         facility_county_summary = {}
         for county in counties:
             facility_county_count = facilities.filter(
-                ward__county=county).count()
+                ward__constituency__county=county).count()
             facility_county_summary[county.name] = facility_county_count
         constituencies_summary = {}
-        for const in Constituency.objects.all():
+        for const in constituencies:
             constituencies_summary[const.name] = facilities.filter(
-                ward__constituency=ward)
+                ward__constituency=const).count()
         facility_owners_summary = {}
-        for owner in Owner.objects.all():
+        for owner in owners:
             owner_count = facilities.filter(owner=owner).count()
+            facility_owners_summary[owner.name] = owner_count
+
+        facility_type_summary = {}
+        for facility_type in facility_types:
+            facility_type_count = facilities.filter(
+                facility_type=facility_type).count()
+
+            facility_type_summary[facility_type.name] = facility_type_count
+        data = {
+            "wards_summary": facility_wards_summary,
+            "county_summary": facility_county_summary,
+            "constituencies_summary": constituencies_summary,
+            "owners_summary": facility_owners_summary,
+            "types_summary": facility_type_summary
+        }
 
         return Response(data)

@@ -333,3 +333,8 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, 'correction_template.txt')
+
+    def test_dashboard_view(self):
+        url = reverse('api:facilities:dashboard')
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
