@@ -1,0 +1,11 @@
+---
+install_dir: "/opt/mfl_frontend"
+download_dir: "{{install_dir}}/downloads"
+extraction_dir: "{{install_dir}}/frontend"
+mfl_frontend_tag: "0.0.1a1"
+download_url: "https://github.com/MasterFacilityList/mfl_web/releases/download/mfl_frontend_tag/mfl_web__{{mfl_frontend_tag}}.tar.gz"
+server_url: "http://localhost:8001/v1/"
+oauth2_key: ""
+oauth2_secret: ""
+mfl_frontend_archive_file : "{{download_dir}}/mfl_frontend__{{mfl_frontend_version}}.tar.gz"
+ssl_on: false
