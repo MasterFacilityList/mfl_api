@@ -23,7 +23,7 @@ test:
         - fab test
 
         # test playbooks
-        - ansible-playbook -i hosts/test testing.yml --connection=local:
+        - ansible-playbook -i inventory site.yml --connection=local:
             pwd: playbooks
 
 
