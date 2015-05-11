@@ -70,12 +70,11 @@ Configuring the ansible inventory
 . warn::
 
     If you are working off a recent Ubuntu Linux on your laptop, you will do
-    yourself a great 1TBD
+    yourself a great 1TBD]a
 
 TBD - Add warning about removing LC forwarding from SSH config
 TBD - **everything here is work in progress**
 
-TODO - Django deploy checklist'
 TODO - Can only be in a non-threaded server, because of ``GDAL``
 ( for those who will not use the supplied playbooks )
 TODO - Warning about using this on a production server
