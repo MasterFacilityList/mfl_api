@@ -529,10 +529,6 @@ The Facility approval workflow
 +++++++++++++++++++++++++++++++++
 TBD - Makers, checkers
 
-The facility regulation workflow
-+++++++++++++++++++++++++++++++++++
-TBD
-
 The facility upgrade workflow
 +++++++++++++++++++++++++++++++
 TBD - implement a transitions graph in the database ( setup ); owner type linked
@@ -541,6 +537,10 @@ TBD - document!
 
 The facility downgrade workflow
 ++++++++++++++++++++++++++++++++++
+TBD
+
+The facility regulation workflow
++++++++++++++++++++++++++++++++++++
 TBD
 
 Facility ratings
