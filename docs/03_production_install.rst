@@ -71,13 +71,13 @@ be edited to have a line for each server that is managed by Ansible.
 
 The following is an example:
 
-.. text::
+.. code-block:: text
 
     azure_test_server             ansible_ssh_host=mfl.azure.slade360.co.ke     ansible_ssh_port=22     ansible_ssh_user=azureuser     ansible_ssh_private_key_file=/home/ngurenyaga/.ssh/id_rsa
 
 The template breaks down roughly to this:
 
-.. text::
+.. code-block:: text
 
     <a descriptive name we choose for the server>
     ansible_ssh_host=<an IP address or host name>
