@@ -338,15 +338,17 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
 
     def test_dashboard_view(self):
         url = reverse('api:facilities:dashboard')
-        county = mommy.make(County)
-        constituency = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=constituency)
-        facility_type = mommy.make(FacilityType)
-        owner = mommy.make(Owner)
+        county = mommy.make(County, name="Kiambu")
+        constituency = mommy.make(
+            Constituency, county=county, name="Kaskazini")
+        ward = mommy.make(Ward, constituency=constituency, name="Magharibi")
+        facility_type = mommy.make(FacilityType, name="Health Center")
+        owner = mommy.make(Owner, name="MOH")
 
         facility = mommy.make(
-            Facility, ward=ward, facility_type=facility_type, owner=owner)
-        regulating_body = mommy.make(RegulatingBody)
+            Facility, ward=ward, facility_type=facility_type,
+            owner=owner, name="Mama Lucy")
+        regulating_body = mommy.make(RegulatingBody, name="Poisons Board")
         mommy.make(FacilityUnit, regulating_body=regulating_body)
         mommy.make(
             FacilityRegulationStatus,

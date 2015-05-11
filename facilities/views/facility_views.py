@@ -458,37 +458,50 @@ def get_correction_template(request, facility_id):
 class DashBoard(APIView):
     queryset = Facility.objects.all()
 
-    def get(self, *args, **kwargs):
-        facilities = Facility.objects.all()
+    def get_facility_wards_summary(self):
         wards = Ward.objects.all()
-        constituencies = Constituency.objects.all()
-        counties = County.objects.all()
-        owners = Owner.objects.all()
-        facility_types = FacilityType.objects.all()
         facility_wards_summary = {}
         for ward in wards:
-            ward_facility_count = facilities.filter(ward=ward).count()
+            ward_facility_count = self.queryset.filter(ward=ward).count()
             facility_wards_summary[ward.name] = ward_facility_count
+        return facility_wards_summary
+
+    def get_facility_county_summary(self):
+        counties = County.objects.all()
         facility_county_summary = {}
         for county in counties:
-            facility_county_count = facilities.filter(
+            facility_county_count = self.queryset.filter(
                 ward__constituency__county=county).count()
             facility_county_summary[county.name] = facility_county_count
-        constituencies_summary = {}
-        for const in constituencies:
-            constituencies_summary[const.name] = facilities.filter(
-                ward__constituency=const).count()
-        facility_owners_summary = {}
-        for owner in owners:
-            owner_count = facilities.filter(owner=owner).count()
-            facility_owners_summary[owner.name] = owner_count
+        return facility_county_summary
 
+    def get_facility_constituency_summary(self):
+        constituencies = Constituency.objects.all()
+        facility_constituency_summary = {}
+        for const in constituencies:
+            facility_const_count = self.queryset.filter(
+                ward__constituency=const).count()
+            facility_constituency_summary[const.name] = facility_const_count
+        return facility_constituency_summary
+
+    def get_facility_type_summary(self):
+        facility_types = FacilityType.objects.all()
         facility_type_summary = {}
         for facility_type in facility_types:
-            facility_type_count = facilities.filter(
+            facility_type_count = self.queryset.filter(
                 facility_type=facility_type).count()
-
             facility_type_summary[facility_type.name] = facility_type_count
+        return facility_type_summary
+
+    def get_facility_owner_summary(self):
+        owners = Owner.objects.all()
+        facility_owners_summary = {}
+        for owner in owners:
+            owner_count = self.queryset.filter(owner=owner).count()
+            facility_owners_summary[owner.name] = owner_count
+        return facility_owners_summary
+
+    def get_facility_regulators_summary(self):
         regulation_status = FacilityRegulationStatus.objects.all()
         regulatory_bodies = RegulatingBody.objects.all()
         regulator_summary = {}
@@ -503,14 +516,18 @@ class DashBoard(APIView):
             facility_units_count = facility_units.filter(
                 regulating_body=body).count()
             regulator_summary[body.name]['units'] = facility_units_count
+        return regulator_summary
+
+    def get(self, *args, **kwargs):
 
         data = {
-            "wards_summary": facility_wards_summary,
-            "county_summary": facility_county_summary,
-            "constituencies_summary": constituencies_summary,
-            "owners_summary": facility_owners_summary,
-            "types_summary": facility_type_summary,
-            "regulator_summry": regulator_summary
+            "total_facilities": Facility.objects.count(),
+            "wards_summary": self.get_facility_wards_summary(),
+            "county_summary": self.get_facility_county_summary(),
+            "constituencies_summary": self.get_facility_constituency_summary(),
+            "owners_summary": self.get_facility_owner_summary(),
+            "types_summary": self.get_facility_type_summary(),
+            "regulator_summry": self.get_facility_regulators_summary()
         }
 
         return Response(data)
