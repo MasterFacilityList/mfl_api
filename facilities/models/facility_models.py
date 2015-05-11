@@ -624,8 +624,10 @@ class FacilityUnit(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
-    regulating_body = models.ForeignKey(RegulatingBody)
-    regulation_status = models.ForeignKey(RegulationStatus)
+    regulating_body = models.ForeignKey(
+        RegulatingBody, null=True, blank=True)
+    regulation_status = models.ForeignKey(
+        RegulationStatus, null=True, blank=True)
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
