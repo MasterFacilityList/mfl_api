@@ -558,6 +558,10 @@ class Facility(SequenceMixin, AbstractBase):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'
+        permissions = (
+            ("view_classified_facilities", "Can see classified facilities"),
+            ("publish_facilities", "Can publish facilities"),
+        )
 
 
 @reversion.register

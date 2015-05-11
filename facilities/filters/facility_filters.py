@@ -230,8 +230,8 @@ class FacilityRegulationStatusFilter(CommonFieldsFilterset):
 
 
 class FacilityContactFilter(CommonFieldsFilterset):
-    facility = django_filters.AllValuesFilter(lookup_type='exact')
-    contact = django_filters.AllValuesFilter(lookup_type='exact')
+    facility = django_filters.CharFilter(lookup_type='exact')
+    contact = django_filters.CharFilter(lookup_type='exact')
 
     class Meta(object):
         model = FacilityContact
@@ -285,7 +285,7 @@ class FacilityFilter(CommonFieldsFilterset):
 class FacilityUnitFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     description = django_filters.CharFilter(lookup_type='icontains')
-    facility = django_filters.AllValuesFilter(lookup_type='exact')
+    facility = django_filters.CharFilter(lookup_type='exact')
 
     class Meta(object):
         model = FacilityUnit

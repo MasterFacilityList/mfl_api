@@ -96,6 +96,14 @@ open_whole_week      Another boolean filter e.g ``/api/facilities/facilities/?op
 is_classified        A boolean filter that determines if a facility's coordinates should be shown or not. The public front-end should omit classified facilities by default. i.e. publish those that can be listed with ``/api/facilities/facilities/?is_classified=false``
 is_published         A boolean filter that determines if a facility has been cleared for display on the public site. The public site should only display facilities that can be listed with ``/api/facilities/facilities/?is_published=true``
 is_regulated         The facilities that are pending action from the regulators can be listed with ``/api/facilities/facilities/?is_regulated=False``
+==================== ==========================================================
+
+The following filters are common to **all** list endpoints in this API,
+other than ``/api/users/``.
+
+==================== ==========================================================
+Filter               Explanation
+==================== ==========================================================
 updated_before       The most recently updated facilities can be listed with a query similar to ``/api/facilities/facilities/?updated_before=2015-05-09T08:57:48.094112Z``. The datetime is in ISO 8601 format.
 created_before       Similar to ``updated_before``, but operating on creation dates. Creation dates are not "touched" after the initial creation of the resource.
 updated_after        Similar to ``updated_before``, but returns records newer than the specified datetime
@@ -114,119 +122,358 @@ search               Perform a full text search that looks through all fields. e
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The following are the important fields when adding a new facility:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+name                The name of the faciity e.g "Musembe Dispensary (Lugari)"
+abbreviation        A shortened name
+description         Free text that supplies any additional detail that is required
+location_desc       An explanation of the location, in "plain" language e.g "Eldoret - Webuye Highway (at Musembe Mkt junction)"
+number_of_beds      The number of beds as per the facility's license
+number_of_cots      The number of cots as per the facility's license
+open_whole_day      `true` if the facility is a 24 hour operation
+open_whole_week     `true` if the facility is a 7 day operation
+facility_type       An ``id``, obtained by listing ``/api/facilities/facility_types/``
+operation_status    An ``id``, obtained from ``/api/facilities/facility_status/``. This is the overall state of the facility e.g "Operational" or "Not Operational"
+ward                An ``id``, obtained from ``/api/common/wards/``. Facilities are attached at the level of the smallest administrative area ( the ward ).
+owner               An ``id``, obtained from ``/api/facilities/owners/``.
+officer_in_charge   An ``id``, obtained from ``/api/facilities/officers/``
+physical_address    An ``id``, obtained from ``/api/common/address/``
+parent              Optional. If a facility is a "branch" of a larger facility, the ``id`` of the parent facility should be supplied here.
+=================== ===========================================================
+
+The following example illustrates a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "name": "Demo Facility",
+        "abbreviation": "DEMOFAC",
+        "description": "This is an example in the documentation",
+        "location_desc": "Planet: Mars",
+        "number_of_beds": 20,
+        "number_of_cots": 0,
+        "open_whole_day": true,
+        "open_whole_week": true,
+        "facility_type": "db8f93ad-b558-405a-89b5-a0cdb318ee6e",
+        "operation_status": "ee194a52-db9d-401c-a2ef-9c8225e501cd",
+        "ward": "a64d930d-883e-4b96-ba39-c792a1cd04f2",
+        "owner": "f4c7ca47-7ee6-4795-ac1c-a5d219e329ad",
+        "officer_in_charge": "972c9c96-fe27-4803-b6f8-c933310e2f44",
+        "physical_address": "88dde94b-dc42-4b13-b1cb-05eca047678c",
+        "parent": null
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+In order to update an existing record, ``PATCH`` the appropriate field from
+the record's detail view.
+
+For exampple: if the facility that we created above got the ``id`` set to
+``e88f0c1a-e1e4-44ff-8db1-8c4135abb080`` ( this will be returned to the client
+in the resource returned after successful creation ), we can change its
+``location_desc`` from "Planet: Mars" to "Planet: Venus" by sending the
+following request in a ``PATCH`` to ``/api/facilities/facilities/e88f0c1a-e1e4-44ff-8db1-8c4135abb080/``:
+
+.. code-block:: javascript
+
+    {
+        "location_desc": "Planet: Venus"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+In order to delete the record that we just created, send a ``DELETE`` with an
+empty payload to the detail URL i.e. to ``/api/facilities/facilities/e88f0c1a-e1e4-44ff-8db1-8c4135abb080/`` in the example above.
 
-Facility physical addresses
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
+
+Physical addresses
 ++++++++++++++++++++++++++++++
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The physical addresses known to the system can be listed at
+``/api/common/address/``.
+
+In addition to the common filters that are already explained above,
+physical addresses have the following extra filters:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+town                Filter by the ``id`` of a town. Towns can be listed at ``/api/common/towns/`` e.g ``/api/common/address/?town=b2af0361-c924-4ba2-9bc6-82333fc0a26f``
+postal_code         Filter by the ``postal_code`` e.g ``/api/common/address/?postal_code=00100``
+address             Filter by the actual text of the address itself e.g ``/api/common/address/?address=P.O.%20Box%201``
+nearest_landmark    Filter by the contents of the ``nearest_landmark`` field e.g ``/api/common/address/?nearest_landmark=kicc``
+plot_number         Filter by the ``plot_number`` field e.g ``/api/common/address/?plot_number=940``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The detail endpoint is ``/api/common/address/<id>/`` e.g
+``/api/common/address/20d01a89-f6b5-4a4d-b788-32182d427c18/`` for the address
+whose ``id`` is ``20d01a89-f6b5-4a4d-b788-32182d427c18``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+Supply the following fields:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+postal_code         A valid postal code e.g "00100"
+address             An address e.g "No. 11A, Kabarnet Court, off Kabarnet Road" or "P.O. Box 5980"
+nearest_landmark    Free text, left to the discretion of the person creating the record
+plot_number         Free text, left to the discretion of the person entering the record
+town                The ``id`` of a town, as listed at ``/api/common/towns/``
+=================== ===========================================================
+
+.. code-block:: javascript
+
+    {
+        "postal_code": "00100",
+        "address": "No. 11A, Kabarnet Court, off Kabarnet Road",
+        "nearest_landmark": "Kingdom Business Centre",
+        "plot_number": "-",
+        "town": "b2af0361-c924-4ba2-9bc6-82333fc0a26f"
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+``PATCH`` the detail endpoint above e.g to set the ``plot_number`` for the
+example record above, send the following ``PATCH`` payload to
+``/api/common/address/20d01a89-f6b5-4a4d-b788-32182d427c18/``:
+
+.. code-block:: javascript
+
+    {
+        "plot_number": "250"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Send a ``DELETE`` request to the detail endpoint. In the example above,
+the ``DELETE`` would be sent to ``/api/common/address/20d01a89-f6b5-4a4d-b788-32182d427c18/``.
+
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility contacts
 +++++++++++++++++++
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+Facility contacts can be listed at ``/api/facilities/contacts/``.
+
+In addition to the common contacts that are already explained above,
+facility contacts have the following extra fields:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+facility            The ``id`` of the relevant facility, as listed at ``/api/facilities/facilities/`` e.g ``/api/facilities/contacts/?facility=faaefb75-dba4-4564-8acb-6b947685de24``
+contact             The ``id`` of a contact, as listed at ``/api/common/contacts/`` e.g ``/api/facilities/contacts/?contact=2f5fe4c2-0371-4ba0-ba31-79d997d71c6a``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The detail endpoint is ``/api/facilities/contacts/<id>/``. For example, the
+detail URL for the facility contact whose ``id`` is
+``9641f588-a5c0-4c0d-ad13-cfcf98a2fb7`` is
+``/api/facilities/contacts/9641f588-a5c0-4c0d-ad13-cfcf98a2fb7``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The only required fields are the ``facility`` and ``contact`` ( as documented
+above ).
+
+The following example is a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "facility": "faaefb75-dba4-4564-8acb-6b947685de24",
+        "contact": "2f5fe4c2-0371-4ba0-ba31-79d997d71c6a"
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+``PATCH`` the detail endpoint with the new values e.g to change the contact in
+the record above, a valid ``PATCH`` payload could be:
+
+.. code-block:: javascript
+
+    {
+        "contact": "516f64b5-a12c-4323-b918-a5512b4baf6a"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Send a ``DELETE`` request to the detail endpoint.
+
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility units
 ++++++++++++++++
+A facility may contain within it multiple semi-independent units e.g a
+pharmacy, a lab and a radiology unit.
+
+.. note::
+
+    These units may fall under the scope of different regulators. This API
+    server does not currently handle that.
+
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+Facility units can be listed via a ``GET`` to ``/api/facilities/facility_units/``.
+
+In addition to the common filters, facility units can be filtered by the
+following fields:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+facility            The ``id`` of the facility, as listed at ``/api/facilities/facilities/`` e.g ``/api/facilities/facility_units/?facility=faaefb75-dba4-4564-8acb-6b947685de24``
+name                The name of the facility unit e.g ``/api/facilities/facility_units/?facility=faaefb75-dba4-4564-8acb-6b947685de24&name=pharmacy``
+description         The description of the facility unit e.g ``/api/facilities/facility_units/?facility=faaefb75-dba4-4564-8acb-6b947685de24&description=hospital%20pharmacy``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+A single facility unit record can be retrieved at its detail endpoint i.e
+ ``/api/facilities/facility_units/<id>/`` e.g
+ ``/api/facilities/facility_units/1fcc5c30-9170-4c9d-8d05-9695ba81a08c/``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+When adding a new facility unit, the fields of interest are the ``name``,
+``description`` and ``facility``.
+
+The following is a valid ``POST`` payload for ``/api/facilities/facility_units/``:
+
+.. code-block:: javascript
+
+    {
+        "name": "Pharmacy",
+        "description": "Hospital Pharmacy",
+        "facility": "faaefb75-dba4-4564-8acb-6b947685de24"
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+A ``PATCH`` to the detail endpoint will update the relevant field(s):
+For example:
+
+.. code-block:: javascript
+
+    {
+        "description": "Community Pharmacy"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Send a ``DELETE`` request to the detail endpoint.
+
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility services
 ++++++++++++++++++++
+These APIs link facilities to :doc:`09_services`.
+
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The currently registered facility services can be listed via ``GET`` to
+``/api/facilities/facility_services/``.
+
+In addition to the standard filters, facility services have the following
+additional filters:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+facility            ``id`` of a facility, as obtained from ``/api/facilities/facilities/``
+selected_option     ``id`` of a service catalog service option, as obtained from ``/api/facilities/service_options/``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
-
-Filtering and search
-~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+A facility service record can be retrieved at
+``/api/facilities/facility_services/<id>/`` e.g
+``/api/facilities/facility_services/df6bc639-1d9b-49f8-8f95-51e6de9c93e2/``
+for the facility service whose ``id`` is ``df6bc639-1d9b-49f8-8f95-51e6de9c93e2``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+To  associate a facility with a service, the required fields are ``facility``
+and ``selected_option``.
+
+The following is an example ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "service": "f465cb89-995c-4004-9f32-1d97fa6d0eb2",
+        "option": "f465cb89-995c-4004-9f32-1d97fa6d0eb2"
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+Issue a ``PATCH`` to the detail endpoint with the new value. For example, to
+change the option the example record we created above, the following payload
+could be sent via ``PATCH`` to
+``/api/facilities/facility_services/df6bc639-1d9b-49f8-8f95-51e6de9c93e2/``:
+
+.. code-block:: javascript
+
+    {
+        "option": "7dde4be8-1c1e-43ce-8569-eebb63bcb329"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Issue a ``DELETE`` to the detail endpoint.
+
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility workflows
 ---------------------
@@ -238,19 +485,49 @@ Facility workflows
     information screens that handle the facility information services mentioned
     above, rather than give each of these its own set of screens.
 
-TBD Draw state diagram
+.. note::
+
+    These workflows have multiple interactions with the role based access
+    control setup.
+
+The facility "publishing" workflow
+++++++++++++++++++++++++++++++++++++
+The first generation MFL system had a notion of "synchronizing" facility
+records to the "public site". This notion arose beceause the "public" MFL
+system was a separate system.
+
+This API does away with that notion. All applications - admin or public, web
+or mobile - share the same API. Facilities that should be seen in the public
+API have ``is_published`` set to ``true`` and ``is_classified`` set to
+``false``.
+
+.. note::
+
+    When ``is_classified`` is ``true``, a user accessing the public site will
+    need to be logged in with an account that has a the
+    ``view_classified_facilities`` permission.
+
+To "publish" a facility, simply ``PATCH`` the facility's detail URL and set
+``is_published`` to ``true``. Newly created facilities are not published by
+default.
+
+To "classify" a facility, ``PATCH`` its detail endpoint with ``is_classified``
+set to ``true``. A facility is not classified by default.
+
+.. note::
+
+    The public user interface should add an ``is_published=true`` filter to
+    every request made to the facilities endpoints. For an unauthenticated
+    user, it should also append ``is_classified=false`` to every call to the
+    facilities list endpoint.
+
+    The administration user interface should implement role based access
+    control, limiting publishing to users with the ``publish_facilities``
+    permission.
 
 The Facility approval workflow
 +++++++++++++++++++++++++++++++++
 TBD - Makers, checkers
-
-The facility "publishing" workflow
-++++++++++++++++++++++++++++++++++++
-TBD
-
-The facility regulation workflow
-+++++++++++++++++++++++++++++++++++
-TBD
 
 The facility upgrade workflow
 +++++++++++++++++++++++++++++++
@@ -260,6 +537,10 @@ TBD - document!
 
 The facility downgrade workflow
 ++++++++++++++++++++++++++++++++++
+TBD
+
+The facility regulation workflow
++++++++++++++++++++++++++++++++++++
 TBD
 
 Facility ratings
