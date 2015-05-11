@@ -383,7 +383,6 @@ The following is a valid ``POST`` payload for ``/api/facilities/facility_units/`
         "facility": "faaefb75-dba4-4564-8acb-6b947685de24"
     }
 
-
 A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
 representation of the freshly created resource will be returned in the
 response.
@@ -411,25 +410,69 @@ A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility services
 ++++++++++++++++++++
+These APIs link facilities to :doc:`09_services`.
+
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The currently registered facility services can be listed via ``GET`` to
+``/api/facilities/facility_services/``.
+
+In addition to the standard filters, facility services have the following
+additional filters:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+facility            ``id`` of a facility, as obtained from ``/api/facilities/facilities/``
+selected_option     ``id`` of a service catalog service option, as obtained from ``/api/facilities/service_options/``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+A facility service record can be retrieved at
+``/api/facilities/facility_services/<id>/`` e.g
+``/api/facilities/facility_services/df6bc639-1d9b-49f8-8f95-51e6de9c93e2/``
+for the facility service whose ``id`` is ``df6bc639-1d9b-49f8-8f95-51e6de9c93e2``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+To  associate a facility with a service, the required fields are ``facility``
+and ``selected_option``.
+
+The following is an example ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "service": "f465cb89-995c-4004-9f32-1d97fa6d0eb2",
+        "option": "f465cb89-995c-4004-9f32-1d97fa6d0eb2"
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+``PATCH`` the detail endpoint with the new value. For example, to change the
+option the example record we created above, the following payload could be
+sent via ``PATCH`` to ````/api/facilities/facility_services/df6bc639-1d9b-49f8-8f95-51e6de9c93e2/````:
+
+.. code-block:: javascript
+
+    {
+        "option": "7dde4be8-1c1e-43ce-8569-eebb63bcb329"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Issue a ``DELETE`` to the detail endpoint.
+
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility workflows
 ---------------------
