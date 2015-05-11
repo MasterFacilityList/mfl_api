@@ -6,4 +6,4 @@
     - common
     - postgresql
     - api
-    - {role:frontend }
+    - frontend

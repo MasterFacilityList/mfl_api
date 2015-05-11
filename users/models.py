@@ -18,6 +18,7 @@ USER_MODEL = settings.AUTH_USER_MODEL
 
 
 class MflUserManager(BaseUserManager):
+
     def create(self, email, first_name,
                username, password=None, **extra_fields):
         now = timezone.now()
@@ -44,6 +45,7 @@ class MflUserManager(BaseUserManager):
 
 @reversion.register
 class MflUser(AbstractBaseUser, PermissionsMixin):
+
     """
     Add custom behaviour to the user model.
 
