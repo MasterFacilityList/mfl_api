@@ -485,15 +485,49 @@ Facility workflows
     information screens that handle the facility information services mentioned
     above, rather than give each of these its own set of screens.
 
-TBD Draw state diagram
+.. note::
+
+    These workflows have multiple interactions with the role based access
+    control setup.
+
+The facility "publishing" workflow
+++++++++++++++++++++++++++++++++++++
+The first generation MFL system had a notion of "synchronizing" facility
+records to the "public site". This notion arose beceause the "public" MFL
+system was a separate system.
+
+This API does away with that notion. All applications - admin or public, web
+or mobile - share the same API. Facilities that should be seen in the public
+API have ``is_published`` set to ``true`` and ``is_classified`` set to
+``false``.
+
+.. note::
+
+    When ``is_classified`` is ``true``, a user accessing the public site will
+    need to be logged in with an account that has a the
+    ``view_classified_facilities`` permission.
+
+To "publish" a facility, simply ``PATCH`` the facility's detail URL and set
+``is_published`` to ``true``. Newly created facilities are not published by
+default.
+
+To "classify" a facility, ``PATCH`` its detail endpoint with ``is_classified``
+set to ``true``. A facility is not classified by default.
+
+.. note::
+
+    The public user interface should add an ``is_published=true`` filter to
+    every request made to the facilities endpoints. For an unauthenticated
+    user, it should also append ``is_classified=false`` to every call to the
+    facilities list endpoint.
+
+    The administration user interface should implement role based access
+    control, limiting publishing to users with the ``publish_facilities``
+    permission.
 
 The Facility approval workflow
 +++++++++++++++++++++++++++++++++
 TBD - Makers, checkers
-
-The facility "publishing" workflow
-++++++++++++++++++++++++++++++++++++
-TBD
 
 The facility regulation workflow
 +++++++++++++++++++++++++++++++++++

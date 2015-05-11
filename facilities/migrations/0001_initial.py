@@ -44,6 +44,7 @@ class Migration(migrations.Migration):
                 'ordering': ('-updated', '-created'),
                 'abstract': False,
                 'verbose_name_plural': 'facilities',
+                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('publish_facilities', 'Can publish facilities')),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
