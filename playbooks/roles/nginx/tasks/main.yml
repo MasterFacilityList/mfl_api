@@ -1,0 +1,9 @@
+---
+- name: Install nginx
+  sudo: yes
+  apt: name=nginx state=latest
+
+
+- name: remove the default nginx site
+  sudo: yes
+  command: rm /etc/nginx/sites-enabled/default removes=/etc/nginx/sites-enabled/default

@@ -29,7 +29,6 @@
   apt: 'name={{item}} state=latest install_recommends=yes'
   with_items:
     - build-essential
-    - nginx
     - openjdk-7-jdk
     - git
     - python-setuptools
@@ -60,7 +59,6 @@
 - name: Restart essential services just to be sure
   service: 'name={{item}} state=restarted'
   with_items:
-    - nginx
     - elasticsearch "enabled=yes"
 
 - name: set up an account on the target machine for the current user
