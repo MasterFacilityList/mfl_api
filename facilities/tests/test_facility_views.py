@@ -347,6 +347,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         facility = mommy.make(
             Facility, ward=ward, facility_type=facility_type, owner=owner)
         regulating_body = mommy.make(RegulatingBody)
+        mommy.make(FacilityUnit, regulating_body=regulating_body)
         mommy.make(
             FacilityRegulationStatus,
             regulating_body=regulating_body,
