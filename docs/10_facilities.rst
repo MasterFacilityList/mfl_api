@@ -454,9 +454,10 @@ response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-``PATCH`` the detail endpoint with the new value. For example, to change the
-option the example record we created above, the following payload could be
-sent via ``PATCH`` to ````/api/facilities/facility_services/df6bc639-1d9b-49f8-8f95-51e6de9c93e2/````:
+Issue a ``PATCH`` to the detail endpoint with the new value. For example, to
+change the option the example record we created above, the following payload
+could be sent via ``PATCH`` to
+``/api/facilities/facility_services/df6bc639-1d9b-49f8-8f95-51e6de9c93e2/``:
 
 .. code-block:: javascript
 
