@@ -10,7 +10,7 @@ from common.tests.test_views import (
     LoginMixin,
     default
 )
-from common.models import Ward, UserCounty
+from common.models import Ward, UserCounty, County, Constituency
 
 from ..serializers import (
     OwnerSerializer,
@@ -24,7 +24,8 @@ from ..models import (
     FacilityStatus,
     Facility,
     FacilityUnit,
-    FacilityRegulationStatus
+    FacilityRegulationStatus,
+    FacilityType
 )
 
 
@@ -336,5 +337,12 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
 
     def test_dashboard_view(self):
         url = reverse('api:facilities:dashboard')
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner = mommy.make(Owner)
+        mommy.make(
+            Facility, ward=ward, facility_type=facility_type, owner=owner)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
