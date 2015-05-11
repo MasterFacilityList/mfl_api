@@ -38,10 +38,10 @@
                 "first_name": "public",
                 "last_name": "public",
                 "username": "public",
-                "password": "pbkdf2_sha256$20000$tXNoknj6C4rs$cgeMr9NLPim2eOXtv1FXpm1gDMu1NbBfQNyWazkrCrE=",
-                "is_staff": true,
+                "password": "pbkdf2_sha256$20000$L1ZKsL8Ov6TI$RdfHD1CDGEcr0Cilik3sWHH5/RW6m/4BYYEMLctIb6U=",
+                "is_staff": false,
                 "is_national": true,
-                "is_superuser": true
+                "is_superuser": false
             }
         ]
     }
