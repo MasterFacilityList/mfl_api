@@ -32,6 +32,16 @@
                 "is_staff": true,
                 "is_national": false,
                 "is_superuser": true
+            },
+            {
+                "email": "public@mfltest.slade360.co.ke",
+                "first_name": "public",
+                "last_name": "public",
+                "username": "public",
+                "password": "pbkdf2_sha256$20000$tXNoknj6C4rs$cgeMr9NLPim2eOXtv1FXpm1gDMu1NbBfQNyWazkrCrE=",
+                "is_staff": true,
+                "is_national": true,
+                "is_superuser": true
             }
         ]
     }
