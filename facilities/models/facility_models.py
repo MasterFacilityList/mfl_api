@@ -624,11 +624,14 @@ class FacilityUnit(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
+    regulating_body = models.ForeignKey(RegulatingBody)
+    regulation_status = models.ForeignKey(RegulationStatus)
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
 
 
+@reversion.register
 class ServiceCategory(AbstractBase):
     """
     Categorisation of health services. e.g Immunisation, Antenatal,
@@ -649,6 +652,7 @@ class ServiceCategory(AbstractBase):
         verbose_name_plural = 'service categories'
 
 
+@reversion.register
 class Option(AbstractBase):
     """
     services could either be:
@@ -683,6 +687,7 @@ class Option(AbstractBase):
         return "{}: {}".format(self.option_type, self.display_text)
 
 
+@reversion.register
 class Service(SequenceMixin, AbstractBase):
     """
     A health service.
@@ -716,6 +721,7 @@ class Service(SequenceMixin, AbstractBase):
         verbose_name_plural = 'services'
 
 
+@reversion.register
 class ServiceOption(AbstractBase):
     """
     One service can have multiple options to be selected
@@ -728,6 +734,7 @@ class ServiceOption(AbstractBase):
         return "{}: {}".format(self.service, self.option)
 
 
+@reversion.register
 class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
@@ -746,6 +753,7 @@ class FacilityService(AbstractBase):
         return "{}: {}".format(self.facility, self.selected_option)
 
 
+@reversion.register
 class ServiceRating(AbstractBase):
     """
     The scale for rating the facility service.

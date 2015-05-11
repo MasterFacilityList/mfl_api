@@ -492,11 +492,17 @@ class DashBoard(APIView):
         regulation_status = FacilityRegulationStatus.objects.all()
         regulatory_bodies = RegulatingBody.objects.all()
         regulator_summary = {}
+        facility_units = FacilityUnit.objects.all()
 
         for body in regulatory_bodies:
             facility_regulator_count = regulation_status.filter(
                 regulating_body=body).count()
-            regulator_summary[body.name] = facility_regulator_count
+            regulator_summary[body.name] = {}
+            regulator_summary[body.name]['facilities'] = \
+                facility_regulator_count
+            facility_units_count = facility_units.filter(
+                regulating_body=body).count()
+            regulator_summary[body.name]['units'] = facility_units_count
 
         data = {
             "wards_summary": facility_wards_summary,
