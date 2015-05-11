@@ -196,7 +196,7 @@ Deleting a record
 In order to delete the record that we just created, send a ``DELETE`` with an
 empty payload to the detail URL i.e. to ``/api/facilities/facilities/e88f0c1a-e1e4-44ff-8db1-8c4135abb080/`` in the example above.
 
-A successful deletion will get back a ``HTTP 204 NO CONTENT`` response.
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Physical addresses
 ++++++++++++++++++++++++++++++
@@ -273,51 +273,141 @@ Deleting a record
 Send a ``DELETE`` request to the detail endpoint. In the example above,
 the ``DELETE`` would be sent to ``/api/common/address/20d01a89-f6b5-4a4d-b788-32182d427c18/``.
 
-A successful deletion will get back a ``HTTP 204 NO CONTENT`` response.
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility contacts
 +++++++++++++++++++
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+Facility contacts can be listed at ``/api/facilities/contacts/``.
+
+In addition to the common contacts that are already explained above,
+facility contacts have the following extra fields:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+facility            The ``id`` of the relevant facility, as listed at ``/api/facilities/facilities/`` e.g ``/api/facilities/contacts/?facility=faaefb75-dba4-4564-8acb-6b947685de24``
+contact             The ``id`` of a contact, as listed at ``/api/common/contacts/`` e.g ``/api/facilities/contacts/?contact=2f5fe4c2-0371-4ba0-ba31-79d997d71c6a``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The detail endpoint is ``/api/facilities/contacts/<id>/``. For example, the
+detail URL for the facility contact whose ``id`` is
+``9641f588-a5c0-4c0d-ad13-cfcf98a2fb7`` is
+``/api/facilities/contacts/9641f588-a5c0-4c0d-ad13-cfcf98a2fb7``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+The only required fields are the ``facility`` and ``contact`` ( as documented
+above ).
+
+The following example is a valid ``POST`` payload:
+
+.. code-block:: javascript
+
+    {
+        "facility": "faaefb75-dba4-4564-8acb-6b947685de24",
+        "contact": "2f5fe4c2-0371-4ba0-ba31-79d997d71c6a"
+    }
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+``PATCH`` the detail endpoint with the new values e.g to change the contact in
+the record above, a valid ``PATCH`` payload could be:
+
+.. code-block:: javascript
+
+    {
+        "contact": "516f64b5-a12c-4323-b918-a5512b4baf6a"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Send a ``DELETE`` request to the detail endpoint.
+
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility units
 ++++++++++++++++
+A facility may contain within it multiple semi-independent units e.g a
+pharmacy, a lab and a radiology unit.
+
+.. note::
+
+    These units may fall under the scope of different regulators. This API
+    server does not currently handle that.
+
 Listing multiple records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+Facility units can be listed via a ``GET`` to ``/api/facilities/facility_units/``.
+
+In addition to the common filters, facility units can be filtered by the
+following fields:
+
+=================== ===========================================================
+Field               Explanation
+=================== ===========================================================
+facility            The ``id`` of the facility, as listed at ``/api/facilities/facilities/`` e.g ``/api/facilities/facility_units/?facility=faaefb75-dba4-4564-8acb-6b947685de24``
+name                The name of the facility unit e.g ``/api/facilities/facility_units/?facility=faaefb75-dba4-4564-8acb-6b947685de24&name=pharmacy``
+description         The description of the facility unit e.g ``/api/facilities/facility_units/?facility=faaefb75-dba4-4564-8acb-6b947685de24&description=hospital%20pharmacy``
+=================== ===========================================================
 
 Retrieving a single record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+A single facility unit record can be retrieved at its detail endpoint i.e
+ ``/api/facilities/facility_units/<id>/`` e.g
+ ``/api/facilities/facility_units/1fcc5c30-9170-4c9d-8d05-9695ba81a08c/``.
 
 Adding a new record
 ~~~~~~~~~~~~~~~~~~~~~~
-TBD
+When adding a new facility unit, the fields of interest are the ``name``,
+``description`` and ``facility``.
+
+The following is a valid ``POST`` payload for ``/api/facilities/facility_units/``:
+
+.. code-block:: javascript
+
+    {
+        "name": "Pharmacy",
+        "description": "Hospital Pharmacy",
+        "facility": "faaefb75-dba4-4564-8acb-6b947685de24"
+    }
+
+
+A successful ``POST`` will get back a ``HTTP 201 Created`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Updating an existing record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TBD
+A ``PATCH`` to the detail endpoint will update the relevant field(s):
+For example:
+
+.. code-block:: javascript
+
+    {
+        "description": "Community Pharmacy"
+    }
+
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
+representation of the freshly created resource will be returned in the
+response.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
-TBD
+Send a ``DELETE`` request to the detail endpoint.
+
+A successful ``DELETE`` will get back a ``HTTP 204 NO CONTENT`` response.
 
 Facility services
 ++++++++++++++++++++
