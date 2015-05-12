@@ -2,11 +2,13 @@
 # On Vagrant, there are lots of locale issues; this helps, **sometimes**
 - locale_gen: name=en_US.UTF-8 state=present
 
+
 - name: Add APT keys for third party DEB package repositories
   apt_key: 'url={{item}} state=present'
   with_items:
     - https://www.postgresql.org/media/keys/ACCC4CF8.asc
     - https://packages.elasticsearch.org/GPG-KEY-elasticsearch
+
 
 - name: 'Add third party APT repos, after adding their signing keys above'
   apt_repository: "repo='{{item}}' state=present"
@@ -14,8 +16,10 @@
     - 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
     - 'deb http://packages.elasticsearch.org/elasticsearch/1.5/debian stable main'
 
+
 - name: Update the package cache and upgrade any packages that need updates
-  apt: upgrade=dist update_cache=yes
+  apt: update_cache=yes
+
 
 - name: Install essential packages
   apt: 'name={{item}} state=latest install_recommends=yes'
