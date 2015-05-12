@@ -745,7 +745,7 @@ class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
     """
-    facility = models.ForeignKey(Facility, relatd_name='facility_services')
+    facility = models.ForeignKey(Facility, related_name='facility_services')
     selected_option = models.ForeignKey(ServiceOption)
     is_confirmed = models.BooleanField(
         default=False,
