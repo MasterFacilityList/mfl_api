@@ -124,7 +124,7 @@ def playbook_test():
         local('ansible-playbook -i inventory site.yml --connection=local')
 
 
-def circle_ci_test():
+def circleci_test():
     """Dev only - run tests in circleci
 
     The test runs take advantage of parallelism in circleci
