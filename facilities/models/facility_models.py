@@ -745,7 +745,7 @@ class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
     """
-    facility = models.ForeignKey(Facility)
+    facility = models.ForeignKey(Facility, relatd_name='facility_services')
     selected_option = models.ForeignKey(ServiceOption)
     is_confirmed = models.BooleanField(
         default=False,
@@ -754,6 +754,14 @@ class FacilityService(AbstractBase):
         default=False,
         help_text='Indicates whether a service has been cancelled by the '
         'CHRIO')
+
+    @property
+    def service_name(self):
+        return self.selected_option.service.name
+
+    @property
+    def option_display_value(self):
+        return self.selected_option.option.display_text
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)

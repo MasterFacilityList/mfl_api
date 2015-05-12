@@ -86,6 +86,9 @@ class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class FacilityServiceSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    service_name = serializers.CharField(read_only=True)
+    option_display_value = serializers.CharField(read_only=True)
+
     class Meta(object):
         model = FacilityService
 

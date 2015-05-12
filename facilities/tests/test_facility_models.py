@@ -80,6 +80,8 @@ class TestFacilityService(BaseTestCase):
             facility=facility, selected_option=service_option)
         self.assertEqual(
             str(facility_service), 'thifitari: savis: BOOLEAN: Yes/No')
+        self.assertEquals('Yes/No', facility_service.option_display_value)
+        self.assertEquals('savis', facility_service.service_name)
 
 
 class TestServiceRating(BaseTestCase):
