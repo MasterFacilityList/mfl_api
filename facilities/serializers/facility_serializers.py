@@ -164,7 +164,7 @@ class FacilitySerializer(
     operations_status_name = serializers.CharField(read_only=True)
     county = serializers.CharField(read_only=True)
     constituency = serializers.CharField(read_only=True)
-    
+
     class Meta(object):
         model = Facility
         exclude = ('attributes',)
