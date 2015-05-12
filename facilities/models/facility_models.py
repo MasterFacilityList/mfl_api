@@ -548,12 +548,11 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def get_facility_services(self):
         """Digests the facility_services for the sake of frontend."""
-        services = FacilityService.objects.filter(
-            facility=self)
+        services = self.facility_services.all()
         return [
             {
-                "id": service.selected_option.service.name,
-                "name": service.selected_option.service.id,
+                "id": service.selected_option.service.id,
+                "name": service.selected_option.service.name,
                 "option_name": service.selected_option.option.display_text,
                 "category_name": service.selected_option.service.category.name,
                 "category_id": service.selected_option.service.category.id

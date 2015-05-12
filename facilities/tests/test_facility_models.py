@@ -83,6 +83,28 @@ class TestFacilityService(BaseTestCase):
         self.assertEquals('Yes/No', facility_service.option_display_value)
         self.assertEquals('savis', facility_service.service_name)
 
+    def test_facility_service_(self):
+
+        facility = mommy.make(Facility, name='thifitari')
+        service_category = mommy.make(ServiceCategory, name='a good service')
+        service = mommy.make(Service, name='savis', category=service_category)
+        option = mommy.make(
+            Option, option_type='BOOLEAN', display_text='Yes/No')
+        service_option = mommy.make(
+            ServiceOption, service=service, option=option)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+        expected_data = [
+            {
+                "id": service.id,
+                "name": service.name,
+                "option_name": option.display_text,
+                "category_name": service_category.name,
+                "category_id": service_category.id
+            }
+        ]
+        self.assertEquals(expected_data, facility.get_facility_services)
+
 
 class TestServiceRating(BaseTestCase):
     def test_unicode(self):
