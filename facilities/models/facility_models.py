@@ -545,6 +545,22 @@ class Facility(SequenceMixin, AbstractBase):
         else:
             False
 
+    @property
+    def get_facility_services(self):
+        """Digests the facility_services for the sake of frontend."""
+        services = FacilityService.objects.filter(
+            facility=self)
+        return [
+            {
+                "id": service.selected_option.service.name,
+                "name": service.selected_option.service.id,
+                "option_name": service.selected_option.option.display_text,
+                "category_name": service.selected_option.service.category.name,
+                "category_id": service.selected_option.service.category.id
+            }
+            for service in services
+        ]
+
     def clean(self, *args, **kwargs):
         self.validate_publish(*args, **kwargs)
 

@@ -164,6 +164,8 @@ class FacilitySerializer(
     operations_status_name = serializers.CharField(read_only=True)
     county = serializers.CharField(read_only=True)
     constituency = serializers.CharField(read_only=True)
+    facility_services = serializers.ListField(
+        read_only=True, source="get_facility_services")
 
     class Meta(object):
         model = Facility
