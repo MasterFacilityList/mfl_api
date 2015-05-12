@@ -24,9 +24,7 @@ dependencies:
 
 test:
     override:
-        # test code
-        - case $CIRCLECI_NODE_INDEX in 0) fab test ;; 1) ansible-playbook -i inventory site.yml --connection=local ;; esac:
-            pwd: playbooks
+        - fab circleci_test:
             parallel: true
 
 
