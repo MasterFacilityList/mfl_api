@@ -578,22 +578,6 @@ class FacilityOperationState(AbstractBase):
 
 
 @reversion.register
-class FacilityLevel(AbstractBase):
-    """
-    Models the different types of facilities.
-    e.g HEALTH_CENTER, DISPENSARY etc
-    """
-    name = models.CharField(max_length=100)
-    owner_type = models.ForeignKey(OwnerType)
-    is_initial_level = models.BooleanField()
-    is_final_level = models.BooleanField()
-    previous_level = models.ForeignKey(
-        'self', related_name='the preceding level')
-    next_level = models.ForeignKey(
-        'self', related_name='The suceedding levels')
-
-
-@reversion.register
 class FacilityUpgrade(AbstractBase):
     """
     Logs the upgrades and the downgrades of a facility.
