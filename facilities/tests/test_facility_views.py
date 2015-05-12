@@ -10,7 +10,7 @@ from common.tests.test_views import (
     LoginMixin,
     default
 )
-from common.models import Ward, UserCounty
+from common.models import Ward, UserCounty, County, Constituency
 
 from ..serializers import (
     OwnerSerializer,
@@ -24,7 +24,14 @@ from ..models import (
     FacilityStatus,
     Facility,
     FacilityUnit,
-    FacilityRegulationStatus
+    FacilityRegulationStatus,
+    FacilityType,
+    RegulatingBody,
+    ServiceCategory,
+    Service,
+    Option,
+    ServiceOption,
+    FacilityService
 )
 
 
@@ -205,6 +212,31 @@ class TestFacilityView(LoginMixin, APITestCase):
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
 
+    def test_get_facility_services(self):
+        facility = mommy.make(Facility, name='thifitari')
+        service_category = mommy.make(ServiceCategory, name='a good service')
+        service = mommy.make(Service, name='savis', category=service_category)
+        option = mommy.make(
+            Option, option_type='BOOLEAN', display_text='Yes/No')
+        service_option = mommy.make(
+            ServiceOption, service=service, option=option)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+        expected_data = [
+            {
+                "id": service.id,
+                "name": service.name,
+                "option_name": option.display_text,
+                "category_name": service_category.name,
+                "category_id": service_category.id
+            }
+        ]
+        url = self.url + "{}/".format(facility.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        facility_services = response.data.get('facility_services')
+        self.assertEquals(expected_data, facility_services)
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
     def setUp(self):
@@ -333,3 +365,24 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, 'correction_template.txt')
+
+    def test_dashboard_view(self):
+        url = reverse('api:facilities:dashboard')
+        county = mommy.make(County, name="Kiambu")
+        constituency = mommy.make(
+            Constituency, county=county, name="Kaskazini")
+        ward = mommy.make(Ward, constituency=constituency, name="Magharibi")
+        facility_type = mommy.make(FacilityType, name="Health Center")
+        owner = mommy.make(Owner, name="MOH")
+
+        facility = mommy.make(
+            Facility, ward=ward, facility_type=facility_type,
+            owner=owner, name="Mama Lucy")
+        regulating_body = mommy.make(RegulatingBody, name="Poisons Board")
+        mommy.make(FacilityUnit, regulating_body=regulating_body)
+        mommy.make(
+            FacilityRegulationStatus,
+            regulating_body=regulating_body,
+            facility=facility)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)

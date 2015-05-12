@@ -44,6 +44,7 @@ class Migration(migrations.Migration):
                 'ordering': ('-updated', '-created'),
                 'abstract': False,
                 'verbose_name_plural': 'facilities',
+                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('publish_facilities', 'Can publish facilities')),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
@@ -196,7 +197,6 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(help_text=b'A short summary of the facility unit.')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(to='facilities.Facility', on_delete=django.db.models.deletion.PROTECT)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -556,6 +556,21 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='officer',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='facilityunit',
+            name='regulating_body',
+            field=models.ForeignKey(to='facilities.RegulatingBody'),
+        ),
+        migrations.AddField(
+            model_name='facilityunit',
+            name='regulation_status',
+            field=models.ForeignKey(to='facilities.RegulationStatus'),
+        ),
+        migrations.AddField(
+            model_name='facilityunit',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),

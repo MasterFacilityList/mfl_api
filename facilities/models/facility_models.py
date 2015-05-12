@@ -402,7 +402,8 @@ class FacilityContact(AbstractBase):
     They also could be of as many different types as the facility has;
     they could be emails, phone numbers, land lines etc.
     """
-    facility = models.ForeignKey('Facility', on_delete=models.PROTECT)
+    facility = models.ForeignKey(
+        'Facility', related_name='facility_contacts', on_delete=models.PROTECT)
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT)
 
     def __unicode__(self):
@@ -545,6 +546,34 @@ class Facility(SequenceMixin, AbstractBase):
         else:
             False
 
+    @property
+    def get_facility_services(self):
+        """Digests the facility_services for the sake of frontend."""
+        services = self.facility_services.all()
+        return [
+            {
+                "id": service.selected_option.service.id,
+                "name": service.selected_option.service.name,
+                "option_name": service.selected_option.option.display_text,
+                "category_name": service.selected_option.service.category.name,
+                "category_id": service.selected_option.service.category.id
+            }
+            for service in services
+        ]
+
+    @property
+    def get_facility_contacts(self):
+        """For the same purpose as the get_facility_services above"""
+        contacts = self.facility_contacts.all()
+        return [
+            {
+                "id": contact.contact.id,
+                "contact": contact.contact.contact,
+                "contact_type_name": contact.contact.contact_type.name
+            }
+            for contact in contacts
+        ]
+
     def clean(self, *args, **kwargs):
         self.validate_publish(*args, **kwargs)
 
@@ -558,6 +587,10 @@ class Facility(SequenceMixin, AbstractBase):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'
+        permissions = (
+            ("view_classified_facilities", "Can see classified facilities"),
+            ("publish_facilities", "Can publish facilities"),
+        )
 
 
 @reversion.register
@@ -624,11 +657,16 @@ class FacilityUnit(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
+    regulating_body = models.ForeignKey(
+        RegulatingBody, null=True, blank=True)
+    regulation_status = models.ForeignKey(
+        RegulationStatus, null=True, blank=True)
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
 
 
+@reversion.register
 class ServiceCategory(AbstractBase):
     """
     Categorisation of health services. e.g Immunisation, Antenatal,
@@ -649,6 +687,7 @@ class ServiceCategory(AbstractBase):
         verbose_name_plural = 'service categories'
 
 
+@reversion.register
 class Option(AbstractBase):
     """
     services could either be:
@@ -683,6 +722,7 @@ class Option(AbstractBase):
         return "{}: {}".format(self.option_type, self.display_text)
 
 
+@reversion.register
 class Service(SequenceMixin, AbstractBase):
     """
     A health service.
@@ -716,6 +756,7 @@ class Service(SequenceMixin, AbstractBase):
         verbose_name_plural = 'services'
 
 
+@reversion.register
 class ServiceOption(AbstractBase):
     """
     One service can have multiple options to be selected
@@ -728,11 +769,12 @@ class ServiceOption(AbstractBase):
         return "{}: {}".format(self.service, self.option)
 
 
+@reversion.register
 class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
     """
-    facility = models.ForeignKey(Facility)
+    facility = models.ForeignKey(Facility, related_name='facility_services')
     selected_option = models.ForeignKey(ServiceOption)
     is_confirmed = models.BooleanField(
         default=False,
@@ -742,10 +784,19 @@ class FacilityService(AbstractBase):
         help_text='Indicates whether a service has been cancelled by the '
         'CHRIO')
 
+    @property
+    def service_name(self):
+        return self.selected_option.service.name
+
+    @property
+    def option_display_value(self):
+        return self.selected_option.option.display_text
+
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)
 
 
+@reversion.register
 class ServiceRating(AbstractBase):
     """
     The scale for rating the facility service.
