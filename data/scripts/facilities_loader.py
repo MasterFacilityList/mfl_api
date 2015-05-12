@@ -111,7 +111,7 @@ def read_the_facilities_file():  # noqa
                 if town_dict not in towns:
                     towns.append(
                         {"name": neartest_town})
-                if facility_physical_address not in physical_addresss and facility: # NOQA
+                if facility_physical_address not in physical_addresss and facility:  # NOQA
                     physical_addresss.append(facility_physical_address)
                 facility_email = row[27]
 
