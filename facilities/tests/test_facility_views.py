@@ -27,6 +27,11 @@ from ..models import (
     FacilityRegulationStatus,
     FacilityType,
     RegulatingBody,
+    ServiceCategory,
+    Service,
+    Option,
+    ServiceOption,
+    FacilityService
 )
 
 
@@ -206,6 +211,31 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
+
+    def test_get_facility_services(self):
+        facility = mommy.make(Facility, name='thifitari')
+        service_category = mommy.make(ServiceCategory, name='a good service')
+        service = mommy.make(Service, name='savis', category=service_category)
+        option = mommy.make(
+            Option, option_type='BOOLEAN', display_text='Yes/No')
+        service_option = mommy.make(
+            ServiceOption, service=service, option=option)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+        expected_data = [
+            {
+                "id": service.id,
+                "name": service.name,
+                "option_name": option.display_text,
+                "category_name": service_category.name,
+                "category_id": service_category.id
+            }
+        ]
+        url = self.url + "{}/".format(facility.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        facility_services = response.data.get('facility_services')
+        self.assertEquals(expected_data, facility_services)
 
 
 class CountyAndNationalFilterBackendTest(APITestCase):

@@ -84,7 +84,6 @@ class TestFacilityService(BaseTestCase):
         self.assertEquals('savis', facility_service.service_name)
 
     def test_facility_service_(self):
-
         facility = mommy.make(Facility, name='thifitari')
         service_category = mommy.make(ServiceCategory, name='a good service')
         service = mommy.make(Service, name='savis', category=service_category)
