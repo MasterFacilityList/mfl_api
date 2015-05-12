@@ -57,7 +57,8 @@ from ..serializers import (
     FacilityOperationStateSerializer,
     FacilityUpgradeSerializer,
     RegulatingBodyContactSerializer,
-    RegulationStatusSerializer
+    RegulationStatusSerializer,
+    FacilityDetailSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -353,7 +354,7 @@ class FacilityDetailView(
         QuerysetFilterMixin, AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     queryset = Facility.objects.all()
-    serializer_class = FacilitySerializer
+    serializer_class = FacilityDetailSerializer
 
 
 class FacilityContactListView(generics.ListCreateAPIView):
