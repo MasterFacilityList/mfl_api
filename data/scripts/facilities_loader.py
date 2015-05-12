@@ -85,7 +85,9 @@ def read_the_facilities_file():  # noqa
                 if postal_contact not in postal_contacts:
                     postal_contacts.append(postal_contact)
                 facility_postal_contact = {
-                    "facility": name,
+                    "facility": {
+                        "name": name
+                    },
                     "contact": {
                         "contact": "{} {} {}".format(
                             post_address, postal_code, address_town)
@@ -122,7 +124,9 @@ def read_the_facilities_file():  # noqa
                             email_contact
                         )
                     facility_email_contact = {
-                        "facility": name,
+                        "facility": {
+                            "name": name
+                        },
                         "contact": {
                             "contact": facility_email
                         }
@@ -141,7 +145,9 @@ def read_the_facilities_file():  # noqa
                     if fax_contact not in fax_contacts:
                         fax_contacts.append(fax_contact)
                     facility_fax_contact = {
-                        "facility": name,
+                        "facility": {
+                            "name": name
+                        },
                         "contact": {
                             "contact": facility_fax
                         }
@@ -160,7 +166,9 @@ def read_the_facilities_file():  # noqa
                     if mobile_contact not in mobile_contacts:
                         mobile_contacts.append(mobile_contact)
                     facility_mobile_contact = {
-                        "facility": name,
+                        "facility": {
+                            "name": name
+                        },
                         "contact": {
                             "contact": facility_mobile
                         }
@@ -178,7 +186,9 @@ def read_the_facilities_file():  # noqa
                     if landline_contact not in land_line_contacts:
                         land_line_contacts.append(landline_contact)
                     facility_landline_contact = {
-                        "facility": name,
+                        "facility": {
+                            "name": name
+                        },
                         "contact": facility_landline
                     }
                     if facility_landline_contact not in facilities_landline_contacts:  # noqa
