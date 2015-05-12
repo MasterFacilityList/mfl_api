@@ -83,7 +83,7 @@ class TestFacilityService(BaseTestCase):
         self.assertEquals('Yes/No', facility_service.option_display_value)
         self.assertEquals('savis', facility_service.service_name)
 
-    def test_facility_service_(self):
+    def test_facility_service(self):
         facility = mommy.make(Facility, name='thifitari')
         service_category = mommy.make(ServiceCategory, name='a good service')
         service = mommy.make(Service, name='savis', category=service_category)
@@ -414,8 +414,11 @@ class TestFacility(BaseTestCase):
 
 class TestFacilityContact(BaseTestCase):
     def test_save(self):
-        facility = mommy.make(Facility, name="Nairobi Hospital")
-        contact = mommy.make(Contact, contact="075689267")
+        contact_type = mommy.make(ContactType)
+        facility = mommy.make(
+            Facility, name="Nairobi Hospital")
+        contact = mommy.make(
+            Contact, contact="075689267", contact_type=contact_type)
         data = {
             "facility": facility,
             "contact": contact
@@ -426,6 +429,14 @@ class TestFacilityContact(BaseTestCase):
         # test unicode
         expected = "Nairobi Hospital: 075689267"
         self.assertEquals(expected, facility_contact.__unicode__())
+        expected_data = [
+            {
+                "id": contact.id,
+                "contact": contact.contact,
+                "contact_type_name": contact_type.name
+            }
+        ]
+        self.assertEquals(expected_data, facility.get_facility_contacts)
 
 
 class TestRegulationStatus(BaseTestCase):

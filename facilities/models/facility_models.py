@@ -402,7 +402,8 @@ class FacilityContact(AbstractBase):
     They also could be of as many different types as the facility has;
     they could be emails, phone numbers, land lines etc.
     """
-    facility = models.ForeignKey('Facility', on_delete=models.PROTECT)
+    facility = models.ForeignKey(
+        'Facility', related_name='facility_contacts', on_delete=models.PROTECT)
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT)
 
     def __unicode__(self):
@@ -558,6 +559,19 @@ class Facility(SequenceMixin, AbstractBase):
                 "category_id": service.selected_option.service.category.id
             }
             for service in services
+        ]
+
+    @property
+    def get_facility_contacts(self):
+        """For the same purpose as the get_facility_services above"""
+        contacts = self.facility_contacts.all()
+        return [
+            {
+                "id": contact.contact.id,
+                "contact": contact.contact.contact,
+                "contact_type_name": contact.contact.contact_type.name
+            }
+            for contact in contacts
         ]
 
     def clean(self, *args, **kwargs):
