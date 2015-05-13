@@ -489,6 +489,30 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
 
+    @property
+    def ward_name(self):
+        return self.ward.name
+
+    @property
+    def facility_physical_address(self):
+        return {
+            "id": self.physical_address.id,
+            "town": self.physical_address.town.name,
+            "address": self.physical_address.address,
+            "nearest_landmark": self.physical_address.nearest_landmark,
+            "plot_number": self.physical_address.plot_number,
+            "postal_code": self.physical_address.postal_code
+
+        }
+
+    @property
+    def get_county(self):
+        return self.ward.constituency.county.name
+
+    @property
+    def get_constituency(self):
+        return self.ward.constituency.name
+
     def validate_publish(self):
         if self.is_published and not self.is_approved:
             message = "A facility has to be approved for it to be published"
@@ -522,7 +546,7 @@ class Facility(SequenceMixin, AbstractBase):
         return self.operation_status.name
 
     @property
-    def regulary_status_name(self):
+    def regulatory_status_name(self):
         if self.current_regulatory_status:
             return self.current_regulatory_status.regulation_status.name
 
