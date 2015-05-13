@@ -174,7 +174,6 @@ def download_file(request, file_name=None, file_extension=None):
                 os.path.basename(file_path)
             )
             response['X-Sendfile'] = smart_str(file_path)
-            os.remove(file_path)
             return response
         else:
 

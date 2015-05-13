@@ -491,7 +491,7 @@ class TestDownloadView(LoginMixin, APITestCase):
     def test_download_view(self):
         url = reverse('api:common:download_pdf')
         url = url + "?file_url={}&file_name={}&css={}".format(
-            'http://127.0.0.1', 'awesome_file', 'p,h1,h2,h3 {color: red}'
+            'http://google.com', 'awesome_file', 'p,h1,h2,h3 {color: red}'
         )
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
