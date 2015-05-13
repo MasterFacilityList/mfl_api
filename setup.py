@@ -112,5 +112,6 @@ setup(
         "xlsxwriter>=0.7.2",
         "mock>=1.0.1",
         "recommonmark>=0.1.1",
+        "WeasyPrint>=0.23",
     ],
 )
