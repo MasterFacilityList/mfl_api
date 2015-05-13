@@ -185,13 +185,13 @@ def download_file(request, file_name=None, file_extension=None):
 def download_pdf(request):
     file_url = request.GET.get('file_url', None)
     file_name = request.GET.get('file_name', None)
-    css_file = request.GET.get('css_file', None)
+    custom_css = request.GET.get('css', None)
     file_name = file_name + ".pdf"
     file_path = os.path.join(settings.BASE_DIR, file_name)
-    if css_file:
+    if custom_css:
         HTML(file_url).write_pdf(
             file_path,
-            stylesheets=[CSS(string='body { font-family: serif !important }')])
+            stylesheets=[CSS(string=custom_css)])
     else:
         HTML(file_url).write_pdf(file_path)
     download_file = open(file_path)
