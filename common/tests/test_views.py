@@ -495,4 +495,3 @@ class TestDownloadView(LoginMixin, APITestCase):
         )
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-
