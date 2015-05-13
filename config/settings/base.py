@@ -98,6 +98,12 @@ CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
 REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.ScopedRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'rating': '10/day'
+    },
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissions',
     ),
@@ -132,6 +138,7 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': 'iso-8601',
     'DATE_FORMAT': 'iso-8601',
     'TIME_FORMAT': 'iso-8601'
+
 }
 SWAGGER_SETTINGS = {
     'exclude_namespaces': [],
