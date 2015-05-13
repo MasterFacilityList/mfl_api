@@ -56,7 +56,5 @@ Getting started
 2. Activate the virtualenv and run ``python setup.py install`` while in the project folder.
 
 
-
-
 .. toctree::
     :maxdepth: 2
