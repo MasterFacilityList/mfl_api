@@ -82,6 +82,29 @@ class TestFacilityService(BaseTestCase):
             facility=facility, selected_option=service_option)
         self.assertEqual(
             str(facility_service), 'thifitari: savis: BOOLEAN: Yes/No')
+        self.assertEquals('Yes/No', facility_service.option_display_value)
+        self.assertEquals('savis', facility_service.service_name)
+
+    def test_facility_service(self):
+        facility = mommy.make(Facility, name='thifitari')
+        service_category = mommy.make(ServiceCategory, name='a good service')
+        service = mommy.make(Service, name='savis', category=service_category)
+        option = mommy.make(
+            Option, option_type='BOOLEAN', display_text='Yes/No')
+        service_option = mommy.make(
+            ServiceOption, service=service, option=option)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+        expected_data = [
+            {
+                "id": service.id,
+                "name": service.name,
+                "option_name": option.display_text,
+                "category_name": service_category.name,
+                "category_id": service_category.id
+            }
+        ]
+        self.assertEquals(expected_data, facility.get_facility_services)
 
 
 class TestServiceRating(BaseTestCase):
@@ -415,8 +438,11 @@ class TestFacility(BaseTestCase):
 
 class TestFacilityContact(BaseTestCase):
     def test_save(self):
-        facility = mommy.make(Facility, name="Nairobi Hospital")
-        contact = mommy.make(Contact, contact="075689267")
+        contact_type = mommy.make(ContactType)
+        facility = mommy.make(
+            Facility, name="Nairobi Hospital")
+        contact = mommy.make(
+            Contact, contact="075689267", contact_type=contact_type)
         data = {
             "facility": facility,
             "contact": contact
@@ -427,6 +453,14 @@ class TestFacilityContact(BaseTestCase):
         # test unicode
         expected = "Nairobi Hospital: 075689267"
         self.assertEquals(expected, facility_contact.__unicode__())
+        expected_data = [
+            {
+                "id": contact.id,
+                "contact": contact.contact,
+                "contact_type_name": contact_type.name
+            }
+        ]
+        self.assertEquals(expected_data, facility.get_facility_contacts)
 
 
 class TestRegulationStatus(BaseTestCase):
