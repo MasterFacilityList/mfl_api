@@ -89,7 +89,7 @@ class ServiceRatingFilter(CommonFieldsFilterset):
     occupation = django_filters.CharFilter(lookup_type='icontains')
     comment = django_filters.CharFilter(lookup_type='icontains')
     service = django_filters.AllValuesFilter(
-        name='facility_service__service', lookup_type='exact')
+        name='facility_service__selected_option__service', lookup_type='exact')
     facility = django_filters.AllValuesFilter(
         name='facility_service__facility', lookup_type='exact')
 
