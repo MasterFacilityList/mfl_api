@@ -7,6 +7,8 @@ from django.utils.encoding import smart_str
 from django.conf import settings
 from django.http import HttpResponse
 
+from weasyprint import HTML, CSS
+
 from collections import OrderedDict
 from django.shortcuts import redirect
 from rest_framework.views import APIView
@@ -160,7 +162,7 @@ def root_redirect_view(request):
     return redirect('api:root_listing', permanent=True)
 
 
-def download_file(request, file_name, file_extension):
+def download_file(request, file_name=None, file_extension=None):
         full_file_name = file_name + "." + file_extension
         file_path = os.path.join(settings.BASE_DIR, full_file_name)
         if os.path.exists(file_path):
@@ -172,8 +174,33 @@ def download_file(request, file_name, file_extension):
                 os.path.basename(file_path)
             )
             response['X-Sendfile'] = smart_str(file_path)
+            os.remove(file_path)
             return response
         else:
 
             data = "The file does not exist"
             raise ValidationError(detail=data)
+
+
+def download_pdf(request):
+    file_url = request.GET.get('file_url', None)
+    file_name = request.GET.get('file_name', None)
+    css_file = request.GET.get('css_file', None)
+    file_name = file_name + ".pdf"
+    file_path = os.path.join(settings.BASE_DIR, file_name)
+    if css_file:
+        HTML(file_url).write_pdf(
+            file_path,
+            stylesheets=[CSS(string='body { font-family: serif !important }')])
+    else:
+        HTML(file_url).write_pdf(file_path)
+    download_file = open(file_path)
+    response = HttpResponse(
+        FileWrapper(download_file), content_type='application/pdf')
+    response[
+        'Content-Disposition'] = 'attachment; filename="{}"'.format(
+        os.path.basename(file_path)
+    )
+    response['X-Sendfile'] = smart_str(file_path)
+    os.remove(file_path)
+    return response
