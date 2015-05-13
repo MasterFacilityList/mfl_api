@@ -242,8 +242,8 @@ class FacilityFilter(CommonFieldsFilterset):
         matching_facilities = []
         for obj in Facility.objects.all():
 
-            truth_ness = 'True'
-            false_ness = 'False'
+            truth_ness = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+            false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']
             if value.find(truth_ness) > -1 and obj.is_regulated:
                 matching_facilities.append(obj)
             if value.find(false_ness) > -1 and not obj.is_regulated:
@@ -257,6 +257,11 @@ class FacilityFilter(CommonFieldsFilterset):
     facility_type = ListCharFilter(lookup_type='icontains')
     operation_status = ListCharFilter(lookup_type='icontains')
     ward = ListCharFilter(lookup_type='icontains')
+    county = ListCharFilter(
+        name='ward__constituency__county',
+        lookup_type='icontains')
+    constituency = ListCharFilter(
+        name='ward__constituency', lookup_type='icontains')
     owner = ListCharFilter(lookup_type='icontains')
     officer_in_charge = ListCharFilter(lookup_type='icontains')
 
