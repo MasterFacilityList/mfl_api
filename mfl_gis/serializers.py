@@ -98,6 +98,7 @@ class WardBoundarySerializer(AbstractBoundarySerializer):
 
 class WardBoundaryDetailSerializer(AbstractBoundarySerializer):
     facility_coordinates = serializers.ReadOnlyField()
+    facility_ids = serializers.ReadOnlyField()
 
     class Meta(AbstractBoundarySerializer.Meta):
         model = WardBoundary

@@ -296,5 +296,11 @@ class ConstituencyBoundary(AdministrativeUnitBoundary):
 class WardBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Ward)
 
+    @property
+    def facility_ids(self):
+        return FacilityCoordinates.objects.filter(
+            coordinates__contained=self.mpoly
+        ).values_list('id', flat=True) if self and self.mpoly else 0
+
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'
