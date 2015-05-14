@@ -185,8 +185,7 @@ class FacilityDetailSerializer(
         source="get_facility_services")
     facility_contacts = serializers.ReadOnlyField(
         read_only=True, source="get_facility_contacts")
-    facility_physical_address = serializers.DictField(
-        read_only=True, required=False)
+    facility_physical_address = serializers.DictField()
     ward_name = serializers.ReadOnlyField()
 
     class Meta(object):
