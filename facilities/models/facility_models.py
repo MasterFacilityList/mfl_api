@@ -490,14 +490,10 @@ class Facility(SequenceMixin, AbstractBase):
     attributes = models.TextField(null=True, blank=True)
 
     @property
-    def ward_name(self):
-        return self.ward.name
-
-    @property
-    def facility_physical_address(self):
+    def get_physical_address(self):
         return {
             "id": self.physical_address.id,
-            "town": self.physical_address.town.name,
+            "town": self.physical_address.name,
             "address": self.physical_address.address,
             "nearest_landmark": self.physical_address.nearest_landmark,
             "plot_number": self.physical_address.plot_number,
@@ -546,7 +542,7 @@ class Facility(SequenceMixin, AbstractBase):
         return self.operation_status.name
 
     @property
-    def regulatory_status_name(self):
+    def regulary_status_name(self):
         if self.current_regulatory_status:
             return self.current_regulatory_status.regulation_status.name
 
