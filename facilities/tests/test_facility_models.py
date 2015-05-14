@@ -9,9 +9,7 @@ from common.models import (
     PhysicalAddress,
     ContactType,
     County,
-    Constituency,
-    Town
-)
+    Constituency)
 
 from ..models import (
     OwnerType,
@@ -412,28 +410,6 @@ class TestFacility(BaseTestCase):
     def test_publishing(self):
         with self.assertRaises(ValidationError):
             mommy.make(Facility, is_published=True)
-
-    def test_facility_get_properties(self):
-        town = mommy.make(Town, name='Londiani')
-        physical_address = mommy.make(PhysicalAddress, town=town)
-        county = mommy.make(County, name='Bomet')
-        constituency = mommy.make(Constituency, county=county, name='Pokot')
-        ward = mommy.make(Ward, name='Chepalungu', constituency=constituency)
-        facility = mommy.make(
-            Facility, ward=ward, physical_address=physical_address)
-
-        # test county
-        self.assertEquals('Bomet'. facility.get_county)
-        self.assertEquals('Pokot', facility.get_constituency)
-        self.assertEquals(
-            {
-                "id": physical_address.id,
-                "town": town.name,
-                "plot_number": physical_address.plot_number,
-                "nearest_landmark": physical_address.nearest_landmark,
-                "address": physical_address.address,
-                "postal_code": physical_address.postal_code
-            })
 
 
 class TestFacilityContact(BaseTestCase):
