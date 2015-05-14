@@ -36,6 +36,7 @@ class AbstractBoundarySerializer(
     center = serializers.ReadOnlyField()
     facility_count = serializers.ReadOnlyField()
     density = serializers.ReadOnlyField()
+    bound = serializers.ReadOnlyField()
 
     class Meta(object):
         geo_field = 'mpoly'

@@ -202,6 +202,10 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     mpoly = gis_models.MultiPolygonField(null=True, blank=True)
 
     @property
+    def bound(self):
+        return self.mpoly.envelope.geojson if self.mpoly else None
+
+    @property
     def center(self):
         return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
