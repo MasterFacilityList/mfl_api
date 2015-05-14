@@ -40,7 +40,6 @@ class TestCountyBoundaryViews(LoginMixin, APITestCase):
         boundary_list_response = self.client.get(self.list_url)
         self.assertEqual(200, boundary_list_response.status_code)
         self.assertEqual(2, len(boundary_list_response.data['results']))
-        self.assertIn('bound', boundary_list_response.data['results'])
 
 
 class TestConstituencyBoundaryViews(LoginMixin, APITestCase):
