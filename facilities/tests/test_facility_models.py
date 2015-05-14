@@ -377,7 +377,7 @@ class TestFacility(BaseTestCase):
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility, is_confirmed=True)
         self.assertEquals(
-            facility.regulatory_status_name,
+            facility.regulary_status_name,
             facility_reg_status.regulation_status.name)
 
     def test_owner_type_name(self):
@@ -423,9 +423,8 @@ class TestFacility(BaseTestCase):
             Facility, ward=ward, physical_address=physical_address)
 
         # test county
-        self.assertEquals('Bomet', facility.get_county)
+        self.assertEquals('Bomet'. facility.get_county)
         self.assertEquals('Pokot', facility.get_constituency)
-        self.assertEquals('Chepalungu', facility.ward_name)
         self.assertEquals(
             {
                 "id": physical_address.id,
@@ -434,7 +433,7 @@ class TestFacility(BaseTestCase):
                 "nearest_landmark": physical_address.nearest_landmark,
                 "address": physical_address.address,
                 "postal_code": physical_address.postal_code
-            }, facility.facility_physical_address)
+            })
 
 
 class TestFacilityContact(BaseTestCase):
