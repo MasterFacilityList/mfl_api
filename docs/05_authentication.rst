@@ -186,18 +186,18 @@ this representation:
 
 Authenticating using OAuth2 tokens
 *************************************
-First,  obtain an access token by ``POST``ing the user's credentials to
-``/o/token/``. For example:
+First,  obtain an access token by making a ``POST`` with the user's credentials to
+``/oauth2/token/``. For example:
 
 .. code-block:: text
 
-    curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/o/token/
+    curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/oauth2/token/
 
 Which breaks down as:
 
 .. code-block:: text
 
-    curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/o/token/
+    curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/oauth2/token/
 
 If you authenticate successfully, the reply from the server will be a `JSON`
 payload that has the issued access token, the refresh token, the access token
@@ -213,7 +213,7 @@ type, expiry and scope. For example:
         "scope": "read write"
     }
 
-Pick the ``access_token`` and send it in an ``Authorization: Bearer`` header
+Pick the ``access_token`` and the ``token_type`` and send them in an ``Authorization`` header
 e.g
 
 .. code-block:: text
