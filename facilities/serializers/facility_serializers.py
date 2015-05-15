@@ -157,13 +157,14 @@ class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class FacilitySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    regulary_status_name = serializers.CharField(read_only=True)
+    regulatory_status_name = serializers.CharField(read_only=True)
     facility_type_name = serializers.CharField(read_only=True)
     owner_name = serializers.CharField(read_only=True)
     owner_type_name = serializers.CharField(read_only=True)
     operations_status_name = serializers.CharField(read_only=True)
     county = serializers.CharField(read_only=True)
     constituency = serializers.CharField(read_only=True)
+    ward_name = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility
@@ -173,17 +174,20 @@ class FacilitySerializer(
 class FacilityDetailSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     """Adds facility services to the payload"""
-    regulary_status_name = serializers.CharField(read_only=True)
+    regulatory_status_name = serializers.CharField(read_only=True)
     facility_type_name = serializers.CharField(read_only=True)
     owner_name = serializers.CharField(read_only=True)
     owner_type_name = serializers.CharField(read_only=True)
     operations_status_name = serializers.CharField(read_only=True)
     county = serializers.CharField(read_only=True)
     constituency = serializers.CharField(read_only=True)
-    facility_services = serializers.ListField(
-        read_only=True, source="get_facility_services")
-    facility_contacts = serializers.ListField(
+    facility_services = serializers.ReadOnlyField(
+        source="get_facility_services")
+    facility_contacts = serializers.ReadOnlyField(
         read_only=True, source="get_facility_contacts")
+    facility_physical_address = serializers.DictField(
+        read_only=True, required=False)
+    ward_name = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility
