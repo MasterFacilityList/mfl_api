@@ -233,7 +233,6 @@ CACHES = {
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    'oauth2_provider.backends.OAuth2Backend',
 )
 LOGIN_REDIRECT_URL = '/api/'
 

@@ -5,6 +5,7 @@ from common.views import APIRoot, root_redirect_view
 from rest_auth.views import (
     PasswordChange, PasswordReset, PasswordResetConfirm
 )
+from oauth2_provider.views import AuthorizationView, TokenView, RevokeTokenView
 
 
 # copied from rest_auth.urls just to remove login and logout urls
@@ -23,6 +24,15 @@ rest_auth_patterns = patterns(
         include('rest_auth.registration.urls', namespace='registration'))
 )
 
+# copied from oauth2_provider.urls to remove application management urls
+# another hack to exclude unwanted urls
+oauth2_provider_patterns = patterns(
+    '',
+    url(r'^authorize/$', AuthorizationView.as_view(), name="authorize"),
+    url(r'^token/$', TokenView.as_view(), name="token"),
+    url(r'^revoke_token/$', RevokeTokenView.as_view(), name="revoke-token"),
+)
+
 apipatterns = patterns(
     '',
 
@@ -35,8 +45,6 @@ apipatterns = patterns(
     url(r'^facilities/', include('facilities.urls', namespace='facilities')),
     url(r'^chul/', include('chul.urls', namespace='chul')),
     url(r'^gis/', include('mfl_gis.urls', namespace='mfl_gis')),
-
-    # rest-auth urls
     url(r'^rest-auth/', include(rest_auth_patterns, namespace='rest_auth')),
 )
 
@@ -48,5 +56,5 @@ urlpatterns = patterns(
     url(r'^accounts/',
         include('rest_framework.urls', namespace='rest_framework')),
     url(r'^oauth2/',
-        include('oauth2_provider.urls', namespace='oauth2_provider')),
+        include(oauth2_provider_patterns, namespace='oauth2_provider')),
 )
