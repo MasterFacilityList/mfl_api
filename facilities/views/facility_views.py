@@ -159,6 +159,7 @@ class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ServiceRatingListView(generics.ListCreateAPIView):
+    throttle_scope = 'rating'
     queryset = ServiceRating.objects.all()
     serializer_class = ServiceRatingSerializer
     filter_class = ServiceRatingFilter
