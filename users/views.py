@@ -11,6 +11,7 @@ from .filters import MFLUserFilter
 
 
 class PermissionsListView(generics.ListAPIView):
+
     """
     This is a read-only list view; intentionally.
 
@@ -45,6 +46,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class MFLOauthApplicationListView(generics.ListCreateAPIView):
+
     """
     List and register new OAuth2 applications
 
@@ -105,15 +107,15 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
 
     ## Step 1: obtain an access token
     In order to obtain an access token, `POST` the user's credentials to
-    [/o/token/](/o/token/).
+    [/oauth2/token/](/oauth2/token/).
 
     For example:
 
-        curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/o/token/
+        curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/oauth2/token/
 
     Which breaks down as:
 
-        curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/o/token/
+        curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/oauth2/token/
 
     ## Step 2: use the access token
     The reply from the server will be a `JSON` payload that has the issued
@@ -144,6 +146,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
 
 
 class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
+
     """View, update and retire specific OAuth2 application authorizations"""
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
