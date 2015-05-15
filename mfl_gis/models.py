@@ -300,7 +300,7 @@ class WardBoundary(AdministrativeUnitBoundary):
     def facility_ids(self):
         return FacilityCoordinates.objects.filter(
             coordinates__contained=self.mpoly
-        ).values_list('id', flat=True) if self and self.mpoly else 0
+        ).values_list('id', flat=True) if self and self.mpoly else []
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'
