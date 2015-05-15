@@ -202,6 +202,10 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     mpoly = gis_models.MultiPolygonField(null=True, blank=True)
 
     @property
+    def bound(self):
+        return self.mpoly.envelope.geojson if self.mpoly else None
+
+    @property
     def center(self):
         return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
@@ -291,6 +295,12 @@ class ConstituencyBoundary(AdministrativeUnitBoundary):
 @reversion.register
 class WardBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Ward)
+
+    @property
+    def facility_ids(self):
+        return FacilityCoordinates.objects.filter(
+            coordinates__contained=self.mpoly
+        ).values_list('id', flat=True) if self and self.mpoly else []
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'

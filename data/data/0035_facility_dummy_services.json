@@ -1,0 +1,289 @@
+[
+   {
+      "model":"facilities.Option",
+      "unique_fields":["value","display_text"],
+      "records":[
+            {
+                "value": "Yes",
+                "display_text": "Yes",
+                "option_type": "BOOLEAN"
+            },
+            {
+                "value": "No",
+                "display_text": "No",
+                "option_type": "BOOLEAN"
+            },
+            {
+                "value": "Basic",
+                "display_text": "Basic",
+                "option_type": "BOOLEAN"
+            },
+            {
+                "value": "Comprehensive",
+                "display_text": "Comprehensive",
+                "option_type": "BOOLEAN"
+            },
+            {
+                "value": "1",
+                "display_text": "Level 1",
+                "option_type": "INTEGER"
+            },
+            {
+                "value": "2",
+                "display_text": "Level 2",
+                "option_type": "INTEGER"
+            },
+            {
+                "value": "3",
+                "display_text": "Level 3",
+                "option_type": "INTEGER"
+            },
+            {
+                "value": "4",
+                "display_text": "Level 4",
+                "option_type": "INTEGER"
+            },
+            {
+                "value": "5",
+                "display_text": "Level 5",
+                "option_type": "INTEGER"
+            },
+            {
+                "value": "6",
+                "display_text": "Level 6",
+                "option_type": "INTEGER"
+            }
+        ]
+    },
+    {
+      "model":"facilities.ServiceOption",
+      "unique_fields":["service","option"],
+      "records":[
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"HIV Prevention Services"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"HIV Prevention Services"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Condom Promotion and Distribution"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Condom Promotion and Distribution"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Management of STIs"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Management of STIs"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Voluntary Counselling and Testing"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Voluntary Counselling and Testing"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Early Infant Diagnosis"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Early Infant Diagnosis"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"PMTCT - ANC"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"PMTCT - ANC"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Post Exposure Prophylaxis"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Post Exposure Prophylaxis"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Paediatric Antiretroviral Therapy"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Paediatric Antiretroviral Therapy"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Adult Antiretroviral Therapy"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Adult Antiretroviral Therapy"
+                }
+            },
+            {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Home Based Care"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Home Based Care"
+                }
+            },
+                   {
+                "option": {
+                    "value": "Yes"
+                },
+                "service": {
+                    "name":"Short Term FP"
+                }
+            },
+            {
+                "option": {
+                    "value": "No"
+                },
+                "service": {
+                    "name":"Short Term FP"
+                }
+            }
+        
+        ]
+    },
+    {
+          "model":"facilities.FacilityService",
+          "unique_fields":["facility","selected_option"],
+          "records":[
+                {
+                    "selected_option": {
+                        "option": {
+                            "value": "Yes"
+                        },
+                        "service": {
+                            "name":"Short Term FP"
+                        }
+                    },
+                    "facility":{
+                        "name": "Endebess District Hospital"
+                    }
+                },
+                {
+                    "selected_option": {
+                        "option": {
+                            "value": "Yes"
+                        },
+                        "service": {
+                            "name":"Home Based Care"
+                        }
+                    },
+                    "facility":{
+                        "name": "Endebess District Hospital"
+                    }
+                },
+                {
+                    "selected_option": {
+                        "option": {
+                            "value": "Yes"
+                        },
+                        "service": {
+                            "name":"Adult Antiretroviral Therapy"
+                        }
+                    
+                    },
+                    "facility":{
+                        "name": "Endebess District Hospital"
+                    }
+                }
+
+          ]
+    }
+
+]

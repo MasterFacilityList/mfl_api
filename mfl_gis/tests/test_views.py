@@ -66,3 +66,13 @@ class TestWardBoundaryViews(LoginMixin, APITestCase):
         boundary_list_response = self.client.get(self.list_url)
         self.assertEqual(200, boundary_list_response.status_code)
         self.assertEqual(2, len(boundary_list_response.data['results']))
+
+    def test_get_single(self):
+        boundary = mommy.make(WardBoundary)
+        url = self.list_url + "{}/".format(boundary.id)
+        response = self.client.get(url)
+        self.assertEqual(200, response.status_code)
+        self.assertEquals(
+            [],
+            response.data.get('properties').get('facility_ids')
+        )
