@@ -28,6 +28,7 @@ version = config.__version__
 
 
 class Tox(TestCommand):
+
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []

@@ -2,7 +2,23 @@ from django.conf.urls import url, patterns, include
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 from common.views import APIRoot, root_redirect_view
+from rest_auth.views import (
+    UserDetails, PasswordChange, PasswordReset, PasswordResetConfirm
+)
 
+
+rest_auth_patterns = patterns(
+    '',
+
+    url(r'^password/reset/$', PasswordReset.as_view(),
+        name='rest_password_reset'),
+    url(r'^password/reset/confirm/$', PasswordResetConfirm.as_view(),
+        name='rest_password_reset_confirm'),
+
+    url(r'^user/$', UserDetails.as_view(), name='rest_user_details'),
+    url(r'^password/change/$', PasswordChange.as_view(),
+        name='rest_password_change'),
+)
 
 apipatterns = patterns(
     '',
@@ -15,7 +31,9 @@ apipatterns = patterns(
     url(r'^facilities/', include('facilities.urls', namespace='facilities')),
     url(r'^chul/', include('chul.urls', namespace='chul')),
     url(r'^gis/', include('mfl_gis.urls', namespace='mfl_gis')),
-    url(r'^rest-auth/', include('rest_auth.urls', namespace='rest_auth')),
+
+    # rest-auth urls
+    url(r'^rest-auth/', include(rest_auth_patterns, namespace='rest_auth')),
     url(r'^rest-auth/registration/',
         include('rest_auth.registration.urls',
                 namespace='rest_auth_registration'))
