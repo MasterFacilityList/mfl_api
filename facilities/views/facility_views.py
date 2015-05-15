@@ -115,7 +115,7 @@ class QuerysetFilterMixin(object):
 
 class RatingScaleListView(generics.ListCreateAPIView):
     queryset = RatingScale.objects.all()
-    serializer_class = RatingScaleSerializer,
+    serializer_class = RatingScaleSerializer
     filter_class = RatingScaleFilter
     ordering_fields = ('value', 'display_text')
 
