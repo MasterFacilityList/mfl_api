@@ -64,6 +64,25 @@ class TestUserViews(LoginMixin, APITestCase):
         self.assertEqual(400, response.status_code)
 
 
+class TestCurrentUserDetailView(LoginMixin, APITestCase):
+    url = reverse("api:users:current_user")
+
+    def test_deny_unauthorized_access(self):
+        client = self.client.__class__()
+        resp = client.get(self.url)
+        self.assertEqual(resp.status_code, 401)
+
+    def test_get_current_user(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        data = resp.data
+        self.assertEqual(self._user.email, data['email'])
+        self.assertEqual(self._user.first_name, data['first_name'])
+
+        for i in ['password', 'password_history']:
+            self.assertNotIn(i, data)
+
+
 class TestGroupViews(LoginMixin, APITestCase):
 
     def setUp(self):

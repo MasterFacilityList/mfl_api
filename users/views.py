@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import Group, Permission
 from .models import MflUser, MFLOAuthApplication
 from .serializers import (
@@ -43,6 +44,14 @@ class UserList(generics.ListCreateAPIView):
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MflUser.objects.all()
     serializer_class = MflUserSerializer
+
+
+class CurrentUserDetailView(generics.RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = MflUserSerializer
+
+    def get_object(self):
+        return self.request.user
 
 
 class MFLOauthApplicationListView(generics.ListCreateAPIView):
