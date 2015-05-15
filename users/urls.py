@@ -4,6 +4,7 @@ from django.conf.urls import url, patterns
 from .views import (
     UserList,
     UserDetailView,
+    CurrentUserDetailView,
     MFLOauthApplicationListView,
     MFLOauthApplicationDetailView,
     PermissionsListView,
@@ -29,6 +30,7 @@ urlpatterns = patterns(
         name='permissions_list'),
 
     url(r'^$', UserList.as_view(), name='mfl_users_list'),
+    url(r'^current/$', CurrentUserDetailView.as_view(), name='current_user'),
     url(r'^(?P<pk>[^/]+)/$', UserDetailView.as_view(),
         name='mfl_user_detail'),
 )

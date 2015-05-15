@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import Group, Permission
 from .models import MflUser, MFLOAuthApplication
 from .serializers import (
@@ -11,6 +12,7 @@ from .filters import MFLUserFilter
 
 
 class PermissionsListView(generics.ListAPIView):
+
     """
     This is a read-only list view; intentionally.
 
@@ -44,7 +46,16 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MflUserSerializer
 
 
+class CurrentUserDetailView(generics.RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = MflUserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+
 class MFLOauthApplicationListView(generics.ListCreateAPIView):
+
     """
     List and register new OAuth2 applications
 
@@ -55,8 +66,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
     over HTTPS**.
 
     # Registering a new OAuth2 application
-    You can learn all that you need to know about oauth2 by reading
-    https://tools.ietf.org/html/rfc6749 .
+    You can learn all that you need to know about oauth2 by reading [RFC6749](https://tools.ietf.org/html/rfc6749>).
 
     If you are in too much of a hurry to read all that, here is what you
     should do:
@@ -105,15 +115,15 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
 
     ## Step 1: obtain an access token
     In order to obtain an access token, `POST` the user's credentials to
-    [/o/token/](/o/token/).
+    [/oauth2/token/](/oauth2/token/).
 
     For example:
 
-        curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/o/token/
+        curl -X POST -d "grant_type=password&username=serikalikuu@mfltest.slade360.co.ke&password=serikalikuu" http://sfzgvKKVpLxyHn3EbZrepehJnLn1r0OOFnuqBNy7:7SMXKum5CJVWABxIitwszES3Kls5RTBzYzJDI5jdvgPcw0vSjP5pnlYHfANSkPyn8pzSfyi5ETesPGXbbiKih0D3YRjE49IlsMShJy0p6pxLOLp72UKsNKxnj08H0fXP@localhost:8000/oauth2/token/
 
     Which breaks down as:
 
-        curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/o/token/
+        curl -X POST -d grant_type=<grant_type>&username=<email>&password=<password>" http://<client_id>:<client_secret>@<host>:<por>/oauth2/token/
 
     ## Step 2: use the access token
     The reply from the server will be a `JSON` payload that has the issued
@@ -129,7 +139,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
             "scope": "read write"
         }
 
-    Pick the `access_token` and send it in an `Authorization: Bearer` header
+    Pick the `access_token` and `token_type` and send them in an `Authorization` header
     e.g
 
         curl -H "Authorization: Bearer ziBLqoXwVEA8lW9yEmE260AZ4lCJHq" http://localhost:8000/api/common/counties/
@@ -144,6 +154,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
 
 
 class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
+
     """View, update and retire specific OAuth2 application authorizations"""
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
