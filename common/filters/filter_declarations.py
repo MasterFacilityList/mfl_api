@@ -55,6 +55,7 @@ class CountyFilter(CommonFieldsFilterset):
 class ConstituencyFilter(CommonFieldsFilterset):
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
+    county = ListCharFilter(lookup_type='icontains')
 
     class Meta(object):
         model = Constituency
@@ -63,6 +64,7 @@ class ConstituencyFilter(CommonFieldsFilterset):
 class WardFilter(CommonFieldsFilterset):
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
+    constituency = ListCharFilter(lookup_type='icontains')
 
     class Meta(object):
         model = Ward
