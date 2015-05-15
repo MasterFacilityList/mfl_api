@@ -23,6 +23,8 @@ can get them at once with:
 ::
 
     sudo apt-get build-dep python-shapely python-numpy cython python-psycopg2
+    libxml2-dev libxslt1-dev libffi-dev
+
 
 
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
