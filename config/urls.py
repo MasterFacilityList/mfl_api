@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 from common.views import APIRoot, root_redirect_view
 from rest_auth.views import (
-    UserDetails, PasswordChange, PasswordReset, PasswordResetConfirm
+    PasswordChange, PasswordReset, PasswordResetConfirm
 )
 
 
@@ -17,7 +17,6 @@ rest_auth_patterns = patterns(
     url(r'^password/reset/confirm/$', PasswordResetConfirm.as_view(),
         name='rest_password_reset_confirm'),
 
-    url(r'^user/$', UserDetails.as_view(), name='rest_user_details'),
     url(r'^password/change/$', PasswordChange.as_view(),
         name='rest_password_change'),
     url(r'^registration/',

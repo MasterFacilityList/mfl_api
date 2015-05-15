@@ -50,6 +50,7 @@ class LoginMixin(object):
 
 
 class TestViewCounties(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestViewCounties, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -100,6 +101,7 @@ class TestViewCounties(LoginMixin, APITestCase):
 
 
 class TestViewConstituencies(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestViewConstituencies, self).setUp()
 
@@ -152,6 +154,7 @@ class TestViewConstituencies(LoginMixin, APITestCase):
 
 
 class TestViewWards(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestViewWards, self).setUp()
 
@@ -206,6 +209,7 @@ class TestViewWards(LoginMixin, APITestCase):
 
 
 class TestContactView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestContactView, self).setUp()
         self.url = reverse("api:common:contacts_list")
@@ -278,6 +282,7 @@ class TestContactView(LoginMixin, APITestCase):
 
 
 class TestContactTypeView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestContactTypeView, self).setUp()
         self.url = reverse("api:common:contact_types_list")
@@ -307,6 +312,7 @@ class TestContactTypeView(LoginMixin, APITestCase):
 
 
 class TestTownView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestTownView, self).setUp()
         self.url = reverse("api:common:towns_list")
@@ -323,6 +329,7 @@ class TestTownView(LoginMixin, APITestCase):
 
 
 class TestAPIRootView(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse('api:root_listing')
         cache.clear()
@@ -380,6 +387,7 @@ class TestAPIRootView(LoginMixin, APITestCase):
 
 
 class TestUserContactView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestUserContactView, self).setUp()
         self.url = reverse("api:common:user_contacts_list")
@@ -415,6 +423,7 @@ class TestUserContactView(LoginMixin, APITestCase):
 
 
 class TestAuditableViewMixin(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestAuditableViewMixin, self).setUp()
 
