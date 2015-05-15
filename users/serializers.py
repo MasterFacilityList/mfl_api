@@ -37,6 +37,7 @@ def _lookup_groups(validated_data):
 
 
 class PermissionSerializer(serializers.ModelSerializer):
+
     """This is intended to power a read-only view"""
     class Meta(object):
         model = Permission
@@ -44,6 +45,7 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
+
     """This is intended to power retrieval, creation and addition of groups
 
     # Assigning permissions to a group
@@ -104,6 +106,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class MflUserSerializer(serializers.ModelSerializer):
+
     """This should allow everything about users to be managed"""
     counties = UserCountySerializer(many=True, required=False)
 
@@ -151,6 +154,7 @@ class MflUserSerializer(serializers.ModelSerializer):
 
 
 class MFLOAuthApplicationSerializer(serializers.ModelSerializer):
+
     """This powers the creation of OAuth2 applications"""
 
     class Meta(object):

@@ -47,5 +47,6 @@ urlpatterns = patterns(
     url(r'^api/', include(apipatterns, namespace='api')),
     url(r'^accounts/',
         include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^oauth2/', include('oauth2_provider.urls')),
+    url(r'^oauth2/',
+        include('oauth2_provider.urls', namespace='oauth2_provider')),
 )

@@ -66,8 +66,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
     over HTTPS**.
 
     # Registering a new OAuth2 application
-    You can learn all that you need to know about oauth2 by reading
-    https://tools.ietf.org/html/rfc6749 .
+    You can learn all that you need to know about oauth2 by reading [RFC6749](https://tools.ietf.org/html/rfc6749>).
 
     If you are in too much of a hurry to read all that, here is what you
     should do:
@@ -140,7 +139,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
             "scope": "read write"
         }
 
-    Pick the `access_token` and send it in an `Authorization: Bearer` header
+    Pick the `access_token` and `token_type` and send them in an `Authorization` header
     e.g
 
         curl -H "Authorization: Bearer ziBLqoXwVEA8lW9yEmE260AZ4lCJHq" http://localhost:8000/api/common/counties/
