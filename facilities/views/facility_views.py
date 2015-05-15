@@ -121,7 +121,7 @@ class RatingScaleListView(generics.ListCreateAPIView):
 
 
 class RatingScaleDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = RatingScale.object.all()
+    queryset = RatingScale.objects.all()
     serializer_class = RatingScaleSerializer
 
 
