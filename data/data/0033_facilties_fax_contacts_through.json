@@ -126,17 +126,6 @@
     },
     {
         "contact": {
-            "contact": "054-21073/ 054-21077",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Lodwar District Hospital"
-        }
-    },
-    {
-        "contact": {
             "contact": "31551",
             "contact_type": {
                 "name": "FAX"
@@ -562,17 +551,6 @@
         },
         "facility": {
             "name": "Bungoma District Hospital"
-        }
-    },
-    {
-        "contact": {
-            "contact": "067-4355276",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Matuu District Hospital"
         }
     },
     {
@@ -1409,17 +1387,6 @@
         },
         "facility": {
             "name": "Kiambere Health Centre"
-        }
-    },
-    {
-        "contact": {
-            "contact": "069-52022",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Dabel Health Centre (Moyale)"
         }
     },
     {
@@ -2354,17 +2321,6 @@
             }
         },
         "facility": {
-            "name": "Godoma Model Health Centre (Moyale)"
-        }
-    },
-    {
-        "contact": {
-            "contact": "069-52022",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
             "name": "Somare Dispensary"
         }
     },
@@ -2432,17 +2388,6 @@
         },
         "facility": {
             "name": "Mansile Dispensary"
-        }
-    },
-    {
-        "contact": {
-            "contact": "069-52022",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Odda Dispensary (Moyale)"
         }
     },
     {
@@ -2828,17 +2773,6 @@
         },
         "facility": {
             "name": "El-Molo Bay Dispensary"
-        }
-    },
-    {
-        "contact": {
-            "contact": "069-52022",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Nana Dispensary"
         }
     },
     {
@@ -3316,17 +3250,6 @@
     },
     {
         "contact": {
-            "contact": "2227872",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Dr Okanga J B O"
-        }
-    },
-    {
-        "contact": {
             "contact": "0202434118",
             "contact_type": {
                 "name": "FAX"
@@ -3349,17 +3272,6 @@
     },
     {
         "contact": {
-            "contact": "0228775",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Avenue Health Care"
-        }
-    },
-    {
-        "contact": {
             "contact": "06952287",
             "contact_type": {
                 "name": "FAX"
@@ -3367,17 +3279,6 @@
         },
         "facility": {
             "name": "Crossroad Nursing Home"
-        }
-    },
-    {
-        "contact": {
-            "contact": "0222393",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Dr Gikandi Clinic"
         }
     },
     {
@@ -3510,17 +3411,6 @@
         },
         "facility": {
             "name": "Shalom Community Hospital (Machakos)"
-        }
-    },
-    {
-        "contact": {
-            "contact": "0422130762",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Star Hospital"
         }
     },
     {
@@ -4136,17 +4026,6 @@
             }
         },
         "facility": {
-            "name": "Yaballo Dispensary"
-        }
-    },
-    {
-        "contact": {
-            "contact": "06952022",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
             "name": "Manyatta Dispensary"
         }
     },
@@ -4471,17 +4350,6 @@
     },
     {
         "contact": {
-            "contact": "0403203080",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Diani Beach Hospital"
-        }
-    },
-    {
-        "contact": {
             "contact": "06532371",
             "contact_type": {
                 "name": "FAX"
@@ -4691,17 +4559,6 @@
     },
     {
         "contact": {
-            "contact": "00",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Lorugum Medical Services Ltd"
-        }
-    },
-    {
-        "contact": {
             "contact": "0202017160",
             "contact_type": {
                 "name": "FAX"
@@ -4742,17 +4599,6 @@
         },
         "facility": {
             "name": "Star-Heal Medical Clinic"
-        }
-    },
-    {
-        "contact": {
-            "contact": "020601881",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Kibera Community Self Help Program - Migori "
         }
     },
     {
@@ -4830,17 +4676,6 @@
         },
         "facility": {
             "name": "Bore Singwaya Dispensary"
-        }
-    },
-    {
-        "contact": {
-            "contact": "02030724",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Bungoma west Medical Services"
         }
     },
     {
@@ -4955,17 +4790,6 @@
     },
     {
         "contact": {
-            "contact": "020-2107065",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Tico - Bao VCT"
-        }
-    },
-    {
-        "contact": {
             "contact": "044822394",
             "contact_type": {
                 "name": "FAX"
@@ -5051,51 +4875,8 @@
         "facility": {
             "name": "Musovo Dispensary"
         }
-    },
-    {
-        "contact": {
-            "contact": "044621093",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Kyevaluki Dispensary"
-        }
-    },
-    {
-        "contact": {
-            "contact": "044621093",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Kawauni Dispensary"
-        }
-    },
-    {
-        "contact": {
-            "contact": "044621093",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Kathaana Dispensary"
-        }
-    },
-    {
-        "contact": {
-            "contact": "0700829066",
-            "contact_type": {
-                "name": "FAX"
-            }
-        },
-        "facility": {
-            "name": "Kikopey Dispensary"
-        }
     }
 ]
+
 }
 ]
