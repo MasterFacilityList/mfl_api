@@ -26,7 +26,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    RegulatingBodyContact
+    RegulatingBodyContact,
+    RatingScale
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -46,6 +47,11 @@ BOOLEAN_CHOICES = (
     ('Y', 'True'),
     ('N', 'False')
 )
+
+
+class RatingScaleFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = RatingScale
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):

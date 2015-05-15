@@ -50,10 +50,18 @@ from ..views import (
     RegulatingBodyContactListView,
     RegulatingBodyContactDetailView,
     get_correction_template,
-    DashBoard
+    DashBoard,
+    RatingScaleDetailView,
+    RatingScaleListView
 )
 urlpatterns = patterns(
     '',
+
+    url(r'^rating_scales/$', RatingScaleListView.as_view(),
+        name='rating_scales_list'),
+
+    url(r'^rating_scales/$', RatingScaleDetailView.as_view(),
+        name='rating_scale_detail'),
 
     url(r'^dashboard/$', DashBoard.as_view(),
         name='dashboard'),
