@@ -6,6 +6,7 @@ from django.apps import apps
 from django.db import transaction
 from django.db.utils import ProgrammingError
 from django.contrib.gis.geos import Point
+from django.core.exceptions import ObjectDoesNotExist
 
 from common.fields import SequenceField
 
@@ -19,7 +20,8 @@ def _retrieve_existing_model_instance(model_cls, field_data):
     assert isinstance(field_data, dict)
     try:
         instance = model_cls.objects.get(**field_data)
-    except ProgrammingError:
+    except (ProgrammingError, ObjectDoesNotExist):
+
         keys = field_data.keys()
         for key in keys:
             value = field_data[key]
