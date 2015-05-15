@@ -7,6 +7,8 @@ from rest_auth.views import (
 )
 
 
+# copied from rest_auth.urls just to remove login and logout urls
+# this may be a hack but other methods looked scarier
 rest_auth_patterns = patterns(
     '',
 
@@ -24,6 +26,7 @@ rest_auth_patterns = patterns(
 
 apipatterns = patterns(
     '',
+
     url(r'^$', login_required(
         cache_page(60*60)(APIRoot.as_view())), name='root_listing'),
     url(r'^explore/',
@@ -40,6 +43,7 @@ apipatterns = patterns(
 
 urlpatterns = patterns(
     '',
+
     url(r'^$', root_redirect_view, name='root_redirect'),
     url(r'^api/', include(apipatterns, namespace='api')),
     url(r'^accounts/',
