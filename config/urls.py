@@ -18,6 +18,8 @@ rest_auth_patterns = patterns(
     url(r'^user/$', UserDetails.as_view(), name='rest_user_details'),
     url(r'^password/change/$', PasswordChange.as_view(),
         name='rest_password_change'),
+    url(r'^registration/',
+        include('rest_auth.registration.urls', namespace='registration'))
 )
 
 apipatterns = patterns(
@@ -34,9 +36,6 @@ apipatterns = patterns(
 
     # rest-auth urls
     url(r'^rest-auth/', include(rest_auth_patterns, namespace='rest_auth')),
-    url(r'^rest-auth/registration/',
-        include('rest_auth.registration.urls',
-                namespace='rest_auth_registration'))
 )
 
 urlpatterns = patterns(
