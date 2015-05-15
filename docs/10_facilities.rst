@@ -87,8 +87,6 @@ description          Similar to ``name`` but operating on descriptions e.g ``/ap
 facility_type        Filter by the ``id``s of one or more facility types e.g ``/api/facilities/facilities/?facility_type=f25ba517-3b8d-4692-ba7b-3524f6ec58e5,b2225473-08f1-4e86-a47a-0a61cf75e731``. Facility types can be listed at ``/api/facilities/facility_types/``.
 operation_status     Filter by the ``id`` of one or more operation statuses from ``/api/facilities/facility_status/``
 ward                 Filter by the ``id`` of wards ( from ``/api/common/wards/`` e.g ``/api/facilities/facilities/?ward=353404d7-02e6-422f-b64f-b1c7d0f1bcf0`` )
-county                 Filter by the ``id`` of counties ( from ``/api/common/counties/`` e.g ``/api/facilities/facilities/?county=fa47afa2-a78a-421f-ad9f-55e6cbfc280c`` )
-constituency                 Filter by the ``id`` of constituencies ( from ``/api/common/constituencies/`` e.g ``/api/facilities/facilities/?constituencies=93280ce0-670f-4b96-a449-57d65f0dcace`` )
 owner                Filter by the ``id`` of one or more owners. Owners can be listed at ``/api/facilities/owners/``
 officer_in_charge    Filter by the ``id`` of one or more officers-in-charge. The officers can be listed at ``/api/facilities/officers/``
 number_of_beds       Filter by the number of beds, supplying one or more filter parameters e.g ``/api/facilities/facilities/?number_of_beds=20,21,22,23,24``
