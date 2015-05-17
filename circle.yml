@@ -1,22 +1,22 @@
 machine:
-    environment:
-        DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
-        COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
-
-    services:
-        - elasticsearch
-
+  environment:
+    DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
+    COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
+  services:
+    - elasticsearch
 
 checkout:
-    post:
-        - cp .env-example .env
+  post:
+    - cp .env-example .env
 
+dependencies:
+  post:
+    - pip install fabric
 
 test:
-    override:
-        - fab test
-
+  override:
+    - fab test
 
 general:
-    artifacts:
-        - "htmlcov"
+  artifacts:
+    - "htmlcov"
