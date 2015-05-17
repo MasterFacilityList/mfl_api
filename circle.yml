@@ -12,20 +12,9 @@ checkout:
         - cp .env-example .env
 
 
-dependencies:
-    pre:
-        - sudo apt-get -y update
-        - sudo apt-get -y autoclean
-        - sudo apt-get -y autoremove
-
-    post:
-        - pip install fabric
-
-
 test:
     override:
-        - fab circleci_test:
-            parallel: true
+        - fab test
 
 
 general:

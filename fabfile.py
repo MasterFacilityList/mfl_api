@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 import json
-import os
 
 from os.path import dirname, abspath, join
 from config.settings import base
@@ -116,23 +115,3 @@ def setup(*args, **kwargs):
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()
-
-
-def playbook_test():
-    """Dev only - test the ansible playbooks"""
-    with lcd('playbooks'):
-        local('ansible-playbook -i inventory site.yml --connection=local')
-
-
-def circleci_test():
-    """Dev only - run tests in circleci
-
-    The test runs take advantage of parallelism in circleci
-    """
-    max_nodes = os.getenv('CIRCLE_NODE_TOTAL', 1)
-    this_node = os.getenv('CIRCLE_NODE_INDEX', 0)
-
-    commands = [test, playbook_test]
-    for index, command in enumerate(commands):
-        if index % int(max_nodes) == int(this_node):
-            command()
