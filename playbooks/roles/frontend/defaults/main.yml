@@ -9,3 +9,4 @@ oauth2_key: ""
 oauth2_secret: ""
 mfl_frontend_archive_file : "{{download_dir}}/mfl_frontend__{{mfl_frontend_version}}.tar.gz"
 ssl_on: false
+token_url: "o/token/"
