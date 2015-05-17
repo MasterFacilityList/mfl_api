@@ -66,18 +66,44 @@ You **MUST** work your way through the `Django deployment checklist`_.
 
 Configuring the ansible inventory
 -------------------------------------
+There is an ``inventory`` file in the ``playbooks`` folder. This file should
+be edited to have a line for each server that is managed by Ansible.
 
-. warn::
+The following is an example:
 
-    If you are working off a recent Ubuntu Linux on your laptop, you will do
-    yourself a great 1TBD]a
+.. code-block:: text
 
-TBD - Add warning about removing LC forwarding from SSH config
-TBD - **everything here is work in progress**
+    azure_test_server             ansible_ssh_host=mfl.azure.slade360.co.ke     ansible_ssh_port=22     ansible_ssh_user=azureuser     ansible_ssh_private_key_file=/home/ngurenyaga/.ssh/id_rsa
 
-TODO - Can only be in a non-threaded server, because of ``GDAL``
-( for those who will not use the supplied playbooks )
-TODO - Warning about using this on a production server
+The template breaks down roughly to this:
+
+.. code-block:: text
+
+    <a descriptive name we choose for the server>
+    ansible_ssh_host=<an IP address or host name>
+    ansible_ssh_port=<the port over which the SSL daemon is listening on the remote machine>
+    ansible_ssh_user=<the username to log in with on the remote machine>
+    ansible_ssh_private_key_file=<a path to a local SSH private key>
+
+.. warning::
+
+    The SSH private key must be kept private.
+
+.. warning::
+
+    If you are working off a recent Ubuntu Linux on your laptop, you should
+    comment out ``SendEnv LANG LC_*`` in ``/etc/ssh/ssh_config``.
+
+    The forwarding of language environment variables from the local computer
+    is known to cause mischief on the remote server.
+
+.. warning::
+
+    This server should only be run on a non-threaded server e.g ``gunicorn``
+    in the standard multi-process configuration.
+
+    This is because the geographic features rely on ``GDAL``, which is not
+    thread safe.
 
 
 .. toctree::

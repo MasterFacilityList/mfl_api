@@ -15,6 +15,7 @@ from common.models import Ward, UserCounty, County, Constituency
 from ..serializers import (
     OwnerSerializer,
     FacilitySerializer,
+    FacilityDetailSerializer,
     FacilityStatusSerializer,
     FacilityUnitSerializer
 )
@@ -206,7 +207,7 @@ class TestFacilityView(LoginMixin, APITestCase):
         facility = mommy.make(Facility)
         url = self.url + "{}/".format(facility.id)
         response = self.client.get(url)
-        expected_data = FacilitySerializer(facility).data
+        expected_data = FacilityDetailSerializer(facility).data
         self.assertEquals(200, response.status_code)
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
