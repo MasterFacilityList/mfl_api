@@ -579,7 +579,7 @@ class Facility(SequenceMixin, AbstractBase):
         services = self.facility_services.all()
         return [
             {
-                "id": service.selected_option.id,
+                "id": service.id,
                 "service_id": service.selected_option.service.id,
                 "service_name": service.selected_option.service.name,
                 "option_name": service.selected_option.option.display_text,

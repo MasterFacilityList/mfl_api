@@ -101,15 +101,18 @@ class TestFacilityService(BaseTestCase):
             Option, option_type='BOOLEAN', display_text='Yes/No')
         service_option = mommy.make(
             ServiceOption, service=service, option=option)
-        mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+        facility_service = mommy.make(
+            FacilityService, facility=facility, selected_option=service_option
+        )
         expected_data = [
             {
-                "id": service.id,
-                "name": service.name,
+                "id": facility_service.id,
+                "service_id": service.id,
+                "service_name": service.name,
                 "option_name": option.display_text,
                 "category_name": service_category.name,
-                "category_id": service_category.id
+                "category_id": service_category.id,
+                "average_rating": facility_service.average_rating
             }
         ]
         self.assertEquals(expected_data, facility.get_facility_services)
@@ -539,7 +542,8 @@ class TestFacilityContact(BaseTestCase):
         self.assertEquals(expected, facility_contact.__unicode__())
         expected_data = [
             {
-                "id": contact.id,
+                "id": facility_contact.id,
+                "contact_id": contact.id,
                 "contact": contact.contact,
                 "contact_type_name": contact_type.name
             }
