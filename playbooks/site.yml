@@ -5,5 +5,5 @@
   roles:
     - common
     - postgresql
-    - api
-    - { role: frontend }
+    - { role: api, server_name: mfl.azure.slade360.co.ke}
+    - { role: frontend, server_name: mfl-public.slade360.co.ke}
