@@ -579,11 +579,13 @@ class Facility(SequenceMixin, AbstractBase):
         services = self.facility_services.all()
         return [
             {
-                "id": service.selected_option.service.id,
-                "name": service.selected_option.service.name,
+                "id": service.selected_option.id,
+                "service_id": service.selected_option.service.id,
+                "service_name": service.selected_option.service.name,
                 "option_name": service.selected_option.option.display_text,
                 "category_name": service.selected_option.service.category.name,
-                "category_id": service.selected_option.service.category.id
+                "category_id": service.selected_option.service.category.id,
+                "average_rating": service.average_rating
             }
             for service in services
         ]
@@ -594,7 +596,8 @@ class Facility(SequenceMixin, AbstractBase):
         contacts = self.facility_contacts.all()
         return [
             {
-                "id": contact.contact.id,
+                "id": contact.id,
+                "contact_id": contact.contact.id,
                 "contact": contact.contact.contact,
                 "contact_type_name": contact.contact.contact_type.name
             }
