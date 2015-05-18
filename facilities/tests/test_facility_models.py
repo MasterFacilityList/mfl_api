@@ -1,3 +1,5 @@
+from __future__ import division
+
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
@@ -27,6 +29,7 @@ from ..models import (
     FacilityRegulationStatus,
     FacilityContact,
     FacilityUnit,
+    FacilityServiceRating,
     ServiceCategory,
     Service,
     ServiceOption,
@@ -40,6 +43,7 @@ from ..models import (
 
 
 class TestFacilityOperationState(BaseTestCase):
+
     def test_save(self):
         status = mommy.make(FacilityStatus, name='PENDING_OPENING')
         facility = mommy.make(
@@ -53,18 +57,21 @@ class TestFacilityOperationState(BaseTestCase):
 
 
 class TestServiceCategory(BaseTestCase):
+
     def test_unicode(self):
         instance = ServiceCategory(name='test name')
         self.assertEqual(str(instance), 'test name')
 
 
 class TestOption(BaseTestCase):
+
     def test_unicode(self):
         instance = Option(option_type='BOOLEAN', display_text='Yes/No')
         self.assertEqual(str(instance), 'BOOLEAN: Yes/No')
 
 
 class TestServiceOption(BaseTestCase):
+
     def test_unicode(self):
         service = Service(name='savis')
         option = Option(option_type='BOOLEAN', display_text='Yes/No')
@@ -73,6 +80,7 @@ class TestServiceOption(BaseTestCase):
 
 
 class TestFacilityService(BaseTestCase):
+
     def test_unicode(self):
         facility = Facility(name='thifitari')
         service = Service(name='savis')
@@ -106,8 +114,72 @@ class TestFacilityService(BaseTestCase):
         ]
         self.assertEquals(expected_data, facility.get_facility_services)
 
+    def test_average_rating(self):
+        facility1 = mommy.make(Facility)
+        service1, service2 = mommy.make(Service), mommy.make(Service)
+        soption1, soption2 = (
+            mommy.make(ServiceOption, service=service1),
+            mommy.make(ServiceOption, service=service2)
+        )
+        fs1, fs2 = (
+            mommy.make(
+                FacilityService, facility=facility1, selected_option=soption1
+            ),
+            mommy.make(
+                FacilityService, facility=facility1, selected_option=soption2
+            )
+        )
+        fs1_ratings = [
+            mommy.make(FacilityServiceRating, rating=2, facility_service=fs1),
+            mommy.make(FacilityServiceRating, rating=3, facility_service=fs1),
+            mommy.make(FacilityServiceRating, rating=4, facility_service=fs1),
+        ]
+        fs2_ratings = [
+            mommy.make(FacilityServiceRating, rating=4, facility_service=fs2),
+            mommy.make(FacilityServiceRating, rating=3, facility_service=fs2),
+            mommy.make(FacilityServiceRating, rating=4, facility_service=fs2),
+        ]
+
+        # add some noise
+        facility2 = mommy.make(Facility)
+        service3, service4 = mommy.make(Service), mommy.make(Service)
+        soption3, soption4 = (
+            mommy.make(ServiceOption, service=service3),
+            mommy.make(ServiceOption, service=service4)
+        )
+        fs3, fs4 = (
+            mommy.make(
+                FacilityService, facility=facility2, selected_option=soption3
+            ),
+            mommy.make(
+                FacilityService, facility=facility2, selected_option=soption4
+            )
+        )
+
+        mommy.make(FacilityServiceRating, rating=2, facility_service=fs3),
+        mommy.make(FacilityServiceRating, rating=3, facility_service=fs3),
+        mommy.make(FacilityServiceRating, rating=4, facility_service=fs3),
+        mommy.make(FacilityServiceRating, rating=4, facility_service=fs4),
+        mommy.make(FacilityServiceRating, rating=3, facility_service=fs4),
+        mommy.make(FacilityServiceRating, rating=4, facility_service=fs4),
+
+        # test calculations
+        self.assertEqual(
+            fs1.average_rating,
+            sum([i.rating for i in fs1_ratings]) / len(fs1_ratings)
+        )
+        self.assertEqual(
+            fs2.average_rating,
+            sum([i.rating for i in fs2_ratings]) / len(fs2_ratings)
+        )
+        self.assertEqual(
+            facility1.average_rating,
+            (fs1.average_rating + fs2.average_rating) / 2
+        )
+
 
 class TestServiceRating(BaseTestCase):
+
     def test_unicode(self):
         service = Service(name='savis')
         facility = Facility(name='thifitari')
@@ -125,6 +197,7 @@ class TestServiceRating(BaseTestCase):
 
 
 class TestServiceModel(BaseTestCase):
+
     def test_save_without_code(self):
         service = mommy.make(Service, name='some name')
         self.assertEquals(1, Service.objects.count())
@@ -143,6 +216,7 @@ class TestServiceModel(BaseTestCase):
 
 
 class TestOwnerTypes(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "FBO",
@@ -157,6 +231,7 @@ class TestOwnerTypes(BaseTestCase):
 
 
 class TestOwnerModel(BaseTestCase):
+
     def test_save(self):
         owner_type = mommy.make(OwnerType, name="FBO")
         data = {
@@ -188,6 +263,7 @@ class TestOwnerModel(BaseTestCase):
 
 
 class TestJobTitleModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "Nurse officer incharge",
@@ -202,6 +278,7 @@ class TestJobTitleModel(BaseTestCase):
 
 
 class TestOfficer(BaseTestCase):
+
     def test_save(self):
         jt = mommy.make(JobTitle, name='Nursing officer incharge')
         data = {
@@ -218,6 +295,7 @@ class TestOfficer(BaseTestCase):
 
 
 class TestOfficerContactModel(BaseTestCase):
+
     def test_save(self):
         officer = mommy.make(Officer, name='Maruge')
         contact = mommy.make(Contact, contact='maruge@gmail.com')
@@ -235,6 +313,7 @@ class TestOfficerContactModel(BaseTestCase):
 
 
 class TestFacilityStatusModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "OPERATIONAL",
@@ -248,6 +327,7 @@ class TestFacilityStatusModel(BaseTestCase):
 
 
 class TestFacilityTypeModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "Hospital",
@@ -262,6 +342,7 @@ class TestFacilityTypeModel(BaseTestCase):
 
 
 class TestRegulatingBodyModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "Director of Medical Services",
@@ -288,6 +369,7 @@ class TestRegulatingBodyModel(BaseTestCase):
 
 
 class TestFacility(BaseTestCase):
+
     def test_save(self):
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
@@ -438,6 +520,7 @@ class TestFacility(BaseTestCase):
 
 
 class TestFacilityContact(BaseTestCase):
+
     def test_save(self):
         contact_type = mommy.make(ContactType)
         facility = mommy.make(
@@ -465,6 +548,7 @@ class TestFacilityContact(BaseTestCase):
 
 
 class TestRegulationStatus(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "OPERATIONAL",
@@ -479,6 +563,7 @@ class TestRegulationStatus(BaseTestCase):
 
 
 class TestFacilityRegulationStatus(BaseTestCase):
+
     def test_save(self):
         facility = mommy.make(Facility, name="Nairobi Hospital")
         status = mommy.make(RegulationStatus, name="SUSPENDED")
@@ -514,6 +599,7 @@ class TestFacilityUnitModel(BaseTestCase):
 
 
 class TestRegulationStatusModel(BaseTestCase):
+
     def test_save(self):
         mommy.make(RegulationStatus)
         self.assertEquals(1, RegulationStatus.objects.count())
@@ -547,3 +633,19 @@ class TestRegulationStatusModel(BaseTestCase):
     def test_next_state_name_is_null(self):
         status = mommy.make(RegulationStatus, is_final_state=True)
         self.assertEquals("", status.next_state_name)
+
+
+class TestFacilityServiceRating(BaseTestCase):
+
+    def test_unicode(self):
+        facility = mommy.make(Facility, name='fac')
+        service = mommy.make(Service, name='serv')
+        soption = mommy.make(ServiceOption, service=service)
+        facility_service = mommy.make(
+            FacilityService, facility=facility, selected_option=soption
+        )
+        rating = mommy.make(
+            FacilityServiceRating, facility_service=facility_service,
+            rating=5
+        )
+        self.assertEqual(str(rating), "serv (fac): 5")

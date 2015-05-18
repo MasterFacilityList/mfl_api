@@ -26,7 +26,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    RegulatingBodyContact
+    RegulatingBodyContact,
+    FacilityServiceRating
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
