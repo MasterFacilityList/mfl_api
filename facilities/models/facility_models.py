@@ -832,7 +832,7 @@ class FacilityService(AbstractBase):
     @property
     def average_rating(self):
         avg = self.facility_service_ratings.aggregate(models.Avg('rating'))
-        return avg['rating__avg']
+        return avg['rating__avg'] or 0.0
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)

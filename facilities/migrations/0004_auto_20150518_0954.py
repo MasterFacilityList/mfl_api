@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('rating', models.PositiveIntegerField(validators=[django.core.validators.MaxValueValidator(5), django.core.validators.MinValueValidator(0)])),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('facility_service', models.ForeignKey(related_name='facility_service_rating', to='facilities.FacilityService')),
+                ('facility_service', models.ForeignKey(related_name='facility_service_ratings', to='facilities.FacilityService')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
