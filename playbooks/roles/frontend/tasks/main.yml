@@ -24,7 +24,7 @@
 - name: extract frontend
   unarchive: >
     copy=no
-    src="{{download_dir}}/{{mfl_frontend_archive_file}}"
+    src="{{mfl_frontend_archive_file}}"
     dest="{{extraction_dir}}"
   tags: mfl_frontend
 

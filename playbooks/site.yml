@@ -4,6 +4,6 @@
   sudo: True
   roles:
     - common
-    - postgresql
-    - { role: api, server_name: mfl.azure.slade360.co.ke}
-    - { role: frontend, server_name: mfl-public.slade360.co.ke}
+    - { role: frontend, server_name: mfl-public.slade360.co.ke }
+    - { role: postgresql }
+    - { role: api, server_name: mfl.azure.slade360.co.ke }
