@@ -35,8 +35,15 @@ from ..models import (
     FacilityOperationState,
     RegulatingBodyContact,
     Option,
-    ServiceRating
+    ServiceRating,
+    RatingScale
 )
+
+
+class TestRatingScale(BaseTestCase):
+    def test_save(self):
+        mommy.make(RatingScale)
+        self.assertEquals(1, RatingScale.objects.count())
 
 
 class TestFacilityOperationState(BaseTestCase):

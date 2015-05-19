@@ -26,7 +26,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    RegulatingBodyContact
+    RegulatingBodyContact,
+    RatingScale
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -46,6 +47,11 @@ BOOLEAN_CHOICES = (
     ('Y', 'True'),
     ('N', 'False')
 )
+
+
+class RatingScaleFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = RatingScale
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):
@@ -257,6 +263,12 @@ class FacilityFilter(CommonFieldsFilterset):
     facility_type = ListCharFilter(lookup_type='icontains')
     operation_status = ListCharFilter(lookup_type='icontains')
     ward = ListCharFilter(lookup_type='icontains')
+    ward_code = ListCharFilter(name="ward__code", lookup_type='icontains')
+    county_code = ListCharFilter(
+        name='ward__constituency__county__code',
+        lookup_type='icontains')
+    constituency_code = ListCharFilter(
+        name='ward__constituency__code', lookup_type='icontains')
     county = ListCharFilter(
         name='ward__constituency__county',
         lookup_type='icontains')
