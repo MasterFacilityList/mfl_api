@@ -32,7 +32,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    RegulatingBodyContact
+    RegulatingBodyContact,
+    RatingScale
 )
 
 from ..serializers import (
@@ -61,6 +62,7 @@ from ..serializers import (
     RegulationStatusSerializer,
     FacilityDetailSerializer,
     FacilityServiceRatingSerializer,
+    RatingScaleSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -85,7 +87,8 @@ from ..filters import (
     FacilityApprovalFilter,
     FacilityOperationStateFilter,
     FacilityUpgradeFilter,
-    RegulatingBodyContactFilter
+    RegulatingBodyContactFilter,
+    RatingScaleFilter
 )
 
 
@@ -110,6 +113,18 @@ class QuerysetFilterMixin(object):
                 ward__constituency__county=self.request.user.county)
 
         return self.queryset
+
+
+class RatingScaleListView(generics.ListCreateAPIView):
+    queryset = RatingScale.objects.all()
+    serializer_class = RatingScaleSerializer
+    filter_class = RatingScaleFilter
+    ordering_fields = ('value', 'display_text')
+
+
+class RatingScaleDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = RatingScale.objects.all()
+    serializer_class = RatingScaleSerializer
 
 
 class RegulatingBodyContactListView(generics.ListCreateAPIView):

@@ -47,6 +47,7 @@ class PhysicalAddressFilter(CommonFieldsFilterset):
 class CountyFilter(CommonFieldsFilterset):
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
+    county_id = ListCharFilter(name='id', lookup_type='icontains')
 
     class Meta(object):
         model = County
@@ -55,14 +56,18 @@ class CountyFilter(CommonFieldsFilterset):
 class ConstituencyFilter(CommonFieldsFilterset):
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
+    county = ListCharFilter(lookup_type='icontains')
+    constituency_id = ListCharFilter(name='id', lookup_type='icontains')
 
     class Meta(object):
         model = Constituency
 
 
 class WardFilter(CommonFieldsFilterset):
+    ward_id = ListCharFilter(name='id', lookup_type='icontains')
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
+    constituency = ListCharFilter(lookup_type='icontains')
 
     class Meta(object):
         model = Ward

@@ -26,8 +26,14 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
-    RegulatingBodyContact
+    RegulatingBodyContact,
+    RatingScale
 )
+
+
+class RatingScaleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = RatingScale
 
 
 class RegulatingBodyContactSerializer(

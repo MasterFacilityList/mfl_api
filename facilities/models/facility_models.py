@@ -841,6 +841,15 @@ class FacilityService(AbstractBase):
         return "{}: {}".format(self.facility, self.selected_option)
 
 
+class RatingScale(AbstractBase):
+    """
+    The scale that a facility will use for rating.
+    It will be effectively the likert scale.
+    """
+    value = models.CharField(max_length=3)
+    display_text = models.TextField(help_text='What the user will see')
+
+
 @reversion.register
 class FacilityServiceRating(AbstractBase):
 
@@ -870,9 +879,12 @@ class ServiceRating(AbstractBase):
     The scale for rating the facility service.
     """
     facility_service = models.ForeignKey(FacilityService)
-    cleanliness = models.BooleanField(default=True)
-    attitude = models.BooleanField(default=True)
-    will_return = models.BooleanField(default=True)
+    cleanliness = models.ForeignKey(
+        RatingScale, related_name='cleanliness_rating')
+    attitude = models.ForeignKey(
+        RatingScale, related_name='attitude_ratings')
+    will_return = models.ForeignKey(
+        RatingScale, related_name='return_rating')
     occupation = models.CharField(max_length=100)
     comment = models.TextField(null=True, blank=True)
 
