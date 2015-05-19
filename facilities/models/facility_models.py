@@ -1,5 +1,8 @@
+from __future__ import division
+
 import reversion
 
+from django.core import validators
 from django.db import models
 from rest_framework.exceptions import ValidationError
 from common.models import (
@@ -576,11 +579,13 @@ class Facility(SequenceMixin, AbstractBase):
         services = self.facility_services.all()
         return [
             {
-                "id": service.selected_option.service.id,
-                "name": service.selected_option.service.name,
+                "id": service.id,
+                "service_id": service.selected_option.service.id,
+                "service_name": service.selected_option.service.name,
                 "option_name": service.selected_option.option.display_text,
                 "category_name": service.selected_option.service.category.name,
-                "category_id": service.selected_option.service.category.id
+                "category_id": service.selected_option.service.category.id,
+                "average_rating": service.average_rating
             }
             for service in services
         ]
@@ -591,12 +596,23 @@ class Facility(SequenceMixin, AbstractBase):
         contacts = self.facility_contacts.all()
         return [
             {
-                "id": contact.contact.id,
+                "id": contact.id,
+                "contact_id": contact.contact.id,
                 "contact": contact.contact.contact,
                 "contact_type_name": contact.contact.contact_type.name
             }
             for contact in contacts
         ]
+
+    @property
+    def average_rating(self):
+        avg_service_rating = [
+            i.average_rating for i in self.facility_services.all()
+        ]
+        try:
+            return sum(avg_service_rating, 0) / self.facility_services.count()
+        except ZeroDivisionError:
+            return 0
 
     def clean(self, *args, **kwargs):
         self.validate_publish(*args, **kwargs)
@@ -816,6 +832,11 @@ class FacilityService(AbstractBase):
     def option_display_value(self):
         return self.selected_option.option.display_text
 
+    @property
+    def average_rating(self):
+        avg = self.facility_service_ratings.aggregate(models.Avg('rating'))
+        return avg['rating__avg'] or 0.0
+
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)
 
@@ -827,6 +848,29 @@ class RatingScale(AbstractBase):
     """
     value = models.CharField(max_length=3)
     display_text = models.TextField(help_text='What the user will see')
+
+
+@reversion.register
+class FacilityServiceRating(AbstractBase):
+
+    """Rating of a facility's service"""
+
+    facility_service = models.ForeignKey(
+        FacilityService, related_name='facility_service_ratings'
+    )
+    rating = models.PositiveIntegerField(
+        validators=[
+            validators.MaxValueValidator(5),
+            validators.MinValueValidator(0)
+        ]
+    )
+
+    def __unicode__(self):
+        return "{} ({}): {}".format(
+            self.facility_service.service_name,
+            self.facility_service.facility.name,
+            self.rating
+        )
 
 
 @reversion.register

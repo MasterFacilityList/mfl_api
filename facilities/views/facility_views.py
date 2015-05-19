@@ -22,6 +22,7 @@ from ..models import (
     FacilityRegulationStatus,
     FacilityContact,
     FacilityUnit,
+    FacilityServiceRating,
     ServiceCategory,
     Option,
     Service,
@@ -60,6 +61,7 @@ from ..serializers import (
     RegulatingBodyContactSerializer,
     RegulationStatusSerializer,
     FacilityDetailSerializer,
+    FacilityServiceRatingSerializer,
     RatingScaleSerializer
 )
 from ..filters import (
@@ -237,6 +239,17 @@ class FacilityServiceDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityService.objects.all()
     serializer_class = FacilityServiceSerializer
+
+
+class FacilityServiceRatingListView(generics.ListCreateAPIView):
+    queryset = FacilityServiceRating.objects.all()
+    serializer_class = FacilityServiceRatingSerializer
+    ordering_fields = ('rating', )
+
+
+class FacilityServiceRatingDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityServiceRating.objects.all()
+    serializer_class = FacilityServiceRatingSerializer
 
 
 class ServiceOptionListView(generics.ListCreateAPIView):
