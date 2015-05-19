@@ -547,6 +547,11 @@ TBD
 
 Facility ratings
 -------------------
+Ratings are scores given to a facility's services. One facility service can be rated by multiple users.
+One user, can rate multiple facility services.
+
+The scores given to a service range from 1 to 5, with 1 being the lowest score
+and 5 being the highest score.
 
 .. note::
 
@@ -557,11 +562,25 @@ Facility ratings
 
 Facility service ratings
 +++++++++++++++++++++++++++
-TBD
+To rate a facility service, simply make a ``POST`` to ``api/facilities/facility_service_ratings/`` with the
+facility_service's ``id`` and the score given. For example,
+
+.. code-block: javascript
+
+    {
+        "facility_service": "80613650-f765-4032-a9d3-bb0fc9cc37cc",
+        "rating": 3
+    }
 
 Facility rating reports
 ++++++++++++++++++++++++++
-TBD
+The rating reports available include:
+
+1) number of users with specific rating/score
+2) sorting of facilities by average score
+3) sorting of facility services by average score
+4) sorting of facility services in a facility by average score
+
 
 Facility downloads
 -----------------------
