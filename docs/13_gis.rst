@@ -4,7 +4,7 @@ This chapter assumes that the reader is familiar with the general
 principles explained in the :doc:`06_api` chapter.
 
 The MFL 2 API server uses the excellent `GeoDjango`_ and `PostGIS`_ to provide
-09_services that can be used to generate facility maps, perform geographic
+:doc:`09_services` that can be used to generate facility maps, perform geographic
 queries and validate facility coordinate data. You can read more about this at
 the :doc:`13_gis` page.
 

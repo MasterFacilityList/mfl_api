@@ -14,7 +14,7 @@ user interfaces be just one more set of API clients, with no special
 privileges.
 
 This guide is for the authors of client applications ( applications that
-consume the RESTful web 09_services ). Those who would like to make changes to
+consume the RESTful web :doc:`09_services` ). Those who would like to make changes to
 the MFL API server code itself should refer to the :doc:`14_workflow` guide.
 
 The MFL 2 API is "RESTish". We subscribe to the principles of `REST`_ but

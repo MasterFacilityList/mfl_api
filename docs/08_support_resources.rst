@@ -7,7 +7,7 @@ principles explained in the :doc:`06_api` chapter.
 
 The MFL's job description is to standardize the management of information
 relating to facilities ( including community health units ), provide a standard
-catalogue of available healthcare 09_services and act as a central ingress
+catalogue of available healthcare :doc:`09_services` and act as a central ingress
 point for regulation. However, in order to do this, the MFL needs to have a
 constellation of support resources in its data model.
 
