@@ -35,10 +35,10 @@ urlpatterns = patterns(
         name='geo_code_method_detail'),
 
     url(r'^coordinates/$',
-        cache_page(60 * 60 * 24 * 30)(FacilityCoordinatesListView.as_view()),
+        cache_page(60)(FacilityCoordinatesListView.as_view()),
         name='facility_coordinates_list'),
     url(r'^coordinates/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60 * 24 * 30)(FacilityCoordinatesDetailView.as_view()),
+        cache_page(60)(FacilityCoordinatesDetailView.as_view()),
         name='facility_coordinates_detail'),
 
     url(r'^country_borders/$',
