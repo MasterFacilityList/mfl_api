@@ -6,7 +6,6 @@ from django.test.utils import override_settings
 from django.core.urlresolvers import reverse
 from django.core.management import call_command
 
-
 from model_mommy import mommy
 
 from facilities.models import Facility, FacilityApproval
@@ -87,6 +86,12 @@ class TestElasticSearchAPI(TestCase):
             "mfl_gis.CountyBoundary",
             "mfl_gis.ConstituencyBoundary",
             "mfl_gis.WardBoundary"]
+    },
+    CACHES={
+        'default': {
+            'BACKEND':
+            'django.core.cache.backends.dummy.DummyCache',
+        }
     })
 class TestSearchFunctions(ViewTestBase):
     def test_serialize_model(self):
