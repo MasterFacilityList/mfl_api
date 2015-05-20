@@ -26,7 +26,9 @@ DATABASES = {
 }  # Env should have DATABASE_URL
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -236,6 +238,10 @@ CACHES = {
         }
     }
 }
+CACHE_MIDDLEWARE_ALIAS = 'api_cache'
+CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default
+CACHE_MIDDLEWARE_KEY_PREFIX = 'mfl'
+
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
