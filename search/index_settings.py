@@ -5,17 +5,17 @@ INDEX_SETTINGS = {
                 "synonym_analyzer": {
                     "type": "custom",
                     "tokenizer": "standard",
-                    "filter": ["synonym"]
+                    "filter": ["synonym", "unique_stem"]
                 },
                 "ngram_analyzer": {
                     "type": "custom",
                     "tokenizer": "lowercase",
-                    "filter": ["mfl_ngram", "synonym"]
+                    "filter": ["mfl_ngram", "synonym", "unique_stem"]
                 },
                 "edgengram_analyzer": {
                     "type": "custom",
                     "tokenizer": "lowercase",
-                    "filter": ["mfl_edgengram"]
+                    "filter": ["mfl_edgengram", "unique_stem"]
                 }
             },
             "tokenizer": {
@@ -46,8 +46,41 @@ INDEX_SETTINGS = {
                     "type": "synonym",
                     "ignore_case": "true",
                     "synonyms_path": "synonyms.txt"
+                },
+
+                "unique_stem": {
+                    "type": "unique",
+                    "only_on_same_position": True
+                }
+            },
+            "mappings": {
+                "facility": {
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "analyzer": "edgengram_analyzer"
+                        },
+                        "location_dec": {
+                            "type": "synonym_analyzer"
+                        }
+                    }
+                },
+                "owner": {
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "analyzer": "edgengram_analyzer"
+                        }
+                    }
                 }
             }
+
         }
     }
 }
+
+
+#  Enable suggestions
+# Add auto complete
+# add synonyms
+# enable query
