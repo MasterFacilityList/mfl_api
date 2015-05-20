@@ -256,6 +256,13 @@ class FacilityFilter(CommonFieldsFilterset):
         else:
             return Facility.objects.exclude(id__in=regulated_facilities)
 
+    def service_filter(self, value):
+        facility_ids = [
+            fs.facility.id for fs in FacilityService.objects.filter(
+                selected_option__service__category=value)]
+
+        return Facility.objects.filter(id__in=facility_ids)
+
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
     description = ListCharFilter(lookup_type='icontains')
@@ -294,6 +301,8 @@ class FacilityFilter(CommonFieldsFilterset):
         coerce=strtobool)
     is_regulated = django_filters.MethodFilter(
         action=filter_regulated_facilities)
+    service = django_filters.MethodFilter(
+        action=service_filter)
 
     class Meta(object):
         model = Facility
