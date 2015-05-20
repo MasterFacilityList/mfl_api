@@ -113,5 +113,6 @@ setup(
         "mock>=1.0.1",
         "recommonmark>=0.1.1",
         "WeasyPrint>=0.23",
+        "django-redis>=4.0.0",
     ],
 )
