@@ -1,15 +1,18 @@
 [
     {
-        "fields": {
-            "redirect_uris": "",
-            "name": "mfl-public-frontend",
-            "client_type": "confidential",
-            "user": 3,
-            "client_id": "xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5",
-            "skip_authorization": false,
-            "client_secret": "PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx",
-            "authorization_grant_type": "password"
-            },
-        "model": "users.mfloauthapplication"
+        "model": "users.mfloauthapplication",
+        "unique_fields": ["client_id"],
+        "records": [
+            {
+                "redirect_uris": "",
+                "name": "mfl-public-frontend",
+                "client_type": "confidential",
+                "user": 3,
+                "client_id": "xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5",
+                "skip_authorization": false,
+                "client_secret": "PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx",
+                "authorization_grant_type": "password"
+            }
+        ]
     }
 ]
