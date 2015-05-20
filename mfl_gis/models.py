@@ -203,7 +203,7 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
     @property
     def bound(self):
-        return json.dumps(self.mpoly.envelope.geojson) if self.mpoly else None
+        return json.loads(self.mpoly.envelope.geojson) if self.mpoly else None
 
     @property
     def center(self):
