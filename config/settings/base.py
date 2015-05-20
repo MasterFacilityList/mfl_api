@@ -26,7 +26,9 @@ DATABASES = {
 }  # Env should have DATABASE_URL
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -226,15 +228,22 @@ TEMPLATES = [
     },
 ]
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/tmp/django_cache',
-        'TIMEOUT': 60 * 60,
-        'OPTIONS': {
-            'MAX_ENTRIES': 10000
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "COMPRESS_MIN_LEN": 10,
+            "IGNORE_EXCEPTIONS": True,
         }
     }
 }
+CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default
+
+# cache for the gis views
+GIS_BORDERS_CACHE_SECONDS = (60 * 60 * 24 * 30)
+
+
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
