@@ -1,6 +1,5 @@
 from __future__ import division
 
-from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
@@ -37,16 +36,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     RegulatingBodyContact,
-    Option,
-    ServiceRating,
-    RatingScale
+    Option
 )
-
-
-class TestRatingScale(BaseTestCase):
-    def test_save(self):
-        mommy.make(RatingScale)
-        self.assertEquals(1, RatingScale.objects.count())
 
 
 class TestFacilityOperationState(BaseTestCase):
@@ -186,24 +177,6 @@ class TestFacilityService(BaseTestCase):
             facility1.average_rating,
             (fs1.average_rating + fs2.average_rating) / 2
         )
-
-
-class TestServiceRating(BaseTestCase):
-
-    def test_unicode(self):
-        service = Service(name='savis')
-        facility = Facility(name='thifitari')
-        option = Option(option_type='BOOLEAN', display_text='Yes/No')
-        service_option = ServiceOption(service=service, option=option)
-        facility_service = FacilityService(
-            facility=facility, selected_option=service_option)
-        service_rating = ServiceRating(
-            facility_service=facility_service,
-            created_by=mommy.make(get_user_model(), email='yusa@yusas.org')
-        )
-        self.assertEqual(
-            str(service_rating),
-            'thifitari: savis: BOOLEAN: Yes/No: yusa@yusas.org')
 
 
 class TestServiceModel(BaseTestCase):

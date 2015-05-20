@@ -37,8 +37,6 @@ from ..views import (
     FacilityServiceDetailView,
     ServiceOptionListView,
     ServiceOptionDetailView,
-    ServiceRatingListView,
-    ServiceRatingDetailView,
     FacilityApprovalListView,
     FacilityApprovalDetailView,
     FacilityOperationStateListView,
@@ -53,20 +51,11 @@ from ..views import (
     RegulatingBodyContactDetailView,
     get_correction_template,
     DashBoard,
-    RatingScaleDetailView,
-    RatingScaleListView
 )
 
 
 urlpatterns = patterns(
     '',
-
-    url(r'^rating_scales/$', RatingScaleListView.as_view(),
-        name='rating_scales_list'),
-
-    url(r'^rating_scales/(?P<pk>[^/]+)/$',
-        RatingScaleDetailView.as_view(),
-        name='rating_scale_detail'),
 
     url(r'^dashboard/$', DashBoard.as_view(),
         name='dashboard'),
@@ -110,12 +99,6 @@ urlpatterns = patterns(
     url(r'^facilitiy_approvals/(?P<pk>[^/]+)/$',
         FacilityApprovalDetailView.as_view(),
         name='facility_approval_detail'),
-
-    url(r'^service_ratings/$', ServiceRatingListView.as_view(),
-        name='service_ratings_list'),
-    url(r'^service_ratings/(?P<pk>[^/]+)/$',
-        ServiceRatingDetailView.as_view(),
-        name='service_rating_detail'),
 
     url(r'^facility_service_ratings/$',
         FacilityServiceRatingListView.as_view(),
