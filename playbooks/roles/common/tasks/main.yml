@@ -45,6 +45,8 @@
     - libxml2-dev
     - libxslt1-dev
     - libffi-dev
+    - redis-server
+    - redis-client
 
 - name: Install dependencies for packages that will compile in the virtualenv
   apt: 'pkg={{item}} state=build-dep'
