@@ -20,75 +20,75 @@ def remove_keys(sample_list):
 
 
 def _write_excel_file(data):
-        data = json.loads(json.dumps(data, default=default))
-        result = data.get('results')
+    data = json.loads(json.dumps(data, default=default))
+    result = data.get('results')
 
-        work_book_name = 'download.xlsx'
-        workbook = xlsxwriter.Workbook(work_book_name)
-        format = workbook.add_format(
-            {
-                'bold': True,
-                'font_color': 'black',
-                'font_size': 15
-            })
-        format.set_align('center')
-        format.set_align('vcenter')
+    work_book_name = 'download.xlsx'
+    workbook = xlsxwriter.Workbook(work_book_name)
+    format = workbook.add_format(
+        {
+            'bold': True,
+            'font_color': 'black',
+            'font_size': 15
+        })
+    format.set_align('center')
+    format.set_align('vcenter')
 
-        def _add_data_to_worksheet(work_sheet_data):
-            worksheet = workbook.add_worksheet()
+    def _add_data_to_worksheet(work_sheet_data):
+        worksheet = workbook.add_worksheet()
 
-            worksheet.set_row(0, 70)
-            worksheet.set_column('A:A', 30)
-            worksheet.set_column('A:B', 30)
-            worksheet.set_column('A:C', 30)
-            worksheet.set_column('A:D', 30)
-            worksheet.set_column('A:E', 30)
-            worksheet.set_column('A:F', 30)
-            worksheet.set_column('A:G', 30)
-            worksheet.set_column('A:H', 30)
-            worksheet.set_column('A:I', 30)
-            worksheet.set_column('A:J', 30)
-            worksheet.set_column('A:K', 30)
+        worksheet.set_row(0, 70)
+        worksheet.set_column('A:A', 30)
+        worksheet.set_column('A:B', 30)
+        worksheet.set_column('A:C', 30)
+        worksheet.set_column('A:D', 30)
+        worksheet.set_column('A:E', 30)
+        worksheet.set_column('A:F', 30)
+        worksheet.set_column('A:G', 30)
+        worksheet.set_column('A:H', 30)
+        worksheet.set_column('A:I', 30)
+        worksheet.set_column('A:J', 30)
+        worksheet.set_column('A:K', 30)
 
-            row = 0
+        row = 0
+        col = 0
+        if len(work_sheet_data) > 1:
+            example_dict = work_sheet_data[0]
+            sample_keys = example_dict.keys()
+
+            # remove columns that should not be excel
+            sample_keys = remove_keys(sample_keys)
+
+            for key in sample_keys:
+                key = key.replace('_', " ")
+                worksheet.write(row, col, key, format)
+                col = col + 1
+            row = 1
             col = 0
-            if len(work_sheet_data) > 1:
-                example_dict = work_sheet_data[0]
-                sample_keys = example_dict.keys()
+            for data_dict in work_sheet_data:
+                data_keys = data_dict.keys()
+                # remove colums that should not be in excel
+                data_keys = remove_keys(data_keys)
 
-                # remove columns that should not be excel
-                sample_keys = remove_keys(sample_keys)
+                for key in data_keys:
+                    if not isinstance(data_dict.get(key), list):
+                        worksheet.write(row, col, data_dict.get(key))
+                        col = col + 1
+                    else:
+                        _add_data_to_worksheet(
+                            data.get(key)) if data.get(key) else None
 
-                for key in sample_keys:
-                    key = key.replace('_', " ")
-                    worksheet.write(row, col, key, format)
-                    col = col + 1
-                row = 1
                 col = 0
-                for data_dict in work_sheet_data:
-                    data_keys = data_dict.keys()
-                    # remove colums that should not be in excel
-                    data_keys = remove_keys(data_keys)
+                row = row + 1
 
-                    for key in data_keys:
-                        if not isinstance(data_dict.get(key), list):
-                            worksheet.write(row, col, data_dict.get(key))
-                            col = col + 1
-                        else:
-                            _add_data_to_worksheet(
-                                data.get(key)) if data.get(key) else None
+        else:
+            # the count is zero thus do not write the excel file
+            pass
 
-                    col = 0
-                    row = row + 1
+    _add_data_to_worksheet(result)
+    workbook.close()
 
-            else:
-                # the count is zero thus do not write the excel file
-                pass
-
-        _add_data_to_worksheet(result)
-        workbook.close()
-
-        return work_book_name
+    return work_book_name
 
 
 class ExcelRenderer(renderers.BaseRenderer):
