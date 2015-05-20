@@ -2,4 +2,7 @@ from rest_framework.pagination import PageNumberPagination
 
 
 class GISPageNumberPagination(PageNumberPagination):
-    page_size = 1500  # Show all wards at once
+
+    def get_page_size(self, request):
+        """Impractically high limit; ensures we always return all boundaries"""
+        return 1500000

@@ -72,6 +72,7 @@ class FacilityCoordinatesListView(generics.ListCreateAPIView):
     filter_class = FacilityCoordinatesFilter
     ordering_fields = (
         'facility', 'latitude', 'longitude', 'source', 'method',)
+    pagination_class = GISPageNumberPagination
 
 
 class FacilityCoordinatesDetailView(
