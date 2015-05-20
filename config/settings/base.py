@@ -238,9 +238,7 @@ CACHES = {
         }
     }
 }
-CACHE_MIDDLEWARE_ALIAS = 'api_cache'
 CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default
-CACHE_MIDDLEWARE_KEY_PREFIX = 'mfl'
 
 # django-allauth related settings
 # some of these settings take into account that the target audience
