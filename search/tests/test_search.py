@@ -13,10 +13,10 @@ from facilities.models import Facility, FacilityApproval
 from facilities.serializers import FacilitySerializer
 from common.tests import ViewTestBase
 
-from ..filters import SearchFilter
+from search.filters import SearchFilter
 
 
-from .. search_utils import ElasticAPI, index_instance, default
+from search.search_utils import ElasticAPI, index_instance, default
 
 
 class TestElasticSearchAPI(TestCase):
@@ -193,7 +193,6 @@ class TestSearchFilter(ViewTestBase):
         api.delete_index('test_index')
 
     def test_filter_elastic_not_available(self):
-        from ..filters.filter_shared import ElasticAPI
         with patch.object(
                 ElasticAPI,
                 'search_document') as mock_search:

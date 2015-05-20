@@ -68,6 +68,7 @@ INSTALLED_APPS = (
     'chul',
     'data',
     'mfl_gis',
+    'search',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )

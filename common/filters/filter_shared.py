@@ -3,11 +3,10 @@ import django_filters
 from django import forms
 from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
-from django.conf import settings
 
 from rest_framework import ISO_8601
 
-from search.search_utils import ElasticAPI
+from search.filters import SearchFilter
 
 
 class IsoDateTimeField(forms.DateTimeField):
