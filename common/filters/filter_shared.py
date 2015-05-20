@@ -7,7 +7,7 @@ from django.conf import settings
 
 from rest_framework import ISO_8601
 
-from common.utilities.search_utils import ElasticAPI
+from search.search_utils import ElasticAPI
 
 
 class IsoDateTimeField(forms.DateTimeField):
