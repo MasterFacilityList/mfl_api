@@ -33,6 +33,7 @@ from .serializers import (
     ConstituencyBoundaryDetailSerializer,
     WardBoundaryDetailSerializer
 )
+from .pagination import GISPageNumberPagination
 
 
 class GeoCodeSourceListView(generics.ListCreateAPIView):
@@ -88,6 +89,7 @@ class WorldBorderListView(generics.ListCreateAPIView):
     serializer_class = WorldBorderSerializer
     filter_class = WorldBorderFilter
     ordering_fields = ('name', 'code',)
+    pagination_class = GISPageNumberPagination
 
 
 class WorldBorderDetailView(
@@ -101,6 +103,7 @@ class CountyBoundaryListView(generics.ListCreateAPIView):
     serializer_class = CountyBoundarySerializer
     filter_class = CountyBoundaryFilter
     ordering_fields = ('name', 'code',)
+    pagination_class = GISPageNumberPagination
 
 
 class CountyBoundaryDetailView(
@@ -114,6 +117,7 @@ class ConstituencyBoundaryListView(generics.ListCreateAPIView):
     serializer_class = ConstituencyBoundarySerializer
     filter_class = ConstituencyBoundaryFilter
     ordering_fields = ('name', 'code',)
+    pagination_class = GISPageNumberPagination
 
 
 class ConstituencyBoundaryDetailView(
@@ -127,6 +131,7 @@ class WardBoundaryListView(generics.ListCreateAPIView):
     serializer_class = WardBoundarySerializer
     filter_class = WardBoundaryFilter
     ordering_fields = ('name', 'code',)
+    pagination_class = GISPageNumberPagination
 
 
 class WardBoundaryDetailView(
