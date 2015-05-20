@@ -168,7 +168,7 @@ class TestFacilityView(LoginMixin, APITestCase):
             FacilityRegulationStatus, facility=facility_1, is_confirmed=True)
         mommy.make(
             FacilityRegulationStatus, facility=facility_2, is_confirmed=False)
-        # the value for the param comes as unicode hence the u
+
         url = self.url + "?is_regulated=True"
         regulated_expected_data = {
             "count": 1,
@@ -185,7 +185,6 @@ class TestFacilityView(LoginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
         # get unregulated
-        # the value for the param comes as unicode hence the u
         url = self.url + "?is_regulated=False"
         response_2 = self.client.get(url)
         unregulated_data = regulated_expected_data = {

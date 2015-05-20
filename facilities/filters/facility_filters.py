@@ -246,10 +246,11 @@ class FacilityContactFilter(CommonFieldsFilterset):
 class FacilityFilter(CommonFieldsFilterset):
     def filter_regulated_facilities(self, value):
         truth_ness = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
-        # false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']
+        # false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']"""
 
         regulated_facilities = [
-            obj.facility.id for obj in FacilityRegulationStatus.objects.all()]
+            obj.facility.id for obj in FacilityRegulationStatus.objects.filter(
+                is_confirmed=True)]
 
         if value in truth_ness:
             return Facility.objects.filter(id__in=regulated_facilities)
