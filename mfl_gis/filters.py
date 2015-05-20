@@ -35,6 +35,14 @@ class GeoCodeMethodFilter(CommonFieldsFilterset):
 
 class FacilityCoordinatesFilter(CommonFieldsFilterset):
 
+    ward = ListCharFilter(lookup_type='exact', name='facility__ward')
+    constituency = ListCharFilter(
+        lookup_type='exact', name='facility__ward__constituency'
+    )
+    county = ListCharFilter(
+        lookup_type='exact', name='facility__ward__constituency__county'
+    )
+
     class Meta(object):
         model = FacilityCoordinates
 
