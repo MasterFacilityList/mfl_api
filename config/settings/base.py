@@ -285,3 +285,6 @@ REST_AUTH_SERIALIZERS = {
 
 # django-allauth forces this atrocity on us ( true at the time of writing )
 SITE_ID = 1
+
+EXCEL_EXCEPT_FIELDS = [
+    'id', 'updated', 'created_by', 'updated_by', 'active', 'deleted', 'search']
