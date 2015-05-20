@@ -240,6 +240,10 @@ CACHES = {
 }
 CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default
 
+# cache for the gis views
+GIS_BORDERS_CACHE_SECONDS = (60 * 60 * 24 * 30)
+
+
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
