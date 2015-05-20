@@ -1,0 +1,18 @@
+---
+- name: install ufw
+  tags: ufw
+  sudo: yes
+  apt: name=ufw state=latest
+
+# Start by toughening up the firewall configuration
+- ufw: state=enabled policy=deny
+
+- ufw: rule=allow port=80 proto=tcp
+
+- ufw: rule=allow port=443 proto=tcp
+
+- ufw: rule=allow name=OpenSSH
+
+- ufw: rule=limit port=ssh proto=tcp
+
+- ufw: logging=on

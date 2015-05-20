@@ -1,0 +1,18 @@
+(function (window) {
+    "use strict";
+
+    var setts = {
+        "SERVER_URL": "http://localhost:8061/",
+        "CREDZ": {
+            "username": "{{username}}",
+            "password": "{{password}}",
+            "client_id": "{{client_id}}",
+            "client_secret": "{{client_secret}}"
+        }
+    };
+
+    setts.CREDZ.token_url = setts.SERVER_URL + "{{token_url}}";
+
+    window.MFL_SETTINGS = setts;
+
+})(window);

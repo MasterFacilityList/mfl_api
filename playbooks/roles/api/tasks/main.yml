@@ -42,10 +42,6 @@
   notify:
     - restart supervisor
 
-- name: remove the default nginx site
-  sudo: yes
-  command: rm /etc/nginx/sites-enabled/default removes=/etc/nginx/sites-enabled/default
-
 - name: copy the nginx configuration to its destination
   sudo: yes
   template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
