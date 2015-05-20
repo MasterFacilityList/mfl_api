@@ -240,6 +240,34 @@ class TestFacilityView(LoginMixin, APITestCase):
         facility_services = response.data.get('facility_services')
         self.assertEquals(expected_data, facility_services)
 
+    def test_filter_facilities_by_service_categories(self):
+        category = mommy.make(ServiceCategory)
+        service = mommy.make(Service, category=category)
+        option = mommy.make(Option)
+        service_option = mommy.make(
+            ServiceOption, option=option, service=service)
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityService, facility=facility_2)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+
+        url = self.url + "?service_category={}".format(category.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+
+            ]
+        }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
 
