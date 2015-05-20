@@ -34,6 +34,7 @@ from .serializers import (
     WardBoundaryDetailSerializer
 )
 from .pagination import GISPageNumberPagination
+from .generics import GISListCreateAPIView
 
 
 class GeoCodeSourceListView(generics.ListCreateAPIView):
@@ -47,9 +48,10 @@ class GeoCodeSourceDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = GeoCodeSource.objects.all()
     serializer_class = GeoCodeSourceSerializer
+    pagination_class = GISPageNumberPagination
 
 
-class GeoCodeMethodListView(generics.ListCreateAPIView):
+class GeoCodeMethodListView(GISListCreateAPIView):
     queryset = GeoCodeMethod.objects.all()
     serializer_class = GeoCodeMethodSerializer
     filter_class = GeoCodeMethodFilter
@@ -60,9 +62,10 @@ class GeoCodeMethodDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = GeoCodeMethod.objects.all()
     serializer_class = GeoCodeMethodSerializer
+    pagination_class = GISPageNumberPagination
 
 
-class FacilityCoordinatesListView(generics.ListCreateAPIView):
+class FacilityCoordinatesListView(GISListCreateAPIView):
 
     # This data is controlled access
     # Do not change the permission_classes without good reason
@@ -85,7 +88,7 @@ class FacilityCoordinatesDetailView(
     serializer_class = FacilityCoordinatesSerializer
 
 
-class WorldBorderListView(generics.ListCreateAPIView):
+class WorldBorderListView(GISListCreateAPIView):
     queryset = WorldBorder.objects.all()
     serializer_class = WorldBorderSerializer
     filter_class = WorldBorderFilter
@@ -99,7 +102,7 @@ class WorldBorderDetailView(
     serializer_class = WorldBorderDetailSerializer
 
 
-class CountyBoundaryListView(generics.ListCreateAPIView):
+class CountyBoundaryListView(GISListCreateAPIView):
     queryset = CountyBoundary.objects.all()
     serializer_class = CountyBoundarySerializer
     filter_class = CountyBoundaryFilter
@@ -113,7 +116,7 @@ class CountyBoundaryDetailView(
     serializer_class = CountyBoundaryDetailSerializer
 
 
-class ConstituencyBoundaryListView(generics.ListCreateAPIView):
+class ConstituencyBoundaryListView(GISListCreateAPIView):
     queryset = ConstituencyBoundary.objects.all()
     serializer_class = ConstituencyBoundarySerializer
     filter_class = ConstituencyBoundaryFilter
@@ -127,7 +130,7 @@ class ConstituencyBoundaryDetailView(
     serializer_class = ConstituencyBoundaryDetailSerializer
 
 
-class WardBoundaryListView(generics.ListCreateAPIView):
+class WardBoundaryListView(GISListCreateAPIView):
     queryset = WardBoundary.objects.all()
     serializer_class = WardBoundarySerializer
     filter_class = WardBoundaryFilter
