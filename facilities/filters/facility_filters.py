@@ -301,7 +301,7 @@ class FacilityFilter(CommonFieldsFilterset):
         coerce=strtobool)
     is_regulated = django_filters.MethodFilter(
         action=filter_regulated_facilities)
-    service = django_filters.MethodFilter(
+    service_category = django_filters.MethodFilter(
         action=service_filter)
 
     class Meta(object):
