@@ -22,18 +22,11 @@ from ..models import (
     FacilityService,
     FacilityServiceRating,
     ServiceOption,
-    ServiceRating,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    RatingScale
 )
-
-
-class RatingScaleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = RatingScale
 
 
 class RegulatingBodyContactSerializer(
@@ -69,13 +62,6 @@ class ServiceCategorySerializer(
 
     class Meta(object):
         model = ServiceCategory
-
-
-class ServiceRatingSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-
-    class Meta(object):
-        model = ServiceRating
 
 
 class OptionSerializer(AbstractFieldsMixin, serializers.ModelSerializer):

@@ -22,12 +22,10 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    RatingScale
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -47,11 +45,6 @@ BOOLEAN_CHOICES = (
     ('Y', 'True'),
     ('N', 'False')
 )
-
-
-class RatingScaleFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = RatingScale
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):
@@ -79,28 +72,6 @@ class FacilityApprovalFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityApproval
-
-
-class ServiceRatingFilter(CommonFieldsFilterset):
-    facility_service = django_filters.AllValuesFilter(lookup_type='exact')
-    cleanliness = django_filters.TypedChoiceFilter(
-        choices=BOOLEAN_CHOICES,
-        coerce=strtobool)
-    attitude = django_filters.TypedChoiceFilter(
-        choices=BOOLEAN_CHOICES,
-        coerce=strtobool)
-    will_return = django_filters.TypedChoiceFilter(
-        choices=BOOLEAN_CHOICES,
-        coerce=strtobool)
-    occupation = django_filters.CharFilter(lookup_type='icontains')
-    comment = django_filters.CharFilter(lookup_type='icontains')
-    service = django_filters.AllValuesFilter(
-        name='facility_service__selected_option__service', lookup_type='exact')
-    facility = django_filters.AllValuesFilter(
-        name='facility_service__facility', lookup_type='exact')
-
-    class Meta(object):
-        model = ServiceRating
 
 
 class ServiceCategoryFilter(CommonFieldsFilterset):
