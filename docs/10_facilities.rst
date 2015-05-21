@@ -635,5 +635,174 @@ Analysis of facilities by regulator and regulation status
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TBD
 
+Facility types
+==============
+There are many types of facilities ranging from health centers to National Hospitals.
+The different types of facilities are different among the different types of owners.
+
+Facility types form the basis of upgrading and downgrading facilities.
+
+Creating of faciltity types;
+A facility type has five distinct fields
+
+================*===============================================================================
+    Field           *  Explanation
+================*===============================================================================
+    Id          * The primary key of the facility type 
+
+    Name        *  The name of the facility type e.g HEALTH_CENTER         
+
+    Sub-Division*  A sub-division of the facility type e.g A hospitla has got several 
+                    sub divisions e.g District Hospital of Provincial Hospital
+
+    Preceeding  * A facility type that comes before the type e.g a Provincial Hospital comes before
+                  a National Hospital
+
+
+Creating A facility type
+++++++++++++++++++++++++
+``POST`` to ``api/facilities/facility_types/`` with a payload similar to the one below
+
+.. code-block:: javascript
+    
+    {
+            "name": "Hospital",
+            "sub_division": "Provincial Hospital",
+            "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
+    }
+    
+
+Expected Response Code
+    ``HTTP 201 CREATED``
+
+Expexcted sample data
+
+.. code-block:: javascript
+    {
+        "id": "11494347-f40c-4fbb-8632-cc1f35fe1fc9",
+        "created": "2015-05-21T14:38:03.298142Z",
+        "updated": "2015-05-21T14:38:03.298162Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "name": "Hospital",
+        "sub_division": "Provincial Hospital",
+        "created_by": 1,
+        "updated_by": 1,
+        "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
+    }
+
+
+
+
+Listing Facillity types 
++++++++++++++++++++++++
+``GET`` the URL ``api/facilities/facility_types/``
+
+Sample Reponse data
+
+.. code-block:: javascript
+        {
+            "count": 27,
+            "next": "http://localhost:8000/api/facilities/facility_types/?page=2&page_size=2",
+            "previous": null,
+            "results": [
+                {
+                    "id": "11494347-f40c-4fbb-8632-cc1f35fe1fc9",
+                    "created": "2015-05-21T14:38:03.298142Z",
+                    "updated": "2015-05-21T14:38:03.298162Z",
+                    "deleted": false,
+                    "active": true,
+                    "search": null,
+                    "name": "Hospital",
+                    "sub_division": "Provincial Hospital",
+                    "created_by": 1,
+                    "updated_by": 1,
+                    "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
+                },
+                {
+                    "id": "950047f7-dae4-4803-9818-9886004daaf1",
+                    "created": "2015-05-15T13:45:13.592372Z",
+                    "updated": "2015-05-15T13:45:13.592404Z",
+                    "deleted": false,
+                    "active": true,
+                    "search": null,
+                    "name": "District Hospital",
+                    "sub_division": null,
+                    "created_by": 1,
+                    "updated_by": 1,
+                    "preceding": null
+                }
+            ]
+    }
+
+Expected Response code
+    ``HTTP 200 OK``
+
+
+Retrieving facility types
++++++++++++++++++++++++++
+``GET`` the URL ``api/facilities/facility_types/<id>/``
+
+For example to get the details of a facility typ whose is 950047f7-dae4-4803-9818-9886004daaf1
+We would do a ``GET`` to the URL ``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
+Sample Response would be 
+
+.. code-block:: javascript
+        {
+            "id": "950047f7-dae4-4803-9818-9886004daaf1",
+            "created": "2015-05-15T13:45:13.592372Z",
+            "updated": "2015-05-15T13:45:13.592404Z",
+            "deleted": false,
+            "active": true,
+            "search": null,
+            "name": "District Hospital",
+            "sub_division": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "preceding": null
+        }
+
+
+Expected Response code
+    ``HTTP 200 OK``
+
+
+Updating Facility types
+++++++++++++++++++++++++
+``PATCH`` the URL `api/facilities/facility_types/<id>/``
+With a payload containing of the fields to be editted. For example to update the facility type's name whose id is
+ 950047f7-dae4-4803-9818-9886004daaf1 we would a ``PATCH`` to the URL ``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``with a  payload similar to the one below
+
+ .. code-block:: javascript
+    {
+        "name": "District Hospital Editted"
+    }
+
+Sample Expected Response data:
+
+..code-block:: javascript:
+    
+    {
+        "id": "950047f7-dae4-4803-9818-9886004daaf1",
+        "created": "2015-05-15T13:45:13.592372Z",
+        "updated": "2015-05-15T13:45:13.592404Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "name": "District Hospital Editted",
+        "sub_division": null,
+        "created_by": 1,
+        "updated_by": 1,
+        "preceding": null
+    }
+
+Expected Response Code
+    ``HTTP 200 OK``
+
+
+Facility Upgrades and Downgrades
+==================================
+
 .. toctree::
     :maxdepth: 2
