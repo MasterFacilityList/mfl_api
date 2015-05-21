@@ -84,8 +84,18 @@ LOCAL_APPS = [
     'data_bootstrap',
     'data',
 ]
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken',
+    'if-modified-since',
+    'if-none-match'
+)
 AUTH_USER_MODEL = 'users.MflUser'
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
