@@ -29,8 +29,6 @@ class FacilityCoordinatesListSerializer(
     # DO NOT make this any fatter than it must be
     # The facility list JSON payload is already > 1MB!
     # That is why there is a detail serializer
-    facility_name = serializers.ReadOnlyField(source="facility.name")
-    facility_id = serializers.ReadOnlyField(source="facility.id")
     ward = serializers.ReadOnlyField(source="facility.ward.id")
     constituency = serializers.ReadOnlyField(
         source="facility.ward.constituency.id"
@@ -44,7 +42,7 @@ class FacilityCoordinatesListSerializer(
         geo_field = "coordinates"
         exclude = (
             'created', 'created_by', 'updated', 'updated_by', 'deleted', 'search',
-            'collection_date', 'source', 'method',
+            'collection_date', 'source', 'method', 'active', 'facility',
     )
 
 
