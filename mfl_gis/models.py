@@ -3,6 +3,7 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
+from django.contrib.gis.db.models import Union
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -250,6 +251,14 @@ class WorldBorder(AdministrativeUnitBoundary):
     """
     longitude = gis_models.FloatField()
     latitude = gis_models.FloatField()
+    
+    @property
+    def geometry(self):
+        if self.code == 'KEN':
+            return json.loads(CountyBoundary.objects.aggregate(Union('mpoly')).geojson)
+        
+        # Fallback
+        return json.loads(self.mpoly.geojson)
 
 
 @reversion.register

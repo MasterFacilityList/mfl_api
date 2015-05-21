@@ -218,6 +218,10 @@ LOGGING = {
         'mfl_gis': {
             'handlers': ['console'],
             'level': 'ERROR'
+        },
+        'exception_handler': {
+            'handlers': ['console'],
+            'level': 'ERROR'
         }
     }
 }
