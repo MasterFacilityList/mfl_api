@@ -261,9 +261,6 @@ class WorldBorder(AdministrativeUnitBoundary):
             )['mpoly__union'].geojson
         ) if self.mpoly else {}
 
-        # Fallback
-        return json.loads(self.mpoly.geojson)
-
 
 @reversion.register
 class CountyBoundary(AdministrativeUnitBoundary):
