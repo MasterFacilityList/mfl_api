@@ -21,6 +21,7 @@ from .views import (
 
 
 cache_seconds = settings.GIS_BORDERS_CACHE_SECONDS
+coordinates_cache_seconds = (60 * 60 * 24)
 
 
 urlpatterns = patterns(
@@ -49,12 +50,12 @@ urlpatterns = patterns(
 
     url(r'^coordinates/$',
         gzip_page(
-            cache_page(60)
+            cache_page(coordinates_cache_seconds)
             (FacilityCoordinatesListView.as_view())),
         name='facility_coordinates_list'),
     url(r'^coordinates/(?P<pk>[^/]+)/$',
         gzip_page(
-            cache_page(60)
+            cache_page(coordinates_cache_seconds)
             (FacilityCoordinatesDetailView.as_view())),
         name='facility_coordinates_detail'),
 

@@ -24,9 +24,31 @@ class GeoCodeMethodSerializer(
         model = GeoCodeMethod
 
 
-class FacilityCoordinatesSerializer(
+class FacilityCoordinatesListSerializer(
         AbstractFieldsMixin, GeoFeatureModelSerializer):
+    # DO NOT make this any fatter than it must be
+    # The facility list JSON payload is already > 1MB!
+    # That is why there is a detail serializer
+    ward = serializers.ReadOnlyField(source="facility.ward.id")
+    constituency = serializers.ReadOnlyField(
+        source="facility.ward.constituency.id"
+    )
+    county = serializers.ReadOnlyField(
+        source="facility.ward.constituency.county.id"
+    )
 
+    class Meta(object):
+        model = FacilityCoordinates
+        geo_field = "coordinates"
+        exclude = (
+            'created', 'created_by', 'updated', 'updated_by', 'deleted',
+            'search', 'collection_date', 'source', 'method', 'active',
+            'facility',
+        )
+
+
+class FacilityCoordinatesDetailSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     facility_name = serializers.ReadOnlyField(source="facility.name")
     facility_id = serializers.ReadOnlyField(source="facility.id")
     ward = serializers.ReadOnlyField(source="facility.ward.id")
@@ -55,9 +77,15 @@ class AbstractBoundarySerializer(
 
 class WorldBorderSerializer(AbstractBoundarySerializer):
     center = serializers.ReadOnlyField()
+    geometry = serializers.ReadOnlyField()
 
     class Meta(AbstractBoundarySerializer.Meta):
         model = WorldBorder
+        geo_field = 'geometry'
+        exclude = (
+            'mpoly', 'active', 'deleted', 'search', 'created', 'updated',
+            'created_by', 'updated_by', 'longitude', 'latitude',
+        )
 
 
 class WorldBorderDetailSerializer(AbstractBoundarySerializer):
@@ -69,12 +97,15 @@ class WorldBorderDetailSerializer(AbstractBoundarySerializer):
 
 
 class CountyBoundarySerializer(AbstractBoundarySerializer):
-    constituency_ids = serializers.ReadOnlyField()
     constituency_boundary_ids = serializers.ReadOnlyField()
     county_id = serializers.ReadOnlyField(source='area.id')
 
     class Meta(AbstractBoundarySerializer.Meta):
         model = CountyBoundary
+        exclude = (
+            'active', 'deleted', 'search', 'created', 'updated', 'created_by',
+            'updated_by', 'area',
+        )
 
 
 class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):

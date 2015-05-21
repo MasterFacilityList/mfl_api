@@ -3,6 +3,7 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
+from django.contrib.gis.db.models import Union
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -250,6 +251,15 @@ class WorldBorder(AdministrativeUnitBoundary):
     """
     longitude = gis_models.FloatField()
     latitude = gis_models.FloatField()
+
+    @property
+    def geometry(self):
+        """The world border data is unreliable, hence this; works for Kenya"""
+        return json.loads(
+            CountyBoundary.objects.aggregate(
+                Union('mpoly')
+            )['mpoly__union'].geojson
+        ) if self.mpoly else {}
 
 
 @reversion.register

@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from rest_framework.views import exception_handler
 from rest_framework import status
 
+import logging
+
+LOGGER = logging.getLogger(__name__)
+
 
 def custom_exception_handler(exc, context):
     """
@@ -22,7 +26,9 @@ def custom_exception_handler(exc, context):
 
     if isinstance(exc, ValidationError):
         data = {'detail': 'Validation Error: {}'.format(exc)}
+        LOGGER.error(exc)
         return Response(data, status=status.HTTP_400_BAD_REQUEST)
     else:
         data = {'detail': 'Server Error: {}'.format(exc.__class__.__name__)}
+        LOGGER.error(exc)
         return Response(data, status=500)
