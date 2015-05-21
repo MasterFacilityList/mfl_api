@@ -88,36 +88,41 @@ def _write_excel_file(data):
     return mem_file_contents
 
 
-class ExcelRenderer(renderers.BaseRenderer):
+class DownloadMixin(object):
+    extension = None
+
+    def update_download_headers(self, renderer_context):
+        view = renderer_context.get('view', None)
+        if view is not None:
+            fname = view.get_view_name() or 'download'
+            if self.extension:
+                fname = "{}.{}".format(fname, self.extension)
+            view.response._headers['content-disposition'] = (
+                'Content-Disposition',
+                'attachment; filename="{}"'.format(fname)
+            )
+
+
+class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
     media_type = ('application/vnd.openxmlformats'
                   '-officedocument.spreadsheetml.sheet')
     format = 'excel'
     render_style = 'binary'
+    extension = 'xlsx'
 
-    def render(self, data, media_type=None, renderer_context=None):
-        view = renderer_context.get('view', None)
-        if view is not None:
-            fname = view.get_view_name() or 'download'
-            view.response._headers['content-disposition'] = (
-                'Content-Disposition',
-                'attachment; filename="{}.xlsx"'.format(fname)
-            )
-
+    def render(self, data, media_type, renderer_context):
+        self.update_download_headers(renderer_context)
         return _write_excel_file(data)
 
-
-class CSVRenderer(csv_renderers.CSVRenderer):
+    
+class CSVRenderer(DownloadMixin, csv_renderers.CSVRenderer):
     """Subclassed just to add content-disposition header"""
 
+    extension = 'csv'
+
     def render(self, data, media_type=None, renderer_context=None):
-        view = renderer_context.get('view', None)
-        if view is not None:
-            fname = view.get_view_name() or 'download'
-            view.response._headers['content-disposition'] = (
-                'Content-Disposition',
-                'attachment; filename="{}.csv"'.format(fname)
-            )
+        self.update_download_headers(renderer_context)
         return super(CSVRenderer, self).render(
-            data['results'], media_type=media_type,
+            data, media_type=media_type,
             renderer_context=renderer_context
         )
