@@ -5,10 +5,9 @@ import cStringIO
 import uuid
 
 from django.conf import settings
-from common.utilities.search_utils import default
-
-
 from rest_framework import renderers
+from rest_framework_csv import renderers as csv_renderers
+from common.utilities.search_utils import default
 
 
 def remove_keys(sample_list):
@@ -96,10 +95,28 @@ class ExcelRenderer(renderers.BaseRenderer):
     render_style = 'binary'
 
     def render(self, data, media_type=None, renderer_context=None):
-        response = renderer_context.get('response', None)
-        if response is not None:
-            response._headers['content-disposition'] = (
-                'Content-Disposition', 'attachment; filename="download.xlsx"'
+        view = renderer_context.get('view', None)
+        if view is not None:
+            fname = view.get_view_name() or 'download'
+            view.response._headers['content-disposition'] = (
+                'Content-Disposition',
+                'attachment; filename="{}.xlsx"'.format(fname)
             )
 
         return _write_excel_file(data)
+
+
+class CSVRenderer(csv_renderers.CSVRenderer):
+    """Subclassed just to add content-disposition header"""
+
+    def render(self, data, media_type=None, renderer_context=None):
+        view = renderer_context.get('view', None)
+        if view is not None:
+            fname = view.get_view_name() or 'download'
+            view.response._headers['content-disposition'] = (
+                'Content-Disposition',
+                'attachment; filename="{}.csv"'.format(fname)
+            )
+        return super(CSVRenderer, self).render(
+            data['results'], media_type=media_type, renderer_context=renderer_context
+        )
