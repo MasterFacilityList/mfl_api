@@ -90,10 +90,16 @@ def _write_excel_file(data):
 
 
 class ExcelRenderer(renderers.BaseRenderer):
-    media_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'  # noqa
+    media_type = ('application/vnd.openxmlformats'
+                  '-officedocument.spreadsheetml.sheet')
     format = 'excel'
+    render_style = 'binary'
 
-    def render(
-            self, data, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # noqa
-            renderer_context=None):  # noqa
+    def render(self, data, media_type=None, renderer_context=None):
+        response = renderer_context.get('response', None)
+        if response is not None:
+            response._headers['content-disposition'] = (
+                'Content-Disposition', 'attachment; filename="download.xlsx"'
+            )
+
         return _write_excel_file(data)
