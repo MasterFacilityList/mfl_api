@@ -924,5 +924,81 @@ with a payload similar to the one shown below:
     is deemed to have been upgraded or downgraded and the changes reflected in 
     the facility.
 
+Listing Facilities that are due for upgrade/downgrade Confirmation
+------------------------------------------------------------------
+``GET`` the URL ``/api/facilities/facility_upgrade/?is_confirmed=false``
+
+
+Sample Response data:
+
+.. code-block:: javascript
+    
+        {
+            "count": 1,
+            "next": null,
+            "previous": null,
+            "results": [
+                {
+                    "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+                    "created": "2015-05-21T15:37:56.240505Z",
+                    "updated": "2015-05-21T15:37:56.240522Z",
+                    "deleted": false,
+                    "active": true,
+                    "search": null,
+                    "reason": "A good reason for the upgrade",
+                    "is_confirmed": false,
+                    "is_cancelled": false,
+                    "created_by": 3,
+                    "updated_by": 3,
+                    "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+                    "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+                }
+        ]
+    }
+
+
+Expected Response code:
+    ``HTTP 200 OK``
+
+Listing all the facilties whose upgrades and downgrades have been declined:
+``GET`` the URL ``/api/facilities/facility_upgrade/?is_cacelled=true``
+
+The resulting payload and expected response code are similar the ones above
+
+
+Listing all the the Upgrades/Downgrades of a facility
+-----------------------------------------------------
+``GET`` the URL ``/api/facilities/facility_upgrade/?facility=<id>``
+
+For example a get to the URL 
+``api/facilities/facility_upgrade/?facility=cc585b49-dc42-47a3-a08a-7f2c3963339311``
+results in the data shown below and the a response code of ``HTTTP 200 OK``
+
+.. code-block:: javascript
+    
+    {
+        "count": 1,
+        "next": null,
+        "previous": null,
+        "results": [
+            {
+                "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+                "created": "2015-05-21T15:37:56.240505Z",
+                "updated": "2015-05-21T15:37:56.240522Z",
+                "deleted": false,
+                "active": true,
+                "search": null,
+                "reason": "A good reason for the upgrade",
+                "is_confirmed": true,
+                "is_cancelled": true,
+                "created_by": 3,
+                "updated_by": 3,
+                "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+                "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+            }
+        ]
+    }
+
+
 .. toctree:: 
     :maxdepth: 2

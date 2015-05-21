@@ -60,6 +60,13 @@ class RegulatingBodyContactFilter(CommonFieldsFilterset):
 
 
 class FacilityUpgradeFilter(CommonFieldsFilterset):
+    is_confirmed = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    is_cancelled = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+
     class Meta(object):
         model = FacilityUpgrade
 
