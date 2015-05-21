@@ -1,5 +1,7 @@
 import xlsxwriter
 import json
+import string
+import cStringIO
 
 from django.conf import settings
 from common.utilities.search_utils import default
@@ -23,8 +25,9 @@ def _write_excel_file(data):
     data = json.loads(json.dumps(data, default=default))
     result = data.get('results')
 
-    work_book_name = 'download.xlsx'
-    workbook = xlsxwriter.Workbook(work_book_name)
+    # work_book_name = 'download.xlsx'
+    mem_file = cStringIO.StringIO()
+    workbook = xlsxwriter.Workbook(mem_file)
     format = workbook.add_format(
         {
             'bold': True,
@@ -36,19 +39,11 @@ def _write_excel_file(data):
 
     def _add_data_to_worksheet(work_sheet_data):
         worksheet = workbook.add_worksheet()
+        chars = string.ascii_uppercase
 
-        worksheet.set_row(0, 70)
-        worksheet.set_column('A:A', 30)
-        worksheet.set_column('A:B', 30)
-        worksheet.set_column('A:C', 30)
-        worksheet.set_column('A:D', 30)
-        worksheet.set_column('A:E', 30)
-        worksheet.set_column('A:F', 30)
-        worksheet.set_column('A:G', 30)
-        worksheet.set_column('A:H', 30)
-        worksheet.set_column('A:I', 30)
-        worksheet.set_column('A:J', 30)
-        worksheet.set_column('A:K', 30)
+        # format the column titles
+        worksheet.set_row(0, 50)
+        [worksheet.set_column('A:{}'.format(char), 30) for char in chars]
 
         row = 0
         col = 0
@@ -75,6 +70,7 @@ def _write_excel_file(data):
                         worksheet.write(row, col, data_dict.get(key))
                         col = col + 1
                     else:
+                        # write sheets to new work sheets
                         _add_data_to_worksheet(
                             data.get(key)) if data.get(key) else None
 
@@ -87,14 +83,17 @@ def _write_excel_file(data):
 
     _add_data_to_worksheet(result)
     workbook.close()
+    mem_file_contents = mem_file.getvalue()
+    mem_file.close()
 
-    return work_book_name
+    return mem_file_contents
 
 
 class ExcelRenderer(renderers.BaseRenderer):
-    media_type = 'text/plain'  # noqa
+    media_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'  # noqa
     format = 'excel'
 
-    def render(self, data, accepted_media_type=None, renderer_context=None):
-        file_name = _write_excel_file(data)
-        return file_name
+    def render(
+            self, data, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # noqa
+            renderer_context=None):  # noqa
+        return _write_excel_file(data)
