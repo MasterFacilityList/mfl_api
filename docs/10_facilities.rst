@@ -804,5 +804,91 @@ Expected Response Code
 Facility Upgrades and Downgrades
 ==================================
 
-.. toctree::
+Upgrading or downgrading a facility is as easy as changing the facity type of a facility to another type.
+The person doing this should have the sufficient permssions to do. To get the persmission consult this section.
+
+Upgrading a Facility
+``POST`` to ``api/facilities/facility_upgrade/``
+A payload similar to the one shown below
+
+..code-block:: javascript
+    {   
+        "reason": "A good reason for the upgrade",
+        "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393", // id of the facility
+        "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75" // id of the facility type
+    }
+
+Sample Response Data
+
+..code-block:: javascript
+
+    {
+        "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+        "created": "2015-05-21T15:37:56.240505Z",
+        "updated": "2015-05-21T15:37:56.240522Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "reason": "A good reason for the upgrade",
+        "is_confirmed": false,
+        "is_cancelled": false,
+        "created_by": 3,
+        "updated_by": 3,
+        "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+        "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+    }
+
+Expected Response Code
+    ``HTTP 201 CREATED``
+
+
+This however does not update that a facility has been upgraded. The record has to be confirmed by the CHRIO
+To confirm a facility upgrade/Downgrade
+``PATCH``  ``api/facilities/facility_upgrade/<id>`` 
+The id identifies a particular facility upgrade
+for example to confirm the facility upgrade we did above we would do a ``PATCH`` to ``api/facilities/facility_upgrade/70610b2b-ddd8-49b4-8594-52c236a834d2`` with the payload below:
+
+..code-block:: javascript
+
+    {
+        "is_confirmed": true
+    }
+
+
+Expected Response data
+
+..code-block:: javascript
+
+    {
+        "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+        "created": "2015-05-21T15:37:56.240505Z",
+        "updated": "2015-05-21T15:37:56.240522Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "reason": "A good reason for the upgrade",
+        "is_confirmed": true,
+        "is_cancelled": false,
+        "created_by": 3,
+        "updated_by": 3,
+        "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+        "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+    }
+
+Expected HTTP Response code
+    ``HTTP 200 OK``
+
+
+Cancelling a facility upgrade/Downgrade
+++++++++++++++++++++++++++++++++++++++++
+Cancelling a facility upgrade or downgrade is very similar to confirming a facility upgrade with a minor change 
+in the payload sent.
+Do a ``PATCH``  to the url ``api/facilities/facility_upgrade/<id>/`` with a payload such as below:
+
+.. code-block:: javascript
+    {
+        "is_cancelled": true
+    }
+
+.. toctree:: 
     :maxdepth: 2
