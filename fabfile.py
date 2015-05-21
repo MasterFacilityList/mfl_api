@@ -95,7 +95,7 @@ def create_entire_index(*args, **kwargs):
 def setup(*args, **kwargs):
     """Dev only - clear and recreate the entire database"""
     # needs to come first to as to index data as it is being loaded
-    # create_search_index()
+    create_search_index()
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
@@ -110,9 +110,9 @@ def setup(*args, **kwargs):
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
 
-    if True:  # base.DEBUG:
+    if base.DEBUG:
         load_demo_data()
-        # create_entire_index()
+        create_entire_index()
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()
