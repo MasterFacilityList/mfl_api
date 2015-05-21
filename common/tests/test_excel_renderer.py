@@ -4,7 +4,7 @@ from .test_views import LoginMixin
 
 from common.models import County
 from model_mommy import mommy
-from common.renderers import _write_excel_file
+from common.renderers.excel_renderer import _write_excel_file
 
 
 class TestExcelRenderer(LoginMixin, APITestCase):
