@@ -251,15 +251,16 @@ class WorldBorder(AdministrativeUnitBoundary):
     """
     longitude = gis_models.FloatField()
     latitude = gis_models.FloatField()
-    
+
     @property
     def geometry(self):
-        """The author of this code is sorry about it"""
-        if self.code == 'KEN':
-            return json.loads(
-                CountyBoundary.objects.aggregate(Union('mpoly'))['mpoly__union'].geojson
-            )
-        
+        """The world border data is unreliable, hence this; works for Kenya only"""
+        return json.loads(
+            CountyBoundary.objects.aggregate(
+                Union('mpoly')
+            )['mpoly__union'].geojson
+        )
+
         # Fallback
         return json.loads(self.mpoly.geojson)
 

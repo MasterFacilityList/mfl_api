@@ -41,9 +41,10 @@ class FacilityCoordinatesListSerializer(
         model = FacilityCoordinates
         geo_field = "coordinates"
         exclude = (
-            'created', 'created_by', 'updated', 'updated_by', 'deleted', 'search',
-            'collection_date', 'source', 'method', 'active', 'facility',
-    )
+            'created', 'created_by', 'updated', 'updated_by', 'deleted',
+            'search', 'collection_date', 'source', 'method', 'active',
+            'facility',
+        )
 
 
 class FacilityCoordinatesDetailSerializer(
@@ -82,8 +83,8 @@ class WorldBorderSerializer(AbstractBoundarySerializer):
         model = WorldBorder
         geo_field = 'geometry'
         exclude = (
-            'mpoly','active','deleted','search','created', 'updated', 'created_by', 'updated_by',
-            'longitude', 'latitude',
+            'mpoly', 'active', 'deleted', 'search', 'created', 'updated',
+            'created_by', 'updated_by', 'longitude', 'latitude',
         )
 
 
@@ -102,7 +103,8 @@ class CountyBoundarySerializer(AbstractBoundarySerializer):
     class Meta(AbstractBoundarySerializer.Meta):
         model = CountyBoundary
         exclude = (
-            'active','deleted','search','created', 'updated', 'created_by', 'updated_by','area',
+            'active', 'deleted', 'search', 'created', 'updated', 'created_by',
+            'updated_by', 'area',
         )
 
 
