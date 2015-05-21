@@ -81,7 +81,10 @@ class WorldBorderSerializer(AbstractBoundarySerializer):
     class Meta(AbstractBoundarySerializer.Meta):
         model = WorldBorder
         geo_field = 'geometry'
-        exclude = ('mpoly',)
+        exclude = (
+            'mpoly','active','deleted','search','created', 'updated', 'created_by', 'updated_by',
+            'longitude', 'latitude',
+        )
 
 
 class WorldBorderDetailSerializer(AbstractBoundarySerializer):
@@ -100,7 +103,6 @@ class CountyBoundarySerializer(AbstractBoundarySerializer):
         model = CountyBoundary
         exclude = (
             'active','deleted','search','created', 'updated', 'created_by', 'updated_by','area',
-            'bound',
         )
 
 
