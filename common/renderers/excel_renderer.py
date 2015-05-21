@@ -90,38 +90,16 @@ def _write_excel_file(data):
 
 
 class ExcelRenderer(renderers.BaseRenderer):
-    media_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'  # noqa
+    media_type = ('application/vnd.openxmlformats'
+                  '-officedocument.spreadsheetml.sheet')
     format = 'excel'
+    render_style = 'binary'
 
-    def render(
-            self, data, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # noqa
-            renderer_context=None):  # noqa
+    def render(self, data, media_type=None, renderer_context=None):
         response = renderer_context.get('response', None)
         if response is not None:
-            response._headers['content-disposition'] = ('Content-Disposition', 'attachment, filename=download.xlsx;')
-            response.status_code = 289
+            response._headers['content-disposition'] = (
+                'Content-Disposition', 'attachment; filename="download.xlsx"'
+            )
 
         return _write_excel_file(data)
-
-
-    # def render(
-    #         self, data, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # noqa
-    #         renderer_context=None):  # noqa
-    #     view = renderer_context.get('view', None)
-    #     if view is not None:
-    #         response = view.response
-    #         response._headers['content-disposition'] = ('Content-Disposition', 'attachment, filename=download.xlsx;')
-    #         response.status_code = 289
-
-    #     return _write_excel_file(data)
-
-    # def render(
-    #         self, data, media_type=None,
-    #         renderer_context=None):  # noqa
-    #     view = renderer_context.get('view', None)
-    #     # from pdb import set_trace; set_trace()
-    #     if view is not None:
-    #         print "hahahha"
-    #         view.response._headers['Content-Disposition'] = 'attachment, filename=download.xlsx;'
-
-    #     return _write_excel_file(data)
