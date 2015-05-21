@@ -2,6 +2,7 @@ import xlsxwriter
 import json
 import string
 import cStringIO
+import uuid
 
 from django.conf import settings
 from common.utilities.search_utils import default
@@ -12,13 +13,10 @@ from rest_framework import renderers
 
 def remove_keys(sample_list):
     """
-    Removes keys that should not be in excel
+    Removes keys that should not be in excel e.d ids and audit fields
     """
-    for key in sample_list:
-        if key in settings.EXCEL_EXCEPT_FIELDS:
-            key_index = sample_list.index(key)
-            del sample_list[key_index]
-    return sample_list
+    new_set = set(sample_list) - set(settings.EXCEL_EXCEPT_FIELDS)
+    return [item for item in new_set]
 
 
 def _write_excel_file(data):
@@ -51,7 +49,7 @@ def _write_excel_file(data):
             example_dict = work_sheet_data[0]
             sample_keys = example_dict.keys()
 
-            # remove columns that should not be excel
+            # remove columns that should not be in excel
             sample_keys = remove_keys(sample_keys)
 
             for key in sample_keys:
@@ -67,12 +65,14 @@ def _write_excel_file(data):
 
                 for key in data_keys:
                     if not isinstance(data_dict.get(key), list):
-                        worksheet.write(row, col, data_dict.get(key))
+                        try:
+                            uuid.UUID(data_dict.get(key))
+                        except:
+                            worksheet.write(row, col, data_dict.get(key))
                         col = col + 1
                     else:
                         # write sheets to new work sheets
-                        _add_data_to_worksheet(
-                            data.get(key)) if data.get(key) else None
+                        col = col + 1
 
                 col = 0
                 row = row + 1

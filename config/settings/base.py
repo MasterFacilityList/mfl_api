@@ -287,5 +287,5 @@ REST_AUTH_SERIALIZERS = {
 SITE_ID = 1
 
 EXCEL_EXCEPT_FIELDS = [
-    'id', 'updated', 'created_by', 'updated_by', 'active',
+    'id', 'updated', 'created', 'created_by', 'updated_by', 'active',
     'deleted', 'search']

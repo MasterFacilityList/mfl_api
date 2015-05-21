@@ -20,10 +20,6 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         mommy.make(County)
         response = self.client.get(excel_url)
         self.assertEquals(200, response.status_code)
-        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-        self.assertTrue(os.path.exists(file_path))
-        os.remove(file_path)
-        self.assertFalse(os.path.exists(file_path))
 
     def test_write_excel_file(self):
         mommy.make(County)
@@ -31,42 +27,6 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         url = reverse('api:common:counties_list')
         response = self.client.get(url)
         _write_excel_file(response.data)
-        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-        self.assertTrue(os.path.exists(file_path))
-        os.remove(file_path)
-        self.assertFalse(os.path.exists(file_path))
-
-    def test_download_view_file_exists(self):
-        mommy.make(County)
-        mommy.make(County)
-        url = reverse('api:common:counties_list')
-        response = self.client.get(url)
-        _write_excel_file(response.data)
-        file_name = "download"
-        file_extension = "xlsx"
-        kwargs = {
-            "file_name": file_name,
-            "file_extension": file_extension
-        }
-        url = reverse("api:common:download_file", kwargs=kwargs)
-        resp = self.client.get(url)
-        self.assertEquals(200, resp.status_code)
-        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-        os.remove(file_path)
-        self.assertFalse(os.path.exists(file_path))
-
-    def test_download_view_file_does_not_exist(self):
-        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-        os.remove(file_path) if os.path.exists(file_path) else None
-        file_name = "download"
-        file_extension = "xlsx"
-        kwargs = {
-            "file_name": file_name,
-            "file_extension": file_extension
-        }
-        url = reverse("api:common:download_file", kwargs=kwargs)
-        with self.assertRaises(ValidationError):
-            self.client.get(url)
 
     def test_nested_list_in_excel_renderer(self):
         data = {
@@ -92,10 +52,6 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         }
 
         _write_excel_file(data)
-        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-        self.assertTrue(os.path.exists(file_path))
-        os.remove(file_path)
-        self.assertFalse(os.path.exists(file_path))
 
     def test_nested_empty_list_in_excel_renderer(self):
             data = {
@@ -116,10 +72,6 @@ class TestExcelRenderer(LoginMixin, APITestCase):
             }
 
             _write_excel_file(data)
-            file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-            self.assertTrue(os.path.exists(file_path))
-            os.remove(file_path)
-            self.assertFalse(os.path.exists(file_path))
 
     def test_empty_list(self):
         data = {
@@ -127,7 +79,3 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         }
 
         _write_excel_file(data)
-        file_path = os.path.join(settings.BASE_DIR, 'download.xlsx')
-        self.assertTrue(os.path.exists(file_path))
-        os.remove(file_path)
-        self.assertFalse(os.path.exists(file_path))
