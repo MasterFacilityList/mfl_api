@@ -1,12 +1,7 @@
-import os
-
-from django.conf import settings
-
 from django.core.urlresolvers import reverse
 from rest_framework.test import APITestCase
 from .test_views import LoginMixin
 
-from rest_framework.exceptions import ValidationError
 from common.models import County
 from model_mommy import mommy
 from common.renderers import _write_excel_file
