@@ -24,9 +24,32 @@ class GeoCodeMethodSerializer(
         model = GeoCodeMethod
 
 
-class FacilityCoordinatesSerializer(
+class FacilityCoordinatesListSerializer(
         AbstractFieldsMixin, GeoFeatureModelSerializer):
+    # DO NOT make this any fatter than it must be
+    # The facility list JSON payload is already > 1MB!
+    # That is why there is a detail serializer
+    facility_name = serializers.ReadOnlyField(source="facility.name")
+    facility_id = serializers.ReadOnlyField(source="facility.id")
+    ward = serializers.ReadOnlyField(source="facility.ward.id")
+    constituency = serializers.ReadOnlyField(
+        source="facility.ward.constituency.id"
+    )
+    county = serializers.ReadOnlyField(
+        source="facility.ward.constituency.county.id"
+    )
 
+    class Meta(object):
+        model = FacilityCoordinates
+        geo_field = "coordinates"
+        exclude = (
+            'created', 'created_by', 'updated', 'updated_by', 'deleted', 'search',
+            'collection_date', 'source', 'method',
+    )
+
+
+class FacilityCoordinatesDetailSerializer(
+        AbstractFieldsMixin, GeoFeatureModelSerializer):
     facility_name = serializers.ReadOnlyField(source="facility.name")
     facility_id = serializers.ReadOnlyField(source="facility.id")
     ward = serializers.ReadOnlyField(source="facility.ward.id")

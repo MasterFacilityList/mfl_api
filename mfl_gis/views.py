@@ -23,7 +23,8 @@ from .filters import (
 from .serializers import (
     GeoCodeSourceSerializer,
     GeoCodeMethodSerializer,
-    FacilityCoordinatesSerializer,
+    FacilityCoordinatesListSerializer,
+    FacilityCoordinatesDetailSerializer,
     WorldBorderSerializer,
     WorldBorderDetailSerializer,
     CountyBoundarySerializer,
@@ -66,12 +67,12 @@ class GeoCodeMethodDetailView(
 
 
 class FacilityCoordinatesListView(GISListCreateAPIView):
-
+    # The list serializer omits many fields for size reasons
     # This data is controlled access
     # Do not change the permission_classes without good reason
     permission_classes = (DjangoModelPermissions,)
     queryset = FacilityCoordinates.objects.all()
-    serializer_class = FacilityCoordinatesSerializer
+    serializer_class = FacilityCoordinatesListSerializer
     filter_class = FacilityCoordinatesFilter
     ordering_fields = (
         'facility', 'latitude', 'longitude', 'source', 'method',)
@@ -80,12 +81,12 @@ class FacilityCoordinatesListView(GISListCreateAPIView):
 
 class FacilityCoordinatesDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-
+    # The detail serializer has all fields
     # This data is controlled access
     # Do not change the permission classes without good reason
     permission_classes = (DjangoModelPermissions,)
     queryset = FacilityCoordinates.objects.all()
-    serializer_class = FacilityCoordinatesSerializer
+    serializer_class = FacilityCoordinatesDetailSerializer
 
 
 class WorldBorderListView(GISListCreateAPIView):
