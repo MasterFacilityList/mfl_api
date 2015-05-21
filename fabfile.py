@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import json
+import os
 
 from os.path import dirname, abspath, join
 from config.settings import base
@@ -57,9 +58,9 @@ def reset_migrations():
 
 def psql(query, no_sudo=False, is_file=False):
     """Dev only - used by the setup function below"""
-    sudo = 'sudo -u postgres'
-    if no_sudo:
-        sudo = ''
+    sudo = ''  # 'sudo -u postgres'
+    # if no_sudo:
+    #    sudo = ''
 
     if is_file:
         local('{} psql < {}'.format(sudo, query))
@@ -94,7 +95,7 @@ def create_entire_index(*args, **kwargs):
 def setup(*args, **kwargs):
     """Dev only - clear and recreate the entire database"""
     # needs to come first to as to index data as it is being loaded
-    create_search_index()
+    # create_search_index()
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
@@ -109,9 +110,64 @@ def setup(*args, **kwargs):
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
 
-    if base.DEBUG:
+    if True:  # base.DEBUG:
         load_demo_data()
-        create_entire_index()
+        # create_entire_index()
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()
+
+
+def clear_cache():
+    local('redis-cli flushall')
+
+
+def warmup_cache(
+        server_location, username, password, client_id, client_secret):
+    """Warm up the cache"""
+    import requests
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+
+    def _get_url(stub):
+        return "{}{}".format(server_location, stub)
+
+    def login():
+        data = {
+            'username': username,
+            'password': password,
+            'grant_type': 'password',
+            'client_id': client_id,
+            'client_secret': client_secret
+        }
+        headers = {
+            'Accept': 'application/json'
+        }
+        resp = requests.request(
+            "POST", url=_get_url("/o/token/"), data=data,
+            headers=headers
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            return "{} {}".format(data['token_type'], data['access_token'])
+        else:
+            raise ValueError(resp.content)
+
+    def prod_api(token):
+        headers = {
+            'Authorization': token,
+            'Accept': 'application/json, */*',
+            'Accept-Encoding': 'gzip'
+        }
+        urls = [
+            "/api/gis/coordinates/?page_size=9000",
+            "/api/gis/county_boundaries/?page_size=47",
+
+            "/api/gis/ward_boundaries/",
+            "/api/gis/constituency_boundaries/",
+            "/api/gis/county_boundaries/"
+        ]
+        for i in urls:
+            requests.request("GET", url=_get_url(i), headers=headers)
+
+    prod_api(login())
