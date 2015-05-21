@@ -254,8 +254,11 @@ class WorldBorder(AdministrativeUnitBoundary):
     
     @property
     def geometry(self):
+        """The author of this code is sorry about it"""
         if self.code == 'KEN':
-            return json.loads(CountyBoundary.objects.aggregate(Union('mpoly')).geojson)
+            return json.loads(
+                CountyBoundary.objects.aggregate(Union('mpoly'))['mpoly__union'].geojson
+            )
         
         # Fallback
         return json.loads(self.mpoly.geojson)

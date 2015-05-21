@@ -76,9 +76,12 @@ class AbstractBoundarySerializer(
 
 class WorldBorderSerializer(AbstractBoundarySerializer):
     center = serializers.ReadOnlyField()
+    geometry = serializers.ReadOnlyField()
 
     class Meta(AbstractBoundarySerializer.Meta):
         model = WorldBorder
+        geo_field = 'geometry'
+        exclude = ('mpoly',)
 
 
 class WorldBorderDetailSerializer(AbstractBoundarySerializer):
