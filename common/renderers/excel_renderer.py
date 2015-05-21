@@ -118,5 +118,6 @@ class CSVRenderer(csv_renderers.CSVRenderer):
                 'attachment; filename="{}.csv"'.format(fname)
             )
         return super(CSVRenderer, self).render(
-            data['results'], media_type=media_type, renderer_context=renderer_context
+            data['results'], media_type=media_type,
+            renderer_context=renderer_context
         )
