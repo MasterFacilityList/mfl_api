@@ -3,7 +3,7 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
-from django.contrib.gis.db.models import Union
+from django.contrib.gis.geos import MultiPolygon
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -256,9 +256,14 @@ class WorldBorder(AdministrativeUnitBoundary):
     def geometry(self):
         """The author of this code is sorry about it"""
         if self.code == 'KEN':
-            return json.loads(
-                CountyBoundary.objects.aggregate(Union('mpoly'))['mpoly__union'].geojson
-            )
+            concat = None
+            for cb in CountyBoundary.objects.all():
+                if concat:
+                    concat.extend(cb.mpoly)
+                else:
+                    concat = cb.mpoly
+            
+            return json.loads(concat.geojson)
         
         # Fallback
         return json.loads(self.mpoly.geojson)
