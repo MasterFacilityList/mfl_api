@@ -254,7 +254,7 @@ class WorldBorder(AdministrativeUnitBoundary):
 
     @property
     def geometry(self):
-        """The world border data is unreliable, hence this; works for Kenya only"""
+        """The world border data is unreliable, hence this; works for Kenya"""
         return json.loads(
             CountyBoundary.objects.aggregate(
                 Union('mpoly')
