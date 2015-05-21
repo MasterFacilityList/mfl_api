@@ -90,12 +90,15 @@ class WorldBorderDetailSerializer(AbstractBoundarySerializer):
 
 
 class CountyBoundarySerializer(AbstractBoundarySerializer):
-    constituency_ids = serializers.ReadOnlyField()
     constituency_boundary_ids = serializers.ReadOnlyField()
     county_id = serializers.ReadOnlyField(source='area.id')
 
     class Meta(AbstractBoundarySerializer.Meta):
         model = CountyBoundary
+        exclude = (
+            'active','deleted','search','created', 'updated', 'created_by', 'updated_by','area',
+            'bound',
+        )
 
 
 class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
