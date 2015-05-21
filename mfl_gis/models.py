@@ -259,7 +259,7 @@ class WorldBorder(AdministrativeUnitBoundary):
             CountyBoundary.objects.aggregate(
                 Union('mpoly')
             )['mpoly__union'].geojson
-        )
+        ) if self.mpoly else {}
 
         # Fallback
         return json.loads(self.mpoly.geojson)
