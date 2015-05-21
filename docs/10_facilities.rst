@@ -565,7 +565,7 @@ Facility service ratings
 To rate a facility service, simply make a ``POST`` to ``api/facilities/facility_service_ratings/`` with the
 facility_service's ``id`` and the score given. For example,
 
-.. code-block: javascript
+.. code-block:: javascript
 
     {
         "facility_service": "80613650-f765-4032-a9d3-bb0fc9cc37cc",
@@ -635,49 +635,52 @@ Analysis of facilities by regulator and regulation status
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TBD
 
+
 Facility types
 ==============
-There are many types of facilities ranging from health centers to National Hospitals.
-The different types of facilities are different among the different types of owners.
+There are many types of facilities ranging from health centers,
+hospitals, dispensaries, national hospitals etc.
 
-Facility types form the basis of upgrading and downgrading facilities.
+Facility types form the basis of upgrading and downgrading of facilities.
 
-Creating of faciltity types;
-A facility type has five distinct fields
+A facility type has five distinct fields:
 
-================*===============================================================================
-    Field           *  Explanation
-================*===============================================================================
-    Id          * The primary key of the facility type 
+================ ==============================================================
+    Field          Explanation
+================ ==============================================================
+    id            The primary key of the facility type 
 
-    Name        *  The name of the facility type e.g HEALTH_CENTER         
+    name           The name of the facility type e.g HEALTH_CENTER         
 
-    Sub-Division*  A sub-division of the facility type e.g A hospitla has got several 
-                    sub divisions e.g District Hospital of Provincial Hospital
+    sub-division   A sub-division of the facility type e.g A hospitla has got
+                   several sub divisions e.g District Hospital of Provincial 
+                   Hospital
 
-    Preceeding  * A facility type that comes before the type e.g a Provincial Hospital comes before
-                  a National Hospital
+    preceeding    A facility type that comes before the type e.g a Provincial
+                  Hospital comes before a National Hospital
+================ ==============================================================
 
 
 Creating A facility type
-++++++++++++++++++++++++
-``POST`` to ``api/facilities/facility_types/`` with a payload similar to the one below
+------------------------
+``POST`` to ``api/facilities/facility_types/`` a payload similar to the one below
 
 .. code-block:: javascript
     
     {
-            "name": "Hospital",
-            "sub_division": "Provincial Hospital",
-            "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
+        "name": "Hospital",
+        "sub_division": "Provincial Hospital",
+        "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
     }
     
 
-Expected Response Code
+Expected Response Code:
     ``HTTP 201 CREATED``
 
-Expexcted sample data
+Expexcted sample data:
 
 .. code-block:: javascript
+
     {
         "id": "11494347-f40c-4fbb-8632-cc1f35fe1fc9",
         "created": "2015-05-21T14:38:03.298142Z",
@@ -696,15 +699,16 @@ Expexcted sample data
 
 
 Listing Facillity types 
-+++++++++++++++++++++++
+-----------------------
 ``GET`` the URL ``api/facilities/facility_types/``
 
-Sample Reponse data
+Sample Response data:
 
 .. code-block:: javascript
+
         {
             "count": 27,
-            "next": "http://localhost:8000/api/facilities/facility_types/?page=2&page_size=2",
+            "next": "http://localhost:8000/api/facilities/facility_types/?page=2",
             "previous": null,
             "results": [
                 {
@@ -736,32 +740,35 @@ Sample Reponse data
             ]
     }
 
-Expected Response code
+Expected Response code:
     ``HTTP 200 OK``
 
 
-Retrieving facility types
-+++++++++++++++++++++++++
+Retrieving a facility type
+---------------------------
 ``GET`` the URL ``api/facilities/facility_types/<id>/``
 
-For example to get the details of a facility typ whose is 950047f7-dae4-4803-9818-9886004daaf1
-We would do a ``GET`` to the URL ``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
-Sample Response would be 
+For example to get the details of a facility type whose is 
+950047f7-dae4-4803-9818-9886004daaf1  do a ``GET`` to the URL 
+``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
+
+Sample Response data:
 
 .. code-block:: javascript
-        {
-            "id": "950047f7-dae4-4803-9818-9886004daaf1",
-            "created": "2015-05-15T13:45:13.592372Z",
-            "updated": "2015-05-15T13:45:13.592404Z",
-            "deleted": false,
-            "active": true,
-            "search": null,
-            "name": "District Hospital",
-            "sub_division": null,
-            "created_by": 1,
-            "updated_by": 1,
-            "preceding": null
-        }
+
+    {
+        "id": "950047f7-dae4-4803-9818-9886004daaf1",
+        "created": "2015-05-15T13:45:13.592372Z",
+        "updated": "2015-05-15T13:45:13.592404Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "name": "District Hospital",
+        "sub_division": null,
+        "created_by": 1,
+        "updated_by": 1,
+        "preceding": null
+    }
 
 
 Expected Response code
@@ -769,20 +776,23 @@ Expected Response code
 
 
 Updating Facility types
-++++++++++++++++++++++++
-``PATCH`` the URL `api/facilities/facility_types/<id>/``
-With a payload containing of the fields to be editted. For example to update the facility type's name whose id is
- 950047f7-dae4-4803-9818-9886004daaf1 we would a ``PATCH`` to the URL ``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``with a  payload similar to the one below
+-----------------------
+``PATCH`` the URL ``api/facilities/facility_types/<id>/`` with a payload 
+containing the fields to be editted. For example to update a facility type's
+name whose id is 950047f7-dae4-4803-9818-9886004daaf1 do a ``PATCH`` to the URL 
+``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
+with a  payload similar to the one below
 
- .. code-block:: javascript
+.. code-block:: javascript
+
     {
         "name": "District Hospital Editted"
     }
 
 Sample Expected Response data:
 
-..code-block:: javascript:
-    
+.. code-block:: javascript
+
     {
         "id": "950047f7-dae4-4803-9818-9886004daaf1",
         "created": "2015-05-15T13:45:13.592372Z",
@@ -794,33 +804,39 @@ Sample Expected Response data:
         "sub_division": null,
         "created_by": 1,
         "updated_by": 1,
-        "preceding": null
+        "preceding": null,
     }
 
-Expected Response Code
+Expected Response Code:
     ``HTTP 200 OK``
 
 
 Facility Upgrades and Downgrades
-==================================
+================================
 
-Upgrading or downgrading a facility is as easy as changing the facity type of a facility to another type.
-The person doing this should have the sufficient permssions to do. To get the persmission consult this section.
+Upgrading or downgrading a facility is as easy as changing the 
+facility type of a facility to another type. The person doing this should
+have the sufficient permssions to do so.
+This is however a two step process. The First step involves making the upgrade
+or the downgrade and the second involves confirming the upgrade or the
+downgrade.
 
-Upgrading a Facility
-``POST`` to ``api/facilities/facility_upgrade/``
-A payload similar to the one shown below
+Upgrading/Downgrading a Facility (First Step)
+---------------------------------------------
+``POST`` to ``api/facilities/facility_upgrade/`` a payload similar to the one
+shown below
 
-..code-block:: javascript
+.. code-block:: javascript
+
     {   
         "reason": "A good reason for the upgrade",
         "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393", // id of the facility
         "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75" // id of the facility type
     }
 
-Sample Response Data
+Sample Response Data:
 
-..code-block:: javascript
+.. code-block:: javascript
 
     {
         "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
@@ -838,26 +854,33 @@ Sample Response Data
         "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
     }
 
-Expected Response Code
+Expected Response Code:
     ``HTTP 201 CREATED``
 
 
-This however does not update that a facility has been upgraded. The record has to be confirmed by the CHRIO
-To confirm a facility upgrade/Downgrade
-``PATCH``  ``api/facilities/facility_upgrade/<id>`` 
-The id identifies a particular facility upgrade
-for example to confirm the facility upgrade we did above we would do a ``PATCH`` to ``api/facilities/facility_upgrade/70610b2b-ddd8-49b4-8594-52c236a834d2`` with the payload below:
+Confirming Upgrage or Downgrade (Second Step)
+---------------------------------------------   
+The CHRIO may choose to either to confirm or cancel a facility uprgrade 
+or downgrade.
 
-..code-block:: javascript
+To confirm a facility upgrade/Downgrade ``PATCH``  
+``api/facilities/facility_upgrade/<id>`` where the id identifies a particular
+facility upgrade/downgrade.
+
+For example to confirm the facility upgrade done above do a ``PATCH`` to 
+``api/facilities/facility_upgrade/70610b2b-ddd8-49b4-8594-52c236a834d2`` 
+with the payload below:
+
+.. code-block:: javascript
 
     {
         "is_confirmed": true
     }
 
 
-Expected Response data
+Expected Response data:
 
-..code-block:: javascript
+.. code-block:: javascript
 
     {
         "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
@@ -879,16 +902,27 @@ Expected HTTP Response code
     ``HTTP 200 OK``
 
 
-Cancelling a facility upgrade/Downgrade
-++++++++++++++++++++++++++++++++++++++++
-Cancelling a facility upgrade or downgrade is very similar to confirming a facility upgrade with a minor change 
+Cancelling a facility upgrade/Downgrade(Second Step)
+----------------------------------------------------
+Cancelling a facility upgrade or downgrade is very similar to confirming a
+facility upgrade with a minor change 
 in the payload sent.
-Do a ``PATCH``  to the url ``api/facilities/facility_upgrade/<id>/`` with a payload such as below:
+
+Do a ``PATCH``  to the url ``api/facilities/facility_upgrade/<id>/`` 
+with a payload similar to the one shown below:
 
 .. code-block:: javascript
+
     {
         "is_cancelled": true
     }
+
+
+.. note::
+
+    It is after the confirmation of a facility upgrade or downgrade that a facility
+    is deemed to have been upgraded or downgraded and the changes reflected in 
+    the facility.
 
 .. toctree:: 
     :maxdepth: 2
