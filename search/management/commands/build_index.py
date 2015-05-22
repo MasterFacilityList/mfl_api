@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.db.models import get_app, get_models
 from django.conf import settings
-from common.utilities.search_utils import index_instance
+from search.search_utils import index_instance
 
 
 class Command(BaseCommand):

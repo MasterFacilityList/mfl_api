@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from common.utilities.search_utils import ElasticAPI
+from search.search_utils import ElasticAPI
 
 
 class Command(BaseCommand):

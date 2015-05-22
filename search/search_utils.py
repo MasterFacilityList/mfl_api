@@ -46,7 +46,8 @@ def get_model_fields(model_cls):
 class ElasticAPI(object):
     def setup_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
-        result = requests.put(url, data=INDEX_SETTINGS)
+        mfl_settings = json.dumps(INDEX_SETTINGS)
+        result = requests.put(url, data=mfl_settings)
         return result
 
     def get_index(self, index_name):
@@ -78,13 +79,14 @@ class ElasticAPI(object):
         document_type = instance_type.__name__.lower()
         url = "{}{}/{}/_search".format(
             ELASTIC_URL, index_name, document_type)
-        search_fields = get_model_fields(instance_type)[0] + get_model_fields(instance_type)[1]
+        search_fields = (get_model_fields(instance_type)[0]
+                         + get_model_fields(instance_type)[1])
 
         data = {
             "query": {
-                "multi_match": {
+                "match": {
                     "query": str(query),  # remove unicodes
-                    "fields": search_fields
+                    "fields": ["name"]
                 }
             }
         }
