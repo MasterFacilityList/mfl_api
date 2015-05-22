@@ -3,7 +3,6 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
-from django.contrib.gis.geos import Polygon, LinearRing
 from django.contrib.gis.db.models import Union
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
@@ -239,22 +238,37 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
     @property
     def geometry(self):
-        """Reduce the precision of the geometries sent in list views"""
-        if not self.mpoly:
-            return None
+        """Reduce the precision of the geometries sent in list views
 
-        precision = 6
-
-        def _downsampled_polygon():
-            polygon = self.mpoly.cascaded_union
-            downsampled_coords = [
-                (round(pair[0], precision), round(pair[1], precision))
-                for pair in polygon.coords[0]
-                if polygon.coords
+        This produces a MASSIVE saving in rendering time
+        """
+        try:
+            # 4 decimal places for the web map ( about a meter )
+            PRECISION = 4
+            geojson_dict = json.loads(
+                self.mpoly.cascaded_union.convex_hull.simplify(
+                    tolerance=(1.0 / 10 ** PRECISION)
+                ).geojson
+            )
+            original_coordinates = geojson_dict['coordinates']
+            assert original_coordinates
+            LOGGER.debug(
+                "Original coordinates: \n{}\n".format(original_coordinates[0]))
+            new_coordinates = [
+                [
+                    [
+                        round(coordinate_pair[0], PRECISION),
+                        round(coordinate_pair[1], PRECISION)
+                    ]
+                    for coordinate_pair in original_coordinates[0]
+                    if coordinate_pair
+                ]
             ]
-            return Polygon(LinearRing(*(downsampled_coords)))
-
-        return _downsampled_polygon()
+            geojson_dict['coordinates'] = new_coordinates
+            return geojson_dict
+        except Exception as ex:  # Will bre re-raised after logging / debugging
+            LOGGER.error(ex)
+            raise
 
     def __unicode__(self):
         return self.name

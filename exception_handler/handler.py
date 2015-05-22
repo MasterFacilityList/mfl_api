@@ -34,6 +34,5 @@ def custom_exception_handler(exc, context):
         # Keep this or you'll pull your hair out when **** hits the fan
         import traceback
         traceback.print_exc()
-
         LOGGER.error(exc)
         return Response(data, status=500)
