@@ -79,7 +79,7 @@ class WorldBorderSerializer(AbstractBoundarySerializer):
     center = serializers.ReadOnlyField()
     geometry = serializers.ReadOnlyField()
 
-    class Meta(AbstractBoundarySerializer.Meta):
+    class Meta(object):
         model = WorldBorder
         geo_field = 'geometry'
         exclude = (
@@ -99,12 +99,14 @@ class WorldBorderDetailSerializer(AbstractBoundarySerializer):
 class CountyBoundarySerializer(AbstractBoundarySerializer):
     constituency_boundary_ids = serializers.ReadOnlyField()
     county_id = serializers.ReadOnlyField(source='area.id')
+    geometry = serializers.ReadOnlyField()
 
-    class Meta(AbstractBoundarySerializer.Meta):
+    class Meta(object):
         model = CountyBoundary
+        geo_field = 'geometry'
         exclude = (
             'active', 'deleted', 'search', 'created', 'updated', 'created_by',
-            'updated_by', 'area',
+            'updated_by', 'area', 'mpoly',
         )
 
 
@@ -122,9 +124,15 @@ class ConstituencyBoundarySerializer(AbstractBoundarySerializer):
     ward_ids = serializers.ReadOnlyField()
     ward_boundary_ids = serializers.ReadOnlyField()
     constituency_id = serializers.CharField(source='area.id')
+    geometry = serializers.ReadOnlyField()
 
-    class Meta(AbstractBoundarySerializer.Meta):
+    class Meta(object):
         model = ConstituencyBoundary
+        geo_field = 'geometry'
+        exclude = (
+            'active', 'deleted', 'search', 'created', 'updated', 'created_by',
+            'updated_by', 'area', 'mpoly',
+        )
 
 
 class ConstituencyBoundaryDetailSerializer(AbstractBoundarySerializer):
@@ -139,9 +147,15 @@ class ConstituencyBoundaryDetailSerializer(AbstractBoundarySerializer):
 
 class WardBoundarySerializer(AbstractBoundarySerializer):
     ward_id = serializers.CharField(source='area.id')
+    geometry = serializers.ReadOnlyField()
 
-    class Meta(AbstractBoundarySerializer.Meta):
+    class Meta(object):
         model = WardBoundary
+        geo_field = 'geometry'
+        exclude = (
+            'active', 'deleted', 'search', 'created', 'updated', 'created_by',
+            'updated_by', 'area', 'mpoly',
+        )
 
 
 class WardBoundaryDetailSerializer(AbstractBoundarySerializer):
