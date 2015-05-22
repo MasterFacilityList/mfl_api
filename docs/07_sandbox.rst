@@ -12,7 +12,7 @@ Swagger
 The API is interactively browsable through Swagger from the link ``/api/explore``
 
 The Browsable API
---------------
+------------------
 The  API is accesible from the URL ``/api``. This is the entry point into the 
 entire list of all the URLS in the API and the methods and that are allowed on an 
 endpoint.
