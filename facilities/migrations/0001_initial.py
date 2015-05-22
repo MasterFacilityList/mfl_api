@@ -156,6 +156,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('rating', models.PositiveIntegerField(validators=[django.core.validators.MaxValueValidator(5), django.core.validators.MinValueValidator(0)])),
+                ('comment', models.TextField(null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility_service', models.ForeignKey(related_name='facility_service_ratings', to='facilities.FacilityService')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -366,25 +367,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='RatingScale',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('deleted', models.BooleanField(default=False)),
-                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('value', models.CharField(max_length=3)),
-                ('display_text', models.TextField(help_text=b'What the user will see')),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ('-updated', '-created'),
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
             name='RegulatingBody',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
@@ -501,29 +483,6 @@ class Migration(migrations.Migration):
                 ('option', models.ForeignKey(to='facilities.Option')),
                 ('service', models.ForeignKey(to='facilities.Service')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ('-updated', '-created'),
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='ServiceRating',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('deleted', models.BooleanField(default=False)),
-                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('occupation', models.CharField(max_length=100)),
-                ('comment', models.TextField(null=True, blank=True)),
-                ('attitude', models.ForeignKey(related_name='attitude_ratings', to='facilities.RatingScale')),
-                ('cleanliness', models.ForeignKey(related_name='cleanliness_rating', to='facilities.RatingScale')),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('facility_service', models.ForeignKey(to='facilities.FacilityService')),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('will_return', models.ForeignKey(related_name='return_rating', to='facilities.RatingScale')),
             ],
             options={
                 'ordering': ('-updated', '-created'),

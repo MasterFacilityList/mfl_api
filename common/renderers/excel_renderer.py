@@ -5,14 +5,17 @@ import cStringIO
 import uuid
 
 from django.conf import settings
+
 from rest_framework import renderers
-from rest_framework_csv import renderers as csv_renderers
+
+
 from common.utilities.search_utils import default
+from .shared import DownloadMixin
 
 
 def remove_keys(sample_list):
     """
-    Removes keys that should not be in excel e.d ids and audit fields
+    Removes keys that should not be in excel e.g PKs and audit fields
     """
     new_set = set(sample_list) - set(settings.EXCEL_EXCEPT_FIELDS)
     return [item for item in new_set]
@@ -88,21 +91,6 @@ def _write_excel_file(data):
     return mem_file_contents
 
 
-class DownloadMixin(object):
-    extension = None
-
-    def update_download_headers(self, renderer_context):
-        view = renderer_context.get('view', None)
-        if view is not None:
-            fname = view.get_view_name() or 'download'
-            if self.extension:
-                fname = "{}.{}".format(fname, self.extension)
-            view.response._headers['content-disposition'] = (
-                'Content-Disposition',
-                'attachment; filename="{}"'.format(fname)
-            )
-
-
 class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
     media_type = ('application/vnd.openxmlformats'
                   '-officedocument.spreadsheetml.sheet')
@@ -113,16 +101,3 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
     def render(self, data, media_type, renderer_context):
         self.update_download_headers(renderer_context)
         return _write_excel_file(data)
-
-    
-class CSVRenderer(DownloadMixin, csv_renderers.CSVRenderer):
-    """Subclassed just to add content-disposition header"""
-
-    extension = 'csv'
-
-    def render(self, data, media_type=None, renderer_context=None):
-        self.update_download_headers(renderer_context)
-        return super(CSVRenderer, self).render(
-            data, media_type=media_type,
-            renderer_context=renderer_context
-        )
