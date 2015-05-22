@@ -608,6 +608,7 @@ regulatory statuses and facility types.
 
 To get the analyzed data:
 ``GET`` the URL ``api/facilities/dashboard/``
+
 Sample Expected data
 
 .. code-block:: javascript
