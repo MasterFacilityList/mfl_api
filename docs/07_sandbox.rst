@@ -7,13 +7,22 @@ with high quality API documentation sites like the `Stripe API site`_.
 
 .. _`Stripe API site`: https://stripe.com/docs/api
 
-TBD - swagger
-TBD - browseable API
-TBD - metadata
-TBD - An example for each of the verbs in use
-TBD - Metadata ( should be more consumable, almost like Stripe's )
-TBD - Swagger compatible docstrings for every single view
-( first line summary, detailed description, params from filters including base filter)
+Swagger
+--------
+The API is interactively browsable through Swagger from the link ``/api/explore``
+
+The Browsable API
+--------------
+The  API is accesible from the URL ``/api``. This is the entry point into the 
+entire list of all the URLS in the API and the methods and that are allowed on an 
+endpoint.
+
+API Metadata support
+--------------------
+The ``api`` URL has been designed to make it easy for a client accessing an endpoint 
+to know the methods that are allowed on the endpoint. The metadata support also allows
+a client to know the fields that an endpoint accepts and whether they are required or
+not.
 
 .. toctree::
     :maxdepth: 2
