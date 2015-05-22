@@ -3,6 +3,8 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
+from django.contrib.gis.db.models import Union
+from django.contrib.gis.geos import MultiPolygon
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -203,7 +205,7 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
     @property
     def bound(self):
-        return json.dumps(self.mpoly.envelope.geojson) if self.mpoly else None
+        return json.loads(self.mpoly.envelope.geojson) if self.mpoly else None
 
     @property
     def center(self):
@@ -235,6 +237,55 @@ class AdministrativeUnitBoundary(GISAbstractBase):
             _lookup_facility_coordinates
         return _lookup_facility_coordinates(self)
 
+    @property
+    def geometry(self):
+        """Reduce the precision of the geometries sent in list views
+
+        This produces a MASSIVE saving in rendering time
+        """
+        if not self.mpoly:
+            return self.mpoly
+
+        def _simplify(tolerance, geometry):
+            if isinstance(geometry, MultiPolygon):
+                polygon = None
+                for child_polygon in geometry:
+                    if polygon:
+                        polygon.extend(child_polygon)
+                    else:
+                        polygon = child_polygon
+            else:
+                polygon = geometry
+
+            return json.loads(
+                polygon.simplify(
+                    tolerance=(1.0 / 10 ** PRECISION)
+                ).geojson
+            )
+
+        # 3 decimal places for the web map ( about 10 meter accuracy )
+        PRECISION = 3
+        TOLERANCE = (1.0 / 10 ** PRECISION)
+        geojson_dict = _simplify(
+            tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
+        )
+        original_coordinates = geojson_dict['coordinates']
+        assert original_coordinates
+        new_coordinates = [
+            [
+                [
+                    round(coordinate_pair[0], PRECISION),
+                    round(coordinate_pair[1], PRECISION)
+                ]
+                for coordinate_pair in original_coordinates[0]
+                if coordinate_pair
+                and isinstance(coordinate_pair[0], float)
+                and isinstance(coordinate_pair[1], float)
+            ]
+        ]
+        geojson_dict['coordinates'] = new_coordinates
+        return geojson_dict
+
     def __unicode__(self):
         return self.name
 
@@ -250,6 +301,15 @@ class WorldBorder(AdministrativeUnitBoundary):
     """
     longitude = gis_models.FloatField()
     latitude = gis_models.FloatField()
+
+    @property
+    def geometry(self):
+        """The world border data is unreliable, hence this; works for Kenya"""
+        return json.loads(
+            CountyBoundary.objects.aggregate(
+                Union('mpoly')
+            )['mpoly__union'].geojson
+        ) if self.mpoly else {}
 
 
 @reversion.register

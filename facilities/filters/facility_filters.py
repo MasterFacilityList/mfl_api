@@ -22,12 +22,10 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    RatingScale
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -49,17 +47,19 @@ BOOLEAN_CHOICES = (
 )
 
 
-class RatingScaleFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = RatingScale
-
-
 class RegulatingBodyContactFilter(CommonFieldsFilterset):
     class Meta(object):
         model = RegulatingBodyContact
 
 
 class FacilityUpgradeFilter(CommonFieldsFilterset):
+    is_confirmed = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    is_cancelled = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+
     class Meta(object):
         model = FacilityUpgrade
 
@@ -79,28 +79,6 @@ class FacilityApprovalFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityApproval
-
-
-class ServiceRatingFilter(CommonFieldsFilterset):
-    facility_service = django_filters.AllValuesFilter(lookup_type='exact')
-    cleanliness = django_filters.TypedChoiceFilter(
-        choices=BOOLEAN_CHOICES,
-        coerce=strtobool)
-    attitude = django_filters.TypedChoiceFilter(
-        choices=BOOLEAN_CHOICES,
-        coerce=strtobool)
-    will_return = django_filters.TypedChoiceFilter(
-        choices=BOOLEAN_CHOICES,
-        coerce=strtobool)
-    occupation = django_filters.CharFilter(lookup_type='icontains')
-    comment = django_filters.CharFilter(lookup_type='icontains')
-    service = django_filters.AllValuesFilter(
-        name='facility_service__selected_option__service', lookup_type='exact')
-    facility = django_filters.AllValuesFilter(
-        name='facility_service__facility', lookup_type='exact')
-
-    class Meta(object):
-        model = ServiceRating
 
 
 class ServiceCategoryFilter(CommonFieldsFilterset):
@@ -246,15 +224,23 @@ class FacilityContactFilter(CommonFieldsFilterset):
 class FacilityFilter(CommonFieldsFilterset):
     def filter_regulated_facilities(self, value):
         truth_ness = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
-        false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']
-        matching_facilities = []
-        facilities = Facility.objects.all()
-        for facility in facilities:
-            if value in truth_ness and facility.is_regulated:
-                matching_facilities.append(facility)
-            if value in false_ness and not facility.is_regulated:
-                    matching_facilities.append(facility)
-        return matching_facilities
+        # false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']"""
+
+        regulated_facilities = [
+            obj.facility.id for obj in FacilityRegulationStatus.objects.filter(
+                is_confirmed=True)]
+
+        if value in truth_ness:
+            return Facility.objects.filter(id__in=regulated_facilities)
+        else:
+            return Facility.objects.exclude(id__in=regulated_facilities)
+
+    def service_filter(self, value):
+        facility_ids = [
+            fs.facility.id for fs in FacilityService.objects.filter(
+                selected_option__service__category=value)]
+
+        return Facility.objects.filter(id__in=facility_ids)
 
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
@@ -294,6 +280,8 @@ class FacilityFilter(CommonFieldsFilterset):
         coerce=strtobool)
     is_regulated = django_filters.MethodFilter(
         action=filter_regulated_facilities)
+    service_category = django_filters.MethodFilter(
+        action=service_filter)
 
     class Meta(object):
         model = Facility

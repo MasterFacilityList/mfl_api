@@ -168,7 +168,7 @@ class TestFacilityView(LoginMixin, APITestCase):
             FacilityRegulationStatus, facility=facility_1, is_confirmed=True)
         mommy.make(
             FacilityRegulationStatus, facility=facility_2, is_confirmed=False)
-        # the value for the param comes as unicode hence the u
+
         url = self.url + "?is_regulated=True"
         regulated_expected_data = {
             "count": 1,
@@ -185,7 +185,6 @@ class TestFacilityView(LoginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
         # get unregulated
-        # the value for the param comes as unicode hence the u
         url = self.url + "?is_regulated=False"
         response_2 = self.client.get(url)
         unregulated_data = regulated_expected_data = {
@@ -240,6 +239,34 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         facility_services = response.data.get('facility_services')
         self.assertEquals(expected_data, facility_services)
+
+    def test_filter_facilities_by_service_categories(self):
+        category = mommy.make(ServiceCategory)
+        service = mommy.make(Service, category=category)
+        option = mommy.make(Option)
+        service_option = mommy.make(
+            ServiceOption, option=option, service=service)
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityService, facility=facility_2)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+
+        url = self.url + "?service_category={}".format(category.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+
+            ]
+        }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
 
 
 class CountyAndNationalFilterBackendTest(APITestCase):

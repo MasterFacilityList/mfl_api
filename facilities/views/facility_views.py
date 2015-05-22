@@ -28,12 +28,11 @@ from ..models import (
     Service,
     FacilityService,
     ServiceOption,
-    ServiceRating,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    RatingScale
+
 )
 
 from ..serializers import (
@@ -54,7 +53,6 @@ from ..serializers import (
     ServiceSerializer,
     FacilityServiceSerializer,
     ServiceOptionSerializer,
-    ServiceRatingSerializer,
     FacilityApprovalSerializer,
     FacilityOperationStateSerializer,
     FacilityUpgradeSerializer,
@@ -62,7 +60,6 @@ from ..serializers import (
     RegulationStatusSerializer,
     FacilityDetailSerializer,
     FacilityServiceRatingSerializer,
-    RatingScaleSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -83,12 +80,10 @@ from ..filters import (
     ServiceFilter,
     FacilityServiceFilter,
     ServiceOptionFilter,
-    ServiceRatingFilter,
     FacilityApprovalFilter,
     FacilityOperationStateFilter,
     FacilityUpgradeFilter,
     RegulatingBodyContactFilter,
-    RatingScaleFilter
 )
 
 
@@ -113,18 +108,6 @@ class QuerysetFilterMixin(object):
                 ward__constituency__county=self.request.user.county)
 
         return self.queryset
-
-
-class RatingScaleListView(generics.ListCreateAPIView):
-    queryset = RatingScale.objects.all()
-    serializer_class = RatingScaleSerializer
-    filter_class = RatingScaleFilter
-    ordering_fields = ('value', 'display_text')
-
-
-class RatingScaleDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = RatingScale.objects.all()
-    serializer_class = RatingScaleSerializer
 
 
 class RegulatingBodyContactListView(generics.ListCreateAPIView):
@@ -173,20 +156,6 @@ class FacilityApprovalListView(generics.ListCreateAPIView):
 class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FacilityApproval.objects.all()
     serializer_class = FacilityApprovalSerializer
-
-
-class ServiceRatingListView(generics.ListCreateAPIView):
-    throttle_scope = 'rating'
-    queryset = ServiceRating.objects.all()
-    serializer_class = ServiceRatingSerializer
-    filter_class = ServiceRatingFilter
-    ordering_fields = ('facility_service')
-
-
-class ServiceRatingDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = ServiceRating.objects.all()
-    serializer_class = ServiceRatingSerializer
 
 
 class ServiceCategoryListView(generics.ListCreateAPIView):
@@ -487,6 +456,7 @@ def get_correction_template(request, facility_id):
 
 class DashBoard(APIView):
     queryset = Facility.objects.all()
+    filter_class = FacilityFilter
 
     def get_facility_wards_summary(self):
         wards = Ward.objects.all()

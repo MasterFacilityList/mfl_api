@@ -26,7 +26,9 @@ DATABASES = {
 }  # Env should have DATABASE_URL
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,8 +85,18 @@ LOCAL_APPS = [
     'data_bootstrap',
     'data',
 ]
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken',
+    'if-modified-since',
+    'if-none-match'
+)
 AUTH_USER_MODEL = 'users.MflUser'
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -120,9 +132,10 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework.renderers.JSONRenderer',
         'rest_framework_xml.renderers.XMLRenderer',
-        'rest_framework_csv.renderers.CSVRenderer',
+        'common.renderers.CSVRenderer',
         'common.renderers.ExcelRenderer',
     ),
+    'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
@@ -131,7 +144,7 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 50,
     'PAGINATE_BY_PARAM': 'page_size',
     # Should be able to opt in to see all wards at once
-    'MAX_PAGINATE_BY': 1500,
+    'MAX_PAGINATE_BY': 15000,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -216,6 +229,10 @@ LOGGING = {
         'mfl_gis': {
             'handlers': ['console'],
             'level': 'ERROR'
+        },
+        'exception_handler': {
+            'handlers': ['console'],
+            'level': 'ERROR'
         }
     }
 }
@@ -227,15 +244,22 @@ TEMPLATES = [
     },
 ]
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/tmp/django_cache',
-        'TIMEOUT': 60 * 60,
-        'OPTIONS': {
-            'MAX_ENTRIES': 10000
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "COMPRESS_MIN_LEN": 10,
+            "IGNORE_EXCEPTIONS": True,
         }
     }
 }
+CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default
+
+# cache for the gis views
+GIS_BORDERS_CACHE_SECONDS = (60 * 60 * 24 * 366)
+
+
 # django-allauth related settings
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
@@ -277,3 +301,7 @@ REST_AUTH_SERIALIZERS = {
 
 # django-allauth forces this atrocity on us ( true at the time of writing )
 SITE_ID = 1
+
+EXCEL_EXCEPT_FIELDS = [
+    'id', 'updated', 'created', 'created_by', 'updated_by', 'active',
+    'deleted', 'search']
