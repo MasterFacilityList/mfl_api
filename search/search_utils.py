@@ -2,15 +2,17 @@ import pydoc
 import json
 import uuid
 import requests
-
+import logging
 
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
+from .index_settings import INDEX_SETTINGS
 
 ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
 INDEX_NAME = settings.SEARCH.get('INDEX_NAME')
+LOGGER = logging.getLogger(__name__)
 
 
 def default(obj):
@@ -18,10 +20,33 @@ def default(obj):
         return str(obj)
 
 
+def get_model_fields(model_cls):
+    field_objs = model_cls._meta.get_fields()
+    char_fields = []
+    text_fields = []
+    other_fields = []
+    for field in field_objs:
+        try:
+            internal_type = field.get_internal_type()
+
+            if internal_type == 'CharField':
+                char_fields.append(field.name)
+            elif internal_type == 'TextField':
+                text_fields.append(field.name)
+            else:
+                other_fields.append(field.name)
+        except AttributeError:
+            msg = "Field {} of type {} has no method get_internal_type".format(
+                field.name, field.__class__.__name__)
+            LOGGER.info(msg)
+
+    return char_fields, text_fields, other_fields
+
+
 class ElasticAPI(object):
     def setup_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
-        result = requests.put(url)
+        result = requests.put(url, data=INDEX_SETTINGS)
         return result
 
     def get_index(self, index_name):
@@ -50,10 +75,21 @@ class ElasticAPI(object):
         return result
 
     def search_document(self, index_name, instance_type, query):
-        url = "{}{}{}{}{}{}{}".format(
-            ELASTIC_URL, index_name, "/", instance_type, "/",
-            '_search?q=', query)
-        result = requests.get(url)
+        document_type = instance_type.__name__.lower()
+        url = "{}{}/{}/_search".format(
+            ELASTIC_URL, index_name, document_type)
+        search_fields = get_model_fields(instance_type)[0] + get_model_fields(instance_type)[1]
+
+        data = {
+            "query": {
+                "multi_match": {
+                    "query": str(query),  # remove unicodes
+                    "fields": search_fields
+                }
+            }
+        }
+        data = json.dumps(data)
+        result = requests.post(url, data)
 
         return result
 

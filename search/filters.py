@@ -13,7 +13,7 @@ class SearchFilter(django_filters.filters.Filter):
         super(SearchFilter, self).filter(qs, value)
         api = ElasticAPI()
 
-        document_type = qs.model.__name__.lower()
+        document_type = qs.model
         index_name = settings.SEARCH.get('INDEX_NAME')
         result = api.search_document(index_name, document_type, value)
 
