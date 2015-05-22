@@ -266,7 +266,7 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
         try:
             # 4 decimal places for the web map ( about a meter )
-            PRECISION = 4
+            PRECISION = 3
             TOLERANCE = (1.0 / 10 ** PRECISION)
             geojson_dict = _simplify(
                 tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
