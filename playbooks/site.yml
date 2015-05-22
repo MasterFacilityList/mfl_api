@@ -4,6 +4,19 @@
   sudo: True
   roles:
     - common
-    - { role: frontend, server_name: mfl-public.slade360.co.ke }
+    - {
+        role: frontend,
+        server_name: mfl-public.azure.slade360.co.ke,
+        server_url: "http://mfl.azure.slade360.co.ke/",
+        username: serikalikuu@mfltest.slade360.co.ke,
+        password: serikalikuu,
+        client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
+        client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
+        tags: "public-frontend"
+      }
     - { role: postgresql }
-    - { role: api, server_name: mfl.azure.slade360.co.ke }
+    - {
+        role: api,
+        server_name: mfl.azure.slade360.co.ke,
+        tags: "api-server"
+      }

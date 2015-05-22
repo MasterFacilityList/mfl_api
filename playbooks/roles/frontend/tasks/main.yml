@@ -46,7 +46,8 @@
     owner="www-data"
   sudo: yes
   tags: mfl_frontend
-
+  notify:
+    - restart nginx
 
 - name: set nginx sites-enabled
   file: >
@@ -55,16 +56,20 @@
     state=link
   sudo: yes
   tags: mfl_frontend
-
+  notify:
+    - restart nginx
 
 - name: enable port 80 through firewall
   ufw: port=80 proto=tcp rule=allow
   tags: mfl_frontend
   sudo: yes
-
+  notify:
+    - enable ufw
 
 - name: enable port 443 through firewall
   ufw: port=443 proto=tcp rule=allow
   tags: mfl_frontend
   sudo: yes
   when: ssl_on
+  notify:
+    - enable ufw
