@@ -30,5 +30,10 @@ def custom_exception_handler(exc, context):
         return Response(data, status=status.HTTP_400_BAD_REQUEST)
     else:
         data = {'detail': 'Server Error: {}'.format(exc.__class__.__name__)}
+
+        # Keep this or you'll pull your hair out when **** hits the fan
+        import traceback
+        traceback.print_exc()
+
         LOGGER.error(exc)
         return Response(data, status=500)

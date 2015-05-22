@@ -3,6 +3,7 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
+from django.contrib.gis.geos import Polygon, LinearRing
 from django.contrib.gis.db.models import Union
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
@@ -235,6 +236,25 @@ class AdministrativeUnitBoundary(GISAbstractBase):
         from common.models.model_declarations import \
             _lookup_facility_coordinates
         return _lookup_facility_coordinates(self)
+
+    @property
+    def geometry(self):
+        """Reduce the precision of the geometries sent in list views"""
+        if not self.mpoly:
+            return None
+
+        precision = 6
+
+        def _downsampled_polygon():
+            polygon = self.mpoly.cascaded_union
+            downsampled_coords = [
+                (round(pair[0], precision), round(pair[1], precision))
+                for pair in polygon.coords[0]
+                if polygon.coords
+            ]
+            return Polygon(LinearRing(*(downsampled_coords)))
+
+        return _downsampled_polygon()
 
     def __unicode__(self):
         return self.name
