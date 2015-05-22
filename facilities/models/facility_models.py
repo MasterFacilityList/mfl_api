@@ -183,9 +183,6 @@ class FacilityType(AbstractBase):
     preceding = models.ForeignKey(
         'self', null=True, blank=True, related_name='preceding_type',
         help_text='The facility type that comes before this type')
-    suceedding = models.ForeignKey(
-        'self', null=True, blank=True, related_name='suceedding_type',
-        help_text='The facility type that comes afetr this type')
 
     def __unicode__(self):
         return self.name

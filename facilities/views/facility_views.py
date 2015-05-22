@@ -456,6 +456,7 @@ def get_correction_template(request, facility_id):
 
 class DashBoard(APIView):
     queryset = Facility.objects.all()
+    filter_class = FacilityFilter
 
     def get_facility_wards_summary(self):
         wards = Ward.objects.all()

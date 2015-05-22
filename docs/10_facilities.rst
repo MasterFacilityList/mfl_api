@@ -565,7 +565,7 @@ Facility service ratings
 To rate a facility service, simply make a ``POST`` to ``api/facilities/facility_service_ratings/`` with the
 facility_service's ``id`` and the score given. For example,
 
-.. code-block: javascript
+.. code-block:: javascript
 
     {
         "facility_service": "80613650-f765-4032-a9d3-bb0fc9cc37cc",
@@ -635,5 +635,370 @@ Analysis of facilities by regulator and regulation status
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TBD
 
-.. toctree::
+
+Facility types
+==============
+There are many types of facilities ranging from health centers,
+hospitals, dispensaries, national hospitals etc.
+
+Facility types form the basis of upgrading and downgrading of facilities.
+
+A facility type has five distinct fields:
+
+================ ==============================================================
+    Field          Explanation
+================ ==============================================================
+    id            The primary key of the facility type 
+
+    name           The name of the facility type e.g HEALTH_CENTER         
+
+    sub-division   A sub-division of the facility type e.g A hospitla has got
+                   several sub divisions e.g District Hospital of Provincial 
+                   Hospital
+
+    preceeding    A facility type that comes before the type e.g a Provincial
+                  Hospital comes before a National Hospital
+================ ==============================================================
+
+
+Creating A facility type
+------------------------
+``POST`` to ``api/facilities/facility_types/`` a payload similar to the one below
+
+.. code-block:: javascript
+    
+    {
+        "name": "Hospital",
+        "sub_division": "Provincial Hospital",
+        "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
+    }
+    
+
+Expected Response Code:
+    ``HTTP 201 CREATED``
+
+Expexcted sample data:
+
+.. code-block:: javascript
+
+    {
+        "id": "11494347-f40c-4fbb-8632-cc1f35fe1fc9",
+        "created": "2015-05-21T14:38:03.298142Z",
+        "updated": "2015-05-21T14:38:03.298162Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "name": "Hospital",
+        "sub_division": "Provincial Hospital",
+        "created_by": 1,
+        "updated_by": 1,
+        "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
+    }
+
+
+
+
+Listing Facillity types 
+-----------------------
+``GET`` the URL ``api/facilities/facility_types/``
+
+Sample Response data:
+
+.. code-block:: javascript
+
+        {
+            "count": 27,
+            "next": "http://localhost:8000/api/facilities/facility_types/?page=2",
+            "previous": null,
+            "results": [
+                {
+                    "id": "11494347-f40c-4fbb-8632-cc1f35fe1fc9",
+                    "created": "2015-05-21T14:38:03.298142Z",
+                    "updated": "2015-05-21T14:38:03.298162Z",
+                    "deleted": false,
+                    "active": true,
+                    "search": null,
+                    "name": "Hospital",
+                    "sub_division": "Provincial Hospital",
+                    "created_by": 1,
+                    "updated_by": 1,
+                    "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
+                },
+                {
+                    "id": "950047f7-dae4-4803-9818-9886004daaf1",
+                    "created": "2015-05-15T13:45:13.592372Z",
+                    "updated": "2015-05-15T13:45:13.592404Z",
+                    "deleted": false,
+                    "active": true,
+                    "search": null,
+                    "name": "District Hospital",
+                    "sub_division": null,
+                    "created_by": 1,
+                    "updated_by": 1,
+                    "preceding": null
+                }
+            ]
+    }
+
+Expected Response code:
+    ``HTTP 200 OK``
+
+
+Retrieving a facility type
+---------------------------
+``GET`` the URL ``api/facilities/facility_types/<id>/``
+
+For example to get the details of a facility type whose is 
+950047f7-dae4-4803-9818-9886004daaf1  do a ``GET`` to the URL 
+``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
+
+Sample Response data:
+
+.. code-block:: javascript
+
+    {
+        "id": "950047f7-dae4-4803-9818-9886004daaf1",
+        "created": "2015-05-15T13:45:13.592372Z",
+        "updated": "2015-05-15T13:45:13.592404Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "name": "District Hospital",
+        "sub_division": null,
+        "created_by": 1,
+        "updated_by": 1,
+        "preceding": null
+    }
+
+
+Expected Response code
+    ``HTTP 200 OK``
+
+
+Updating Facility types
+-----------------------
+``PATCH`` the URL ``api/facilities/facility_types/<id>/`` with a payload 
+containing the fields to be editted. For example to update a facility type's
+name whose id is 950047f7-dae4-4803-9818-9886004daaf1 do a ``PATCH`` to the URL 
+``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
+with a  payload similar to the one below
+
+.. code-block:: javascript
+
+    {
+        "name": "District Hospital Editted"
+    }
+
+Sample Expected Response data:
+
+.. code-block:: javascript
+
+    {
+        "id": "950047f7-dae4-4803-9818-9886004daaf1",
+        "created": "2015-05-15T13:45:13.592372Z",
+        "updated": "2015-05-15T13:45:13.592404Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "name": "District Hospital Editted",
+        "sub_division": null,
+        "created_by": 1,
+        "updated_by": 1,
+        "preceding": null,
+    }
+
+Expected Response Code:
+    ``HTTP 200 OK``
+
+
+Facility Upgrades and Downgrades
+================================
+
+Upgrading or downgrading a facility is as easy as changing the 
+facility type of a facility to another type. The person doing this should
+have the sufficient permssions to do so.
+This is however a two step process. The First step involves making the upgrade
+or the downgrade and the second involves confirming the upgrade or the
+downgrade.
+
+Upgrading/Downgrading a Facility (First Step)
+---------------------------------------------
+``POST`` to ``api/facilities/facility_upgrade/`` a payload similar to the one
+shown below
+
+.. code-block:: javascript
+
+    {   
+        "reason": "A good reason for the upgrade",
+        "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393", // id of the facility
+        "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75" // id of the facility type
+    }
+
+Sample Response Data:
+
+.. code-block:: javascript
+
+    {
+        "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+        "created": "2015-05-21T15:37:56.240505Z",
+        "updated": "2015-05-21T15:37:56.240522Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "reason": "A good reason for the upgrade",
+        "is_confirmed": false,
+        "is_cancelled": false,
+        "created_by": 3,
+        "updated_by": 3,
+        "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+        "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+    }
+
+Expected Response Code:
+    ``HTTP 201 CREATED``
+
+
+Confirming Upgrage or Downgrade (Second Step)
+---------------------------------------------   
+The CHRIO may choose to either to confirm or cancel a facility uprgrade 
+or downgrade.
+
+To confirm a facility upgrade/Downgrade ``PATCH``  
+``api/facilities/facility_upgrade/<id>`` where the id identifies a particular
+facility upgrade/downgrade.
+
+For example to confirm the facility upgrade done above do a ``PATCH`` to 
+``api/facilities/facility_upgrade/70610b2b-ddd8-49b4-8594-52c236a834d2`` 
+with the payload below:
+
+.. code-block:: javascript
+
+    {
+        "is_confirmed": true
+    }
+
+
+Expected Response data:
+
+.. code-block:: javascript
+
+    {
+        "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+        "created": "2015-05-21T15:37:56.240505Z",
+        "updated": "2015-05-21T15:37:56.240522Z",
+        "deleted": false,
+        "active": true,
+        "search": null,
+        "reason": "A good reason for the upgrade",
+        "is_confirmed": true,
+        "is_cancelled": false,
+        "created_by": 3,
+        "updated_by": 3,
+        "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+        "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+    }
+
+Expected HTTP Response code
+    ``HTTP 200 OK``
+
+
+Cancelling a facility upgrade/Downgrade(Second Step)
+----------------------------------------------------
+Cancelling a facility upgrade or downgrade is very similar to confirming a
+facility upgrade with a minor change 
+in the payload sent.
+
+Do a ``PATCH``  to the url ``api/facilities/facility_upgrade/<id>/`` 
+with a payload similar to the one shown below:
+
+.. code-block:: javascript
+
+    {
+        "is_cancelled": true
+    }
+
+
+.. note::
+
+    It is after the confirmation of a facility upgrade or downgrade that a facility
+    is deemed to have been upgraded or downgraded and the changes reflected in 
+    the facility.
+
+Listing Facilities that are due for upgrade/downgrade Confirmation
+------------------------------------------------------------------
+``GET`` the URL ``/api/facilities/facility_upgrade/?is_confirmed=false``
+
+
+Sample Response data:
+
+.. code-block:: javascript
+    
+        {
+            "count": 1,
+            "next": null,
+            "previous": null,
+            "results": [
+                {
+                    "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+                    "created": "2015-05-21T15:37:56.240505Z",
+                    "updated": "2015-05-21T15:37:56.240522Z",
+                    "deleted": false,
+                    "active": true,
+                    "search": null,
+                    "reason": "A good reason for the upgrade",
+                    "is_confirmed": false,
+                    "is_cancelled": false,
+                    "created_by": 3,
+                    "updated_by": 3,
+                    "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+                    "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+                }
+        ]
+    }
+
+
+Expected Response code:
+    ``HTTP 200 OK``
+
+Listing all the facilties whose upgrades and downgrades have been declined:
+``GET`` the URL ``/api/facilities/facility_upgrade/?is_cacelled=true``
+
+The resulting payload and expected response code are similar the ones above
+
+
+Listing all the the Upgrades/Downgrades of a facility
+-----------------------------------------------------
+``GET`` the URL ``/api/facilities/facility_upgrade/?facility=<id>``
+
+For example a get to the URL 
+``api/facilities/facility_upgrade/?facility=cc585b49-dc42-47a3-a08a-7f2c3963339311``
+results in the data shown below and the a response code of ``HTTTP 200 OK``
+
+.. code-block:: javascript
+    
+    {
+        "count": 1,
+        "next": null,
+        "previous": null,
+        "results": [
+            {
+                "id": "70610b2b-ddd8-49b4-8594-52c236a834d2",
+                "created": "2015-05-21T15:37:56.240505Z",
+                "updated": "2015-05-21T15:37:56.240522Z",
+                "deleted": false,
+                "active": true,
+                "search": null,
+                "reason": "A good reason for the upgrade",
+                "is_confirmed": true,
+                "is_cancelled": true,
+                "created_by": 3,
+                "updated_by": 3,
+                "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393",
+                "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75"
+            }
+        ]
+    }
+
+
+.. toctree:: 
     :maxdepth: 2
