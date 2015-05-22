@@ -874,7 +874,7 @@ class DashBoard(APIView):
             "constituencies_summary": self.get_facility_constituency_summary(),
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
-            "regulator_summry": self.get_facility_regulators_summary()
+            "regulator_summary": self.get_facility_regulators_summary()
         }
 
         return Response(data)
