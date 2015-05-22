@@ -74,3 +74,13 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         }
 
         _write_excel_file(data)
+
+
+class TestCsvRenderer(LoginMixin, APITestCase):
+    def test_get_csv_from_end_point(self):
+        url = reverse('api:common:counties_list')
+        excel_url = url + "?format=csv"
+        mommy.make(County)
+        mommy.make(County)
+        response = self.client.get(excel_url)
+        self.assertEquals(200, response.status_code)
