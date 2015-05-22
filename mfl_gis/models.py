@@ -4,6 +4,7 @@ import json
 
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models import Union
+from django.contrib.gis.geos import Polygon, MultiPolygon
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -242,18 +243,36 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
         This produces a MASSIVE saving in rendering time
         """
-        try:
-            # 4 decimal places for the web map ( about a meter )
-            PRECISION = 4
-            geojson_dict = json.loads(
-                self.mpoly.cascaded_union.convex_hull.simplify(
+        def _simplify(tolerance, geometry):
+            if isinstance(geometry, MultiPolygon):
+                polygon = None
+                for child_polygon in geometry:
+                    if polygon:
+                        polygon.extend(child_polygon)
+                    else:
+                        polygon = child_polygon
+                LOGGER.debug(
+                    'Created a polygon {} out of multipolygon {}'
+                    .format(type(polygon), type(geometry))
+                )
+            else:
+                polygon = geometry
+
+            return json.loads(
+                polygon.simplify(
                     tolerance=(1.0 / 10 ** PRECISION)
                 ).geojson
             )
+
+        try:
+            # 4 decimal places for the web map ( about a meter )
+            PRECISION = 4
+            TOLERANCE = (1.0 / 10 ** PRECISION)
+            geojson_dict = _simplify(
+                tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
+            )
             original_coordinates = geojson_dict['coordinates']
             assert original_coordinates
-            LOGGER.debug(
-                "Original coordinates: \n{}\n".format(original_coordinates[0]))
             new_coordinates = [
                 [
                     [
