@@ -3,7 +3,13 @@ from django.contrib.gis.geos import Point
 from rest_framework.exceptions import ValidationError
 from common.tests.test_models import BaseTestCase
 
-from ..models import GeoCodeSource, GeoCodeMethod, FacilityCoordinates
+from ..models import (
+    GeoCodeSource, GeoCodeMethod, FacilityCoordinates, WorldBorder)
+
+
+class TestWorldBoundaryModel(BaseTestCase):
+    def test_geom_property(self):
+        self.assertEqual(WorldBorder().geometry, {})
 
 
 class TestGeoCodeSourceModel(BaseTestCase):

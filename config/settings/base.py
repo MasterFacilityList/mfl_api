@@ -84,8 +84,18 @@ LOCAL_APPS = [
     'data_bootstrap',
     'data',
 ]
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken',
+    'if-modified-since',
+    'if-none-match'
+)
 AUTH_USER_MODEL = 'users.MflUser'
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -124,6 +134,7 @@ REST_FRAMEWORK = {
         'common.renderers.CSVRenderer',
         'common.renderers.ExcelRenderer',
     ),
+    'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
@@ -217,6 +228,10 @@ LOGGING = {
         'mfl_gis': {
             'handlers': ['console'],
             'level': 'ERROR'
+        },
+        'exception_handler': {
+            'handlers': ['console'],
+            'level': 'ERROR'
         }
     }
 }
@@ -241,7 +256,7 @@ CACHES = {
 CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default
 
 # cache for the gis views
-GIS_BORDERS_CACHE_SECONDS = (60 * 60 * 24 * 30)
+GIS_BORDERS_CACHE_SECONDS = (60 * 60 * 24 * 366)
 
 
 # django-allauth related settings
