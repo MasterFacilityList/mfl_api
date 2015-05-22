@@ -254,10 +254,6 @@ class AdministrativeUnitBoundary(GISAbstractBase):
                         polygon.extend(child_polygon)
                     else:
                         polygon = child_polygon
-                LOGGER.debug(
-                    'Created a polygon {} out of multipolygon {}'
-                    .format(type(polygon), type(geometry))
-                )
             else:
                 polygon = geometry
 
@@ -267,30 +263,28 @@ class AdministrativeUnitBoundary(GISAbstractBase):
                 ).geojson
             )
 
-        try:
-            # 4 decimal places for the web map ( about a meter )
-            PRECISION = 3
-            TOLERANCE = (1.0 / 10 ** PRECISION)
-            geojson_dict = _simplify(
-                tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
-            )
-            original_coordinates = geojson_dict['coordinates']
-            assert original_coordinates
-            new_coordinates = [
+        # 3 decimal places for the web map ( about 10 meter accuracy )
+        PRECISION = 3
+        TOLERANCE = (1.0 / 10 ** PRECISION)
+        geojson_dict = _simplify(
+            tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
+        )
+        original_coordinates = geojson_dict['coordinates']
+        assert original_coordinates
+        new_coordinates = [
+            [
                 [
-                    [
-                        round(coordinate_pair[0], PRECISION),
-                        round(coordinate_pair[1], PRECISION)
-                    ]
-                    for coordinate_pair in original_coordinates[0]
-                    if coordinate_pair
+                    round(coordinate_pair[0], PRECISION),
+                    round(coordinate_pair[1], PRECISION)
                 ]
+                for coordinate_pair in original_coordinates[0]
+                if coordinate_pair
+                and isinstance(float, coordinate_pair[0])
+                and isinstance(float, coordinate_pair[1])
             ]
-            geojson_dict['coordinates'] = new_coordinates
-            return geojson_dict
-        except Exception as ex:  # Will bre re-raised after logging / debugging
-            LOGGER.error(ex)
-            raise
+        ]
+        geojson_dict['coordinates'] = new_coordinates
+        return geojson_dict
 
     def __unicode__(self):
         return self.name
