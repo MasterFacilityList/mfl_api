@@ -577,10 +577,15 @@ Facility downloads
 
 Facility cover letters
 +++++++++++++++++++++++++
-``GET`` the URL ``api/facilities/facility_cover_report/<id>/``
 
+To get a copy of a facilities cover letter:
+
+``GET`` the URL ``api/facilities/facility_cover_report/<id>/``
+ 
 Facility correction templates
 ++++++++++++++++++++++++++++++++
+To get a facilities correction templates:
+
 ``GET`` the URL ``api/facilities/facility_correction_template/<id>/``
 
 Facility Excel reports
