@@ -4,7 +4,7 @@ import json
 
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models import Union
-from django.contrib.gis.geos import Polygon, MultiPolygon
+from django.contrib.gis.geos import MultiPolygon
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -243,6 +243,9 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
         This produces a MASSIVE saving in rendering time
         """
+        if not self.mpoly:
+            return self.mpoly
+
         def _simplify(tolerance, geometry):
             if isinstance(geometry, MultiPolygon):
                 polygon = None
