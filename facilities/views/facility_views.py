@@ -111,6 +111,18 @@ class QuerysetFilterMixin(object):
 
 
 class RegulatingBodyContactListView(generics.ListCreateAPIView):
+    """
+    Lists and creates regulatory contact details
+
+    contact --  A contact pk
+    regulatory_body -- A regulatory bodies pk
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = RegulatingBodyContact.objects.all()
     serializer_class = RegulatingBodyContactSerializer
     filter_class = RegulatingBodyContactFilter
@@ -118,11 +130,24 @@ class RegulatingBodyContactListView(generics.ListCreateAPIView):
 
 
 class RegulatingBodyContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular regulatory body contact.
+    """
     queryset = RegulatingBodyContact.objects.all()
     serializer_class = RegulatingBodyContactSerializer
 
 
 class FacilityUpgradeListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility upgrades and downloads
+
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityUpgrade.objects.all()
     serializer_class = FacilityUpgradeSerializer
     filter_class = FacilityUpgradeFilter
@@ -130,11 +155,24 @@ class FacilityUpgradeListView(generics.ListCreateAPIView):
 
 
 class FacilityUpgradeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility upgrade or downgrade
+    """
     queryset = FacilityUpgrade.objects.all()
     serializer_class = FacilityUpgradeSerializer
 
 
 class FacilityOperationStateListView(generics.ListCreateAPIView):
+    """
+    Lists and creates operation statuses for facilities
+
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityOperationState.objects.all()
     serializer_class = FacilityOperationStateSerializer
     filter_class = FacilityOperationStateFilter
@@ -142,11 +180,25 @@ class FacilityOperationStateListView(generics.ListCreateAPIView):
 
 
 class FacilityOperationStateDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular operation status
+    """
     queryset = FacilityOperationState.objects.all()
     serializer_class = FacilityOperationStateSerializer
 
 
 class FacilityApprovalListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility approvals
+
+    facility -- A pk of the facility
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityApproval.objects.all()
     serializer_class = FacilityApprovalSerializer
     filter_class = FacilityApprovalFilter
@@ -154,11 +206,24 @@ class FacilityApprovalListView(generics.ListCreateAPIView):
 
 
 class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility approval
+    """
     queryset = FacilityApproval.objects.all()
     serializer_class = FacilityApprovalSerializer
 
 
 class ServiceCategoryListView(generics.ListCreateAPIView):
+    """
+    Lists and creates service categories
+
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
     filter_class = ServiceCategoryFilter
@@ -167,11 +232,24 @@ class ServiceCategoryListView(generics.ListCreateAPIView):
 
 class ServiceCategoryDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular service category
+    """
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
 
 
 class OptionListView(generics.ListCreateAPIView):
+    """
+    Lists and Creates options
+
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = Option.objects.all()
     serializer_class = OptionSerializer
     filter_class = OptionFilter
@@ -180,11 +258,25 @@ class OptionListView(generics.ListCreateAPIView):
 
 class OptionDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a a particular option
+    """
     queryset = Option.objects.all()
     serializer_class = OptionSerializer
 
 
 class ServiceListView(generics.ListCreateAPIView):
+    """
+    Lists and creates services
+
+    category -- Service category pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
     filter_class = ServiceFilter
@@ -193,11 +285,26 @@ class ServiceListView(generics.ListCreateAPIView):
 
 class ServiceDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular service
+    """
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
 
 class FacilityServiceListView(generics.ListCreateAPIView):
+    """
+    Lists and creates links between facilities and services
+
+    facility -- A facility's pk
+    selected_option -- A service selected_option's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityService.objects.all()
     serializer_class = FacilityServiceSerializer
     filter_class = FacilityServiceFilter
@@ -206,22 +313,43 @@ class FacilityServiceListView(generics.ListCreateAPIView):
 
 class FacilityServiceDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility service detail
+    """
     queryset = FacilityService.objects.all()
     serializer_class = FacilityServiceSerializer
 
 
 class FacilityServiceRatingListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility's services ratings
+    """
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
     ordering_fields = ('rating', )
 
 
 class FacilityServiceRatingDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility service rating
+    """
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
 
 
 class ServiceOptionListView(generics.ListCreateAPIView):
+    """
+    Lists and creates service options
+
+    service -- A service's pk
+    option -- An option's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = ServiceOption.objects.all()
     serializer_class = ServiceOptionSerializer
     filter_class = ServiceOptionFilter
@@ -230,11 +358,27 @@ class ServiceOptionListView(generics.ListCreateAPIView):
 
 class ServiceOptionDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular service option
+    """
     queryset = ServiceOption.objects.all()
     serializer_class = ServiceOptionSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility units
+
+    facility -- A facility's pk
+    name -- Name of a facility unit
+    description -- Description of a facility unit
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityUnit.objects.all()
     serializer_class = FacilityUnitSerializer
     ordering_fields = ('name', 'facility', 'regulating_body',)
@@ -243,11 +387,24 @@ class FacilityUnitsListView(generics.ListCreateAPIView):
 
 class FacilityUnitDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility unit's detail
+    """
     queryset = FacilityUnit.objects.all()
     serializer_class = FacilityUnitSerializer
 
 
 class FacilityStatusListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility operation statuses
+
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityStatus.objects.all()
     serializer_class = FacilityStatusSerializer
     ordering_fields = ('name',)
@@ -256,11 +413,24 @@ class FacilityStatusListView(generics.ListCreateAPIView):
 
 class FacilityStatusDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular operation status
+    """
     queryset = FacilityStatus.objects.all()
     serializer_class = FacilityStatusSerializer
 
 
 class JobTitleListView(generics.ListCreateAPIView):
+    """
+    Lists and creates job titles
+
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = JobTitle.objects.all()
     serializer_class = JobTitleSerializer
     ordering_fields = ('name',)
@@ -269,11 +439,27 @@ class JobTitleListView(generics.ListCreateAPIView):
 
 class JobTitleDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular job title
+    """
     queryset = JobTitle.objects.all()
     serializer_class = JobTitleSerializer
 
 
 class OfficerListView(generics.ListCreateAPIView):
+    """
+    Lists and creates officers
+
+    name  -- name of an officer
+    registration_number -- The official registration  number of an officer
+    job_title --  A job title's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = Officer.objects.all()
     serializer_class = OfficerSerializer
     ordering_fields = ('name', 'job_title', 'registration_number',)
@@ -282,11 +468,26 @@ class OfficerListView(generics.ListCreateAPIView):
 
 class OfficerDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular officer
+    """
     queryset = Officer.objects.all()
     serializer_class = OfficerSerializer
 
 
 class RegulatingBodyListView(generics.ListCreateAPIView):
+    """
+    Lists and creates regulatory bodies
+
+    name -- Name of a regulatory body
+    abbreviation -- The abbreviation of a regulatory body
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = RegulatingBody.objects.all()
     serializer_class = RegulatingBodySerializer
     ordering_fields = ('name', 'abbreviation',)
@@ -295,11 +496,26 @@ class RegulatingBodyListView(generics.ListCreateAPIView):
 
 class RegulatingBodyDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular regulatory body details
+    """
     queryset = RegulatingBody.objects.all()
     serializer_class = RegulatingBodySerializer
 
 
 class OwnerTypeListView(generics.ListCreateAPIView):
+    """
+    Lists and creates a owners
+
+    name --  The name of an owner type
+    description --  Description of an owner type
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = OwnerType.objects.all()
     serializer_class = OwnerTypeSerializer
     ordering_fields = ('name', )
@@ -308,11 +524,26 @@ class OwnerTypeListView(generics.ListCreateAPIView):
 
 class OwnerTypeDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular owner type
+    """
     queryset = OwnerType.objects.all()
     serializer_class = OwnerTypeSerializer
 
 
 class OfficerContactListView(generics.ListCreateAPIView):
+    """
+    Lists and creates officer contacts
+
+    officer -- An officer's pk
+    contact --  A contacts pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = OfficerContact.objects.all()
     serializer_class = OfficerContactSerializer
     ordering_fields = ('officer', 'contact',)
@@ -321,11 +552,29 @@ class OfficerContactListView(generics.ListCreateAPIView):
 
 class OfficerContactDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular officer contact detail
+    """
     queryset = OfficerContact.objects.all()
     serializer_class = OfficerContactSerializer
 
 
 class OwnerListView(generics.ListCreateAPIView):
+    """
+    List and creates a list of owners
+
+    name -- The name of an owner
+    description -- The description of an owner
+    abbreviation -- The abbreviation of an owner
+    code --  The code of an owner
+    owner_type -- An owner-type's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
     filter_class = OwnerFilter
@@ -334,11 +583,44 @@ class OwnerListView(generics.ListCreateAPIView):
 
 class OwnerDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular owner's details
+    """
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
 
 
 class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
+    """
+    Lists and creates facilities
+
+    name -- The name of the facility
+    code -- A list of comma separated facility codes (one or more)
+    description -- The description of the facility
+    facility_type -- A list of comma separated facility type's pk
+    operation_status -- A list of comma separated operation statuses pks
+    ward -- A list of comma separated ward pks (one or more)
+    ward_code -- A list of comma separated ward codes
+    county_code -- A list of comma separated county codes
+    constituency_code -- A list of comma separated constituency codes
+    county -- A list of comma separated county pks
+    constituency -- A list of comma separated constituency pks
+    owner -- A list of comma separated owner pks
+    officer_in_charge -- A list of comma separated officer pks
+    number_of_beds -- A list of comma separated integers
+    number_of_cots -- A list of comma separated integers
+    open_whole_day -- Boolean True/False
+    is_classified -- Boolean True/False
+    is_published -- Boolean True/False
+    is_regulated -- Boolean True/False
+    service_category -- A service category's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
     filter_class = FacilityFilter
@@ -351,11 +633,26 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
 class FacilityDetailView(
         QuerysetFilterMixin, AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility
+    """
     queryset = Facility.objects.all()
     serializer_class = FacilityDetailSerializer
 
 
 class FacilityContactListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility contacts
+
+    facility -- A facility's pk
+    contact -- A contact's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityContact.objects.all()
     serializer_class = FacilityContactSerializer
     filter_class = FacilityContactFilter
@@ -364,11 +661,28 @@ class FacilityContactListView(generics.ListCreateAPIView):
 
 class FacilityContactDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility contact
+    """
     queryset = FacilityContact.objects.all()
     serializer_class = FacilityContactSerializer
 
 
 class FacilityRegulationStatusListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facilities regulation statuses
+
+    facility -- A facility's pk
+    regulating_body -- A regulating body's pk
+    regulation_status -- A regulation status's pk
+    reason -- A reason for a certain regulation status
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityRegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer
     filter_class = FacilityRegulationStatusFilter
@@ -379,11 +693,26 @@ class FacilityRegulationStatusListView(generics.ListCreateAPIView):
 class FacilityRegulationStatusDetailView(
         AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility's regulation status
+    """
     queryset = FacilityRegulationStatus.objects.all()
     serializer_class = FacilityRegulationStatusSerializer
 
 
 class FacilityTypeListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility types
+
+    name -- Name of a facility type
+    sub_division -- A sub-division in a facility type
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityType.objects.all()
     serializer_class = FacilityTypeSerializer
     filter_class = FacilityTypeFilter
@@ -392,12 +721,27 @@ class FacilityTypeListView(generics.ListCreateAPIView):
 
 class FacilityTypeDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility types detail
+    """
     queryset = FacilityType.objects.all()
     serializer_class = FacilityTypeSerializer
 
 
 class RegulationStatusListView(
         AuditableDetailViewMixin, generics.ListCreateAPIView):
+    """
+    Lists and creates regulation statuses
+
+    name -- name of a regulation status
+    description -- description of a regulation status
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = RegulationStatus.objects.all()
     serializer_class = RegulationStatusSerializer
     filter_class = RegulationStatusFilter
@@ -406,6 +750,9 @@ class RegulationStatusListView(
 
 class RegulationStatusDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular regulation status
+    """
     queryset = RegulationStatus.objects.all()
     serializer_class = RegulationStatusSerializer
 
