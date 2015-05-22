@@ -19,7 +19,6 @@ from .views import (
     TownDetailView,
     PhysicalAddressView,
     PhysicalAddressDetailView,
-    download_file,
     download_pdf
 )
 
@@ -28,9 +27,6 @@ urlpatterns = patterns(
     '',
     url(r'^download_pdf/$',
         download_pdf, name='download_pdf'),
-
-    url(r'^download/(?P<file_name>\w+)/(?P<file_extension>\w+)/$',
-        download_file, name='download_file'),
 
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),

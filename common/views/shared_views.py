@@ -164,25 +164,6 @@ def root_redirect_view(request):
 
 
 @never_cache
-def download_file(request, file_name=None, file_extension=None):
-    full_file_name = file_name + "." + file_extension
-    file_path = os.path.join(settings.BASE_DIR, full_file_name)
-    if os.path.exists(file_path):
-        my_file = open(file_path)
-        response = HttpResponse(
-            FileWrapper(my_file), content_type='text/csv')
-        response[
-            'Content-Disposition'] = 'attachment; filename="{}"'.format(
-            os.path.basename(file_path)
-        )
-        response['X-Sendfile'] = smart_str(file_path)
-        return response
-    else:
-        data = "The file does not exist"
-        raise ValidationError(detail=data)
-
-
-@never_cache
 def download_pdf(request):
     file_url = request.GET.get('file_url', None)
     file_name = request.GET.get('file_name', None)

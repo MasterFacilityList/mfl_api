@@ -131,7 +131,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework.renderers.JSONRenderer',
         'rest_framework_xml.renderers.XMLRenderer',
-        'rest_framework_csv.renderers.CSVRenderer',
+        'common.renderers.CSVRenderer',
         'common.renderers.ExcelRenderer',
     ),
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
@@ -143,7 +143,7 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 50,
     'PAGINATE_BY_PARAM': 'page_size',
     # Should be able to opt in to see all wards at once
-    'MAX_PAGINATE_BY': 1500,
+    'MAX_PAGINATE_BY': 15000,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -300,3 +300,7 @@ REST_AUTH_SERIALIZERS = {
 
 # django-allauth forces this atrocity on us ( true at the time of writing )
 SITE_ID = 1
+
+EXCEL_EXCEPT_FIELDS = [
+    'id', 'updated', 'created', 'created_by', 'updated_by', 'active',
+    'deleted', 'search']
