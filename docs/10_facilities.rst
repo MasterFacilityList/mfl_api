@@ -527,23 +527,6 @@ set to ``true``. A facility is not classified by default.
     control, limiting publishing to users with the ``publish_facilities``
     permission.
 
-The Facility approval workflow
-+++++++++++++++++++++++++++++++++
-TBD - Makers, checkers
-
-The facility upgrade workflow
-+++++++++++++++++++++++++++++++
-TBD - implement a transitions graph in the database ( setup ); owner type linked
-TBD - add data for that
-TBD - document!
-
-The facility downgrade workflow
-++++++++++++++++++++++++++++++++++
-TBD
-
-The facility regulation workflow
-+++++++++++++++++++++++++++++++++++
-TBD
 
 Facility ratings
 -------------------
@@ -593,12 +576,12 @@ Facility downloads
     collection and data updates in the field.
 
 Facility cover letters
-++++++++++++++++++++++++++
-TBD
++++++++++++++++++++++++++
+``GET`` the URL ``api/facilities/facility_cover_report/<id>/``
 
 Facility correction templates
 ++++++++++++++++++++++++++++++++
-TBD
+``GET`` the URL ``api/facilities/facility_correction_template/<id>/``
 
 Facility Excel reports
 +++++++++++++++++++++++++
@@ -613,27 +596,126 @@ Facility Excel reports
         * it can use all the available filters
         * every API ( not just the facilities API ) can produce CSV and Excel
 
-TBD
+    e.g  to get an excel file of facilities:
+    ``GET`` the URL ``api/facilities/facilities/?format=excel``
+
 
 Facility dashboard APIs
 --------------------------
-TBD - overall explanation of simple dashboards purpose / role
+TThe dasboard API does a high level analysis of different aspects of the facilities.
+Currently It support analysis of facilities by owners, administrative units, regulatory status 
+and facility types.
+To get the analyzed data:
+``GET`` the URL ``api/facilities/dashboard/``
+Sample Expected data
 
-Analysis of facilities by administrative units
-++++++++++++++++++++++++++++++++++++++++++++++++++
-TBD
-
-Analysis of facilities by type
-++++++++++++++++++++++++++++++++
-TBD
-
-Analysis of facilities by owner and owner category
-+++++++++++++++++++++++++++++++++++++++++++++++++++++
-TBD
-
-Analysis of facilities by regulator and regulation status
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-TBD
+.. code-block:: javascript
+    
+    {
+        "owners_summary": {
+            "Academic (if registered)": 30,
+            "Non-Governmental Organizations": 265,
+            "Other Public Institution": 68,
+            "Company Medical Service": 78,
+            "Private Practice - General Practitioner": 332,
+            "Private Practice - Medical Specialist": 139,
+            "Parastatal": 12,
+            "Private Practice - Clinical Officer": 451,
+            "Christian Health Association of Kenya": 300,
+            "Ministry of Health": 3658,
+            "Private Practice - Nurse / Midwife": 844,
+            "State Coorporation": 5,
+            "Local Authority": 101,
+            "Humanitarian Agencies": 3,
+            "Private Enterprise (Institution)": 1203,
+            "Supreme Council for Kenya Muslims": 10,
+            "Private Practice - Unspecified": 179,
+            "Kenya Episcopal Conference-Catholic Secretariat": 318,
+            "Other Faith Based": 225,
+            "Armed Forces": 14,
+            "NOT IN LIST": 0,
+            "Community": 88,
+            "Local Authority T Fund": 5,
+            "Community Development Fund": 33
+        },
+        "county_summary": {
+            "KISUMU": 127,
+            "KIAMBU": 333,
+            "BOMET": 117,
+            "NYAMIRA": 114,
+            "LAIKIPIA": 148       
+        },
+        "total_facilities": 8361,
+        "wards_summary": {
+            "BASUBA": 1,
+            "SUAM": 2,
+            "MASONGALENI": 1,
+            "MENENGAI": 10
+        },
+        "regulator_summry": {
+            "Ministry of Health": {
+                "units": 0,
+                "facilities": 8051
+            },
+            "Kenya MPDB - Private Practice": {
+                "units": 0,
+                "facilities": 1362
+            },
+            "Kenya MPDB - Institution": {
+                "units": 0,
+                "facilities": 3832
+            },
+            "Nursing Council of Kenya (Private Practice)": {
+                "units": 0,
+                "facilities": 1606
+            },
+            "Pharmacy & Poisons Board": {
+                "units": 0,
+                "facilities": 44
+            },
+            "Other": {
+                "units": 0,
+                "facilities": 992
+            },
+            "Clinical Officers Council": {
+                "units": 0,
+                "facilities": 872
+            }
+        },
+        "constituencies_summary": {
+            "LAIKIPIA WEST": 46,
+            "CENTRAL IMENTI": 31
+            
+        },
+        "types_summary": {
+            "Other Hospital": 196,
+            "Not in List": 16,
+            "District Hospital": 119,
+            "Training Institution in Health (Stand-alone)": 5,
+            "VCT Centre (Stand-Alone)": 125,
+            "Dispensary": 3808,
+            "Laboratory (Stand-alone)": 23,
+            "Maternity Home": 43,
+            "Health Centre": 901,
+            "Funeral Home (Stand-alone)": 1,
+            "Medical Centre": 21,
+            "Nursing Home": 172,
+            "Sub-District Hospital": 119,
+            "Dental Clinic": 26,
+            "Rural Health Training Centre": 1,
+            "District Health Office": 3,
+            "Health Project": 6,
+            "Provincial General Hospital": 7,
+            "Medical Clinic": 2735,
+            "Regional Blood Transfusion Centre": 1,
+            "Eye Centre": 9,
+            "Blood Bank": 1,
+            "Eye Clinic": 3,
+            "National Referral Hospital": 2,
+            "Health Programme": 9,
+            "Radiology Unit": 9
+        }
+    }
 
 
 Facility types
