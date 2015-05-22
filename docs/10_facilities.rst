@@ -601,10 +601,11 @@ Facility Excel reports
 
 
 Facility dashboard APIs
---------------------------
-TThe dasboard API does a high level analysis of different aspects of the facilities.
-Currently It support analysis of facilities by owners, administrative units, regulatory status 
-and facility types.
+++++++++++++++++++++++++++
+The dasboard API does a high level analysis of different aspects of the facilities.
+Currently, it supports analysis of facilities by owners, administrative units, 
+regulatory statuses and facility types.
+
 To get the analyzed data:
 ``GET`` the URL ``api/facilities/dashboard/``
 Sample Expected data
@@ -652,7 +653,7 @@ Sample Expected data
             "MASONGALENI": 1,
             "MENENGAI": 10
         },
-        "regulator_summry": {
+        "regulator_summary": {
             "Ministry of Health": {
                 "units": 0,
                 "facilities": 8051
