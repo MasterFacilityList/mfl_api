@@ -69,10 +69,10 @@ class CommunityHealthUnitContactListView(generics.ListCreateAPIView):
 
     health_unit -- A community health unit pk
     contact  -- A contact id
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
-    Created_by -- User who created the status
-    Updated_by -- User who updated the status
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
@@ -97,10 +97,10 @@ class ApproverListView(generics.ListCreateAPIView):
     Lists and creates entities who can approver community health units and
     community workers
 
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
-    Created_by -- User who created the status
-    Updated_by -- User who updated the status
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
@@ -123,17 +123,17 @@ class CommunityHealthUnitApprovalListView(generics.ListCreateAPIView):
     """
     Lists and creates Community Health Unit Approvals
 
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
-    Created_by -- User who created the status
-    Updated_by -- User who updated the status
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
     queryset = CommunityHealthUnitApproval.objects.all()
     serializer_class = CommunityHealthUnitApprovalSerializer
     filter_class = CommunityHealthUnitApprovalFilter
-    ordering_fields = ('health_unit', 'approver', 'approval_status')
+    ordering_fields = ('health_unit', 'approver', 'approval_record')
 
 
 class CommunityHealthUnitApprovalDetailView(
@@ -150,17 +150,17 @@ class CommunityHealthWorkerApprovalListView(generics.ListCreateAPIView):
     """
     Lists and creates Community Health Unit Workers Approvals
 
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
-    Created_by -- User who created the status
-    Updated_by -- User who updated the status
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
     queryset = CommunityHealthWorkerApproval.objects.all()
     serializer_class = CommunityHealthWorkerApprovalSerializer
     filter_class = CommunityHealthWorkerApprovalFilter
-    ordering_fields = ('health_worker', 'approver', 'approval_status')
+    ordering_fields = ('health_worker', 'approver', 'approval_record')
 
 
 class CommunityHealthWorkerApprovalDetailView(
@@ -204,8 +204,8 @@ class CommunityHealthUnitListView(generics.ListCreateAPIView):
     """
     Lists and creates community health units
 
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
     Created_by -- User who created the status
     Updated_by -- User who updated the status
     active  -- Boolean is the record active
@@ -231,10 +231,10 @@ class CommunityHealthWorkerListView(generics.ListCreateAPIView):
     Lists and creates community health workers
 
     health_unit -- A community health  unit
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
-    Created_by -- User who created the status
-    Updated_by -- User who updated the status
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
@@ -259,10 +259,10 @@ class CommunityHealthWorkerContactListView(generics.ListCreateAPIView):
 
     health_worker -- A community health worker
     contact -- A contact
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
-    Created_by -- User who created the status
-    Updated_by -- User who updated the status
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
@@ -276,7 +276,7 @@ class CommunityHealthWorkerContactDetailView(
         AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
     """
-    Retrieves a paritular community health_worker conatct
+    Retrieves a paritular community health_worker contact
 
     health_worker -- A community health worker
     contact -- A contact
