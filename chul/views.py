@@ -160,7 +160,7 @@ class CommunityHealthWorkerApprovalListView(generics.ListCreateAPIView):
     queryset = CommunityHealthWorkerApproval.objects.all()
     serializer_class = CommunityHealthWorkerApprovalSerializer
     filter_class = CommunityHealthWorkerApprovalFilter
-    ordering_fields = ('health_worker', 'approver', 'approval_record')
+    ordering_fields = ('health_worker', 'approver', 'approval_status')
 
 
 class CommunityHealthWorkerApprovalDetailView(
