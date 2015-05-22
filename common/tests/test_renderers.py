@@ -1,10 +1,14 @@
+from django.test import TestCase
 from django.core.urlresolvers import reverse
+
 from rest_framework.test import APITestCase
-from .test_views import LoginMixin
+from model_mommy import mommy
+
 
 from common.models import County
-from model_mommy import mommy
 from common.renderers.excel_renderer import _write_excel_file
+from .test_views import LoginMixin
+from ..renderers.shared import DownloadMixin
 
 
 class TestExcelRenderer(LoginMixin, APITestCase):
@@ -84,3 +88,12 @@ class TestCsvRenderer(LoginMixin, APITestCase):
         mommy.make(County)
         response = self.client.get(excel_url)
         self.assertEquals(200, response.status_code)
+
+
+class TestDownloadMixin(TestCase):
+    def test_update_download_headers(self):
+        down_load_mixin = DownloadMixin()
+        # this is mainly for coverage purpose
+        render_context = {}
+        self.assertIsNone(
+            down_load_mixin.update_download_headers(render_context))
