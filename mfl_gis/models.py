@@ -279,8 +279,8 @@ class AdministrativeUnitBoundary(GISAbstractBase):
                 ]
                 for coordinate_pair in original_coordinates[0]
                 if coordinate_pair
-                and isinstance(float, coordinate_pair[0])
-                and isinstance(float, coordinate_pair[1])
+                and isinstance(coordinate_pair[0], float)
+                and isinstance(coordinate_pair[1], float)
             ]
         ]
         geojson_dict['coordinates'] = new_coordinates
