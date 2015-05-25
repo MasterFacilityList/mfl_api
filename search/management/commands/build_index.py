@@ -1,7 +1,8 @@
 from django.core.management import BaseCommand
 from django.db.models import get_app, get_models
 from django.conf import settings
-from common.utilities.search_utils import index_instance
+
+from search.search_utils import index_instance, confirm_model_is_indexable
 
 
 class Command(BaseCommand):
@@ -17,25 +18,12 @@ class Command(BaseCommand):
         # optimize this to index in bulk
 
         apps_lists = settings.LOCAL_APPS
-        non_indexable_models = settings.SEARCH.get('NON_INDEXABLE_MODELS')
-        non_indexable_models_classes = []
-        non_indexable_models_names = []
-        for app_model in non_indexable_models:
-            app_name, cls_name = app_model.split('.')
-            non_indexable_models_names.append(cls_name)
-            app = get_app(app_name)
-            app_models = get_models(app)
-
-            for model_cls in app_models:
-                if model_cls.__name__ in non_indexable_models_names:
-                    non_indexable_models_classes.append(model_cls)
-        non_indexable_models_classes = list(set(non_indexable_models_classes))
 
         for app_name in apps_lists:
             app = get_app(app_name)
             for model in get_models(app):
-                if model not in non_indexable_models_classes:
-                    all_instances = model.objects.all()[0:3] \
+                if model and confirm_model_is_indexable(model):
+                    all_instances = model.objects.all()[0:100] \
                         if options.get('test') else model.objects.all()
                     [index_instance(obj) for obj in all_instances]
                     message = "Indexed {} {}".format(

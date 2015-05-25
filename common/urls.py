@@ -80,6 +80,7 @@ urlpatterns = patterns(
     url(r'^address/(?P<pk>[^/]+)/$',
         PhysicalAddressDetailView.as_view(),
         name='physical_address_detail'),
+
     url(r'^filtering_summaries/$',
         FilteringSummariesView.as_view(), name="filtering_summaries"),
 )

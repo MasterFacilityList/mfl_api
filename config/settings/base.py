@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'chul',
     'data',
     'mfl_gis',
+    'search',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
@@ -271,7 +272,7 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": False,
+    "REALTIME_INDEX": True,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
         "mfl_gis.WorldBorder",
