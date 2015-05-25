@@ -7,6 +7,8 @@ import logging
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.db.models import get_app, get_models
+from mfl_gis.models import FacilityCoordinates
 
 from .index_settings import INDEX_SETTINGS
 
@@ -91,6 +93,23 @@ class ElasticAPI(object):
         return result
 
 
+def confirm_model_is_indexable(model):
+        non_indexable_models = settings.SEARCH.get('NON_INDEXABLE_MODELS')
+        non_indexable_models_classes = []
+        non_indexable_models_names = []
+        for app_model in non_indexable_models:
+            app_name, cls_name = app_model.split('.')
+            non_indexable_models_names.append(cls_name)
+            app = get_app(app_name)
+            app_models = get_models(app)
+
+            for model_cls in app_models:
+                if model_cls.__name__ in non_indexable_models_names:
+                    non_indexable_models_classes.append(model_cls)
+        non_indexable_models_classes = list(set(non_indexable_models_classes))
+        return True if model not in non_indexable_models_classes else False
+
+
 def serialize_model(obj):
     """
     Locates a models serializer and uses it to serialize a model instance
@@ -110,27 +129,39 @@ def serialize_model(obj):
     serializer_path = "{}{}{}{}".format(
         app_label, ".serializers.", obj.__class__.__name__, 'Serializer')
     serializer_cls = pydoc.locate(serializer_path)
+    if not serializer_cls:
+        LOGGER.info("Unable to locate a serializer for model {}".format(
+            obj.__class__))
+    else:
 
-    serialized_data = serializer_cls(obj).data
+        serialized_data = serializer_cls(obj).data
 
-    serialized_data = json.dumps(serialized_data, default=default)
-    return {
-        "data": serialized_data,
-        "instance_type": obj.__class__.__name__.lower(),
-        "instance_id": str(obj.id)
-    }
+        serialized_data = json.dumps(serialized_data, default=default)
+        return {
+            "data": serialized_data,
+            "instance_type": obj.__class__.__name__.lower(),
+            "instance_id": str(obj.id)
+        }
 
 
 def index_instance(obj, index_name=INDEX_NAME):
     elastic_api = ElasticAPI()
-    data = serialize_model(obj)
-    return elastic_api.index_document(index_name, data)
+    if obj.__class__ == FacilityCoordinates:
+        import pdb
+        pdb.set_trace()
+    if confirm_model_is_indexable(obj.__class__):
+        data = serialize_model(obj)
+        return elastic_api.index_document(index_name, data)
+    else:
+        LOGGER.info(
+            "Instance of model {} skipped for indexing as it should not be"
+            " indexed".format(obj.__class__))
 
 
 @receiver(post_save)
 def index_on_save(sender, instance, **kwargs):
     """
-    Listen for save signals and index the insances being created.
+    Listen for save signals and index the instances being created.
     """
     app_label = instance._meta.app_label
     index_in_realtime = settings.SEARCH.get("REALTIME_INDEX")
