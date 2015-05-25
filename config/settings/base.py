@@ -141,7 +141,7 @@ REST_FRAMEWORK = {
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_METADATA_CLASS': 'common.metadata.CustomMetadata',
-    'PAGINATE_BY': 50,
+    'PAGINATE_BY': 25,
     'PAGINATE_BY_PARAM': 'page_size',
     # Should be able to opt in to see all wards at once
     'MAX_PAGINATE_BY': 15000,
