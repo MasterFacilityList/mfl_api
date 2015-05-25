@@ -35,7 +35,7 @@ class Command(BaseCommand):
             app = get_app(app_name)
             for model in get_models(app):
                 if model not in non_indexable_models_classes:
-                    all_instances = model.objects.all()[0:3] \
+                    all_instances = model.objects.all()[0:100] \
                         if options.get('test') else model.objects.all()
                     [index_instance(obj) for obj in all_instances]
                     message = "Indexed {} {}".format(

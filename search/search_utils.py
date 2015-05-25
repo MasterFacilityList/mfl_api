@@ -20,29 +20,6 @@ def default(obj):
         return str(obj)
 
 
-def get_model_fields(model_cls):
-    field_objs = model_cls._meta.get_fields()
-    char_fields = []
-    text_fields = []
-    other_fields = []
-    for field in field_objs:
-        try:
-            internal_type = field.get_internal_type()
-
-            if internal_type == 'CharField':
-                char_fields.append(field.name)
-            elif internal_type == 'TextField':
-                text_fields.append(field.name)
-            else:
-                other_fields.append(field.name)
-        except AttributeError:
-            msg = "Field {} of type {} has no method get_internal_type".format(
-                field.name, field.__class__.__name__)
-            LOGGER.info(msg)
-
-    return char_fields, text_fields, other_fields
-
-
 class ElasticAPI(object):
     def setup_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
@@ -79,11 +56,9 @@ class ElasticAPI(object):
         document_type = instance_type.__name__.lower()
         url = "{}{}/{}/_search".format(
             ELASTIC_URL, index_name, document_type)
-        search_fields = (get_model_fields(instance_type)[0]
-                         + get_model_fields(instance_type)[1])
-
         data = {
             "fields": [],  # return only _ids from the hits
+            "size": 30,  # return only 30 hits
             "query": {
                 "filtered": {
                     "query": {
