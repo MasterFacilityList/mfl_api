@@ -110,3 +110,17 @@ class UserCountySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = UserCounty
+
+
+class FilteringOptionsSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=200)
+    id = serializers.CharField(max_length=200)
+
+
+class FilteringSummariesSerializer(serializers.Serializer):
+    county = FilteringOptionsSerializer(many=True)
+    constituenncy = FilteringOptionsSerializer(many=True)
+    ward = FilteringOptionsSerializer(many=True)
+    facility_type = FilteringOptionsSerializer(many=True)
+    service_category = FilteringOptionsSerializer(many=True)
+    operation_status = FilteringOptionsSerializer(many=True)

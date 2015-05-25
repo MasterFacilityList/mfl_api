@@ -503,3 +503,18 @@ class TestDownloadView(LoginMixin, APITestCase):
         )
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+
+class FilteringSummariesView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(FilteringSummariesView, self).setUp()
+        self.url = reverse('api:common:filtering_summaries')
+
+    def test_get_summaries(self):
+        mommy.make(County, name="muranga")
+        ward = mommy.make(Ward, name='kizito')
+        mommy.make(Constituency, name='kiambaa')
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertTrue('ward' in response.data)
+        self.assertEqual(response.data['ward'][0]['name'], ward.name)
