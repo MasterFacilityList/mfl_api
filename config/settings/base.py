@@ -132,8 +132,8 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework.renderers.JSONRenderer',
         'rest_framework_xml.renderers.XMLRenderer',
-        # 'common.renderers.CSVRenderer',
-        # 'common.renderers.ExcelRenderer',
+        'common.renderers.CSVRenderer',
+        'common.renderers.ExcelRenderer',
     ),
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (

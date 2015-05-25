@@ -60,7 +60,7 @@ class TestElasticSearchAPI(TestCase):
         result = index_instance(facility, 'test_index')
         self.assertEquals(201, result.status_code)
         self.elastic_search_api.search_document(
-            index_name=index_name, instance_type='facility', query='tree')
+            index_name=index_name, instance_type=Facility, query='tree')
 
     def test_remove_document(self):
         index_name = 'test_index'

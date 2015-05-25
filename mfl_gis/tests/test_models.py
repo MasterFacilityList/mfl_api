@@ -60,6 +60,8 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         )
 
     def test_save(self):
+        import pdb
+        pdb.set_trace()
         facility_gps = mommy.make_recipe(
             'mfl_gis.tests.facility_coordinates_recipe'
         )
