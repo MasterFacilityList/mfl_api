@@ -83,10 +83,30 @@ class ElasticAPI(object):
                          + get_model_fields(instance_type)[1])
 
         data = {
+            "fields": [],  # return only _ids from the hits
             "query": {
-                "match": {
-                    "query": str(query),  # remove unicodes
-                    "fields": ["name"]
+                "filtered": {
+                    "query": {
+                        "query_string": {
+                            "query": query
+                        }
+                    },
+                    "filter": {
+                        "bool": {
+                            "must": [
+                                {
+                                    "term": {
+                                        "active": True
+                                    }
+                                },
+                                {
+                                    "term": {
+                                        "deleted": False
+                                    }
+                                }
+                            ]
+                        }
+                    }
                 }
             }
         }
