@@ -1,7 +1,7 @@
 from django.conf import settings
 
 import django_filters
-from .search_utils import ElasticAPI
+from search.search_utils import ElasticAPI
 
 
 class SearchFilter(django_filters.filters.Filter):

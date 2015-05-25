@@ -8,7 +8,6 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.db.models import get_app, get_models
-from mfl_gis.models import FacilityCoordinates
 
 from .index_settings import INDEX_SETTINGS
 
@@ -146,9 +145,6 @@ def serialize_model(obj):
 
 def index_instance(obj, index_name=INDEX_NAME):
     elastic_api = ElasticAPI()
-    if obj.__class__ == FacilityCoordinates:
-        import pdb
-        pdb.set_trace()
     if confirm_model_is_indexable(obj.__class__):
         data = serialize_model(obj)
         return elastic_api.index_document(index_name, data)

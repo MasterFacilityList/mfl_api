@@ -9,7 +9,7 @@ from django.conf import settings
 from rest_framework import renderers
 
 
-from common.utilities.search_utils import default
+from search.search_utils import default
 from .shared import DownloadMixin
 
 
