@@ -174,6 +174,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     constituency = serializers.CharField(read_only=True)
     ward_name = serializers.ReadOnlyField()
     average_rating = serializers.ReadOnlyField()
+    facility_services = serializers.ReadOnlyField(
+        source="get_facility_services")
 
     class Meta(object):
         model = Facility
