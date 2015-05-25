@@ -1,4 +1,7 @@
 from rest_framework import generics
+from rest_framework import views
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import response
 
 from ..models import (
     Contact,
@@ -10,6 +13,11 @@ from ..models import (
     UserCounty,
     UserContact,
     Town
+)
+from facilities.models import(
+    FacilityStatus,
+    ServiceCategory,
+    FacilityType
 )
 from ..serializers import (
     ContactSerializer,
@@ -23,7 +31,8 @@ from ..serializers import (
     ContactTypeSerializer,
     UserCountySerializer,
     UserContactSerializer,
-    TownSerializer
+    TownSerializer,
+    FilteringSummariesSerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -272,3 +281,27 @@ class TownDetailView(
     """
     queryset = Town.objects.all()
     serializer_class = TownSerializer
+
+
+class FilteringSummariesView(views.APIView):
+    """
+        Retrieves filtering summaries
+    """
+    serializer_cls = FilteringSummariesSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        resp = {
+            'county': County.objects.values('id', 'name').distinct(),
+            'facility_type': FacilityType.objects.values(
+                'id', 'name').distinct(),
+            'constituency': Constituency.objects.values(
+                'id', 'name').distinct(),
+            'ward': Ward.objects.values('id', 'name').distinct(),
+            'operation_status': FacilityStatus.objects.values(
+                'id', 'name').distinct(),
+            'service_category': ServiceCategory.objects.values(
+                'id', 'name').distinct()
+        }
+        res = self.serializer_cls(data=resp)
+        return response.Response(res.initial_data)
