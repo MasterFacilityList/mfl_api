@@ -18,5 +18,13 @@
     - {
         role: api,
         server_name: mfl.azure.slade360.co.ke,
-        tags: "api-server"
+        tags: "api-server",
+
+        # the settings below are for warming up the cache
+        warm_cache: true,
+        server_url: "http://mfl.azure.slade360.co.ke",
+        username: serikalikuu@mfltest.slade360.co.ke,
+        password: serikalikuu,
+        client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
+        client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
       }

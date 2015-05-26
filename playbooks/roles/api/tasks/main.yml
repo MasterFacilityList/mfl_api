@@ -42,8 +42,18 @@
   notify:
     - restart supervisor
 
+
 - name: copy the nginx configuration to its destination
   sudo: yes
   template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
   notify:
     - restart nginx
+
+
+- name: warm api cache
+  shell: >
+    source /opt/mfl_api_virtualenv/bin/activate && 
+    cd /opt/mfl_api && 
+    fab warmup_cache:server_location="{{server_url}}",username="{{username}}",password="{{password}}",client_id="{{client_id}}",client_secret="{{client_secret}}" executable=/bin/bash
+  when: warm_cache
+  tags: warm_cache

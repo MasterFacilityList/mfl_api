@@ -20,6 +20,11 @@ In order to build some of the Python dependencies in the `virtualenv`, some
 libraries will need to be in place. Again, if you are on a recent Ubuntu, you
 can get them at once with:
 
+.. note::
+
+    This project has been tested with Python2. It may work with Python3 but it
+    has not been tested
+
 ::
 
     sudo apt-get build-dep python-shapely python-numpy cython python-psycopg2
