@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 import json
-import os
 
 from os.path import dirname, abspath, join
 from config.settings import base
@@ -60,7 +59,7 @@ def psql(query, no_sudo=False, is_file=False):
     """Dev only - used by the setup function below"""
     sudo = 'sudo -u postgres'
     if no_sudo:
-       sudo = ''
+        sudo = ''
 
     if is_file:
         local('{} psql < {}'.format(sudo, query))
