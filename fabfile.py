@@ -159,12 +159,10 @@ def warmup_cache(
             'Accept-Encoding': 'gzip'
         }
         urls = [
-            "/api/gis/coordinates/?page_size=9000",
-            "/api/gis/county_boundaries/?page_size=47",
-
+            "/api/gis/coordinates/",
+            "/api/gis/county_boundaries/",
             "/api/gis/ward_boundaries/",
             "/api/gis/constituency_boundaries/",
-            "/api/gis/county_boundaries/"
         ]
         for i in urls:
             requests.request("GET", url=_get_url(i), headers=headers)
