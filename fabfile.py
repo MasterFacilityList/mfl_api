@@ -58,9 +58,9 @@ def reset_migrations():
 
 def psql(query, no_sudo=False, is_file=False):
     """Dev only - used by the setup function below"""
-    sudo = ''  # 'sudo -u postgres'
-    # if no_sudo:
-    #    sudo = ''
+    sudo = 'sudo -u postgres'
+    if no_sudo:
+       sudo = ''
 
     if is_file:
         local('{} psql < {}'.format(sudo, query))
