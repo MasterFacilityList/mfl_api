@@ -63,8 +63,23 @@ class ElasticAPI(object):
             "query": {
                 "filtered": {
                     "query": {
-                        "query_string": {
-                            "query": query
+                        "fuzzy_like_this": {
+                            "fields": [
+                                "name", "facility_services.service_name",
+                                "facility_services.category_name",
+                                "owner_name",
+                                "owner_type_name",
+                                "facility_type_name",
+                                "ward_name",
+                                "constituency_name",
+                                "county",
+                                "regulatory_status_name",
+                                "abbreviation",
+                                "location_desc"
+                            ],
+                            "like_text": query,
+                            "max_query_terms": 12,
+                            'analyzer': 'snowbal'
                         }
                     },
                     "filter": {
