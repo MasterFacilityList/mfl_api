@@ -153,7 +153,11 @@ def warmup_cache(
             raise ValueError(resp.content)
 
     def prod_api(token):
-        headers = {
+        non_gzipped_headers = {
+            'Authorization': token,
+            'Accept': 'application/json, */*'
+        }
+        gzipped_headers = {
             'Authorization': token,
             'Accept': 'application/json, */*',
             'Accept-Encoding': 'gzip'
@@ -165,6 +169,10 @@ def warmup_cache(
             "/api/gis/constituency_boundaries/",
         ]
         for i in urls:
-            requests.request("GET", url=_get_url(i), headers=headers)
+            # warmup non-gzip encoded content
+            requests.request("GET", url=_get_url(i), headers=non_gzipped_headers)
+
+            # warmup gzip encoded content
+            requests.request("GET", url=_get_url(i), headers=gzipped_headers)
 
     prod_api(login())
