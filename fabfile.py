@@ -170,7 +170,9 @@ def warmup_cache(
         ]
         for i in urls:
             # warmup non-gzip encoded content
-            requests.request("GET", url=_get_url(i), headers=non_gzipped_headers)
+            requests.request(
+                "GET", url=_get_url(i), headers=non_gzipped_headers
+            )
 
             # warmup gzip encoded content
             requests.request("GET", url=_get_url(i), headers=gzipped_headers)
