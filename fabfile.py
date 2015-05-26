@@ -115,3 +115,66 @@ def setup(*args, **kwargs):
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()
+
+
+def clear_cache():
+    local('redis-cli flushall')
+
+
+def warmup_cache(
+        server_location, username, password, client_id, client_secret):
+    """Warm up the cache"""
+    import requests
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+
+    def _get_url(stub):
+        return "{}{}".format(server_location, stub)
+
+    def login():
+        data = {
+            'username': username,
+            'password': password,
+            'grant_type': 'password',
+            'client_id': client_id,
+            'client_secret': client_secret
+        }
+        headers = {
+            'Accept': 'application/json'
+        }
+        resp = requests.request(
+            "POST", url=_get_url("/o/token/"), data=data,
+            headers=headers
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            return "{} {}".format(data['token_type'], data['access_token'])
+        else:
+            raise ValueError(resp.content)
+
+    def prod_api(token):
+        non_gzipped_headers = {
+            'Authorization': token,
+            'Accept': 'application/json, */*'
+        }
+        gzipped_headers = {
+            'Authorization': token,
+            'Accept': 'application/json, */*',
+            'Accept-Encoding': 'gzip'
+        }
+        urls = [
+            "/api/gis/coordinates/",
+            "/api/gis/county_boundaries/",
+            "/api/gis/ward_boundaries/",
+            "/api/gis/constituency_boundaries/",
+        ]
+        for i in urls:
+            # warmup non-gzip encoded content
+            requests.request(
+                "GET", url=_get_url(i), headers=non_gzipped_headers
+            )
+
+            # warmup gzip encoded content
+            requests.request("GET", url=_get_url(i), headers=gzipped_headers)
+
+    prod_api(login())
