@@ -28,7 +28,7 @@ class ElasticAPI(object):
         result = requests.put(url, data=mfl_settings)
         return result
 
-    def get_index(self, index_name):
+    def get_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
         result = requests.get(url)
         return result

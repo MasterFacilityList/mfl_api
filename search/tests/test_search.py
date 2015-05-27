@@ -242,3 +242,13 @@ class TestSearchFilter(ViewTestBase):
         mommy.make(Facility, name='medical clinic two')
         mommy.make(Facility, name='medical clinic one')
         call_command('build_index')
+
+    def test_delete_index(self):
+        api = ElasticAPI()
+        call_command('setup_index')
+        get_result = api.get_index('mfl_index')
+        self.assertEquals(get_result.status_code, 200)
+        call_command('remove_index')
+
+        remove_result = api.get_index('mfl_index')
+        self.assertEquals(remove_result.status_code, 404)
