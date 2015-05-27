@@ -12,7 +12,6 @@ from model_mommy import mommy
 from facilities.models import Facility, FacilityApproval
 from facilities.serializers import FacilitySerializer
 from common.tests import ViewTestBase
-from mfl_gis.models import FacilityCoordinates
 
 from search.filters import SearchFilter
 
@@ -21,63 +20,63 @@ from search.search_utils import (
     ElasticAPI, index_instance, default, serialize_model)
 
 
-# class TestElasticSearchAPI(TestCase):
-#     def setUp(self):
-#         self.elastic_search_api = ElasticAPI()
-#         super(TestElasticSearchAPI, self).setUp()
+class TestElasticSearchAPI(TestCase):
+    def setUp(self):
+        self.elastic_search_api = ElasticAPI()
+        super(TestElasticSearchAPI, self).setUp()
 
-#     def test_setup_index(self):
-#         self.elastic_search_api.delete_index(index_name='test_index')
-#         result = self.elastic_search_api.setup_index(index_name='test_index')
-#         self.assertEquals(200, result.status_code)
-#         self.elastic_search_api.delete_index(index_name='test_index')
+    def test_setup_index(self):
+        self.elastic_search_api.delete_index(index_name='test_index')
+        result = self.elastic_search_api.setup_index(index_name='test_index')
+        self.assertEquals(200, result.status_code)
+        self.elastic_search_api.delete_index(index_name='test_index')
 
-#     def test_get_non_existing_index(self):
-#         index_name = 'test_index'
-#         self.elastic_search_api.delete_index(index_name)
-#         self.elastic_search_api.get_index(index_name)
+    def test_get_non_existing_index(self):
+        index_name = 'test_index'
+        self.elastic_search_api.delete_index(index_name)
+        self.elastic_search_api.get_index(index_name)
 
-#     def test_get_exsting_index(self):
-#         index_name = 'test_index'
-#         self.elastic_search_api.setup_index(index_name=index_name)
-#         self.elastic_search_api.get_index(index_name)
-#         self.elastic_search_api.delete_index(index_name='test_index')
+    def test_get_exsting_index(self):
+        index_name = 'test_index'
+        self.elastic_search_api.setup_index(index_name=index_name)
+        self.elastic_search_api.get_index(index_name)
+        self.elastic_search_api.delete_index(index_name='test_index')
 
-#     def test_delete_index(self):
-#         index_name = 'test_index_3'
-#         response = self.elastic_search_api.setup_index(index_name=index_name)
-#         self.assertEquals(200, response.status_code)
-#         self.elastic_search_api.delete_index(index_name)
+    def test_delete_index(self):
+        index_name = 'test_index_3'
+        response = self.elastic_search_api.setup_index(index_name=index_name)
+        self.assertEquals(200, response.status_code)
+        self.elastic_search_api.delete_index(index_name)
 
-#     def test_index_document(self):
-#         facility = mommy.make(Facility, name='Fig tree medical clinic')
-#         self.elastic_search_api.setup_index(index_name='test_index')
-#         result = index_instance(facility, 'test_index')
-#         self.assertEquals(201, result.status_code)
+    def test_index_document(self):
+        facility = mommy.make(Facility, name='Fig tree medical clinic')
+        self.elastic_search_api.setup_index(index_name='test_index')
+        result = index_instance(facility, 'test_index')
+        self.assertEquals(201, result.status_code)
 
-#     def test_search_document_no_instance_type(self):
-#         index_name = 'test_index'
-#         response = self.elastic_search_api.setup_index(index_name=index_name)
-#         self.assertEquals(200, response.status_code)
-#         facility = mommy.make(Facility, name='Fig tree medical clinic')
-#         result = index_instance(facility, 'test_index')
-#         self.assertEquals(201, result.status_code)
-#         self.elastic_search_api.search_document(
-#             index_name=index_name, instance_type=Facility, query='tree')
+    def test_search_document_no_instance_type(self):
+        index_name = 'test_index'
+        response = self.elastic_search_api.setup_index(index_name=index_name)
+        self.assertEquals(200, response.status_code)
+        facility = mommy.make(Facility, name='Fig tree medical clinic')
+        result = index_instance(facility, 'test_index')
+        self.assertEquals(201, result.status_code)
+        self.elastic_search_api.search_document(
+            index_name=index_name, instance_type=Facility, query='tree')
 
-#     def test_remove_document(self):
-#         index_name = 'test_index'
-#         self.elastic_search_api.setup_index(index_name=index_name)
-#         facility = mommy.make(Facility, name='Fig tree medical clinic')
-#         result = index_instance(facility, 'test_index')
-#         self.assertEquals(201, result.status_code)
-#         self.elastic_search_api.remove_document(
-#             index_name, 'facility', str(facility.id))
-#         self.elastic_search_api.delete_index(index_name='test_index')
+    def test_remove_document(self):
+        index_name = 'test_index'
+        self.elastic_search_api.setup_index(index_name=index_name)
+        facility = mommy.make(Facility, name='Fig tree medical clinic')
+        result = index_instance(facility, 'test_index')
+        self.assertEquals(201, result.status_code)
+        self.elastic_search_api.remove_document(
+            index_name, 'facility', str(facility.id))
+        self.elastic_search_api.delete_index(index_name='test_index')
 
-#     def tearDown(self):
-#         self.elastic_search_api.delete_index(index_name='test_index')
-#         super(TestElasticSearchAPI, self).tearDown()
+    def tearDown(self):
+        self.elastic_search_api.delete_index(index_name='test_index')
+        super(TestElasticSearchAPI, self).tearDown()
 
 
 @override_settings(
@@ -183,84 +182,84 @@ class TestSearchFunctions(ViewTestBase):
         self.elastic_search_api.delete_index('test_index')
 
 
-# @override_settings(
-#     SEARCH={
-#         "ELASTIC_URL": "http://localhost:9200/",
-#         "INDEX_NAME": "test_index",
-#         "NON_INDEXABLE_MODELS": [
-#             "mfl_gis.FacilityCoordinates",
-#             "mfl_gis.WorldBorder",
-#             "mfl_gis.CountyBoundary",
-#             "mfl_gis.ConstituencyBoundary",
-#             "mfl_gis.WardBoundary"]
-#     })
-# class TestSearchFilter(ViewTestBase):
-#     def test_filter_no_data(self):
-#         api = ElasticAPI()
-#         api.delete_index('test_index')
-#         api.setup_index('test_index')
-#         mommy.make(Facility, name='test facility')
-#         mommy.make(Facility)
-#         qs = Facility.objects.all()
+@override_settings(
+    SEARCH={
+        "ELASTIC_URL": "http://localhost:9200/",
+        "INDEX_NAME": "test_index",
+        "NON_INDEXABLE_MODELS": [
+            "mfl_gis.FacilityCoordinates",
+            "mfl_gis.WorldBorder",
+            "mfl_gis.CountyBoundary",
+            "mfl_gis.ConstituencyBoundary",
+            "mfl_gis.WardBoundary"]
+    })
+class TestSearchFilter(ViewTestBase):
+    def test_filter_no_data(self):
+        api = ElasticAPI()
+        api.delete_index('test_index')
+        api.setup_index('test_index')
+        mommy.make(Facility, name='test facility')
+        mommy.make(Facility)
+        qs = Facility.objects.all()
 
-#         search_filter = SearchFilter(name='search')
-#         result = search_filter.filter(qs, 'test')
-#         # no documents have been indexed
-#         self.assertEquals(result.count(), 0)
-#         api.delete_index('test_index')
+        search_filter = SearchFilter(name='search')
+        result = search_filter.filter(qs, 'test')
+        # no documents have been indexed
+        self.assertEquals(result.count(), 0)
+        api.delete_index('test_index')
 
-#     def test_filter_elastic_not_available(self):
-#         with patch.object(
-#                 ElasticAPI,
-#                 'search_document') as mock_search:
-#             mock_search.return_value = None
+    def test_filter_elastic_not_available(self):
+        with patch.object(
+                ElasticAPI,
+                'search_document') as mock_search:
+            mock_search.return_value = None
 
-#             api = ElasticAPI()
-#             api.delete_index('test_index')
-#             api.setup_index('test_index')
-#             mommy.make(Facility, name='test facility')
-#             mommy.make(Facility)
-#             qs = Facility.objects.all()
+            api = ElasticAPI()
+            api.delete_index('test_index')
+            api.setup_index('test_index')
+            mommy.make(Facility, name='test facility')
+            mommy.make(Facility)
+            qs = Facility.objects.all()
 
-#             search_filter = SearchFilter(name='search')
-#             result = search_filter.filter(qs, 'test')
-#             # no documents have been indexed
-#             self.assertEquals(result.count(), 0)
-#             api.delete_index('test_index')
+            search_filter = SearchFilter(name='search')
+            result = search_filter.filter(qs, 'test')
+            # no documents have been indexed
+            self.assertEquals(result.count(), 0)
+            api.delete_index('test_index')
 
-#     def test_filter_data(self):
-#         api = ElasticAPI()
-#         api.delete_index('test_index')
-#         api.setup_index('test_index')
-#         test_facility = mommy.make(Facility, name='test facility')
-#         index_instance(test_facility, 'test_index')
-#         mommy.make(Facility)
-#         qs = Facility.objects.all()
+    def test_filter_data(self):
+        api = ElasticAPI()
+        api.delete_index('test_index')
+        api.setup_index('test_index')
+        test_facility = mommy.make(Facility, name='test facility')
+        index_instance(test_facility, 'test_index')
+        mommy.make(Facility)
+        qs = Facility.objects.all()
 
-#         search_filter = SearchFilter(name='search')
-#         # some weird bug there is a delay in getting the search results
-#         for x in range(0, 100):
-#             search_filter.filter(qs, 'test')
-#         api.delete_index('test_index')
+        search_filter = SearchFilter(name='search')
+        # some weird bug there is a delay in getting the search results
+        for x in range(0, 100):
+            search_filter.filter(qs, 'test')
+        api.delete_index('test_index')
 
-#     def test_create_index(self):
-#         call_command('setup_index')
-#         api = ElasticAPI()
-#         api.get_index('mfl_index')
-#         # handle cases where the index already exists
+    def test_create_index(self):
+        call_command('setup_index')
+        api = ElasticAPI()
+        api.get_index('mfl_index')
+        # handle cases where the index already exists
 
-#     def test_build_index(self):
-#         call_command('setup_index')
-#         mommy.make(Facility, name='medical clinic two')
-#         mommy.make(Facility, name='medical clinic one')
-#         call_command('build_index')
+    def test_build_index(self):
+        call_command('setup_index')
+        mommy.make(Facility, name='medical clinic two')
+        mommy.make(Facility, name='medical clinic one')
+        call_command('build_index')
 
-#     def test_delete_index(self):
-#         api = ElasticAPI()
-#         call_command('setup_index')
-#         get_result = api.get_index('mfl_index')
-#         self.assertEquals(get_result.status_code, 200)
-#         call_command('remove_index')
+    def test_delete_index(self):
+        api = ElasticAPI()
+        call_command('setup_index')
+        get_result = api.get_index('mfl_index')
+        self.assertEquals(get_result.status_code, 200)
+        call_command('remove_index')
 
-#         remove_result = api.get_index('mfl_index')
-#         self.assertEquals(remove_result.status_code, 404)
+        remove_result = api.get_index('mfl_index')
+        self.assertEquals(remove_result.status_code, 404)
