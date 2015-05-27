@@ -257,9 +257,10 @@ class TestSearchFilter(ViewTestBase):
     def test_delete_index(self):
         api = ElasticAPI()
         call_command('setup_index')
-        get_result = api.get_index('mfl_index')
+        for x in range(0, 100):
+            get_result = api.get_index('mfl_index')
         self.assertEquals(get_result.status_code, 200)
         call_command('remove_index')
-
-        remove_result = api.get_index('mfl_index')
+        for x in range(0, 100):
+            remove_result = api.get_index('mfl_index')
         self.assertEquals(remove_result.status_code, 404)
