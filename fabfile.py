@@ -86,6 +86,13 @@ def create_search_index(*args, **kwargs):
     manage('setup_index')
 
 
+def remove_search_index(*args, **kwargs):
+    """
+    Deletes the search index in elastic search
+    """
+    manage('remove_index')
+
+
 def create_entire_index(*args, **kwargs):
     """Creates the entire search index"""
     manage('build_index')
@@ -94,6 +101,7 @@ def create_entire_index(*args, **kwargs):
 def setup(*args, **kwargs):
     """Dev only - clear and recreate the entire database"""
     # needs to come first to as to index data as it is being loaded
+    remove_search_index()
     create_search_index()
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
