@@ -261,6 +261,7 @@ class FacilityFilter(CommonFieldsFilterset):
     constituency = ListCharFilter(
         name='ward__constituency', lookup_type='icontains')
     owner = ListCharFilter(lookup_type='icontains')
+    owner_type = ListCharFilter(name='owner__owner_type', lookup_type='exact')
     officer_in_charge = ListCharFilter(lookup_type='icontains')
 
     number_of_beds = ListIntegerFilter(lookup_type='exact')
