@@ -8,8 +8,8 @@ server {
     gzip_disable "MSIE [1-6]\.(?!.*SV1)";
 
 
-    access_log /var/log/nginx/mfl_frontend.access.log;
-    error_log /var/log/nginx/mfl_frontend.error.log;
+    access_log /var/log/nginx/{{frontend_name}}.access.log;
+    error_log /var/log/nginx/{{frontend_name}}.error.log;
 
     location / {
         root {{extraction_dir}};

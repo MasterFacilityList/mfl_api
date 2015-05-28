@@ -6,13 +6,29 @@
     - common
     - {
         role: frontend,
+        frontend_name: "mfl_public_web",
         server_name: mfl-public.azure.slade360.co.ke,
         server_url: "http://mfl.azure.slade360.co.ke/",
         username: serikalikuu@mfltest.slade360.co.ke,
         password: serikalikuu,
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
         client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
+        frontend_tag: "0.0.1a1",
+        frontend_archive_file_name: "mfl_public_web__{{frontend_tag}}.tar.gz",
+        download_url: "https://github.com/MasterFacilityList/mfl_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
         tags: "public-frontend"
+      }
+    - {
+        role: frontend,
+        frontend_name: "mfl_admin_web",
+        server_name: mfl-admin.azure.slade360.co.ke,
+        server_url: "http://mfl.azure.slade360.co.ke/",
+        client_id: 5O1KlpwBb96ANWe27ZQOpbWSF4DZDm4sOytwdzGv,
+        client_secret: PqV0dHbkjXAtJYhY9UOCgRVi5BzLhiDxGU91kbt5EoayQ5SYOoJBYRYAYlJl2RetUeDMpSvhe9DaQr0HKHan0B9ptVyoLvOqpekiOmEqUJ6HZKuIoma0pvqkkKDU9GPv,
+        frontend_tag: "0.0.1a1",
+        frontend_archive_file_name: "mfl_admin_web__{{frontend_tag}}.tar.gz",
+        download_url: "https://github.com/MasterFacilityList/mfl_admin_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
+        tags: "admin-frontend"
       }
     - { role: postgresql }
     - {
