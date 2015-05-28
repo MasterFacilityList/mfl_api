@@ -15,6 +15,12 @@
                 }
             },
             {
+                "contact": "720131657",
+                "contact_type": {
+                    "name": "MOBILE"
+                }
+            },
+            {
                 "contact": "0728844112",
                 "contact_type": {
                     "name": "MOBILE"
@@ -45406,12 +45412,6 @@
             },
             {
                 "contact": "warugurumercy@gmail.com",
-                "contact_type": {
-                    "name": "EMAIL"
-                }
-            },
-            {
-                "contact": "charlocky@yahoo.com",
                 "contact_type": {
                     "name": "EMAIL"
                 }

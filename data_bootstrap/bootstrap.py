@@ -88,6 +88,8 @@ def _instantiate_single_record(model, unique_fields, record):
                 unique_dict[field] = field_data
 
         try:
+            # import pdb
+            # pdb.set_trace()
             instance = model_cls.objects.get(**unique_dict)
             return model_cls, None  # Must test for None in calling code
         except model_cls.DoesNotExist:

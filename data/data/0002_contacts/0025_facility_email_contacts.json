@@ -5,10 +5,10 @@
         "unique_fields": ["contact", "contact_type"],
         "records":[
     {
-    "contact": "endebesshospital@yahoo.com",
-    "contact_type": {
-        "name": "EMAIL"
-    }
+        "contact": "endebesshospital@yahoo.com",
+        "contact_type": {
+            "name": "EMAIL"
+        }
     },
     {
         "contact": "lugarihospital@yahoo.com",
@@ -929,12 +929,6 @@
         }
     },
     {
-        "contact": "charlocky@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
         "contact": "isaiahtoroitich@yahoo.com",
         "contact_type": {
             "name": "EMAIL"
@@ -1326,12 +1320,6 @@
     },
     {
         "contact": "aquilaflowers.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "N/A",
         "contact_type": {
             "name": "EMAIL"
         }
@@ -1769,12 +1757,6 @@
         }
     },
     {
-        "contact": "katieno2010@gmail.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
         "contact": "iskich@yahoo.com",
         "contact_type": {
             "name": "EMAIL"
@@ -1859,12 +1841,6 @@
         }
     },
     {
-        "contact": "hospitalnyamira@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
         "contact": "gwerso@gmail.com",
         "contact_type": {
             "name": "EMAIL"
@@ -1920,12 +1896,6 @@
     },
     {
         "contact": "guchadmoh@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "dmohmasaba@yahoo.com",
         "contact_type": {
             "name": "EMAIL"
         }
@@ -3312,12 +3282,6 @@
     },
     {
         "contact": "mwiandiken@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "rotadispensary@yahoo.com",
         "contact_type": {
             "name": "EMAIL"
         }
@@ -5904,12 +5868,6 @@
     },
     {
         "contact": "mathari@health.go.ke",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "jibanahospital@hotmail.com",
         "contact_type": {
             "name": "EMAIL"
         }
@@ -12039,79 +11997,8 @@
         "contact_type": {
             "name": "EMAIL"
         }
-    },
-    {
-        "contact": "victormainga@gmail.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "jedidahnmugi09@gmail.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "davidruwa@gmail.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "mwanahamisi@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "faithjebor@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "modestyoutpatient@gmail.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "paulwanyama67@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "jnkina@gmail.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "edwinong'uti@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "wangechistella@yahoo.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "info@eastend.co.ke",
-        "contact_type": {
-            "name": "EMAIL"
-        }
-    },
-    {
-        "contact": "gmkunu@gmail.com",
-        "contact_type": {
-            "name": "EMAIL"
-        }
     }
 ]
+
 }
 ]

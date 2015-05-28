@@ -59,7 +59,6 @@ class ElasticAPI(object):
             ELASTIC_URL, index_name, document_type)
         data = {
             "fields": [],  # return only _ids from the hits
-            "size": 30,  # return only 30 hits
             "query": {
                 "filtered": {
                     "query": {

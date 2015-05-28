@@ -1,0 +1,2459 @@
+[
+    {
+        "model": "facilities.Facility", 
+        "unique_fields": [
+            "name"
+        ],
+        "records": [
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kiminini Township"
+                    }
+                }, 
+                "code": 19680, 
+                "description": "", 
+                "name": "Kiminini Pag VCT", 
+                "location_desc": "Situated at the Kiminini PAG Church compound towards the current Kiminini Health Centre (Angaza) grounds", 
+                "facility_type": {
+                    "name": "VCT Centre (Stand-Alone)"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Other Faith Based"
+                }, 
+                "attributes": "{\"latitude\": \"00.88226\", \"division\": \"Kiminini\", \"sub_location\": \"Kiminini\", \"location\": \"Kiminini\", \"longitude\": \"034.92687\"}", 
+                "ward": {
+                    "code": 688
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Hamza"
+                    }
+                }, 
+                "code": 19476, 
+                "description": "", 
+                "name": "Upendo Clinic Makadara", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - Nurse / Midwife"
+                }, 
+                "attributes": "{\"latitude\": \"-01.29406\", \"division\": \"Makadara \", \"sub_location\": \"Hamza\", \"location\": \"Makadara\", \"longitude\": \"036.87226\"}", 
+                "ward": {
+                    "code": 1430
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kisima shopping Centre"
+                    }
+                }, 
+                "code": 19291, 
+                "description": "", 
+                "name": "Kisima Community Medical Clinic", 
+                "location_desc": "In Lmarge Enterprise Building", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - Nurse / Midwife"
+                }, 
+                "attributes": "{\"latitude\": \"00.94679\", \"division\": \"Lorroki\", \"sub_location\": \"Kisima\", \"location\": \"Kisima\", \"longitude\": \"036.76537\"}", 
+                "ward": {
+                    "code": 661
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Masalani town"
+                    }
+                }, 
+                "code": 19061, 
+                "description": "", 
+                "name": "Tawakal Medical Clinic and Laboratory Services", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - Clinical Officer"
+                }, 
+                "attributes": "{\"latitude\": \"-1.69544\", \"division\": \"Masalani\", \"sub_location\": \"Gumarey\", \"location\": \"Gumarey\", \"longitude\": \"40.16830\"}", 
+                "ward": {
+                    "code": 160
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "B11/173", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 18638, 
+                "description": "", 
+                "name": "East End Chemist", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Not in List"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - Unspecified"
+                }, 
+                "attributes": "{\"latitude\": \"00.04766\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"037.65375\"}", 
+                "ward": {
+                    "code": 276
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 18636, 
+                "description": "", 
+                "name": "Theluji Pharmacy Ltd", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Not in List"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - Unspecified"
+                }, 
+                "attributes": "{\"latitude\": \"00.04764\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"037.65330\"}", 
+                "ward": {
+                    "code": 276
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Katwanyaa"
+                    }
+                }, 
+                "code": 12250, 
+                "description": "", 
+                "name": "Katwanyaa Medical Clinic", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Enterprise (Institution)"
+                }, 
+                "attributes": "{\"latitude\": \"-1.36349\", \"division\": \"Matungulu\", \"sub_location\": \"Matungulu\", \"location\": \"Matungulu \", \"longitude\": \"37.39485\"}", 
+                "ward": {
+                    "code": 383
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 16633, 
+                "description": "", 
+                "name": "Snowview Medical Clinic", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Enterprise (Institution)"
+                }, 
+                "attributes": "{\"latitude\": \"0.08353\", \"division\": \"Timau\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"37.23961\"}", 
+                "ward": {
+                    "code": 281
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 16631, 
+                "description": "", 
+                "name": "Pr Medical Clinic (Ngushishi)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Enterprise (Institution)"
+                }, 
+                "attributes": "{\"latitude\": \"0.055526\", \"division\": \"Ngushishi\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"37.3405\"}", 
+                "ward": {
+                    "code": 282
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Eldoret"
+                    }
+                }, 
+                "code": 16346, 
+                "description": "", 
+                "name": "Kalyet Clinic (Wareng)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Enterprise (Institution)"
+                }, 
+                "attributes": "{\"latitude\": \"0.492988\", \"division\": \"Kapseret\", \"sub_location\": \"Pioneer\", \"location\": \"Pioneer\", \"longitude\": \"35.2663\"}", 
+                "ward": {
+                    "code": 727
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Eldoret"
+                    }
+                }, 
+                "code": 14397, 
+                "description": "", 
+                "name": "Consolata Medical Clinic (Eldoret South)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Enterprise (Institution)"
+                }, 
+                "attributes": "{\"latitude\": \"0.492988\", \"division\": \"Kapseret\", \"sub_location\": \"Pioneer\", \"location\": \"Pioneer\", \"longitude\": \"35.2663\"}", 
+                "ward": {
+                    "code": 727
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Subukia"
+                    }
+                }, 
+                "code": 15773, 
+                "description": "", 
+                "name": "Wa-Sammy Medical Clinic", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Nursing Home"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 5, 
+                "owner": {
+                    "name": "Private Enterprise (Institution)"
+                }, 
+                "attributes": "{\"latitude\": \"0.00208\", \"division\": \"Subukia\", \"sub_location\": \"Subukia West\", \"location\": \"Waseges\", \"longitude\": \"36.23286\"}", 
+                "ward": {
+                    "code": 857
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kericho"
+                    }
+                }, 
+                "code": 14271, 
+                "description": "", 
+                "name": "Buchenge Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Community"
+                }, 
+                "attributes": "{\"latitude\": \"-0.26505\", \"division\": \"Ainamoi\", \"sub_location\": \"Boywek\", \"location\": \"Ainamoi\", \"longitude\": \"35.32758\"}", 
+                "ward": {
+                    "code": 949
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kitale"
+                    }
+                }, 
+                "code": 16364, 
+                "description": "", 
+                "name": "Matunda Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"1.03442\", \"division\": \"Kiminini\", \"sub_location\": \"Matunda\", \"location\": \"Matunda\", \"longitude\": \"34.99367\"}", 
+                "ward": {
+                    "code": 685
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kericho"
+                    }
+                }, 
+                "code": 14730, 
+                "description": "", 
+                "name": "Kapkurer Dispensary (Kericho)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.256759\", \"division\": \"Ainamoi\", \"sub_location\": \"Boywek\", \"location\": \"Ainamoi\", \"longitude\": \"35.2822\"}", 
+                "ward": {
+                    "code": 945
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kwa Buro"
+                    }
+                }, 
+                "code": 20632, 
+                "description": "", 
+                "name": "Eclipse Medical Centre", 
+                "location_desc": "About 2 kilometre North of Bombolulu Estate Stage", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - Clinical Officer"
+                }, 
+                "attributes": "{\"latitude\": \"-04.01260\", \"division\": \"Kisauni\", \"sub_location\": \"Kisauni\", \"location\": \"Kisauni\", \"longitude\": \"039.70926\"}", 
+                "ward": {
+                    "code": 20
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Naivasha town"
+                    }
+                }, 
+                "code": 20565, 
+                "description": "", 
+                "name": "Olkaria Community Health Centre(Naivasha)", 
+                "location_desc": "Located within Olkaria 4 power station Kengen Naivasha", 
+                "facility_type": {
+                    "name": "Health Centre"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 3, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-00.93655\", \"division\": \"Kongoni\", \"sub_location\": \"Olkaria\", \"location\": \"Hells Gate\", \"longitude\": \"036.37006\"}", 
+                "ward": {
+                    "code": 841
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Itugururu"
+                    }
+                }, 
+                "code": 20561, 
+                "description": "", 
+                "name": "Kamwimbi Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-00.44052\", \"division\": \"Igamba ngombe\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"037.75279\"}", 
+                "ward": {
+                    "code": 305
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kajuki"
+                    }
+                }, 
+                "code": 20560, 
+                "description": "", 
+                "name": "Iriuko Ria Ng'ombe", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-00.23478\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"037.82172\"}", 
+                "ward": {
+                    "code": 298
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kangutu market"
+                    }
+                }, 
+                "code": 20559, 
+                "description": "", 
+                "name": "Kangutu Dispensary", 
+                "location_desc": "Chuka Kathwana Route", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-00.33798\", \"division\": \"Chuka\", \"sub_location\": \"Kangutu\", \"location\": \"Mariani\", \"longitude\": \"037.68546\"}", 
+                "ward": {
+                    "code": 301
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Ng'iya Market"
+                    }
+                }, 
+                "code": 20507, 
+                "description": "", 
+                "name": "Ulafu Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"0.06048\", \"division\": \"Karemo\", \"sub_location\": \"Ulafu\", \"location\": \"East Alego\", \"longitude\": \"34.90876\"}", 
+                "ward": {
+                    "code": 757
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Chwele"
+                    }
+                }, 
+                "code": 20493, 
+                "description": "", 
+                "name": "Makhonge dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"0.76115\", \"division\": \"Mukuyuni\", \"sub_location\": \"Mukuyuni\", \"location\": \"Mukuyuni\", \"longitude\": \"34.57912\"}", 
+                "ward": {
+                    "code": 1085
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "214", 
+                    "town": {
+                        "name": "Wangu'ru Town"
+                    }
+                }, 
+                "code": 20482, 
+                "description": "", 
+                "name": "Modesty Outpatient Centre", 
+                "location_desc": "Along Nairobi - Embu high way opposite KCB Mwea Branch ", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - General Practitioner"
+                }, 
+                "attributes": "{\"latitude\": \"-00.68380\", \"division\": \"Tebere\", \"sub_location\": \"Kiarukungu\", \"location\": \"Tebere\", \"longitude\": \"037.35418\"}", 
+                "ward": {
+                    "code": 503
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 20481, 
+                "description": "", 
+                "name": "Akorian Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"0.62234\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"035.90683\"}", 
+                "ward": {
+                    "code": 791
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Metipso"
+                    }
+                }, 
+                "code": 20436, 
+                "description": "", 
+                "name": "Chemasusu Dispensary", 
+                "location_desc": "Near Chemasusu Primary School", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.09070\", \"division\": \"Eldama Ravine\", \"sub_location\": \"Arama Poror\", \"location\": \"Lembus \", \"longitude\": \"35.64393\"}", 
+                "ward": {
+                    "code": 806
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Saos"
+                    }
+                }, 
+                "code": 20434, 
+                "description": "", 
+                "name": "Saos Dispensary", 
+                "location_desc": "Near Saos Primary School", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.10688\", \"division\": \"Eldama Ravine\", \"sub_location\": \"Saos\", \"location\": \"Saos Kibias\", \"longitude\": \"35.81452\"}", 
+                "ward": {
+                    "code": 809
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Muserechi"
+                    }
+                }, 
+                "code": 20433, 
+                "description": "", 
+                "name": "Muserechi  Dispensary", 
+                "location_desc": "Near Muserechi Primary School", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.03091\", \"division\": \"Eldama Ravine\", \"sub_location\": \"Orinie\", \"location\": \"Kiplombe\", \"longitude\": \"035.87063\"}", 
+                "ward": {
+                    "code": 805
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "N/a", 
+                    "town": {
+                        "name": "Ngungi mkt"
+                    }
+                }, 
+                "code": 20429, 
+                "description": "", 
+                "name": "Ngungi Dispensary", 
+                "location_desc": "Ngungi primary", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.49582\", \"division\": \"Zombe/mwitika ward\", \"sub_location\": \"Ngungi\", \"location\": \"Zombe\", \"longitude\": \"38.22697\"}", 
+                "ward": {
+                    "code": 362
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kilonzo shopping centre"
+                    }
+                }, 
+                "code": 20424, 
+                "description": "", 
+                "name": "Kilonzo Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.39997\", \"division\": \"Nzambani\", \"sub_location\": \"kilonzo\", \"location\": \"Kyanika\", \"longitude\": \"38.05338\"}", 
+                "ward": {
+                    "code": 360
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kalulu Shopping Center"
+                    }
+                }, 
+                "code": 20422, 
+                "description": "", 
+                "name": "Kalulu Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.53529\", \"division\": \"Chuluni\", \"sub_location\": \"Katumbu\", \"location\": \"Kanduti\", \"longitude\": \"38.16677\"}", 
+                "ward": {
+                    "code": 361
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Sooma shopping Centre"
+                    }
+                }, 
+                "code": 20420, 
+                "description": "", 
+                "name": "Sooma Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.46410\", \"division\": \"Itoleka\", \"sub_location\": \"Sooma\", \"location\": \"Itoleka\", \"longitude\": \"37.89180\"}", 
+                "ward": {
+                    "code": 356
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kamaembe Shopping Centre"
+                    }
+                }, 
+                "code": 20419, 
+                "description": "", 
+                "name": "Kamaembe Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.33401\", \"division\": \"Chuluni\", \"sub_location\": \"Kyanzai\", \"location\": \"Kenze\", \"longitude\": \"38.17087\"}", 
+                "ward": {
+                    "code": 354
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "kanzaw'u shopping centre"
+                    }
+                }, 
+                "code": 20416, 
+                "description": "", 
+                "name": "Kanzaw'u Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.55337\", \"division\": \"Chuluni\", \"sub_location\": \"kaluva\", \"location\": \"kyelele\", \"longitude\": \"38.12552\"}", 
+                "ward": {
+                    "code": 361
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "KIisyoka Shopping Centre"
+                    }
+                }, 
+                "code": 20415, 
+                "description": "", 
+                "name": "Kisyoka Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.54721\", \"division\": \"Itoleka\", \"sub_location\": \"Kisyoka\", \"location\": \"Kavuta\", \"longitude\": \"37.89636\"}", 
+                "ward": {
+                    "code": 356
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Masoka Shopping Centre"
+                    }
+                }, 
+                "code": 20414, 
+                "description": "", 
+                "name": "Masoka Dispensary", 
+                "location_desc": "located in Masoka village", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.56076\", \"division\": \"Katulani\", \"sub_location\": \"Masoka\", \"location\": \"Maliku\", \"longitude\": \"37.89133\"}", 
+                "ward": {
+                    "code": 356
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kisekini I Shopping Centre"
+                    }
+                }, 
+                "code": 20413, 
+                "description": "", 
+                "name": "Kisekini Dispensary ", 
+                "location_desc": "Located in the compound of Kisekini Primary School", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.41155\", \"division\": \"Mulango\", \"sub_location\": \"Kisekini\", \"location\": \"Mulango\", \"longitude\": \"38.01551\"}", 
+                "ward": {
+                    "code": 357
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Inyuu market"
+                    }
+                }, 
+                "code": 20412, 
+                "description": "", 
+                "name": "Kwa-Mutei Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.43794\", \"division\": \"Chuluni\", \"sub_location\": \"Inyuu\", \"location\": \"Inyuu\", \"longitude\": \"38.13312\"}", 
+                "ward": {
+                    "code": 361
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kahawa West"
+                    }
+                }, 
+                "code": 20403, 
+                "description": "", 
+                "name": "Jacaranda Maternity  (Kiamumbi )", 
+                "location_desc": "Along kiambu Kamiti", 
+                "facility_type": {
+                    "name": "Maternity Home"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 9, 
+                "owner": {
+                    "name": "Private Practice - Clinical Officer"
+                }, 
+                "attributes": "{\"latitude\": \"-1.18759\", \"division\": \"\", \"sub_location\": \"Kiamumbi\", \"location\": \"Kamiti\", \"longitude\": \"36.89501\"}", 
+                "ward": {
+                    "code": 585
+                }, 
+                "number_of_cots": 2, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Chaka"
+                    }
+                }, 
+                "code": 20391, 
+                "description": "", 
+                "name": "Sagana State Lodge Dispensary", 
+                "location_desc": "In Sagana State Lodge", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.21784\", \"division\": \"\", \"sub_location\": \"Karandi\", \"location\": \"Ruguru\", \"longitude\": \"37.04344\"}", 
+                "ward": {
+                    "code": 474
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Eldas"
+                    }
+                }, 
+                "code": 20358, 
+                "description": "", 
+                "name": "Wargadud Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 6, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"2.49546\", \"division\": \"Anole\", \"sub_location\": \"Wargadud\", \"location\": \"Wargadud\", \"longitude\": \"39.70071\"}", 
+                "ward": {
+                    "code": 181
+                }, 
+                "number_of_cots": 2, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Garissa Town"
+                    }
+                }, 
+                "code": 20354, 
+                "description": "", 
+                "name": "NEP Technical Training Institute Dispensary", 
+                "location_desc": "Garissa Sankuri Road", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Academic (if registered)"
+                }, 
+                "attributes": "{\"latitude\": \"-00.44064\", \"division\": \"Central\", \"sub_location\": \"Township\", \"location\": \"Township\", \"longitude\": \"039.63586\"}", 
+                "ward": {
+                    "code": 132
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Mwangwei "
+                    }
+                }, 
+                "code": 20336, 
+                "description": "", 
+                "name": "Mwangwei  Dispensary", 
+                "location_desc": "Mwangwei Primary School", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-04.5234\", \"division\": \"Lunga Lunga\", \"sub_location\": \"Mwangwei\", \"location\": \"Majoreni\", \"longitude\": \"039.3465\"}", 
+                "ward": {
+                    "code": 35
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Menzamwenye"
+                    }
+                }, 
+                "code": 20335, 
+                "description": "", 
+                "name": "Mwanguda Dispensary", 
+                "location_desc": "Near Mwanguda Primary School", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 1, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-04.5234\", \"division\": \"Lunga Lunga\", \"sub_location\": \"Malamba\", \"location\": \"Dzombo\", \"longitude\": \"039.4234\"}", 
+                "ward": {
+                    "code": 34
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Chepkono"
+                    }
+                }, 
+                "code": 20330, 
+                "description": "", 
+                "name": "Chepkono Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"01.25108\", \"division\": \"Lelan\", \"sub_location\": \"Chepkono\", \"location\": \"Kapyongen\", \"longitude\": \"035.24521\"}", 
+                "ward": {
+                    "code": 659
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Karatina"
+                    }
+                }, 
+                "code": 20312, 
+                "description": "", 
+                "name": "Gitimaini dispensary", 
+                "location_desc": "It is between Gitunduti and Gatei near Gathehu.", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.25720\", \"division\": \"Mathira\", \"sub_location\": \"Gitimaini\", \"location\": \"Magutu\", \"longitude\": \"37.08202\"}", 
+                "ward": {
+                    "code": 475
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Karatina"
+                    }
+                }, 
+                "code": 20311, 
+                "description": "", 
+                "name": "Karindundu dispensary", 
+                "location_desc": "Off Karatina town next to railway lime", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.29422\", \"division\": \"Karatina\", \"sub_location\": \"Karindundu\", \"location\": \"Karatina\", \"longitude\": \"37.07737\"}", 
+                "ward": {
+                    "code": 475
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Mukameni"
+                    }
+                }, 
+                "code": 20306, 
+                "description": "", 
+                "name": "Mukameni Dispensary", 
+                "location_desc": "Rural", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.60151\", \"division\": \"\", \"sub_location\": \"Mukameni\", \"location\": \"Ungatu\", \"longitude\": \"38.01201\"}", 
+                "ward": {
+                    "code": 350
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 20294, 
+                "description": "", 
+                "name": "Kiamanyomba (Nyamira North)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 4, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.46380\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"035.01584\"}", 
+                "ward": {
+                    "code": 775
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 20293, 
+                "description": "", 
+                "name": "Kemunchugu (Nyamira North)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 4, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.46382\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"034.99952\"}", 
+                "ward": {
+                    "code": 776
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 20292, 
+                "description": "", 
+                "name": "Kiomara (Nyamira North)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 4, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.45577\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"034.96962\"}", 
+                "ward": {
+                    "code": 776
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 20291, 
+                "description": "", 
+                "name": "Rianyambweke (Nyamira North)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 4, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.49196\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"034.96354\"}", 
+                "ward": {
+                    "code": 776
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 20290, 
+                "description": "", 
+                "name": "Nyabonge (Nyamira North)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 4, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.55286\", \"division\": \"\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"034.98751\"}", 
+                "ward": {
+                    "code": 775
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": ""
+                    }
+                }, 
+                "code": 20289, 
+                "description": "", 
+                "name": "Nyabweri (Nyamira North)", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 4, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.52996\", \"division\": \"Ekerenyo\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"034.95731\"}", 
+                "ward": {
+                    "code": 774
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Maongoa"
+                    }
+                }, 
+                "code": 20268, 
+                "description": "", 
+                "name": "Maongoa Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.73978\", \"division\": \"Waita\", \"sub_location\": \"Thonoa\", \"location\": \"Waita\", \"longitude\": \"38.15500\"}", 
+                "ward": {
+                    "code": 345
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Malioni"
+                    }
+                }, 
+                "code": 20267, 
+                "description": "", 
+                "name": "Malioni Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.83837\", \"division\": \"Waita\", \"sub_location\": \"Kathoka\", \"location\": \"Endui\", \"longitude\": \"38.13526\"}", 
+                "ward": {
+                    "code": 345
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Mwambui"
+                    }
+                }, 
+                "code": 20266, 
+                "description": "", 
+                "name": "Mwambui dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.74780\", \"division\": \"Waita\", \"sub_location\": \"Mwambui\", \"location\": \"Mwambui\", \"longitude\": \"38.05235\"}", 
+                "ward": {
+                    "code": 345
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Miambani"
+                    }
+                }, 
+                "code": 20258, 
+                "description": "", 
+                "name": "Nzouni Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.07955\", \"division\": \" Mui\", \"sub_location\": \"\", \"location\": \"\", \"longitude\": \"38.15654\"}", 
+                "ward": {
+                    "code": 344
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kimongo"
+                    }
+                }, 
+                "code": 20257, 
+                "description": "", 
+                "name": "Matulani Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.05619\", \"division\": \"Nuu\", \"sub_location\": \"Kimongo\", \"location\": \"Kimongo\", \"longitude\": \"38.30145\"}", 
+                "ward": {
+                    "code": 343
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Ngunguni"
+                    }
+                }, 
+                "code": 20256, 
+                "description": "", 
+                "name": "Kyumbe Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.02259\", \"division\": \"Nuu\", \"sub_location\": \"Malawa\", \"location\": \"Wingemi\", \"longitude\": \"38.52808\"}", 
+                "ward": {
+                    "code": 343
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Inside Mbale GK Prison"
+                    }
+                }, 
+                "code": 20255, 
+                "description": "", 
+                "name": "GK Prison Mbale", 
+                "location_desc": "Next to Governor HQs office Mbale", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"0.07981\", \"division\": \"Municipality\", \"sub_location\": \"Kegoye\", \"location\": \"wamuluma\", \"longitude\": \"34.72208\"}", 
+                "ward": {
+                    "code": 1051
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "Cigma Bld bloc 6/403", 
+                    "town": {
+                        "name": "Nyahururu"
+                    }
+                }, 
+                "code": 20229, 
+                "description": "", 
+                "name": "Helna Medical Clinic", 
+                "location_desc": "Situated at Nyahururu town", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Private Practice - Clinical Officer"
+                }, 
+                "attributes": "{\"latitude\": \"00.03369\", \"division\": \"Nyahururu\", \"sub_location\": \"Nyahururu\", \"location\": \"Nyahururu\", \"longitude\": \"36.363890\"}", 
+                "ward": {
+                    "code": 815
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "639/Chania/Kanyoni", 
+                    "town": {
+                        "name": "Kamwangi"
+                    }
+                }, 
+                "code": 20218, 
+                "description": "", 
+                "name": "Kanyoni Community Dispensary", 
+                "location_desc": "Situated along Thika Nakuru highway", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.92336\", \"division\": \"Mangu\", \"sub_location\": \"Kanyoni\", \"location\": \"Gathaiti\", \"longitude\": \"036.85143\"}", 
+                "ward": {
+                    "code": 556
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Uhuru Market"
+                    }
+                }, 
+                "code": 20206, 
+                "description": "", 
+                "name": "Bar Hostess Empowerment and Support Programme (Makadara)", 
+                "location_desc": "Along Jogoo Road Hashi Petrol Station Opposite Maziwa Stage", 
+                "facility_type": {
+                    "name": "Medical Clinic"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Non-Governmental Organizations"
+                }, 
+                "attributes": "{\"latitude\": \"-01.29381\", \"division\": \"Makadara\", \"sub_location\": \"Makongeni\", \"location\": \"Makongeni\", \"longitude\": \"036.84889\"}", 
+                "ward": {
+                    "code": 1433
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kisukioni"
+                    }
+                }, 
+                "code": 20193, 
+                "description": "", 
+                "name": "Kisukioni Dispensary", 
+                "location_desc": "On Tala - Donyo Sabuk - Thika Road at Kisukioni Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.22458\", \"division\": \"Central\", \"sub_location\": \"Kisukioni\", \"location\": \"Kalandini\", \"longitude\": \"037.27116\"}", 
+                "ward": {
+                    "code": 388
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kakuyuni Market"
+                    }
+                }, 
+                "code": 20182, 
+                "description": "", 
+                "name": "Kathome Dispensary (Kangundo)", 
+                "location_desc": "Near Kakuyuni Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.38912\", \"division\": \"Kakuyuni\", \"sub_location\": \"Kathome\", \"location\": \"Katheini\", \"longitude\": \"037.36237\"}", 
+                "ward": {
+                    "code": 383
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Maondo"
+                    }
+                }, 
+                "code": 20179, 
+                "description": "", 
+                "name": "Ebenezer Health Care Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 2, 
+                "owner": {
+                    "name": "Private Practice - Nurse / Midwife"
+                }, 
+                "attributes": "{\"latitude\": \"00.16052\", \"division\": \"Shiatsala\", \"sub_location\": \"Maondo\", \"location\": \"Manyala\", \"longitude\": \"034.45162\"}", 
+                "ward": {
+                    "code": 1036
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Ngoleni Market"
+                    }
+                }, 
+                "code": 20166, 
+                "description": "", 
+                "name": "Ngiini Dispensary Kathiani", 
+                "location_desc": "Near Ngoleni market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-1.39292\", \"division\": \"Mitaboni\", \"sub_location\": \"Ngoleni\", \"location\": \"Mitaboni\", \"longitude\": \"37.28808\"}", 
+                "ward": {
+                    "code": 391
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "serem"
+                    }
+                }, 
+                "code": 20150, 
+                "description": "", 
+                "name": "Chemobo dispensary", 
+                "location_desc": "Along Kapsabet-Serem road 4 km SW of serem Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"0.03953\", \"division\": \"Aldai\", \"sub_location\": \"Kapsamoch\", \"location\": \"Kapkures\", \"longitude\": \"34.84665\"}", 
+                "ward": {
+                    "code": 756
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "serem"
+                    }
+                }, 
+                "code": 20149, 
+                "description": "", 
+                "name": "Chepkurngung Dispensary", 
+                "location_desc": "Along Kapsabet -Serem Road 7 km SW of Serem market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"0.03165\", \"division\": \"Aldai\", \"sub_location\": \"Chepkurngung\", \"location\": \"Kapkures\", \"longitude\": \"34.87818\"}", 
+                "ward": {
+                    "code": 756
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Gesima Market"
+                    }
+                }, 
+                "code": 20142, 
+                "description": "", 
+                "name": "Nyaiguta Dispensary", 
+                "location_desc": "Behind Gesima Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 3, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-00.57212\", \"division\": \"Gesima\", \"sub_location\": \"\", \"location\": \"Gesima\", \"longitude\": \"034.00415\"}", 
+                "ward": {
+                    "code": 1259
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kenyenya Market"
+                    }
+                }, 
+                "code": 20141, 
+                "description": "", 
+                "name": "Kenyenya Health Centre", 
+                "location_desc": "Behind Kenyenya market", 
+                "facility_type": {
+                    "name": "Health Centre"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 6, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-00.55751\", \"division\": \"Nyamira\", \"sub_location\": \"Nyabisimba\", \"location\": \"Bonyamatuta Masaba\", \"longitude\": \"034.91408\"}", 
+                "ward": {
+                    "code": 1353
+                }, 
+                "number_of_cots": 1, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "Nil", 
+                    "town": {
+                        "name": "Near KITI institute"
+                    }
+                }, 
+                "code": 20138, 
+                "description": "", 
+                "name": "Menengai Health Centre", 
+                "location_desc": "Near KITI institute", 
+                "facility_type": {
+                    "name": "Health Centre"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"00.27560\", \"division\": \"Lanet\", \"sub_location\": \"Menegai\", \"location\": \"Menengai\", \"longitude\": \"036.11128\"}", 
+                "ward": {
+                    "code": 803
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "Nil", 
+                    "town": {
+                        "name": "Near Soko mjinga"
+                    }
+                }, 
+                "code": 20137, 
+                "description": "", 
+                "name": "Rhonda Dispensary and Maternity", 
+                "location_desc": "Near Soko mjinga", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-00.30494\", \"division\": \"Municipality\", \"sub_location\": \"Rhonda\", \"location\": \"Kaptemwo \", \"longitude\": \"036.05523\"}", 
+                "ward": {
+                    "code": 875
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Katoloka Market"
+                    }
+                }, 
+                "code": 20130, 
+                "description": "", 
+                "name": "Kimeeni Dispensary", 
+                "location_desc": "Near Katoloka Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 2, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.69390\", \"division\": \"Kalawa\", \"sub_location\": \"Kimeeni\", \"location\": \"Kalawa\", \"longitude\": \"037.73910\"}", 
+                "ward": {
+                    "code": 416
+                }, 
+                "number_of_cots": 2, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Mukuku Market"
+                    }
+                }, 
+                "code": 20129, 
+                "description": "", 
+                "name": "Nduluku Dispensary", 
+                "location_desc": "Near Mukuku Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 2, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.58716\", \"division\": \"Waia\", \"sub_location\": \"Mukuku\", \"location\": \"Nduluku\", \"longitude\": \"037.61742\"}", 
+                "ward": {
+                    "code": 415
+                }, 
+                "number_of_cots": 2, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Muiu Market"
+                    }
+                }, 
+                "code": 20128, 
+                "description": "", 
+                "name": "Kisoi Munyao Memorial Dispensary", 
+                "location_desc": "Near Muiu Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 2, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.69107\", \"division\": \"Waia\", \"sub_location\": \"Muiu\", \"location\": \"Sakai\", \"longitude\": \"037.57943\"}", 
+                "ward": {
+                    "code": 415
+                }, 
+                "number_of_cots": 2, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Ndauni Market"
+                    }
+                }, 
+                "code": 20127, 
+                "description": "", 
+                "name": "Ndauni Dispensary", 
+                "location_desc": "Near Ndauni Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 2, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.71141\", \"division\": \"Kathulumbi\", \"sub_location\": \"Ndauni\", \"location\": \"Ndauni\", \"longitude\": \"037.73645\"}", 
+                "ward": {
+                    "code": 416
+                }, 
+                "number_of_cots": 2, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Katilini"
+                    }
+                }, 
+                "code": 20125, 
+                "description": "", 
+                "name": "Katilini Dispensary", 
+                "location_desc": "Situated Near Katilini Market", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": true, 
+                "number_of_beds": 2, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-01.66687\", \"division\": \"Mbooni \", \"sub_location\": \"Kyuu\", \"location\": \"Kyuu\", \"longitude\": \"037.42724\"}", 
+                "ward": {
+                    "code": 412
+                }, 
+                "number_of_cots": 2, 
+                "open_whole_day": true, 
+                "is_published": true
+            }, 
+            {
+                "operation_status": {
+                    "name": "OPERATIONAL"
+                }, 
+                "physical_address": {
+                    "plot_number": "", 
+                    "town": {
+                        "name": "Kisama"
+                    }
+                }, 
+                "code": 20040, 
+                "description": "", 
+                "name": "Katingani Dispensary", 
+                "location_desc": "", 
+                "facility_type": {
+                    "name": "Dispensary"
+                }, 
+                "abbreviation": "", 
+                "open_whole_week": false, 
+                "number_of_beds": 0, 
+                "owner": {
+                    "name": "Ministry of Health"
+                }, 
+                "attributes": "{\"latitude\": \"-0.88083\", \"division\": \"Central\", \"sub_location\": \"Kisama\", \"location\": \"Kivou\", \"longitude\": \"38.14964\"}", 
+                "ward": {
+                    "code": 341
+                }, 
+                "number_of_cots": 0, 
+                "open_whole_day": false, 
+                "is_published": true
+            }
+        ]
+    }
+]
