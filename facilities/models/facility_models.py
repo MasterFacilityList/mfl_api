@@ -634,6 +634,7 @@ class Facility(SequenceMixin, AbstractBase):
             ("view_classified_facilities", "Can see classified facilities"),
             ("publish_facilities", "Can publish facilities"),
         )
+        ordering = ('search', )
 
 
 @reversion.register

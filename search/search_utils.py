@@ -58,46 +58,9 @@ class ElasticAPI(object):
         url = "{}{}/{}/_search".format(
             ELASTIC_URL, index_name, document_type)
         data = {
-            "fields": [],  # return only _ids from the hits
-            "size": 30,  # return only 30 hits
             "query": {
-                "filtered": {
-                    "query": {
-                        "fuzzy_like_this": {
-                            "fields": [
-                                "name", "facility_services.service_name",
-                                "facility_services.category_name",
-                                "owner_name",
-                                "owner_type_name",
-                                "facility_type_name",
-                                "ward_name",
-                                "constituency_name",
-                                "county",
-                                "regulatory_status_name",
-                                "abbreviation",
-                                "location_desc"
-                            ],
-                            "like_text": query,
-                            "max_query_terms": 12,
-                            'analyzer': 'snowbal'
-                        }
-                    },
-                    "filter": {
-                        "bool": {
-                            "must": [
-                                {
-                                    "term": {
-                                        "active": True
-                                    }
-                                },
-                                {
-                                    "term": {
-                                        "deleted": False
-                                    }
-                                }
-                            ]
-                        }
-                    }
+                "query_string": {
+                    "query": query
                 }
             }
         }
