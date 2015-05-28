@@ -3,13 +3,22 @@ INDEX_SETTINGS = {
         "analysis": {
             "analyzer": {
                 "default": {
-                    "type": "snowball",
-                    "search": "snowball"
-
-                },
-                "mfl_analyzer": {
-                    "type": "snowball",
-                    "language": "English"
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": [
+                        "standard",
+                        "lowercase",
+                        "stop",
+                        "kstem",
+                        "ngram"
+                    ]
+                }
+            },
+            "filter": {
+                "ngram": {
+                    "type": "ngram",
+                    "min_gram": 2,
+                    "max_gram": 15
                 }
             }
         }
