@@ -24,7 +24,7 @@
 - name: extract frontend
   unarchive: >
     copy=no
-    src="{{mfl_frontend_archive_file}}"
+    src="{{frontend_archive_file}}"
     dest="{{extraction_dir}}"
   tags: mfl_frontend
 
@@ -42,7 +42,7 @@
 - name: set nginx sites-available
   template: >
     src=frontend.nginx.conf.j2
-    dest="/etc/nginx/sites-available/mfl_frontend"
+    dest="/etc/nginx/sites-available/{{frontend_name}}"
     owner="www-data"
   sudo: yes
   tags: mfl_frontend
@@ -51,8 +51,8 @@
 
 - name: set nginx sites-enabled
   file: >
-    src="/etc/nginx/sites-available/mfl_frontend"
-    dest="/etc/nginx/sites-enabled/mfl_frontend"
+    src="/etc/nginx/sites-available/{{frontend_name}}"
+    dest="/etc/nginx/sites-enabled/{{frontend_name}}"
     state=link
   sudo: yes
   tags: mfl_frontend

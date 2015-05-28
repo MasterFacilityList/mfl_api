@@ -50,10 +50,11 @@
     - restart nginx
 
 
-- name: warm api cache
+- name: clear and warm api cache
   shell: >
-    source /opt/mfl_api_virtualenv/bin/activate && 
-    cd /opt/mfl_api && 
+    source /opt/mfl_api_virtualenv/bin/activate &&
+    cd /opt/mfl_api &&
+    fab clear_cache &&
     fab warmup_cache:server_location="{{server_url}}",username="{{username}}",password="{{password}}",client_id="{{client_id}}",client_secret="{{client_secret}}" executable=/bin/bash
   when: warm_cache
   tags: warm_cache
