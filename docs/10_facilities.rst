@@ -90,6 +90,7 @@ ward                 Filter by the ``id`` of wards ( from ``/api/common/wards/``
 county                 Filter by the ``id`` of counties ( from ``/api/common/counties/`` e.g ``/api/facilities/facilities/?county=fa47afa2-a78a-421f-ad9f-55e6cbfc280c`` )
 constituency                 Filter by the ``id`` of constituencies ( from ``/api/common/constituencies/`` e.g ``/api/facilities/facilities/?constituencies=93280ce0-670f-4b96-a449-57d65f0dcace`` )
 owner                Filter by the ``id`` of one or more owners. Owners can be listed at ``/api/facilities/owners/``
+owner_type               Filter by the ``id`` of one or more owner types. Owner types can be listed at ``/api/facilities/owner_types/``
 officer_in_charge    Filter by the ``id`` of one or more officers-in-charge. The officers can be listed at ``/api/facilities/officers/``
 number_of_beds       Filter by the number of beds, supplying one or more filter parameters e.g ``/api/facilities/facilities/?number_of_beds=20,21,22,23,24``
 number_of_cots       Filter by the number of cots, supplying one ormore filter parameters e.g ``/api/facilities/facilities/?number_of_cots=10,11,12``
