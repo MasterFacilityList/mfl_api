@@ -17,7 +17,8 @@ from ..models import (
 from facilities.models import(
     FacilityStatus,
     ServiceCategory,
-    FacilityType
+    FacilityType,
+    OwnerType
 )
 from ..serializers import (
     ContactSerializer,
@@ -301,6 +302,8 @@ class FilteringSummariesView(views.APIView):
             'operation_status': FacilityStatus.objects.values(
                 'id', 'name').distinct(),
             'service_category': ServiceCategory.objects.values(
+                'id', 'name').distinct(),
+            'owner_type': OwnerType.objects.values(
                 'id', 'name').distinct()
         }
         res = self.serializer_cls(data=resp)
