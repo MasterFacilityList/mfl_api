@@ -175,6 +175,7 @@ def warmup_cache(
             "/api/gis/county_boundaries/",
             "/api/gis/ward_boundaries/",
             "/api/gis/constituency_boundaries/",
+            "/api/common/filtering_summaries/"
         ]
         for i in urls:
             # warmup non-gzip encoded content
