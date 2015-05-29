@@ -399,42 +399,43 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, 'correction_template.txt')
 
-    def test_dashboard_view(self):
-        url = reverse('api:facilities:dashboard')
-        county = mommy.make(County, name="Narok")
-        owner_type = mommy.make(OwnerType, name='FBO')
-        owner_type_2 = mommy.make(OwnerType, name='MOH')
-        constituency = mommy.make(
-            Constituency, county=county, name="Kaskazini")
-        constituency_2 = mommy.make(
-            Constituency, county=self.user.county, name="Nuu")
-        ward = mommy.make(Ward, constituency=constituency, name="Magharibi")
-        ward_2 = mommy.make(Ward, constituency=constituency_2, name="Kusini")
-        facility_type = mommy.make(FacilityType, name="Health Center")
-        owner = mommy.make(Owner, name="MOH", owner_type=owner_type_2)
-        owner = mommy.make(Owner, name="CHAK", owner_type=owner_type)
+    # def test_dashboard_view(self):
+    #     url = reverse('api:facilities:dashboard')
+    #     county = mommy.make(County, name="Narok")
+    #     owner_type = mommy.make(OwnerType, name='FBO')
+    #     owner_type_2 = mommy.make(OwnerType, name='MOH')
+    #     constituency = mommy.make(
+    #         Constituency, county=county, name="Kaskazini")
+    #     constituency_2 = mommy.make(
+    #         Constituency, county=self.user.county, name="Nuu")
+    #     ward = mommy.make(Ward, constituency=constituency, name="Magharibi")
+    #     ward_2 = mommy.make(Ward, constituency=constituency_2, name="Kusini")
+    #     facility_type = mommy.make(FacilityType, name="Health Center")
+    #     owner = mommy.make(Owner, name="MOH", owner_type=owner_type_2)
+    #     owner = mommy.make(Owner, name="CHAK", owner_type=owner_type)
 
-        facility = mommy.make(
-            Facility, ward=ward, facility_type=facility_type,
-            owner=owner, name="Mama Lucy")
-        mommy.make(
-            Facility, ward=ward_2, facility_type=facility_type,
-            owner=owner, name="St Teresa Hospital")
-        regulating_body = mommy.make(RegulatingBody, name="Poisons Board")
-        mommy.make(FacilityUnit, regulating_body=regulating_body)
-        mommy.make(
-            FacilityRegulationStatus,
-            regulating_body=regulating_body,
-            facility=facility)
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
+    #     facility = mommy.make(
+    #         Facility, ward=ward, facility_type=facility_type,
+    #         owner=owner, name="Mama Lucy")
+    #     mommy.make(
+    #         Facility, ward=ward_2, facility_type=facility_type,
+    #         owner=owner, name="St Teresa Hospital")
+    #     regulating_body = mommy.make(RegulatingBody, name="Poisons Board")
+    #     mommy.make(FacilityUnit, regulating_body=regulating_body)
+    #     mommy.make(
+    #         FacilityRegulationStatus,
+    #         regulating_body=regulating_body,
+    #         facility=facility)
+    #     response = self.client.get(url)
+    #     self.assertEquals(200, response.status_code)
 
 
 class TestDashBoardView(LoginMixin, APITestCase):
     def setUp(self):
-        self.url = reverse('api:facilities:dashboard')
-        self.dashboard = DashBoard()
         super(TestDashBoardView, self).setUp()
+        self.url = reverse('api:facilities:dashboard')
+        county = mommy.make(County, name='Kiambu')
+        mommy.make(UserCounty, county=county, user=self.user)
 
     def test_get_dashboard_national_user(self):
         county = mommy.make(County)
