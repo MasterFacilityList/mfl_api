@@ -626,123 +626,259 @@ Facility Excel reports
 
 Facility dashboard APIs
 ++++++++++++++++++++++++++
+This api is accesbile by administrators at bo the county and the National level.
 The dasboard API does a high level analysis of different aspects of the facilities.
 Currently, it supports analysis of facilities by owners, administrative units, 
-regulatory statuses and facility types.
+facility types, facility owner types and the recently created facilities.
+
 
 To get the analyzed data:
 ``GET`` the URL ``api/facilities/dashboard/``
+The data that the endpoint responds with is dependent upon the priviledges of the user logged in.
 
-Sample Expected data
+Sample Expected data for a **National user**
 
 .. code-block:: javascript
     
     {
-        "owners_summary": {
-            "Academic (if registered)": 30,
-            "Non-Governmental Organizations": 265,
-            "Other Public Institution": 68,
-            "Company Medical Service": 78,
-            "Private Practice - General Practitioner": 332,
-            "Private Practice - Medical Specialist": 139,
-            "Parastatal": 12,
-            "Private Practice - Clinical Officer": 451,
-            "Christian Health Association of Kenya": 300,
-            "Ministry of Health": 3658,
-            "Private Practice - Nurse / Midwife": 844,
-            "State Coorporation": 5,
-            "Local Authority": 101,
-            "Humanitarian Agencies": 3,
-            "Private Enterprise (Institution)": 1203,
-            "Supreme Council for Kenya Muslims": 10,
-            "Private Practice - Unspecified": 179,
-            "Kenya Episcopal Conference-Catholic Secretariat": 318,
-            "Other Faith Based": 225,
-            "Armed Forces": 14,
-            "NOT IN LIST": 0,
-            "Community": 88,
-            "Local Authority T Fund": 5,
-            "Community Development Fund": 33
-        },
-        "county_summary": {
-            "KISUMU": 127,
-            "KIAMBU": 333,
-            "BOMET": 117,
-            "NYAMIRA": 114,
-            "LAIKIPIA": 148       
-        },
-        "total_facilities": 8361,
-        "wards_summary": {
-            "BASUBA": 1,
-            "SUAM": 2,
-            "MASONGALENI": 1,
-            "MENENGAI": 10
-        },
-        "regulator_summary": {
-            "Ministry of Health": {
-                "units": 0,
-                "facilities": 8051
+        "owners_summary": [
+            {
+                "count": 5,
+                "name": "State Coorporation"
             },
-            "Kenya MPDB - Private Practice": {
-                "units": 0,
-                "facilities": 1362
+            {
+                "count": 1203,
+                "name": "Private Enterprise (Institution)"
             },
-            "Kenya MPDB - Institution": {
-                "units": 0,
-                "facilities": 3832
+            {
+                "count": 0,
+                "name": "NOT IN LIST"
             },
-            "Nursing Council of Kenya (Private Practice)": {
-                "units": 0,
-                "facilities": 1606
+            {
+                "count": 3,
+                "name": "Humanitarian Agencies"
             },
-            "Pharmacy & Poisons Board": {
-                "units": 0,
-                "facilities": 44
+            {
+                "count": 179,
+                "name": "Private Practice - Unspecified"
             },
-            "Other": {
-                "units": 0,
-                "facilities": 992
-            },
-            "Clinical Officers Council": {
-                "units": 0,
-                "facilities": 872
-            }
-        },
-        "constituencies_summary": {
-            "LAIKIPIA WEST": 46,
-            "CENTRAL IMENTI": 31
             
-        },
-        "types_summary": {
-            "Other Hospital": 196,
-            "Not in List": 16,
-            "District Hospital": 119,
-            "Training Institution in Health (Stand-alone)": 5,
-            "VCT Centre (Stand-Alone)": 125,
-            "Dispensary": 3808,
-            "Laboratory (Stand-alone)": 23,
-            "Maternity Home": 43,
-            "Health Centre": 901,
-            "Funeral Home (Stand-alone)": 1,
-            "Medical Centre": 21,
-            "Nursing Home": 172,
-            "Sub-District Hospital": 119,
-            "Dental Clinic": 26,
-            "Rural Health Training Centre": 1,
-            "District Health Office": 3,
-            "Health Project": 6,
-            "Provincial General Hospital": 7,
-            "Medical Clinic": 2735,
-            "Regional Blood Transfusion Centre": 1,
-            "Eye Centre": 9,
-            "Blood Bank": 1,
-            "Eye Clinic": 3,
-            "National Referral Hospital": 2,
-            "Health Programme": 9,
-            "Radiology Unit": 9
-        }
+        ],
+        "recently_created": 8361,
+        "county_summary": [
+            {
+                "count": 784,
+                "name": "NAIROBI"
+            },
+            {
+                "count": 392,
+                "name": "MERU"
+            },
+            {
+                "count": 379,
+                "name": "NAKURU"
+            },
+            {
+                "count": 363,
+                "name": "KITUI"
+            },
+            {
+                "count": 358,
+                "name": "NYERI"
+            },
+            {
+                "count": 333,
+                "name": "KIAMBU"
+            },
+            {
+                "count": 267,
+                "name": "KAJIADO"
+            },
+            {
+                "count": 256,
+                "name": "MOMBASA"
+            },
+            {
+                "count": 243,
+                "name": "MACHAKOS"
+            },
+            {
+                "count": 233,
+                "name": "KILIFI"
+            }
+        ],
+        "total_facilities": 8361,
+        "status_summary": [
+            {
+                "count": 0,
+                "name": "Facility_Gazette_By_ID"
+            },
+            {
+                "count": 0,
+                "name": "PENDING"
+            },
+            {
+                "count": 0,
+                "name": "Not-Operational"
+            },
+            {
+                "count": 8361,
+                "name": "OPERATIONAL"
+            },
+            {
+                "count": 0,
+                "name": "Licensing"
+            },
+            {
+                "count": 0,
+                "name": "Registration"
+            },
+            {
+                "count": 0,
+                "name": "Gazettment"
+            }
+        ],
+        "owner_types": [
+            {
+                "count": 0,
+                "name": "Other"
+            },
+            {
+                "count": 268,
+                "name": "Non-Governmental Organizations"
+            },
+            {
+                "count": 3226,
+                "name": "Private Institutions and Private Practice"
+            },
+            {
+                "count": 853,
+                "name": "Faith Based Organization"
+            },
+            {
+                "count": 356,
+                "name": "Other Public Institution"
+            },
+            {
+                "count": 3658,
+                "name": "Ministry of Health"
+            }
+        ],
+        "constituencies_summary": [],
+        "types_summary": [
+            {
+                "count": 119,
+                "name": "District Hospital"
+            },
+            {
+                "count": 901,
+                "name": "Health Centre"
+            },
+            {
+                "count": 3808,
+                "name": "Dispensary"
+            }
+        ]
     }
 
+Sample Expected data for a **County user** (Mombasa County)
+
+.. code-block:: javascript
+    
+    {
+        "owners_summary": [
+                  
+            {
+                "count": 5,
+                "name": "Local Authority T Fund"
+            },
+            {
+                "count": 33,
+                "name": "Community Development Fund"
+            },
+            {
+                "count": 78,
+                "name": "Company Medical Service"
+            },
+            {
+                "count": 265,
+                "name": "Non-Governmental Organizations"
+            },
+            {
+                "count": 225,
+                "name": "Other Faith Based"
+            },
+            {
+                "count": 10,
+                "name": "Supreme Council for Kenya Muslims"
+            },
+            
+        ],
+        "owner_types": [     
+            {
+                "count": 189,
+                "name": "Private Institutions and Private Practice"
+            },
+            {
+                "count": 10,
+                "name": "Faith Based Organization"
+            },
+            {
+                "count": 27,
+                "name": "Other Public Institution"
+            },
+            {
+                "count": 23,
+                "name": "Ministry of Health"
+            }
+        ],
+        "constituencies_summary": [
+            {
+                "count": 71,
+                "name": "MVITA"
+            },
+            {
+                "count": 49,
+                "name": "LIKONI"
+            },
+            {
+                "count": 46,
+                "name": "NYALI"
+            },
+            {
+                "count": 44,
+                "name": "CHANGAMWE"
+            },
+            {
+                "count": 25,
+                "name": "KISAUNI"
+            },
+            {
+                "count": 21,
+                "name": "JOMVU"
+            }
+        ],
+        "types_summary": [       
+            {
+                "count": 2735,
+                "name": "Medical Clinic"
+            },
+            {
+                "count": 196,
+                "name": "Other Hospital"
+            },
+            {
+                "count": 119,
+                "name": "Sub-District Hospital"
+            },
+            {
+                "count": 172,
+                "name": "Nursing Home"
+            }
+         
+        ]
+    }
+   
 
 Facility types
 ==============
