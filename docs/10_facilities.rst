@@ -626,10 +626,10 @@ Facility Excel reports
 
 Facility dashboard APIs
 ++++++++++++++++++++++++++
-This api is accesbile by administrators at bo the county and the National level.
+This api is accesbile by administrators at both the county and the National level.
 The dasboard API does a high level analysis of different aspects of the facilities.
 Currently, it supports analysis of facilities by owners, administrative units, 
-facility types, facility owner types and the recently created facilities.
+facility types, facility owner types and analysis by time created.
 
 
 To get the analyzed data:
