@@ -1,0 +1,459 @@
+[
+   
+    {
+      "model":"facilities.ServiceOption",
+      "unique_fields":["service","option"],
+      "records": [  
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Condom Promotion and Distribution"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Condom Promotion and Distribution"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Management of STIs"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Management of STIs"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Voluntary Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Voluntary Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Early Infant Diagnosis"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Early Infant Diagnosis"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "PMTCT - ANC"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "PMTCT - ANC"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "PMTCT - Maternity"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "PMTCT - Maternity"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Post Exposure Prophylaxis"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Post Exposure Prophylaxis"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Diagnostic Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Diagnostic Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Paediatric Antiretroviral Therapy"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Paediatric Antiretroviral Therapy"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Adult Antiretroviral Therapy"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Adult Antiretroviral Therapy"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Home Based Care"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Home Based Care"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Short Term FP"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Short Term FP"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Long Term FP"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Long Term FP"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Integrated Services"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Integrated Services"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Stand Alone Services"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Stand Alone Services"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Focused Antenatal Care"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Focused Antenatal Care"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Specialized ANC"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Specialized ANC"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Basic Immunization"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Basic Immunization"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Immunization with additional vaccines"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Immunization with additional vaccines"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Port Immunization Services"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Port Immunization Services"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Smear Microscopy"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Smear Microscopy"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Tuberculosis Culture"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Tuberculosis Culture"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "First Line Treatment"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "First Line Treatment"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "MDRTB Treatment"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "MDRTB Treatment"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "Yes"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    },
+    {
+        "option": {
+            "value": "No"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    }
+]
+
+    }    
+
+]
