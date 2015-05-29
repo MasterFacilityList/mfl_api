@@ -6,7 +6,7 @@ from django.utils import timezone
 from rest_framework.views import APIView, Response
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
-from common.models import Ward, County, Constituency
+from common.models import County, Constituency
 
 from ..models import (
     OwnerType,
@@ -822,16 +822,19 @@ class DashBoard(APIView):
         return top_10_counties_summary
 
     def get_facility_constituency_summary(self):
-        constituencies = Constituency.objects.all()
+        constituencies = Constituency.objects.filter(county=self.user.county)
         facility_constituency_summary = {}
         for const in constituencies:
             facility_const_count = self.queryset.filter(
                 ward__constituency=const).count()
             facility_constituency_summary[const.name] = facility_const_count
         top_10_consts = sorted(
-            facility_county_summary.items(),
+            facility_constituency_summary.items(),
             key=lambda x: x[1], reverse=True)[0:10]
-        return facility_constituency_summary
+        top_10_consts_summary = {}
+        for item in top_10_consts:
+            top_10_consts_summary[item[0]] = item[1]
+        return top_10_consts_summary
 
     def get_facility_type_summary(self):
         facility_types = FacilityType.objects.all()
