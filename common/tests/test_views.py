@@ -14,7 +14,8 @@ from ..models import (
     ContactType,
     Constituency,
     Ward,
-    UserContact
+    UserContact,
+    UserCounty
 )
 from ..serializers import (
     ContactSerializer,
@@ -44,6 +45,8 @@ class LoginMixin(object):
             password='mtihani',
             is_national=True
         )
+        county = mommy.make(County, name='Kiambu')
+        mommy.make(UserCounty, county=county, user=self.user)
         self.client.login(email='tester@ehealth.or.ke', password='mtihani')
         self.maxDiff = None
         super(LoginMixin, self).setUp()
