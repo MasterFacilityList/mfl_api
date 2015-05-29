@@ -805,14 +805,6 @@ class DashBoard(APIView):
     queryset = Facility.objects.all()
     filter_class = FacilityFilter
 
-    def get_facility_wards_summary(self):
-        wards = Ward.objects.all()
-        facility_wards_summary = {}
-        for ward in wards:
-            ward_facility_count = self.queryset.filter(ward=ward).count()
-            facility_wards_summary[ward.name] = ward_facility_count
-        return facility_wards_summary
-
     def get_facility_county_summary(self):
         counties = County.objects.all()
         facility_county_summary = {}
@@ -869,7 +861,6 @@ class DashBoard(APIView):
 
         data = {
             "total_facilities": Facility.objects.count(),
-            "wards_summary": self.get_facility_wards_summary(),
             "county_summary": self.get_facility_county_summary(),
             "constituencies_summary": self.get_facility_constituency_summary(),
             "owners_summary": self.get_facility_owner_summary(),
