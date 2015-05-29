@@ -816,9 +816,13 @@ class DashBoard(APIView):
             facility_county_summary.items(),
             key=lambda x: x[1], reverse=True)[0:10]
         facility_county_summary
-        top_10_counties_summary = {}
+        top_10_counties_summary = []
         for item in top_10_counties:
-            top_10_counties_summary[item[0]] = item[1]
+            top_10_counties_summary.append(
+                {
+                    "name": item[0],
+                    "count": item[1]
+                })
         return top_10_counties_summary
 
     def get_facility_constituency_summary(self):
@@ -832,68 +836,90 @@ class DashBoard(APIView):
         top_10_consts = sorted(
             facility_constituency_summary.items(),
             key=lambda x: x[1], reverse=True)[0:10]
-        top_10_consts_summary = {}
+        top_10_consts_summary = []
         for item in top_10_consts:
-            top_10_consts_summary[item[0]] = item[1]
+            top_10_consts_summary.append(
+                {
+                    "name": item[0],
+                    "count": item[1]
+                })
         return top_10_consts_summary
 
     def get_facility_type_summary(self):
         facility_types = FacilityType.objects.all()
-        facility_type_summary = {}
+        facility_type_summary = []
         for facility_type in facility_types:
             facility_type_count = self.queryset.filter(
                 facility_type=facility_type).count()
+            facility_type_summary.append(
+                {
+                    "name": facility_type.name,
+                    "count": facility_type_count
+                })
             facility_type_summary[facility_type.name] = facility_type_count
         return facility_type_summary
 
     def get_facility_owner_summary(self):
         owners = Owner.objects.all()
-        facility_owners_summary = {}
+        facility_owners_summary = []
         for owner in owners:
             owner_count = self.queryset.filter(owner=owner).count()
+            facility_owners_summary.append(
+                {
+                    "name": owner.name,
+                    "count": owner_count
+                })
             facility_owners_summary[owner.name] = owner_count
         return facility_owners_summary
 
-    def get_facility_regulators_summary(self):
-        regulation_status = FacilityRegulationStatus.objects.all()
-        regulatory_bodies = RegulatingBody.objects.all()
-        regulator_summary = {}
-        facility_units = FacilityUnit.objects.all()
-
-        for body in regulatory_bodies:
-            facility_regulator_count = regulation_status.filter(
-                regulating_body=body).count()
-            regulator_summary[body.name] = {}
-            regulator_summary[body.name]['facilities'] = \
-                facility_regulator_count
-            facility_units_count = facility_units.filter(
-                regulating_body=body).count()
-            regulator_summary[body.name]['units'] = facility_units_count
-        return regulator_summary
-
     def get_facility_status_summary(self):
         statuses = FacilityStatus.objects.all()
-        status_summary = {}
+        status_summary = []
         for status in statuses:
             if not self.request.user.is_national:
                 status_count = Facility.objects.filter(
                     operation_status=status,
                     ward__constituency__county=self.request.user.county
                 ).count()
-                status_summary[status.name] = status_count
+                status_summary.append(
+                    {
+                        "name": status.name,
+                        "count": status_count
+
+                    })
             else:
                 status_count = Facility.objects.filter(
                     operation_status=status).count()
+                status_count.append(
+                    {
+                        "name": status.name,
+                        "count": status_count
+                    })
                 status_summary[status.name] = status_count
         return status_summary
 
     def get_facility_owner_types_summary(self):
         owner_types = OwnerType.objects.all()
-        owner_types_summary = {}
+        owner_types_summary = []
         for owner_type in owner_types:
-            owner_types_count = Facility.objects.filter(
-                owner__owner_type=owner_type).count()
-            owner_types_summary[owner_type.name] = owner_types_count
+            if self.request.user.is_national:
+                owner_types_count = Facility.objects.filter(
+                    owner__owner_type=owner_type).count()
+                owner_types_summary.append(
+                    {
+                        "name": owner_types.name,
+                        "count": owner_types_count
+                    })
+            else:
+                owner_types_count = Facility.objects.filter(
+                    owner__owner_type=owner_type,
+                    ward__constituency__county=self.request.user.county
+                ).count()
+                owner_types_summary.append(
+                    {
+                        "name": owner_types.name,
+                        "count": owner_types_count
+                    })
         return owner_types_summary
 
     def get(self, *args, **kwargs):
@@ -904,7 +930,6 @@ class DashBoard(APIView):
             "constituencies_summary": self.get_facility_constituency_summary(),
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
-            "regulator_summary": self.get_facility_regulators_summary(),
             "status_summary": self.get_facility_status_summary(),
             "owner_types": self.get_facility_status_summary()
         }

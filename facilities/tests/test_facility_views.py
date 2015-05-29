@@ -427,3 +427,15 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
             facility=facility)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+
+class TestDashBoardView(LoginMixin, APITestCase):
+    def setUp(self):
+        self.county = mommy.make(County, name='test County 1')
+        self.county_2 = mommy.make(County, name='test County 2')
+        self.constituency = mommy.make(Constituency, county=self.county)
+        self.ward = mommy.make(Ward, constituency=self.constituency)
+
+        self.constituency_2 = mommy.make(Constituency, county=self.county_2)
+        facility = mommy.make(Facility)
+        super(TestDashBoardView, self).setUp()
