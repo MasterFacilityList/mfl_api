@@ -812,7 +812,14 @@ class DashBoard(APIView):
             facility_county_count = self.queryset.filter(
                 ward__constituency__county=county).count()
             facility_county_summary[county.name] = facility_county_count
-        return facility_county_summary
+        top_10_counties = sorted(
+            facility_county_summary.items(),
+            key=lambda x: x[1], reverse=True)[0:10]
+        facility_county_summary
+        top_10_counties_summary = {}
+        for item in top_10_counties:
+            top_10_counties_summary[item[0]] = item[1]
+        return top_10_counties_summary
 
     def get_facility_constituency_summary(self):
         constituencies = Constituency.objects.all()
@@ -821,6 +828,9 @@ class DashBoard(APIView):
             facility_const_count = self.queryset.filter(
                 ward__constituency=const).count()
             facility_constituency_summary[const.name] = facility_const_count
+        top_10_consts = sorted(
+            facility_county_summary.items(),
+            key=lambda x: x[1], reverse=True)[0:10]
         return facility_constituency_summary
 
     def get_facility_type_summary(self):
