@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.template import loader, Context
 from django.http import HttpResponse
 
@@ -823,7 +825,10 @@ class DashBoard(APIView):
                     "name": item[0],
                     "count": item[1]
                 })
-        return top_10_counties_summary
+        if self.request.user.is_national:
+            return top_10_counties_summary
+        else:
+            return []
 
     def get_facility_constituency_summary(self):
         constituencies = Constituency.objects.filter(
@@ -856,7 +861,6 @@ class DashBoard(APIView):
                     "name": facility_type.name,
                     "count": facility_type_count
                 })
-            facility_type_summary[facility_type.name] = facility_type_count
         return facility_type_summary
 
     def get_facility_owner_summary(self):
@@ -869,7 +873,6 @@ class DashBoard(APIView):
                     "name": owner.name,
                     "count": owner_count
                 })
-            facility_owners_summary[owner.name] = owner_count
         return facility_owners_summary
 
     def get_facility_status_summary(self):
@@ -890,12 +893,11 @@ class DashBoard(APIView):
             else:
                 status_count = Facility.objects.filter(
                     operation_status=status).count()
-                status_count.append(
+                status_summary.append(
                     {
                         "name": status.name,
                         "count": status_count
                     })
-                status_summary[status.name] = status_count
         return status_summary
 
     def get_facility_owner_types_summary(self):
@@ -907,7 +909,7 @@ class DashBoard(APIView):
                     owner__owner_type=owner_type).count()
                 owner_types_summary.append(
                     {
-                        "name": owner_types.name,
+                        "name": owner_type.name,
                         "count": owner_types_count
                     })
             else:
@@ -917,21 +919,42 @@ class DashBoard(APIView):
                 ).count()
                 owner_types_summary.append(
                     {
-                        "name": owner_types.name,
+                        "name": owner_type.name,
                         "count": owner_types_count
                     })
         return owner_types_summary
 
+    def get_recently_created_facilities(self):
+        right_now = timezone.now()
+        three_months_ago = right_now - timedelta(days=90)
+        recent_facilities_count = 0
+        if self.request.user.is_national:
+            recent_facilities_count = Facility.objects.filter(
+                created__gte=three_months_ago).count()
+        else:
+            recent_facilities_count = Facility.objects.filter(
+                created__gte=three_months_ago,
+                ward__constituency__county=self.request.user.county).count()
+        return recent_facilities_count
+
     def get(self, *args, **kwargs):
+        total_facilities = 0
+        if self.request.user.is_national:
+            total_facilities = Facility.objects.count()
+        else:
+            total_facilities = Facility.objects.filter(
+                ward__constituency__county=self.request.user.county
+            ).count()
 
         data = {
-            "total_facilities": Facility.objects.count(),
+            "total_facilities": total_facilities,
             "county_summary": self.get_facility_county_summary(),
             "constituencies_summary": self.get_facility_constituency_summary(),
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
-            "owner_types": self.get_facility_status_summary()
+            "owner_types": self.get_facility_owner_types_summary(),
+            "recently_created": self.get_recently_created_facilities()
         }
 
         return Response(data)
