@@ -27,7 +27,6 @@ from ..models import (
     FacilityUnit,
     FacilityRegulationStatus,
     FacilityType,
-    RegulatingBody,
     ServiceCategory,
     Service,
     Option,
@@ -398,23 +397,126 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, 'correction_template.txt')
 
-    def test_dashboard_view(self):
-        url = reverse('api:facilities:dashboard')
-        county = mommy.make(County, name="Kiambu")
-        constituency = mommy.make(
-            Constituency, county=county, name="Kaskazini")
-        ward = mommy.make(Ward, constituency=constituency, name="Magharibi")
-        facility_type = mommy.make(FacilityType, name="Health Center")
-        owner = mommy.make(Owner, name="MOH")
 
-        facility = mommy.make(
-            Facility, ward=ward, facility_type=facility_type,
-            owner=owner, name="Mama Lucy")
-        regulating_body = mommy.make(RegulatingBody, name="Poisons Board")
-        mommy.make(FacilityUnit, regulating_body=regulating_body)
+class TestDashBoardView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestDashBoardView, self).setUp()
+        self.url = reverse('api:facilities:dashboard')
+        county = mommy.make(County, name='Kiambu')
+        mommy.make(UserCounty, county=county, user=self.user)
+
+    def test_get_dashboard_national_user(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
         mommy.make(
-            FacilityRegulationStatus,
-            regulating_body=regulating_body,
-            facility=facility)
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+
+        )
+        expected_data = {
+            "owners_summary": [
+                {
+                    "count": 1,
+                    "name": owner.name
+                },
+            ],
+            "recently_created": 1,
+            "county_summary": [
+                {
+                    "count": 1,
+                    "name": county.name
+                },
+                # the county belonging to the logged in user
+                {
+                    "count": 0,
+                    "name": "Kiambu"
+                },
+            ],
+            "total_facilities": 1,
+            "status_summary": [
+                {
+                    "count": 1,
+                    "name": status.name
+                },
+            ],
+            "owner_types": [
+                {
+                    "count": 1,
+                    "name": owner_type. name
+                },
+            ],
+            "constituencies_summary": [],
+            "types_summary": [
+                {
+                    "count": 1,
+                    "name": facility_type.name
+                },
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(expected_data, response.data)
+
+    def test_get_dashboard_as_county_user(self):
+        # remove the user as a national user
+        self.user.is_national = False
+        self.user.save()
+        constituency = mommy.make(
+            Constituency, county=self.user.county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+
+        )
+        expected_data = {
+            "owners_summary": [
+                {
+                    "count": 1,
+                    "name": owner.name
+                },
+            ],
+            "recently_created": 1,
+            "county_summary": [],
+            "total_facilities": 1,
+            "status_summary": [
+                {
+                    "count": 1,
+                    "name": status.name
+                },
+            ],
+            "owner_types": [
+                {
+                    "count": 1,
+                    "name": owner_type. name
+                },
+            ],
+            "constituencies_summary": [
+                {
+                    "name": constituency.name,
+                    "count": 1
+                }
+            ],
+            "types_summary": [
+                {
+                    "count": 1,
+                    "name": facility_type.name
+                },
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(expected_data, response.data)
