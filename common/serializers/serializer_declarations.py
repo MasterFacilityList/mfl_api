@@ -108,6 +108,13 @@ class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
 class UserCountySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    user_full_name = serializers.ReadOnlyField(
+        source='user.get_full_name')
+    county_name = serializers.ReadOnlyField(
+        source='county.name')
+    user_email = serializers.ReadOnlyField(
+        source='user.email')
+
     class Meta(object):
         model = UserCounty
 
