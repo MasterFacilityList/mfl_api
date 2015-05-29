@@ -42,6 +42,102 @@
                 "is_staff": false,
                 "is_national": true,
                 "is_superuser": false
+            },
+            {
+                "email": "barrack@mfltest.slade360.co.ke",
+                "first_name": "Barrack",
+                "last_name": "Hussein",
+                "username": "barrack",
+                "password": "pbkdf2_sha256$20000$iRX5ARyoRIEs$7xOVSMBqX8qxuHTXa9/aCbc/RZBsi5QXCnf1AU9iHTc=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "mugabe@mfltest.slade360.co.ke",
+                "first_name": "Robert",
+                "last_name": "mugabe",
+                "username": "robamugs",
+                "password": "pbkdf2_sha256$20000$iRX5ARyoRIEs$7xOVSMBqX8qxuHTXa9/aCbc/RZBsi5QXCnf1AU9iHTc=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "hosni@mfltest.slade360.co.ke",
+                "first_name": "Hosni",
+                "last_name": "Mubarrack",
+                "username": "Hosni",
+                "password": "pbkdf2_sha256$20000$iRX5ARyoRIEs$7xOVSMBqX8qxuHTXa9/aCbc/RZBsi5QXCnf1AU9iHTc=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "yassa@mfltest.slade360.co.ke",
+                "first_name": "Yassa",
+                "last_name": "Arafat",
+                "username": "yassa",
+                "password": "pbkdf2_sha256$20000$iRX5ARyoRIEs$7xOVSMBqX8qxuHTXa9/aCbc/RZBsi5QXCnf1AU9iHTc=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "musharraf@mfltest.slade360.co.ke",
+                "first_name": "pervez",
+                "last_name": "musharraf",
+                "username": "musharraf",
+                "password": "pbkdf2_sha256$20000$iRX5ARyoRIEs$7xOVSMBqX8qxuHTXa9/aCbc/RZBsi5QXCnf1AU9iHTc=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            }
+        ]
+    },
+    {
+        "model": "common.UserCounty",
+        "unique_fields": ["user", "county"],
+        "records": [
+            {
+                "user": {
+                    "email": "barrack@mfltest.slade360.co.ke"
+                },
+                "county": {
+                    "code": 1
+                }
+            },
+            {
+                "user": {
+                    "email": "mugabe@mfltest.slade360.co.ke"
+                },
+                "county": {
+                    "code": 3
+                }
+            },
+            {
+                "user": {
+                    "email": "hosni@mfltest.slade360.co.ke"
+                },
+                "county": {
+                    "code": 47
+                }
+            },
+            {
+                "user": {
+                    "email": "yassa@mfltest.slade360.co.ke"
+                },
+                "county": {
+                    "code": 33
+                }
+            },
+            {
+                "user": {
+                    "email": "musharraf@mfltest.slade360.co.ke"
+                },
+                "county": {
+                    "code": 4
+                }
             }
         ]
     }
