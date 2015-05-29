@@ -14,8 +14,7 @@ from ..models import (
     ContactType,
     Constituency,
     Ward,
-    UserContact,
-    UserCounty
+    UserContact
 )
 from ..serializers import (
     ContactSerializer,
