@@ -822,7 +822,8 @@ class DashBoard(APIView):
         return top_10_counties_summary
 
     def get_facility_constituency_summary(self):
-        constituencies = Constituency.objects.filter(county=self.user.county)
+        constituencies = Constituency.objects.filter(
+            county=self.request.user.county)
         facility_constituency_summary = {}
         for const in constituencies:
             facility_const_count = self.queryset.filter(
@@ -870,6 +871,31 @@ class DashBoard(APIView):
             regulator_summary[body.name]['units'] = facility_units_count
         return regulator_summary
 
+    def get_facility_status_summary(self):
+        statuses = FacilityStatus.objects.all()
+        status_summary = {}
+        for status in statuses:
+            if not self.request.user.is_national:
+                status_count = Facility.objects.filter(
+                    operation_status=status,
+                    ward__constituency__county=self.request.user.county
+                ).count()
+                status_summary[status.name] = status_count
+            else:
+                status_count = Facility.objects.filter(
+                    operation_status=status).count()
+                status_summary[status.name] = status_count
+        return status_summary
+
+    def get_facility_owner_types_summary(self):
+        owner_types = OwnerType.objects.all()
+        owner_types_summary = {}
+        for owner_type in owner_types:
+            owner_types_count = Facility.objects.filter(
+                owner__owner_type=owner_type).count()
+            owner_types_summary[owner_type.name] = owner_types_count
+        return owner_types_summary
+
     def get(self, *args, **kwargs):
 
         data = {
@@ -878,7 +904,9 @@ class DashBoard(APIView):
             "constituencies_summary": self.get_facility_constituency_summary(),
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
-            "regulator_summary": self.get_facility_regulators_summary()
+            "regulator_summary": self.get_facility_regulators_summary(),
+            "status_summary": self.get_facility_status_summary(),
+            "owner_types": self.get_facility_status_summary()
         }
 
         return Response(data)
