@@ -816,7 +816,7 @@ class DashBoard(APIView):
             facility_county_summary[county.name] = facility_county_count
         top_10_counties = sorted(
             facility_county_summary.items(),
-            key=lambda x: x[1], reverse=True)[0:10]
+            key=lambda x: x[1], reverse=True)[0:20]
         facility_county_summary
         top_10_counties_summary = []
         for item in top_10_counties:
@@ -840,7 +840,7 @@ class DashBoard(APIView):
             facility_constituency_summary[const.name] = facility_const_count
         top_10_consts = sorted(
             facility_constituency_summary.items(),
-            key=lambda x: x[1], reverse=True)[0:10]
+            key=lambda x: x[1], reverse=True)[0:20]
         top_10_consts_summary = []
         for item in top_10_consts:
             top_10_consts_summary.append(
