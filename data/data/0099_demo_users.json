@@ -140,5 +140,107 @@
                 }
             }
         ]
+    },
+    {   
+
+        "model": "common.Contact",
+        "unique_fields": ["contact", "contact_type"],
+
+        "records": [
+            {
+                "contact": "barrack@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },            
+            {
+                "contact": "mugabe@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            {
+                "contact": "hosni@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            {
+                "contact": "musharraf@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            {
+                "contact": "yassa@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            }
+        ]
+    },
+    {   
+
+        "model": "common.UserContact",
+        "unique_fields": ["user", "contact"],
+
+        "records": [
+
+        {
+            "contact": {
+                "contact": "barrack@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+           "user": {
+                    "email": "barrack@mfltest.slade360.co.ke"
+                }
+        },
+        {       
+            "contact": {
+                "contact": "mugabe@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            "user": {
+                    "email": "mugabe@mfltest.slade360.co.ke"
+                }
+        },
+        {  
+            "contact": {
+                "contact": "hosni@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            "user": {
+                    "email": "hosni@mfltest.slade360.co.ke"
+                }
+        },
+        {
+            "contact": {
+                "contact": "musharraf@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            "user": {
+                    "email": "musharraf@mfltest.slade360.co.ke"
+            }
+        },
+        {
+            "contact": {
+                "contact": "yassa@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            "user": {
+                    "email": "yassa@mfltest.slade360.co.ke"
+            }
+        }
+        ]
     }
 ]
