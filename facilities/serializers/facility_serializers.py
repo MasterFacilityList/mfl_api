@@ -189,6 +189,7 @@ class FacilityDetailSerializer(FacilitySerializer):
         read_only=True, source="get_facility_contacts")
     facility_physical_address = serializers.DictField(
         read_only=True, required=False)
+    officer_name = serializers.ReadOnlyField(source='officer_in_charge.name')
 
 
 class FacilityContactSerializer(
