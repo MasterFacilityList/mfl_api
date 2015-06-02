@@ -44,17 +44,6 @@ def server_deploy():
         )
 
 
-def reset_migrations():
-    """Development only - remove and recreate all migration"""
-    for app_name in base.LOCAL_APPS:
-        local('rm -f {}/migrations/ -r'.format(app_name))
-
-    for app_name in base.LOCAL_APPS:
-        manage('makemigrations {}'.format(app_name))
-
-    local('git add . --all')
-
-
 def psql(query, no_sudo=False, is_file=False):
     """Dev only - used by the setup function below"""
     sudo = 'sudo -u postgres'
