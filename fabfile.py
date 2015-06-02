@@ -92,18 +92,6 @@ def setup(*args, **kwargs):
     # needs to come first to as to index data as it is being loaded
     remove_search_index()
     create_search_index()
-    no_sudo = True if 'no-sudo' in args else False
-    kwargs['sql'] if 'sql' in kwargs else None
-    db_name = base.DATABASES.get('default').get('NAME')
-    db_user = base.DATABASES.get('default').get('USER')
-    db_pass = base.DATABASES.get('default').get('PASSWORD')
-
-    psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
-    psql("DROP USER IF EXISTS {}".format(db_user), no_sudo)
-    psql("CREATE USER {0} WITH SUPERUSER CREATEDB "
-         "CREATEROLE LOGIN PASSWORD '{1}'".format(db_user, db_pass), no_sudo)
-    psql('CREATE DATABASE {}'.format(db_name), no_sudo)
-    psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
 
     if base.DEBUG:
