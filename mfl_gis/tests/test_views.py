@@ -72,7 +72,5 @@ class TestWardBoundaryViews(LoginMixin, APITestCase):
         url = self.list_url + "{}/".format(boundary.id)
         response = self.client.get(url)
         self.assertEqual(200, response.status_code)
-        self.assertEquals(
-            [],
-            response.data.get('properties').get('facility_ids')
-        )
+
+        assert not response.data.get('properties').get('facility_ids')
