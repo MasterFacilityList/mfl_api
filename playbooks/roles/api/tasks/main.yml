@@ -25,8 +25,11 @@
 - name: now install the dependencies that we need
   pip: chdir=/opt/mfl_api requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
 
-- name: run fab setup
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup >> /tmp/fab_setup.log executable=/bin/bash"
+- name: run fab load_demo_data
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab load_demo_data >> /tmp/fab_load_data.log executable=/bin/bash"
+
+- name: run fab recreate_search_index
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab recreate_search_index >> /tmp/fab_recreate_search_index.log executable=/bin/bash"
 
 - name: run the Django migrations and collectstatic
   django_manage: "command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
