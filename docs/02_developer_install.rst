@@ -48,19 +48,19 @@ Getting started
 
 2. Activate the created vitualenv and run ``pip install -r requirements.``
 
-3. Run ``fab setup``
-    Running this command will do the following:
-
-    * Create the database.
-
-    * Run migrations.
-
-    * Load demo data if the project **DEBUG** attribute in settings is set to true .
+3. Run the following commands sequentially:
+    * fab setup_db
+        This creates the database and runs migrations.
+    * fab load_demo_data
+        This will load sample test data for the API if the project **DEBUG** 
+        attribute in settings is set to true .
+    * fab recreate_search_index
+        Creates an Elasticsearch  index. Before running this command ensure that 
+        Elasticsearch is up and running.
+ 
 
 **B: Installing the system**
-
-
-2. Activate the virtualenv and run ``python setup.py install`` while in the project folder.
+    Activate the virtualenv and run ``python setup.py install`` while in the project folder.
 
 
 .. toctree::
