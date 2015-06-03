@@ -46,18 +46,24 @@ Getting started
 
 1. Create a virtualenv
 
-2. Activate the created vitualenv and run ``pip install -r requirements.``
+2. Activate the created vitualenv and run ``pip install -r requirements.txt``
 
 3. Run the following commands sequentially:
     * fab setup_db
         This creates the database and runs migrations.
     * fab load_demo_data
         This will load sample test data for the API if the project **DEBUG** 
-        attribute in settings is set to true .
+        attribute in settings is set to `True`.
     * fab recreate_search_index
         Creates an Elasticsearch  index. Before running this command ensure that 
-        Elasticsearch is up and running.
- 
+        Elasticsearch is up and running. This command causes the data that has been
+        loaded in the database to be indexed in ElasticSearch.
+
+At times one may want to retain the database. To do so, call fab load_demo_data and
+fab recreate_search_index. 
+Also one may want to recreate the database. Calling fab setup_db drops the database, 
+creates it again and runs migrations. After this one may proceed to load the data 
+and create the search index.
 
 **B: Installing the system**
     Activate the virtualenv and run ``python setup.py install`` while in the project folder.
