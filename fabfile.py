@@ -44,17 +44,6 @@ def server_deploy():
         )
 
 
-def reset_migrations():
-    """Development only - remove and recreate all migration"""
-    for app_name in base.LOCAL_APPS:
-        local('rm -f {}/migrations/ -r'.format(app_name))
-
-    for app_name in base.LOCAL_APPS:
-        manage('makemigrations {}'.format(app_name))
-
-    local('git add . --all')
-
-
 def psql(query, no_sudo=False, is_file=False):
     """Dev only - used by the setup function below"""
     sudo = 'sudo -u postgres'
@@ -71,6 +60,9 @@ def load_demo_data(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
     data_files = join(BASE_DIR, 'data/data/*')
     manage('bootstrap', data_files)
+
+    # Needs to occur after base setup data has been loaded
+    load_gis_data()
 
 
 def load_gis_data(*args, **kwargs):
@@ -93,16 +85,18 @@ def remove_search_index(*args, **kwargs):
     manage('remove_index')
 
 
-def create_entire_index(*args, **kwargs):
+def build_search_index(*args, **kwargs):
     """Creates the entire search index"""
     manage('build_index')
 
 
-def setup(*args, **kwargs):
-    """Dev only - clear and recreate the entire database"""
-    # needs to come first to as to index data as it is being loaded
+def recreate_search_index(*args, **kwargs):
     remove_search_index()
     create_search_index()
+    build_search_index()
+
+
+def setup_db(*args, **kwargs):
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
@@ -116,13 +110,6 @@ def setup(*args, **kwargs):
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
-
-    if base.DEBUG:
-        load_demo_data()
-        create_entire_index()
-
-    # Needs to occur after base setup data has been loaded
-    load_gis_data()
 
 
 def clear_cache():
@@ -176,6 +163,7 @@ def warmup_cache(
             "/api/gis/ward_boundaries/",
             "/api/gis/constituency_boundaries/",
             "/api/common/filtering_summaries/"
+            "/api/facilities/facilities/"
         ]
         for i in urls:
             # warmup non-gzip encoded content
