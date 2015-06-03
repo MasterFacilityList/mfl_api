@@ -20,11 +20,9 @@ class ThrottlingBySession(throttling.SimpleRateThrottle):
         if fs_identity:
             machine = self.get_ident(request)
             ident = machine + fs_identity
-
-            if request.user.is_authenticated():
-                return self.cache_format % {
-                    'scope': self.scope,
-                    'ident': ident
-                }
+            return self.cache_format % {
+                'scope': self.scope,
+                'ident': ident
+            }
         else:
             return None
