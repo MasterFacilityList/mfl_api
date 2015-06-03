@@ -203,6 +203,10 @@ class FacilityDetailSerializer(FacilitySerializer):
         read_only=True, required=False)
     officer_name = serializers.ReadOnlyField(source='officer_in_charge.name')
 
+    class Meta(object):
+        model = Facility
+        exclude = ('attributes', )
+
 
 class FacilityContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
