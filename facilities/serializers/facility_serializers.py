@@ -192,6 +192,14 @@ class FacilityDetailSerializer(FacilitySerializer):
     officer_name = serializers.ReadOnlyField(source='officer_in_charge.name')
 
 
+class FacilityListSerializer(FacilitySerializer):
+    class Meta(object):
+        model = Facility
+        fields = [
+            'code', 'name', 'id', 'county', 'constituency',
+            'facility_type_name', 'owner_type_name']
+
+
 class FacilityContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
