@@ -61,6 +61,9 @@ def load_demo_data(*args, **kwargs):
     data_files = join(BASE_DIR, 'data/data/*')
     manage('bootstrap', data_files)
 
+    # Needs to occur after base setup data has been loaded
+    load_gis_data()
+
 
 def load_gis_data(*args, **kwargs):
     """Load boundary data from stored GeoJSON files"""
@@ -87,19 +90,20 @@ def create_entire_index(*args, **kwargs):
     manage('build_index')
 
 
-def setup(*args, **kwargs):
-    """Dev only - clear and recreate the entire database"""
-    # needs to come first to as to index data as it is being loaded
-    remove_search_index()
-    create_search_index()
+def setup_db(*args, **kwargs):
+    no_sudo = True if 'no-sudo' in args else False
+    kwargs['sql'] if 'sql' in kwargs else None
+    db_name = base.DATABASES.get('default').get('NAME')
+    db_user = base.DATABASES.get('default').get('USER')
+    db_pass = base.DATABASES.get('default').get('PASSWORD')
+
+    psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
+    psql("DROP USER IF EXISTS {}".format(db_user), no_sudo)
+    psql("CREATE USER {0} WITH SUPERUSER CREATEDB "
+         "CREATEROLE LOGIN PASSWORD '{1}'".format(db_user, db_pass), no_sudo)
+    psql('CREATE DATABASE {}'.format(db_name), no_sudo)
+    psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
-
-    if base.DEBUG:
-        load_demo_data()
-        create_entire_index()
-
-    # Needs to occur after base setup data has been loaded
-    load_gis_data()
 
 
 def clear_cache():
