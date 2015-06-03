@@ -115,7 +115,7 @@ REST_FRAMEWORK = {
         'common.utilities.throttling.ThrottlingBySession',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'rating': '10/day'
+        'rating': '1/day'
     },
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissions',

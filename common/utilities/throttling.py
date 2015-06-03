@@ -16,8 +16,15 @@ class ThrottlingBySession(throttling.SimpleRateThrottle):
         Override this method in order to have an ip based cache key
         for authenticated users instead of the usual user.pk based cache key.
         """
-        if request.user.is_authenticated():
-            return self.cache_format % {
-                'scope': self.scope,
-                'ident': self.get_ident(request)
-            }
+        fs_identity = request.DATA.get('facility_service', None)
+        if fs_identity:
+            machine = self.get_ident(request)
+            ident = machine + fs_identity
+
+            if request.user.is_authenticated():
+                return self.cache_format % {
+                    'scope': self.scope,
+                    'ident': ident
+                }
+        else:
+            return None
