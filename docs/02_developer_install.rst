@@ -59,11 +59,14 @@ Getting started
         Elasticsearch is up and running. This command causes the data that has been
         loaded in the database to be indexed in ElasticSearch.
 
-At times one may want to retain the database. To do so, call fab load_demo_data and
-fab recreate_search_index. 
-Also one may want to recreate the database. Calling fab setup_db drops the database, 
-creates it again and runs migrations. After this one may proceed to load the data 
-and create the search index.
+.. note ::
+
+    At times durint development one may want to retain the database. To do so, 
+    call fab load_demo_data and fab recreate_search_index. 
+
+    Also one may want to recreate the database. Calling fab setup_db drops the database, 
+    creates it again and runs migrations. After this one may proceed to load the data 
+    and create the search index as desired.
 
 **B: Installing the system**
     Activate the virtualenv and run ``python setup.py install`` while in the project folder.
