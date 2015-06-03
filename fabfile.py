@@ -90,7 +90,7 @@ def build_search_index(*args, **kwargs):
     manage('build_index')
 
 
-def recreate_index(*args, **kwargs):
+def recreate_search_index(*args, **kwargs):
     remove_search_index()
     create_search_index()
     build_search_index()
