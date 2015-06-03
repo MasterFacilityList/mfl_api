@@ -17,7 +17,8 @@ from ..serializers import (
     FacilitySerializer,
     FacilityDetailSerializer,
     FacilityStatusSerializer,
-    FacilityUnitSerializer
+    FacilityUnitSerializer,
+    FacilityListSerializer
 )
 from ..models import (
     OwnerType,
@@ -263,6 +264,23 @@ class TestFacilityView(LoginMixin, APITestCase):
 
             ]
         }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_facility_slimmed_down_listing(self):
+        url = reverse("api:facilities:facilities_read_list")
+        facility = mommy.make(Facility)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityListSerializer(facility).data
+            ]
+        }
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
