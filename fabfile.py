@@ -85,9 +85,15 @@ def remove_search_index(*args, **kwargs):
     manage('remove_index')
 
 
-def create_entire_index(*args, **kwargs):
+def build_search_index(*args, **kwargs):
     """Creates the entire search index"""
     manage('build_index')
+
+
+def recreate_index(*args, **kwargs):
+    remove_search_index()
+    create_search_index()
+    build_search_index()
 
 
 def setup_db(*args, **kwargs):
