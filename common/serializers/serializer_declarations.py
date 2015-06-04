@@ -16,6 +16,12 @@ from .serializer_base import AbstractFieldsMixin
 
 class UserContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
+    contact_text = serializers.ReadOnlyField(source='contact.contact')
+    contact_type_text = serializers.ReadOnlyField(
+        source='contact.contact_type.name'
+    )
+
     class Meta(object):
         model = UserContact
 

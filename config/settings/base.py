@@ -112,10 +112,10 @@ CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False  # Turn on in production
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': (
-        'rest_framework.throttling.ScopedRateThrottle',
+        'common.utilities.throttling.ThrottlingBySession',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'rating': '1000/day'
+        'rating': '1/day'
     },
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissions',
