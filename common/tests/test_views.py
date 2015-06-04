@@ -526,3 +526,12 @@ class FilteringSummariesView(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         self.assertEqual(response.data, {})
+
+    def test_get_summaries_some_fields_wrong(self):
+        mommy.make(County, name="muranga")
+        ward = mommy.make(Ward, name='kizito')
+        mommy.make(Constituency, name='kiambaa')
+        response = self.client.get(self.url+'?fields=ward,hakuna')
+        self.assertEquals(200, response.status_code)
+        self.assertTrue('ward' in response.data)
+        self.assertEqual(response.data['ward'][0]['name'], ward.name)
