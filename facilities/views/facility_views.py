@@ -89,6 +89,7 @@ from ..filters import (
     FacilityOperationStateFilter,
     FacilityUpgradeFilter,
     RegulatingBodyContactFilter,
+    FacilityServiceRatingFilter
 )
 
 
@@ -332,6 +333,7 @@ class FacilityServiceRatingListView(generics.ListCreateAPIView):
     throttle_scope = 'rating'
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
+    filter_class = FacilityServiceRatingFilter
     ordering_fields = ('rating', )
 
 
