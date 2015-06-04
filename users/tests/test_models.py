@@ -84,22 +84,3 @@ class TestMflUserModel(BaseTestCase):
         self.assertFalse(user.requires_password_change)
         user.set_password('we now expect the change history to be saved')
         self.assertEqual(len(user.password_history), 2)
-
-
-class TestDeleting(BaseTestCase):
-    def setUp(self):
-        self.url = reverse('api:common:counties_list')
-        super(TestDeleting, self).setUp()
-
-    def test_delete_county(self):
-        county = mommy.make(County)
-        url = self.url + '{}/'.format(county.id)
-        response = self.client.delete(url)
-        # assert status code due to cache time of 15 seconds
-        self.assertEquals(200, response.status_code)
-        # self.assertEquals("Not Found", response.data.get('detail'))
-
-        with self.assertRaises(County.DoesNotExist):
-            County.objects.get(id=county.id)
-
-        self.assertEquals(1, County.everything.filter(id=county.id).count())
