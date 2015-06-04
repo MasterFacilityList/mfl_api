@@ -191,7 +191,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
             "owner", "officer_in_charge", "physical_address",
-            "parent", "contacts", ]
+            "parent", "contacts"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
