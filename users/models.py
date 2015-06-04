@@ -17,6 +17,14 @@ from oauth2_provider.models import AbstractApplication
 USER_MODEL = settings.AUTH_USER_MODEL
 
 
+# recreate the custom default manager same as it is in common
+# to avoid cyclic dependencies
+class CustomDefaultManager(models.Manager):
+    def get_queryset(self):
+        return super(
+            CustomDefaultManager, self).get_queryset().filter(deleted=False)
+
+
 class MflUserManager(BaseUserManager):
     def create(self, email, first_name,
                username, password=None, **extra_fields):
@@ -84,6 +92,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     objects = MflUserManager()
+    everything = CustomDefaultManager()
 
     def set_password(self, raw_password):
         """Overridden so that we can keep track of password age"""

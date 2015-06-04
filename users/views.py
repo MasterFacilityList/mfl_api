@@ -10,6 +10,18 @@ from .serializers import (
 from .filters import MFLUserFilter
 
 
+class CustomDestroyModelMixin(object):
+
+    def perform_destroy(self, instance):
+        instance.deleted = True
+        instance.save()
+
+
+class CustomRetrieveUpdateDestroyView(
+        CustomDestroyModelMixin, generics.RetrieveUpdateDestroyAPIView):
+    pass
+
+
 class PermissionsListView(generics.ListAPIView):
     """
     This is a read-only list view; intentionally.
@@ -27,7 +39,7 @@ class GroupListView(generics.ListCreateAPIView):
     serializer_class = GroupSerializer
 
 
-class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
+class GroupDetailView(CustomRetrieveUpdateDestroyView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
@@ -39,7 +51,7 @@ class UserList(generics.ListCreateAPIView):
     ordering_fields = ('first_name', 'last_name', 'email', 'username',)
 
 
-class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+class UserDetailView(CustomRetrieveUpdateDestroyView):
     queryset = MflUser.objects.all()
     serializer_class = MflUserSerializer
 
@@ -143,7 +155,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
         'user', 'client_type', 'authorization_grant_type', 'name')
 
 
-class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
+class MFLOauthApplicationDetailView(CustomRetrieveUpdateDestroyView):
     """View, update and retire specific OAuth2 application authorizations"""
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer
