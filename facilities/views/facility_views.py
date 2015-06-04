@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.utils import timezone
 
 from rest_framework.views import APIView, Response
+from rest_framework.permissions import AllowAny
+
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
 from common.models import County, Constituency
@@ -760,48 +762,66 @@ class RegulationStatusDetailView(
     serializer_class = RegulationStatusSerializer
 
 
-def get_inspection_report(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('inspection_report.txt')
-    report_date = timezone.now().isoformat()
-    regulating_bodies = FacilityRegulationStatus.objects.filter(
-        facility=facility)
-    regulating_body = regulating_bodies[0] if regulating_bodies else None
+class FacilityInspectionReport(APIView):
+    permission_classes = (AllowAny, )
 
-    context = Context(
-        {
-            "report_date": report_date,
-            "facility": facility,
-            "regulating_body": regulating_body
-        }
-    )
-    return HttpResponse(template.render(context))
+    def get(self, request, facility_id, *args, **kwargs):
+        return self.get_inspection_report(facility_id)
 
+    def get_inspection_report(self, facility_id):
+        facility = Facility.objects.get(pk=facility_id)
+        template = loader.get_template('inspection_report.txt')
+        report_date = timezone.now().isoformat()
+        regulating_bodies = FacilityRegulationStatus.objects.filter(
+            facility=facility)
+        regulating_body = regulating_bodies[0] if regulating_bodies else None
 
-def get_cover_report(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('cover_report.txt')
-    report_date = timezone.now().isoformat()
-    context = Context(
-        {
-            "report_date": report_date,
-            "facility": facility
-        }
-    )
-    return HttpResponse(template.render(context))
+        context = Context(
+            {
+                "report_date": report_date,
+                "facility": facility,
+                "regulating_body": regulating_body
+            }
+        )
+        return HttpResponse(template.render(context))
 
 
-def get_correction_template(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('correction_template.txt')
-    request_date = timezone.now().isoformat()
-    context = Context(
-        {
-            "request_date": request_date,
-            "facility": facility
-        }
-    )
-    return HttpResponse(template.render(context))
+class FacilityCoverTemplate(APIView):
+    permission_classes = (AllowAny, )
+
+    def get(self, request, facility_id, *args, **kwargs):
+        return self.get_cover_report(facility_id)
+
+    def get_cover_report(self, facility_id):
+        facility = Facility.objects.get(pk=facility_id)
+        template = loader.get_template('cover_report.txt')
+        report_date = timezone.now().isoformat()
+        context = Context(
+            {
+                "report_date": report_date,
+                "facility": facility
+            }
+        )
+        return HttpResponse(template.render(context))
+
+
+class FacilityCorrectionTemplate(APIView):
+    permission_classes = (AllowAny, )
+
+    def get(self, request, facility_id, *args, **kwargs):
+        return self.get_correction_template(facility_id)
+
+    def get_correction_template(self, facility_id):
+        facility = Facility.objects.get(pk=facility_id)
+        template = loader.get_template('correction_template.txt')
+        request_date = timezone.now().isoformat()
+        context = Context(
+            {
+                "request_date": request_date,
+                "facility": facility
+            }
+        )
+        return HttpResponse(template.render(context))
 
 
 class DashBoard(APIView):

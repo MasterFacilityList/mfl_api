@@ -45,11 +45,11 @@ from ..views import (
     FacilityUpgradeDetailView,
     FacilityServiceRatingDetailView,
     FacilityServiceRatingListView,
-    get_cover_report,
-    get_inspection_report,
+    FacilityCoverTemplate,
+    FacilityInspectionReport,
     RegulatingBodyContactListView,
     RegulatingBodyContactDetailView,
-    get_correction_template,
+    FacilityCorrectionTemplate,
     DashBoard,
 )
 
@@ -61,17 +61,16 @@ urlpatterns = patterns(
         name='dashboard'),
 
     url(r'^facility_correction_template/(?P<facility_id>[^/]+)/$',
-        get_correction_template,
+        FacilityCorrectionTemplate.as_view(),
         name='facility_correction_template'),
+
     url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
-        get_inspection_report,
+        FacilityInspectionReport.as_view(),
         name='facility_inspection_report'),
 
-    url(r'^facility_cover_report/(?P<facility_id>[^/]+)/$', get_cover_report,
+    url(r'^facility_cover_report/(?P<facility_id>[^/]+)/$',
+        FacilityCoverTemplate.as_view(),
         name='facility_cover_report'),
-    url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
-        get_inspection_report,
-        name='facility_inspection_report'),
 
     url(r'^regulating_body_contacts/$',
         RegulatingBodyContactListView.as_view(),
