@@ -1,11 +1,8 @@
 from rest_framework import generics
-from rest_framework.mixins import DestroyModelMixin
 
 
-class CustomDestroyModelMixin(DestroyModelMixin):
-    """
-    Overrides the perform_destroy method.
-    """
+class CustomDestroyModelMixin(object):
+
     def perform_destroy(self, instance):
         instance.deleted = True
         instance.save()

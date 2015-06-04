@@ -2,24 +2,24 @@ import logging
 import reversion
 import os
 
+from collections import OrderedDict
+
 from django.core.servers.basehttp import FileWrapper
 from django.views.decorators.cache import never_cache
 from django.utils.encoding import smart_str
 from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 from weasyprint import HTML, CSS
-
-from collections import OrderedDict
-from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from ..utilities.metadata_helpers import MODEL_VIEW_DICT, _lookup_metadata
 
+from ..utilities.metadata_helpers import MODEL_VIEW_DICT, _lookup_metadata
 from ..metadata import CustomMetadata
 
 METADATA_CLASS = CustomMetadata()
