@@ -17,8 +17,8 @@ from .serializer_base import AbstractFieldsMixin
 class UserContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
-    contact = serializers.ReadOnlyField(source='contact.contact')
-    contact_type = serializers.ReadOnlyField(
+    contact_text = serializers.ReadOnlyField(source='contact.contact')
+    contact_type_text = serializers.ReadOnlyField(
         source='contact.contact_type.name'
     )
 
