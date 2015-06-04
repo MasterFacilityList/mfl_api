@@ -326,6 +326,7 @@ class FacilityServiceRatingListView(generics.ListCreateAPIView):
     """
     Lists and creates facility's services ratings
     """
+    throttle_scope = 'rating'
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
     ordering_fields = ('rating', )

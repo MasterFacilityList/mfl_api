@@ -1,5 +1,4 @@
 import xlsxwriter
-import json
 import string
 import cStringIO
 import uuid
@@ -8,8 +7,6 @@ from django.conf import settings
 
 from rest_framework import renderers
 
-
-from search.search_utils import default
 from .shared import DownloadMixin
 
 
@@ -17,15 +14,13 @@ def remove_keys(sample_list):
     """
     Removes keys that should not be in excel e.g PKs and audit fields
     """
-    new_set = set(sample_list) - set(settings.EXCEL_EXCEPT_FIELDS)
-    return [item for item in new_set]
+    return [
+        item for item in sample_list
+        if item not in settings.EXCEL_EXCEPT_FIELDS]
 
 
 def _write_excel_file(data):
-    data = json.loads(json.dumps(data, default=default))
     result = data.get('results')
-
-    # work_book_name = 'download.xlsx'
     mem_file = cStringIO.StringIO()
     workbook = xlsxwriter.Workbook(mem_file)
     format = workbook.add_format(
@@ -68,9 +63,9 @@ def _write_excel_file(data):
                 for key in data_keys:
                     if not isinstance(data_dict.get(key), list):
                         try:
-                            uuid.UUID(data_dict.get(key))
-                        except:
-                            worksheet.write(row, col, data_dict.get(key))
+                            uuid.UUID(str(data_dict.get(key)))
+                        except ValueError:
+                            worksheet.write(row, col, str(data_dict.get(key)))
                         col = col + 1
                     else:
                         # write sheets to new work sheets

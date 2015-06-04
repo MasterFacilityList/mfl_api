@@ -73,5 +73,5 @@ class TestModels(TestCase):
             #  a naive way to test unicodes for coverage purposes only
             try:
                 self.assertIsInstance(obj.__unicode__(), str)
-            except AssertionError:
+            except:
                 self.assertIsInstance(obj.__unicode__(), unicode)

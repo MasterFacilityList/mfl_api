@@ -169,7 +169,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     facility_type_name = serializers.CharField(read_only=True)
     owner_name = serializers.CharField(read_only=True)
     owner_type_name = serializers.CharField(read_only=True)
-    operations_status_name = serializers.CharField(read_only=True)
+    operation_status_name = serializers.CharField(read_only=True)
     county = serializers.CharField(read_only=True)
     constituency = serializers.CharField(read_only=True)
     ward_name = serializers.ReadOnlyField()
@@ -179,7 +179,19 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = Facility
-        exclude = ('attributes',)
+        fields = [
+            "name", "owner_name", "operation_status", "code", "id",
+            "county", "constituency", "ward", "facility_type_name",
+            "operation_status_name", "regulatory_status_name",
+            "facility_type_name", "number_of_beds",
+            "number_of_cots", "is_classified", "is_published",
+            "open_whole_day", "open_whole_week", "owner_type_name",
+            "ward_name", "average_rating", "facility_services",
+            "created", "updated", "deleted", "active", "search",
+            "abbreviation", "description", "location_desc",
+            "created_by", "updated_by", "facility_type",
+            "owner", "officer_in_charge", "physical_address",
+            "parent", "contacts", ]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -190,6 +202,10 @@ class FacilityDetailSerializer(FacilitySerializer):
     facility_physical_address = serializers.DictField(
         read_only=True, required=False)
     officer_name = serializers.ReadOnlyField(source='officer_in_charge.name')
+
+    class Meta(object):
+        model = Facility
+        exclude = ('attributes', )
 
 
 class FacilityContactSerializer(
