@@ -540,7 +540,26 @@ class FilteringSummariesView(LoginMixin, APITestCase):
         mommy.make(County, name="muranga")
         ward = mommy.make(Ward, name='kizito')
         mommy.make(Constituency, name='kiambaa')
-        response = self.client.get(self.url+'?fields=ward,hakuna')
+        response = self.client.get(self.url + '?fields=ward,hakuna')
         self.assertEquals(200, response.status_code)
         self.assertTrue('ward' in response.data)
         self.assertEqual(response.data['ward'][0]['name'], ward.name)
+
+
+class TestDeleting(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse('api:common:counties_list')
+        super(TestDeleting, self).setUp()
+
+    def test_delete_county(self):
+        county = mommy.make(County)
+        url = self.url + '{}/'.format(county.id)
+        response = self.client.delete(url)
+        # assert status code due to cache time of 15 seconds
+        self.assertEquals(200, response.status_code)
+        # self.assertEquals("Not Found", response.data.get('detail'))
+
+        with self.assertRaises(County.DoesNotExist):
+            County.objects.get(id=county.id)
+
+        self.assertEquals(1, County.everything.filter(id=county.id).count())

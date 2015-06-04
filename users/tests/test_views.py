@@ -3,8 +3,10 @@ import json
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
 from common.tests.test_views import LoginMixin
+
 from rest_framework.test import APITestCase
 from rest_framework.exceptions import ValidationError
+from model_mommy import mommy
 
 from ..models import MflUser
 from ..serializers import _lookup_groups
@@ -178,3 +180,22 @@ class TestGroupViews(LoginMixin, APITestCase):
         }
         response = self.client.post(self.url, data)
         self.assertEqual(400, response.status_code)
+
+
+class TestDeleting(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse('api:users:mfl_users_list')
+        super(TestDeleting, self).setUp()
+
+    def test_delete_county(self):
+        user = mommy.make(MflUser)
+        url = self.url + '{}/'.format(user.id)
+        response = self.client.delete(url)
+        # assert status code due to cache time of 15 seconds
+        self.assertEquals(200, response.status_code)
+        # self.assertEquals("Not Found", response.data.get('detail'))
+
+        with self.assertRaises(MflUser.DoesNotExist):
+            MflUser.objects.get(id=user.id)
+
+        self.assertEquals(1, MflUser.everything.filter(id=user.id).count())
