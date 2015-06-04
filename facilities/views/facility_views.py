@@ -11,6 +11,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
 from common.models import County, Constituency
+from common.utilities import CustomRetrieveUpdateDestroyView
 
 from ..models import (
     OwnerType,
@@ -135,7 +136,7 @@ class RegulatingBodyContactListView(generics.ListCreateAPIView):
     ordering_fields = ('regulating_body', 'contact', )
 
 
-class RegulatingBodyContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+class RegulatingBodyContactDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular regulatory body contact.
     """
@@ -160,7 +161,7 @@ class FacilityUpgradeListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'facility_type', 'reason', )
 
 
-class FacilityUpgradeDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityUpgradeDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility upgrade or downgrade
     """
@@ -185,7 +186,7 @@ class FacilityOperationStateListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'operation_status', 'reason')
 
 
-class FacilityOperationStateDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityOperationStateDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular operation status
     """
@@ -211,7 +212,7 @@ class FacilityApprovalListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'comment', )
 
 
-class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityApprovalDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility approval
     """
@@ -237,7 +238,7 @@ class ServiceCategoryListView(generics.ListCreateAPIView):
 
 
 class ServiceCategoryDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular service category
     """
@@ -263,7 +264,7 @@ class OptionListView(generics.ListCreateAPIView):
 
 
 class OptionDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a a particular option
     """
@@ -290,7 +291,7 @@ class ServiceListView(generics.ListCreateAPIView):
 
 
 class ServiceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular service
     """
@@ -318,7 +319,7 @@ class FacilityServiceListView(generics.ListCreateAPIView):
 
 
 class FacilityServiceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility service detail
     """
@@ -337,7 +338,7 @@ class FacilityServiceRatingListView(generics.ListCreateAPIView):
     ordering_fields = ('rating', )
 
 
-class FacilityServiceRatingDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityServiceRatingDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility service rating
     """
@@ -365,7 +366,7 @@ class ServiceOptionListView(generics.ListCreateAPIView):
 
 
 class ServiceOptionDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular service option
     """
@@ -394,7 +395,7 @@ class FacilityUnitsListView(generics.ListCreateAPIView):
 
 
 class FacilityUnitDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility unit's detail
     """
@@ -420,7 +421,7 @@ class FacilityStatusListView(generics.ListCreateAPIView):
 
 
 class FacilityStatusDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular operation status
     """
@@ -446,7 +447,7 @@ class JobTitleListView(generics.ListCreateAPIView):
 
 
 class JobTitleDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular job title
     """
@@ -475,7 +476,7 @@ class OfficerListView(generics.ListCreateAPIView):
 
 
 class OfficerDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular officer
     """
@@ -503,7 +504,7 @@ class RegulatingBodyListView(generics.ListCreateAPIView):
 
 
 class RegulatingBodyDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular regulatory body details
     """
@@ -531,7 +532,7 @@ class OwnerTypeListView(generics.ListCreateAPIView):
 
 
 class OwnerTypeDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular owner type
     """
@@ -559,7 +560,7 @@ class OfficerContactListView(generics.ListCreateAPIView):
 
 
 class OfficerContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular officer contact detail
     """
@@ -590,7 +591,7 @@ class OwnerListView(generics.ListCreateAPIView):
 
 
 class OwnerDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular owner's details
     """
@@ -654,7 +655,7 @@ class FacilityListReadOnlyView(
 
 class FacilityDetailView(
         QuerysetFilterMixin, AuditableDetailViewMixin,
-        generics.RetrieveUpdateDestroyAPIView):
+        CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility
     """
@@ -682,7 +683,7 @@ class FacilityContactListView(generics.ListCreateAPIView):
 
 
 class FacilityContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility contact
     """
@@ -714,7 +715,7 @@ class FacilityRegulationStatusListView(generics.ListCreateAPIView):
 
 class FacilityRegulationStatusDetailView(
         AuditableDetailViewMixin,
-        generics.RetrieveUpdateDestroyAPIView):
+        CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility's regulation status
     """
@@ -742,7 +743,7 @@ class FacilityTypeListView(generics.ListCreateAPIView):
 
 
 class FacilityTypeDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility types detail
     """
@@ -771,7 +772,7 @@ class RegulationStatusListView(
 
 
 class RegulationStatusDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular regulation status
     """

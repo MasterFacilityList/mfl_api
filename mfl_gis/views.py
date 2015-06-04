@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import DjangoModelPermissions
 from common.views import AuditableDetailViewMixin
+from common.utilities import CustomRetrieveUpdateDestroyView
 
 from .models import (
     GeoCodeSource,
@@ -59,7 +60,7 @@ class GeoCodeSourceListView(generics.ListCreateAPIView):
 
 
 class GeoCodeSourceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular Geo Code Source
     """
@@ -88,7 +89,7 @@ class GeoCodeMethodListView(GISListCreateAPIView):
 
 
 class GeoCodeMethodDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular Geo-Code Collectiom method
     """
@@ -124,7 +125,7 @@ class FacilityCoordinatesListView(GISListCreateAPIView):
 
 
 class FacilityCoordinatesDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility coordinates details
     """
@@ -157,7 +158,7 @@ class WorldBorderListView(GISListCreateAPIView):
 
 
 class WorldBorderDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular ward border details
     """
@@ -187,7 +188,7 @@ class CountyBoundaryListView(GISListCreateAPIView):
 
 
 class CountyBoundaryDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular county boundary detail
     """
@@ -217,7 +218,7 @@ class ConstituencyBoundaryListView(GISListCreateAPIView):
 
 
 class ConstituencyBoundaryDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular constituency boundary detail
     """
@@ -247,7 +248,7 @@ class WardBoundaryListView(GISListCreateAPIView):
 
 
 class WardBoundaryDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular ward boundary detail
     """
