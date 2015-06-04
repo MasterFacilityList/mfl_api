@@ -488,21 +488,30 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
 
 
 class TestDownloadView(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse('api:common:download_pdf')
+        super(TestDownloadView, self).setUp()
+
     def test_download_view_with_css(self):
-        url = reverse('api:common:download_pdf')
-        url = url + "?file_url={}&file_name={}&css={}".format(
+        url = self.url + "?file_url={}&file_name={}&css={}".format(
             'http://google.com', 'awesome_file', 'p,h1,h2,h3 {color: red}'
         )
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
 
     def test_download_view_without_css(self):
-        url = reverse('api:common:download_pdf')
-        url = url + "?file_url={}&file_name={}".format(
+        url = self.url + "?file_url={}&file_name={}".format(
             'http://google.com', 'awesome_file'
         )
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+    def test_download_view_file_url_and_file_name_not_provided(self):
+        response = self.client.get(self.url)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(
+            "file_url and file_name params are required",
+            response.data.get("detail"))
 
 
 class FilteringSummariesView(LoginMixin, APITestCase):
