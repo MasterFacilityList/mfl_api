@@ -73,6 +73,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     is_national = models.BooleanField(default=False)
     search = models.CharField(max_length=255, null=True, blank=True)
+    deleted = models.BooleanField(default=False)
 
     password_history = ArrayField(
         models.TextField(null=True, blank=True),
