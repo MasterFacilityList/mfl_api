@@ -51,6 +51,7 @@ from ..views import (
     RegulatingBodyContactDetailView,
     FacilityCorrectionTemplate,
     DashBoard,
+    FacilityListReadOnlyView
 )
 
 
@@ -199,6 +200,8 @@ urlpatterns = patterns(
     url(r'^contacts/(?P<pk>[^/]+)/$', FacilityContactDetailView.as_view(),
         name='facility_contact_detail'),
 
+    url(r'^facilities_list/$', FacilityListReadOnlyView.as_view(),
+        name='facilities_read_list'),
     url(r'^facilities/$', FacilityListView.as_view(), name='facilities_list'),
     url(r'^facilities/(?P<pk>[^/]+)/$', FacilityDetailView.as_view(),
         name='facility_detail'),

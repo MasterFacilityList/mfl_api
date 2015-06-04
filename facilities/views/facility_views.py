@@ -64,6 +64,7 @@ from ..serializers import (
     RegulationStatusSerializer,
     FacilityDetailSerializer,
     FacilityServiceRatingSerializer,
+    FacilityListSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -632,6 +633,20 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     ordering_fields = (
         'name', 'code', 'number_of_beds', 'number_of_cots', 'operation_status',
         'ward', 'owner',
+    )
+
+
+class FacilityListReadOnlyView(
+        QuerysetFilterMixin, AuditableDetailViewMixin, generics.ListAPIView):
+    """
+    Returns a slimmed payload of the facility.
+    """
+    queryset = Facility.objects.all()
+    serializer_class = FacilityListSerializer
+    filter_class = FacilityFilter
+    ordering_fields = (
+        'code', 'name', 'county', 'constituency', 'facility_type_name',
+        'owner_type_name'
     )
 
 

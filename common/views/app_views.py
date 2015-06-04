@@ -18,7 +18,8 @@ from facilities.models import(
     FacilityStatus,
     ServiceCategory,
     FacilityType,
-    OwnerType
+    OwnerType,
+    Owner
 )
 from ..serializers import (
     ContactSerializer,
@@ -292,19 +293,25 @@ class FilteringSummariesView(views.APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        resp = {
-            'county': County.objects.values('id', 'name').distinct(),
-            'facility_type': FacilityType.objects.values(
-                'id', 'name').distinct(),
-            'constituency': Constituency.objects.values(
-                'id', 'name').distinct(),
-            'ward': Ward.objects.values('id', 'name').distinct(),
-            'operation_status': FacilityStatus.objects.values(
-                'id', 'name').distinct(),
-            'service_category': ServiceCategory.objects.values(
-                'id', 'name').distinct(),
-            'owner_type': OwnerType.objects.values(
-                'id', 'name').distinct()
+
+        fields = request.query_params.get('fields', None)
+        fields_model_mapping = {
+            'county': County,
+            'facility_type': FacilityType,
+            'constituency': Constituency,
+            'ward': Ward,
+            'operation_status': FacilityStatus,
+            'service_category': ServiceCategory,
+            'owner_type': OwnerType,
+            'owner': Owner
         }
-        res = self.serializer_cls(data=resp)
-        return response.Response(res.initial_data)
+        if fields:
+            resp = {}
+            for key in fields.split(","):
+                if key in fields_model_mapping:
+                    resp[key] = fields_model_mapping[key].objects.values(
+                        'id', 'name').distinct()
+            res = self.serializer_cls(data=resp).initial_data
+        else:
+            res = {}
+        return response.Response(res)
