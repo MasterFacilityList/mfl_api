@@ -61,7 +61,7 @@ Getting started
 
 .. note ::
 
-    At times durint development one may want to retain the database. To do so, 
+    At times during development one may want to retain the database. To do so, 
     call fab load_demo_data and fab recreate_search_index. 
 
     Also one may want to recreate the database. Calling fab setup_db drops the database, 

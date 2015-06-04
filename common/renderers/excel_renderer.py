@@ -14,11 +14,9 @@ def remove_keys(sample_list):
     """
     Removes keys that should not be in excel e.g PKs and audit fields
     """
-    new_set = []
-    for item in sample_list:
-        new_set.append(str(item)) if item not in \
-            settings.EXCEL_EXCEPT_FIELDS else None
-    return new_set
+    return [
+        item for item in sample_list
+        if item not in settings.EXCEL_EXCEPT_FIELDS]
 
 
 def _write_excel_file(data):
