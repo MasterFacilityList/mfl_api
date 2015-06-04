@@ -87,7 +87,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
-    objects = BaseUserManager()
+    objects = MflUserManager()
     everything = BaseUserManager()
 
     def set_password(self, raw_password):
