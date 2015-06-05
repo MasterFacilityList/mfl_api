@@ -19,15 +19,12 @@ from .views import (
     TownDetailView,
     PhysicalAddressView,
     PhysicalAddressDetailView,
-    DownloadPDF,
     FilteringSummariesView
 )
 
 
 urlpatterns = patterns(
     '',
-    url(r'^download_pdf/$',
-        DownloadPDF.as_view(), name='download_pdf'),
 
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),
