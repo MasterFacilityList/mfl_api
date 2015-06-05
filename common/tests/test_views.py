@@ -1,5 +1,6 @@
 import json
 import uuid
+import time
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
@@ -536,3 +537,17 @@ class TestDeleting(LoginMixin, APITestCase):
             County.objects.get(id=county.id)
 
         self.assertEquals(1, County.everything.filter(id=county.id).count())
+
+    def test_cascading_deletes(self):
+        contact_type = mommy.make(ContactType)
+        contact_1 = mommy.make(Contact, contact_type=contact_type)
+        contact_2 = mommy.make(Contact, contact_type=contact_type)
+        url = reverse("api:common:contact_types_list")
+        url = url + "{}/".format(contact_type)
+        response = self.client.delete(url)
+        # wait for  15 seconds for the cache
+        time.sleep(20)
+        self.assertEquals(204, response.status_code)
+        self.assertTrue(contact_type.deleted)
+        self.assertTrue(contact_1.deleted)
+        self.assertTrue(contact_2.deleted)
