@@ -26,6 +26,7 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
+    FacilityServiceRating
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -45,6 +46,18 @@ BOOLEAN_CHOICES = (
     ('Y', 'True'),
     ('N', 'False')
 )
+
+
+class FacilityServiceRatingFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(
+        name='facility_service__facility',
+        lookup_type='exact')
+    service = django_filters.AllValuesFilter(
+        name='facility_service__selected_option.service',
+        lookup_type='exact')
+
+    class Meta(object):
+        model = FacilityServiceRating
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):

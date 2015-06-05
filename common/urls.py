@@ -19,7 +19,7 @@ from .views import (
     TownDetailView,
     PhysicalAddressView,
     PhysicalAddressDetailView,
-    download_pdf,
+    DownloadPDF,
     FilteringSummariesView
 )
 
@@ -27,7 +27,7 @@ from .views import (
 urlpatterns = patterns(
     '',
     url(r'^download_pdf/$',
-        download_pdf, name='download_pdf'),
+        DownloadPDF.as_view(), name='download_pdf'),
 
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),
