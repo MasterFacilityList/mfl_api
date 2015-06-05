@@ -1,6 +1,5 @@
 import json
 import uuid
-import time
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
