@@ -60,6 +60,11 @@ class TestServiceCategory(BaseTestCase):
         instance = ServiceCategory(name='test name')
         self.assertEqual(str(instance), 'test name')
 
+    def test_service_count_in_category(self):
+        category = mommy.make(ServiceCategory)
+        mommy.make(Service, category=category)
+        self.assertEquals(1, category.services_count)
+
 
 class TestOption(BaseTestCase):
 
