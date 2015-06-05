@@ -428,6 +428,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "owner_count": 1,
             "recently_created": 1,
             "county_summary": [
                 {
@@ -490,6 +491,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "owner_count": 1,
             "recently_created": 1,
             "county_summary": [],
             "total_facilities": 1,
