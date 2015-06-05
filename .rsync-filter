@@ -2,7 +2,7 @@
 - .git/
 - .tox/
 - htmlcov/
-- *.egg.info/
+- *.egg-info/
 - .coverage
 - *.pyc
 - *.pyo
