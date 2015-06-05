@@ -1,14 +1,18 @@
+import os
 from datetime import timedelta
 
 from django.template import loader, Context
 from django.http import HttpResponse
-
+from django.core.servers.basehttp import FileWrapper
+from django.utils.encoding import smart_str
+from django.views.decorators.cache import never_cache
 from django.utils import timezone
+from django.conf import settings
 
 from rest_framework.views import APIView, Response
-from rest_framework.permissions import AllowAny
-
 from rest_framework import generics
+from weasyprint import HTML
+
 from common.views import AuditableDetailViewMixin
 from common.models import County, Constituency
 from common.utilities import CustomRetrieveUpdateDestroyView
@@ -780,9 +784,32 @@ class RegulationStatusDetailView(
     serializer_class = RegulationStatusSerializer
 
 
-class FacilityInspectionReport(APIView):
-    permission_classes = (AllowAny, )
+class DownloadPDFMixin(object):
+    def download_file(self, doc, file_name):
+        doc_file_name = 'temp'
+        file_path = os.path.join(settings.BASE_DIR, file_name)
+        doc_file_path = os.path.join(settings.BASE_DIR, doc_file_name)
+        writting_file = open(doc_file_path, 'w')
+        writting_file.write(doc)
+        writting_file.close()
+        HTML(doc_file_path).write_pdf(file_path)
+        download_file = open(file_path)
+        response = HttpResponse(
+            FileWrapper(download_file), content_type='application/pdf')
+        response[
+            'Content-Disposition'] = 'attachment; filename='.format(
+            os.path.basename(file_path)
+        )
+        response['X-Sendfile'] = smart_str(file_path)
+        os.remove(file_path)
+        os.remove(doc_file_path)
+        return response
 
+
+class FacilityInspectionReport(DownloadPDFMixin, APIView):
+    queryset = Facility.objects.all()
+
+    @never_cache
     def get(self, request, facility_id, *args, **kwargs):
         return self.get_inspection_report(facility_id)
 
@@ -801,15 +828,17 @@ class FacilityInspectionReport(APIView):
                 "regulating_body": regulating_body
             }
         )
-        return HttpResponse(template.render(context))
+        file_name = '{}_inspection_report'.format(facility.name)
+        return self.download_file(template.render(context), file_name)
 
 
-class FacilityCoverTemplate(APIView):
-    permission_classes = (AllowAny, )
+class FacilityCoverTemplate(DownloadPDFMixin, APIView):
+    queryset = Facility.objects.all()
 
     def get(self, request, facility_id, *args, **kwargs):
         return self.get_cover_report(facility_id)
 
+    @never_cache
     def get_cover_report(self, facility_id):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('cover_report.txt')
@@ -820,16 +849,15 @@ class FacilityCoverTemplate(APIView):
                 "facility": facility
             }
         )
-        return HttpResponse(template.render(context))
+        file_name = '{}_cover_report'.format(facility.name)
+        return self.download_file(template.render(context), file_name)
 
 
-class FacilityCorrectionTemplate(APIView):
-    permission_classes = (AllowAny, )
+class FacilityCorrectionTemplate(DownloadPDFMixin, APIView):
+    queryset = Facility.objects.all()
 
+    @never_cache
     def get(self, request, facility_id, *args, **kwargs):
-        return self.get_correction_template(facility_id)
-
-    def get_correction_template(self, facility_id):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('correction_template.txt')
         request_date = timezone.now().isoformat()
@@ -839,7 +867,9 @@ class FacilityCorrectionTemplate(APIView):
                 "facility": facility
             }
         )
-        return HttpResponse(template.render(context))
+        doc = template.render(context)
+        file_name = '{}_correction_template.pdf'.format(facility.name)
+        return self.download_file(doc, file_name)
 
 
 class DashBoard(APIView):
