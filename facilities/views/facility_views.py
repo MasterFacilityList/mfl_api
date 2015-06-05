@@ -938,6 +938,14 @@ class DashBoard(APIView):
                 ward__constituency__county=self.request.user.county).count()
         return recent_facilities_count
 
+    def get_owner_count(self):
+        if self.request.user.is_national:
+            return Owner.objects.count()
+        else:
+            return len(Facility.objects.filter(
+                ward__constituency__county=self.request.user.county
+            ).values_list('owner', flat=True).distinct())
+
     def get(self, *args, **kwargs):
         total_facilities = 0
         if self.request.user.is_national:
@@ -955,7 +963,8 @@ class DashBoard(APIView):
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
             "owner_types": self.get_facility_owner_types_summary(),
-            "recently_created": self.get_recently_created_facilities()
+            "recently_created": self.get_recently_created_facilities(),
+            "owner_count": self.get_owner_count()
         }
 
         return Response(data)
