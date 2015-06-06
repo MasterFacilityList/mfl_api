@@ -60,7 +60,7 @@ def load_demo_data(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
     data_files = join(BASE_DIR, 'data/data/*')
     manage('bootstrap', data_files)
-
+    manage('load_groups')
     # Needs to occur after base setup data has been loaded
     load_gis_data()
 
