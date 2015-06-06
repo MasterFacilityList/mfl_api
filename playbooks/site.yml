@@ -38,6 +38,7 @@
 
         # drop and recreate database
         setup_new_db: false,
+        django_debug: False,
         # the settings below are for warming up the cache
         warm_cache: true,
         server_url: "http://mfl.azure.slade360.co.ke",
