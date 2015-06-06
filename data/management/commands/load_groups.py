@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
         schrio = Group.objects.get(
             name="Sub County Health Records Information Officer")
-        national, created = Group.objects.get(
+        national = Group.objects.get(
             name="National Users")
         for perm in Permission.objects.all():
             national.permissions.add(perm.id)
