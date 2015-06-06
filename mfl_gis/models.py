@@ -175,8 +175,8 @@ class FacilityCoordinates(GISAbstractBase):
     def simplify_coordinates(self):
         return {
             "coordinates": [
-                '%.2f' % round(self.coordinates[0], 2),
-                '%.2f' % round(self.coordinates[1], 2)
+                float('%.2f' % round(self.coordinates[0], 2)),
+                float('%.2f' % round(self.coordinates[1], 2))
             ]
         }
 
