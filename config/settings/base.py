@@ -5,12 +5,14 @@ BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Override in production via env
-env = environ.Env()
+
 env = environ.Env(
-    DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),)
+    DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
+    DEBUG=(bool, True),
+)
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
-DEBUG = env('DEBUG', default=True)
+DEBUG = env('DEBUG')
 SECRET_KEY = env(
     'SECRET_KEY', default='p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8')
 ENV_DB = env.db()
