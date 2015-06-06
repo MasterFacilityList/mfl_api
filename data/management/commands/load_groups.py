@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from users.models import MflUser
 
 
@@ -8,10 +8,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         chrio, created = Group.objects.get_or_create(
             name="County Health Records Information Officer")
+
         schrio, created = Group.objects.get_or_create(
             name="Sub County Health Records Information Officer")
         national, created = Group.objects.get_or_create(
             name="National Users")
+        for perm in Permission.objects.all():
+            national.permissions.add(perm.id)
 
         national_user = MflUser.objects.get(
             email='national@mfltest.slade360.co.ke')
