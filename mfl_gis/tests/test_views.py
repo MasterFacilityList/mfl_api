@@ -1,5 +1,6 @@
 from rest_framework.test import APITestCase
 from common.tests.test_views import LoginMixin
+from common.models import Ward, County, Constituency
 from django.core.urlresolvers import reverse
 from model_mommy import mommy
 
@@ -74,3 +75,34 @@ class TestWardBoundaryViews(LoginMixin, APITestCase):
         self.assertEqual(200, response.status_code)
 
         assert not response.data.get('properties').get('facility_ids')
+
+
+class TestFacilityCoordinatesListing(LoginMixin, APITestCase):
+    def test_list_facility_coordinates(self):
+        url = reverse("api:mfl_gis:facility_coordinates_list")
+        ward = mommy.make(Ward)
+        const = mommy.make(Constituency)
+        county = mommy.make(County)
+        response = self.client.get(url)
+        self.assertIsInstance(response.data, list)
+        response = self.client.get(url)
+        self.assertIsInstance(response.data, list)
+        self.assertEquals(0, len(response.data))
+
+        # test ward filter
+        ward_url = url + "?ward={}".format(ward.id)
+        response = self.client.get(ward_url)
+        self.assertIsInstance(response.data, list)
+        self.assertEquals(0, len(response.data))
+
+        # test county
+        county_url = url + "?county={}".format(county.id)
+        response = self.client.get(county_url)
+        self.assertIsInstance(response.data, list)
+        self.assertEquals(0, len(response.data))
+
+        # test constituency
+        const_url = url + "?constituency={}".format(const.id)
+        response = self.client.get(const_url)
+        self.assertIsInstance(response.data, list)
+        self.assertEquals(0, len(response.data))

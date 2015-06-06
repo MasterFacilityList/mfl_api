@@ -174,7 +174,6 @@ class FacilityCoordinates(GISAbstractBase):
     @property
     def simplify_coordinates(self):
         return {
-            "type": "Point",
             "coordinates": [
                 '%.2f' % round(self.coordinates[0], 2),
                 '%.2f' % round(self.coordinates[1], 2)
@@ -182,53 +181,15 @@ class FacilityCoordinates(GISAbstractBase):
         }
 
     @property
-    def geometry(self):
-        """Reduce the precision of the geometries sent in list views
-
-        This produces a MASSIVE saving in rendering time
-        """
-        if not self.mpoly:
-            return self.mpoly
-
-        def _simplify(tolerance, geometry):
-            if isinstance(geometry, MultiPolygon):
-                polygon = None
-                for child_polygon in geometry:
-                    if polygon:
-                        polygon.extend(child_polygon)
-                    else:
-                        polygon = child_polygon
-            else:
-                polygon = geometry
-
-            return json.loads(
-                polygon.simplify(
-                    tolerance=(1.0 / 10 ** PRECISION)
-                ).geojson
-            )
-
-        # 3 decimal places for the web map ( about 10 meter accuracy )
-        PRECISION = 3
-        TOLERANCE = (1.0 / 10 ** PRECISION)
-        geojson_dict = _simplify(
-            tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
-        )
-        original_coordinates = geojson_dict['coordinates']
-        assert original_coordinates
-        new_coordinates = [
-            [
-                [
-                    round(coordinate_pair[0], PRECISION),
-                    round(coordinate_pair[1], PRECISION)
-                ]
-                for coordinate_pair in original_coordinates[0]
-                if coordinate_pair
-                and isinstance(coordinate_pair[0], float)
-                and isinstance(coordinate_pair[1], float)
-            ]
-        ]
-        geojson_dict['coordinates'] = new_coordinates
-        return geojson_dict
+    def json_features(self):
+        return {
+            "geometry": self.simplify_coordinates,
+            "properties": {
+                "ward": self.facility.ward.id,
+                "constituency": self.facility.ward.constituency.id,
+                "county": self.facility.ward.county.id
+            }
+        }
 
     def clean(self):
         self.validate_longitude_and_latitude_within_kenya()

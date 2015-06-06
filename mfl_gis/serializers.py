@@ -44,7 +44,7 @@ class FacilityCoordinatesListSerializer(
         exclude = (
             'created', 'created_by', 'updated', 'updated_by', 'deleted',
             'search', 'collection_date', 'source', 'method', 'active',
-            'facility', 'coordinates'
+            'facility', 'coordinates', 'id'
         )
 
 
