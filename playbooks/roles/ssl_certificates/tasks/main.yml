@@ -3,11 +3,13 @@
   file: 'state=absent name="{{ssl_certificate_dir}}"'
   sudo: yes
   tags: ssl_certificates
+  when: ssl_on
 
 - name: make ssl certificates directory
   file: 'state=directory name="{{ssl_certificate_dir}}" mode=0600'
   sudo: yes
   tags: ssl_certificates
+  when: ssl_on
 
 - name: copy required certificates and keys
   copy: 'src="{{item.src}}" dest="{{ssl_certificate_dir}}/{{item.dest}}" mode=0600'
@@ -16,3 +18,4 @@
     - {src: "{{web_ssl.cert.src}}", dest: "{{web_ssl.cert.dest}}"}
   sudo: yes
   tags: ssl_certificates
+  when: ssl_on

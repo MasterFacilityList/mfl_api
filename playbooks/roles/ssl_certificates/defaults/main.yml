@@ -1,4 +1,5 @@
 ---
+ssl_on: false
 ssl_certificate_dir: ""
 web_ssl: {
     key: {src: "", dest: ""},

@@ -3,7 +3,7 @@
   name: Install MFL API and front-ends
   sudo: True
   vars:
-    ssl_on: true
+    ssl_on: false
     ssl_certificate_dir: ""
     web_ssl: {
       key: {src: "", dest: ""},
