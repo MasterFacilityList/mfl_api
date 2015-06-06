@@ -2,8 +2,16 @@
 - hosts: all
   name: Install MFL API and front-ends
   sudo: True
+  vars:
+    ssl_on: true
+    web_ssl: {
+      key: {src: "", dest: ""},
+      cert: {src: "", dest: ""}
+    }
+
   roles:
     - common
+    - ssl_certificates
     - {
         role: frontend,
         frontend_name: "mfl_public_web",
@@ -36,9 +44,10 @@
         server_name: mfl.azure.slade360.co.ke,
         tags: "api-server",
 
-        # drop and recreate database
-        setup_new_db: false,
+        setup_new_db: false, # drop and recreate database
+
         django_debug: False,
+
         # the settings below are for warming up the cache
         warm_cache: true,
         server_url: "http://mfl.azure.slade360.co.ke",
