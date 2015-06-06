@@ -35,7 +35,9 @@ Vagrant.configure(2) do |config|
       base_dir: File.expand_path('..'),
       database_name: ENV['DATABASE_NAME'],
       database_user: ENV['DATABASE_USER'],
-      database_password: ENV['DATABASE_PASSWORD']
+      database_password: ENV['DATABASE_PASSWORD'],
+      ssl_cert_file: ENV['SSL_CERT_FILE'],
+      ssl_key_file: ENV['SSL_KEY_FILE']
     }
   end
 end
