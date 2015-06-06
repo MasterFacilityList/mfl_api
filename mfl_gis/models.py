@@ -87,7 +87,7 @@ class FacilityCoordinates(GISAbstractBase):
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
 
-    It it three dimensional.
+    It is three dimensional.
     The three-dimensional readings from a GPS device are latitude, longitude,
     and attitude. The date/time the reading is done is also important, as
     is the source and method of the reading.
@@ -170,6 +170,26 @@ class FacilityCoordinates(GISAbstractBase):
                 'Ward {} does not have boundary info'.format(
                     self.facility.ward)
             )
+
+    @property
+    def simplify_coordinates(self):
+        return {
+            "coordinates": [
+                '%.2f' % round(self.coordinates[0], 2),
+                '%.2f' % round(self.coordinates[1], 2)
+            ]
+        }
+
+    @property
+    def json_features(self):
+        return {
+            "geometry": self.simplify_coordinates,
+            "properties": {
+                "ward": self.facility.ward.id,
+                "constituency": self.facility.ward.constituency.id,
+                "county": self.facility.ward.county.id
+            }
+        }
 
     def clean(self):
         self.validate_longitude_and_latitude_within_kenya()
