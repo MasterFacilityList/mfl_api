@@ -6,12 +6,12 @@ from users.models import MflUser
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        chrio, created = Group.objects.get_or_create(
+        chrio = Group.objects.get(
             name="County Health Records Information Officer")
 
-        schrio, created = Group.objects.get_or_create(
+        schrio = Group.objects.get(
             name="Sub County Health Records Information Officer")
-        national, created = Group.objects.get_or_create(
+        national, created = Group.objects.get(
             name="National Users")
         for perm in Permission.objects.all():
             national.permissions.add(perm.id)
