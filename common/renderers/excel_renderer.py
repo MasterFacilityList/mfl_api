@@ -86,7 +86,7 @@ def _write_excel_file(data):
     return mem_file_contents
 
 
-class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
+class ExcelRenderer(DownloadMixin, renderers.JSONRenderer):
     media_type = ('application/vnd.openxmlformats'
                   '-officedocument.spreadsheetml.sheet')
     format = 'excel'
@@ -95,4 +95,11 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
 
     def render(self, data, media_type, renderer_context):
         self.update_download_headers(renderer_context)
-        return _write_excel_file(data)
+        resullt_key = data.get('results', None)
+        if resullt_key:
+            return _write_excel_file(data)
+        else:
+            # For now we will just support list endpoints.
+            {
+                "detail": "malformed payload. It should be a list endpoint"
+            }
