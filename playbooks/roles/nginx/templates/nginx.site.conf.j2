@@ -15,6 +15,10 @@ server {
 
     keepalive_timeout 5;
 
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+
     {% if ssl_on %}
     ## redirect http to https ##
     rewrite ^ https://$server_name$request_uri? permanent;
@@ -30,6 +34,10 @@ server {
 
     access_log /var/log/nginx/{{server_name}}-https-access.log;
     error_log /var/log/nginx/{{server_name}}-https-error.log;
+
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
 
     ssl_certificate {{web_ssl.cert.dest}} ;
     ssl_certificate_key {{web_ssl.key.dest}} ;
