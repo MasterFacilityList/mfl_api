@@ -219,6 +219,9 @@ class FacilityListSerializer(FacilitySerializer):
 
 class FacilityContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    contact_type = serializers.ReadOnlyField(
+        source="contact.contact_type.name")
+    actual_contact = serializers.ReadOnlyField(source="contact.contact")
 
     class Meta(object):
         model = FacilityContact

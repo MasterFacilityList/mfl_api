@@ -10,7 +10,8 @@ from common.tests.test_views import (
     LoginMixin,
     default
 )
-from common.models import Ward, UserCounty, County, Constituency
+from common.models import (
+    Ward, UserCounty, County, Constituency, Contact, ContactType)
 
 from ..serializers import (
     OwnerSerializer,
@@ -32,7 +33,8 @@ from ..models import (
     Service,
     Option,
     ServiceOption,
-    FacilityService
+    FacilityService,
+    FacilityContact
 )
 
 
@@ -540,3 +542,19 @@ class TestDashBoardView(LoginMixin, APITestCase):
         }
         response = self.client.get(self.url)
         self.assertEquals(expected_data, response.data)
+
+
+class TestFacilityContactView(LoginMixin, APITestCase):
+    def test_list_facility_contacts(self):
+        url = reverse('api:facilities:facility_contacts_list')
+        facility = mommy.make(Facility)
+        contact_type = mommy.make(ContactType, name='EMAIL')
+        contact = mommy.make(
+            Contact, contact_type=contact_type, contact='0700000000')
+        fc = mommy.make(
+            FacilityContact, contact=contact, facility=facility)
+        single_url = url + "{}/".format(fc.id)
+        response = self.client.get(single_url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals('EMAIL', response.data.get('contact_type'))
+        self.assertEquals('0700000000', response.data.get('actual_contact'))
