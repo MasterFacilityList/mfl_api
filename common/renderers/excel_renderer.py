@@ -2,6 +2,7 @@ import xlsxwriter
 import string
 import cStringIO
 import uuid
+import json
 
 from django.conf import settings
 
@@ -86,7 +87,7 @@ def _write_excel_file(data):
     return mem_file_contents
 
 
-class ExcelRenderer(DownloadMixin, renderers.JSONRenderer):
+class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
     media_type = ('application/vnd.openxmlformats'
                   '-officedocument.spreadsheetml.sheet')
     format = 'excel'
@@ -100,6 +101,6 @@ class ExcelRenderer(DownloadMixin, renderers.JSONRenderer):
             return _write_excel_file(data)
         else:
             # For now we will just support list endpoints.
-            {
+            return json.dumps({
                 "detail": "malformed payload. It should be a list endpoint"
-            }
+            })
