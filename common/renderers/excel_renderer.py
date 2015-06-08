@@ -2,10 +2,11 @@ import xlsxwriter
 import string
 import cStringIO
 import uuid
+import json
 
 from django.conf import settings
 
-from rest_framework import renderers
+from rest_framework import renderers, status
 
 from .shared import DownloadMixin
 
@@ -51,7 +52,7 @@ def _write_excel_file(data):
 
             for key in sample_keys:
                 key = key.replace('_', " ")
-                worksheet.write(row, col, key, format)
+                worksheet.write(row, col, key.capitalize(), format)
                 col = col + 1
             row = 1
             col = 0
@@ -95,4 +96,14 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
 
     def render(self, data, media_type, renderer_context):
         self.update_download_headers(renderer_context)
-        return _write_excel_file(data)
+        result_key = data.get('results', None)
+        if result_key:
+            return _write_excel_file(data)
+        else:
+
+            # For now we will just support list endpoints.
+            renderer_context['response'].status_code = \
+                status.HTTP_406_NOT_ACCEPTABLE
+            return json.dumps({
+                "detail": "malformed payload. It should be a list endpoint"
+            })
