@@ -60,7 +60,7 @@ def load_demo_data(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
     data_files = join(BASE_DIR, 'data/data/*')
     manage('bootstrap', data_files)
-
+    manage('load_groups')
     # Needs to occur after base setup data has been loaded
     load_gis_data()
 
@@ -163,7 +163,8 @@ def warmup_cache(
             "/api/gis/ward_boundaries/",
             "/api/gis/constituency_boundaries/",
             "/api/common/filtering_summaries/"
-            "/api/facilities/facilities/"
+            "/api/facilities/facilities/",
+            "/api/facilities/facilities_list/"
         ]
         for i in urls:
             # warmup non-gzip encoded content
