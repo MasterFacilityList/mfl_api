@@ -6,7 +6,7 @@ import json
 
 from django.conf import settings
 
-from rest_framework import renderers
+from rest_framework import renderers, status
 
 from .shared import DownloadMixin
 
@@ -96,11 +96,14 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
 
     def render(self, data, media_type, renderer_context):
         self.update_download_headers(renderer_context)
-        resullt_key = data.get('results', None)
-        if resullt_key:
+        result_key = data.get('results', None)
+        if result_key:
             return _write_excel_file(data)
         else:
+
             # For now we will just support list endpoints.
+            renderer_context['response'].status_code = \
+                status.HTTP_406_NOT_ACCEPTABLE
             return json.dumps({
                 "detail": "malformed payload. It should be a list endpoint"
             })
