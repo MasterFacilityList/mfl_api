@@ -25,7 +25,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         excel_url = url + "?format=excel"
         mommy.make(County)
         response = self.client.get(excel_url)
-        self.assertEquals(200, response.status_code)
+        self.assertEquals(406, response.status_code)
 
     def test_write_excel_file(self):
         mommy.make(County)
