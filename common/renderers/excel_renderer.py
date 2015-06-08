@@ -52,7 +52,7 @@ def _write_excel_file(data):
 
             for key in sample_keys:
                 key = key.replace('_', " ")
-                worksheet.write(row, col, key, format)
+                worksheet.write(row, col, key.capitalize(), format)
                 col = col + 1
             row = 1
             col = 0
