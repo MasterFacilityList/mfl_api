@@ -213,7 +213,8 @@ class FacilityListSerializer(FacilitySerializer):
         model = Facility
         fields = [
             'code', 'name', 'id', 'county', 'constituency',
-            'facility_type_name', 'owner_type_name']
+            'facility_type_name', 'owner_type_name',
+            'regulatory_status_name', 'ward', 'operation_status_name']
 
 
 class FacilityContactSerializer(
