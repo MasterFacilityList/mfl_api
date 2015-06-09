@@ -13,10 +13,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name='facility',
-            name='open_whole_day',
-        ),
-        migrations.RemoveField(
-            model_name='facility',
             name='open_whole_week',
         ),
         migrations.AddField(
@@ -28,6 +24,11 @@ class Migration(migrations.Migration):
             model_name='facility',
             name='open_weekends',
             field=models.BooleanField(default=False, help_text=b'Is the facility_open during weekends?'),
+        ),
+        migrations.AlterField(
+            model_name='facility',
+            name='open_whole_day',
+            field=models.BooleanField(default=False, help_text=b'Does the facility operate 24 hours a day'),
         ),
         migrations.AlterField(
             model_name='service',

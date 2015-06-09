@@ -448,6 +448,9 @@ class Facility(SequenceMixin, AbstractBase):
     number_of_cots = models.PositiveIntegerField(
         default=0,
         help_text="The number of cots that a facility has e.g 0")
+    open_whole_day = models.BooleanField(
+        default=False,
+        help_text="Does the facility operate 24 hours a day")
     open_public_holidays = models.BooleanField(
         default=False,
         help_text="Is the facility open on public holidays?")
