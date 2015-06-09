@@ -233,7 +233,8 @@ class TestFacilityView(LoginMixin, APITestCase):
                 "option_name": option.display_text,
                 "category_name": service_category.name,
                 "category_id": service_category.id,
-                "average_rating": facility_service.average_rating
+                "average_rating": facility_service.average_rating,
+                "number_of_ratings": 0
             }
         ]
         url = self.url + "{}/".format(facility.id)
