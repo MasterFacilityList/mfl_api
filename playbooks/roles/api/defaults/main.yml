@@ -1,2 +1,3 @@
 ---
 server_name: "_"
+django_debug: True

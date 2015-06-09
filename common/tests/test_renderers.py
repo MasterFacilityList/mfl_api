@@ -18,6 +18,15 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         response = self.client.get(excel_url)
         self.assertEquals(200, response.status_code)
 
+    def test_get_non_list_endpoint(self):
+        county = mommy.make(County)
+        url = reverse('api:common:counties_list')
+        url = url + "{}/".format(county.id)
+        excel_url = url + "?format=excel"
+        mommy.make(County)
+        response = self.client.get(excel_url)
+        self.assertEquals(406, response.status_code)
+
     def test_write_excel_file(self):
         mommy.make(County)
         mommy.make(County)

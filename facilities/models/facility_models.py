@@ -726,6 +726,10 @@ class ServiceCategory(AbstractBase):
     def __unicode__(self):
         return self.name
 
+    @property
+    def services_count(self):
+        return len(self.category_services.all())
+
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'service categories'
 
@@ -778,7 +782,8 @@ class Service(SequenceMixin, AbstractBase):
         'Antenatal Care')
     category = models.ForeignKey(
         ServiceCategory,
-        help_text="The classification that the service lies in.")
+        help_text="The classification that the service lies in.",
+        related_name='category_services')
 
     code = SequenceField(unique=True, editable=False)
     options = models.ManyToManyField(Option, through='ServiceOption')

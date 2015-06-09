@@ -68,6 +68,18 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         self.assertEquals(
             facility_gps.facility.name, facility_gps.__unicode__())
 
+    def test_simplify_coordinates(self):
+        facility_gps = mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+        self.assertIsInstance(facility_gps.simplify_coordinates, dict)
+
+    def test_features_json(self):
+        facility_gps = mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+        self.assertIsInstance(facility_gps.json_features, dict)
+
     def test_validate_longitude_and_latitude_within_kenya_invalid(self):
         """The Kampala Serena - 0.319590, 32.586484; definitely not in Kenya"""
         with self.assertRaises(ValidationError):

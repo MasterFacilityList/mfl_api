@@ -36,14 +36,15 @@ class FacilityCoordinatesListSerializer(
     county = serializers.ReadOnlyField(
         source="facility.ward.constituency.county.id"
     )
+    geometry = serializers.ReadOnlyField(source='simplify_coordinates')
 
     class Meta(object):
         model = FacilityCoordinates
-        geo_field = "coordinates"
+        geo_field = "geometry"
         exclude = (
             'created', 'created_by', 'updated', 'updated_by', 'deleted',
             'search', 'collection_date', 'source', 'method', 'active',
-            'facility',
+            'facility', 'coordinates', 'id'
         )
 
 
@@ -61,7 +62,7 @@ class FacilityCoordinatesDetailSerializer(
 
     class Meta(object):
         model = FacilityCoordinates
-        geo_field = "coordinates"
+        geo_field = "geometry"
 
 
 class AbstractBoundarySerializer(

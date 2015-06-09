@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.views import Response
 from rest_framework.permissions import DjangoModelPermissions
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
@@ -122,6 +123,23 @@ class FacilityCoordinatesListView(GISListCreateAPIView):
     ordering_fields = (
         'facility', 'latitude', 'longitude', 'source', 'method',)
     pagination_class = GISPageNumberPagination
+
+    def get(self, *args, **kwargs):
+        queryset = self.queryset
+        ward = self.request.query_params.get('ward', None)
+        county = self.request.query_params.get('county', None)
+        constituency = self.request.query_params.get('constituency', None)
+        if ward:
+            queryset = queryset.filter(facility__ward=ward)
+        if county:
+            queryset = queryset.filter(
+                facility__ward__constituency__county=county)
+        if constituency:
+            queryset = queryset.filter(
+                facility__ward__constituency=constituency)
+
+        result = [fc.json_features for fc in queryset]
+        return Response(data=result)
 
 
 class FacilityCoordinatesDetailView(
