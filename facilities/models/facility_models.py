@@ -588,7 +588,8 @@ class Facility(SequenceMixin, AbstractBase):
                 "option_name": service.selected_option.option.display_text,
                 "category_name": service.selected_option.service.category.name,
                 "category_id": service.selected_option.service.category.id,
-                "average_rating": service.average_rating
+                "average_rating": service.average_rating,
+                "number_of_ratings": service.number_of_ratings
             }
             for service in services
         ]
