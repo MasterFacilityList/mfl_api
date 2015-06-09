@@ -267,10 +267,10 @@ class FacilityFilter(CommonFieldsFilterset):
     number_of_beds = ListIntegerFilter(lookup_type='exact')
     number_of_cots = ListIntegerFilter(lookup_type='exact')
 
-    open_whole_day = django_filters.TypedChoiceFilter(
+    open_on_weekends = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
-    open_whole_week = django_filters.TypedChoiceFilter(
+    open_public_holidays = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
     is_classified = django_filters.TypedChoiceFilter(

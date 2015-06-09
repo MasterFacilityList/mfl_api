@@ -186,7 +186,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "operation_status_name", "regulatory_status_name",
             "facility_type_name", "number_of_beds",
             "number_of_cots", "is_classified", "is_published",
-            "open_whole_day", "open_whole_week", "owner_type_name",
+            "open_on_weekends", "open_public_holidays", "owner_type_name",
             "ward_name", "average_rating", "facility_services",
             "created", "updated", "deleted", "active", "search",
             "abbreviation", "description", "location_desc",
