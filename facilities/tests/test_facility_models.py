@@ -384,7 +384,7 @@ class TestFacility(BaseTestCase):
             "number_of_beds": 100,
             "number_of_cots": 1,
             "open_public_holidays": True,
-            "open_on_weekends": True,
+            "open_weekends": True,
             "operation_status": operation_status,
             "ward": ward,
             "owner": owner,

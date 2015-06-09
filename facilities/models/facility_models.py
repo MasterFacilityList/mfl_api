@@ -451,7 +451,7 @@ class Facility(SequenceMixin, AbstractBase):
     open_public_holidays = models.BooleanField(
         default=False,
         help_text="Is the facility open on public holidays?")
-    open_on_weekends = models.BooleanField(
+    open_weekends = models.BooleanField(
         default=False,
         help_text="Is the facility_open during weekends?")
     is_classified = models.BooleanField(
