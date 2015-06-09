@@ -870,13 +870,24 @@ class DashBoard(APIView):
         facility_types = FacilityType.objects.all()
         facility_type_summary = []
         for facility_type in facility_types:
-            facility_type_count = self.queryset.filter(
-                facility_type=facility_type).count()
-            facility_type_summary.append(
-                {
-                    "name": facility_type.name,
-                    "count": facility_type_count
-                })
+            if self.request.user.is_national:
+                facility_type_count = self.queryset.filter(
+                    facility_type=facility_type).count()
+                facility_type_summary.append(
+                    {
+                        "name": facility_type.name,
+                        "count": facility_type_count
+                    })
+            else:
+                facility_type_count = self.queryset.filter(
+                    facility_type=facility_type,
+                    ward__constituency__county=self.request.user.county
+                ).count()
+                facility_type_summary.append(
+                    {
+                        "name": facility_type.name,
+                        "count": facility_type_count
+                    })
         return facility_type_summary
 
     def get_facility_owner_summary(self):
@@ -957,9 +968,12 @@ class DashBoard(APIView):
         if self.request.user.is_national:
             return Owner.objects.count()
         else:
-            return len(Facility.objects.filter(
-                ward__constituency__county=self.request.user.county
-            ).values_list('owner', flat=True).distinct())
+            return len(list(set(
+                [
+                    f.owner for f in Facility.objects.filter(
+                        ward__constituency__county=self.request.user.county)
+                ]
+            )))
 
     def get(self, *args, **kwargs):
         total_facilities = 0
