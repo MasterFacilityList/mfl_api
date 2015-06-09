@@ -833,6 +833,11 @@ class FacilityService(AbstractBase):
         'CHRIO')
 
     @property
+    def number_of_ratings(self):
+        return FacilityServiceRating.objects.filter(
+            facility_service=self).count()
+
+    @property
     def service_name(self):
         return self.selected_option.service.name
 

@@ -90,6 +90,7 @@ class FacilityServiceSerializer(
     service_name = serializers.CharField(read_only=True)
     option_display_value = serializers.CharField(read_only=True)
     average_rating = serializers.ReadOnlyField()
+    number_of_ratings = serializers.ReadOnlyField()
 
     class Meta(object):
         model = FacilityService
@@ -214,7 +215,8 @@ class FacilityListSerializer(FacilitySerializer):
         fields = [
             'code', 'name', 'id', 'county', 'constituency',
             'facility_type_name', 'owner_type_name',
-            'regulatory_status_name', 'ward', 'operation_status_name']
+            'regulatory_status_name', 'ward', 'operation_status_name',
+            'ward_name']
 
 
 class FacilityContactSerializer(
