@@ -96,6 +96,16 @@ class TestFacilityService(BaseTestCase):
         self.assertEquals('Yes/No', facility_service.option_display_value)
         self.assertEquals('savis', facility_service.service_name)
 
+    def test_number_of_ratings(self):
+        fs = mommy.make(FacilityService)
+        self.assertEquals(0, fs.number_of_ratings)
+
+        fs_2 = mommy.make(FacilityService)
+        mommy.make(FacilityServiceRating, facility_service=fs_2, rating=1)
+        mommy.make(FacilityServiceRating, facility_service=fs_2, rating=5)
+        mommy.make(FacilityServiceRating, facility_service=fs_2, rating=3)
+        self.assertEquals(3, fs_2.number_of_ratings)
+
     def test_facility_service(self):
         facility = mommy.make(Facility, name='thifitari')
         service_category = mommy.make(ServiceCategory, name='a good service')
