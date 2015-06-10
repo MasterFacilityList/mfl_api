@@ -450,10 +450,13 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="The number of cots that a facility has e.g 0")
     open_whole_day = models.BooleanField(
         default=False,
-        help_text="Is the facility open 24 hours a day?")
-    open_whole_week = models.BooleanField(
+        help_text="Does the facility operate 24 hours a day")
+    open_public_holidays = models.BooleanField(
         default=False,
-        help_text="Is the facility open the entire week?")
+        help_text="Is the facility open on public holidays?")
+    open_weekends = models.BooleanField(
+        default=False,
+        help_text="Is the facility_open during weekends?")
     is_classified = models.BooleanField(
         default=False,
         help_text="Should the facility geo-codes be visible to the public?"
