@@ -44,7 +44,7 @@
         load_demo_data: false,
 
         # the settings below are for warming up the cache
-        warm_cache: true,
+        warm_cache: false,
         server_url: "http://mfl.azure.slade360.co.ke",
         username: national@mfltest.slade360.co.ke,
         password: national,
