@@ -36,7 +36,7 @@
         server_name: mfl.azure.slade360.co.ke,
         tags: "api-server",
 
-        frontend_url: "http://mfl.azure.slade360.co.ke/",
+        frontend_url: "http://mfl-admin.azure.slade360.co.ke/",
 
         # drop and recreate database
         setup_new_db: false,
