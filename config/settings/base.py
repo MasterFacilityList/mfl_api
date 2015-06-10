@@ -44,6 +44,7 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER', default=487)
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='notarealpassword')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+PASSWORD_RESET_URL = "http://localhost:8062/#/reset_pwd_confirm/{uid}/{token}"
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
     'django.contrib.sites',
