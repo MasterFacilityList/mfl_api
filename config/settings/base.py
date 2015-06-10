@@ -9,6 +9,7 @@ BASE_DIR = os.path.dirname(
 env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
     DEBUG=(bool, True),
+    FRONTEND_URL=(str, "http://localhost:8062")
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -306,4 +307,8 @@ SITE_ID = 1
 
 EXCEL_EXCEPT_FIELDS = [
     'id', 'updated', 'created', 'created_by', 'updated_by', 'active',
-    'deleted', 'search']
+    'deleted', 'search'
+]
+
+FRONTEND_URL = env("FRONTEND_URL")
+PASSWORD_RESET_URL = "%s/#/reset_pwd_confirm/{uid}/{token}" % FRONTEND_URL
