@@ -149,7 +149,8 @@ class MflUserSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password_history', 'password', )
+        exclude = ('password_history',)
+        extra_kwargs = {'password': {'write_only': True}}
 
 
 class MFLOAuthApplicationSerializer(serializers.ModelSerializer):
