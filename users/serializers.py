@@ -135,11 +135,17 @@ class MflUserSerializer(serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
+        pwd = validated_data.pop('password', None)
+
         # This does not handle password changes intelligently
         # Use the documented password change endpoints
         # Also: teach your API consumers to always prefer PATCH to PUT
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+
+        if pwd is not None:
+            instance.set_password(pwd)
+
         instance.save()
 
         instance.groups.clear()
