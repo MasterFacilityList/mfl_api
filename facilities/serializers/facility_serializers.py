@@ -32,6 +32,12 @@ from ..models import (
 class RegulatingBodyContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
+    contact_text = serializers.ReadOnlyField(source='contact.contact')
+    contact_type = serializers.ReadOnlyField(
+        source='contact.contact_type.name'
+
+    )
+
     class Meta(object):
         model = RegulatingBodyContact
 
@@ -193,7 +199,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
             "owner", "officer_in_charge", "physical_address",
-            "parent", "contacts", ]
+            "parent", "contacts",
+        ]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
