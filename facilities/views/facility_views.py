@@ -230,7 +230,7 @@ class ServiceCategoryListView(generics.ListCreateAPIView):
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
     filter_class = ServiceCategoryFilter
-    ordering_fields = ('name', 'description', )
+    ordering_fields = ('name', 'description', 'abbreviation')
 
 
 class ServiceCategoryDetailView(
@@ -283,7 +283,7 @@ class ServiceListView(generics.ListCreateAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
     filter_class = ServiceFilter
-    ordering_fields = ('name', 'category', 'code',)
+    ordering_fields = ('name', 'category', 'code', 'abbreviation')
 
 
 class ServiceDetailView(

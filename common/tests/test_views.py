@@ -531,7 +531,28 @@ class FilteringSummariesView(LoginMixin, APITestCase):
         mommy.make(County, name="muranga")
         ward = mommy.make(Ward, name='kizito')
         mommy.make(Constituency, name='kiambaa')
-        response = self.client.get(self.url+'?fields=ward,hakuna')
+        response = self.client.get(self.url + '?fields=ward,hakuna')
         self.assertEquals(200, response.status_code)
         self.assertTrue('ward' in response.data)
         self.assertEqual(response.data['ward'][0]['name'], ward.name)
+
+
+class TestSlimDetailViews(LoginMixin, APITestCase):
+    def test_get_county_slim_detail_view(self):
+        county = mommy.make(County)
+        url = reverse('api:common:county_slim_detail', args=[str(county.id)])
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_get_consituency_slim_detail_view(self):
+        const = mommy.make(Constituency)
+        url = reverse(
+            'api:common:constituency_slim_detail', args=[str(const.id)])
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_get_ward_slim_detail_view(self):
+        ward = mommy.make(Ward)
+        url = reverse('api:common:ward_slim_detail', args=[str(ward.id)])
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
