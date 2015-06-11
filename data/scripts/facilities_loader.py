@@ -369,7 +369,7 @@ def read_the_facilities_file():  # noqa
                     "number_of_beds": number_of_beds,
                     "number_of_cots": number_of_cots,
                     "open_whole_day": open_whole_day,
-                    "open_whole_week": open_whole_week,
+                    "open_weeekends": open_whole_week,
                     "is_published": is_published,
                     "facility_type": {
                         "name": facility_type
