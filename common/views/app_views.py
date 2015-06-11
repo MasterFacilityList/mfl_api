@@ -30,6 +30,9 @@ from ..serializers import (
     PhysicalAddressSerializer,
     ConstituencySerializer,
     ConstituencyDetailSerializer,
+    ConstituencySlimDetailSerializer,
+    CountySlimDetailSerializer,
+    WardSlimDetailSerializer,
     ContactTypeSerializer,
     UserCountySerializer,
     UserContactSerializer,
@@ -123,10 +126,20 @@ class CountyView(generics.ListCreateAPIView):
 class CountyDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     """
-    Retrieves a patricular county
+    Retrieves a patricular county including the county boundary
+    and its facility coordinates
     """
     queryset = County.objects.all()
     serializer_class = CountyDetailSerializer
+
+
+class CountySlimDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves the primary details of a county
+    """
+    queryset = County.objects.all()
+    serializer_class = CountySlimDetailSerializer
 
 
 class WardView(generics.ListCreateAPIView):
@@ -150,10 +163,20 @@ class WardView(generics.ListCreateAPIView):
 class WardDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     """
-    Retrieves a patricular ward
+    Retrieves a patricular ward details including ward boundaries
+    and facility coordinates
     """
     queryset = Ward.objects.all()
     serializer_class = WardDetailSerializer
+
+
+class WardSlimDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a patricular ward primary details
+    """
+    queryset = Ward.objects.all()
+    serializer_class = WardSlimDetailSerializer
 
 
 class ConstituencyView(generics.ListCreateAPIView):
@@ -180,6 +203,12 @@ class ConstituencyDetailView(
     """
     queryset = Constituency.objects.all()
     serializer_class = ConstituencyDetailSerializer
+
+
+class ConstituencySlimDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Constituency.objects.all()
+    serializer_class = ConstituencySlimDetailSerializer
 
 
 class ContactTypeListView(generics.ListCreateAPIView):

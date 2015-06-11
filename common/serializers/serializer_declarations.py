@@ -35,6 +35,7 @@ class ContactTypeSerializer(
 
 class ContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    contact_type_name = serializers.ReadOnlyField(source='contact_type.name')
 
     class Meta(object):
         model = Contact
@@ -60,6 +61,14 @@ class CountyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     county_boundary = CountyBoundarySerializer(
         source='countyboundary', read_only=True)
     facility_coordinates = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = County
+        read_only_fields = ('code',)
+
+
+class CountySlimDetailSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = County
@@ -93,6 +102,12 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
         read_only_fields = ('code',)
 
 
+class WardSlimDetailSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = Ward
+
+
 class ConstituencySerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
@@ -110,6 +125,13 @@ class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     class Meta(object):
         model = Constituency
         read_only_fields = ('code',)
+
+
+class ConstituencySlimDetailSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta(object):
+        model = Constituency
 
 
 class UserCountySerializer(
