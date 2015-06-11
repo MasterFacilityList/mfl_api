@@ -888,7 +888,11 @@ class DashBoard(APIView):
                         "name": facility_type.name,
                         "count": facility_type_count
                     })
-        return facility_type_summary
+        facility_type_summary_sorted = sorted(
+            facility_type_summary,
+            key=lambda x: x, reverse=True)[0:5]
+
+        return facility_type_summary_sorted
 
     def get_facility_owner_summary(self):
         owners = Owner.objects.all()
