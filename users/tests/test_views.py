@@ -117,7 +117,7 @@ class TestUserViews(LoginMixin, APITestCase):
 
         user = MflUser.objects.get(id=user.id)
         self.assertTrue(user.check_password(patch_data['password']))
-        self.assertEqual(user.first_name, patch_data["password"])
+        self.assertEqual(user.first_name, patch_data["first_name"])
 
     def test_failed_create(self):
         create_url = reverse('api:users:mfl_users_list')
