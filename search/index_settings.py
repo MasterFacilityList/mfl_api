@@ -21,8 +21,10 @@ def get_mappings():
             for field in single_model.get("fields"):
                 field_mapping = {
                     "type": "string",
+                    "store": True,
+                    "coerce": False,
                     "index_analyzer": "autocomplete",
-                    "search_analyzer": "autocomplete"
+                    "search_analyzer": "autocomplete",
                 }
                 fields_conf["properties"][field] = field_mapping
             mappings[single_model.get("name")] = fields_conf
@@ -32,8 +34,6 @@ def get_mappings():
 INDEX_SETTINGS = {
     "settings": {
         "index": {
-            "creation_date": "1434101603851",
-            "uuid": "HHzIptOYTxOowFCIxY7_eA",
             "number_of_replicas": "1",
             "analysis": {
                 "analyzer": {
