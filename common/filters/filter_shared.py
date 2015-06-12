@@ -6,7 +6,7 @@ from django.utils.dateparse import parse_datetime
 
 from rest_framework import ISO_8601
 
-from search.filters import SearchFilter
+from search.filters import SearchFilter, AutoCompleteSearchFilter
 
 
 class IsoDateTimeField(forms.DateTimeField):
@@ -115,3 +115,4 @@ class CommonFieldsFilterset(django_filters.FilterSet):
     is_active = django_filters.BooleanFilter(
         name='active', lookup_type='exact')
     search = SearchFilter(name='search')
+    search_auto = AutoCompleteSearchFilter(name='search')

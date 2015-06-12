@@ -69,6 +69,24 @@ class ElasticAPI(object):
 
         return result
 
+    def search_auto_complete_document(self, index_name, instance_type, query):
+        document_type = instance_type.__name__.lower()
+        url = "{}{}/{}/_search".format(
+            ELASTIC_URL, index_name, document_type)
+        data = {
+            "query": {
+                "query_string": {
+                    "default_field": "name",
+                    "query": query,
+                    "analyzer": "autocomplete"
+                }
+            }
+        }
+        data = json.dumps(data)
+        result = requests.post(url, data)
+
+        return result
+
 
 def confirm_model_is_indexable(model):
         non_indexable_models = settings.SEARCH.get('NON_INDEXABLE_MODELS')

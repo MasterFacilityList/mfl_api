@@ -8,6 +8,8 @@ class SearchFilter(django_filters.filters.Filter):
     """
     Given a query searches elastic search index and returns a queryset of hits.
     """
+    api = ElasticAPI()
+    search_type = 'full_text'
 
     def filter(self, qs, value):
         super(SearchFilter, self).filter(qs, value)
@@ -15,7 +17,13 @@ class SearchFilter(django_filters.filters.Filter):
 
         document_type = qs.model
         index_name = settings.SEARCH.get('INDEX_NAME')
-        result = api.search_document(index_name, document_type, value)
+        if self.search_type == 'full_text':
+            result = api.search_document(index_name, document_type, value)
+        elif self.search_type == 'auto_complete':
+            result = api.search_auto_complete_document(
+                index_name, document_type, value)
+        else:
+            raise NotImplementedError
 
         hits = []
         try:
@@ -38,3 +46,7 @@ class SearchFilter(django_filters.filters.Filter):
         final_queryset = qs.model.objects.filter(id__in=combined_results_ids)
 
         return final_queryset
+
+
+class AutoCompleteSearchFilter(SearchFilter):
+    search_type = "auto_complete"
