@@ -36,7 +36,8 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     RegulatingBodyContact,
-    Option
+    Option,
+    FacilityOfficer
 )
 
 
@@ -650,3 +651,9 @@ class TestFacilityServiceRating(BaseTestCase):
             rating=5
         )
         self.assertEqual(str(rating), "serv (fac): 5")
+
+
+class TestFacilityOfficer(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityOfficer)
+        self.assertEquals(1, FacilityOfficer.objects.count())

@@ -880,3 +880,12 @@ class FacilityServiceRating(AbstractBase):
             self.facility_service.facility.name,
             self.rating
         )
+
+
+@reversion.register
+class FacilityOfficer(AbstractBase):
+    """
+    A facility can have more than one officer. This models links the two.
+    """
+    facility = models.ForeignKey(Facility, related_name='facility_officers')
+    officer = models.ForeignKey(Officer, related_name='officer_facilities')

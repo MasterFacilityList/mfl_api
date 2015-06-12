@@ -26,7 +26,21 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
+    FacilityOfficer
 )
+
+
+class FacilityOfficerSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    facility_name = serializers.ReadOnlyField(source='facility.name')
+    officer_name = serializers.ReadOnlyField(source='officer.name')
+    id_number = serializers.ReadOnlyField(source='officer.id_number')
+    registration_number = serializers.ReadOnlyField(
+        source='officer.registration_number')
+    job_title = serializers.ReadOnlyField(source='officer.job_title.name')
+
+    class Meta(object):
+        model = FacilityOfficer
 
 
 class RegulatingBodyContactSerializer(

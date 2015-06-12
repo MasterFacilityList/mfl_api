@@ -19,7 +19,8 @@ from ..serializers import (
     FacilityDetailSerializer,
     FacilityStatusSerializer,
     FacilityUnitSerializer,
-    FacilityListSerializer
+    FacilityListSerializer,
+    FacilityOfficerSerializer
 )
 from ..models import (
     OwnerType,
@@ -34,7 +35,9 @@ from ..models import (
     Option,
     ServiceOption,
     FacilityService,
-    FacilityContact
+    FacilityContact,
+    FacilityOfficer,
+    Officer
 )
 
 
@@ -559,3 +562,41 @@ class TestFacilityContactView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals('EMAIL', response.data.get('contact_type'))
         self.assertEquals('0700000000', response.data.get('actual_contact'))
+
+
+class TestFacilityOfficerView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityOfficerView, self).setUp()
+        self.url = reverse('api:facilities:facility_officers_list')
+
+    def test_list_facility_officers(self):
+        facility_officer = mommy.make(FacilityOfficer)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityOfficerSerializer(facility_officer).data
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrive_single_facility_officer(self):
+        facility_officer = mommy.make(FacilityOfficer)
+        url = self.url + "{}/".format(facility_officer.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(facility_officer.id), response.data.get('id'))
+
+    def test_post(self):
+        facility = mommy.make(Facility)
+        officer = mommy.make(Officer)
+        data = {
+            "facility": str(facility.id),
+            "officer": str(officer.id)
+        }
+        response = self.client.post(path=self.url, data=data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, FacilityOfficer.objects.count())

@@ -26,6 +26,7 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
+    FacilityOfficer
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -45,6 +46,11 @@ BOOLEAN_CHOICES = (
     ('Y', 'True'),
     ('N', 'False')
 )
+
+
+class FacilityOfficerFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = FacilityOfficer
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):
