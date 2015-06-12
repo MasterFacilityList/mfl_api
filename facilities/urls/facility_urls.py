@@ -51,12 +51,19 @@ from ..views import (
     RegulatingBodyContactDetailView,
     get_correction_template,
     DashBoard,
-    FacilityListReadOnlyView
+    FacilityListReadOnlyView,
+    FacilityOfficerDetailView,
+    FacilityOfficerListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^facility_officers/$', FacilityOfficerListView.as_view(),
+        name='facility_officers_list'),
+    url(r'^facility_officers/(?P<pk>[^/]+)/$',
+        FacilityOfficerDetailView.as_view(),
+        name='facility_officer_detail'),
 
     url(r'^dashboard/$', DashBoard.as_view(),
         name='dashboard'),

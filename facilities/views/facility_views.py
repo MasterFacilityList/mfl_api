@@ -34,6 +34,7 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
+    FacilityOfficer
 
 )
 
@@ -62,7 +63,8 @@ from ..serializers import (
     RegulationStatusSerializer,
     FacilityDetailSerializer,
     FacilityServiceRatingSerializer,
-    FacilityListSerializer
+    FacilityListSerializer,
+    FacilityOfficerSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -87,6 +89,7 @@ from ..filters import (
     FacilityOperationStateFilter,
     FacilityUpgradeFilter,
     RegulatingBodyContactFilter,
+    FacilityOfficerFilter
 )
 
 
@@ -1001,3 +1004,19 @@ class DashBoard(APIView):
         }
 
         return Response(data)
+
+
+class FacilityOfficerListView(
+        AuditableDetailViewMixin, generics.ListCreateAPIView):
+    serializer_class = FacilityOfficerSerializer
+    queryset = FacilityOfficer.objects.all()
+    filter_class = FacilityOfficerFilter
+    ordering_fields = (
+        'name', 'id_number', 'registration_number',
+        'facility_name')
+
+
+class FacilityOfficerDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = FacilityOfficerSerializer
+    queryset = FacilityOfficer.objects.all()
