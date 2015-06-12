@@ -76,7 +76,7 @@ class ElasticAPI(object):
         data = {
             "query": {
                 "query_string": {
-                    "default_field": "name",
+                    "fields": ["name", "ward_name"],
                     "query": query,
                     "analyzer": "autocomplete"
                 }

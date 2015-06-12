@@ -283,6 +283,38 @@ SEARCH = {
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
 
+    ],
+    "AUTOCOMPLETE_MODEL_FIELDS": [
+        {
+            "app": "facilities",
+            "models": [
+                {
+                    "name": "facility",
+                    "fields": ["name", "ward_name"]
+                },
+                {
+                    "name": "owner",
+                    "fields": ["name"]
+                }
+            ]
+        },
+        {
+            "app": "common",
+            "models": [
+                {
+                    "name": "County",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Consituency",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Ward",
+                    "fields": ["name"]
+                }
+            ]
+        }
     ]
 }
 
