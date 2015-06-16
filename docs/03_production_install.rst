@@ -24,7 +24,7 @@ the operating system as environment variables or as a `.env` file in the
 application's root folder.
 
 The ``.env`` file holds confidential configuration information. For that
-reason, it is not tracked in revision control ( revision control has an example
+reason, it is not tracked in version control ( version control has an example
 ``.env`` whose values should **not** be used in production ).
 
 A proper ``.env`` file should set the following values up:
@@ -34,9 +34,10 @@ A proper ``.env`` file should set the following values up:
     SECRET_KEY=pleasechangetoanewlygeneratedsecretkey
     DEBUG=off  # NEVER run with Debug=True in production
 
-    EMAIL_HOST=email-smtp.us-east-1.amazonaws.com  # This is an example
-    EMAIL_HOST_USER=donotleakthisvalue
-    EMAIL_HOST_PASSWORD=keepthisonesecretalso
+    # Use real email settings here e.g from Amazon SES
+    EMAIL_HOST=''
+    EMAIL_HOST_USER=''
+    EMAIL_HOST_PASSWORD=''
 
 
     # Here because the original user was too lazy to write ruby code for the VagrantFile
@@ -46,6 +47,10 @@ A proper ``.env`` file should set the following values up:
 
     # Make sure you change this in lockstep with the three DATABASE_* vars above
     DATABASE_URL='postgres://mfl:mfl@localhost:5432/mfl'
+
+
+    # Location where the administration frontend is running
+    FRONTEND_URL='http://localhost:8062'
 
 
 .. _Twelve-Factor App: http://12factor.net/
