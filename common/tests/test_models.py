@@ -362,6 +362,7 @@ class TestUserConstituencyModel(BaseTestCase):
         const = mommy.make(Constituency, county=county)
         const_2 = mommy.make(Constituency, county=county_2)
         user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
         creator_user = mommy.make(get_user_model())
         mommy.make(UserCounty, county=county, user=creator_user)
 
@@ -371,11 +372,8 @@ class TestUserConstituencyModel(BaseTestCase):
             created_by=creator_user
         )
         self.assertEquals(1, UserConstituency.objects.count())
-        # should raise validation error
+        # should raise validation error'
         with self.assertRaises(ValidationError):
-            mommy.make(
-                UserConstituency, user=user, constituency=const_2,
-                created_by=creator_user
-            )
+            mommy.make(UserConstituency, user=user_2, constituency=const_2)
         # test user constituencies
         self.assertEquals(const, user.constituency)

@@ -619,4 +619,5 @@ class TestUserConstituenciesView(LoginMixin, APITestCase):
         response = self.client.post(self.url, data)
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, UserConstituency.objects.count())
-        self.assertIn('id', json.loads(json.dumps(response.data)))
+        self.assertIn('id', json.loads(json.dumps(
+            response.data, default=default)))
