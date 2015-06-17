@@ -95,7 +95,7 @@ officer_in_charge    Filter by the ``id`` of one or more officers-in-charge. The
 number_of_beds       Filter by the number of beds, supplying one or more filter parameters e.g ``/api/facilities/facilities/?number_of_beds=20,21,22,23,24``
 number_of_cots       Filter by the number of cots, supplying one ormore filter parameters e.g ``/api/facilities/facilities/?number_of_cots=10,11,12``
 open_whole_day       A boolean filter e.g ``/api/facilities/facilities/?open_whole_day=true``
-open_whole_week      Another boolean filter e.g ``/api/facilities/facilities/?open_whole_week=true``
+open_whole_week      A boolean filter e.g ``/api/facilities/facilities/?open_whole_week=true``
 is_classified        A boolean filter that determines if a facility's coordinates should be shown or not. The public front-end should omit classified facilities by default. i.e. publish those that can be listed with ``/api/facilities/facilities/?is_classified=false``
 is_published         A boolean filter that determines if a facility has been cleared for display on the public site. The public site should only display facilities that can be listed with ``/api/facilities/facilities/?is_published=true``
 is_regulated         The facilities that are pending action from the regulators can be listed with ``/api/facilities/facilities/?is_regulated=False``
@@ -112,7 +112,7 @@ created_before       Similar to ``updated_before``, but operating on creation da
 updated_after        Similar to ``updated_before``, but returns records newer than the specified datetime
 created_after        Similar to ``updated_after``, but works with creation dates.
 updated_on           This is similar to the date filters above but performs **exact matches** on the update date.
-created_on           This is also performas exact matches.
+created_on           This is also performs exact matches.
 is_active            For all resources in this server, the preferred way to "retire" records is to mark them as inactive. This allows the API client to request only active or only inactive records.
 search               Perform a full text search that looks through all fields. e.g ``/api/facilities/facilities/?search=endebess`` gives back all facilities that have "endebess" anywhere in their name, description or attributes.
 ==================== ==========================================================
@@ -178,11 +178,12 @@ Updating an existing record
 In order to update an existing record, ``PATCH`` the appropriate field from
 the record's detail view.
 
-For exampple: if the facility that we created above got the ``id`` set to
+For example, if the facility that we created above got the ``id`` set to
 ``e88f0c1a-e1e4-44ff-8db1-8c4135abb080`` ( this will be returned to the client
 in the resource returned after successful creation ), we can change its
-``location_desc`` from "Planet: Mars" to "Planet: Venus" by sending the
-following request in a ``PATCH`` to ``/api/facilities/facilities/e88f0c1a-e1e4-44ff-8db1-8c4135abb080/``:
+``location_desc`` from "Planet: Mars" to "Planet: Venus" by sending a
+``PATCH`` to ``/api/facilities/facilities/e88f0c1a-e1e4-44ff-8db1-8c4135abb080/`` with the
+following payload:
 
 .. code-block:: javascript
 
@@ -190,9 +191,8 @@ following request in a ``PATCH`` to ``/api/facilities/facilities/e88f0c1a-e1e4-4
         "location_desc": "Planet: Venus"
     }
 
-A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
-representation of the freshly created resource will be returned in the
-response.
+A successful ``PATCH`` will get back a ``HTTP 200 OK`` response and a
+representation of the freshly updated resource will be returned.
 
 Deleting a record
 ~~~~~~~~~~~~~~~~~~~~~
@@ -268,7 +268,7 @@ example record above, send the following ``PATCH`` payload to
     }
 
 A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
-representation of the freshly created resource will be returned in the
+representation of the updated resource will be returned in the
 response.
 
 Deleting a record
@@ -331,7 +331,7 @@ the record above, a valid ``PATCH`` payload could be:
     }
 
 A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
-representation of the freshly created resource will be returned in the
+representation of the updated resource will be returned in the
 response.
 
 Deleting a record
@@ -402,7 +402,7 @@ For example:
     }
 
 A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
-representation of the freshly created resource will be returned in the
+representation of the updated resource will be returned in the
 response.
 
 Deleting a record
@@ -469,7 +469,7 @@ could be sent via ``PATCH`` to
     }
 
 A successful ``PATCH`` will get back a ``HTTP 200 OK`` response. A
-representation of the freshly created resource will be returned in the
+representation of the updated resource will be returned in the
 response.
 
 Deleting a record
@@ -587,7 +587,7 @@ To get the cover letter in PDF:
 ``GET the URL ``api/common/dowload_pdf/?file_url=api/facilities/facility_cover_report/<facility_id>/&file_name=<file_name>``
 
 
- 
+
 Facility correction templates
 ++++++++++++++++++++++++++++++++
 To view a facility's correction template:
@@ -618,28 +618,28 @@ Facility Excel reports
     has two positive effects:
 
         * it can use all the available filters
-        * every API ( not just the facilities API ) can produce CSV and Excel
+        * every list API endpoint ( not just the facilities list API endpoint ) can produce CSV and Excel
 
-    e.g  to get an excel file of facilities:
+    e.g. to get an excel file of facilities:
     ``GET`` the URL ``api/facilities/facilities/?format=excel``
 
 
 Facility dashboard APIs
 ++++++++++++++++++++++++++
-This api is accesbile by administrators at both the county and the National level.
-The dasboard API does a high level analysis of different aspects of the facilities.
-Currently, it supports analysis of facilities by owners, administrative units, 
+This API is accesbile by administrators at both the county and the National level.
+The dashboard API does a high level analysis of different aspects of the facilities.
+Currently, it supports analysis of facilities by owners, administrative units,
 facility types, facility owner types and analysis by time created.
 
 
 To get the analyzed data:
-``GET`` the URL ``api/facilities/dashboard/``
+``GET`` the URL ``api/facilities/dashboard/``.
 The data that the endpoint responds with is dependent upon the priviledges of the user logged in.
 
-Sample Expected data for a **National user**
+For a **National user**, the following response is expected
 
 .. code-block:: javascript
-    
+
     {
         "owners_summary": [
             {
@@ -662,7 +662,7 @@ Sample Expected data for a **National user**
                 "count": 179,
                 "name": "Private Practice - Unspecified"
             },
-            
+
         ],
         "recently_created": 8361,
         "county_summary": [
@@ -781,13 +781,13 @@ Sample Expected data for a **National user**
         ]
     }
 
-Sample Expected data for a **County user** (Mombasa County)
+For a **County user** (Mombasa County in this case), the following response is expected
 
 .. code-block:: javascript
-    
+
     {
         "owners_summary": [
-                  
+
             {
                 "count": 5,
                 "name": "Local Authority T Fund"
@@ -812,9 +812,9 @@ Sample Expected data for a **County user** (Mombasa County)
                 "count": 10,
                 "name": "Supreme Council for Kenya Muslims"
             },
-            
+
         ],
-        "owner_types": [     
+        "owner_types": [
             {
                 "count": 189,
                 "name": "Private Institutions and Private Practice"
@@ -858,7 +858,7 @@ Sample Expected data for a **County user** (Mombasa County)
                 "name": "JOMVU"
             }
         ],
-        "types_summary": [       
+        "types_summary": [
             {
                 "count": 2735,
                 "name": "Medical Clinic"
@@ -875,10 +875,10 @@ Sample Expected data for a **County user** (Mombasa County)
                 "count": 172,
                 "name": "Nursing Home"
             }
-         
+
         ]
     }
-   
+
 
 Facility types
 ==============
@@ -892,12 +892,12 @@ A facility type has five distinct fields:
 ================ ==============================================================
     Field          Explanation
 ================ ==============================================================
-    id            The primary key of the facility type 
+    id            The primary key of the facility type
 
-    name           The name of the facility type e.g HEALTH_CENTER         
+    name           The name of the facility type e.g HEALTH_CENTER
 
     sub-division   A sub-division of the facility type e.g A hospitla has got
-                   several sub divisions e.g District Hospital of Provincial 
+                   several sub divisions e.g District Hospital of Provincial
                    Hospital
 
     preceeding    A facility type that comes before the type e.g a Provincial
@@ -910,18 +910,18 @@ Creating A facility type
 ``POST`` to ``api/facilities/facility_types/`` a payload similar to the one below
 
 .. code-block:: javascript
-    
+
     {
         "name": "Hospital",
         "sub_division": "Provincial Hospital",
         "preceding": "950047f7-dae4-4803-9818-9886004daaf1"
     }
-    
+
 
 Expected Response Code:
     ``HTTP 201 CREATED``
 
-Expexcted sample data:
+Expected sample data:
 
 .. code-block:: javascript
 
@@ -942,7 +942,7 @@ Expexcted sample data:
 
 
 
-Listing Facillity types 
+Listing Facillity types
 -----------------------
 ``GET`` the URL ``api/facilities/facility_types/``
 
@@ -992,8 +992,8 @@ Retrieving a facility type
 ---------------------------
 ``GET`` the URL ``api/facilities/facility_types/<id>/``
 
-For example to get the details of a facility type whose is 
-950047f7-dae4-4803-9818-9886004daaf1  do a ``GET`` to the URL 
+For example to get the details of a facility type whose is
+``950047f7-dae4-4803-9818-9886004daaf1``  do a ``GET`` to the URL
 ``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
 
 Sample Response data:
@@ -1021,16 +1021,16 @@ Expected Response code
 
 Updating Facility types
 -----------------------
-``PATCH`` the URL ``api/facilities/facility_types/<id>/`` with a payload 
-containing the fields to be editted. For example to update a facility type's
-name whose id is 950047f7-dae4-4803-9818-9886004daaf1 do a ``PATCH`` to the URL 
+``PATCH`` the URL ``api/facilities/facility_types/<id>/`` with a payload
+containing the fields to be edited. For example to update a facility type's
+name whose id is 950047f7-dae4-4803-9818-9886004daaf1 do a ``PATCH`` to the URL
 ``api/facilities/facility_types/950047f7-dae4-4803-9818-9886004daaf1/``
 with a  payload similar to the one below
 
 .. code-block:: javascript
 
     {
-        "name": "District Hospital Editted"
+        "name": "District Hospital Edited"
     }
 
 Sample Expected Response data:
@@ -1044,7 +1044,7 @@ Sample Expected Response data:
         "deleted": false,
         "active": true,
         "search": null,
-        "name": "District Hospital Editted",
+        "name": "District Hospital Edited",
         "sub_division": null,
         "created_by": 1,
         "updated_by": 1,
@@ -1058,7 +1058,7 @@ Expected Response Code:
 Facility Upgrades and Downgrades
 ================================
 
-Upgrading or downgrading a facility is as easy as changing the 
+Upgrading or downgrading a facility is as easy as changing the
 facility type of a facility to another type. The person doing this should
 have the sufficient permssions to do so.
 This is however a two step process. The First step involves making the upgrade
@@ -1072,7 +1072,7 @@ shown below
 
 .. code-block:: javascript
 
-    {   
+    {
         "reason": "A good reason for the upgrade",
         "facility": "cc585b49-dc42-47a3-a08a-7f2c39633393", // id of the facility
         "facility_type": "57a0351b-accd-4ccf-b19f-38920ea78e75" // id of the facility type
@@ -1102,17 +1102,17 @@ Expected Response Code:
     ``HTTP 201 CREATED``
 
 
-Confirming Upgrage or Downgrade (Second Step)
----------------------------------------------   
-The CHRIO may choose to either to confirm or cancel a facility uprgrade 
+Confirming Upgrade or Downgrade (Second Step)
+---------------------------------------------
+The CHRIO may choose to either to confirm or cancel a facility upgrade
 or downgrade.
 
-To confirm a facility upgrade/Downgrade ``PATCH``  
-``api/facilities/facility_upgrade/<id>`` where the id identifies a particular
+To confirm a facility upgrade/downgrade ``PATCH``
+``api/facilities/facility_upgrade/<id>/`` where the ``id`` identifies a particular
 facility upgrade/downgrade.
 
-For example to confirm the facility upgrade done above do a ``PATCH`` to 
-``api/facilities/facility_upgrade/70610b2b-ddd8-49b4-8594-52c236a834d2`` 
+For example to confirm the facility upgrade done above do a ``PATCH`` to
+``api/facilities/facility_upgrade/70610b2b-ddd8-49b4-8594-52c236a834d2``
 with the payload below:
 
 .. code-block:: javascript
@@ -1146,13 +1146,13 @@ Expected HTTP Response code
     ``HTTP 200 OK``
 
 
-Cancelling a facility upgrade/Downgrade(Second Step)
+Cancelling a facility upgrade/downgrade(Second Step)
 ----------------------------------------------------
 Cancelling a facility upgrade or downgrade is very similar to confirming a
-facility upgrade with a minor change 
+facility upgrade with a minor change
 in the payload sent.
 
-Do a ``PATCH``  to the url ``api/facilities/facility_upgrade/<id>/`` 
+Do a ``PATCH``  to the url ``api/facilities/facility_upgrade/<id>/``
 with a payload similar to the one shown below:
 
 .. code-block:: javascript
@@ -1165,7 +1165,7 @@ with a payload similar to the one shown below:
 .. note::
 
     It is after the confirmation of a facility upgrade or downgrade that a facility
-    is deemed to have been upgraded or downgraded and the changes reflected in 
+    is deemed to have been upgraded or downgraded and the changes reflected in
     the facility.
 
 Listing Facilities that are due for upgrade/downgrade Confirmation
@@ -1176,7 +1176,7 @@ Listing Facilities that are due for upgrade/downgrade Confirmation
 Sample Response data:
 
 .. code-block:: javascript
-    
+
         {
             "count": 1,
             "next": null,
@@ -1214,12 +1214,12 @@ Listing all the the Upgrades/Downgrades of a facility
 -----------------------------------------------------
 ``GET`` the URL ``/api/facilities/facility_upgrade/?facility=<id>``
 
-For example a get to the URL 
+For example a get to the URL
 ``api/facilities/facility_upgrade/?facility=cc585b49-dc42-47a3-a08a-7f2c3963339311``
 results in the data shown below and the a response code of ``HTTTP 200 OK``
 
 .. code-block:: javascript
-    
+
     {
         "count": 1,
         "next": null,
@@ -1244,5 +1244,5 @@ results in the data shown below and the a response code of ``HTTTP 200 OK``
     }
 
 
-.. toctree:: 
+.. toctree::
     :maxdepth: 2

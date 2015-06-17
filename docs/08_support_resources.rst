@@ -261,8 +261,8 @@ known contact, although the use cases for that are more limited.
 
     This section introduces some patterns that will recur in this API:
 
-    *   The use of filters: the list APIs are filterably by most of the
-        fields that they list. You can explore this further in the 07_sandbox.
+    *   The use of filters: the list APIs are filterable by most of the
+        fields that they list. You can explore this further in the :doc:`07_sandbox`.
     *   The use of **explicit join tables** for many to many relationships.
 
     The ``regulating_body_contact`` resource that is the subject of this

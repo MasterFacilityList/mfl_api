@@ -14,7 +14,7 @@ user interfaces be just one more set of API clients, with no special
 privileges.
 
 This guide is for the authors of client applications ( applications that
-consume the RESTful web :doc:`09_services` ). Those who would like to make changes to
+consume the RESTful web e.g. :doc:`09_services` ). Those who would like to make changes to
 the MFL API server code itself should refer to the :doc:`14_workflow` guide.
 
 The MFL 2 API is "RESTish". We subscribe to the principles of `REST`_ but
@@ -45,7 +45,7 @@ Production instances should always run over HTTPS.
 
 Data Format
 ------------
-The MFL API server supports JSON and XML for all API endpoints.
+The MFL API server supports JSON for all API endpoints.
 
 *Some* endpoints support CSV and Excel output. This will be indicated in the
 relevant sections of the documentation.
@@ -67,10 +67,6 @@ Send the correct ``Accept`` header. For example:
 
      curl -i -H "Accept: application/json" -H "Content-Type: application/json" http://localhost:8000/api/common/contacts/
 
-**To get xml**
-
-    curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" http://localhost:8000/api/common/contacts/
-
 **To get csv**
 
      curl -i -H "Accept: application/csv" -H "Content-Type: application/csv" http://localhost:8000/api/common/contacts/
@@ -85,10 +81,9 @@ Content negotiation using query parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Append a ``?format=<>`` ``GET`` parameter. For example:
 
- * to get XML append ``?format=xml`` to the URL
- * to get CSV append ``?format=csv`` to the URL
- * to get Excel, append ``?format=xlsx`` to the URL
  * to get JSON ( the default ), append ``?format=json`` to the URL
+ * to get CSV append ``?format=csv`` to the URL
+ * to get Excel, append ``?format=excel`` to the URL
 
 Common fields
 --------------------
@@ -100,7 +95,7 @@ Common fields
  ``id``         A UUID. This is the database record's primary key.
  ``created``    An ISO 8601 timestamp ( UTC time zone ) that indicates when the resource was created
  ``updated``    An ISO 8601 timestamp ( UTC time zone ) that shows when the last update occured
- ``active```    A boolean; will be set to ``false`` when the record is retired
+ ``active``     A boolean; will be set to ``false`` when the record is retired
  ``deleted``    A boolean; will be set to ``true`` when the record is removed. The API will in-fact not return deleted items by default.
  ``created``    The ID of the user that created the record. The user model is the only one with non UUID primary keys.
  ``updated``    The ID of the user that last updated the record.
@@ -387,19 +382,19 @@ format:
         ]
     }
 
-A client can request a larger page size by specifying the `page_size` parameter
-e.g `/api/common/contacts/?page_size=100`. There page size limit is selected at
+A client can request a larger page size by specifying the ``page_size`` parameter
+e.g ``/api/common/contacts/?page_size=100``. There page size limit is selected at
 server configuration time; it will usually be around 1000 items.
 
 Audit trail
 -------------
 The API server provides an audit trail for all non third-party resources.
 This audit trail can be accessed on **detail endpoints** by appending an
-`include_audit=true` query parameter.
+``include_audit=true`` query parameter.
 
-For example, if there was a contact with `id`
-`28d2a0c8-40f4-4686-97d0-d7c6f453fcb3`, a `GET` request to
-`/api/common/contacts/28d2a0c8-40f4-4686-97d0-d7c6f453fcb3/?include_audit=true`
+For example, if there was a contact with the id
+``28d2a0c8-40f4-4686-97d0-d7c6f453fcb3``, a ``GET`` request to
+``/api/common/contacts/28d2a0c8-40f4-4686-97d0-d7c6f453fcb3/?include_audit=true``
 would return a payload that has a `revisions` key that contains a
 representation of every past revision of that specific contact.
 
@@ -409,7 +404,7 @@ Every **list** endpoint supports **full text** search. Search is implemented
 as a filter, using the `search` query parameter.
 
 For example, to search for contacts that have the word "meru" in them, the
-query would be `/api/common/contacts/?search=meru`.
+query would be ``/api/common/contacts/?search=meru``.
 
 .. toctree::
     :maxdepth: 2

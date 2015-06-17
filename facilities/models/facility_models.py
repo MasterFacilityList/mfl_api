@@ -838,8 +838,7 @@ class FacilityService(AbstractBase):
 
     @property
     def number_of_ratings(self):
-        return FacilityServiceRating.objects.filter(
-            facility_service=self).count()
+        return self.facility_service_ratings.count()
 
     @property
     def service_name(self):

@@ -20,12 +20,12 @@ Deployment Assumptions
 -----------------------
 The deployment scripts will fail unless the following are true:
 
-  * you are on a vagrant supported OS ( so far Ubuntu 14.04LTS and ArchLinux have been tested )
+  * you are on a vagrant supported OS ( so far Ubuntu 14.04LTS has been tested )
   * you have run ``ssh-keygen`` and have a public key at ``$HOME/.ssh/id_rsa.pub``
 
 Vagrant
 ----------
-Before installation, you will need to have the vagrant-env plugin - https://github.com/gosuri/vagrant-env .
+Before installation, you will need to have the `vagrant-env <https://github.com/gosuri/vagrant-env>`_  plugin.
 The installation is as simple as running
 
 ::
