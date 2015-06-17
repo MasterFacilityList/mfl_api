@@ -37,6 +37,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name_plural': 'constituency boundaries',
             },
@@ -59,6 +60,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name_plural': 'county boundaries',
             },
@@ -79,6 +81,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name': 'facility coordinates',
                 'verbose_name_plural': 'facility coordinates',
@@ -100,6 +103,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
         ),
@@ -120,6 +124,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
         ),
@@ -141,6 +146,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name_plural': 'ward boundaries',
             },
@@ -164,6 +170,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
         ),
