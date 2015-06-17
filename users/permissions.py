@@ -1,4 +1,4 @@
-from rest_auth.permissions import DjangoModelPermissions
+from rest_auth.permissions import BasePermission
 
 
 class MFLModelPermissions(BasePermission):
