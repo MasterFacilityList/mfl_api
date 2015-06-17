@@ -83,7 +83,7 @@ Append a ``?format=<>`` ``GET`` parameter. For example:
 
  * to get JSON ( the default ), append ``?format=json`` to the URL
  * to get CSV append ``?format=csv`` to the URL
- * to get Excel, append ``?format=xlsx`` to the URL
+ * to get Excel, append ``?format=excel`` to the URL
 
 Common fields
 --------------------
