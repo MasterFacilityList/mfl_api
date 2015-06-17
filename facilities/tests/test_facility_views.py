@@ -20,7 +20,8 @@ from ..serializers import (
     FacilityStatusSerializer,
     FacilityUnitSerializer,
     FacilityListSerializer,
-    FacilityOfficerSerializer
+    FacilityOfficerSerializer,
+    RegulatoryBodyUserSerializer
 )
 from ..models import (
     OwnerType,
@@ -37,7 +38,9 @@ from ..models import (
     FacilityService,
     FacilityContact,
     FacilityOfficer,
-    Officer
+    Officer,
+    RegulatoryBodyUser,
+    RegulatingBody
 )
 
 
@@ -600,3 +603,43 @@ class TestFacilityOfficerView(LoginMixin, APITestCase):
         response = self.client.post(path=self.url, data=data)
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, FacilityOfficer.objects.count())
+
+
+class TestRegulatoryBodyUserView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestRegulatoryBodyUserView, self).setUp()
+        self.url = reverse("api:facilities:regulatory_body_users_list")
+
+    def test_listing(self):
+        reg_bod_user = mommy.make(RegulatoryBodyUser)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                RegulatoryBodyUserSerializer(reg_bod_user).data
+            ]
+        }
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrieving_single_record(self):
+        reg_bod_user = mommy.make(RegulatoryBodyUser)
+        url = self.url + "{}/".format(reg_bod_user.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = RegulatoryBodyUserSerializer(reg_bod_user).data
+        self.assertEquals(expected_data, response.data)
+
+    def test_posting(self):
+        reg_body = mommy.make(RegulatingBody)
+        user = mommy.make(get_user_model())
+        data = {
+            "regulatory_body": reg_body.id,
+            "user": user.id
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertIn('id', response.data)
+        self.assertEquals(1, RegulatingBody.objects.count())

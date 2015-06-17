@@ -34,7 +34,8 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    FacilityOfficer
+    FacilityOfficer,
+    RegulatoryBodyUser
 
 )
 
@@ -64,7 +65,8 @@ from ..serializers import (
     FacilityDetailSerializer,
     FacilityServiceRatingSerializer,
     FacilityListSerializer,
-    FacilityOfficerSerializer
+    FacilityOfficerSerializer,
+    RegulatoryBodyUserSerializer
 )
 from ..filters import (
     FacilityFilter,
@@ -89,7 +91,8 @@ from ..filters import (
     FacilityOperationStateFilter,
     FacilityUpgradeFilter,
     RegulatingBodyContactFilter,
-    FacilityOfficerFilter
+    FacilityOfficerFilter,
+    RegulatoryBodyUserFilter
 )
 
 
@@ -114,6 +117,24 @@ class QuerysetFilterMixin(object):
                 ward__constituency__county=self.request.user.county)
 
         return self.queryset
+
+
+class RegulatoryBodyUserListView(generics.ListCreateAPIView):
+    """
+    Lists and creates a regulatory body's users
+    """
+    queryset = RegulatoryBodyUser.objects.all()
+    serializer_class = RegulatoryBodyUserSerializer
+    filter_class = RegulatoryBodyUserFilter
+    ordering_fields = ('regulatory_body', 'user')
+
+
+class RegulatoryBodyUserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a single regulatory body user
+    """
+    serializer_class = RegulatoryBodyUserSerializer
+    queryset = RegulatoryBodyUser.objects.all()
 
 
 class RegulatingBodyContactListView(generics.ListCreateAPIView):

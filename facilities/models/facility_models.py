@@ -2,6 +2,7 @@ from __future__ import division
 
 import reversion
 
+from django.conf import settings
 from django.core import validators
 from django.db import models
 from rest_framework.exceptions import ValidationError
@@ -243,6 +244,31 @@ class RegulatingBody(AbstractBase):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulating bodies'
+
+
+@reversion.register
+class RegulatoryBodyUser(AbstractBase):
+    """
+    Links user to a regulatory body.
+    These are the users who  will be carrying out the regulatory activities
+    """
+    regulatory_body = models.ForeignKey(RegulatingBody)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='regulatory_body_users')
+
+    def make_user_national_user(self):
+        self.user.is_national = True
+        self.user.save()
+
+    def clean(self, *args, **kwargs):
+        self.make_user_national_user()
+
+    def __unicode__(self):
+        custom_unicode = "{}: {}".format(self.regulatory_body, self.user)
+        return custom_unicode
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('regulatory_body', 'user', )
 
 
 @reversion.register
