@@ -126,6 +126,7 @@ class AbstractBase(models.Model):
     class Meta(object):
         ordering = ('-updated', '-created',)
         abstract = True
+        default_permissions = ('add', 'change', 'delete', 'view', )
 
 
 class SequenceMixin(object):

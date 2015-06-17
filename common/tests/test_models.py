@@ -18,7 +18,8 @@ from ..models import (
     ContactType,
     PhysicalAddress,
     UserCounty,
-    UserContact
+    UserContact,
+    UserConstituency
 )
 
 
@@ -320,3 +321,59 @@ class TestUserContactModel(BaseTestCase):
         # test unicode
         expected_unicode = "{}: {}".format(user.get_full_name, contact.contact)
         self.assertEquals(expected_unicode, user_contact.__unicode__())
+
+
+class TestUserConstituencyModel(BaseTestCase):
+    def test_save(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        creator_user = mommy.make(get_user_model())
+        mommy.make(
+            UserCounty, county=county, user=creator_user)
+        user_const = mommy.make(
+            UserConstituency, constituency=const, user=user,
+            created_by=creator_user)
+        self.assertEquals(1, UserConstituency.objects.count())
+
+        # test unicode
+        expected_unicode = "{}: {}".format(user, const)
+        self.assertEquals(expected_unicode, user_const.__unicode__())
+
+    def test_validate_user_active_in_one_consituency_only(self):
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        const = mommy.make(Constituency, county=county)
+        creator_user = mommy.make(get_user_model())
+        const_2 = mommy.make(Constituency)
+        user = mommy.make(get_user_model())
+        mommy.make(UserCounty, user=creator_user, county=county)
+        mommy.make(
+            UserConstituency, user=user, active=True, constituency=const,
+            created_by=creator_user)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                UserConstituency, user=user, active=True, constituency=const_2,
+                created_by=creator_user)
+
+    def test_validator_constituency_in_creators_county(self):
+        county = mommy.make(County)
+        county_2 = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        const_2 = mommy.make(Constituency, county=county_2)
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        creator_user = mommy.make(get_user_model())
+        mommy.make(UserCounty, county=county, user=creator_user)
+
+        # should save without incidence
+        mommy.make(
+            UserConstituency, user=user, constituency=const,
+            created_by=creator_user
+        )
+        self.assertEquals(1, UserConstituency.objects.count())
+        # should raise validation error'
+        with self.assertRaises(ValidationError):
+            mommy.make(UserConstituency, user=user_2, constituency=const_2)
+        # test user constituencies
+        self.assertEquals(const, user.constituency)

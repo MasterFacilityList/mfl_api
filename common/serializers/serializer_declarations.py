@@ -9,7 +9,8 @@ from ..models import (
     ContactType,
     UserCounty,
     UserContact,
-    Town
+    Town,
+    UserConstituency
 )
 from .serializer_base import AbstractFieldsMixin
 
@@ -159,3 +160,15 @@ class FilteringSummariesSerializer(serializers.Serializer):
     facility_type = FilteringOptionsSerializer(many=True)
     service_category = FilteringOptionsSerializer(many=True)
     operation_status = FilteringOptionsSerializer(many=True)
+
+
+class UserConstituencySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    user_email = serializers.ReadOnlyField(source='user.email')
+    user_name = serializers.ReadOnlyField(source='user.get_full_name')
+    constituency_name = serializers.ReadOnlyField(source='constituenncy.name')
+    county_name = serializers.ReadOnlyField(source='constituenncy.county.name')
+    county_id = serializers.ReadOnlyField(source='constituenncy.county')
+
+    class Meta:
+        model = UserConstituency

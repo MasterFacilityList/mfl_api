@@ -9,13 +9,24 @@ from ..models import (
     UserCounty,
     PhysicalAddress,
     UserContact,
-    Town
+    Town,
+    UserConstituency
+
 )
 from .filter_shared import (
     CommonFieldsFilterset,
     ListCharFilter,
     ListIntegerFilter
 )
+
+
+class UserConstituencyFilter(CommonFieldsFilterset):
+    county = django_filters.CharFilter(
+        lookup_type='exact', name='constituency__county')
+    constituency = ListCharFilter(lookup_type='exact')
+
+    class Meta(object):
+        model = UserConstituency
 
 
 class ContactTypeFilter(CommonFieldsFilterset):
