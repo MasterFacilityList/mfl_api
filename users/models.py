@@ -141,9 +141,13 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 
+    class Meta:
+        default_permissions = ('add', 'change', 'delete', 'view', )
+
 
 class MFLOAuthApplication(AbstractApplication):
 
     class Meta(object):
         verbose_name = 'mfl oauth application'
         verbose_name_plural = 'mfl oauth applications'
+        default_permissions = ('add', 'change', 'delete', 'view', )

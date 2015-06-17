@@ -54,6 +54,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
         ),
@@ -73,6 +74,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
             bases=(common.models.base.SequenceMixin, models.Model),
@@ -114,6 +116,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
         ),
@@ -168,6 +171,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
         ),

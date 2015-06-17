@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],
             options={
-                'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -56,6 +56,7 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(related_name='users_mfloauthapplication', to=settings.AUTH_USER_MODEL)),
             ],
             options={
+                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'verbose_name': 'mfl oauth application',
                 'verbose_name_plural': 'mfl oauth applications',
             },
