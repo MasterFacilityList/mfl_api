@@ -121,7 +121,7 @@ REST_FRAMEWORK = {
         'rating': '1/day'
     },
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissions',
+        'users.permissions.DjangoModelPermissions',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',

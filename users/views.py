@@ -20,6 +20,7 @@ class PermissionsListView(generics.ListAPIView):
     """
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
+    filter_fields = ('name', )
 
 
 class GroupListView(generics.ListCreateAPIView):
