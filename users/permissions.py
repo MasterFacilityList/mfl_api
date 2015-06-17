@@ -1,4 +1,4 @@
-from rest_auth.permissions import BasePermission
+from rest_framework.permissions import BasePermission
 
 
 class MFLModelPermissions(BasePermission):
