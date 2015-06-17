@@ -23,12 +23,21 @@ from .views import (
     PhysicalAddressView,
     PhysicalAddressDetailView,
     download_pdf,
-    FilteringSummariesView
+    FilteringSummariesView,
+    UserConstituencyDetailView,
+    UserConstituencyListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^user_constituencies/$',
+        UserConstituencyListView.as_view(),
+        name='user_constituencies_list'),
+    url(r'^user_constituencies/(?P<pk>[^/]+)/$',
+        UserConstituencyDetailView.as_view(),
+        name='user_constituency_detail'),
+
     url(r'^download_pdf/$',
         download_pdf, name='download_pdf'),
 

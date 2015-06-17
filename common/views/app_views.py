@@ -12,7 +12,8 @@ from ..models import (
     ContactType,
     UserCounty,
     UserContact,
-    Town
+    Town,
+    UserConstituency
 )
 from facilities.models import(
     FacilityStatus,
@@ -37,7 +38,8 @@ from ..serializers import (
     UserCountySerializer,
     UserContactSerializer,
     TownSerializer,
-    FilteringSummariesSerializer
+    FilteringSummariesSerializer,
+    UserConstituencySerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -48,7 +50,8 @@ from ..filters import (
     WardFilter,
     UserCountyFilter,
     UserContactFilter,
-    TownFilter
+    TownFilter,
+    UserConstituencyFilter
 )
 from .shared_views import AuditableDetailViewMixin
 
@@ -344,3 +347,16 @@ class FilteringSummariesView(views.APIView):
         else:
             res = {}
         return response.Response(res)
+
+
+class UserConstituencyListView(generics.ListCreateAPIView):
+    serializer_class = UserConstituencySerializer
+    filter_class = UserConstituencyFilter
+    queryset = UserConstituency.objects.all()
+    ordering_fields = ('user', 'constituency')
+
+
+class UserConstituencyDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserConstituencySerializer
+    queryset = UserConstituency.objects.all()

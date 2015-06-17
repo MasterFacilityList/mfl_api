@@ -124,6 +124,13 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
             user=self, active=True)
         return user_counties[0].county if user_counties else None
 
+    @property
+    def constituency(self):
+        from common.models import UserConstituency
+        user_consts = UserConstituency.objects.filter(
+            user=self, active=True)
+        return user_consts[0].constituency if user_consts else None
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 
