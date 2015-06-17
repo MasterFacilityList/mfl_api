@@ -657,6 +657,13 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
         'ward', 'owner',
     )
 
+    def get_queryset(self):
+        if self.request.user.regulator:
+            return self.queryset.filter(
+                regulatory_body=self.request.user.regulator)
+        else:
+            return self.queryset
+
 
 class FacilityListReadOnlyView(
         QuerysetFilterMixin, AuditableDetailViewMixin, generics.ListAPIView):

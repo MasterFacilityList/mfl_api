@@ -643,3 +643,24 @@ class TestRegulatoryBodyUserView(LoginMixin, APITestCase):
         self.assertEquals(201, response.status_code)
         self.assertIn('id', response.data)
         self.assertEquals(1, RegulatingBody.objects.count())
+
+
+class TestFacilityRegulator(APITestCase):
+    def test_filtering_facilities_by_regulator(self):
+        url = reverse("api:facilities:facilities_list")
+        reg_body = mommy.make(RegulatingBody)
+        user = mommy.make(get_user_model())
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
+        facility = mommy.make(Facility, regulatory_body=reg_body)
+        mommy.make(Facility)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+            ]
+        }
+        response = self.client.get(url)
+        self.assertEquals(expected_data, response.data)
+        self.assertEquals(200, response.status_code)

@@ -523,6 +523,8 @@ class Facility(SequenceMixin, AbstractBase):
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
+    regulatory_body = models.ForeignKey(
+        RegulatingBody, null=True, blank=True)
 
     @property
     def ward_name(self):
