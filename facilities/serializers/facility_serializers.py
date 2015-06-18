@@ -104,6 +104,8 @@ class OptionSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class ServiceOptionSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    option_name = serializers.ReadOnlyField(source="option.display_text")
+    service_name = serializers.ReadOnlyField(source="service.name")
 
     class Meta(object):
         model = ServiceOption
