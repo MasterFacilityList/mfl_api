@@ -61,13 +61,11 @@ from ..views import (
 
 urlpatterns = patterns(
     '',
-    url(r'^regulatory_body_users/$',
-        RegulatoryBodyUserListView.as_view(),
+    url(r'^regulatory_body_users/$', RegulatoryBodyUserListView.as_view(),
         name='regulatory_body_users_list'),
     url(r'^regulatory_body_users/(?P<pk>[^/]+)/$',
         RegulatoryBodyUserDetailView.as_view(),
         name='regulatory_body_user_detail'),
-
     url(r'^facility_officers/$', FacilityOfficerListView.as_view(),
         name='facility_officers_list'),
     url(r'^facility_officers/(?P<pk>[^/]+)/$',

@@ -254,7 +254,7 @@ class RegulatoryBodyUser(AbstractBase):
     """
     regulatory_body = models.ForeignKey(RegulatingBody)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='regulatory_body_users')
+        settings.AUTH_USER_MODEL, related_name='regulatory_users')
 
     def make_user_national_user(self):
         self.user.is_national = True

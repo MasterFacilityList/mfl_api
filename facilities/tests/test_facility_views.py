@@ -39,8 +39,8 @@ from ..models import (
     FacilityContact,
     FacilityOfficer,
     Officer,
-    RegulatoryBodyUser,
-    RegulatingBody
+    RegulatingBody,
+    RegulatoryBodyUser
 )
 
 
@@ -649,9 +649,10 @@ class TestFacilityRegulator(APITestCase):
     def test_filtering_facilities_by_regulator(self):
         url = reverse("api:facilities:facilities_list")
         reg_body = mommy.make(RegulatingBody)
-        user = mommy.make(get_user_model())
+        user = mommy.make(get_user_model(), password='test')
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
         facility = mommy.make(Facility, regulatory_body=reg_body)
+        self.client.force_authenticate(user)
         mommy.make(Facility)
         expected_data = {
             "count": 1,

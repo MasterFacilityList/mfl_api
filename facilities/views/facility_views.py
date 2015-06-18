@@ -119,24 +119,6 @@ class QuerysetFilterMixin(object):
         return self.queryset
 
 
-class RegulatoryBodyUserListView(generics.ListCreateAPIView):
-    """
-    Lists and creates a regulatory body's users
-    """
-    queryset = RegulatoryBodyUser.objects.all()
-    serializer_class = RegulatoryBodyUserSerializer
-    filter_class = RegulatoryBodyUserFilter
-    ordering_fields = ('regulatory_body', 'user')
-
-
-class RegulatoryBodyUserDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    Retrieves a single regulatory body user
-    """
-    serializer_class = RegulatoryBodyUserSerializer
-    queryset = RegulatoryBodyUser.objects.all()
-
-
 class RegulatingBodyContactListView(generics.ListCreateAPIView):
     """
     Lists and creates regulatory contact details
@@ -659,10 +641,29 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
 
     def get_queryset(self):
         if self.request.user.regulator:
-            return self.queryset.filter(
+            self.queryset = self.queryset.filter(
                 regulatory_body=self.request.user.regulator)
         else:
-            return self.queryset
+            self.queryset = self.queryset
+        return super(FacilityListView, self).get_queryset()
+
+
+class RegulatoryBodyUserListView(generics.ListCreateAPIView):
+    """
+    Lists and creates a regulatory body's users
+    """
+    queryset = RegulatoryBodyUser.objects.all()
+    serializer_class = RegulatoryBodyUserSerializer
+    filter_class = RegulatoryBodyUserFilter
+    ordering_fields = ('regulatory_body', 'user')
+
+
+class RegulatoryBodyUserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a single regulatory body user
+    """
+    serializer_class = RegulatoryBodyUserSerializer
+    queryset = RegulatoryBodyUser.objects.all()
 
 
 class FacilityListReadOnlyView(
