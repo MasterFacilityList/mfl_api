@@ -1,5 +1,8 @@
 [program:mfl_api]
-command=/opt/mfl_api_virtualenv/bin/gunicorn -w 3 --timeout=300 --graceful-timeout=300 config.wsgi:application
+process_name=%(program_name)s%(process_num)d
+numproc={{ app_procs }}
+numprocs_start=0
+command=/opt/mfl_api_virtualenv/bin/gunicorn -w 3 --timeout=300 --graceful-timeout=300 config.wsgi:application --bind=127.0.0.1:80%(process_num)02d
 directory=/opt/mfl_api
 user=nobody
 autostart=true
