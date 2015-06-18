@@ -1,5 +1,7 @@
 from __future__ import division
 
+from django.contrib.auth import get_user_model
+
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
@@ -37,7 +39,8 @@ from ..models import (
     FacilityOperationState,
     RegulatingBodyContact,
     Option,
-    FacilityOfficer
+    FacilityOfficer,
+    RegulatoryBodyUser
 )
 
 
@@ -657,3 +660,24 @@ class TestFacilityOfficer(BaseTestCase):
     def test_saving(self):
         mommy.make(FacilityOfficer)
         self.assertEquals(1, FacilityOfficer.objects.count())
+
+
+class TestRegulatoryBodyUserModel(BaseTestCase):
+    def test_saving(self):
+        reg_body = mommy.make(RegulatoryBodyUser)
+        self.assertEquals(1, RegulatoryBodyUser.objects.count())
+
+        # test the user is a national user
+        self.assertTrue(reg_body.user.is_national)
+
+        # test the user is a regulator
+        self.assertIsNotNone(reg_body.user.regulator)
+        self.assertEquals(reg_body.user.regulator, reg_body.regulatory_body)
+
+    def test_unicode(self):
+        reg_body = mommy.make(RegulatingBody)
+        user = mommy.make(get_user_model())
+        user_reg = mommy.make(
+            RegulatoryBodyUser, regulatory_body=reg_body, user=user)
+        expected_unicode = "{}: {}".format(reg_body, user)
+        self.assertEquals(expected_unicode, user_reg.__unicode__())
