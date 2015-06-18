@@ -168,7 +168,7 @@ class UserConstituencySerializer(
     user_name = serializers.ReadOnlyField(source='user.get_full_name')
     constituency_name = serializers.ReadOnlyField(source='constituency.name')
     county_name = serializers.ReadOnlyField(source='constituency.county.name')
-    county_id = serializers.ReadOnlyField(source='constituency.county')
+    county_id = serializers.ReadOnlyField(source='constituency.county.id')
 
     class Meta:
         model = UserConstituency
