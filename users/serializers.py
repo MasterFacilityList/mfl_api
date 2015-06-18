@@ -4,7 +4,10 @@ from django.contrib.auth.models import Group, Permission
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from common.serializers import UserCountySerializer, UserConstituencySerializer, UserContactSerializer
+from common.serializers import (
+    UserCountySerializer,
+    UserConstituencySerializer,
+    UserContactSerializer)
 from facilities.serializers import RegulatoryBodyUserSerializer
 from .models import MflUser, MFLOAuthApplication
 
