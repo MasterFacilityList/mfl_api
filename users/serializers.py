@@ -118,6 +118,13 @@ class MflUserSerializer(serializers.ModelSerializer):
 
     user_permissions = PermissionSerializer(many=True, required=False)
     groups = GroupSerializer(many=True, required=False)
+    regulator = serializers.ReadOnlyField(source='regulator.id')
+    regulator_name = serializers.ReadOnlyField(source='regulator.name')
+    county = serializers.ReadOnlyField(source='county.id')
+    county_name = serializers.ReadOnlyField(source='county.name')
+    constituency = serializers.ReadOnlyField(source='constituency.id')
+    constituency_name = serializers.ReadOnlyField(
+        source='constituency.name')
 
     @transaction.atomic
     def create(self, validated_data):

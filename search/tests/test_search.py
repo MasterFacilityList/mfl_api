@@ -12,6 +12,7 @@ from model_mommy import mommy
 from facilities.models import Facility, FacilityApproval
 from facilities.serializers import FacilitySerializer
 from common.tests import ViewTestBase
+from mfl_gis.models import FacilityCoordinates
 
 from search.filters import SearchFilter
 
@@ -263,3 +264,10 @@ class TestSearchFilter(ViewTestBase):
         api.get_index('mfl_index')
         call_command('remove_index')
         api.get_index('mfl_index')
+
+    def test_non_indexable_model(self):
+        obj = mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+
+        index_instance(obj)

@@ -131,6 +131,13 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
             user=self, active=True)
         return user_consts[0].constituency if user_consts else None
 
+    @property
+    def regulator(self):
+        from facilities.models import RegulatoryBodyUser
+        user_regulators = RegulatoryBodyUser.objects.filter(
+            user=self, active=True)
+        return user_regulators[0].regulatory_body if user_regulators else None
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 

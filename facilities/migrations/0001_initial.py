@@ -14,7 +14,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0001_initial'),
+        ('common', '__first__'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -467,6 +467,26 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='RegulatoryBodyUser',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('regulatory_body', models.ForeignKey(to='facilities.RegulatingBody')),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='regulatory_users', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+            },
+        ),
+        migrations.CreateModel(
             name='Service',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
@@ -702,6 +722,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facility',
+            name='regulatory_body',
+            field=models.ForeignKey(blank=True, to='facilities.RegulatingBody', null=True),
+        ),
+        migrations.AddField(
+            model_name='facility',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
@@ -709,6 +734,10 @@ class Migration(migrations.Migration):
             model_name='facility',
             name='ward',
             field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Ward', help_text=b'County ward in which the facility is located'),
+        ),
+        migrations.AlterUniqueTogether(
+            name='regulatorybodyuser',
+            unique_together=set([('regulatory_body', 'user')]),
         ),
         migrations.AlterUniqueTogether(
             name='facilitytype',

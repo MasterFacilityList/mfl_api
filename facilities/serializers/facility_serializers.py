@@ -26,8 +26,20 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    FacilityOfficer
+    FacilityOfficer,
+    RegulatoryBodyUser
 )
+
+
+class RegulatoryBodyUserSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    user_email = serializers.ReadOnlyField(source='user.email')
+    user_name = serializers.ReadOnlyField(source='user.get_full_name')
+    regulatory_body_name = serializers.ReadOnlyField(
+        source='regulatory_body.name')
+
+    class Meta:
+        model = RegulatoryBodyUser
 
 
 class FacilityOfficerSerializer(
