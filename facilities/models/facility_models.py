@@ -260,12 +260,21 @@ class RegulatoryBodyUser(AbstractBase):
         self.user.is_national = True
         self.user.save()
 
-    def clean(self, *args, **kwargs):
-        self.make_user_national_user()
-
     def __unicode__(self):
         custom_unicode = "{}: {}".format(self.regulatory_body, self.user)
         return custom_unicode
+
+    def validate_user_only_in_one_regulator(self):
+        user_regs = self.__class__.objects.filter(
+            user=self.user, active=True, deleted=False)
+        if user_regs.count() > 0:
+            raise ValidationError(
+                "A user can only be assigned to one regulator"
+            )
+
+    def clean(self, *args, **kwargs):
+        self.make_user_national_user()
+        self.validate_user_only_in_one_regulator()
 
     class Meta(AbstractBase.Meta):
         unique_together = ('regulatory_body', 'user', )

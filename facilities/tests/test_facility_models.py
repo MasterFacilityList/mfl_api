@@ -681,3 +681,16 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
             RegulatoryBodyUser, regulatory_body=reg_body, user=user)
         expected_unicode = "{}: {}".format(reg_body, user)
         self.assertEquals(expected_unicode, user_reg.__unicode__())
+
+    def test_validate_user_only_in_one_regulator(self):
+        reg_body = mommy.make(RegulatingBody)
+        reg_body_2 = mommy.make(RegulatingBody)
+        user = mommy.make(get_user_model())
+        mommy.make(
+            RegulatoryBodyUser, regulatory_body=reg_body, user=user,
+            active=True)
+
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                RegulatoryBodyUser, regulatory_body=reg_body_2, user=user,
+                active=True)
