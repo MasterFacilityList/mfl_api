@@ -7,7 +7,7 @@ from .serializers import (
     PermissionSerializer,
     GroupSerializer
 )
-from .filters import MFLUserFilter, PermissionFilter
+from .filters import MFLUserFilter, PermissionFilter, GroupFilter
 
 
 class PermissionsListView(generics.ListAPIView):
@@ -21,11 +21,14 @@ class PermissionsListView(generics.ListAPIView):
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
     filter_class = PermissionFilter
+    ordering_fields = ('name', )
 
 
 class GroupListView(generics.ListCreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    filter_class = GroupFilter
+    ordering_fields = ('name', )
 
 
 class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
