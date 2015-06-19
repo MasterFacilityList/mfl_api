@@ -377,7 +377,6 @@ class TestFacility(BaseTestCase):
     def test_save(self):
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
-        officer_in_charge = mommy.make(Officer, name='Dr Burmuriat')
         regulating_body = mommy.make(RegulatingBody, name='KMPDB')
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
@@ -395,7 +394,6 @@ class TestFacility(BaseTestCase):
             "ward": ward,
             "owner": owner,
             "location_desc": "it is located along Moi Avenue Nairobi",
-            "officer_in_charge": officer_in_charge,
             "physical_address": address
         }
         data = self.inject_audit_fields(data)

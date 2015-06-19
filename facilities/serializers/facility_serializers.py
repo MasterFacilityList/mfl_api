@@ -228,7 +228,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "created", "updated", "deleted", "active", "search",
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
-            "owner", "officer_in_charge", "physical_address",
+            "owner", "physical_address",
             "parent", "contacts",
         ]
 
@@ -240,7 +240,6 @@ class FacilityDetailSerializer(FacilitySerializer):
         read_only=True, source="get_facility_contacts")
     facility_physical_address = serializers.DictField(
         read_only=True, required=False)
-    officer_name = serializers.ReadOnlyField(source='officer_in_charge.name')
 
     class Meta(object):
         model = Facility

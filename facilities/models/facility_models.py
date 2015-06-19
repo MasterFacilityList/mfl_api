@@ -520,9 +520,6 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
-    officer_in_charge = models.ForeignKey(
-        Officer, null=True, blank=True,
-        help_text="The officer in charge of the facility")
     physical_address = models.ForeignKey(
         PhysicalAddress, null=True, blank=True,
         help_text="Postal and courier addressing for the facility")
