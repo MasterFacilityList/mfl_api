@@ -158,6 +158,7 @@ class FacilityRegulationStatusSerializer(
 
 
 class FacilityTypeSerializer(serializers.ModelSerializer):
+    owner_type_name = serializers.ReadOnlyField(source='owner_type.name')
 
     class Meta(object):
         model = FacilityType

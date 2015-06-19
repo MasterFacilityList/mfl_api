@@ -173,6 +173,8 @@ class FacilityStatus(AbstractBase):
 
 @reversion.register
 class FacilityType(AbstractBase):
+    owner_type = models.ForeignKey(
+        OwnerType, null=True, blank=True)
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name for the facility type e.g DISPENSARY")
