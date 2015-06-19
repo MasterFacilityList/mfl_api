@@ -3,6 +3,8 @@
 - .tox/
 - htmlcov/
 - *.egg-info/
+- static/*
++ static/.gitkeep
 - .coverage
 - *.pyc
 - *.pyo
