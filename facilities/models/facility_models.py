@@ -745,11 +745,17 @@ class FacilityUnit(AbstractBase):
         help_text='A short summary of the facility unit.')
     regulating_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True)
-    regulation_status = models.ForeignKey(
-        RegulationStatus, null=True, blank=True)
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
+
+
+# @reversion.register
+# class FacilityUnitRegulation(AbstractBase):
+#     """
+#     """
+#     facility_unit = models.ForeignKey()
+#     regulation_status = models.ForeignKey(RegulationStatus)
 
 
 @reversion.register
