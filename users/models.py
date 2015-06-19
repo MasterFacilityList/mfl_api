@@ -26,7 +26,8 @@ class MflUserManager(BaseUserManager):
         email = MflUserManager.normalize_email(email)
         user = self.model(email=email, first_name=first_name, password=p,
                           username=username,
-                          is_staff=is_staff, is_active=True, is_superuser=False,
+                          is_staff=is_staff, is_active=True,
+                          is_superuser=False,
                           last_login=now, date_joined=now, **extra_fields)
         user.save(using=self._db)
         return user
