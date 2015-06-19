@@ -55,17 +55,27 @@ from ..views import (
     FacilityOfficerDetailView,
     FacilityOfficerListView,
     RegulatoryBodyUserListView,
-    RegulatoryBodyUserDetailView
+    RegulatoryBodyUserDetailView,
+    FacilityUnitRegulationListView,
+    FacilityUnitRegulationDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^facility_unit_regulation/$',
+        FacilityUnitRegulationListView.as_view(),
+        name='facility_unit_regulations_list'),
+    url(r'^facility_unit_regulation/(?P<pk>[^/]+)/$',
+        FacilityUnitRegulationDetailView.as_view(),
+        name='facility_unit_regulation_detail'),
+
     url(r'^regulatory_body_users/$', RegulatoryBodyUserListView.as_view(),
         name='regulatory_body_users_list'),
     url(r'^regulatory_body_users/(?P<pk>[^/]+)/$',
         RegulatoryBodyUserDetailView.as_view(),
         name='regulatory_body_user_detail'),
+
     url(r'^facility_officers/$', FacilityOfficerListView.as_view(),
         name='facility_officers_list'),
     url(r'^facility_officers/(?P<pk>[^/]+)/$',

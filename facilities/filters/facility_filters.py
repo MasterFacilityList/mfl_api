@@ -26,7 +26,9 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    FacilityOfficer, RegulatoryBodyUser
+    FacilityOfficer,
+    RegulatoryBodyUser,
+    FacilityUnitRegulation
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -252,7 +254,7 @@ class FacilityFilter(CommonFieldsFilterset):
                 selected_option__service__category=value)]
 
         return Facility.objects.filter(id__in=facility_ids)
-    id = ListCharFilter(lookup_type='icontains')
+    id = ListCharFilter(lookup_type='icontainss')
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
     description = ListCharFilter(lookup_type='icontains')
@@ -307,3 +309,9 @@ class FacilityUnitFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityUnit
+
+
+class FacilityUnitRegulationFilter(CommonFieldsFilterset):
+
+    class Meta(object):
+        model = FacilityUnitRegulation

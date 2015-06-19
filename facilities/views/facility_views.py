@@ -7,7 +7,8 @@ from ..models import (
     OfficerContact,
     Owner,
     FacilityContact,
-    FacilityOfficer
+    FacilityOfficer,
+    FacilityUnitRegulation
 )
 
 from ..serializers import (
@@ -18,7 +19,8 @@ from ..serializers import (
     FacilityListSerializer,
     FacilityDetailSerializer,
     FacilityContactSerializer,
-    FacilityOfficerSerializer
+    FacilityOfficerSerializer,
+    FacilityUnitRegulationSerializer
 )
 
 from ..filters import (
@@ -27,7 +29,8 @@ from ..filters import (
     OfficerContactFilter,
     OwnerFilter,
     FacilityContactFilter,
-    FacilityOfficerFilter
+    FacilityOfficerFilter,
+    FacilityUnitRegulationFilter
 
 )
 
@@ -257,3 +260,17 @@ class FacilityOfficerDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FacilityOfficerSerializer
     queryset = FacilityOfficer.objects.all()
+
+
+class FacilityUnitRegulationListView(
+        AuditableDetailViewMixin, generics.ListCreateAPIView):
+    queryset = FacilityUnitRegulation.objects.all()
+    serializer_class = FacilityUnitRegulationSerializer
+    filter_class = FacilityUnitRegulationFilter
+    ordering_fields = ('facility_unit', 'regulation_status')
+
+
+class FacilityUnitRegulationDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = FacilityUnitRegulation.objects.all()
+    serializer_class = FacilityUnitRegulationSerializer

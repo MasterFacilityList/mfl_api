@@ -21,7 +21,8 @@ from ..serializers import (
     FacilityUnitSerializer,
     FacilityListSerializer,
     FacilityOfficerSerializer,
-    RegulatoryBodyUserSerializer
+    RegulatoryBodyUserSerializer,
+    FacilityUnitRegulationSerializer
 )
 from ..models import (
     OwnerType,
@@ -40,7 +41,9 @@ from ..models import (
     FacilityOfficer,
     Officer,
     RegulatingBody,
-    RegulatoryBodyUser
+    RegulatoryBodyUser,
+    FacilityUnitRegulation,
+    RegulationStatus
 )
 
 
@@ -665,3 +668,44 @@ class TestFacilityRegulator(APITestCase):
         response = self.client.get(url)
         self.assertEquals(expected_data, response.data)
         self.assertEquals(200, response.status_code)
+
+
+class TestFacilityUnitRegulationView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityUnitRegulationView, self).setUp()
+        self.url = reverse("api:facilities:facility_unit_regulations_list")
+
+    def test_listing(self):
+        obj_1 = mommy.make(FacilityUnitRegulation)
+        obj_2 = mommy.make(FacilityUnitRegulation)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityUnitRegulationSerializer(obj_2).data,
+                FacilityUnitRegulationSerializer(obj_1).data
+            ]
+        }
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrieve_single_record(self):
+        obj = mommy.make(FacilityUnitRegulation)
+        url = self.url + "{}/".format(obj.id)
+        response = self.client.get(url)
+        expected_data = FacilityUnitRegulationSerializer(obj).data
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)
+
+    def test_posting(self):
+        facility_unit = mommy.make(FacilityUnit)
+        reg_status = mommy.make(RegulationStatus)
+        data = {
+            "facility_unit": str(facility_unit.id),
+            "regulation_status": str(reg_status.id)
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertIn('id', response.data)

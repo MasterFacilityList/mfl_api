@@ -27,7 +27,8 @@ from ..models import (
     FacilityUpgrade,
     RegulatingBodyContact,
     FacilityOfficer,
-    RegulatoryBodyUser
+    RegulatoryBodyUser,
+    FacilityUnitRegulation
 )
 
 
@@ -268,6 +269,7 @@ class FacilityContactSerializer(
 
 class FacilityUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    regulation_status = serializers.ReadOnlyField()
 
     class Meta(object):
         model = FacilityUnit
@@ -278,3 +280,9 @@ class FacilityServiceRatingSerializer(
 
     class Meta(object):
         model = FacilityServiceRating
+
+
+class FacilityUnitRegulationSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = FacilityUnitRegulation

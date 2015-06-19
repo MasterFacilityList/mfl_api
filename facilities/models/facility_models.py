@@ -729,6 +729,25 @@ class FacilityApproval(AbstractBase):
 
 
 @reversion.register
+class FacilityUnitRegulation(AbstractBase):
+    """
+    Creates a facility units regulation status.
+    A facility unit can have multiple regulation statuses
+    but only one is active a time. The latest one is taken to the
+    regulation status of the facility unit.
+    """
+    facility_unit = models.ForeignKey(
+        'FacilityUnit', related_name='regulations')
+    regulation_status = models.ForeignKey(
+        RegulationStatus, related_name='facility_units')
+
+    def __unicode__(self):
+        custom_unicode = "{}: {}".format(
+            self.facility_unit, self.regulation_status)
+        return custom_unicode
+
+
+@reversion.register
 class FacilityUnit(AbstractBase):
     """
     Autonomous units within a facility that are regulated differently from the
@@ -746,16 +765,14 @@ class FacilityUnit(AbstractBase):
     regulating_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True)
 
+    @property
+    def regulation_status(self):
+        reg_statuses = FacilityUnitRegulation.objects.filter(
+            facility_unit=self)
+        return reg_statuses[0].regulation_status if reg_statuses else None
+
     def __unicode__(self):
         return self.facility.name + ": " + self.name
-
-
-# @reversion.register
-# class FacilityUnitRegulation(AbstractBase):
-#     """
-#     """
-#     facility_unit = models.ForeignKey()
-#     regulation_status = models.ForeignKey(RegulationStatus)
 
 
 @reversion.register

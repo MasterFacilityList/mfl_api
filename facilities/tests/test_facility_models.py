@@ -40,7 +40,8 @@ from ..models import (
     RegulatingBodyContact,
     Option,
     FacilityOfficer,
-    RegulatoryBodyUser
+    RegulatoryBodyUser,
+    FacilityUnitRegulation
 )
 
 
@@ -602,6 +603,14 @@ class TestFacilityUnitModel(BaseTestCase):
         self.assertEquals(1, FacilityUnit.objects.count())
         self.assertEquals(str(facility_unit), 'AKUH: Pharmacy')
 
+    def test_regulation_status(self):
+        facility_unit = mommy.make(FacilityUnit)
+        reg_status = mommy.make(RegulationStatus)
+        obj = mommy.make(
+            FacilityUnitRegulation,
+            facility_unit=facility_unit, regulation_status=reg_status)
+        self.assertEquals(reg_status, obj.regulation_status)
+
 
 class TestRegulationStatusModel(BaseTestCase):
 
@@ -694,3 +703,19 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
             mommy.make(
                 RegulatoryBodyUser, regulatory_body=reg_body_2, user=user,
                 active=True)
+
+
+class TesstFacilityUnitRegulation(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityUnitRegulation)
+        self.assertEquals(1, FacilityUnitRegulation.objects.count())
+
+    def test_unicode(self):
+        facility_unit = mommy.make(FacilityUnit)
+        regulation_status = mommy.make(RegulationStatus)
+
+        obj = mommy.make(
+            FacilityUnitRegulation,
+            facility_unit=facility_unit, regulation_status=regulation_status)
+        expected_unicode = "{}: {}".format(facility_unit, regulation_status)
+        self.assertEquals(expected_unicode, obj.__unicode__())
