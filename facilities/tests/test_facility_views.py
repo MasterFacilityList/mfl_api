@@ -43,7 +43,8 @@ from ..models import (
     RegulatingBody,
     RegulatoryBodyUser,
     FacilityUnitRegulation,
-    RegulationStatus
+    RegulationStatus,
+    FacilityApproval
 )
 
 
@@ -296,6 +297,39 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
+
+    def test_get_approved_facilities(self):
+        self.maxDiff = None
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        url = self.url + "?is_approved=true"
+        response_1 = self.client.get(url)
+        expected_data_1 = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+            ]
+        }
+        self.assertEquals(200, response_1.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data_1, default=default)),
+            json.loads(json.dumps(response_1.data, default=default)))
+
+        url = self.url + "?is_approved=false"
+        response_2 = self.client.get(url)
+        expected_data_2 = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility_2).data
+            ]
+        }
+        self.assertEquals(200, response_1.status_code)
+        self.assertEquals(expected_data_2, response_2.data)
 
 
 class CountyAndNationalFilterBackendTest(APITestCase):

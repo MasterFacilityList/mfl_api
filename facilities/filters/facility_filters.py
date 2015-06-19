@@ -49,6 +49,8 @@ BOOLEAN_CHOICES = (
     ('N', 'False')
 )
 
+TRUTH_NESS = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+
 
 class RegulatoryBodyUserFilter(CommonFieldsFilterset):
     class Meta(object):
@@ -236,14 +238,13 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 class FacilityFilter(CommonFieldsFilterset):
     def filter_regulated_facilities(self, value):
-        truth_ness = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
         # false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']"""
 
         regulated_facilities = [
             obj.facility.id for obj in FacilityRegulationStatus.objects.filter(
                 is_confirmed=True)]
 
-        if value in truth_ness:
+        if value in TRUTH_NESS:
             return Facility.objects.filter(id__in=regulated_facilities)
         else:
             return Facility.objects.exclude(id__in=regulated_facilities)
@@ -254,6 +255,16 @@ class FacilityFilter(CommonFieldsFilterset):
                 selected_option__service__category=value)]
 
         return Facility.objects.filter(id__in=facility_ids)
+
+    def filter_approved_facilities(self, value):
+        approved_facilities = [
+            approval.facility.id
+            for approval in FacilityApproval.objects.all()]
+        if value in TRUTH_NESS:
+            return Facility.objects.filter(id__in=approved_facilities)
+        else:
+            return Facility.objects.exclude(id__in=approved_facilities)
+
     id = ListCharFilter(lookup_type='icontainss')
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
@@ -295,6 +306,8 @@ class FacilityFilter(CommonFieldsFilterset):
         coerce=strtobool)
     is_regulated = django_filters.MethodFilter(
         action=filter_regulated_facilities)
+    is_approved = django_filters.MethodFilter(
+        action=filter_approved_facilities)
     service_category = django_filters.MethodFilter(
         action=service_filter)
 
