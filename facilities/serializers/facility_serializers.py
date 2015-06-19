@@ -28,8 +28,15 @@ from ..models import (
     RegulatingBodyContact,
     FacilityOfficer,
     RegulatoryBodyUser,
-    FacilityUnitRegulation
+    FacilityUnitRegulation,
+    FacilityUpdates
 )
+
+
+class FacilityUpdatesSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = FacilityUpdates
 
 
 class RegulatoryBodyUserSerializer(

@@ -13,7 +13,8 @@ from ..models import (
     FacilityRegulationStatus,
     RegulationStatus,
     RegulatoryBodyUser,
-    FacilityOperationState
+    FacilityOperationState,
+    FacilityUpdates
 )
 
 from ..serializers import (
@@ -23,7 +24,8 @@ from ..serializers import (
     FacilityRegulationStatusSerializer,
     RegulationStatusSerializer,
     RegulatoryBodyUserSerializer,
-    FacilityOperationStateSerializer
+    FacilityOperationStateSerializer,
+    FacilityUpdatesSerializer
 )
 
 from ..filters import (
@@ -33,7 +35,8 @@ from ..filters import (
     FacilityRegulationStatusFilter,
     RegulationStatusFilter,
     RegulatoryBodyUserFilter,
-    FacilityOperationStateFilter
+    FacilityOperationStateFilter,
+    FacilityUpdatesFilter
 )
 
 
@@ -262,3 +265,21 @@ class RegulatoryBodyUserDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = RegulatoryBodyUserSerializer
     queryset = RegulatoryBodyUser.objects.all()
+
+
+class FacilityUpdatesListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility updates
+    """
+    queryset = FacilityUpdates.objects.all()
+    serializer_class = FacilityUpdatesSerializer
+    filter_class = FacilityUpdatesFilter
+    ordering_fields = ('facility', 'approved')
+
+
+class FacilityUpdatesDetailView(generics.ListCreateAPIView):
+    """
+    Retrieves a single facility update
+    """
+    queryset = FacilityUpdates.objects.all()
+    serializer_class = FacilityUpdatesSerializer
