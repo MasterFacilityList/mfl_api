@@ -21,7 +21,7 @@
                 "password": "pbkdf2_sha256$20000$B87Tl533sMfm$0GpKK5AjCrWekB1lcT38VDtOxBW+AClOeCc0G2xnQVI=",
                 "is_staff": true,
                 "is_national": true,
-                "is_superuser": true
+                "is_superuser": false
             },
             {
                 "email": "chrio@mfltest.slade360.co.ke",
@@ -31,7 +31,7 @@
                 "password": "pbkdf2_sha256$20000$tewjoEaE4psT$9a68nHrW57V8L7u/g8gy9e4FAtOf1EkvYQBUb1rm+vw=",
                 "is_staff": true,
                 "is_national": false,
-                "is_superuser": true
+                "is_superuser": false
             },
             {
                 "email": "public@mfltest.slade360.co.ke",
@@ -228,7 +228,7 @@
                 "constituency": {
                     "code": 288
                 }
-            }    
+            }
         ]
     },
     {
@@ -258,10 +258,10 @@
                 "regulatory_body": {
                     "name": "Clinical Officers Council"
                 }
-            }    
+            }
         ]
     },
-    {   
+    {
 
         "model": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
@@ -272,25 +272,25 @@
                 "contact_type": {
                     "name": "EMAIL"
                 }
-            }, 
+            },
              {
                 "contact": "starehe@mfltest.slade360.co.ke",
                 "contact_type": {
                     "name": "EMAIL"
                 }
-            }, 
+            },
              {
                 "contact": "mathare@mfltest.slade360.co.ke",
                 "contact_type": {
                     "name": "EMAIL"
                 }
-            }, 
+            },
             {
                 "contact": "mombasa@mfltest.slade360.co.ke",
                 "contact_type": {
                     "name": "EMAIL"
                 }
-            },            
+            },
             {
                 "contact": "kilifi@mfltest.slade360.co.ke",
                 "contact_type": {
@@ -335,7 +335,7 @@
             }
         ]
     },
-    {   
+    {
 
         "model": "common.UserContact",
         "unique_fields": ["user", "contact"],
@@ -419,7 +419,7 @@
                     "email": "kamukunji@mfltest.slade360.co.ke"
                 }
         },
-        {       
+        {
             "contact": {
                 "contact": "kilifi@mfltest.slade360.co.ke",
                 "contact_type": {
@@ -430,7 +430,7 @@
                     "email": "kilifi@mfltest.slade360.co.ke"
                 }
         },
-        {  
+        {
             "contact": {
                 "contact": "nairobi@mfltest.slade360.co.ke",
                 "contact_type": {
