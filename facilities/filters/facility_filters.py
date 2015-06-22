@@ -28,7 +28,8 @@ from ..models import (
     RegulatingBodyContact,
     FacilityOfficer,
     RegulatoryBodyUser,
-    FacilityUnitRegulation
+    FacilityUnitRegulation,
+    FacilityUpdates
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -50,6 +51,11 @@ BOOLEAN_CHOICES = (
 )
 
 TRUTH_NESS = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+
+
+class FacilityUpdatesFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityUpdates
 
 
 class RegulatoryBodyUserFilter(CommonFieldsFilterset):

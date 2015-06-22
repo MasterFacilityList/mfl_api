@@ -22,7 +22,8 @@ from ..serializers import (
     FacilityListSerializer,
     FacilityOfficerSerializer,
     RegulatoryBodyUserSerializer,
-    FacilityUnitRegulationSerializer
+    FacilityUnitRegulationSerializer,
+    FacilityUpdatesSerializer
 )
 from ..models import (
     OwnerType,
@@ -44,7 +45,8 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     RegulationStatus,
-    FacilityApproval
+    FacilityApproval,
+    FacilityUpdates
 )
 
 
@@ -743,3 +745,54 @@ class TestFacilityUnitRegulationView(LoginMixin, APITestCase):
         response = self.client.post(self.url, data)
         self.assertEquals(201, response.status_code)
         self.assertIn('id', response.data)
+
+
+class TestFacilityUpdates(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityUpdates, self).setUp()
+        self.url = reverse('api:facilities:facility_updatess_list')
+
+    def test_listing(self):
+        obj = mommy.make(FacilityUpdates)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityUpdatesSerializer(obj).data
+
+            ]
+        }
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrieving(self):
+        obj = mommy.make(FacilityUpdates)
+        url = self.url + "{}/".format(obj.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = FacilityUpdatesSerializer(obj).data
+        self.assertEquals(expected_data, response.data)
+
+    def test_approving(self):
+        facility = mommy.make(
+            Facility,
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        obj = mommy.make(
+            FacilityUpdates,
+            facility=facility,
+            facility_updates=json.dumps(
+                {
+                    "name": "jina",
+                    "id": str(facility.id)
+                }
+            ))
+        url = self.url + "{}/".format(obj.id)
+        data = {"approved": True}
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        obj_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertTrue(response.data.get('approved'))
+        self.assertEquals('jina', obj_refetched.name)

@@ -57,12 +57,21 @@ from ..views import (
     RegulatoryBodyUserListView,
     RegulatoryBodyUserDetailView,
     FacilityUnitRegulationListView,
-    FacilityUnitRegulationDetailView
+    FacilityUnitRegulationDetailView,
+    FacilityUpdatesListView,
+    FacilityUpdatesDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^facility_updates/$',
+        FacilityUpdatesListView.as_view(),
+        name='facility_updatess_list'),
+    url(r'^facility_updates/(?P<pk>[^/]+)/$',
+        FacilityUpdatesDetailView.as_view(),
+        name='facility_updates_detail'),
+
     url(r'^facility_unit_regulation/$',
         FacilityUnitRegulationListView.as_view(),
         name='facility_unit_regulations_list'),

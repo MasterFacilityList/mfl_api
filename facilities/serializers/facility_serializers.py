@@ -28,8 +28,18 @@ from ..models import (
     RegulatingBodyContact,
     FacilityOfficer,
     RegulatoryBodyUser,
-    FacilityUnitRegulation
+    FacilityUnitRegulation,
+    FacilityUpdates
 )
+
+
+class FacilityUpdatesSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    facility_updates = serializers.ReadOnlyField()
+
+    class Meta:
+        model = FacilityUpdates
 
 
 class RegulatoryBodyUserSerializer(

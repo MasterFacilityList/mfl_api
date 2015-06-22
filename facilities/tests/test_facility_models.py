@@ -41,7 +41,8 @@ from ..models import (
     Option,
     FacilityOfficer,
     RegulatoryBodyUser,
-    FacilityUnitRegulation
+    FacilityUnitRegulation,
+    FacilityUpdates
 )
 
 
@@ -689,19 +690,6 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
         expected_unicode = "{}: {}".format(reg_body, user)
         self.assertEquals(expected_unicode, user_reg.__unicode__())
 
-    def test_validate_user_only_in_one_regulator(self):
-        reg_body = mommy.make(RegulatingBody)
-        reg_body_2 = mommy.make(RegulatingBody)
-        user = mommy.make(get_user_model())
-        mommy.make(
-            RegulatoryBodyUser, regulatory_body=reg_body, user=user,
-            active=True)
-
-        with self.assertRaises(ValidationError):
-            mommy.make(
-                RegulatoryBodyUser, regulatory_body=reg_body_2, user=user,
-                active=True)
-
 
 class TestFacilityUnitRegulation(BaseTestCase):
     def test_saving(self):
@@ -717,3 +705,32 @@ class TestFacilityUnitRegulation(BaseTestCase):
             facility_unit=facility_unit, regulation_status=regulation_status)
         expected_unicode = "{}: {}".format(facility_unit, regulation_status)
         self.assertEquals(expected_unicode, obj.__unicode__())
+
+
+class TestFacilityUpdates(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityUpdates)
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+    def test_facility_updates(self):
+        original_name = 'Some facility name'
+        updated_name = 'The name has been editted'
+        facility = mommy.make(
+            Facility,
+            name=original_name,
+            id='cafb2fb8-c6a3-419e-a120-8522634ace73')
+
+        facility.name = updated_name
+        facility.save()
+        self.assertEquals(1, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(
+            id='cafb2fb8-c6a3-419e-a120-8522634ace73')
+        self.assertEquals(original_name, facility_refetched.name)
+
+        # approve the facility_updates
+        facility_update = FacilityUpdates.objects.all()[0]
+        facility_update.approved = True
+        facility_update.save()
+        facility_refetched_2 = Facility.objects.get(
+            id='cafb2fb8-c6a3-419e-a120-8522634ace73')
+        self.assertEquals(updated_name, facility_refetched_2.name)
