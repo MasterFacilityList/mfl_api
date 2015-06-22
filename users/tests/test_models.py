@@ -59,7 +59,7 @@ class TestMflUserModel(BaseTestCase):
     def test_set_password_does_not_set_for_new_users(self):
         user = mommy.make(MflUser)
         user.set_password('does not really matter')
-        self.assertFalse(user.password_history)
+        self.assertIsNotNone(user.password_history)
 
     def test_set_password_sets_for_existing_users(self):
         user = mommy.make(MflUser)

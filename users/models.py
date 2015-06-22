@@ -89,14 +89,15 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         """Overridden so that we can keep track of password age"""
         super(MflUser, self).set_password(raw_password)
 
-        # Exclude new users ( who have never logged in before ) from this
         # We rely on this to implement a "change password on first login"
         # roadblock
-        if self.last_login:
-            if self.password_history:
-                self.password_history.append(make_password(raw_password))
-            else:
-                self.password_history = [make_password(raw_password)]
+
+        if self.password_history:
+            self.password_history.append(
+                make_password(raw_password)) if self.is_authenticated else None
+        else:
+            self.password_history = [make_password(
+                raw_password)] if self.is_authenticated else None
 
     def __unicode__(self):
         return self.email
