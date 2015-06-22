@@ -750,7 +750,7 @@ class TestFacilityUnitRegulationView(LoginMixin, APITestCase):
 class TestFacilityUpdates(LoginMixin, APITestCase):
     def setUp(self):
         super(TestFacilityUpdates, self).setUp()
-        self.url = reverse('api:facilities:facility_updates_list')
+        self.url = reverse('api:facilities:facility_updatess_list')
 
     def test_listing(self):
         obj = mommy.make(FacilityUpdates)
