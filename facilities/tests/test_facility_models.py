@@ -691,7 +691,7 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
         self.assertEquals(expected_unicode, user_reg.__unicode__())
 
 
-class TesstFacilityUnitRegulation(BaseTestCase):
+class TestFacilityUnitRegulation(BaseTestCase):
     def test_saving(self):
         mommy.make(FacilityUnitRegulation)
         self.assertEquals(1, FacilityUnitRegulation.objects.count())
