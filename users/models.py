@@ -106,8 +106,6 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def requires_password_change(self):
-        # import pdb
-        # pdb.set_trace()
         return True if not self.password_history else False
 
     @property
