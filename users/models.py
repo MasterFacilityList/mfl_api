@@ -93,9 +93,11 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         # roadblock
 
         if self.password_history:
-            self.password_history.append(make_password(raw_password))
+            self.password_history.append(
+                make_password(raw_password)) if self.is_authenticated else None
         else:
-            self.password_history = [make_password(raw_password)]
+            self.password_history = [make_password(
+                raw_password)] if self.is_authenticated else None
 
     def __unicode__(self):
         return self.email
