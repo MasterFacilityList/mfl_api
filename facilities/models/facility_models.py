@@ -272,7 +272,7 @@ class RegulatoryBodyUser(AbstractBase):
     def validate_user_only_in_one_regulator(self):
         user_regs = self.__class__.objects.filter(
             user=self.user, active=True, deleted=False)
-        if user_regs.count() > 0:
+        if user_regs.count() > 1:
             raise ValidationError(
                 "A user can only be assigned to one regulator"
             )
