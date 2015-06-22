@@ -658,6 +658,12 @@ class Facility(SequenceMixin, AbstractBase):
         self.validate_publish(*args, **kwargs)
 
     def save(self, *args, **kwargs):
+        """
+        Overide the save method in order to capture updates to a facility.
+        This creates a record of the updates in the FacilityUpdates model.
+        The updates will appear on the facilty once the updates have been
+        approved.
+        """
         if not self.code:
             self.code = self.generate_next_code_sequence()
         try:
