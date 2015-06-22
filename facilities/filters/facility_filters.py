@@ -238,8 +238,6 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 class FacilityFilter(CommonFieldsFilterset):
     def filter_regulated_facilities(self, value):
-        # false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']"""
-
         regulated_facilities = [
             obj.facility.id for obj in FacilityRegulationStatus.objects.filter(
                 is_confirmed=True)]
@@ -265,7 +263,7 @@ class FacilityFilter(CommonFieldsFilterset):
         else:
             return Facility.objects.exclude(id__in=approved_facilities)
 
-    id = ListCharFilter(lookup_type='icontainss')
+    id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
     description = ListCharFilter(lookup_type='icontains')

@@ -703,7 +703,7 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
                 active=True)
 
 
-class TesstFacilityUnitRegulation(BaseTestCase):
+class TestFacilityUnitRegulation(BaseTestCase):
     def test_saving(self):
         mommy.make(FacilityUnitRegulation)
         self.assertEquals(1, FacilityUnitRegulation.objects.count())
