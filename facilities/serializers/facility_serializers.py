@@ -35,6 +35,9 @@ from ..models import (
 
 class FacilityUpdatesSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
+    facility_updates = serializers.ReadOnlyField()
+
     class Meta:
         model = FacilityUpdates
 

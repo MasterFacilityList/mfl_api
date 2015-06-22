@@ -67,10 +67,10 @@ urlpatterns = patterns(
     '',
     url(r'^facility_updates/$',
         FacilityUpdatesListView.as_view(),
-        name='facility_updatess_list'),
+        name='facility_updates_list'),
     url(r'^facility_updates/(?P<pk>[^/]+)/$',
         FacilityUpdatesDetailView.as_view(),
-        name='facility_update_detail'),
+        name='facility_updates_detail'),
 
     url(r'^facility_unit_regulation/$',
         FacilityUnitRegulationListView.as_view(),

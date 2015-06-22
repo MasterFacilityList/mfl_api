@@ -6,6 +6,7 @@ import json
 from django.conf import settings
 from django.core import validators
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.exceptions import ValidationError
 from common.models import (
@@ -689,7 +690,7 @@ class Facility(SequenceMixin, AbstractBase):
                 data = json.dumps(data)
                 FacilityUpdates.objects.create(
                     facility_updates=data, facility=self)
-        except self.__class__.DoesNotExist:
+        except ObjectDoesNotExist:
             super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):

@@ -277,7 +277,7 @@ class FacilityUpdatesListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'approved')
 
 
-class FacilityUpdatesDetailView(generics.ListCreateAPIView):
+class FacilityUpdatesDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieves a single facility update
     """
