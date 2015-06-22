@@ -40,7 +40,8 @@ from ..models import (
     RegulatingBodyContact,
     Option,
     FacilityOfficer,
-    RegulatoryBodyUser
+    RegulatoryBodyUser,
+    FacilityUnitRegulation
 )
 
 
@@ -376,7 +377,6 @@ class TestFacility(BaseTestCase):
     def test_save(self):
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
-        officer_in_charge = mommy.make(Officer, name='Dr Burmuriat')
         regulating_body = mommy.make(RegulatingBody, name='KMPDB')
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
@@ -394,7 +394,6 @@ class TestFacility(BaseTestCase):
             "ward": ward,
             "owner": owner,
             "location_desc": "it is located along Moi Avenue Nairobi",
-            "officer_in_charge": officer_in_charge,
             "physical_address": address
         }
         data = self.inject_audit_fields(data)
@@ -602,6 +601,14 @@ class TestFacilityUnitModel(BaseTestCase):
         self.assertEquals(1, FacilityUnit.objects.count())
         self.assertEquals(str(facility_unit), 'AKUH: Pharmacy')
 
+    def test_regulation_status(self):
+        facility_unit = mommy.make(FacilityUnit)
+        reg_status = mommy.make(RegulationStatus)
+        obj = mommy.make(
+            FacilityUnitRegulation,
+            facility_unit=facility_unit, regulation_status=reg_status)
+        self.assertEquals(reg_status, obj.regulation_status)
+
 
 class TestRegulationStatusModel(BaseTestCase):
 
@@ -694,3 +701,19 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
             mommy.make(
                 RegulatoryBodyUser, regulatory_body=reg_body_2, user=user,
                 active=True)
+
+
+class TestFacilityUnitRegulation(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityUnitRegulation)
+        self.assertEquals(1, FacilityUnitRegulation.objects.count())
+
+    def test_unicode(self):
+        facility_unit = mommy.make(FacilityUnit)
+        regulation_status = mommy.make(RegulationStatus)
+
+        obj = mommy.make(
+            FacilityUnitRegulation,
+            facility_unit=facility_unit, regulation_status=regulation_status)
+        expected_unicode = "{}: {}".format(facility_unit, regulation_status)
+        self.assertEquals(expected_unicode, obj.__unicode__())

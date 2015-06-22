@@ -173,6 +173,8 @@ class FacilityStatus(AbstractBase):
 
 @reversion.register
 class FacilityType(AbstractBase):
+    owner_type = models.ForeignKey(
+        OwnerType, null=True, blank=True)
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name for the facility type e.g DISPENSARY")
@@ -518,9 +520,6 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
-    officer_in_charge = models.ForeignKey(
-        Officer, null=True, blank=True,
-        help_text="The officer in charge of the facility")
     physical_address = models.ForeignKey(
         PhysicalAddress, null=True, blank=True,
         help_text="Postal and courier addressing for the facility")
@@ -727,6 +726,25 @@ class FacilityApproval(AbstractBase):
 
 
 @reversion.register
+class FacilityUnitRegulation(AbstractBase):
+    """
+    Creates a facility units regulation status.
+    A facility unit can have multiple regulation statuses
+    but only one is active a time. The latest one is taken to the
+    regulation status of the facility unit.
+    """
+    facility_unit = models.ForeignKey(
+        'FacilityUnit', related_name='regulations')
+    regulation_status = models.ForeignKey(
+        RegulationStatus, related_name='facility_units')
+
+    def __unicode__(self):
+        custom_unicode = "{}: {}".format(
+            self.facility_unit, self.regulation_status)
+        return custom_unicode
+
+
+@reversion.register
 class FacilityUnit(AbstractBase):
     """
     Autonomous units within a facility that are regulated differently from the
@@ -743,8 +761,12 @@ class FacilityUnit(AbstractBase):
         help_text='A short summary of the facility unit.')
     regulating_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True)
-    regulation_status = models.ForeignKey(
-        RegulationStatus, null=True, blank=True)
+
+    @property
+    def regulation_status(self):
+        reg_statuses = FacilityUnitRegulation.objects.filter(
+            facility_unit=self)
+        return reg_statuses[0].regulation_status if reg_statuses else None
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
