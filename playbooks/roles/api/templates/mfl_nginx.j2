@@ -1,6 +1,6 @@
 upstream app_server {
-    {% for a in range(0,app_procs,1) %}
-    server 127.0.0.1:800{{a}};
+    {% for p in app_ports %}
+    server 127.0.0.1:{{p}};
     {% endfor %}
 }
 
