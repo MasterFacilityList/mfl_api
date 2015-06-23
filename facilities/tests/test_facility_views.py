@@ -2,6 +2,7 @@ import json
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
 
 from rest_framework.test import APITestCase
 from model_mommy import mommy
@@ -354,6 +355,14 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(expected_data, response.data)
+
+    def test_get_facility_as_an_anonymous_user(self):
+        self.client.logout()
+        with self.assertRaises(ImproperlyConfigured) as exception:
+            self.client.get(self.url)
+            self.assertEquals(
+                "The current user has not been configured to use the api.",
+                exception.message)
 
 
 class CountyAndNationalFilterBackendTest(APITestCase):

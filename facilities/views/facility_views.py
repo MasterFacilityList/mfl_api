@@ -1,5 +1,6 @@
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
+from django.core.exceptions import ImproperlyConfigured
 
 from ..models import (
     Facility,
@@ -50,12 +51,22 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-        if not self.request.user.is_national and self.request.user.county \
-                and hasattr(self.queryset.model, 'ward'):
-            return self.queryset.filter(
-                ward__constituency__county=self.request.user.county)
+        try:
+            if not self.request.user.is_national and self.request.user.county \
+                    and hasattr(self.queryset.model, 'ward'):
+                return self.queryset.filter(
+                    ward__constituency__county=self.request.user.county)
 
-        return self.queryset
+            elif self.request.user.regulator and hasattr(
+                    self.queryset.model, 'regulatory_body'):
+                return self.queryset.filter(
+                    regulatory_body=self.request.user.regulator)
+            elif self.request.user.is_national and not \
+                    self.request.user.county:
+                return self.queryset
+        except:
+            error = "The current user has not been configured to use the api."
+            raise ImproperlyConfigured(error)
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
@@ -183,14 +194,6 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
         'name', 'code', 'number_of_beds', 'number_of_cots', 'operation_status',
         'ward', 'owner',
     )
-
-    def get_queryset(self):
-        try:
-            self.queryset = self.queryset.filter(
-                regulatory_body=self.request.user.regulator)
-        except AttributeError:
-            self.queryset = self.queryset
-        return super(FacilityListView, self).get_queryset()
 
 
 class FacilityListReadOnlyView(
