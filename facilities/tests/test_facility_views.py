@@ -333,6 +333,28 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.assertEquals(200, response_1.status_code)
         self.assertEquals(expected_data_2, response_2.data)
 
+    def test_get_facility_as_regulator(self):
+        self.client.logout()
+        user = mommy.make(get_user_model())
+        reg_body = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
+        self.assertIsNotNone(user.regulator)
+        self.client.force_authenticate(user)
+
+        facility = mommy.make(Facility, regulatory_body=reg_body)
+        mommy.make(Facility)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data,
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
 

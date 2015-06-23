@@ -162,7 +162,6 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     county -- A list of comma separated county pks
     constituency -- A list of comma separated constituency pks
     owner -- A list of comma separated owner pks
-    officer_in_charge -- A list of comma separated officer pks
     number_of_beds -- A list of comma separated integers
     number_of_cots -- A list of comma separated integers
     open_whole_day -- Boolean True/False
@@ -186,10 +185,10 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     )
 
     def get_queryset(self):
-        if self.request.user.regulator:
+        try:
             self.queryset = self.queryset.filter(
                 regulatory_body=self.request.user.regulator)
-        else:
+        except AttributeError:
             self.queryset = self.queryset
         return super(FacilityListView, self).get_queryset()
 
@@ -204,7 +203,7 @@ class FacilityListReadOnlyView(
     filter_class = FacilityFilter
     ordering_fields = (
         'code', 'name', 'county', 'constituency', 'facility_type_name',
-        'owner_type_name'
+        'owner_type_name', 'is_published'
     )
 
 
