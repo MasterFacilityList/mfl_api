@@ -1,6 +1,6 @@
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
-from django.core.exceptions import ImproperlyConfigured
+from django.contrib.auth.models import AnonymousUser
 
 from ..models import (
     Facility,
@@ -51,7 +51,7 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-        try:
+        if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and self.request.user.county \
                     and hasattr(self.queryset.model, 'ward'):
                 return self.queryset.filter(
@@ -64,9 +64,10 @@ class QuerysetFilterMixin(object):
             elif self.request.user.is_national and not \
                     self.request.user.county:
                 return self.queryset
-        except:
-            error = "The current user has not been configured to use the api."
-            raise ImproperlyConfigured(error)
+            else:
+                return self.queryset
+        else:
+            return self.queryset
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
