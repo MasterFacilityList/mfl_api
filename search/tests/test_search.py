@@ -156,16 +156,16 @@ class TestSearchFunctions(ViewTestBase):
         facility.save()
         facility_2 = mommy.make(
             Facility,
-            name='Eye of mordal health center')
-        facility_2.is_published = False
-        facility_2.save()
+            name='Eye of mordal health center',
+            is_published=False)
         index_instance(facility, 'test_index')
 
         index_instance(facility_2, 'test_index')
 
         url = url + "?search={}&is_published={}".format('mordal', 'false')
         response = ""
-        # temporary hack there is a delay in getting the search results
+        # Temporary hack there is a delay in getting the search results
+
         for x in range(0, 100):
             response = self.client.get(url)
 

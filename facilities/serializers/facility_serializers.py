@@ -268,7 +268,7 @@ class FacilityListSerializer(FacilitySerializer):
             'code', 'name', 'id', 'county', 'constituency',
             'facility_type_name', 'owner_type_name',
             'regulatory_status_name', 'ward', 'operation_status_name',
-            'ward_name']
+            'ward_name', 'is_published']
 
 
 class FacilityContactSerializer(

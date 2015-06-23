@@ -1,5 +1,6 @@
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
+from django.contrib.auth.models import AnonymousUser
 
 from ..models import (
     Facility,
@@ -50,12 +51,23 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-        if not self.request.user.is_national and self.request.user.county \
-                and hasattr(self.queryset.model, 'ward'):
-            return self.queryset.filter(
-                ward__constituency__county=self.request.user.county)
+        if not isinstance(self.request.user, AnonymousUser):
+            if not self.request.user.is_national and self.request.user.county \
+                    and hasattr(self.queryset.model, 'ward'):
+                return self.queryset.filter(
+                    ward__constituency__county=self.request.user.county)
 
-        return self.queryset
+            elif self.request.user.regulator and hasattr(
+                    self.queryset.model, 'regulatory_body'):
+                return self.queryset.filter(
+                    regulatory_body=self.request.user.regulator)
+            elif self.request.user.is_national and not \
+                    self.request.user.county:
+                return self.queryset
+            else:
+                return self.queryset
+        else:
+            return self.queryset
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
@@ -162,7 +174,6 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     county -- A list of comma separated county pks
     constituency -- A list of comma separated constituency pks
     owner -- A list of comma separated owner pks
-    officer_in_charge -- A list of comma separated officer pks
     number_of_beds -- A list of comma separated integers
     number_of_cots -- A list of comma separated integers
     open_whole_day -- Boolean True/False
@@ -185,14 +196,6 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
         'ward', 'owner',
     )
 
-    def get_queryset(self):
-        if self.request.user.regulator:
-            self.queryset = self.queryset.filter(
-                regulatory_body=self.request.user.regulator)
-        else:
-            self.queryset = self.queryset
-        return super(FacilityListView, self).get_queryset()
-
 
 class FacilityListReadOnlyView(
         QuerysetFilterMixin, AuditableDetailViewMixin, generics.ListAPIView):
@@ -204,7 +207,7 @@ class FacilityListReadOnlyView(
     filter_class = FacilityFilter
     ordering_fields = (
         'code', 'name', 'county', 'constituency', 'facility_type_name',
-        'owner_type_name'
+        'owner_type_name', 'is_published'
     )
 
 
