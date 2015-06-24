@@ -22,15 +22,20 @@ from .views import (
     TownDetailView,
     PhysicalAddressView,
     PhysicalAddressDetailView,
-    download_pdf,
-    FilteringSummariesView
+    FilteringSummariesView,
+    UserConstituencyDetailView,
+    UserConstituencyListView
 )
 
 
 urlpatterns = patterns(
     '',
-    url(r'^download_pdf/$',
-        download_pdf, name='download_pdf'),
+    url(r'^user_constituencies/$',
+        UserConstituencyListView.as_view(),
+        name='user_constituencies_list'),
+    url(r'^user_constituencies/(?P<pk>[^/]+)/$',
+        UserConstituencyDetailView.as_view(),
+        name='user_constituency_detail'),
 
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),

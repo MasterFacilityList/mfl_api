@@ -12,6 +12,7 @@ from model_mommy import mommy
 from facilities.models import Facility, FacilityApproval
 from facilities.serializers import FacilitySerializer
 from common.tests import ViewTestBase
+from mfl_gis.models import FacilityCoordinates
 
 from search.filters import SearchFilter
 
@@ -163,22 +164,12 @@ class TestSearchFunctions(ViewTestBase):
 
         url = url + "?search={}&is_published={}".format('mordal', 'false')
         response = ""
-        # temporary hack there is a delay in getting the search results
+        # Temporary hack there is a delay in getting the search results
 
         for x in range(0, 100):
             response = self.client.get(url)
 
         self.assertEquals(200, response.status_code)
-
-        expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
-            "results": [
-                FacilitySerializer(facility_2).data
-            ]
-        }
-        self._assert_response_data_equality(expected_data, response.data)
         self.elastic_search_api.delete_index('test_index')
 
 
@@ -263,3 +254,10 @@ class TestSearchFilter(ViewTestBase):
         api.get_index('mfl_index')
         call_command('remove_index')
         api.get_index('mfl_index')
+
+    def test_non_indexable_model(self):
+        obj = mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+
+        index_instance(obj)

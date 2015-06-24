@@ -35,7 +35,7 @@
         role: api,
         server_name: mfl.azure.slade360.co.ke,
         tags: "api-server",
-
+        app_ports: [8000, 8001, 8002, 8003, 8004, 8005],
         frontend_url: "http://mfl-admin.azure.slade360.co.ke/",
 
         # drop and recreate database
@@ -44,7 +44,7 @@
         load_demo_data: false,
 
         # the settings below are for warming up the cache
-        warm_cache: false,
+        warm_cache: true,
         server_url: "http://mfl.azure.slade360.co.ke",
         username: national@mfltest.slade360.co.ke,
         password: national,

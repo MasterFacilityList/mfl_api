@@ -19,27 +19,32 @@ USER_MODEL = settings.AUTH_USER_MODEL
 
 class MflUserManager(BaseUserManager):
     def create(self, email, first_name,
-               username, password=None, **extra_fields):
+               username, password=None, is_staff=False, **extra_fields):
         now = timezone.now()
         validate_email(email)
         p = make_password(password)
         email = MflUserManager.normalize_email(email)
         user = self.model(email=email, first_name=first_name, password=p,
                           username=username,
-                          is_staff=False, is_active=True, is_superuser=False,
+                          is_staff=is_staff, is_active=True,
+                          is_superuser=False,
                           last_login=now, date_joined=now, **extra_fields)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, first_name, username,
-                         password, **extra_fields):
+                         password, is_staff=True, **extra_fields):
         user = self.create(email, first_name,
                            username, password, **extra_fields)
-        user.is_staff = True
+        user.is_staff = is_staff
         user.is_active = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
+
+    def get_queryset(self):
+        return super(
+            MflUserManager, self).get_queryset().filter(deleted=False)
 
 
 @reversion.register
@@ -73,6 +78,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     is_national = models.BooleanField(default=False)
     search = models.CharField(max_length=255, null=True, blank=True)
+    deleted = models.BooleanField(default=False)
 
     password_history = ArrayField(
         models.TextField(null=True, blank=True),
@@ -83,19 +89,21 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     objects = MflUserManager()
+    everything = BaseUserManager()
 
     def set_password(self, raw_password):
         """Overridden so that we can keep track of password age"""
         super(MflUser, self).set_password(raw_password)
 
-        # Exclude new users ( who have never logged in before ) from this
         # We rely on this to implement a "change password on first login"
         # roadblock
-        if self.last_login:
-            if self.password_history:
-                self.password_history.append(make_password(raw_password))
-            else:
-                self.password_history = [make_password(raw_password)]
+
+        if self.password_history:
+            self.password_history.append(
+                make_password(raw_password)) if self.is_authenticated else None
+        else:
+            self.password_history = [make_password(
+                raw_password)] if self.is_authenticated else None
 
     def __unicode__(self):
         return self.email
@@ -124,8 +132,25 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
             user=self, active=True)
         return user_counties[0].county if user_counties else None
 
+    @property
+    def constituency(self):
+        from common.models import UserConstituency
+        user_consts = UserConstituency.objects.filter(
+            user=self, active=True)
+        return user_consts[0].constituency if user_consts else None
+
+    @property
+    def regulator(self):
+        from facilities.models import RegulatoryBodyUser
+        user_regulators = RegulatoryBodyUser.objects.filter(
+            user=self, active=True)
+        return user_regulators[0].regulatory_body if user_regulators else None
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
+
+    class Meta:
+        default_permissions = ('add', 'change', 'delete', 'view', )
 
 
 class MFLOAuthApplication(AbstractApplication):
@@ -133,3 +158,4 @@ class MFLOAuthApplication(AbstractApplication):
     class Meta(object):
         verbose_name = 'mfl oauth application'
         verbose_name_plural = 'mfl oauth applications'
+        default_permissions = ('add', 'change', 'delete', 'view', )

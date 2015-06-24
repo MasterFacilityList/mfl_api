@@ -1,5 +1,7 @@
 from __future__ import division
 
+from django.contrib.auth import get_user_model
+
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
@@ -36,7 +38,11 @@ from ..models import (
     FacilityApproval,
     FacilityOperationState,
     RegulatingBodyContact,
-    Option
+    Option,
+    FacilityOfficer,
+    RegulatoryBodyUser,
+    FacilityUnitRegulation,
+    FacilityUpdates
 )
 
 
@@ -372,7 +378,6 @@ class TestFacility(BaseTestCase):
     def test_save(self):
         facility_type = mommy.make(FacilityType, name="DISPENSARY")
         operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
-        officer_in_charge = mommy.make(Officer, name='Dr Burmuriat')
         regulating_body = mommy.make(RegulatingBody, name='KMPDB')
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
@@ -390,7 +395,6 @@ class TestFacility(BaseTestCase):
             "ward": ward,
             "owner": owner,
             "location_desc": "it is located along Moi Avenue Nairobi",
-            "officer_in_charge": officer_in_charge,
             "physical_address": address
         }
         data = self.inject_audit_fields(data)
@@ -598,6 +602,14 @@ class TestFacilityUnitModel(BaseTestCase):
         self.assertEquals(1, FacilityUnit.objects.count())
         self.assertEquals(str(facility_unit), 'AKUH: Pharmacy')
 
+    def test_regulation_status(self):
+        facility_unit = mommy.make(FacilityUnit)
+        reg_status = mommy.make(RegulationStatus)
+        obj = mommy.make(
+            FacilityUnitRegulation,
+            facility_unit=facility_unit, regulation_status=reg_status)
+        self.assertEquals(reg_status, obj.regulation_status)
+
 
 class TestRegulationStatusModel(BaseTestCase):
 
@@ -650,3 +662,75 @@ class TestFacilityServiceRating(BaseTestCase):
             rating=5
         )
         self.assertEqual(str(rating), "serv (fac): 5")
+
+
+class TestFacilityOfficer(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityOfficer)
+        self.assertEquals(1, FacilityOfficer.objects.count())
+
+
+class TestRegulatoryBodyUserModel(BaseTestCase):
+    def test_saving(self):
+        reg_body = mommy.make(RegulatoryBodyUser)
+        self.assertEquals(1, RegulatoryBodyUser.objects.count())
+
+        # test the user is a national user
+        self.assertTrue(reg_body.user.is_national)
+
+        # test the user is a regulator
+        self.assertIsNotNone(reg_body.user.regulator)
+        self.assertEquals(reg_body.user.regulator, reg_body.regulatory_body)
+
+    def test_unicode(self):
+        reg_body = mommy.make(RegulatingBody)
+        user = mommy.make(get_user_model())
+        user_reg = mommy.make(
+            RegulatoryBodyUser, regulatory_body=reg_body, user=user)
+        expected_unicode = "{}: {}".format(reg_body, user)
+        self.assertEquals(expected_unicode, user_reg.__unicode__())
+
+
+class TestFacilityUnitRegulation(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityUnitRegulation)
+        self.assertEquals(1, FacilityUnitRegulation.objects.count())
+
+    def test_unicode(self):
+        facility_unit = mommy.make(FacilityUnit)
+        regulation_status = mommy.make(RegulationStatus)
+
+        obj = mommy.make(
+            FacilityUnitRegulation,
+            facility_unit=facility_unit, regulation_status=regulation_status)
+        expected_unicode = "{}: {}".format(facility_unit, regulation_status)
+        self.assertEquals(expected_unicode, obj.__unicode__())
+
+
+class TestFacilityUpdates(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityUpdates)
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+    def test_facility_updates(self):
+        original_name = 'Some facility name'
+        updated_name = 'The name has been editted'
+        facility = mommy.make(
+            Facility,
+            name=original_name,
+            id='cafb2fb8-c6a3-419e-a120-8522634ace73')
+
+        facility.name = updated_name
+        facility.save()
+        self.assertEquals(1, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(
+            id='cafb2fb8-c6a3-419e-a120-8522634ace73')
+        self.assertEquals(original_name, facility_refetched.name)
+
+        # approve the facility_updates
+        facility_update = FacilityUpdates.objects.all()[0]
+        facility_update.approved = True
+        facility_update.save()
+        facility_refetched_2 = Facility.objects.get(
+            id='cafb2fb8-c6a3-419e-a120-8522634ace73')
+        self.assertEquals(updated_name, facility_refetched_2.name)

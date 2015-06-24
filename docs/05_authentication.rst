@@ -186,7 +186,7 @@ this representation:
 
 Authenticating using OAuth2 tokens
 *************************************
-First,  obtain an access token by ``POST``ing the user's credentials to
+First,  obtain an access token by ``POST`` ing the user's credentials to
 ``/o/token/``. For example:
 
 .. code-block:: text
@@ -522,7 +522,7 @@ discussed in the Authorization section.
 Linking users to groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 In order to assign a user to a group, you will need to know the group
-ID ( which you can obtain from ```/api/groups/``.
+ID ( which you can obtain from ``/api/groups/`` ).
 
 ``PATCH`` an already existing user with a payload similar to this example:
 
@@ -550,7 +550,7 @@ to inactivate or retire a user, ``PATCH`` the user's ( detail ) record and set
 
 For example: if the detail record for the user we registered above
 ( ``likeforreal`` ) is to be found at ``/api/users/9/``, the user can be
-inactivated by ``PATCH``ing ``/api/users/9/`` with:
+inactivated by ``PATCH`` ing ``/api/users/9/`` with:
 
 .. code-block:: javascript
 
@@ -565,7 +565,7 @@ inactivated by ``PATCH``ing ``/api/users/9/`` with:
 
 Password changes
 ~~~~~~~~~~~~~~~~~~~
-The password of the **logged in user** can be changed by ``POST``ing to
+The password of the **logged in user** can be changed by making a ``POST`` to
 ``/api/rest-auth/password/change/`` a payload similar to this example:
 
 .. code-block:: javascript
@@ -581,10 +581,6 @@ The password of the **logged in user** can be changed by ``POST``ing to
     A future version of this server may add support for social authentication
     e.g login via Facebook, Twitter or Google accounts.
 
-.. note::
-
-    A future version of this server may add support for API based password
-    reset.
 
 .. toctree::
     :maxdepth: 2

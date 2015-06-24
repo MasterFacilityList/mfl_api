@@ -14,7 +14,9 @@ from ..models import (
     ContactType,
     Constituency,
     Ward,
-    UserContact
+    UserContact,
+    UserConstituency,
+    UserCounty
 )
 from ..serializers import (
     ContactSerializer,
@@ -24,7 +26,8 @@ from ..serializers import (
     CountyDetailSerializer,
     ConstituencySerializer,
     ConstituencyDetailSerializer,
-    UserContactSerializer
+    UserContactSerializer,
+    UserConstituencySerializer
 )
 from ..views import APIRoot
 
@@ -487,24 +490,6 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
         self.assertEqual(len(parsed_response["revisions"]), 2)
 
 
-class TestDownloadView(LoginMixin, APITestCase):
-    def test_download_view_with_css(self):
-        url = reverse('api:common:download_pdf')
-        url = url + "?file_url={}&file_name={}&css={}".format(
-            'http://google.com', 'awesome_file', 'p,h1,h2,h3 {color: red}'
-        )
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-
-    def test_download_view_without_css(self):
-        url = reverse('api:common:download_pdf')
-        url = url + "?file_url={}&file_name={}".format(
-            'http://google.com', 'awesome_file'
-        )
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-
-
 class FilteringSummariesView(LoginMixin, APITestCase):
     def setUp(self):
         super(FilteringSummariesView, self).setUp()
@@ -514,7 +499,7 @@ class FilteringSummariesView(LoginMixin, APITestCase):
         mommy.make(County, name="muranga")
         ward = mommy.make(Ward, name='kizito')
         mommy.make(Constituency, name='kiambaa')
-        response = self.client.get(self.url+'?fields=ward')
+        response = self.client.get(self.url + '?fields=ward')
         self.assertEquals(200, response.status_code)
         self.assertTrue('ward' in response.data)
         self.assertEqual(response.data['ward'][0]['name'], ward.name)
@@ -537,6 +522,25 @@ class FilteringSummariesView(LoginMixin, APITestCase):
         self.assertEqual(response.data['ward'][0]['name'], ward.name)
 
 
+class TestDeleting(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse('api:common:counties_list')
+        super(TestDeleting, self).setUp()
+
+    def test_delete_county(self):
+        county = mommy.make(County)
+        url = self.url + '{}/'.format(county.id)
+        response = self.client.delete(url)
+        # assert status code due to cache time of 15 seconds
+        self.assertEquals(200, response.status_code)
+        # self.assertEquals("Not Found", response.data.get('detail'))
+
+        with self.assertRaises(County.DoesNotExist):
+            County.objects.get(id=county.id)
+
+        self.assertEquals(1, County.everything.filter(id=county.id).count())
+
+
 class TestSlimDetailViews(LoginMixin, APITestCase):
     def test_get_county_slim_detail_view(self):
         county = mommy.make(County)
@@ -556,3 +560,65 @@ class TestSlimDetailViews(LoginMixin, APITestCase):
         url = reverse('api:common:ward_slim_detail', args=[str(ward.id)])
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+
+class TestUserConstituenciesView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestUserConstituenciesView, self).setUp()
+        self.url = reverse("api:common:user_constituencies_list")
+
+    def test_test_listing(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user, county=county)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, user=self.user, county=county)
+        user_const_1 = mommy.make(
+            UserConstituency, constituency=const, created_by=user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                UserConstituencySerializer(user_const_1).data
+            ]
+        }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_retrieve_single_user_constituency(self):
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user, county=county)
+        const = mommy.make(Constituency, county=county)
+        user_const_1 = mommy.make(
+            UserConstituency, constituency=const, created_by=user)
+        mommy.make(
+            UserConstituency, user=user_2, constituency=const,
+            created_by=user)
+        url = self.url + "{}/".format(user_const_1.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = UserConstituencySerializer(user_const_1).data
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_posting(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, user=self.user, county=county, active=True)
+        data = {
+            "constituency": str(const.id),
+            "user": str(user.id)
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, UserConstituency.objects.count())
+        self.assertIn('id', json.loads(json.dumps(
+            response.data, default=default)))

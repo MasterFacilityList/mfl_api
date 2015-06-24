@@ -12,7 +12,8 @@ from ..models import (
     ContactType,
     UserCounty,
     UserContact,
-    Town
+    Town,
+    UserConstituency
 )
 from facilities.models import(
     FacilityStatus,
@@ -37,7 +38,8 @@ from ..serializers import (
     UserCountySerializer,
     UserContactSerializer,
     TownSerializer,
-    FilteringSummariesSerializer
+    FilteringSummariesSerializer,
+    UserConstituencySerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -48,9 +50,11 @@ from ..filters import (
     WardFilter,
     UserCountyFilter,
     UserContactFilter,
-    TownFilter
+    TownFilter,
+    UserConstituencyFilter
 )
 from .shared_views import AuditableDetailViewMixin
+from ..utilities import CustomRetrieveUpdateDestroyView
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -72,7 +76,7 @@ class ContactView(generics.ListCreateAPIView):
 
 
 class ContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular contact
     """
@@ -98,7 +102,7 @@ class PhysicalAddressView(generics.ListCreateAPIView):
 
 
 class PhysicalAddressDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular physical address
     """
@@ -124,7 +128,7 @@ class CountyView(generics.ListCreateAPIView):
 
 
 class CountyDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular county including the county boundary
     and its facility coordinates
@@ -161,7 +165,7 @@ class WardView(generics.ListCreateAPIView):
 
 
 class WardDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular ward details including ward boundaries
     and facility coordinates
@@ -197,7 +201,7 @@ class ConstituencyView(generics.ListCreateAPIView):
 
 
 class ConstituencyDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a  patricular constituency
     """
@@ -228,7 +232,7 @@ class ContactTypeListView(generics.ListCreateAPIView):
 
 
 class ContactTypeDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular contact type
     """
@@ -256,7 +260,7 @@ class UserCountyView(generics.ListCreateAPIView):
 
 
 class UserCountyDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular link between a user and a county
     """
@@ -281,7 +285,7 @@ class UserContactListView(generics.ListCreateAPIView):
 
 
 class UserContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular user contact
     """
@@ -306,7 +310,7 @@ class TownListView(generics.ListCreateAPIView):
 
 
 class TownDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a patricular town detail
     """
@@ -344,3 +348,16 @@ class FilteringSummariesView(views.APIView):
         else:
             res = {}
         return response.Response(res)
+
+
+class UserConstituencyListView(generics.ListCreateAPIView):
+    serializer_class = UserConstituencySerializer
+    filter_class = UserConstituencyFilter
+    queryset = UserConstituency.objects.all()
+    ordering_fields = ('user', 'constituency')
+
+
+class UserConstituencyDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserConstituencySerializer
+    queryset = UserConstituency.objects.all()

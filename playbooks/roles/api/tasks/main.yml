@@ -14,6 +14,18 @@
   notify:
     - restart supervisor
 
+- name: copy the supervisor configuration to its destination
+  sudo: yes
+  template: src=../templates/mfl_supervisor_conf.j2 dest=/etc/supervisor/conf.d/mfl_api.conf
+  notify:
+    - restart supervisor
+
+- name: copy the nginx configuration to its destination
+  sudo: yes
+  template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
+  notify:
+    - restart nginx
+
 - name: update versions of common dependencies via pip before we make our venv
   pip: 'name={{item}} state=latest'
   with_items:
@@ -44,19 +56,6 @@
 - name: run fab recreate_search_index
   shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab recreate_search_index >> /tmp/fab_recreate_search_index.log executable=/bin/bash"
   when: load_demo_data
-
-- name: copy the supervisor configuration to its destination
-  sudo: yes
-  template: src=../templates/mfl_supervisor_conf.j2 dest=/etc/supervisor/conf.d/mfl_api.conf
-  notify:
-    - restart supervisor
-
-- name: copy the nginx configuration to its destination
-  sudo: yes
-  template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
-  notify:
-    - restart nginx
-
 
 - name: clear and warm api cache
   shell: >

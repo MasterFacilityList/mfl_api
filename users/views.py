@@ -1,13 +1,19 @@
 from rest_framework import generics
+
 from django.contrib.auth.models import Group, Permission
+
+from common.utilities import CustomRetrieveUpdateDestroyView
+
 from .models import MflUser, MFLOAuthApplication
+
 from .serializers import (
     MflUserSerializer,
     MFLOAuthApplicationSerializer,
     PermissionSerializer,
     GroupSerializer
 )
-from .filters import MFLUserFilter
+
+from .filters import MFLUserFilter, PermissionFilter, GroupFilter
 
 
 class PermissionsListView(generics.ListAPIView):
@@ -20,14 +26,18 @@ class PermissionsListView(generics.ListAPIView):
     """
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
+    filter_class = PermissionFilter
+    ordering_fields = ('name', )
 
 
 class GroupListView(generics.ListCreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    filter_class = GroupFilter
+    ordering_fields = ('name', )
 
 
-class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
+class GroupDetailView(CustomRetrieveUpdateDestroyView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
@@ -39,7 +49,7 @@ class UserList(generics.ListCreateAPIView):
     ordering_fields = ('first_name', 'last_name', 'email', 'username',)
 
 
-class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+class UserDetailView(CustomRetrieveUpdateDestroyView):
     queryset = MflUser.objects.all()
     serializer_class = MflUserSerializer
 
@@ -143,7 +153,7 @@ class MFLOauthApplicationListView(generics.ListCreateAPIView):
         'user', 'client_type', 'authorization_grant_type', 'name')
 
 
-class MFLOauthApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
+class MFLOauthApplicationDetailView(CustomRetrieveUpdateDestroyView):
     """View, update and retire specific OAuth2 application authorizations"""
     queryset = MFLOAuthApplication.objects.all()
     serializer_class = MFLOAuthApplicationSerializer

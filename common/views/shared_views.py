@@ -1,17 +1,10 @@
 import logging
 import reversion
-import os
-
-from django.core.servers.basehttp import FileWrapper
-from django.views.decorators.cache import never_cache
-from django.utils.encoding import smart_str
-from django.conf import settings
-from django.http import HttpResponse
-
-from weasyprint import HTML, CSS
 
 from collections import OrderedDict
+
 from django.shortcuts import redirect
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -20,7 +13,6 @@ from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.permissions import IsAdminUser
 
 from ..utilities.metadata_helpers import MODEL_VIEW_DICT, _lookup_metadata
-
 from ..metadata import CustomMetadata
 
 METADATA_CLASS = CustomMetadata()
@@ -161,28 +153,3 @@ class APIRoot(APIView):
 
 def root_redirect_view(request):
     return redirect('api:root_listing', permanent=True)
-
-
-@never_cache
-def download_pdf(request):
-    file_url = request.GET.get('file_url', None)
-    file_name = request.GET.get('file_name', None)
-    custom_css = request.GET.get('css', None)
-    file_name = file_name + ".pdf"
-    file_path = os.path.join(settings.BASE_DIR, file_name)
-    if custom_css:
-        HTML(file_url).write_pdf(
-            file_path,
-            stylesheets=[CSS(string=custom_css)])
-    else:
-        HTML(file_url).write_pdf(file_path)
-    download_file = open(file_path)
-    response = HttpResponse(
-        FileWrapper(download_file), content_type='application/pdf')
-    response[
-        'Content-Disposition'] = 'attachment; filename="{}"'.format(
-        os.path.basename(file_path)
-    )
-    response['X-Sendfile'] = smart_str(file_path)
-    os.remove(file_path)
-    return response

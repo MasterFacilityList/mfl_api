@@ -1,9 +1,13 @@
 from __future__ import division
 
 import reversion
+import json
 
+from django.conf import settings
 from django.core import validators
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework.exceptions import ValidationError
 from common.models import (
     AbstractBase,
@@ -172,6 +176,8 @@ class FacilityStatus(AbstractBase):
 
 @reversion.register
 class FacilityType(AbstractBase):
+    owner_type = models.ForeignKey(
+        OwnerType, null=True, blank=True)
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name for the facility type e.g DISPENSARY")
@@ -243,6 +249,31 @@ class RegulatingBody(AbstractBase):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulating bodies'
+
+
+@reversion.register
+class RegulatoryBodyUser(AbstractBase):
+    """
+    Links user to a regulatory body.
+    These are the users who  will be carrying out the regulatory activities
+    """
+    regulatory_body = models.ForeignKey(RegulatingBody)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='regulatory_users')
+
+    def make_user_national_user(self):
+        self.user.is_national = True
+        self.user.save()
+
+    def __unicode__(self):
+        custom_unicode = "{}: {}".format(self.regulatory_body, self.user)
+        return custom_unicode
+
+    def clean(self, *args, **kwargs):
+        self.make_user_national_user()
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('regulatory_body', 'user', )
 
 
 @reversion.register
@@ -444,7 +475,7 @@ class Facility(SequenceMixin, AbstractBase):
         "7th Floor")
     number_of_beds = models.PositiveIntegerField(
         default=0,
-        help_text="The number of beds that a facilty has. e.g 0")
+        help_text="The number of beds that a facility has. e.g 0")
     number_of_cots = models.PositiveIntegerField(
         default=0,
         help_text="The number of cots that a facility has e.g 0")
@@ -468,8 +499,8 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="COnfirmation by the CHRIO that the facility is okay")
     facility_type = models.ForeignKey(
         FacilityType,
-        help_text="This depends on who owns the facilty. For MOH facilities,"
-        "type is the gazetted classification of the facilty."
+        help_text="This depends on who owns the facility. For MOH facilities,"
+        "type is the gazetted classification of the facility."
         "For Non-MOH check under the respective owners.",
         on_delete=models.PROTECT)
     operation_status = models.ForeignKey(
@@ -483,9 +514,6 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
-    officer_in_charge = models.ForeignKey(
-        Officer, null=True, blank=True,
-        help_text="The officer in charge of the facility")
     physical_address = models.ForeignKey(
         PhysicalAddress, null=True, blank=True,
         help_text="Postal and courier addressing for the facility")
@@ -497,6 +525,11 @@ class Facility(SequenceMixin, AbstractBase):
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
+    regulatory_body = models.ForeignKey(
+        RegulatingBody, null=True, blank=True)
+    has_edits = models.BooleanField(
+        default=False,
+        help_text='Indicates that a facility has updates that have been made')
 
     @property
     def ward_name(self):
@@ -625,9 +658,37 @@ class Facility(SequenceMixin, AbstractBase):
         self.validate_publish(*args, **kwargs)
 
     def save(self, *args, **kwargs):
+        """
+        Overide the save method in order to capture updates to a facility.
+        This creates a record of the updates in the FacilityUpdates model.
+        The updates will appear on the facilty once the updates have been
+        approved.
+        """
         if not self.code:
             self.code = self.generate_next_code_sequence()
-        super(Facility, self).save(*args, **kwargs)
+        try:
+            self.__class__.objects.get(id=self.id)
+            allow_save = kwargs.pop('allow_save', None)
+            if allow_save:
+                super(Facility, self).save(*args, **kwargs)
+            else:
+                fields = [field.name for field in self._meta.fields]
+                data = {}
+                for field in fields:
+                    field_data = getattr(self, field)
+                    if hasattr(field_data, 'id'):
+                        field_name = field + '_id'
+                        data[field_name] = str(getattr(field_data, 'id'))
+                    else:
+                        data[field] = str(field_data)
+                for key, value in data.items():
+                    if value == 'None':
+                        data.pop(key)
+                data = json.dumps(data)
+                FacilityUpdates.objects.create(
+                    facility_updates=data, facility=self)
+        except ObjectDoesNotExist:
+            super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -638,6 +699,28 @@ class Facility(SequenceMixin, AbstractBase):
             ("view_classified_facilities", "Can see classified facilities"),
             ("publish_facilities", "Can publish facilities"),
         )
+
+
+class FacilityUpdates(AbstractBase):
+    """
+    Buffers facility updates until when they are approved upon
+    which they reflect on the facility.
+    """
+    facility = models.ForeignKey(Facility, related_name='updates')
+    approved = models.BooleanField(default=False)
+    facility_updates = models.TextField()
+
+    def update_facility(self):
+        data = json.loads(self.facility_updates)
+        facility = Facility.objects.get(id=data.get('id'))
+        for key, value in data.items():
+            setattr(facility, key, value)
+        facility.save(allow_save=True)
+
+    def save(self, *args, **kwargs):
+        if self.approved:
+            self.update_facility()
+        super(FacilityUpdates, self).save(*args, **kwargs)
 
 
 @reversion.register
@@ -690,6 +773,25 @@ class FacilityApproval(AbstractBase):
 
 
 @reversion.register
+class FacilityUnitRegulation(AbstractBase):
+    """
+    Creates a facility units regulation status.
+    A facility unit can have multiple regulation statuses
+    but only one is active a time. The latest one is taken to the
+    regulation status of the facility unit.
+    """
+    facility_unit = models.ForeignKey(
+        'FacilityUnit', related_name='regulations')
+    regulation_status = models.ForeignKey(
+        RegulationStatus, related_name='facility_units')
+
+    def __unicode__(self):
+        custom_unicode = "{}: {}".format(
+            self.facility_unit, self.regulation_status)
+        return custom_unicode
+
+
+@reversion.register
 class FacilityUnit(AbstractBase):
     """
     Autonomous units within a facility that are regulated differently from the
@@ -698,7 +800,7 @@ class FacilityUnit(AbstractBase):
     For example AKUH  is a facility and licenced by KMPDB.
     In AKUH there are other units such as its pharmacy which is licensed by
     PPB.
-    The pharmacy will in this case be treated as a facilty unit.
+    The pharmacy will in this case be treated as a facility unit.
     """
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
     name = models.CharField(max_length=100)
@@ -706,8 +808,12 @@ class FacilityUnit(AbstractBase):
         help_text='A short summary of the facility unit.')
     regulating_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True)
-    regulation_status = models.ForeignKey(
-        RegulationStatus, null=True, blank=True)
+
+    @property
+    def regulation_status(self):
+        reg_statuses = FacilityUnitRegulation.objects.filter(
+            facility_unit=self)
+        return reg_statuses[0].regulation_status if reg_statuses else None
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
@@ -838,8 +944,7 @@ class FacilityService(AbstractBase):
 
     @property
     def number_of_ratings(self):
-        return FacilityServiceRating.objects.filter(
-            facility_service=self).count()
+        return self.facility_service_ratings.count()
 
     @property
     def service_name(self):
@@ -880,3 +985,12 @@ class FacilityServiceRating(AbstractBase):
             self.facility_service.facility.name,
             self.rating
         )
+
+
+@reversion.register
+class FacilityOfficer(AbstractBase):
+    """
+    A facility can have more than one officer. This models links the two.
+    """
+    facility = models.ForeignKey(Facility, related_name='facility_officers')
+    officer = models.ForeignKey(Officer, related_name='officer_facilities')
