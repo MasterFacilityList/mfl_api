@@ -1,9 +1,19 @@
 from django.template import loader, Context
 from django.http import HttpResponse
 from django.utils import timezone
+import os
+from django.core.servers.basehttp import FileWrapper
+from django.utils.encoding import smart_str
+from django.views.decorators.cache import never_cache
+from django.conf import settings
 
+from rest_framework.views import APIView
 from rest_framework import generics
+
+from weasyprint import HTML
+
 from common.views import AuditableDetailViewMixin
+from common.utilities import CustomRetrieveUpdateDestroyView
 
 from ..models import (
     FacilityApproval,
@@ -64,7 +74,7 @@ class FacilityRegulationStatusListView(generics.ListCreateAPIView):
 
 class FacilityRegulationStatusDetailView(
         AuditableDetailViewMixin,
-        generics.RetrieveUpdateDestroyAPIView):
+        CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility's regulation status
     """
@@ -92,7 +102,7 @@ class FacilityTypeListView(generics.ListCreateAPIView):
 
 
 class FacilityTypeDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility types detail
     """
@@ -121,7 +131,7 @@ class RegulationStatusListView(
 
 
 class RegulationStatusDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular regulation status
     """
@@ -129,48 +139,92 @@ class RegulationStatusDetailView(
     serializer_class = RegulationStatusSerializer
 
 
-def get_inspection_report(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('inspection_report.txt')
-    report_date = timezone.now().isoformat()
-    regulating_bodies = FacilityRegulationStatus.objects.filter(
-        facility=facility)
-    regulating_body = regulating_bodies[0] if regulating_bodies else None
-
-    context = Context(
-        {
-            "report_date": report_date,
-            "facility": facility,
-            "regulating_body": regulating_body
-        }
-    )
-    return HttpResponse(template.render(context))
-
-
-def get_cover_report(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('cover_report.txt')
-    report_date = timezone.now().isoformat()
-    context = Context(
-        {
-            "report_date": report_date,
-            "facility": facility
-        }
-    )
-    return HttpResponse(template.render(context))
+class DownloadPDFMixin(object):
+    def download_file(self, doc, file_name):
+        doc_file_name = 'temp'
+        file_path = os.path.join(settings.BASE_DIR, file_name)
+        doc_file_path = os.path.join(settings.BASE_DIR, doc_file_name)
+        writting_file = open(doc_file_path, 'w')
+        writting_file.write(doc)
+        writting_file.close()
+        HTML(doc_file_path).write_pdf(file_path)
+        download_file = open(file_path)
+        response = HttpResponse(
+            FileWrapper(download_file), content_type='application/pdf')
+        response[
+            'Content-Disposition'] = 'attachment; filename='.format(
+            os.path.basename(file_path)
+        )
+        response['X-Sendfile'] = smart_str(file_path)
+        os.remove(file_path)
+        os.remove(doc_file_path)
+        return response
 
 
-def get_correction_template(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('correction_template.txt')
-    request_date = timezone.now().isoformat()
-    context = Context(
-        {
-            "request_date": request_date,
-            "facility": facility
-        }
-    )
-    return HttpResponse(template.render(context))
+class FacilityInspectionReport(DownloadPDFMixin, APIView):
+    queryset = Facility.objects.all()
+
+    @never_cache
+    def get(self, request, facility_id, *args, **kwargs):
+        return self.get_inspection_report(facility_id)
+
+    def get_inspection_report(self, facility_id):
+        facility = Facility.objects.get(pk=facility_id)
+        template = loader.get_template('inspection_report.txt')
+        report_date = timezone.now().isoformat()
+        regulating_bodies = FacilityRegulationStatus.objects.filter(
+            facility=facility)
+        regulating_body = regulating_bodies[0] if regulating_bodies else None
+
+        context = Context(
+            {
+                "report_date": report_date,
+                "facility": facility,
+                "regulating_body": regulating_body
+            }
+        )
+        file_name = '{}_inspection_report'.format(facility.name)
+        return self.download_file(template.render(context), file_name)
+
+
+class FacilityCoverTemplate(DownloadPDFMixin, APIView):
+    queryset = Facility.objects.all()
+
+    def get(self, request, facility_id, *args, **kwargs):
+        return self.get_cover_report(facility_id)
+
+    @never_cache
+    def get_cover_report(self, facility_id):
+        facility = Facility.objects.get(pk=facility_id)
+        template = loader.get_template('cover_report.txt')
+        report_date = timezone.now().isoformat()
+        context = Context(
+            {
+                "report_date": report_date,
+                "facility": facility
+            }
+        )
+        file_name = '{}_cover_report'.format(facility.name)
+        return self.download_file(template.render(context), file_name)
+
+
+class FacilityCorrectionTemplate(DownloadPDFMixin, APIView):
+    queryset = Facility.objects.all()
+
+    @never_cache
+    def get(self, request, facility_id, *args, **kwargs):
+        facility = Facility.objects.get(pk=facility_id)
+        template = loader.get_template('correction_template.txt')
+        request_date = timezone.now().isoformat()
+        context = Context(
+            {
+                "request_date": request_date,
+                "facility": facility
+            }
+        )
+        doc = template.render(context)
+        file_name = '{}_correction_template.pdf'.format(facility.name)
+        return self.download_file(doc, file_name)
 
 
 class FacilityUpgradeListView(generics.ListCreateAPIView):
@@ -190,7 +244,7 @@ class FacilityUpgradeListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'facility_type', 'reason', )
 
 
-class FacilityUpgradeDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityUpgradeDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility upgrade or downgrade
     """
@@ -215,7 +269,7 @@ class FacilityOperationStateListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'operation_status', 'reason')
 
 
-class FacilityOperationStateDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityOperationStateDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular operation status
     """
@@ -241,7 +295,7 @@ class FacilityApprovalListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'comment', )
 
 
-class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityApprovalDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility approval
     """
@@ -259,7 +313,7 @@ class RegulatoryBodyUserListView(generics.ListCreateAPIView):
     ordering_fields = ('regulatory_body', 'user')
 
 
-class RegulatoryBodyUserDetailView(generics.RetrieveUpdateDestroyAPIView):
+class RegulatoryBodyUserDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a single regulatory body user
     """
@@ -277,7 +331,7 @@ class FacilityUpdatesListView(generics.ListCreateAPIView):
     ordering_fields = ('facility', 'approved')
 
 
-class FacilityUpdatesDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityUpdatesDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a single facility update
     """

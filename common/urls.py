@@ -22,7 +22,6 @@ from .views import (
     TownDetailView,
     PhysicalAddressView,
     PhysicalAddressDetailView,
-    download_pdf,
     FilteringSummariesView,
     UserConstituencyDetailView,
     UserConstituencyListView
@@ -37,9 +36,6 @@ urlpatterns = patterns(
     url(r'^user_constituencies/(?P<pk>[^/]+)/$',
         UserConstituencyDetailView.as_view(),
         name='user_constituency_detail'),
-
-    url(r'^download_pdf/$',
-        download_pdf, name='download_pdf'),
 
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),

@@ -26,6 +26,7 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
+    FacilityServiceRating,
     FacilityOfficer,
     RegulatoryBodyUser,
     FacilityUnitRegulation,
@@ -66,6 +67,18 @@ class RegulatoryBodyUserFilter(CommonFieldsFilterset):
 class FacilityOfficerFilter(CommonFieldsFilterset):
     class Meta(object):
         model = FacilityOfficer
+
+
+class FacilityServiceRatingFilter(CommonFieldsFilterset):
+    facility = django_filters.AllValuesFilter(
+        name='facility_service__facility',
+        lookup_type='exact')
+    service = django_filters.AllValuesFilter(
+        name='facility_service__selected_option.service',
+        lookup_type='exact')
+
+    class Meta(object):
+        model = FacilityServiceRating
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):

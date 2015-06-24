@@ -490,24 +490,6 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
         self.assertEqual(len(parsed_response["revisions"]), 2)
 
 
-class TestDownloadView(LoginMixin, APITestCase):
-    def test_download_view_with_css(self):
-        url = reverse('api:common:download_pdf')
-        url = url + "?file_url={}&file_name={}&css={}".format(
-            'http://google.com', 'awesome_file', 'p,h1,h2,h3 {color: red}'
-        )
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-
-    def test_download_view_without_css(self):
-        url = reverse('api:common:download_pdf')
-        url = url + "?file_url={}&file_name={}".format(
-            'http://google.com', 'awesome_file'
-        )
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-
-
 class FilteringSummariesView(LoginMixin, APITestCase):
     def setUp(self):
         super(FilteringSummariesView, self).setUp()
@@ -538,6 +520,25 @@ class FilteringSummariesView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertTrue('ward' in response.data)
         self.assertEqual(response.data['ward'][0]['name'], ward.name)
+
+
+class TestDeleting(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse('api:common:counties_list')
+        super(TestDeleting, self).setUp()
+
+    def test_delete_county(self):
+        county = mommy.make(County)
+        url = self.url + '{}/'.format(county.id)
+        response = self.client.delete(url)
+        # assert status code due to cache time of 15 seconds
+        self.assertEquals(200, response.status_code)
+        # self.assertEquals("Not Found", response.data.get('detail'))
+
+        with self.assertRaises(County.DoesNotExist):
+            County.objects.get(id=county.id)
+
+        self.assertEquals(1, County.everything.filter(id=county.id).count())
 
 
 class TestSlimDetailViews(LoginMixin, APITestCase):

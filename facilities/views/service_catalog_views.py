@@ -1,5 +1,6 @@
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
+from common.utilities import CustomRetrieveUpdateDestroyView
 
 from ..models import (
     FacilityServiceRating,
@@ -47,7 +48,7 @@ class ServiceCategoryListView(generics.ListCreateAPIView):
 
 
 class ServiceCategoryDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular service category
     """
@@ -73,7 +74,7 @@ class OptionListView(generics.ListCreateAPIView):
 
 
 class OptionDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a a particular option
     """
@@ -100,7 +101,7 @@ class ServiceListView(generics.ListCreateAPIView):
 
 
 class ServiceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular service
     """
@@ -128,7 +129,7 @@ class FacilityServiceListView(generics.ListCreateAPIView):
 
 
 class FacilityServiceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility service detail
     """
@@ -146,7 +147,7 @@ class FacilityServiceRatingListView(generics.ListCreateAPIView):
     ordering_fields = ('rating', )
 
 
-class FacilityServiceRatingDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FacilityServiceRatingDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility service rating
     """
@@ -174,7 +175,7 @@ class ServiceOptionListView(generics.ListCreateAPIView):
 
 
 class ServiceOptionDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular service option
     """

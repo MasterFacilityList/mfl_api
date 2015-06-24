@@ -42,6 +42,10 @@ class MflUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def get_queryset(self):
+        return super(
+            MflUserManager, self).get_queryset().filter(deleted=False)
+
 
 @reversion.register
 class MflUser(AbstractBaseUser, PermissionsMixin):
@@ -74,6 +78,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     is_national = models.BooleanField(default=False)
     search = models.CharField(max_length=255, null=True, blank=True)
+    deleted = models.BooleanField(default=False)
 
     password_history = ArrayField(
         models.TextField(null=True, blank=True),
@@ -84,6 +89,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     objects = MflUserManager()
+    everything = BaseUserManager()
 
     def set_password(self, raw_password):
         """Overridden so that we can keep track of password age"""

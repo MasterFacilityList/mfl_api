@@ -579,33 +579,24 @@ Facility downloads
 Facility cover letters
 +++++++++++++++++++++++++
 
-To **view** a facilities cover letter:
+To **download** a facilities cover letter:
 
 ``GET`` the URL ``api/facilities/facility_cover_report/<facility_id>/``
-
-To get the cover letter in PDF:
-``GET the URL ``api/common/dowload_pdf/?file_url=api/facilities/facility_cover_report/<facility_id>/&file_name=<file_name>``
 
 
 
 Facility correction templates
 ++++++++++++++++++++++++++++++++
-To view a facility's correction template:
+To **download** a facility's correction template:
 
 ``GET`` the URL ``api/facilities/facility_correction_template/<id>/``
-
-To get a PDF of the correction template:
-``GET`` the URL ``api/common/dowload_pdf/?file_url=api/facilities/facility_correction_template/<facility_id>/&file_name=<file_name>``
-
 
 Facilty Inspection Report
 ++++++++++++++++++++++++++
 
-To view a facility's inspection report:
+To **download** a facility's inspection report:
 ``GET`` the URL ``api/facilities/facility_inspection_report/<facility_id>/``
 
-To get a PDF of the inspection report:
-``GET`` ``api/common/dowload_pdf/?file_url=api/facilities/facility_inspection_report/<facility_id>/&file_name=<file_name>``
 
 Facility Excel reports
 +++++++++++++++++++++++++

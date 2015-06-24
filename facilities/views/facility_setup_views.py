@@ -1,5 +1,6 @@
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
+from common.utilities import CustomRetrieveUpdateDestroyView
 
 from ..models import (
     FacilityStatus,
@@ -49,7 +50,7 @@ class FacilityStatusListView(generics.ListCreateAPIView):
 
 
 class FacilityStatusDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular operation status
     """
@@ -75,7 +76,7 @@ class JobTitleListView(generics.ListCreateAPIView):
 
 
 class JobTitleDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular job title
     """
@@ -104,7 +105,7 @@ class OfficerListView(generics.ListCreateAPIView):
 
 
 class OfficerDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular officer
     """
@@ -132,7 +133,7 @@ class RegulatingBodyListView(generics.ListCreateAPIView):
 
 
 class RegulatingBodyDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular regulatory body details
     """
@@ -160,7 +161,7 @@ class OwnerTypeListView(generics.ListCreateAPIView):
 
 
 class OwnerTypeDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular owner type
     """
@@ -187,7 +188,7 @@ class RegulatingBodyContactListView(generics.ListCreateAPIView):
     ordering_fields = ('regulating_body', 'contact', )
 
 
-class RegulatingBodyContactDetailView(generics.RetrieveUpdateDestroyAPIView):
+class RegulatingBodyContactDetailView(CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular regulatory body contact.
     """

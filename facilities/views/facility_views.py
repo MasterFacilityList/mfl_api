@@ -1,5 +1,6 @@
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
+from common.utilities import CustomRetrieveUpdateDestroyView
 from django.contrib.auth.models import AnonymousUser
 
 from ..models import (
@@ -91,7 +92,7 @@ class FacilityUnitsListView(generics.ListCreateAPIView):
 
 
 class FacilityUnitDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility unit's detail
     """
@@ -119,7 +120,7 @@ class OfficerContactListView(generics.ListCreateAPIView):
 
 
 class OfficerContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular officer contact detail
     """
@@ -150,7 +151,7 @@ class OwnerListView(generics.ListCreateAPIView):
 
 
 class OwnerDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular owner's details
     """
@@ -213,7 +214,7 @@ class FacilityListReadOnlyView(
 
 class FacilityDetailView(
         QuerysetFilterMixin, AuditableDetailViewMixin,
-        generics.RetrieveUpdateDestroyAPIView):
+        CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility
     """
@@ -241,7 +242,7 @@ class FacilityContactListView(generics.ListCreateAPIView):
 
 
 class FacilityContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility contact
     """
@@ -260,7 +261,7 @@ class FacilityOfficerListView(
 
 
 class FacilityOfficerDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     serializer_class = FacilityOfficerSerializer
     queryset = FacilityOfficer.objects.all()
 
@@ -274,6 +275,6 @@ class FacilityUnitRegulationListView(
 
 
 class FacilityUnitRegulationDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     queryset = FacilityUnitRegulation.objects.all()
     serializer_class = FacilityUnitRegulationSerializer
