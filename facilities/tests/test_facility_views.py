@@ -822,3 +822,26 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertTrue(response.data.get('approved'))
         self.assertEquals('jina', obj_refetched.name)
+
+    def test_cancelling(self):
+        facility = mommy.make(
+            Facility,
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        obj = mommy.make(
+            FacilityUpdates,
+            facility=facility,
+            facility_updates=json.dumps(
+                {
+                    "name": "jina",
+                    "id": str(facility.id)
+                }
+            ))
+        url = self.url + "{}/".format(obj.id)
+        data = {"cancelled": True}
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        obj_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertFalse(response.data.get('approved'))
+        self.assertTrue(response.data.get('cancelled'))
+        self.assertNotEquals('jina', obj_refetched.name)

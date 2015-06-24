@@ -655,6 +655,7 @@ class Facility(SequenceMixin, AbstractBase):
             return 0
 
     def clean(self, *args, **kwargs):
+        super(Facility, self).clean()
         self.validate_publish(*args, **kwargs)
 
     def save(self, *args, **kwargs):
@@ -708,6 +709,7 @@ class FacilityUpdates(AbstractBase):
     """
     facility = models.ForeignKey(Facility, related_name='updates')
     approved = models.BooleanField(default=False)
+    cancelled = models.BooleanField(default=False)
     facility_updates = models.TextField()
 
     def update_facility(self):
@@ -715,11 +717,24 @@ class FacilityUpdates(AbstractBase):
         facility = Facility.objects.get(id=data.get('id'))
         for key, value in data.items():
             setattr(facility, key, value)
+        facility.has_edits = False
         facility.save(allow_save=True)
 
+    def validate_either_of_approve_or_cancel(self):
+        error = "You can only approve or cancel and not both"
+        if self.approved and self.cancelled:
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        super(FacilityUpdates, self).clean()
+        self.validate_either_of_approve_or_cancel()
+
     def save(self, *args, **kwargs):
-        if self.approved:
+        if self.approved and not self.cancelled:
             self.update_facility()
+        elif self.cancelled and not self.approved:
+            self.facility.has_edits = False
+            self.facility.save(allow_save=True)
         super(FacilityUpdates, self).save(*args, **kwargs)
 
 

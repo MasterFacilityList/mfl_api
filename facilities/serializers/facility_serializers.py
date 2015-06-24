@@ -228,6 +228,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     average_rating = serializers.ReadOnlyField()
     facility_services = serializers.ReadOnlyField(
         source="get_facility_services")
+    is_approved = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility
@@ -244,7 +245,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
-            "parent", "contacts"]
+            "parent", "contacts", "is_approved"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -267,7 +268,7 @@ class FacilityListSerializer(FacilitySerializer):
             'code', 'name', 'id', 'county', 'constituency',
             'facility_type_name', 'owner_type_name',
             'regulatory_status_name', 'ward', 'operation_status_name',
-            'ward_name', 'is_published']
+            'ward_name', 'is_published', "is_approved"]
 
 
 class FacilityContactSerializer(

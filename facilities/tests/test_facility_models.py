@@ -734,3 +734,7 @@ class TestFacilityUpdates(BaseTestCase):
         facility_refetched_2 = Facility.objects.get(
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
         self.assertEquals(updated_name, facility_refetched_2.name)
+
+    def test_approve_and_cancel_validation(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(FacilityUpdates, approved=True, cancelled=True)
