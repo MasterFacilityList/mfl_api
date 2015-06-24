@@ -1,26 +1,19 @@
 from rest_framework import generics
+
 from django.contrib.auth.models import Group, Permission
+
+from common.utilities import CustomRetrieveUpdateDestroyView
+
 from .models import MflUser, MFLOAuthApplication
+
 from .serializers import (
     MflUserSerializer,
     MFLOAuthApplicationSerializer,
     PermissionSerializer,
     GroupSerializer
 )
+
 from .filters import MFLUserFilter, PermissionFilter, GroupFilter
-
-
-# had to rewrite the classes due to cyclcic dependencies
-class CustomDestroyModelMixin(object):
-
-    def perform_destroy(self, instance):
-        instance.deleted = True
-        instance.save()
-
-
-class CustomRetrieveUpdateDestroyView(
-        CustomDestroyModelMixin, generics.RetrieveUpdateDestroyAPIView):
-    pass
 
 
 class PermissionsListView(generics.ListAPIView):
