@@ -19,7 +19,11 @@ from ..serializers import (
     FacilityDetailSerializer,
     FacilityStatusSerializer,
     FacilityUnitSerializer,
-    FacilityListSerializer
+    FacilityListSerializer,
+    FacilityOfficerSerializer,
+    RegulatoryBodyUserSerializer,
+    FacilityUnitRegulationSerializer,
+    FacilityUpdatesSerializer
 )
 from ..models import (
     OwnerType,
@@ -34,7 +38,15 @@ from ..models import (
     Option,
     ServiceOption,
     FacilityService,
-    FacilityContact
+    FacilityContact,
+    FacilityOfficer,
+    Officer,
+    RegulatingBody,
+    RegulatoryBodyUser,
+    FacilityUnitRegulation,
+    RegulationStatus,
+    FacilityApproval,
+    FacilityUpdates
 )
 
 
@@ -233,7 +245,8 @@ class TestFacilityView(LoginMixin, APITestCase):
                 "option_name": option.display_text,
                 "category_name": service_category.name,
                 "category_id": service_category.id,
-                "average_rating": facility_service.average_rating
+                "average_rating": facility_service.average_rating,
+                "number_of_ratings": 0
             }
         ]
         url = self.url + "{}/".format(facility.id)
@@ -286,6 +299,65 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
+
+    def test_get_approved_facilities(self):
+        self.maxDiff = None
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        url = self.url + "?is_approved=true"
+        response_1 = self.client.get(url)
+        expected_data_1 = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+            ]
+        }
+        self.assertEquals(200, response_1.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(expected_data_1, default=default)),
+            json.loads(json.dumps(response_1.data, default=default)))
+
+        url = self.url + "?is_approved=false"
+        response_2 = self.client.get(url)
+        expected_data_2 = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility_2).data
+            ]
+        }
+        self.assertEquals(200, response_1.status_code)
+        self.assertEquals(expected_data_2, response_2.data)
+
+    def test_get_facility_as_regulator(self):
+        self.client.logout()
+        user = mommy.make(get_user_model())
+        reg_body = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
+        self.assertIsNotNone(user.regulator)
+        self.client.force_authenticate(user)
+
+        facility = mommy.make(Facility, regulatory_body=reg_body)
+        mommy.make(Facility)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data,
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)
+
+    def test_get_facility_as_an_anonymous_user(self):
+        self.client.logout()
+        self.client.get(self.url)
 
 
 class CountyAndNationalFilterBackendTest(APITestCase):
@@ -558,3 +630,195 @@ class TestFacilityContactView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals('EMAIL', response.data.get('contact_type'))
         self.assertEquals('0700000000', response.data.get('actual_contact'))
+
+
+class TestFacilityOfficerView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityOfficerView, self).setUp()
+        self.url = reverse('api:facilities:facility_officers_list')
+
+    def test_list_facility_officers(self):
+        facility_officer = mommy.make(FacilityOfficer)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityOfficerSerializer(facility_officer).data
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrive_single_facility_officer(self):
+        facility_officer = mommy.make(FacilityOfficer)
+        url = self.url + "{}/".format(facility_officer.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(facility_officer.id), response.data.get('id'))
+
+    def test_post(self):
+        facility = mommy.make(Facility)
+        officer = mommy.make(Officer)
+        data = {
+            "facility": str(facility.id),
+            "officer": str(officer.id)
+        }
+        response = self.client.post(path=self.url, data=data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, FacilityOfficer.objects.count())
+
+
+class TestRegulatoryBodyUserView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestRegulatoryBodyUserView, self).setUp()
+        self.url = reverse("api:facilities:regulatory_body_users_list")
+
+    def test_listing(self):
+        reg_bod_user = mommy.make(RegulatoryBodyUser)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                RegulatoryBodyUserSerializer(reg_bod_user).data
+            ]
+        }
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrieving_single_record(self):
+        reg_bod_user = mommy.make(RegulatoryBodyUser)
+        url = self.url + "{}/".format(reg_bod_user.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = RegulatoryBodyUserSerializer(reg_bod_user).data
+        self.assertEquals(expected_data, response.data)
+
+    def test_posting(self):
+        reg_body = mommy.make(RegulatingBody)
+        user = mommy.make(get_user_model())
+        data = {
+            "regulatory_body": reg_body.id,
+            "user": user.id
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertIn('id', response.data)
+        self.assertEquals(1, RegulatingBody.objects.count())
+
+
+class TestFacilityRegulator(APITestCase):
+    def test_filtering_facilities_by_regulator(self):
+        url = reverse("api:facilities:facilities_list")
+        reg_body = mommy.make(RegulatingBody)
+        user = mommy.make(get_user_model(), password='test')
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
+        facility = mommy.make(Facility, regulatory_body=reg_body)
+        self.client.force_authenticate(user)
+        mommy.make(Facility)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+            ]
+        }
+        response = self.client.get(url)
+        self.assertEquals(expected_data, response.data)
+        self.assertEquals(200, response.status_code)
+
+
+class TestFacilityUnitRegulationView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityUnitRegulationView, self).setUp()
+        self.url = reverse("api:facilities:facility_unit_regulations_list")
+
+    def test_listing(self):
+        obj_1 = mommy.make(FacilityUnitRegulation)
+        obj_2 = mommy.make(FacilityUnitRegulation)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 2,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityUnitRegulationSerializer(obj_2).data,
+                FacilityUnitRegulationSerializer(obj_1).data
+            ]
+        }
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrieve_single_record(self):
+        obj = mommy.make(FacilityUnitRegulation)
+        url = self.url + "{}/".format(obj.id)
+        response = self.client.get(url)
+        expected_data = FacilityUnitRegulationSerializer(obj).data
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)
+
+    def test_posting(self):
+        facility_unit = mommy.make(FacilityUnit)
+        reg_status = mommy.make(RegulationStatus)
+        data = {
+            "facility_unit": str(facility_unit.id),
+            "regulation_status": str(reg_status.id)
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertIn('id', response.data)
+
+
+class TestFacilityUpdates(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityUpdates, self).setUp()
+        self.url = reverse('api:facilities:facility_updatess_list')
+
+    def test_listing(self):
+        obj = mommy.make(FacilityUpdates)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilityUpdatesSerializer(obj).data
+
+            ]
+        }
+        self.assertEquals(expected_data, response.data)
+
+    def test_retrieving(self):
+        obj = mommy.make(FacilityUpdates)
+        url = self.url + "{}/".format(obj.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = FacilityUpdatesSerializer(obj).data
+        self.assertEquals(expected_data, response.data)
+
+    def test_approving(self):
+        facility = mommy.make(
+            Facility,
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        obj = mommy.make(
+            FacilityUpdates,
+            facility=facility,
+            facility_updates=json.dumps(
+                {
+                    "name": "jina",
+                    "id": str(facility.id)
+                }
+            ))
+        url = self.url + "{}/".format(obj.id)
+        data = {"approved": True}
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        obj_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertTrue(response.data.get('approved'))
+        self.assertEquals('jina', obj_refetched.name)

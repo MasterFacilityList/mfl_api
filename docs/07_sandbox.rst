@@ -13,13 +13,13 @@ The API can be interacted with through Swagger from the link ``api/explore/``
 
 The Browsable API
 ------------------
-The  API is accesible from the URL ``api/``. This is the entry point into the 
-entire list of all the URLS in the API and the methods and that are allowed on an 
+The  API is accesible from the URL ``api/``. This is the entry point into the
+entire list of all the URLs in the API and the methods and that are allowed on an
 endpoint.
 
 API Metadata support
 --------------------
-The ``api/`` URL has been designed to make it easy for a client accessing an endpoint 
+The ``api/`` URL has been designed to make it easy for a client accessing an endpoint
 to know the methods that are allowed on the endpoint. The metadata support also allows
 a client to know the fields that an endpoint accepts and whether they are required or
 not.

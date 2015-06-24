@@ -26,7 +26,11 @@ from ..models import (
     FacilityOperationState,
     FacilityUpgrade,
     RegulatingBodyContact,
-    FacilityServiceRating
+    FacilityServiceRating,
+    FacilityOfficer,
+    RegulatoryBodyUser,
+    FacilityUnitRegulation,
+    FacilityUpdates
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -46,6 +50,23 @@ BOOLEAN_CHOICES = (
     ('Y', 'True'),
     ('N', 'False')
 )
+
+TRUTH_NESS = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+
+
+class FacilityUpdatesFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityUpdates
+
+
+class RegulatoryBodyUserFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = RegulatoryBodyUser
+
+
+class FacilityOfficerFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = FacilityOfficer
 
 
 class FacilityServiceRatingFilter(CommonFieldsFilterset):
@@ -236,14 +257,11 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 class FacilityFilter(CommonFieldsFilterset):
     def filter_regulated_facilities(self, value):
-        truth_ness = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
-        # false_ness = ['False', 'false', 'f', 'F', 'N', 'no', 'No', 'n']"""
-
         regulated_facilities = [
             obj.facility.id for obj in FacilityRegulationStatus.objects.filter(
                 is_confirmed=True)]
 
-        if value in truth_ness:
+        if value in TRUTH_NESS:
             return Facility.objects.filter(id__in=regulated_facilities)
         else:
             return Facility.objects.exclude(id__in=regulated_facilities)
@@ -255,6 +273,16 @@ class FacilityFilter(CommonFieldsFilterset):
 
         return Facility.objects.filter(id__in=facility_ids)
 
+    def filter_approved_facilities(self, value):
+        approved_facilities = [
+            approval.facility.id
+            for approval in FacilityApproval.objects.all()]
+        if value in TRUTH_NESS:
+            return Facility.objects.filter(id__in=approved_facilities)
+        else:
+            return Facility.objects.exclude(id__in=approved_facilities)
+
+    id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
     description = ListCharFilter(lookup_type='icontains')
@@ -276,14 +304,15 @@ class FacilityFilter(CommonFieldsFilterset):
     owner = ListCharFilter(lookup_type='icontains')
     owner_type = ListCharFilter(name='owner__owner_type', lookup_type='exact')
     officer_in_charge = ListCharFilter(lookup_type='icontains')
-
     number_of_beds = ListIntegerFilter(lookup_type='exact')
     number_of_cots = ListIntegerFilter(lookup_type='exact')
-
     open_whole_day = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
-    open_whole_week = django_filters.TypedChoiceFilter(
+    open_weekends = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    open_public_holidays = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
     is_classified = django_filters.TypedChoiceFilter(
@@ -294,6 +323,8 @@ class FacilityFilter(CommonFieldsFilterset):
         coerce=strtobool)
     is_regulated = django_filters.MethodFilter(
         action=filter_regulated_facilities)
+    is_approved = django_filters.MethodFilter(
+        action=filter_approved_facilities)
     service_category = django_filters.MethodFilter(
         action=service_filter)
 
@@ -308,3 +339,9 @@ class FacilityUnitFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityUnit
+
+
+class FacilityUnitRegulationFilter(CommonFieldsFilterset):
+
+    class Meta(object):
+        model = FacilityUnitRegulation

@@ -14,7 +14,9 @@ from ..models import (
     ContactType,
     Constituency,
     Ward,
-    UserContact
+    UserContact,
+    UserConstituency,
+    UserCounty
 )
 from ..serializers import (
     ContactSerializer,
@@ -24,7 +26,8 @@ from ..serializers import (
     CountyDetailSerializer,
     ConstituencySerializer,
     ConstituencyDetailSerializer,
-    UserContactSerializer
+    UserContactSerializer,
+    UserConstituencySerializer
 )
 from ..views import APIRoot
 
@@ -536,3 +539,86 @@ class TestDeleting(LoginMixin, APITestCase):
             County.objects.get(id=county.id)
 
         self.assertEquals(1, County.everything.filter(id=county.id).count())
+
+
+class TestSlimDetailViews(LoginMixin, APITestCase):
+    def test_get_county_slim_detail_view(self):
+        county = mommy.make(County)
+        url = reverse('api:common:county_slim_detail', args=[str(county.id)])
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_get_consituency_slim_detail_view(self):
+        const = mommy.make(Constituency)
+        url = reverse(
+            'api:common:constituency_slim_detail', args=[str(const.id)])
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_get_ward_slim_detail_view(self):
+        ward = mommy.make(Ward)
+        url = reverse('api:common:ward_slim_detail', args=[str(ward.id)])
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+
+class TestUserConstituenciesView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestUserConstituenciesView, self).setUp()
+        self.url = reverse("api:common:user_constituencies_list")
+
+    def test_test_listing(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user, county=county)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, user=self.user, county=county)
+        user_const_1 = mommy.make(
+            UserConstituency, constituency=const, created_by=user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                UserConstituencySerializer(user_const_1).data
+            ]
+        }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_retrieve_single_user_constituency(self):
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user, county=county)
+        const = mommy.make(Constituency, county=county)
+        user_const_1 = mommy.make(
+            UserConstituency, constituency=const, created_by=user)
+        mommy.make(
+            UserConstituency, user=user_2, constituency=const,
+            created_by=user)
+        url = self.url + "{}/".format(user_const_1.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = UserConstituencySerializer(user_const_1).data
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_posting(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, user=self.user, county=county, active=True)
+        data = {
+            "constituency": str(const.id),
+            "user": str(user.id)
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, UserConstituency.objects.count())
+        self.assertIn('id', json.loads(json.dumps(
+            response.data, default=default)))

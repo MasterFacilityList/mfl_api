@@ -21,7 +21,7 @@
                 "password": "pbkdf2_sha256$20000$B87Tl533sMfm$0GpKK5AjCrWekB1lcT38VDtOxBW+AClOeCc0G2xnQVI=",
                 "is_staff": true,
                 "is_national": true,
-                "is_superuser": true
+                "is_superuser": false
             },
             {
                 "email": "chrio@mfltest.slade360.co.ke",
@@ -31,7 +31,7 @@
                 "password": "pbkdf2_sha256$20000$tewjoEaE4psT$9a68nHrW57V8L7u/g8gy9e4FAtOf1EkvYQBUb1rm+vw=",
                 "is_staff": true,
                 "is_national": false,
-                "is_superuser": true
+                "is_superuser": false
             },
             {
                 "email": "public@mfltest.slade360.co.ke",
@@ -92,6 +92,66 @@
                 "is_staff": false,
                 "is_national": false,
                 "is_superuser": false
+            },
+            {
+                "email": "starehe@mfltest.slade360.co.ke",
+                "first_name": "Jacob",
+                "last_name": "Maina",
+                "username": "starehe",
+                "password": "pbkdf2_sha256$20000$5qz5jRLDVSVh$CqxdDj2Ti83SRE7F7gZF4SMRbZqHYCjTmo7UjsILnfc='",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "mathare@mfltest.slade360.co.ke",
+                "first_name": "Mark",
+                "last_name": "Waruuinge",
+                "username": "mathare",
+                "password": "pbkdf2_sha256$20000$oJmTBacwdFqL$kl5OsX5GY9EpBz6KY2Cn09uhxpiilu9RG+QuSow+jF0=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "kamukunji@mfltest.slade360.co.ke",
+                "first_name": "Janet",
+                "last_name": "Muli",
+                "username": "kamukunji",
+                "password": "pbkdf2_sha256$20000$CC7MHde2GQpT$MERrHNQHe2Du9U5opY2xaFWLq/amh5/YADyFZr7r02g=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "john_kmpdb@mfltest.slade360.co.ke",
+                "first_name": "John",
+                "last_name": "Mureithi",
+                "username": "john_kmpdb",
+                "password": "pbkdf2_sha256$20000$0Se9YdE6TeyX$CSbU5/p1rg/fkDMtr8SIgoMBcgCWLTH0+P0HcFOWOqI=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "susan_coc@mfltest.slade360.co.ke",
+                "first_name": "Susan",
+                "last_name": "Njoroge",
+                "username": "susan_coc",
+                "password": "pbkdf2_sha256$20000$qAtr2dfXTd95$QdujTMyNGLPeM+754bFb5iMZtLaH+P5EDnA186dBJ44=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
+            },
+            {
+                "email": "doe_ncck@mfltest.slade360.co.ke",
+                "first_name": "Joseph",
+                "last_name": "Doe",
+                "username": "doe-ncck",
+                "password": "pbkdf2_sha256$20000$kmWwTFRg8FnO$6nc/6kxB65mWCSzwxw8zKSpgoWTno1rH8Yb9bCbvviY=",
+                "is_staff": false,
+                "is_national": false,
+                "is_superuser": false
             }
         ]
     },
@@ -141,18 +201,96 @@
             }
         ]
     },
-    {   
+    {
+        "model": "common.UserConstituency",
+        "unique_fields": ["user", "constituency"],
+        "records": [
+            {
+                "user": {
+                    "email": "starehe@mfltest.slade360.co.ke"
+                },
+                "constituency": {
+                    "code": 289
+                }
+            },
+            {
+                "user": {
+                    "email": "mathare@mfltest.slade360.co.ke"
+                },
+                "constituency": {
+                    "code": 290
+                }
+            },
+            {
+                "user": {
+                    "email": "kamukunji@mfltest.slade360.co.ke"
+                },
+                "constituency": {
+                    "code": 288
+                }
+            }
+        ]
+    },
+    {
+        "model": "facilities.RegulatoryBodyUser",
+        "unique_fields": ["user", "regulatory_body"],
+        "records": [
+            {
+                "user": {
+                    "email": "john_kmpdb@mfltest.slade360.co.ke"
+                },
+                "regulatory_body": {
+                   "name": "Kenya MPDB - Institution"
+                }
+            },
+            {
+                "user": {
+                    "email": "doe_ncck@mfltest.slade360.co.ke"
+                },
+                "regulatory_body": {
+                    "name": "Nursing Council of Kenya (Private Practice)"
+                }
+            },
+            {
+                "user": {
+                    "email": "susan_coc@mfltest.slade360.co.ke"
+                },
+                "regulatory_body": {
+                    "name": "Clinical Officers Council"
+                }
+            }
+        ]
+    },
+    {
 
         "model": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
 
         "records": [
             {
+                "contact": "kamukunji@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+             {
+                "contact": "starehe@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+             {
+                "contact": "mathare@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            {
                 "contact": "mombasa@mfltest.slade360.co.ke",
                 "contact_type": {
                     "name": "EMAIL"
                 }
-            },            
+            },
             {
                 "contact": "kilifi@mfltest.slade360.co.ke",
                 "contact_type": {
@@ -176,15 +314,66 @@
                 "contact_type": {
                     "name": "EMAIL"
                 }
+            },
+            {
+                "contact": "susan_coc@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            {
+                "contact": "john_kmpdb@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            {
+                "contact": "doe_ncck@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
             }
         ]
     },
-    {   
+    {
 
         "model": "common.UserContact",
         "unique_fields": ["user", "contact"],
 
         "records": [
+        {
+            "contact": {
+                "contact": "susan_coc@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+           "user": {
+                    "email": "mombasa@mfltest.slade360.co.ke"
+                }
+        },
+        {
+            "contact": {
+                "contact": "doe_ncck@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+           "user": {
+                    "email": "mombasa@mfltest.slade360.co.ke"
+                }
+        },
+        {
+            "contact": {
+                "contact": "john_kmpdb@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+           "user": {
+                    "email": "mombasa@mfltest.slade360.co.ke"
+                }
+        },
 
         {
             "contact": {
@@ -197,7 +386,40 @@
                     "email": "mombasa@mfltest.slade360.co.ke"
                 }
         },
-        {       
+        {
+            "contact": {
+                "contact": "starehe@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+           "user": {
+                    "email": "starehe@mfltest.slade360.co.ke"
+                }
+        },
+        {
+            "contact": {
+                "contact": "mathare@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+           "user": {
+                    "email": "mathare@mfltest.slade360.co.ke"
+                }
+        },
+        {
+            "contact": {
+                "contact": "kamukunji@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+           "user": {
+                    "email": "kamukunji@mfltest.slade360.co.ke"
+                }
+        },
+        {
             "contact": {
                 "contact": "kilifi@mfltest.slade360.co.ke",
                 "contact_type": {
@@ -208,7 +430,7 @@
                     "email": "kilifi@mfltest.slade360.co.ke"
                 }
         },
-        {  
+        {
             "contact": {
                 "contact": "nairobi@mfltest.slade360.co.ke",
                 "contact_type": {

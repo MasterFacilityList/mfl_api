@@ -5,10 +5,13 @@ from .views import (
     ContactDetailView,
     CountyView,
     CountyDetailView,
+    CountySlimDetailView,
     ConstituencyView,
     ConstituencyDetailView,
+    ConstituencySlimDetailView,
     WardView,
     WardDetailView,
+    WardSlimDetailView,
     ContactTypeListView,
     ContactTypeDetailView,
     UserCountyView,
@@ -19,12 +22,20 @@ from .views import (
     TownDetailView,
     PhysicalAddressView,
     PhysicalAddressDetailView,
-    FilteringSummariesView
+    FilteringSummariesView,
+    UserConstituencyDetailView,
+    UserConstituencyListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^user_constituencies/$',
+        UserConstituencyListView.as_view(),
+        name='user_constituencies_list'),
+    url(r'^user_constituencies/(?P<pk>[^/]+)/$',
+        UserConstituencyDetailView.as_view(),
+        name='user_constituency_detail'),
 
     url(r'^contact_types/$', ContactTypeListView.as_view(),
         name='contact_types_list'),
@@ -46,6 +57,9 @@ urlpatterns = patterns(
     url(r'^counties/(?P<pk>[^/]+)/$',
         cache_page(60*60*12)(CountyDetailView.as_view()),
         name='county_detail'),
+    url(r'^counties/slim_detail/(?P<pk>[^/]+)/$',
+        cache_page(60*60*12)(CountySlimDetailView.as_view()),
+        name='county_slim_detail'),
 
     url(r'^user_counties/$',
         UserCountyView.as_view(),
@@ -60,6 +74,9 @@ urlpatterns = patterns(
     url(r'^wards/(?P<pk>[^/]+)/$',
         cache_page(60*60*12)(WardDetailView.as_view()),
         name='ward_detail'),
+    url(r'^wards/slim_detail/(?P<pk>[^/]+)/$',
+        cache_page(60*60*12)(WardSlimDetailView.as_view()),
+        name='ward_slim_detail'),
 
     url(r'^towns/$', TownListView.as_view(), name='towns_list'),
     url(r'^towns/(?P<pk>[^/]+)/$', TownDetailView.as_view(),
@@ -71,6 +88,9 @@ urlpatterns = patterns(
     url(r'^constituencies/(?P<pk>[^/]+)/$',
         cache_page(60*60*12)(ConstituencyDetailView.as_view()),
         name='constituency_detail'),
+    url(r'^constituencies/slim_detail/(?P<pk>[^/]+)/$',
+        cache_page(60*60*12)(ConstituencySlimDetailView.as_view()),
+        name='constituency_slim_detail'),
 
     url(r'^address/$', PhysicalAddressView.as_view(),
         name='physical_addresses_list'),

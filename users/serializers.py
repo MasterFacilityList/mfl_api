@@ -4,7 +4,11 @@ from django.contrib.auth.models import Group, Permission
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from common.serializers import UserCountySerializer
+from common.serializers import (
+    UserCountySerializer,
+    UserConstituencySerializer,
+    UserContactSerializer)
+from facilities.serializers import RegulatoryBodyUserSerializer
 from .models import MflUser, MFLOAuthApplication
 
 
@@ -37,6 +41,7 @@ def _lookup_groups(validated_data):
 
 
 class PermissionSerializer(serializers.ModelSerializer):
+
     """This is intended to power a read-only view"""
     class Meta(object):
         model = Permission
@@ -44,6 +49,7 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
+
     """This is intended to power retrieval, creation and addition of groups
 
     # Assigning permissions to a group
@@ -104,8 +110,9 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class MflUserSerializer(serializers.ModelSerializer):
+
     """This should allow everything about users to be managed"""
-    counties = UserCountySerializer(many=True, required=False)
+    user_counties = UserCountySerializer(many=True, required=False)
 
     short_name = serializers.ReadOnlyField(source='get_short_name')
     full_name = serializers.ReadOnlyField(source='get_full_name')
@@ -115,6 +122,16 @@ class MflUserSerializer(serializers.ModelSerializer):
 
     user_permissions = PermissionSerializer(many=True, required=False)
     groups = GroupSerializer(many=True, required=False)
+    regulator = serializers.ReadOnlyField(source='regulator.id')
+    regulator_name = serializers.ReadOnlyField(source='regulator.name')
+    county = serializers.ReadOnlyField(source='county.id')
+    county_name = serializers.ReadOnlyField(source='county.name')
+    constituency = serializers.ReadOnlyField(source='constituency.id')
+    constituency_name = serializers.ReadOnlyField(
+        source='constituency.name')
+    user_contacts = UserContactSerializer(many=True, required=False)
+    regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
+    user_constituencies = UserConstituencySerializer(many=True, required=False)
 
     @transaction.atomic
     def create(self, validated_data):
@@ -132,11 +149,17 @@ class MflUserSerializer(serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
+        pwd = validated_data.pop('password', None)
+
         # This does not handle password changes intelligently
         # Use the documented password change endpoints
         # Also: teach your API consumers to always prefer PATCH to PUT
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+
+        if pwd is not None:
+            instance.set_password(pwd)
+
         instance.save()
 
         instance.groups.clear()
@@ -151,6 +174,7 @@ class MflUserSerializer(serializers.ModelSerializer):
 
 
 class MFLOAuthApplicationSerializer(serializers.ModelSerializer):
+
     """This powers the creation of OAuth2 applications"""
 
     class Meta(object):

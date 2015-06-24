@@ -12,7 +12,8 @@ from ..models import (
     ContactType,
     UserCounty,
     UserContact,
-    Town
+    Town,
+    UserConstituency
 )
 from facilities.models import(
     FacilityStatus,
@@ -30,11 +31,15 @@ from ..serializers import (
     PhysicalAddressSerializer,
     ConstituencySerializer,
     ConstituencyDetailSerializer,
+    ConstituencySlimDetailSerializer,
+    CountySlimDetailSerializer,
+    WardSlimDetailSerializer,
     ContactTypeSerializer,
     UserCountySerializer,
     UserContactSerializer,
     TownSerializer,
-    FilteringSummariesSerializer
+    FilteringSummariesSerializer,
+    UserConstituencySerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -45,7 +50,8 @@ from ..filters import (
     WardFilter,
     UserCountyFilter,
     UserContactFilter,
-    TownFilter
+    TownFilter,
+    UserConstituencyFilter
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
@@ -124,10 +130,20 @@ class CountyView(generics.ListCreateAPIView):
 class CountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
-    Retrieves a patricular county
+    Retrieves a patricular county including the county boundary
+    and its facility coordinates
     """
     queryset = County.objects.all()
     serializer_class = CountyDetailSerializer
+
+
+class CountySlimDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves the primary details of a county
+    """
+    queryset = County.objects.all()
+    serializer_class = CountySlimDetailSerializer
 
 
 class WardView(generics.ListCreateAPIView):
@@ -151,10 +167,20 @@ class WardView(generics.ListCreateAPIView):
 class WardDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
-    Retrieves a patricular ward
+    Retrieves a patricular ward details including ward boundaries
+    and facility coordinates
     """
     queryset = Ward.objects.all()
     serializer_class = WardDetailSerializer
+
+
+class WardSlimDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a patricular ward primary details
+    """
+    queryset = Ward.objects.all()
+    serializer_class = WardSlimDetailSerializer
 
 
 class ConstituencyView(generics.ListCreateAPIView):
@@ -181,6 +207,12 @@ class ConstituencyDetailView(
     """
     queryset = Constituency.objects.all()
     serializer_class = ConstituencyDetailSerializer
+
+
+class ConstituencySlimDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = Constituency.objects.all()
+    serializer_class = ConstituencySlimDetailSerializer
 
 
 class ContactTypeListView(generics.ListCreateAPIView):
@@ -316,3 +348,16 @@ class FilteringSummariesView(views.APIView):
         else:
             res = {}
         return response.Response(res)
+
+
+class UserConstituencyListView(generics.ListCreateAPIView):
+    serializer_class = UserConstituencySerializer
+    filter_class = UserConstituencyFilter
+    queryset = UserConstituency.objects.all()
+    ordering_fields = ('user', 'constituency')
+
+
+class UserConstituencyDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserConstituencySerializer
+    queryset = UserConstituency.objects.all()

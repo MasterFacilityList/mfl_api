@@ -9,6 +9,7 @@ BASE_DIR = os.path.dirname(
 env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
     DEBUG=(bool, True),
+    FRONTEND_URL=(str, "http://localhost:8062")
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -120,7 +121,7 @@ REST_FRAMEWORK = {
         'rating': '1/day'
     },
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissions',
+        'users.permissions.MFLModelPermissions',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
@@ -274,7 +275,7 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": True,
+    "REALTIME_INDEX": False,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
         "mfl_gis.WorldBorder",
@@ -306,4 +307,8 @@ SITE_ID = 1
 
 EXCEL_EXCEPT_FIELDS = [
     'id', 'updated', 'created', 'created_by', 'updated_by', 'active',
-    'deleted', 'search']
+    'deleted', 'search'
+]
+
+FRONTEND_URL = env("FRONTEND_URL")
+PASSWORD_RESET_URL = "%s/#/reset_pwd_confirm/{uid}/{token}" % FRONTEND_URL

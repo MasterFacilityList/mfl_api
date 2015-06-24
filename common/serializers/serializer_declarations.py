@@ -9,7 +9,8 @@ from ..models import (
     ContactType,
     UserCounty,
     UserContact,
-    Town
+    Town,
+    UserConstituency
 )
 from .serializer_base import AbstractFieldsMixin
 
@@ -35,6 +36,7 @@ class ContactTypeSerializer(
 
 class ContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    contact_type_name = serializers.ReadOnlyField(source='contact_type.name')
 
     class Meta(object):
         model = Contact
@@ -60,6 +62,14 @@ class CountyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     county_boundary = CountyBoundarySerializer(
         source='countyboundary', read_only=True)
     facility_coordinates = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = County
+        read_only_fields = ('code',)
+
+
+class CountySlimDetailSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = County
@@ -93,6 +103,12 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
         read_only_fields = ('code',)
 
 
+class WardSlimDetailSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = Ward
+
+
 class ConstituencySerializer(AbstractFieldsMixin, GeoModelSerializer):
 
     class Meta(object):
@@ -110,6 +126,13 @@ class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     class Meta(object):
         model = Constituency
         read_only_fields = ('code',)
+
+
+class ConstituencySlimDetailSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta(object):
+        model = Constituency
 
 
 class UserCountySerializer(
@@ -137,3 +160,15 @@ class FilteringSummariesSerializer(serializers.Serializer):
     facility_type = FilteringOptionsSerializer(many=True)
     service_category = FilteringOptionsSerializer(many=True)
     operation_status = FilteringOptionsSerializer(many=True)
+
+
+class UserConstituencySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    user_email = serializers.ReadOnlyField(source='user.email')
+    user_name = serializers.ReadOnlyField(source='user.get_full_name')
+    constituency_name = serializers.ReadOnlyField(source='constituency.name')
+    county_name = serializers.ReadOnlyField(source='constituency.county.name')
+    county_id = serializers.ReadOnlyField(source='constituency.county.id')
+
+    class Meta:
+        model = UserConstituency

@@ -13,6 +13,7 @@ from ..serializers import _lookup_groups
 
 
 class TestLogin(APITestCase):
+
     def setUp(self):
         self.user = MflUser.objects.create(
             'user@test.com', 'pass', 'pass', 'pass'
@@ -66,6 +67,7 @@ class TestLogin(APITestCase):
 
 
 class TestUserViews(LoginMixin, APITestCase):
+
     def test_create_user(self):
         create_url = reverse('api:users:mfl_users_list')
         group = Group.objects.create(name="Test Group")
@@ -102,6 +104,23 @@ class TestUserViews(LoginMixin, APITestCase):
             group.name
         )
 
+    def test_update_user_pwd(self):
+        user = MflUser.objects.create(
+            'user@test.com', 'pass', 'pass', 'pass'
+        )
+        update_url = reverse(
+            'api:users:mfl_user_detail', kwargs={'pk': user.id})
+        patch_data = {
+            "first_name": "Phyll",
+            "password": "yeah",
+        }
+        response = self.client.patch(update_url, patch_data)
+        self.assertEqual(200, response.status_code)
+
+        user = MflUser.objects.get(id=user.id)
+        self.assertTrue(user.check_password(patch_data['password']))
+        self.assertEqual(user.first_name, patch_data["first_name"])
+
     def test_failed_create(self):
         create_url = reverse('api:users:mfl_users_list')
         data = {
@@ -119,6 +138,7 @@ class TestUserViews(LoginMixin, APITestCase):
 
 
 class TestGroupViews(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestGroupViews, self).setUp()
         self.url = reverse('api:users:groups_list')

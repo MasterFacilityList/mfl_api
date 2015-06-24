@@ -1,8 +1,11 @@
-[program:mfl_api]
-command=/opt/mfl_api_virtualenv/bin/gunicorn -w 3 --timeout=300 --graceful-timeout=300 config.wsgi:application
+{% for p in app_ports %}
+[program:mfl_api__{{p}}]
+command=/opt/mfl_api_virtualenv/bin/gunicorn -w 3 --timeout=300 --graceful-timeout=300 config.wsgi:application --bind=127.0.0.1:{{p}} --access-logfile - --error-logfile - --log-level info
 directory=/opt/mfl_api
 user=nobody
 autostart=true
 autorestart=true
 redirect_stderr=true
-environment=DEBUG="{{django_debug}}"
+environment=DEBUG="{{django_debug}}",FRONTEND_URL="{{frontend_url}}"
+
+{% endfor %}

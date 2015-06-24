@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 
 from collections import defaultdict
 from django.apps import apps
@@ -167,18 +168,22 @@ def _process_model_spec(model_spec):
 def process_json_file(filename):
     """The entry point - loops through data files and loads each in"""
     assert isinstance(filename, str)
-    LOGGER.info('Processing {}'.format(filename))
+    if os.path.isdir(filename):
+        LOGGER.info("Filename points to a directory")
+        return
+    else:
+        LOGGER.info('Processing {}'.format(filename))
 
-    with open(filename) as f:
-        model_specs = json.load(f)
-        assert isinstance(model_specs, list)
-        assert len(model_specs) > 0
+        with open(filename) as f:
+            model_specs = json.load(f)
+            assert isinstance(model_specs, list)
+            assert len(model_specs) > 0
 
-        for model_spec in model_specs:
-            try:
-                _process_model_spec(model_spec)
-            except Exception as ex:  # Broad catch to allow debug messages
-                import traceback
-                traceback.print_exc()
-                LOGGER.error(
-                    '{} when processing {:.1000}'.format(ex, model_spec))
+            for model_spec in model_specs:
+                try:
+                    _process_model_spec(model_spec)
+                except Exception as ex:  # Broad catch to allow debug messages
+                    import traceback
+                    traceback.print_exc()
+                    LOGGER.error(
+                        '{} when processing {:.1000}'.format(ex, model_spec))

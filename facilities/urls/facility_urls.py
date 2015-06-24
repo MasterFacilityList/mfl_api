@@ -51,12 +51,45 @@ from ..views import (
     RegulatingBodyContactDetailView,
     FacilityCorrectionTemplate,
     DashBoard,
-    FacilityListReadOnlyView
+    FacilityListReadOnlyView,
+    FacilityOfficerDetailView,
+    FacilityOfficerListView,
+    RegulatoryBodyUserListView,
+    RegulatoryBodyUserDetailView,
+    FacilityUnitRegulationListView,
+    FacilityUnitRegulationDetailView,
+    FacilityUpdatesListView,
+    FacilityUpdatesDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^facility_updates/$',
+        FacilityUpdatesListView.as_view(),
+        name='facility_updatess_list'),
+    url(r'^facility_updates/(?P<pk>[^/]+)/$',
+        FacilityUpdatesDetailView.as_view(),
+        name='facility_updates_detail'),
+
+    url(r'^facility_unit_regulation/$',
+        FacilityUnitRegulationListView.as_view(),
+        name='facility_unit_regulations_list'),
+    url(r'^facility_unit_regulation/(?P<pk>[^/]+)/$',
+        FacilityUnitRegulationDetailView.as_view(),
+        name='facility_unit_regulation_detail'),
+
+    url(r'^regulatory_body_users/$', RegulatoryBodyUserListView.as_view(),
+        name='regulatory_body_users_list'),
+    url(r'^regulatory_body_users/(?P<pk>[^/]+)/$',
+        RegulatoryBodyUserDetailView.as_view(),
+        name='regulatory_body_user_detail'),
+
+    url(r'^facility_officers/$', FacilityOfficerListView.as_view(),
+        name='facility_officers_list'),
+    url(r'^facility_officers/(?P<pk>[^/]+)/$',
+        FacilityOfficerDetailView.as_view(),
+        name='facility_officer_detail'),
 
     url(r'^dashboard/$', DashBoard.as_view(),
         name='dashboard'),
