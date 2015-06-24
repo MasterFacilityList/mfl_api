@@ -1,5 +1,6 @@
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin
+from common.utilities import CustomRetrieveUpdateDestroyView
 from django.contrib.auth.models import AnonymousUser
 
 from ..models import (
