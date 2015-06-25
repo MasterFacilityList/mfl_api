@@ -502,12 +502,12 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="This depends on who owns the facility. For MOH facilities,"
         "type is the gazetted classification of the facility."
         "For Non-MOH check under the respective owners.",
-        on_delete=models.PROTECT)
+        on_delete=models.PROTECT, editable=False)
     operation_status = models.ForeignKey(
         FacilityStatus, null=True, blank=True,
         help_text="Indicates whether the facility"
         "has been approved to operate, is operating, is temporarily"
-        "non-operational, or is closed down")
+        "non-operational, or is closed down", editable=False)
     ward = models.ForeignKey(
         Ward,
         on_delete=models.PROTECT,
@@ -526,7 +526,7 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
     regulatory_body = models.ForeignKey(
-        RegulatingBody, null=True, blank=True)
+        RegulatingBody, null=True, blank=True, editable=False)
     has_edits = models.BooleanField(
         default=False,
         help_text='Indicates that a facility has updates that have been made')
