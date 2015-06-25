@@ -337,3 +337,16 @@ class FacilityUpdatesDetailView(CustomRetrieveUpdateDestroyView):
     """
     queryset = FacilityUpdates.objects.all()
     serializer_class = FacilityUpdatesSerializer
+
+    # def update(self, request, *args, **kwargs):
+    #     partial = kwargs.pop('partial', False)
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(
+    #         instance, data=request.data, partial=partial)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_update(serializer)
+    #     if hasattr(instance, 'facility'):
+    #         data = FacilityDetailSerializer(instance.facility).data
+    #     else:
+    #         data = {}
+    #     return Response(data)

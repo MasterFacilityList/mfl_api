@@ -879,6 +879,8 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.assertIsNone(obj_refetched.lastest_update)
         self.assertTrue(response.data.get('approved'))
         self.assertEquals('jina', obj_refetched.name)
+        expected_data = FacilityUpdatesSerializer(obj_refetched).data
+        self.assertEquals(expected_data, response.data)
 
     def test_cancelling(self):
         facility = mommy.make(
