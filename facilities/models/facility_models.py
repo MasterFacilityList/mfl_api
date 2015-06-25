@@ -677,6 +677,17 @@ class Facility(SequenceMixin, AbstractBase):
         self.validate_publish(*args, **kwargs)
         self.validate_only_one_udpate_at_a_time()
 
+    def _dump_updates(self):
+        fields = [field.name for field in self._meta.fields]
+        origi_model = self.__class__.objects.get(pk=self.pk)
+        data = {}
+
+        for field in fields:
+            if getattr(self, field) != getattr(origi_model, field):
+                data[field] = str(getattr(self, field))
+
+        return json.dumps(data)
+
     def save(self, *args, **kwargs):
         """
         Overide the save method in order to capture updates to a facility.
@@ -692,21 +703,10 @@ class Facility(SequenceMixin, AbstractBase):
             if allow_save:
                 super(Facility, self).save(*args, **kwargs)
             else:
-                fields = [field.name for field in self._meta.fields]
-                data = {}
-                for field in fields:
-                    field_data = getattr(self, field)
-                    if hasattr(field_data, 'id'):
-                        field_name = field + '_id'
-                        data[field_name] = str(getattr(field_data, 'id'))
-                    else:
-                        data[field] = str(field_data)
-                for key, value in data.items():
-                    if value == 'None':
-                        data.pop(key)
-                data = json.dumps(data)
+                updates = self._dump_updates()
                 FacilityUpdates.objects.create(
-                    facility_updates=data, facility=self)
+                    facility_updates=updates, facility=self
+                )
         except ObjectDoesNotExist:
             super(Facility, self).save(*args, **kwargs)
 
