@@ -733,10 +733,9 @@ class FacilityUpdates(AbstractBase):
 
     def update_facility(self):
         data = json.loads(self.facility_updates)
-        facility = Facility.objects.get(id=data.get('id'))
         for key, value in data.items():
-            setattr(facility, key, value)
-        facility.save(allow_save=True)
+            setattr(self.facility, key, value)
+        self.facility.save(allow_save=True)
 
     def validate_either_of_approve_or_cancel(self):
         error = "You can only approve or cancel and not both"
