@@ -19,11 +19,9 @@ class SearchFilter(django_filters.filters.Filter):
         index_name = settings.SEARCH.get('INDEX_NAME')
         if self.search_type == 'full_text':
             result = api.search_document(index_name, document_type, value)
-        elif self.search_type == 'auto_complete':
+        else:
             result = api.search_auto_complete_document(
                 index_name, document_type, value)
-        else:
-            raise NotImplementedError
 
         hits = []
         try:
@@ -32,10 +30,15 @@ class SearchFilter(django_filters.filters.Filter):
         except AttributeError:
             hits = hits
         hits_ids_list = []
+        hits_and_scores = []
 
         for hit in hits:
             obj_id = hit.get('_id')
+            instance = qs.model.objects.get(id=obj_id)
+            score = hit.get('_score')
+            instance.search = score
             hits_ids_list.append(obj_id)
+            hits_and_scores.append({'id': obj_id, 'score': score})
 
         hits_qs = qs.model.objects.filter(id__in=hits_ids_list)
 
@@ -44,7 +47,6 @@ class SearchFilter(django_filters.filters.Filter):
         combined_results = list(set(hits_qs).intersection(qs))
         combined_results_ids = [obj.id for obj in combined_results]
         final_queryset = qs.model.objects.filter(id__in=combined_results_ids)
-
         return final_queryset
 
 

@@ -245,7 +245,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
-            "parent", "contacts", "is_approved"]
+            "parent", "contacts", "is_approved", 'search']
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -268,7 +268,7 @@ class FacilityListSerializer(FacilitySerializer):
             'code', 'name', 'id', 'county', 'constituency',
             'facility_type_name', 'owner_type_name',
             'regulatory_status_name', 'ward', 'operation_status_name',
-            'ward_name', 'is_published', "is_approved"]
+            'ward_name', 'is_published', "is_approved", 'search']
 
 
 class FacilityContactSerializer(
