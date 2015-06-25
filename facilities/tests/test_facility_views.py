@@ -814,12 +814,18 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
                     "id": str(facility.id)
                 }
             ))
+        facility_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertTrue(facility_refetched.has_edits)
+        self.assertEquals(facility_refetched.lastest_update, obj)
         url = self.url + "{}/".format(obj.id)
         data = {"approved": True}
         response = self.client.patch(url, data)
         self.assertEquals(200, response.status_code)
         obj_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertFalse(obj_refetched.has_edits)
+        self.assertIsNone(obj_refetched.lastest_update)
         self.assertTrue(response.data.get('approved'))
         self.assertEquals('jina', obj_refetched.name)
 

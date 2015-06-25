@@ -532,6 +532,15 @@ class Facility(SequenceMixin, AbstractBase):
         help_text='Indicates that a facility has updates that have been made')
 
     @property
+    def lastest_update(self):
+        facility_updates = FacilityUpdates.objects.filter(
+            facility=self, approved=False, cancelled=False)
+        if facility_updates:
+            return facility_updates[0]
+        else:
+            return None
+
+    @property
     def ward_name(self):
         return self.ward.name
 
@@ -654,9 +663,18 @@ class Facility(SequenceMixin, AbstractBase):
         except ZeroDivisionError:
             return 0
 
+    def validate_only_one_udpate_at_a_time(self):
+        updates = FacilityUpdates.objects.filter(
+            facility=self, approved=False, cancelled=False)
+        if not updates.count() < 2:
+            error = "The pending facility update has to be either approved"\
+                "or cancelled before another one is made"
+            raise ValidationError(error)
+
     def clean(self, *args, **kwargs):
         super(Facility, self).clean()
         self.validate_publish(*args, **kwargs)
+        self.validate_only_one_udpate_at_a_time()
 
     def save(self, *args, **kwargs):
         """
