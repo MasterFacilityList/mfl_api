@@ -369,7 +369,7 @@ class TestFacilityView(LoginMixin, APITestCase):
         # error the repoonse status code us not appearing as a 204
         self.assertEquals(200, response.status_code)
         facility_retched = Facility.objects.get(id=facility.id)
-        self.assertEquals(facility_retched, facility_retched.name)
+        self.assertEquals(facility.name, facility_retched.name)
 
     def test_get_facilitiies_with_unacked_udpates(self):
         true_url = self.url + "?has_edits=True"
