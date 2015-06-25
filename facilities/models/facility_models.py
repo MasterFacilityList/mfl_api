@@ -527,9 +527,19 @@ class Facility(SequenceMixin, AbstractBase):
     attributes = models.TextField(null=True, blank=True)
     regulatory_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True, editable=False)
-    has_edits = models.BooleanField(
-        default=False,
-        help_text='Indicates that a facility has updates that have been made')
+
+    @property
+    def has_edits(self):
+        return True if self.lastest_update else False
+
+    @property
+    def lastest_update(self):
+        facility_updates = FacilityUpdates.objects.filter(
+            facility=self, approved=False, cancelled=False)
+        if facility_updates:
+            return facility_updates[0]
+        else:
+            return None
 
     @property
     def ward_name(self):
@@ -656,6 +666,26 @@ class Facility(SequenceMixin, AbstractBase):
 
     def clean(self, *args, **kwargs):
         self.validate_publish(*args, **kwargs)
+        super(Facility, self).clean()
+
+    def _dump_updates(self):
+        fields = [field.name for field in self._meta.fields]
+        forbidden_fields = [
+            'operation_status', 'regulatory_status',
+            'facility_type']
+        origi_model = self.__class__.objects.get(pk=self.pk)
+        data = {}
+
+        for field in fields:
+            if (getattr(self, field) != getattr(origi_model, field)
+                    and field not in forbidden_fields):
+                data[field] = str(getattr(self, field))
+        if any(data):
+            return json.dumps(data)
+        else:
+            error = "Either no field was editted or you editted all or one"
+            " of {} which are not allowed".format(forbidden_fields)
+            raise ValidationError(error)
 
     def save(self, *args, **kwargs):
         """
@@ -672,21 +702,10 @@ class Facility(SequenceMixin, AbstractBase):
             if allow_save:
                 super(Facility, self).save(*args, **kwargs)
             else:
-                fields = [field.name for field in self._meta.fields]
-                data = {}
-                for field in fields:
-                    field_data = getattr(self, field)
-                    if hasattr(field_data, 'id'):
-                        field_name = field + '_id'
-                        data[field_name] = str(getattr(field_data, 'id'))
-                    else:
-                        data[field] = str(field_data)
-                for key, value in data.items():
-                    if value == 'None':
-                        data.pop(key)
-                data = json.dumps(data)
+                updates = self._dump_updates()
                 FacilityUpdates.objects.create(
-                    facility_updates=data, facility=self)
+                    facility_updates=updates, facility=self
+                )
         except ObjectDoesNotExist:
             super(Facility, self).save(*args, **kwargs)
 
@@ -708,17 +727,40 @@ class FacilityUpdates(AbstractBase):
     """
     facility = models.ForeignKey(Facility, related_name='updates')
     approved = models.BooleanField(default=False)
+    cancelled = models.BooleanField(default=False)
     facility_updates = models.TextField()
 
     def update_facility(self):
         data = json.loads(self.facility_updates)
-        facility = Facility.objects.get(id=data.get('id'))
         for key, value in data.items():
-            setattr(facility, key, value)
-        facility.save(allow_save=True)
+            setattr(self.facility, key, value)
+        self.facility.save(allow_save=True)
+
+    def validate_either_of_approve_or_cancel(self):
+        error = "You can only approve or cancel and not both"
+        if self.approved and self.cancelled:
+            raise ValidationError(error)
+
+    def validate_only_one_update_at_a_time(self):
+        updates = self.__class__.objects.filter(
+            facility=self.facility, approved=False, cancelled=False)
+        if self.approved and self.cancelled:
+            # No need to validate again as this is
+            # an ackning after the record was created first
+            pass
+        else:
+            if updates.count() not in range(0, 2):
+                error = "The pending facility update has to be either approved "\
+                    "or cancelled before another one is made"
+                raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_only_one_update_at_a_time()
+        self.validate_either_of_approve_or_cancel()
+        super(FacilityUpdates, self).clean()
 
     def save(self, *args, **kwargs):
-        if self.approved:
+        if self.approved and not self.cancelled:
             self.update_facility()
         super(FacilityUpdates, self).save(*args, **kwargs)
 

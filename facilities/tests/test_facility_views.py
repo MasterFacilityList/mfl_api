@@ -371,6 +371,45 @@ class TestFacilityView(LoginMixin, APITestCase):
         facility_retched = Facility.objects.get(id=facility.id)
         self.assertEquals(facility_retched, facility_retched.name)
 
+    def test_get_facilitiies_with_unacked_udpates(self):
+        true_url = self.url + "?has_edits=True"
+        false_url = self.url + "?has_edits=False"
+        facility_a = mommy.make(
+            Facility, id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        facility_a.name = 'jina ingine'
+        facility_a.save()
+        facility_b = mommy.make(Facility)
+        facility_a_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+
+        true_expected_data = {
+            "next": None,
+            "previous": None,
+            "count": 1,
+            "results": [
+                FacilitySerializer(facility_a_refetched).data
+            ]
+        }
+
+        false_expected_data = {
+            "next": None,
+            "previous": None,
+            "count": 1,
+            "results": [
+                FacilitySerializer(facility_b).data
+            ]
+        }
+        true_response = self.client.get(true_url)
+        false_response = self.client.get(false_url)
+        self.assertEquals(200, true_response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(true_expected_data, default=default)),
+            json.loads(json.dumps(true_response.data, default=default)))
+        self.assertEquals(200, true_response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(false_expected_data, default=default)),
+            json.loads(json.dumps(false_response.data, default=default)))
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
 
@@ -826,11 +865,40 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
                     "id": str(facility.id)
                 }
             ))
+        facility_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertTrue(facility_refetched.has_edits)
+        self.assertEquals(facility_refetched.lastest_update, obj)
         url = self.url + "{}/".format(obj.id)
         data = {"approved": True}
         response = self.client.patch(url, data)
         self.assertEquals(200, response.status_code)
         obj_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertFalse(obj_refetched.has_edits)
+        self.assertIsNone(obj_refetched.lastest_update)
         self.assertTrue(response.data.get('approved'))
         self.assertEquals('jina', obj_refetched.name)
+
+    def test_cancelling(self):
+        facility = mommy.make(
+            Facility,
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        obj = mommy.make(
+            FacilityUpdates,
+            facility=facility,
+            facility_updates=json.dumps(
+                {
+                    "name": "jina",
+                    "id": str(facility.id)
+                }
+            ))
+        url = self.url + "{}/".format(obj.id)
+        data = {"cancelled": True}
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        obj_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        self.assertFalse(response.data.get('approved'))
+        self.assertTrue(response.data.get('cancelled'))
+        self.assertNotEquals('jina', obj_refetched.name)

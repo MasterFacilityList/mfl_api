@@ -276,6 +276,7 @@ SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
     "REALTIME_INDEX": False,
+    "SEARCH_RESULT_SIZE": 1000,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
         "mfl_gis.WorldBorder",
@@ -283,6 +284,38 @@ SEARCH = {
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
 
+    ],
+    "AUTOCOMPLETE_MODEL_FIELDS": [
+        {
+            "app": "facilities",
+            "models": [
+                {
+                    "name": "facility",
+                    "fields": ["name", "ward_name"]
+                },
+                {
+                    "name": "owner",
+                    "fields": ["name"]
+                }
+            ]
+        },
+        {
+            "app": "common",
+            "models": [
+                {
+                    "name": "County",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Consituency",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Ward",
+                    "fields": ["name"]
+                }
+            ]
+        }
     ]
 }
 

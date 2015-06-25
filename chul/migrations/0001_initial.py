@@ -35,6 +35,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': 'approval_statuses',
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -98,6 +99,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -133,6 +135,9 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=50, null=True, blank=True)),
                 ('id_number', models.PositiveIntegerField(unique=True, null=True, blank=True)),
             ],
+            options = {
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+            }
         ),
         migrations.CreateModel(
             name='CommunityHealthWorkerApproval',

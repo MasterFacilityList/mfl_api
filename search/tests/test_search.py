@@ -15,12 +15,48 @@ from common.tests import ViewTestBase
 from mfl_gis.models import FacilityCoordinates
 
 from search.filters import SearchFilter
-
-
 from search.search_utils import (
     ElasticAPI, index_instance, default, serialize_model)
 
+from ..index_settings import get_mappings
 
+
+SEARCH_TEST_SETTINGS = {
+    "ELASTIC_URL": "http://localhost:9200/",
+    "INDEX_NAME": "test_index",
+    "NON_INDEXABLE_MODELS": [
+        "mfl_gis.FacilityCoordinates",
+        "mfl_gis.WorldBorder",
+        "mfl_gis.CountyBoundary",
+        "mfl_gis.ConstituencyBoundary",
+        "mfl_gis.WardBoundary"],
+    "AUTOCOMPLETE_MODEL_FIELDS": [
+        {
+            "app": "facilities",
+            "models": [
+                {
+                    "name": "facility",
+                    "fields": ["name", "ward_name"]
+                },
+                {
+                    "name": "owner",
+                    "fields": ["name"]
+                }
+            ]
+        }
+    ]
+}
+CACHES_TEST_SETTINGS = {
+    'default': {
+        'BACKEND':
+        'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+
+@override_settings(
+    SEARCH=SEARCH_TEST_SETTINGS,
+    CACHES=CACHES_TEST_SETTINGS)
 class TestElasticSearchAPI(TestCase):
     def setUp(self):
         self.elastic_search_api = ElasticAPI()
@@ -75,28 +111,80 @@ class TestElasticSearchAPI(TestCase):
             index_name, 'facility', str(facility.id))
         self.elastic_search_api.delete_index(index_name='test_index')
 
+    def test_index_settings(self):
+        expected_map = {
+            'owner': {
+                'properties': {
+                    'name': {
+                        'coerce': False,
+                        'search_analyzer': 'autocomplete',
+                        'index_analyzer': 'autocomplete',
+                        'type': 'string', 'store': True
+                    }
+                }
+            },
+            'county': {
+                'properties': {
+                    'name': {
+                        'coerce': False,
+                        'search_analyzer': 'autocomplete',
+                        'index_analyzer': 'autocomplete',
+                        'type': 'string',
+                        'store': True
+                    }
+                }
+            },
+            'ward': {
+                'properties': {
+                    'name': {
+                        'coerce': False,
+                        'search_analyzer': 'autocomplete',
+                        'index_analyzer': 'autocomplete',
+                        'type': 'string',
+                        'store': True
+                    }
+                }
+            },
+            'consituency': {
+                'properties': {
+                    'name': {
+                        'coerce': False,
+                        'search_analyzer': 'autocomplete',
+                        'index_analyzer': 'autocomplete',
+                        'type': 'string',
+                        'store': True
+                    }
+                }
+            },
+            'facility': {
+                'properties': {
+                    'name': {
+                        'coerce': False,
+                        'search_analyzer': 'autocomplete',
+                        'index_analyzer': 'autocomplete',
+                        'type': 'string',
+                        'store': True
+                    },
+                    'ward_name': {
+                        'coerce': False,
+                        'search_analyzer': 'autocomplete',
+                        'index_analyzer': 'autocomplete',
+                        'type': 'string',
+                        'store': True
+                    }
+                }
+            }
+        }
+        self.assertEquals(expected_map, get_mappings())
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestElasticSearchAPI, self).tearDown()
 
 
 @override_settings(
-    SEARCH={
-        "ELASTIC_URL": "http://localhost:9200/",
-        "INDEX_NAME": "test_index",
-        "NON_INDEXABLE_MODELS": [
-            "mfl_gis.FacilityCoordinates",
-            "mfl_gis.WorldBorder",
-            "mfl_gis.CountyBoundary",
-            "mfl_gis.ConstituencyBoundary",
-            "mfl_gis.WardBoundary"]
-    },
-    CACHES={
-        'default': {
-            'BACKEND':
-            'django.core.cache.backends.dummy.DummyCache',
-        }
-    })
+    SEARCH=SEARCH_TEST_SETTINGS,
+    CACHES=CACHES_TEST_SETTINGS)
 class TestSearchFunctions(ViewTestBase):
     def test_serialize_model(self):
         self.maxDiff = None
@@ -126,6 +214,31 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility, name='Kanyakini')
         index_instance(facility, 'test_index')
         url = url + "?search={}".format('Kanyakini')
+        response = ""
+        # temporary hack there is a delay in getting the search results
+        for x in range(0, 100):
+            response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+            ]
+        }
+        self._assert_response_data_equality(expected_data, response.data)
+        self.elastic_search_api.delete_index('test_index')
+
+    def test_seach_auto_complete(self):
+        url = reverse('api:facilities:facilities_list')
+        self.elastic_search_api = ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
+        facility = mommy.make(Facility, name='Kanyakini')
+        index_instance(facility, 'test_index')
+        url = url + "?search_auto={}".format('Kanya')
         response = ""
         # temporary hack there is a delay in getting the search results
         for x in range(0, 100):
@@ -174,16 +287,8 @@ class TestSearchFunctions(ViewTestBase):
 
 
 @override_settings(
-    SEARCH={
-        "ELASTIC_URL": "http://localhost:9200/",
-        "INDEX_NAME": "test_index",
-        "NON_INDEXABLE_MODELS": [
-            "mfl_gis.FacilityCoordinates",
-            "mfl_gis.WorldBorder",
-            "mfl_gis.CountyBoundary",
-            "mfl_gis.ConstituencyBoundary",
-            "mfl_gis.WardBoundary"]
-    })
+    SEARCH=SEARCH_TEST_SETTINGS,
+    CACHES=CACHES_TEST_SETTINGS)
 class TestSearchFilter(ViewTestBase):
     def test_filter_no_data(self):
         api = ElasticAPI()

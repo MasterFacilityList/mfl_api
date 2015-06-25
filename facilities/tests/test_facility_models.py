@@ -522,6 +522,16 @@ class TestFacility(BaseTestCase):
                 "postal_code": physical_address.postal_code
             }, facility.facility_physical_address)
 
+    def test_only_one_facility_upadted_till_acknowledged(self):
+        facility = mommy.make(Facility)
+        facility.name = 'The name has been changed'
+        facility.save()
+        with self.assertRaises(ValidationError):
+            facility.name = 'The name has been changed again'
+            facility.save()
+            facility.name = 'The name has been changed once more'
+            facility.save()
+
 
 class TestFacilityContact(BaseTestCase):
 
@@ -734,3 +744,22 @@ class TestFacilityUpdates(BaseTestCase):
         facility_refetched_2 = Facility.objects.get(
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
         self.assertEquals(updated_name, facility_refetched_2.name)
+
+    def test_updating_forbidden_fields(self):
+        operation_status = mommy.make(FacilityStatus)
+        facility_type = mommy.make(FacilityType)
+        regulation_status = mommy.make(FacilityRegulationStatus)
+        facility = mommy.make(Facility)
+        facility.operation_status = operation_status
+        with self.assertRaises(ValidationError):
+            facility.save()
+        facility.regulatory_status = regulation_status
+        with self.assertRaises(ValidationError):
+            facility.save()
+        facility.facility_type = facility_type
+        with self.assertRaises(ValidationError):
+            facility.save()
+
+    def test_approve_and_cancel_validation(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(FacilityUpdates, approved=True, cancelled=True)

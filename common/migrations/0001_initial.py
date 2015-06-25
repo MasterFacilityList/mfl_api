@@ -153,6 +153,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': 'user constituencies',
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(

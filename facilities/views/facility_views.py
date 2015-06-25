@@ -198,8 +198,8 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     serializer_class = FacilitySerializer
     filter_class = FacilityFilter
     ordering_fields = (
-        'name', 'code', 'number_of_beds', 'number_of_cots', 'operation_status',
-        'ward', 'owner',
+        'search', 'name', 'code', 'number_of_beds', 'number_of_cots',
+        'operation_status', 'ward', 'owner',
     )
 
 
