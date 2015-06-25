@@ -359,6 +359,18 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.client.logout()
         self.client.get(self.url)
 
+    def test_patch_facility(self):
+        facility = mommy.make(Facility)
+        url = self.url + "{}/".format(facility.id)
+        data = {
+            "name": "A new name"
+        }
+        response = self.client.patch(url, data)
+        # error the repoonse status code us not appearing as a 204
+        self.assertEquals(200, response.status_code)
+        facility_retched = Facility.objects.get(id=facility.id)
+        self.assertEquals(facility_retched, facility_retched.name)
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
 
