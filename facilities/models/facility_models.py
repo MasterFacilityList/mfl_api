@@ -664,18 +664,9 @@ class Facility(SequenceMixin, AbstractBase):
         except ZeroDivisionError:
             return 0
 
-    def validate_only_one_udpate_at_a_time(self):
-        updates = FacilityUpdates.objects.filter(
-            facility=self, approved=False, cancelled=False)
-        if not updates.count() < 2:
-            error = "The pending facility update has to be either approved"\
-                "or cancelled before another one is made"
-            raise ValidationError(error)
-
     def clean(self, *args, **kwargs):
-        super(Facility, self).clean()
         self.validate_publish(*args, **kwargs)
-        self.validate_only_one_udpate_at_a_time()
+        super(Facility, self).clean()
 
     def _dump_updates(self):
         fields = [field.name for field in self._meta.fields]
@@ -742,9 +733,23 @@ class FacilityUpdates(AbstractBase):
         if self.approved and self.cancelled:
             raise ValidationError(error)
 
+    def validate_only_one_update_at_a_time(self):
+        updates = self.__class__.objects.filter(
+            facility=self.facility, approved=False, cancelled=False)
+        if self.approved and self.cancelled:
+            # No need to validate again as this is
+            # an ackning after the record was created first
+            pass
+        else:
+            if updates.count() not in range(0, 2):
+                error = "The pending facility update has to be either approved "\
+                    "or cancelled before another one is made"
+                raise ValidationError(error)
+
     def clean(self, *args, **kwargs):
-        super(FacilityUpdates, self).clean()
+        self.validate_only_one_update_at_a_time()
         self.validate_either_of_approve_or_cancel()
+        super(FacilityUpdates, self).clean()
 
     def save(self, *args, **kwargs):
         if self.approved and not self.cancelled:

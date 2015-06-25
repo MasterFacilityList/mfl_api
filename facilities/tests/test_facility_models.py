@@ -522,6 +522,16 @@ class TestFacility(BaseTestCase):
                 "postal_code": physical_address.postal_code
             }, facility.facility_physical_address)
 
+    def test_only_one_facility_upadted_till_acknowledged(self):
+        facility = mommy.make(Facility)
+        facility.name = 'The name has been changed'
+        facility.save()
+        with self.assertRaises(ValidationError):
+            facility.name = 'The name has been changed again'
+            facility.save()
+            facility.name = 'The name has been changed once more'
+            facility.save()
+
 
 class TestFacilityContact(BaseTestCase):
 
