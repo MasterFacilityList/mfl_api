@@ -527,9 +527,10 @@ class Facility(SequenceMixin, AbstractBase):
     attributes = models.TextField(null=True, blank=True)
     regulatory_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True)
-    has_edits = models.BooleanField(
-        default=False,
-        help_text='Indicates that a facility has updates that have been made')
+
+    @property
+    def has_edits(self):
+        return True if self.lastest_update else False
 
     @property
     def lastest_update(self):
@@ -735,7 +736,6 @@ class FacilityUpdates(AbstractBase):
         facility = Facility.objects.get(id=data.get('id'))
         for key, value in data.items():
             setattr(facility, key, value)
-        facility.has_edits = False
         facility.save(allow_save=True)
 
     def validate_either_of_approve_or_cancel(self):
@@ -750,9 +750,6 @@ class FacilityUpdates(AbstractBase):
     def save(self, *args, **kwargs):
         if self.approved and not self.cancelled:
             self.update_facility()
-        elif self.cancelled and not self.approved:
-            self.facility.has_edits = False
-            self.facility.save(allow_save=True)
         super(FacilityUpdates, self).save(*args, **kwargs)
 
 

@@ -359,6 +359,45 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.client.logout()
         self.client.get(self.url)
 
+    def test_get_facilitiies_with_unacked_udpates(self):
+        true_url = self.url + "?has_edits=True"
+        false_url = self.url + "?has_edits=False"
+        facility_a = mommy.make(
+            Facility, id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        facility_a.name = 'jina ingine'
+        facility_a.save()
+        facility_b = mommy.make(Facility)
+        facility_a_refetched = Facility.objects.get(
+            id='67105b48-0cc0-4de2-8266-e45545f1542f')
+
+        true_expected_data = {
+            "next": None,
+            "previous": None,
+            "count": 1,
+            "results": [
+                FacilitySerializer(facility_a_refetched).data
+            ]
+        }
+
+        false_expected_data = {
+            "next": None,
+            "previous": None,
+            "count": 1,
+            "results": [
+                FacilitySerializer(facility_b).data
+            ]
+        }
+        true_response = self.client.get(true_url)
+        false_response = self.client.get(false_url)
+        self.assertEquals(200, true_response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(true_expected_data, default=default)),
+            json.loads(json.dumps(true_response.data, default=default)))
+        self.assertEquals(200, true_response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps(false_expected_data, default=default)),
+            json.loads(json.dumps(false_response.data, default=default)))
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
 
