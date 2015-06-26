@@ -23,7 +23,8 @@ from ..serializers import (
     FacilityOfficerSerializer,
     RegulatoryBodyUserSerializer,
     FacilityUnitRegulationSerializer,
-    FacilityUpdatesSerializer
+    FacilityUpdatesSerializer,
+    ServiceSerializer
 )
 from ..models import (
     OwnerType,
@@ -908,3 +909,26 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.assertFalse(response.data.get('approved'))
         self.assertTrue(response.data.get('cancelled'))
         self.assertNotEquals('jina', obj_refetched.name)
+
+
+class TestServicesWithOptionsList(LoginMixin, APITestCase):
+    def test_listing_services_with_options(self):
+        service = mommy.make(Service)
+        option = mommy.make(Option)
+        mommy.make(
+            ServiceOption, service=service, option=option)
+        mommy.make(Service)
+        url = reverse("api:facilities:services_with_options_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                ServiceSerializer(service).data
+            ]
+        }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))

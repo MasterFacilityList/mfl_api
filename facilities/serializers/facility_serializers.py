@@ -120,6 +120,7 @@ class ServiceOptionSerializer(
 
 class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True)
+    service_options = ServiceOptionSerializer(many=True, required=False)
 
     class Meta(object):
         model = Service

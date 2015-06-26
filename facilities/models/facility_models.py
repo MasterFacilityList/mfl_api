@@ -966,7 +966,7 @@ class ServiceOption(AbstractBase):
     One service can have multiple options to be selected
     this is for defining the available choices for a service.
     """
-    service = models.ForeignKey(Service)
+    service = models.ForeignKey(Service, related_name='service_options')
     option = models.ForeignKey(Option)
 
     def __unicode__(self):
