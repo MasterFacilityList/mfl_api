@@ -42,7 +42,8 @@ from ..models import (
     FacilityOfficer,
     RegulatoryBodyUser,
     FacilityUnitRegulation,
-    FacilityUpdates
+    FacilityUpdates,
+    FacilityUpgrade
 )
 
 
@@ -763,3 +764,29 @@ class TestFacilityUpdates(BaseTestCase):
     def test_approve_and_cancel_validation(self):
         with self.assertRaises(ValidationError):
             mommy.make(FacilityUpdates, approved=True, cancelled=True)
+
+
+class TestFacilityUpgrade(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityUpgrade)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+
+    def test_only_one_facility_upgrade_at_a_time(self):
+        facility = mommy.make(Facility)
+        facility_type = mommy.make(FacilityType)
+        facility_type_2 = mommy.make(FacilityType)
+        first_level_change = mommy.make(
+            FacilityUpgrade, facility=facility, facility_type=facility_type)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityUpgrade, facility=facility,
+                facility_type=facility_type_2)
+
+        # confirm the first level/type change and there is no error
+        # raised during subsequest level /type change
+
+        first_level_change.is_confirmed = True
+        first_level_change.save()
+        mommy.make(
+            FacilityUpgrade, facility=facility,
+            facility_type=facility_type_2)
