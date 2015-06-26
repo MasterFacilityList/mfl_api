@@ -14,7 +14,7 @@ def read_the_facilities_file():
 
     with open(facility_officers_file_file, 'r') as csv_file:
         facilities_reader = csv.reader(csv_file)
-        col_names = [
+        col_names = [  # NOQA
             "Facility_Code", "In_Charge_Name",
             "In_Charge_National_ID", "In_Charge_Job_Title_ID",
             "ttlId", "ttlName"
@@ -22,7 +22,6 @@ def read_the_facilities_file():
         for row in facilities_reader:
             facility_code = row[0]
             officer_name = row[1]
-            job_title = row[5]
             facility_officer_dict = {
                 "facility": {
                     "code": facility_code
@@ -36,15 +35,14 @@ def read_the_facilities_file():
                 try:
                     Officer.objects.get(name=officer_name)
                     Facility.objects.get(code=str(facility_code))
-                    if facility_officer_dict not in formatted_facility_officers:
-                        formatted_facility_officers.append(facility_officer_dict)
-                    # print facility_officer_dict
+                    if (facility_officer_dict not
+                            in formatted_facility_officers):
+                        formatted_facility_officers.append(
+                            facility_officer_dict)
                 except (Officer.MultipleObjectsReturned):
-                    # print "Officer with name {} does not exist".format(officer_name)
                     pass
 
             except:
-                # print "Facility with code {} does not exist".format(facility_code)
                 pass
     return {
         "officers": formatted_facility_officers
