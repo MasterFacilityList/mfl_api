@@ -371,7 +371,7 @@ class TestFacilityView(LoginMixin, APITestCase):
         facility_retched = Facility.objects.get(id=facility.id)
         self.assertEquals(facility.name, facility_retched.name)
 
-    def test_get_facilitiies_with_unacked_udpates(self):
+    def test_get_facilities_with_unacked_updates(self):
         true_url = self.url + "?has_edits=True"
         false_url = self.url + "?has_edits=False"
         facility_a = mommy.make(
@@ -868,7 +868,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         facility_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertTrue(facility_refetched.has_edits)
-        self.assertEquals(facility_refetched.lastest_update, obj)
+        self.assertEquals(facility_refetched.latest_update, obj)
         url = self.url + "{}/".format(obj.id)
         data = {"approved": True}
         response = self.client.patch(url, data)
@@ -876,11 +876,15 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         obj_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertFalse(obj_refetched.has_edits)
-        self.assertIsNone(obj_refetched.lastest_update)
+        self.assertIsNone(obj_refetched.latest_update)
         self.assertTrue(response.data.get('approved'))
         self.assertEquals('jina', obj_refetched.name)
-        expected_data = FacilityUpdatesSerializer(obj_refetched).data
-        self.assertEquals(expected_data, response.data)
+        facility_updates_refetched = FacilityUpdates.objects.get(id=obj.id)
+        expected_data = FacilityUpdatesSerializer(
+            facility_updates_refetched).data
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
 
     def test_cancelling(self):
         facility = mommy.make(

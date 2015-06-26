@@ -232,11 +232,11 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "open_weekends", "open_whole_day",
             "open_public_holidays", "owner_type_name",
             "ward_name", "average_rating", "facility_services",
-            "created", "updated", "deleted", "active", "search",
+            "created", "updated", "deleted", "active",
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
-            "parent", "contacts", "is_approved", 'search']
+            "parent", "contacts", "is_approved"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -259,7 +259,7 @@ class FacilityListSerializer(FacilitySerializer):
             'code', 'name', 'id', 'county', 'constituency',
             'facility_type_name', 'owner_type_name',
             'regulatory_status_name', 'ward', 'operation_status_name',
-            'ward_name', 'is_published', "is_approved", 'search']
+            'ward_name', 'is_published', "is_approved"]
 
 
 class FacilityContactSerializer(

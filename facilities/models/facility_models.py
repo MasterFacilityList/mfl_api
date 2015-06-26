@@ -530,10 +530,10 @@ class Facility(SequenceMixin, AbstractBase):
 
     @property
     def has_edits(self):
-        return True if self.lastest_update else False
+        return True if self.latest_update else False
 
     @property
-    def lastest_update(self):
+    def latest_update(self):
         facility_updates = FacilityUpdates.objects.filter(
             facility=self, approved=False, cancelled=False)
         if facility_updates:
@@ -668,12 +668,16 @@ class Facility(SequenceMixin, AbstractBase):
         self.validate_publish(*args, **kwargs)
         super(Facility, self).clean()
 
-    def _dump_updates(self):
+    def _dump_updates(self, origi_model):
         fields = [field.name for field in self._meta.fields]
         forbidden_fields = [
-            'operation_status', 'regulatory_status',
-            'facility_type']
-        origi_model = self.__class__.objects.get(pk=self.pk)
+            'operation_status', 'regulatory_status', 'facility_type',
+            'operation_status_id', 'regulatory_status_id', 'facility_type_id']
+        for field in fields:
+            if hasattr(getattr(self, field), 'id'):
+                field_name = field + "_id"
+                fields.append(field_name)
+                del fields[fields.index(field)]
         data = {}
 
         for field in fields:
@@ -697,12 +701,12 @@ class Facility(SequenceMixin, AbstractBase):
         if not self.code:
             self.code = self.generate_next_code_sequence()
         try:
-            self.__class__.objects.get(id=self.id)
+            origi_model = self.__class__.objects.get(id=self.id)
             allow_save = kwargs.pop('allow_save', None)
             if allow_save:
                 super(Facility, self).save(*args, **kwargs)
             else:
-                updates = self._dump_updates()
+                updates = self._dump_updates(origi_model)
                 FacilityUpdates.objects.create(
                     facility_updates=updates, facility=self
                 )
@@ -743,13 +747,13 @@ class FacilityUpdates(AbstractBase):
 
     def validate_only_one_update_at_a_time(self):
         updates = self.__class__.objects.filter(
-            facility=self.facility, approved=False, cancelled=False)
-        if self.approved and self.cancelled:
+            facility=self.facility, approved=False, cancelled=False).count()
+        if self.approved or self.cancelled:
             # No need to validate again as this is
-            # an ackning after the record was created first
+            # an approval or rejection after the record was created first
             pass
         else:
-            if updates.count() not in range(0, 2):
+            if updates >= 1:
                 error = "The pending facility update has to be either approved "\
                     "or cancelled before another one is made"
                 raise ValidationError(error)
