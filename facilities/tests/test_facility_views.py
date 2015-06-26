@@ -359,7 +359,7 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.client.logout()
         self.client.get(self.url)
 
-    def test_get_facilitiies_with_unacked_udpates(self):
+    def test_get_facilities_with_unacked_updates(self):
         true_url = self.url + "?has_edits=True"
         false_url = self.url + "?has_edits=False"
         facility_a = mommy.make(
@@ -856,7 +856,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         facility_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertTrue(facility_refetched.has_edits)
-        self.assertEquals(facility_refetched.lastest_update, obj)
+        self.assertEquals(facility_refetched.latest_update, obj)
         url = self.url + "{}/".format(obj.id)
         data = {"approved": True}
         response = self.client.patch(url, data)
@@ -864,7 +864,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         obj_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertFalse(obj_refetched.has_edits)
-        self.assertIsNone(obj_refetched.lastest_update)
+        self.assertIsNone(obj_refetched.latest_update)
         self.assertTrue(response.data.get('approved'))
         self.assertEquals('jina', obj_refetched.name)
 
