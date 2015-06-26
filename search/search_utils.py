@@ -13,6 +13,7 @@ from .index_settings import INDEX_SETTINGS
 
 ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
 INDEX_NAME = settings.SEARCH.get('INDEX_NAME')
+SEARCH_RESULT_SIZE = settings.SEARCH.get('SEARCH_RESULT_SIZE')
 LOGGER = logging.getLogger(__name__)
 
 
@@ -58,9 +59,31 @@ class ElasticAPI(object):
         url = "{}{}/{}/_search".format(
             ELASTIC_URL, index_name, document_type)
         data = {
+            "from": 0,
+            "size": SEARCH_RESULT_SIZE,
             "query": {
                 "query_string": {
                     "query": query
+                }
+            }
+        }
+        data = json.dumps(data)
+        result = requests.post(url, data)
+
+        return result
+
+    def search_auto_complete_document(self, index_name, instance_type, query):
+        document_type = instance_type.__name__.lower()
+        url = "{}{}/{}/_search".format(
+            ELASTIC_URL, index_name, document_type)
+        data = {
+            "from": 0,
+            "size": SEARCH_RESULT_SIZE,
+            "query": {
+                "query_string": {
+                    "fields": ["name"],
+                    "query": query,
+                    "analyzer": "autocomplete"
                 }
             }
         }
