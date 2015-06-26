@@ -670,10 +670,12 @@ class Facility(SequenceMixin, AbstractBase):
 
     def _dump_updates(self, origi_model):
         fields = [field.name for field in self._meta.fields]
-        if hasattr(field, 'id'):
-            field_name = field + "_id"
-            fields.append(field_name)
-            del fields[fields.index(field)]
+        for field in fields:
+            if hasattr(getattr(self, field), 'id'):
+                field_name = field + "_id"
+                fields.append(field_name)
+                del fields[fields.index(field)]
+
         data = {}
 
         for field in fields:

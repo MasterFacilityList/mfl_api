@@ -723,12 +723,14 @@ class TestFacilityUpdates(BaseTestCase):
     def test_facility_updates(self):
         original_name = 'Some facility name'
         updated_name = 'The name has been editted'
+        physical_address = mommy.make(PhysicalAddress)
         facility = mommy.make(
             Facility,
             name=original_name,
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
 
         facility.name = updated_name
+        facility.physical_address = physical_address
         facility.save()
         self.assertEquals(1, FacilityUpdates.objects.count())
         facility_refetched = Facility.objects.get(
