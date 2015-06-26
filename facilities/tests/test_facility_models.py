@@ -790,3 +790,9 @@ class TestFacilityUpgrade(BaseTestCase):
         mommy.make(
             FacilityUpgrade, facility=facility,
             facility_type=facility_type_2)
+
+    def test_cancelling(self):
+        facility_level_change = mommy.make(FacilityUpgrade)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+        facility_level_change.is_cancelled = True
+        facility_level_change.save()
