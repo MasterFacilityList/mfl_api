@@ -1,1 +1,1 @@
-from .views import CustomRetrieveUpdateDestroyView  # noqa
+from .views import *  # noqa

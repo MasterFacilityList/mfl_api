@@ -745,6 +745,21 @@ class TestFacilityUpdates(BaseTestCase):
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
         self.assertEquals(updated_name, facility_refetched_2.name)
 
+    def test_updating_forbidden_fields(self):
+        operation_status = mommy.make(FacilityStatus)
+        facility_type = mommy.make(FacilityType)
+        regulation_status = mommy.make(FacilityRegulationStatus)
+        facility = mommy.make(Facility)
+        facility.operation_status = operation_status
+        with self.assertRaises(ValidationError):
+            facility.save()
+        facility.regulatory_status = regulation_status
+        with self.assertRaises(ValidationError):
+            facility.save()
+        facility.facility_type = facility_type
+        with self.assertRaises(ValidationError):
+            facility.save()
+
     def test_approve_and_cancel_validation(self):
         with self.assertRaises(ValidationError):
             mommy.make(FacilityUpdates, approved=True, cancelled=True)

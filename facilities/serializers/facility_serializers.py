@@ -33,15 +33,6 @@ from ..models import (
 )
 
 
-class FacilityUpdatesSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-
-    facility_updates = serializers.ReadOnlyField()
-
-    class Meta:
-        model = FacilityUpdates
-
-
 class RegulatoryBodyUserSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     user_email = serializers.ReadOnlyField(source='user.email')
@@ -300,3 +291,13 @@ class FacilityUnitRegulationSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = FacilityUnitRegulation
+
+
+class FacilityUpdatesSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    facility_updates = serializers.ReadOnlyField()
+    facility = FacilityDetailSerializer(required=False)
+
+    class Meta:
+        model = FacilityUpdates

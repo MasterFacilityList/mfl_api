@@ -1,7 +1,12 @@
+from django.contrib.auth.models import AnonymousUser
+
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.views import Response
+
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
-from django.contrib.auth.models import AnonymousUser
+
 
 from ..models import (
     Facility,
@@ -213,13 +218,22 @@ class FacilityListReadOnlyView(
 
 
 class FacilityDetailView(
-        QuerysetFilterMixin, AuditableDetailViewMixin,
-        CustomRetrieveUpdateDestroyView):
+        QuerysetFilterMixin,
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a particular facility
     """
     queryset = Facility.objects.all()
     serializer_class = FacilityDetailSerializer
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FacilityContactListView(generics.ListCreateAPIView):
