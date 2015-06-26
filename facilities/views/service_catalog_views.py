@@ -181,3 +181,12 @@ class ServiceOptionDetailView(
     """
     queryset = ServiceOption.objects.all()
     serializer_class = ServiceOptionSerializer
+
+
+class ServicesWithOptionListView(ServiceListView):
+
+    def get_queryset(self, *args, **kwargs):
+        return Service.objects.filter(
+            id__in=ServiceOption.objects.values_list(
+                'service', flat=True)
+        ).distinct()
