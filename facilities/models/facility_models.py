@@ -803,7 +803,7 @@ class FacilityUpgrade(AbstractBase):
         help_text='Indicates whether a facility upgrade or downgrade has been'
         'cancelled or not')
 
-    def validate_only_one_type_at_a_time(self):
+    def validate_only_one_type_change_a_time(self):
         if self.is_confirmed or self.is_cancelled:
             pass
         else:
@@ -817,7 +817,7 @@ class FacilityUpgrade(AbstractBase):
 
     def clean(self):
         super(FacilityUpgrade, self).clean()
-        self.validate_only_one_type_at_a_time()
+        self.validate_only_one_type_change_a_time()
 
 
 @reversion.register
@@ -1056,3 +1056,6 @@ class FacilityOfficer(AbstractBase):
     """
     facility = models.ForeignKey(Facility, related_name='facility_officers')
     officer = models.ForeignKey(Officer, related_name='officer_facilities')
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('facility', 'officer')
