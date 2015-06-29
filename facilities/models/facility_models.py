@@ -803,6 +803,22 @@ class FacilityUpgrade(AbstractBase):
         help_text='Indicates whether a facility upgrade or downgrade has been'
         'cancelled or not')
 
+    def validate_only_one_type_change_at_a_time(self):
+        if self.is_confirmed or self.is_cancelled:
+            pass
+        else:
+            type_change_count = self.__class__.objects.filter(
+                facility=self.facility, is_confirmed=False, is_cancelled=False
+            ).count()
+            if type_change_count >= 1:
+                error = "The pending level change has to confirmed"\
+                        "first before another level change is made"
+                raise ValidationError(error)
+
+    def clean(self):
+        super(FacilityUpgrade, self).clean()
+        self.validate_only_one_type_change_at_a_time()
+
 
 @reversion.register
 class FacilityApproval(AbstractBase):
@@ -1040,3 +1056,6 @@ class FacilityOfficer(AbstractBase):
     """
     facility = models.ForeignKey(Facility, related_name='facility_officers')
     officer = models.ForeignKey(Officer, related_name='officer_facilities')
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('facility', 'officer')

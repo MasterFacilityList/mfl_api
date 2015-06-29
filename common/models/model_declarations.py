@@ -54,6 +54,9 @@ class Contact(AbstractBase):
     def __unicode__(self):
         return "{}::{}".format(self.contact_type.name, self.contact)
 
+    class Meta(AbstractBase.Meta):
+        unique_together = ('contact', 'contact_type')
+
 
 class Town(AbstractBase):
     name = models.CharField(
