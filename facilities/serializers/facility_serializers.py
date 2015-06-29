@@ -277,6 +277,8 @@ class FacilityContactSerializer(
 class FacilityUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     regulation_status = serializers.ReadOnlyField()
+    regulating_body_name = serializers.ReadOnlyField(
+        source="regulating_body.name")
 
     class Meta(object):
         model = FacilityUnit
