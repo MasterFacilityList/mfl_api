@@ -33,15 +33,6 @@ from ..models import (
 )
 
 
-class FacilityUpdatesSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-
-    facility_updates = serializers.ReadOnlyField()
-
-    class Meta:
-        model = FacilityUpdates
-
-
 class RegulatoryBodyUserSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     user_email = serializers.ReadOnlyField(source='user.email')
@@ -54,7 +45,7 @@ class RegulatoryBodyUserSerializer(
 
 
 class FacilityOfficerSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
+        AbstractFieldsMixin, serializers.ModelSerializer,):
     facility_name = serializers.ReadOnlyField(source='facility.name')
     officer_name = serializers.ReadOnlyField(source='officer.name')
     id_number = serializers.ReadOnlyField(source='officer.id_number')
@@ -129,6 +120,7 @@ class ServiceOptionSerializer(
 
 class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True)
+    service_options = ServiceOptionSerializer(many=True, required=False)
 
     class Meta(object):
         model = Service
@@ -204,6 +196,7 @@ class RegulationStatusSerializer(
 
 class OfficerSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    job_title_name = serializers.ReadOnlyField(source='job_title.name')
 
     class Meta(object):
         model = Officer
@@ -228,6 +221,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     average_rating = serializers.ReadOnlyField()
     facility_services = serializers.ReadOnlyField(
         source="get_facility_services")
+    is_approved = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility
@@ -240,11 +234,11 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "open_weekends", "open_whole_day",
             "open_public_holidays", "owner_type_name",
             "ward_name", "average_rating", "facility_services",
-            "created", "updated", "deleted", "active", "search",
+            "created", "updated", "deleted", "active",
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
-            "parent", "contacts"]
+            "parent", "contacts", "is_approved"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -267,7 +261,7 @@ class FacilityListSerializer(FacilitySerializer):
             'code', 'name', 'id', 'county', 'constituency',
             'facility_type_name', 'owner_type_name',
             'regulatory_status_name', 'ward', 'operation_status_name',
-            'ward_name', 'is_published']
+            'ward_name', 'is_published', "is_approved"]
 
 
 class FacilityContactSerializer(
@@ -300,3 +294,13 @@ class FacilityUnitRegulationSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = FacilityUnitRegulation
+
+
+class FacilityUpdatesSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    facility_updates = serializers.ReadOnlyField()
+    facility = FacilityDetailSerializer(required=False)
+
+    class Meta:
+        model = FacilityUpdates

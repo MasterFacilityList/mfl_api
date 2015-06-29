@@ -282,6 +282,16 @@ class FacilityFilter(CommonFieldsFilterset):
         else:
             return Facility.objects.exclude(id__in=approved_facilities)
 
+    def facilities_updates_pending_approval(self, value):
+        facilities_to_update_ids = []
+        for facility in Facility.objects.all():
+            if facility.has_edits:
+                facilities_to_update_ids.append(facility.id)
+        if value in TRUTH_NESS:
+            return Facility.objects.filter(id__in=facilities_to_update_ids)
+        else:
+            return Facility.objects.exclude(id__in=facilities_to_update_ids)
+
     id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
@@ -327,6 +337,8 @@ class FacilityFilter(CommonFieldsFilterset):
         action=filter_approved_facilities)
     service_category = django_filters.MethodFilter(
         action=service_filter)
+    has_edits = django_filters.MethodFilter(
+        action=facilities_updates_pending_approval)
 
     class Meta(object):
         model = Facility

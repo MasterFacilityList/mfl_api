@@ -59,12 +59,16 @@ from ..views import (
     FacilityUnitRegulationListView,
     FacilityUnitRegulationDetailView,
     FacilityUpdatesListView,
-    FacilityUpdatesDetailView
+    FacilityUpdatesDetailView,
+    ServicesWithOptionListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^services_with_options/$',
+        ServicesWithOptionListView.as_view(),
+        name='services_with_options_list'),
     url(r'^facility_updates/$',
         FacilityUpdatesListView.as_view(),
         name='facility_updatess_list'),

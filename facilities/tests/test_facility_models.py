@@ -42,7 +42,8 @@ from ..models import (
     FacilityOfficer,
     RegulatoryBodyUser,
     FacilityUnitRegulation,
-    FacilityUpdates
+    FacilityUpdates,
+    FacilityUpgrade
 )
 
 
@@ -522,6 +523,14 @@ class TestFacility(BaseTestCase):
                 "postal_code": physical_address.postal_code
             }, facility.facility_physical_address)
 
+    def test_only_one_facility_updated_till_acknowledged(self):
+        facility = mommy.make(Facility)
+        facility.name = 'The name has been changed'
+        facility.save()
+        with self.assertRaises(ValidationError):
+            facility.name = 'The name has been changed again'
+            facility.save()
+
 
 class TestFacilityContact(BaseTestCase):
 
@@ -715,12 +724,14 @@ class TestFacilityUpdates(BaseTestCase):
     def test_facility_updates(self):
         original_name = 'Some facility name'
         updated_name = 'The name has been editted'
+        physical_address = mommy.make(PhysicalAddress)
         facility = mommy.make(
             Facility,
             name=original_name,
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
 
         facility.name = updated_name
+        facility.physical_address = physical_address
         facility.save()
         self.assertEquals(1, FacilityUpdates.objects.count())
         facility_refetched = Facility.objects.get(
@@ -734,3 +745,54 @@ class TestFacilityUpdates(BaseTestCase):
         facility_refetched_2 = Facility.objects.get(
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
         self.assertEquals(updated_name, facility_refetched_2.name)
+
+    def test_updating_forbidden_fields(self):
+        operation_status = mommy.make(FacilityStatus)
+        facility_type = mommy.make(FacilityType)
+        regulation_status = mommy.make(FacilityRegulationStatus)
+        facility = mommy.make(Facility)
+        facility.operation_status = operation_status
+        with self.assertRaises(ValidationError):
+            facility.save()
+        facility.regulatory_status = regulation_status
+        with self.assertRaises(ValidationError):
+            facility.save()
+        facility.facility_type = facility_type
+        with self.assertRaises(ValidationError):
+            facility.save()
+
+    def test_approve_and_cancel_validation(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(FacilityUpdates, approved=True, cancelled=True)
+
+
+class TestFacilityUpgrade(BaseTestCase):
+    def test_saving(self):
+        mommy.make(FacilityUpgrade)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+
+    def test_only_one_facility_upgrade_at_a_time(self):
+        facility = mommy.make(Facility)
+        facility_type = mommy.make(FacilityType)
+        facility_type_2 = mommy.make(FacilityType)
+        first_level_change = mommy.make(
+            FacilityUpgrade, facility=facility, facility_type=facility_type)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityUpgrade, facility=facility,
+                facility_type=facility_type_2)
+
+        # confirm the first level/type change and there is no error
+        # raised during subsequest level /type change
+
+        first_level_change.is_confirmed = True
+        first_level_change.save()
+        mommy.make(
+            FacilityUpgrade, facility=facility,
+            facility_type=facility_type_2)
+
+    def test_cancelling(self):
+        facility_level_change = mommy.make(FacilityUpgrade)
+        self.assertEquals(1, FacilityUpgrade.objects.count())
+        facility_level_change.is_cancelled = True
+        facility_level_change.save()
