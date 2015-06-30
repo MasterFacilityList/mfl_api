@@ -16,7 +16,9 @@ from .views import (
     WorldBorderDetailView,
     CountyBoundaryDetailView,
     ConstituencyBoundaryDetailView,
-    WardBoundaryDetailView
+    WardBoundaryDetailView,
+    FacilityCoordinatesCreationAndListing,
+    FacilityCoordinatesCreationAndDetail
 )
 
 
@@ -48,6 +50,12 @@ urlpatterns = patterns(
             (GeoCodeMethodDetailView.as_view())),
         name='geo_code_method_detail'),
 
+    url(r'^facility_coordinates/$',
+        FacilityCoordinatesCreationAndListing.as_view(),
+        name='facility_coordinates_simple_list'),
+    url(r'^facility_coordinates/(?P<pk>[^/]+)/$',
+        FacilityCoordinatesCreationAndDetail.as_view(),
+        name='facility_coordinates_simple_detail'),
     url(r'^coordinates/$',
         gzip_page(
             cache_page(coordinates_cache_seconds)

@@ -222,6 +222,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     facility_services = serializers.ReadOnlyField(
         source="get_facility_services")
     is_approved = serializers.ReadOnlyField()
+    has_edits = serializers.ReadOnlyField()
+    latest_update = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility
@@ -238,7 +240,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "abbreviation", "description", "location_desc",
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
-            "parent", "contacts", "is_approved"]
+            "parent", "contacts", "is_approved",
+            "has_edits", "latest_update"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -301,7 +304,11 @@ class FacilityUpdatesSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
     facility_updates = serializers.ReadOnlyField()
+    facility_updated_json = serializers.ReadOnlyField()
     facility = FacilityDetailSerializer(required=False)
+    created_by_name = serializers.ReadOnlyField(
+        source='created_by.get_full_name')
 
     class Meta:
         model = FacilityUpdates
+        exclude = ('facility_updates', )

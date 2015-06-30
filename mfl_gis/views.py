@@ -34,7 +34,8 @@ from .serializers import (
     WardBoundarySerializer,
     CountyBoundaryDetailSerializer,
     ConstituencyBoundaryDetailSerializer,
-    WardBoundaryDetailSerializer
+    WardBoundaryDetailSerializer,
+    FacilityCoordinateSimpleSerializer
 )
 from .pagination import GISPageNumberPagination
 from .generics import GISListCreateAPIView
@@ -153,6 +154,54 @@ class FacilityCoordinatesDetailView(
     permission_classes = (DjangoModelPermissions,)
     queryset = FacilityCoordinates.objects.all()
     serializer_class = FacilityCoordinatesDetailSerializer
+
+
+class FacilityCoordinatesCreationAndListing(GISListCreateAPIView):
+    """
+    Lists and creates facility coordinates
+
+    ward -- A list of comma separated ward pks
+    constituency -- A list of comma separated constituency pks
+    county -- A list of comma separated county pks
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    # The list serializer omits many fields for size reasons
+    # This data is controlled access
+    # Do not change the permission_classes without good reason
+    permission_classes = (DjangoModelPermissions,)
+    queryset = FacilityCoordinates.objects.all()
+    serializer_class = FacilityCoordinateSimpleSerializer
+    filter_class = FacilityCoordinatesFilter
+    ordering_fields = (
+        'facility', 'latitude', 'longitude', 'source', 'method',)
+    pagination_class = GISPageNumberPagination
+
+
+class FacilityCoordinatesCreationAndDetail(CustomRetrieveUpdateDestroyView):
+    """
+    Lists and creates facility coordinates
+
+    ward -- A list of comma separated ward pks
+    constituency -- A list of comma separated constituency pks
+    county -- A list of comma separated county pks
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    # The list serializer omits many fields for size reasons
+    # This data is controlled access
+    # Do not change the permission_classes without good reason
+    permission_classes = (DjangoModelPermissions,)
+    queryset = FacilityCoordinates.objects.all()
+    serializer_class = FacilityCoordinateSimpleSerializer
 
 
 class WorldBorderListView(GISListCreateAPIView):

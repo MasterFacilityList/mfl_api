@@ -185,6 +185,14 @@
             },
             {
                 "user": {
+                    "email": "chrio@mfltest.slade360.co.ke"
+                },
+                "county": {
+                    "code": 47
+                }
+            },
+            {
+                "user": {
                     "email": "narok@mfltest.slade360.co.ke"
                 },
                 "county": {
@@ -208,6 +216,14 @@
             {
                 "user": {
                     "email": "starehe@mfltest.slade360.co.ke"
+                },
+                "constituency": {
+                    "code": 289
+                }
+            },
+              {
+                "user": {
+                    "email": "schrio@mfltest.slade360.co.ke"
                 },
                 "constituency": {
                     "code": 289
@@ -323,6 +339,12 @@
             },
             {
                 "contact": "john_kmpdb@mfltest.slade360.co.ke",
+                "contact_type": {
+                    "name": "EMAIL"
+                }
+            },
+            {
+                "contact": "doe_ncck@mfltest.slade360.co.ke",
                 "contact_type": {
                     "name": "EMAIL"
                 }

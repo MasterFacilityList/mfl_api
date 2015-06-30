@@ -831,7 +831,11 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.url = reverse('api:facilities:facility_updatess_list')
 
     def test_listing(self):
-        obj = mommy.make(FacilityUpdates)
+        update = {
+            "name": "some name"
+        }
+        obj = mommy.make(
+            FacilityUpdates, facility_updates=json.dumps(update))
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         expected_data = {
@@ -846,7 +850,11 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.assertEquals(expected_data, response.data)
 
     def test_retrieving(self):
-        obj = mommy.make(FacilityUpdates)
+        update = {
+            "name": "some name"
+        }
+        obj = mommy.make(
+            FacilityUpdates, facility_updates=json.dumps(update))
         url = self.url + "{}/".format(obj.id)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
@@ -869,7 +877,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         facility_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertTrue(facility_refetched.has_edits)
-        self.assertEquals(facility_refetched.latest_update, obj)
+        self.assertEquals(facility_refetched.latest_update, str(obj.id))
         url = self.url + "{}/".format(obj.id)
         data = {"approved": True}
         response = self.client.patch(url, data)

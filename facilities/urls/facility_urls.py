@@ -131,9 +131,9 @@ urlpatterns = patterns(
         FacilityOperationStateDetailView.as_view(),
         name='facility_operation_state_detail'),
 
-    url(r'^facilitiy_approvals/$', FacilityApprovalListView.as_view(),
+    url(r'^facility_approvals/$', FacilityApprovalListView.as_view(),
         name='facility_approvals_list'),
-    url(r'^facilitiy_approvals/(?P<pk>[^/]+)/$',
+    url(r'^facility_approvals/(?P<pk>[^/]+)/$',
         FacilityApprovalDetailView.as_view(),
         name='facility_approval_detail'),
 

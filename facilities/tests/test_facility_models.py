@@ -1,4 +1,5 @@
 from __future__ import division
+import json
 
 from django.contrib.auth import get_user_model
 
@@ -764,6 +765,14 @@ class TestFacilityUpdates(BaseTestCase):
     def test_approve_and_cancel_validation(self):
         with self.assertRaises(ValidationError):
             mommy.make(FacilityUpdates, approved=True, cancelled=True)
+
+    def test_facility_updated_json(self):
+        update = {'name': 'some other name'}
+        facility_update = mommy.make(
+            FacilityUpdates,
+            facility_updates=json.dumps(update))
+        self.assertIsInstance(
+            facility_update.facility_updated_json(), dict)
 
 
 class TestFacilityUpgrade(BaseTestCase):
