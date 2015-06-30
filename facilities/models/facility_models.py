@@ -708,7 +708,8 @@ class Facility(SequenceMixin, AbstractBase):
             else:
                 updates = self._dump_updates(origi_model)
                 FacilityUpdates.objects.create(
-                    facility_updates=updates, facility=self
+                    facility_updates=updates, facility=self,
+                    created_by=self.updated_by, updated_by=self.updated_by
                 )
         except ObjectDoesNotExist:
             super(Facility, self).save(*args, **kwargs)
@@ -733,6 +734,9 @@ class FacilityUpdates(AbstractBase):
     approved = models.BooleanField(default=False)
     cancelled = models.BooleanField(default=False)
     facility_updates = models.TextField()
+
+    def facility_updated_json(self):
+        return json.loads(self.facility_updates)
 
     def update_facility(self):
         data = json.loads(self.facility_updates)

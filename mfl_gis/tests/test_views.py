@@ -4,14 +4,11 @@ from common.models import Ward, County, Constituency
 from django.core.urlresolvers import reverse
 from model_mommy import mommy
 
-from facilities.models import Facility
 from ..models import (
     WorldBorder,
     CountyBoundary,
     ConstituencyBoundary,
-    WardBoundary,
-    GeoCodeSource,
-    GeoCodeMethod
+    WardBoundary
 )
 from ..serializers import WorldBorderDetailSerializer
 

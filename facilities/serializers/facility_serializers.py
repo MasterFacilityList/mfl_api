@@ -304,7 +304,9 @@ class FacilityUpdatesSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
     facility_updates = serializers.ReadOnlyField()
+    facility_updated_json = serializers.ReadOnlyField()
     facility = FacilityDetailSerializer(required=False)
 
     class Meta:
         model = FacilityUpdates
+        exclude = ('facility_updates', )
