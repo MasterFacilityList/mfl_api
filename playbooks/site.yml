@@ -46,8 +46,8 @@
         # the settings below are for warming up the cache
         warm_cache: true,
         server_url: "http://mfl.azure.slade360.co.ke",
-        username: national@mfltest.slade360.co.ke,
-        password: national,
+        username: public@mfltest.slade360.co.ke,
+        password: public,
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
         client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
       }
