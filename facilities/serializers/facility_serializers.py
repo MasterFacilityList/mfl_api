@@ -306,6 +306,8 @@ class FacilityUpdatesSerializer(
     facility_updates = serializers.ReadOnlyField()
     facility_updated_json = serializers.ReadOnlyField()
     facility = FacilityDetailSerializer(required=False)
+    created_by_name = serializers.ReadOnlyField(
+        source='created_by.get_full_name')
 
     class Meta:
         model = FacilityUpdates
