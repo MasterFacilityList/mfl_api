@@ -10,7 +10,22 @@
                 "name": "Sub County Health Records Information Officer"
             },
             {
-                "name": "National Users"
+                "name": "Publishers"
+            },
+            {
+                "name": "Regulators (makers)"
+            },
+            {
+                "name": "Regulators (Approvers)"
+            },
+            {
+                "name": "Public Users"
+            },
+            {
+                "name": "National Administrators"
+            },
+            {
+                "name": "County Administrators"
             }
         ]
     }
