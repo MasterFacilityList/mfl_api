@@ -6,7 +6,7 @@ from users.models import MflUser
 def get_particular_type_of_permission(perm_type, perms):
     matching_perms = []
     for perm in perms:
-        if perm.codename.find(perm_type) and perm not in matching_perms:
+        if perm.codename.find(perm_type) > -1 and perm not in matching_perms:
             matching_perms.append(perm)
     return matching_perms
 
@@ -128,19 +128,14 @@ class Command(BaseCommand):
             if user.regulator:
                 user.groups.add(regulator_makers.id)
                 user.groups.add(regulator_approvers.id)
-                continue
             elif user.is_staff and not user.county:
                 user.groups.add(national.id)
-                continue
             elif user.constituency:
                 user.groups.add(schrio.id)
-                continue
             elif user.county and not user.is_staff:
                 user.groups.add(chrio.id)
-                continue
             elif user.county and user.is_staff:
                 user.groups.add(county_admins.id)
-                continue
             elif user.is_national and not user.is_staff and not user.regulator:
                 user.groups.add(publishers.id)
             else:
