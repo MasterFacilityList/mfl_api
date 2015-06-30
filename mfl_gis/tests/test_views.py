@@ -4,12 +4,14 @@ from common.models import Ward, County, Constituency
 from django.core.urlresolvers import reverse
 from model_mommy import mommy
 
-
+from facilities.models import Facility
 from ..models import (
     WorldBorder,
     CountyBoundary,
     ConstituencyBoundary,
-    WardBoundary
+    WardBoundary,
+    GeoCodeSource,
+    GeoCodeMethod
 )
 from ..serializers import WorldBorderDetailSerializer
 
@@ -106,3 +108,22 @@ class TestFacilityCoordinatesListing(LoginMixin, APITestCase):
         response = self.client.get(const_url)
         self.assertIsInstance(response.data, list)
         self.assertEquals(0, len(response.data))
+
+
+class TestPostingFacilityCoordinates(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:mfl_gis:facility_coordinates_simple_list")
+        super(TestPostingFacilityCoordinates, self).setUp()
+
+    def test_get(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+
+    def test_retrieve(self):
+        facility_gps = mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        url = self.url + "{}/".format(str(facility_gps.id))
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)

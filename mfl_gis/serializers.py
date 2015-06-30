@@ -65,6 +65,12 @@ class FacilityCoordinatesDetailSerializer(
         geo_field = "geometry"
 
 
+class FacilityCoordinateSimpleSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = FacilityCoordinates
+
+
 class AbstractBoundarySerializer(
         AbstractFieldsMixin, GeoFeatureModelSerializer):
     center = serializers.ReadOnlyField()

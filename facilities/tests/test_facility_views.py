@@ -869,7 +869,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         facility_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertTrue(facility_refetched.has_edits)
-        self.assertEquals(facility_refetched.latest_update, obj)
+        self.assertEquals(facility_refetched.latest_update, str(obj.id))
         url = self.url + "{}/".format(obj.id)
         data = {"approved": True}
         response = self.client.patch(url, data)

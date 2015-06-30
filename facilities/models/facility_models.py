@@ -537,7 +537,7 @@ class Facility(SequenceMixin, AbstractBase):
         facility_updates = FacilityUpdates.objects.filter(
             facility=self, approved=False, cancelled=False)
         if facility_updates:
-            return facility_updates[0]
+            return str(facility_updates[0].id)
         else:
             return None
 
