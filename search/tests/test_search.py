@@ -173,7 +173,18 @@ class TestElasticSearchAPI(TestCase):
                         'store': True
                     }
                 }
-            }
+            },
+            'town': {
+                'properties': {
+                    'name': {
+                        'coerce': False,
+                        'search_analyzer': 'autocomplete',
+                        'index_analyzer': 'autocomplete',
+                        'type': 'string',
+                        'store': True
+                    }
+                }
+            },
         }
         self.assertEquals(expected_map, get_mappings())
 

@@ -115,4 +115,6 @@ class CommonFieldsFilterset(django_filters.FilterSet):
     is_active = django_filters.BooleanFilter(
         name='active', lookup_type='exact')
     search = SearchFilter(name='search')
+    q = SearchFilter(name='search')
     search_auto = AutoCompleteSearchFilter(name='search')
+    q_auto = AutoCompleteSearchFilter(name='search')

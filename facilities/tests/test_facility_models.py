@@ -532,6 +532,10 @@ class TestFacility(BaseTestCase):
             facility.name = 'The name has been changed again'
             facility.save()
 
+    def test_null_coordinates(self):
+        facility = mommy.make(Facility)
+        self.assertIsNone(facility.coordinates)
+
 
 class TestFacilityContact(BaseTestCase):
 
