@@ -26,10 +26,6 @@ def check_password_length(raw_password):
 
 
 class MflUserManager(BaseUserManager):
-    # def create(self, email, first_name,
-    #            username, password=None, is_staff=False, **extra_fields):
-    #     return self.create_user(email, first_name,
-    #                             username, password, **extra_fields)
 
     def create_user(self, email, first_name,
                     username, password=None, is_staff=False, **extra_fields):
