@@ -62,11 +62,16 @@ class ElasticAPI(object):
             "from": 0,
             "size": SEARCH_RESULT_SIZE,
             "query": {
-                "query_string": {
-                    "query": query
+                "fuzzy_like_this": {
+                    "fields": [
+                        "_all"
+                    ],
+                    "like_text": query,
+                    "max_query_terms": 12
                 }
             }
         }
+
         data = json.dumps(data)
         result = requests.post(url, data)
 
