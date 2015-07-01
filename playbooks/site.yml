@@ -16,7 +16,9 @@
         frontend_tag: "0.0.1a1",
         frontend_archive_file_name: "mfl_public_web__{{frontend_tag}}.tar.gz",
         download_url: "https://github.com/MasterFacilityList/mfl_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
-        tags: "public-frontend"
+        tags: "public-frontend",
+        username: public@mfltest.slade360.co.ke,
+        password: public,
       }
     - {
         role: frontend,
