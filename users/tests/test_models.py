@@ -93,7 +93,7 @@ class TestMflUserModel(BaseTestCase):
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
-            "password": "short",
+            "password": "ort",
         }
         with self.assertRaises(ValidationError):
             MflUser.objects.create_user(**data)
