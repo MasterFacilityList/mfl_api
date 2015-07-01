@@ -666,10 +666,9 @@ class Facility(SequenceMixin, AbstractBase):
 
     @property
     def coordinates(self):
-        coordinates = self.facility_coordinates_through
-        if coordinates:
-            return coordinates.id
-        else:
+        try:
+            return self.facility_coordinates_through.id
+        except:
             return None
 
     def clean(self, *args, **kwargs):
