@@ -313,6 +313,10 @@ SEARCH = {
                 {
                     "name": "Ward",
                     "fields": ["name"]
+                },
+                {
+                    "name": "Town",
+                    "fields": ["name"]
                 }
             ]
         }

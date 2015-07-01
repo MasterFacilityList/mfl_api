@@ -92,7 +92,8 @@ class FacilityCoordinates(GISAbstractBase):
     and attitude. The date/time the reading is done is also important, as
     is the source and method of the reading.
     """
-    facility = gis_models.OneToOneField(Facility)
+    facility = gis_models.OneToOneField(
+        Facility, related_name='facility_coordinates_through', unique=True)
     coordinates = gis_models.PointField()
     source = gis_models.ForeignKey(
         GeoCodeSource,

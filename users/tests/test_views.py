@@ -15,8 +15,9 @@ from ..serializers import _lookup_groups
 class TestLogin(APITestCase):
 
     def setUp(self):
-        self.user = MflUser.objects.create(
-            'user@test.com', 'pass', 'pass', 'pass'
+        self.user = MflUser.objects.create_user(
+            email='user@test.com', first_name='pass',
+            password='password', username='password'
         )
         self.login_url = reverse("api:rest_auth:rest_login")
         self.logout_url = reverse("api:rest_auth:rest_logout")
@@ -25,15 +26,16 @@ class TestLogin(APITestCase):
     def test_login(self):
         data = {
             "username": 'user@test.com',
-            "password": 'pass'
+            "password": 'password'
         }
         response = self.client.post(self.login_url, data)
         self.assertTrue(self.user.is_authenticated())
         self.assertEquals(200, response.status_code)
 
     def test_inactive_user_login(self):
-        user = MflUser.objects.create(
-            'user2@test.com', 'test first name', 'test user name', 'pass'
+        user = MflUser.objects.create_user(
+            email='user2@test.com', first_name='test first name',
+            username='test user name', password='pass_long'
         )
         user.is_active = False
         user.save()
@@ -41,7 +43,7 @@ class TestLogin(APITestCase):
             self.login_url,
             {
                 "username": user.email,
-                "password": 'pass'
+                "password": 'pass_long'
             }
         )
         self.assertEquals(400, response.status_code)
@@ -86,7 +88,8 @@ class TestUserViews(LoginMixin, APITestCase):
 
     def test_update_user(self):
         user = MflUser.objects.create(
-            'user@test.com', 'pass', 'pass', 'pass'
+            email='user@test.com', first_name='pass',
+            username='pass', password='pass_long'
         )
         group = Group.objects.create(name="Test Group")
         update_url = reverse(
@@ -106,13 +109,14 @@ class TestUserViews(LoginMixin, APITestCase):
 
     def test_update_user_pwd(self):
         user = MflUser.objects.create(
-            'user@test.com', 'pass', 'pass', 'pass'
+            email='user@test.com', first_name='pass',
+            username='pass', password='pass'
         )
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
         patch_data = {
             "first_name": "Phyll",
-            "password": "yeah",
+            "password": "yeah_longer",
         }
         response = self.client.patch(update_url, patch_data)
         self.assertEqual(200, response.status_code)

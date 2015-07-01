@@ -664,6 +664,14 @@ class Facility(SequenceMixin, AbstractBase):
         except ZeroDivisionError:
             return 0
 
+    @property
+    def coordinates(self):
+        coordinates = self.facility_coordinates_through
+        if coordinates:
+            return coordinates.id
+        else:
+            return None
+
     def clean(self, *args, **kwargs):
         self.validate_publish(*args, **kwargs)
         super(Facility, self).clean()

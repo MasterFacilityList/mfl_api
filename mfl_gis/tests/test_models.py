@@ -63,6 +63,8 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         facility_gps = mommy.make_recipe(
             'mfl_gis.tests.facility_coordinates_recipe')
         self.assertEquals(1, FacilityCoordinates.objects.count())
+        self.assertEquals(
+            facility_gps.id, facility_gps.facility.coordinates)
 
         # test unicode
         self.assertEquals(

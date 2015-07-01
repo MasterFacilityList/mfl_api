@@ -2,7 +2,8 @@ import reversion
 
 from django.db import models
 from django.utils import timezone
-from django.core.validators import validate_email, RegexValidator
+from django.core.validators import (
+    validate_email, RegexValidator, ValidationError)
 from django.contrib.auth.models import make_password
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
@@ -17,9 +18,24 @@ from oauth2_provider.models import AbstractApplication
 USER_MODEL = settings.AUTH_USER_MODEL
 
 
+def check_password_length(raw_password):
+    if len(raw_password) >= 6:
+        return True
+    else:
+        return False
+
+
 class MflUserManager(BaseUserManager):
-    def create(self, email, first_name,
-               username, password=None, is_staff=False, **extra_fields):
+    # def create(self, email, first_name,
+    #            username, password=None, is_staff=False, **extra_fields):
+    #     return self.create_user(email, first_name,
+    #                             username, password, **extra_fields)
+
+    def create_user(self, email, first_name,
+                    username, password=None, is_staff=False, **extra_fields):
+        if not check_password_length(password):
+            error = "The password must be at least 6 characters long"
+            raise ValidationError(error)
         now = timezone.now()
         validate_email(email)
         p = make_password(password)
@@ -34,8 +50,8 @@ class MflUserManager(BaseUserManager):
 
     def create_superuser(self, email, first_name, username,
                          password, is_staff=True, **extra_fields):
-        user = self.create(email, first_name,
-                           username, password, **extra_fields)
+        user = self.create_user(email, first_name,
+                                username, password, **extra_fields)
         user.is_staff = is_staff
         user.is_active = True
         user.is_superuser = True
