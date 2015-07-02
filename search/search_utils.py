@@ -12,6 +12,7 @@ from django.db.models import get_app, get_models
 from .index_settings import INDEX_SETTINGS
 
 ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
+AUTO_COMPLETE_MODELS = settings.SEARCH.get('AUTOCOMPLETE_MODEL_FIELDS')
 INDEX_NAME = settings.SEARCH.get('INDEX_NAME')
 SEARCH_RESULT_SIZE = settings.SEARCH.get('SEARCH_RESULT_SIZE')
 LOGGER = logging.getLogger(__name__)
@@ -73,7 +74,14 @@ class ElasticAPI(object):
         return result
 
     def search_auto_complete_document(self, index_name, instance_type, query):
+        search_fields = ["name"]
         document_type = instance_type.__name__.lower()
+        for model_config in AUTO_COMPLETE_MODELS:
+            for model in model_config.get('model'):
+                if model.get('name').lower() == document_type:
+                    search_fields = model.get('fields')
+                    break
+
         url = "{}{}/{}/_search".format(
             ELASTIC_URL, index_name, document_type)
         data = {
@@ -81,7 +89,7 @@ class ElasticAPI(object):
             "size": SEARCH_RESULT_SIZE,
             "query": {
                 "query_string": {
-                    "fields": ["name"],
+                    "fields": search_fields,
                     "query": query,
                     "analyzer": "autocomplete"
                 }
