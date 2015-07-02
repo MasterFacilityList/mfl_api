@@ -82,7 +82,7 @@ class ElasticAPI(object):
         search_fields = ["name"]
         document_type = instance_type.__name__.lower()
         for model_config in AUTO_COMPLETE_MODELS:
-            for model in model_config.get('model'):
+            for model in model_config.get('models'):
                 if model.get('name').lower() == document_type:
                     search_fields = model.get('fields')
                     break
