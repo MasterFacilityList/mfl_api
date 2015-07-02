@@ -624,7 +624,7 @@ class Facility(SequenceMixin, AbstractBase):
             False
 
     @property
-    def lastest_approval(self):
+    def latest_approval(self):
         approvals = FacilityApproval.objects.filter(
             facility=self, is_cancelled=False)
         if approvals:

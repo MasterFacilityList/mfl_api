@@ -536,14 +536,14 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility)
         self.assertIsNone(facility.coordinates)
 
-    def test_lastest_approval(self):
+    def test_latest_approval(self):
         facility = mommy.make(Facility)
         approval = mommy.make(FacilityApproval, facility=facility)
-        self.assertEquals(approval, facility.lastest_approval)
+        self.assertEquals(approval, facility.latest_approval)
 
-    def test_no_lastest_approval(self):
+    def test_no_latest_approval(self):
         facility = mommy.make(Facility)
-        self.assertIsNone(facility.lastest_approval)
+        self.assertIsNone(facility.latest_approval)
 
 
 class TestFacilityContact(BaseTestCase):
