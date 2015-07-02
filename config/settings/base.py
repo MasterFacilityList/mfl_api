@@ -296,6 +296,42 @@ SEARCH = {
                 {
                     "name": "owner",
                     "fields": ["name"]
+                },
+                {
+                    "name": "OwnerType",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "JobTitle",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Officer",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "FacilityStatus",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "FacilityType",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "RegulationStatus",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Option",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "ServiceCategory",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Service",
+                    "fields": ["name"]
                 }
             ]
         },
@@ -313,6 +349,36 @@ SEARCH = {
                 {
                     "name": "Ward",
                     "fields": ["name"]
+                },
+                {
+                    "name": "ContactType",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "Contact",
+                    "fields": ["contact"]
+                },
+            ]
+        },
+        {
+            "app": "mfl_gis",
+            "models": [
+                {
+                    "name": "GeoCodeSource",
+                    "fields": ["name"]
+                },
+                {
+                    "name": "GeoCodeMethod",
+                    "fields": ["name"]
+                }
+            ]
+        },
+        {
+            "app": "users",
+            "models": [
+                {
+                    "name": "MflUser",
+                    "fields": ["full_name", "email"]
                 }
             ]
         }
