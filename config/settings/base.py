@@ -358,6 +358,10 @@ SEARCH = {
                     "name": "Contact",
                     "fields": ["contact"]
                 },
+                {
+                    "name": "Town",
+                    "fields": ["name"]
+                },
             ]
         },
         {

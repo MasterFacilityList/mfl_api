@@ -50,7 +50,7 @@ INDEX_SETTINGS = {
                 },
                 "filter": {
                     "ngram": {
-                        "min_gram": "4",
+                        "min_gram": "2",
                         "type": "ngram",
                         "max_gram": "15"
                     }
