@@ -616,7 +616,8 @@ class Facility(SequenceMixin, AbstractBase):
 
     @property
     def is_approved(self):
-        approvals = FacilityApproval.objects.filter(facility=self).count()
+        approvals = FacilityApproval.objects.filter(
+            facility=self, is_cancelled=False).count()
         if approvals:
             return True
         else:
@@ -840,6 +841,8 @@ class FacilityApproval(AbstractBase):
     """
     facility = models.ForeignKey(Facility)
     comment = models.TextField()
+    is_cancelled = models.BooleanField(
+        default=False, help_text='Cancel a facility approval')
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.created_by)
