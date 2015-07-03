@@ -58,7 +58,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 def load_demo_data(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
-    data_files = join(BASE_DIR, 'data/data/*')
+    data_files = join(BASE_DIR, 'data/data/0*.json')
     manage('bootstrap', data_files)
     manage('load_groups')
     # Needs to occur after base setup data has been loaded

@@ -1,147 +1,36 @@
-from django.core.management import BaseCommand
+import os
+import json
+
+from django.db import transaction
+from django.conf import settings
 from django.contrib.auth.models import Group, Permission
-
-
-USER_MAPPING = {
-    "model": "users.MflUserGroups",
-    "unique_fields": ["user", "group"],
-    "records": [
-        {
-            "mfluser": {
-                "email": "superuser@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Superusers"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "national_admin@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "National Administratiors"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "nairobi_admin@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "County Administratiors"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "publisher@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Publishers"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "public@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Public Users"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "mombasa@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "kilifi@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "nairobi@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "narok@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "tanariver@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "starehe@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Sub County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "mathare@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Sub County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "kamukunji@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Sub County Health Records Information Officer"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "kmpdb@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Regulators (makers)"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "coc@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Regulators (makers)"
-            }
-        },
-        {
-            "mfluser": {
-                "email": "ncck@mfltest.slade360.co.ke"
-            },
-            "group": {
-                "name": "Regulators (makers)"
-            }
-        }
-    ]
-}
+from django.core.management import BaseCommand
+from users.models import MflUser
 
 
 class Command(BaseCommand):
 
-    def handle(self, *args, **options):
-        national = Group.objects.get(name="Superusers")
+    def _load_group_permissions(self, group_permissions):
+        with transaction.atomic():
+            for gp in group_permissions:
+                g = Group.objects.get(**gp["group"])
+                for p in gp["permissions"]:
+                    g.permissions.add(Permission.objects.get(**p))
 
-        for perm in Permission.objects.all():
-            national.permissions.add(perm.id)
+    def _load_user_groups(self, user_groups):
+        with transaction.atomic():
+            for ug in user_groups:
+                u = MflUser.objects.get(**ug["mfluser"])
+                for g in ug["groups"]:
+                    u.groups.add(Group.objects.get(**g))
+
+    def _get_file(self, fname):
+        return os.path.join(settings.BASE_DIR, "data/data", fname)
+
+    def handle(self, *args, **options):
+
+        with open(self._get_file("1001_user_groups.json"), "rt") as f:
+            self._load_user_groups(json.load(f))
+
+        with open(self._get_file("1002_group_permissions.json"), "rt") as f:
+            self._load_group_permissions(json.load(f))
