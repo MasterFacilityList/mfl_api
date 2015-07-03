@@ -1,11 +1,10 @@
-import os
 import json
 
-from django.db import transaction
-from django.conf import settings
 from django.contrib.auth.models import Group
 from django.core.management import BaseCommand
 from users.models import MflUser
+
+from . import _get_file_path
 
 
 class Command(BaseCommand):
@@ -34,12 +33,9 @@ class Command(BaseCommand):
             for u in MflUser.objects.all()
         ]
 
-    def _get_file(self, fname):
-        return os.path.join(settings.BASE_DIR, "data/data", fname)
-
     def handle(self, *args, **options):
-        with open(self._get_file("1001_user_groups.json"), "wt") as f:
+        with open(_get_file_path("1001_user_groups.json"), "wt") as f:
             json.dump(self._dump_user_groups(), f, indent=4)
 
-        with open(self._get_file("1002_group_permissions.json"), "wt") as f:
+        with open(_get_file_path("1002_group_permissions.json"), "wt") as f:
             json.dump(self._dump_group_permissions(), f, indent=4)
