@@ -8,7 +8,7 @@
                 "name": "mfl-public-frontend",
                 "client_type": "confidential",
                 "user": {
-                    "email": "national@mfltest.slade360.co.ke"
+                    "email": "national_admin@mfltest.slade360.co.ke"
                 },
                 "client_id": "xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5",
                 "skip_authorization": false,
@@ -24,7 +24,7 @@
                 "name": "mfl-admin-frontend",
                 "skip_authorization": false,
                 "user": {
-                    "email": "national@mfltest.slade360.co.ke"
+                    "email": "national_admin@mfltest.slade360.co.ke"
                 }
             }
         ]
