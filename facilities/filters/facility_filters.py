@@ -273,15 +273,11 @@ class FacilityFilter(CommonFieldsFilterset):
         for facility in Facility.objects.all():
             cats_seen = []
             for cat in categories:
-                try:
-                    service_count = FacilityService.objects.filter(
-                        selected_option__service__category=cat,
-                        facility=facility).count()
-                    if service_count > 0:
-                        cats_seen.append(cat)
-                except FacilityService.DoesNotExist:
-                    # the facility does not have that service
-                    pass
+                service_count = FacilityService.objects.filter(
+                    selected_option__service__category=cat,
+                    facility=facility).count()
+                if service_count > 0:
+                    cats_seen.append(cat)
             if len(cats_seen) == cat_len:
                 facility_ids.append(facility.id)
 
