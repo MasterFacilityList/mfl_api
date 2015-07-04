@@ -69,7 +69,7 @@ def sanitize_field_names(sample_keys):
     return key_map
 
 
-def _write_excel_file(data):
+def _write_excel_file(data):  # noqa
     result = data.get('results')
     mem_file = cStringIO.StringIO()
     workbook = xlsxwriter.Workbook(mem_file)
