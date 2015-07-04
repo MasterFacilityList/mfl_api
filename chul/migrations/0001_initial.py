@@ -158,6 +158,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -196,6 +197,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': 'statuses',
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.AddField(

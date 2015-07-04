@@ -35,8 +35,8 @@
             },
             {
                 "email": "publisher@mfltest.slade360.co.ke",
-                "first_name": "Jane",
-                "last_name": "Juliet",
+                "first_name": "Julius",
+                "last_name": "Mwelusi",
                 "username": "publisher",
                 "password": "pbkdf2_sha256$20000$xpBHQvCHyhRg$FLmjPLLKE3PhXRGLHTNPzUsFp3XQNcZRiXngBrL7Sf4=",
                 "is_staff": false,
