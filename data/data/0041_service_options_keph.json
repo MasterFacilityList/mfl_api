@@ -1,0 +1,1066 @@
+[
+   
+    {
+      "model":"facilities.ServiceOption",
+      "unique_fields":["service","option"],
+      "records": [
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Services for Sexual Violence Survivors"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Services for Sexual Violence Survivors"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Services for Sexual Violence Survivors"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Services for Sexual Violence Survivors"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Services for Sexual Violence Survivors"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Services for Sexual Violence Survivors"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Maternity Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Maternity Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Maternity Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Maternity Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Maternity Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Maternity Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Integrated Management of Childhood Illnesses"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Integrated Management of Childhood Illnesses"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Integrated Management of Childhood Illnesses"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Integrated Management of Childhood Illnesses"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Integrated Management of Childhood Illnesses"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Integrated Management of Childhood Illnesses"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Nutrition Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Nutrition Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Nutrition Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Nutrition Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Nutrition Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Nutrition Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Radiology Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Radiology Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Radiology Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Radiology Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Radiology Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Radiology Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Curative Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Curative Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Curative Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Curative Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Curative Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Curative Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Surgical Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Surgical Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Surgical Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Surgical Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Surgical Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Surgical Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Ambulance Sevices"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Ambulance Sevices"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Ambulance Sevices"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Ambulance Sevices"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Ambulance Sevices"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Ambulance Sevices"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Opthalmic Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Opthalmic Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Opthalmic Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Opthalmic Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Opthalmic Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Opthalmic Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Mental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Mental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Mental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Mental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Mental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Mental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Physiotherapy"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Physiotherapy"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Physiotherapy"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Physiotherapy"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Physiotherapy"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Physiotherapy"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Environmental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Environmental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Environmental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Environmental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Environmental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Environmental Health Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Emergency Obstetric Care"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Emergency Obstetric Care"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Emergency Obstetric Care"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Emergency Obstetric Care"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Emergency Obstetric Care"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Emergency Obstetric Care"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Oral Health Services (Dental Services)"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Oral Health Services (Dental Services)"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Oral Health Services (Dental Services)"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Oral Health Services (Dental Services)"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Oral Health Services (Dental Services)"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Oral Health Services (Dental Services)"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Dental Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Dental Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Dental Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Dental Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Dental Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Dental Laboratory Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "ENT Services"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "ENT Services"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "ENT Services"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "ENT Services"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "ENT Services"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "ENT Services"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Emergency Preparedness"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Emergency Preparedness"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Emergency Preparedness"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Emergency Preparedness"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Emergency Preparedness"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Emergency Preparedness"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Provider Initiated Counselling and Testing"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Voluntary Male Circumcision"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Rehabilitative Health Services - Orthopaedic Technology"
+        }
+    },
+    {
+        "option": {
+            "value": "1"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    },
+    {
+        "option": {
+            "value": "2"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    },
+    {
+        "option": {
+            "value": "3"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    },
+    {
+        "option": {
+            "value": "4"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    },
+    {
+        "option": {
+            "value": "5"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    },
+    {
+        "option": {
+            "value": "6"
+        },
+        "service": {
+            "name": "Permanent FP"
+        }
+    }
+]
+
+    }
+]
