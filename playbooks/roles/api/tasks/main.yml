@@ -55,7 +55,7 @@
 
 - name: run fab recreate_search_index
   shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab recreate_search_index >> /tmp/fab_recreate_search_index.log executable=/bin/bash"
-  when: load_demo_data
+  when: recreate_search_index
 
 - name: clear and warm api cache
   shell: >
