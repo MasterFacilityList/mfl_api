@@ -44,6 +44,7 @@
         setup_new_db: false,
         django_debug: False,
         load_demo_data: false,
+        recreate_search_index: false,
 
         # the settings below are for warming up the cache
         warm_cache: true,
