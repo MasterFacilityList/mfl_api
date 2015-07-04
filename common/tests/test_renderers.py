@@ -5,7 +5,8 @@ from model_mommy import mommy
 
 
 from common.models import County
-from common.renderers.excel_renderer import _write_excel_file
+from common.renderers.excel_renderer import (
+    _write_excel_file, sanitize_field_names, _build_name_from_list)
 from .test_views import LoginMixin
 
 
@@ -39,11 +40,13 @@ class TestExcelRenderer(LoginMixin, APITestCase):
             "results": [
                 {
                     "key_a": "data",
-                    "key_b": "data"
+                    "key_b": "data",
+                    "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
                 },
                 {
                     "key_a": "data",
-                    "key_b": "data"
+                    "key_b": "data",
+                    "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
                 },
                 {
                     "key_a": "data",
@@ -52,7 +55,8 @@ class TestExcelRenderer(LoginMixin, APITestCase):
                             "key_a": "data",
                             "key_b": "data"
                         }
-                    ]
+                    ],
+                    "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
                 }
             ]
         }
@@ -85,6 +89,42 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         }
 
         _write_excel_file(data)
+
+    def test_sanitize_field_names(self):
+
+        sample_list = ['regulatory_status_name']
+        key_map = sanitize_field_names(sample_list)
+        self.assertEquals([
+            {
+                "actual": sample_list[0],
+                "preferred": " regulatory status"
+            }
+        ], key_map)
+
+        sample_list = ['is_approved']
+        key_map = sanitize_field_names(sample_list)
+        self.assertEquals([
+            {
+                "actual": sample_list[0],
+                "preferred": "approved"
+            }
+        ], key_map)
+        sample_list = ['name']
+        key_map = sanitize_field_names(sample_list)
+        self.assertEquals([
+            {
+                "actual": sample_list[0],
+                "preferred": "name"
+            }
+        ], key_map)
+
+    def test__build_name_from_list(self):
+        name_list = ["regulatory", "status"]
+        result = _build_name_from_list(name_list)
+        self.assertEquals(" regulatory status", result)
+        name_list = ["approved"]
+        result = _build_name_from_list(name_list)
+        self.assertEquals("approved", result)
 
 
 class TestCsvRenderer(LoginMixin, APITestCase):

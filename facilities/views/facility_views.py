@@ -74,6 +74,8 @@ class QuerysetFilterMixin(object):
                     self.queryset.model, 'ward'):
                 return self.queryset.filter(
                     ward__constituency=self.request.user.constituency)
+            else:
+                return self.queryset
         else:
             return self.queryset
 

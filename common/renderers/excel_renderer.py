@@ -20,6 +20,55 @@ def remove_keys(sample_list):
         if item not in settings.EXCEL_EXCEPT_FIELDS]
 
 
+def _build_name_from_list(name_list):
+    """
+    Given a list joins the items in the list together
+    and returns a space separated string
+    """
+    if len(name_list) == 1:
+        return name_list[0]
+    else:
+        mapping_name = ""
+        index = 0
+        while index < len(name_list):
+            mapping_name = mapping_name + " " + name_list[index]
+            index = index + 1
+        return mapping_name
+
+
+def sanitize_field_names(sample_keys):
+    """
+    Creates user friendly names for inlined serializer fields.
+
+    For example:
+        1. A name such as regulatory_status_name the name part is
+           stripped and 'regulatory status' will be used instead
+        2. For name such as is_approved the is part is removed
+           and approved left
+    """
+    key_map = []
+    for key in sample_keys:
+        new_name = key.split('_')
+        if new_name[len(new_name) - 1] == 'name' and key != "name":
+            mapping_name = _build_name_from_list(new_name[0:len(new_name) - 1])
+            key_map.append({
+                "actual": key,
+                "preferred": mapping_name
+            })
+        elif new_name[0].lower() == 'is':
+            mapping_name = _build_name_from_list(new_name[1:len(new_name)])
+            key_map.append({
+                "actual": key,
+                "preferred": mapping_name
+            })
+        else:
+            key_map.append({
+                "actual": key,
+                "preferred": key
+            })
+    return key_map
+
+
 def _write_excel_file(data):
     result = data.get('results')
     mem_file = cStringIO.StringIO()
@@ -28,10 +77,8 @@ def _write_excel_file(data):
         {
             'bold': True,
             'font_color': 'black',
-            'font_size': 15
+            'font_size': 12
         })
-    format.set_align('center')
-    format.set_align('vcenter')
 
     def _add_data_to_worksheet(work_sheet_data):
         worksheet = workbook.add_worksheet()
@@ -50,14 +97,33 @@ def _write_excel_file(data):
             # remove columns that should not be in excel
             sample_keys = remove_keys(sample_keys)
 
+            # find uuid fields and remove them from data
+            data = work_sheet_data[0]
+            reject_keys = []
             for key in sample_keys:
-                key = key.replace('_', " ")
-                worksheet.write(row, col, key.capitalize(), format)
+                try:
+                    uuid.UUID(str(data.get(key)))
+                    reject_keys.append(key)
+                    del sample_keys[sample_keys.index(key)]
+                except ValueError:
+                    pass
+
+            # remove data with uuid fields
+            for data in work_sheet_data:
+                for key in reject_keys:
+                    del data[key]
+
+            # write the excel column names
+            sample_keys_map = sanitize_field_names(sample_keys)
+            for key in sample_keys_map:
+                worksheet.write(
+                    row, col, key.get("preferred").capitalize(), format)
                 col = col + 1
             row = 1
             col = 0
             for data_dict in work_sheet_data:
                 data_keys = data_dict.keys()
+
                 # remove colums that should not be in excel
                 data_keys = remove_keys(data_keys)
 
