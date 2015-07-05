@@ -259,13 +259,15 @@ class FacilityDetailSerializer(FacilitySerializer):
 
 
 class FacilityListSerializer(FacilitySerializer):
+
     class Meta(object):
         model = Facility
         fields = [
             'code', 'name', 'id', 'county', 'constituency',
-            'facility_type_name', 'owner_type_name',
+            'facility_type_name', 'owner_name', 'owner_type_name',
             'regulatory_status_name', 'ward', 'operation_status_name',
-            'ward_name', 'is_published', "is_approved"]
+            'ward_name', 'is_published', "is_approved"
+        ]
 
 
 class FacilityContactSerializer(
