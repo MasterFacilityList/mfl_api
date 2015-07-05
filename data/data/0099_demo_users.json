@@ -29,14 +29,14 @@
                 "last_name": "Mzalendo",
                 "username": "nairobi_admin",
                 "password": "pbkdf2_sha256$20000$EvV2Emirwxdj$OH4+CJ3KndqEl/yK4KnoBCS8oPo3Gy6L+szRYtcIQWs=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false
             },
             {
                 "email": "publisher@mfltest.slade360.co.ke",
-                "first_name": "Julius",
-                "last_name": "Mwelusi",
+                "first_name": "Wairimu",
+                "last_name": "Cherono",
                 "username": "publisher",
                 "password": "pbkdf2_sha256$20000$xpBHQvCHyhRg$FLmjPLLKE3PhXRGLHTNPzUsFp3XQNcZRiXngBrL7Sf4=",
                 "is_staff": false,
