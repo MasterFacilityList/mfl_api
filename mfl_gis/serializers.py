@@ -33,12 +33,6 @@ class FacilityCoordinatesListSerializer(
     constituency = serializers.ReadOnlyField(
         source="facility.ward.constituency.id"
     )
-    source_name = serializers.ReadOnlyField(
-        source="source.name"
-    )
-    method_name = serializers.ReadOnlyField(
-        source="method.name"
-    )
     county = serializers.ReadOnlyField(
         source="facility.ward.constituency.county.id"
     )
@@ -73,6 +67,12 @@ class FacilityCoordinatesDetailSerializer(
 
 class FacilityCoordinateSimpleSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    source_name = serializers.ReadOnlyField(
+        source="source.name"
+    )
+    method_name = serializers.ReadOnlyField(
+        source="method.name"
+    )
     class Meta(object):
         model = FacilityCoordinates
 
