@@ -448,6 +448,7 @@ class TestFacilityView(LoginMixin, APITestCase):
 
     def test_patch_facility(self):
         facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
         url = self.url + "{}/".format(facility.id)
         data = {
             "name": "A new name"
@@ -463,6 +464,7 @@ class TestFacilityView(LoginMixin, APITestCase):
         false_url = self.url + "?has_edits=False"
         facility_a = mommy.make(
             Facility, id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        mommy.make(FacilityApproval, facility=facility_a)
         facility_a.name = 'jina ingine'
         facility_a.save()
         facility_b = mommy.make(Facility)
@@ -951,6 +953,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         facility = mommy.make(
             Facility,
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        mommy.make(FacilityApproval, facility=facility)
         obj = mommy.make(
             FacilityUpdates,
             facility=facility,
