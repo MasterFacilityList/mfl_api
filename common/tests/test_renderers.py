@@ -97,7 +97,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         self.assertEquals([
             {
                 "actual": sample_list[0],
-                "preferred": " regulatory status"
+                "preferred": "regulatory status"
             }
         ], key_map)
 
@@ -121,7 +121,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
     def test__build_name_from_list(self):
         name_list = ["regulatory", "status"]
         result = _build_name_from_list(name_list)
-        self.assertEquals(" regulatory status", result)
+        self.assertEquals("regulatory status", result)
         name_list = ["approved"]
         result = _build_name_from_list(name_list)
         self.assertEquals("approved", result)
