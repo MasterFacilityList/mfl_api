@@ -26,6 +26,9 @@
             },
             {
                 "name": "County Administrators"
+            },
+            {
+                "name": "Superusers"
             }
         ]
     }

@@ -112,81 +112,26 @@ class TestElasticSearchAPI(TestCase):
         self.elastic_search_api.delete_index(index_name='test_index')
 
     def test_index_settings(self):
-        expected_map = {
-            'owner': {
-                'properties': {
-                    'name': {
-                        'coerce': False,
-                        'search_analyzer': 'autocomplete',
-                        'index_analyzer': 'autocomplete',
-                        'type': 'string', 'store': True
-                    }
-                }
-            },
-            'county': {
-                'properties': {
-                    'name': {
-                        'coerce': False,
-                        'search_analyzer': 'autocomplete',
-                        'index_analyzer': 'autocomplete',
-                        'type': 'string',
-                        'store': True
-                    }
-                }
-            },
-            'ward': {
-                'properties': {
-                    'name': {
-                        'coerce': False,
-                        'search_analyzer': 'autocomplete',
-                        'index_analyzer': 'autocomplete',
-                        'type': 'string',
-                        'store': True
-                    }
-                }
-            },
-            'consituency': {
-                'properties': {
-                    'name': {
-                        'coerce': False,
-                        'search_analyzer': 'autocomplete',
-                        'index_analyzer': 'autocomplete',
-                        'type': 'string',
-                        'store': True
-                    }
-                }
-            },
-            'facility': {
-                'properties': {
-                    'name': {
-                        'coerce': False,
-                        'search_analyzer': 'autocomplete',
-                        'index_analyzer': 'autocomplete',
-                        'type': 'string',
-                        'store': True
-                    },
-                    'ward_name': {
-                        'coerce': False,
-                        'search_analyzer': 'autocomplete',
-                        'index_analyzer': 'autocomplete',
-                        'type': 'string',
-                        'store': True
-                    }
-                }
-            },
-            'town': {
-                'properties': {
-                    'name': {
-                        'coerce': False,
-                        'search_analyzer': 'autocomplete',
-                        'index_analyzer': 'autocomplete',
-                        'type': 'string',
-                        'store': True
-                    }
-                }
-            },
-        }
-        self.assertEquals(expected_map, get_mappings())
+        expected_map = get_mappings()
+        for key, value in expected_map.items():
+            for key_2, value_2 in expected_map.get(key).items():
+                for key_3, value_3 in expected_map.get(key).get(key_2).items():
+                        values = expected_map.get(key).get(key_2).get(key_3)
+                        self.assertEquals(
+                            'autocomplete',
+                            values.get('index_analyzer'))
+                        self.assertEquals(
+                            'autocomplete',
+                            values.get('search_analyzer'))
+                        self.assertEquals(
+                            'string',
+                            values.get('type'))
+                        self.assertEquals(
+                            False,
+                            values.get('coerce'))
+                        self.assertEquals(
+                            True,
+                            values.get('store'))
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
@@ -197,6 +142,10 @@ class TestElasticSearchAPI(TestCase):
     SEARCH=SEARCH_TEST_SETTINGS,
     CACHES=CACHES_TEST_SETTINGS)
 class TestSearchFunctions(ViewTestBase):
+    def setUp(self):
+        self.elastic_search_api = ElasticAPI()
+        super(TestSearchFunctions, self).setUp()
+
     def test_serialize_model(self):
         self.maxDiff = None
         facility = mommy.make(Facility)
@@ -229,7 +178,6 @@ class TestSearchFunctions(ViewTestBase):
         # temporary hack there is a delay in getting the search results
         for x in range(0, 100):
             response = self.client.get(url)
-
         self.assertEquals(200, response.status_code)
 
         expected_data = {
@@ -296,11 +244,19 @@ class TestSearchFunctions(ViewTestBase):
         self.assertEquals(200, response.status_code)
         self.elastic_search_api.delete_index('test_index')
 
+    def tearDown(self):
+        self.elastic_search_api.delete_index(index_name='test_index')
+        super(TestSearchFunctions, self).tearDown()
+
 
 @override_settings(
     SEARCH=SEARCH_TEST_SETTINGS,
     CACHES=CACHES_TEST_SETTINGS)
 class TestSearchFilter(ViewTestBase):
+    def setUp(self):
+        self.elastic_search_api = ElasticAPI()
+        super(TestSearchFilter, self).setUp()
+
     def test_filter_no_data(self):
         api = ElasticAPI()
         api.delete_index('test_index')
@@ -377,3 +333,7 @@ class TestSearchFilter(ViewTestBase):
         self.assertEquals(1, FacilityCoordinates.objects.count())
 
         index_instance(obj)
+
+    def tearDown(self):
+        self.elastic_search_api.delete_index(index_name='test_index')
+        super(TestSearchFilter, self).tearDown()

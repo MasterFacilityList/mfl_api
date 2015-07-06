@@ -58,51 +58,6 @@ class Contact(AbstractBase):
         unique_together = ('contact', 'contact_type')
 
 
-class Town(AbstractBase):
-    name = models.CharField(
-        max_length=100, unique=True, null=True, blank=True,
-        help_text="Name of the town")
-
-    def __unicode__(self):
-        return self.name
-
-
-@reversion.register
-class PhysicalAddress(AbstractBase):
-    """
-    The physical properties of a facility.
-
-    These are physical properties of the facility and included is the
-    plot number and nearest landmark. This information in conjunction with
-    GPS codes is useful in locating the facility.
-    """
-    town = models.ForeignKey(
-        Town, null=True, blank=True,
-        help_text="The town where the entity is located e.g Nakuru")
-    postal_code = models.CharField(
-        null=True, blank=True,
-        max_length=100,
-        help_text="The 5 digit number for the post office address. e.g 00900")
-    address = models.TextField(
-        null=True, blank=True,
-        help_text="This is the actual post office number of the entity"
-        "e.g 6790")
-    nearest_landmark = models.TextField(
-        null=True, blank=True,
-        help_text="well-known physical features /structure that can be used to"
-        " simplify directions to a given place. e.g town market or village ")
-    plot_number = models.CharField(
-        max_length=100, null=True, blank=True,
-        help_text="This is the same number found on the title deeds of the"
-        "piece of land on which this facility is located")
-
-    def __unicode__(self):
-        return "{}: {}".format(self.postal_code, self.address)
-
-    class Meta(AbstractBase.Meta):
-        verbose_name_plural = 'physical addresses'
-
-
 class AdministrativeUnitBase(SequenceMixin, AbstractBase):
     """Base class for County, Constituency and Ward"""
     name = models.CharField(
@@ -297,3 +252,51 @@ class UserConstituency(AbstractBase):
 
     class Meta:
         verbose_name_plural = 'user constituencies'
+
+
+class Town(AbstractBase):
+    name = models.CharField(
+        max_length=100, unique=True, null=True, blank=True,
+        help_text="Name of the town")
+    ward = models.ForeignKey(
+        Ward, null=True, blank=True,
+        help_text='The ward where the town is located')
+
+    def __unicode__(self):
+        return self.name
+
+
+@reversion.register
+class PhysicalAddress(AbstractBase):
+    """
+    The physical properties of a facility.
+
+    These are physical properties of the facility and included is the
+    plot number and nearest landmark. This information in conjunction with
+    GPS codes is useful in locating the facility.
+    """
+    town = models.ForeignKey(
+        Town, null=True, blank=True,
+        help_text="The town where the entity is located e.g Nakuru")
+    postal_code = models.CharField(
+        null=True, blank=True,
+        max_length=100,
+        help_text="The 5 digit number for the post office address. e.g 00900")
+    address = models.TextField(
+        null=True, blank=True,
+        help_text="This is the actual post office number of the entity"
+        "e.g 6790")
+    nearest_landmark = models.TextField(
+        null=True, blank=True,
+        help_text="well-known physical features /structure that can be used to"
+        " simplify directions to a given place. e.g town market or village ")
+    plot_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="This is the same number found on the title deeds of the"
+        "piece of land on which this facility is located")
+
+    def __unicode__(self):
+        return "{}: {}".format(self.postal_code, self.address)
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'physical addresses'
