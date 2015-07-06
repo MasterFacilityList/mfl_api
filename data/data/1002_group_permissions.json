@@ -1,91 +1,6 @@
 [
     {
         "group": {
-            "name": "County Health Records Information Officer"
-        },
-        "permissions": [
-            {
-                "codename": "add_approvalstatus"
-            },
-            {
-                "codename": "view_approver"
-            },
-            {
-                "codename": "add_communityhealthunitapproval"
-            },
-            {
-                "codename": "change_communityhealthunitapproval"
-            },
-            {
-                "codename": "delete_communityhealthunitapproval"
-            },
-            {
-                "codename": "add_communityhealthworkerapproval"
-            },
-            {
-                "codename": "change_communityhealthworkerapproval"
-            },
-            {
-                "codename": "delete_communityhealthworkerapproval"
-            },
-            {
-                "codename": "view_facility"
-            },
-            {
-                "codename": "add_facilityapproval"
-            },
-            {
-                "codename": "change_facilityapproval"
-            },
-            {
-                "codename": "delete_facilityapproval"
-            },
-            {
-                "codename": "view_facilityapproval"
-            },
-            {
-                "codename": "view_facilitycontact"
-            },
-            {
-                "codename": "view_facilityofficer"
-            },
-            {
-                "codename": "view_facilityoperationstate"
-            },
-            {
-                "codename": "view_facilityregulationstatus"
-            },
-            {
-                "codename": "view_facilityservice"
-            },
-            {
-                "codename": "view_facilityservicerating"
-            },
-            {
-                "codename": "view_facilitystatus"
-            },
-            {
-                "codename": "view_facilitytype"
-            },
-            {
-                "codename": "view_facilityunit"
-            },
-            {
-                "codename": "view_facilityunitregulation"
-            },
-            {
-                "codename": "view_facilityupdates"
-            },
-            {
-                "codename": "view_facilityupgrade"
-            },
-            {
-                "codename": "view_facilitycoordinates"
-            }
-        ]
-    },
-    {
-        "group": {
             "name": "Sub County Health Records Information Officer"
         },
         "permissions": [
@@ -530,134 +445,6 @@
             },
             {
                 "codename": "view_mfloauthapplication"
-            }
-        ]
-    },
-    {
-        "group": {
-            "name": "National Administrators"
-        },
-        "permissions": [
-            {
-                "codename": "add_group"
-            },
-            {
-                "codename": "change_group"
-            },
-            {
-                "codename": "delete_group"
-            },
-            {
-                "codename": "add_usercontact"
-            },
-            {
-                "codename": "change_usercontact"
-            },
-            {
-                "codename": "delete_usercontact"
-            },
-            {
-                "codename": "view_usercontact"
-            },
-            {
-                "codename": "add_usercounty"
-            },
-            {
-                "codename": "change_usercounty"
-            },
-            {
-                "codename": "delete_usercounty"
-            },
-            {
-                "codename": "view_usercounty"
-            },
-            {
-                "codename": "add_regulatorybodyuser"
-            },
-            {
-                "codename": "change_regulatorybodyuser"
-            },
-            {
-                "codename": "delete_regulatorybodyuser"
-            },
-            {
-                "codename": "view_regulatorybodyuser"
-            },
-            {
-                "codename": "add_mfloauthapplication"
-            },
-            {
-                "codename": "change_mfloauthapplication"
-            },
-            {
-                "codename": "delete_mfloauthapplication"
-            },
-            {
-                "codename": "view_mfloauthapplication"
-            },
-            {
-                "codename": "add_mfluser"
-            },
-            {
-                "codename": "change_mfluser"
-            },
-            {
-                "codename": "delete_mfluser"
-            },
-            {
-                "codename": "view_mfluser"
-            }
-        ]
-    },
-    {
-        "group": {
-            "name": "County Administrators"
-        },
-        "permissions": [
-            {
-                "codename": "add_group"
-            },
-            {
-                "codename": "change_group"
-            },
-            {
-                "codename": "delete_group"
-            },
-            {
-                "codename": "add_userconstituency"
-            },
-            {
-                "codename": "change_userconstituency"
-            },
-            {
-                "codename": "delete_userconstituency"
-            },
-            {
-                "codename": "add_usercontact"
-            },
-            {
-                "codename": "change_usercontact"
-            },
-            {
-                "codename": "delete_usercontact"
-            },
-            {
-                "codename": "view_usercontact"
-            },
-            {
-                "codename": "view_usercounty"
-            },
-            {
-                "codename": "add_mfluser"
-            },
-            {
-                "codename": "change_mfluser"
-            },
-            {
-                "codename": "delete_mfluser"
-            },
-            {
-                "codename": "view_mfluser"
             }
         ]
     },
@@ -1436,6 +1223,480 @@
             },
             {
                 "codename": "view_mfloauthapplication"
+            },
+            {
+                "codename": "add_mfluser"
+            },
+            {
+                "codename": "change_mfluser"
+            },
+            {
+                "codename": "delete_mfluser"
+            },
+            {
+                "codename": "view_mfluser"
+            }
+        ]
+    },
+    {
+        "group": {
+            "name": "County Health Records Information Officer"
+        },
+        "permissions": [
+            {
+                "codename": "add_approvalstatus"
+            },
+            {
+                "codename": "view_approver"
+            },
+            {
+                "codename": "add_communityhealthunitapproval"
+            },
+            {
+                "codename": "change_communityhealthunitapproval"
+            },
+            {
+                "codename": "delete_communityhealthunitapproval"
+            },
+            {
+                "codename": "add_communityhealthworkerapproval"
+            },
+            {
+                "codename": "change_communityhealthworkerapproval"
+            },
+            {
+                "codename": "delete_communityhealthworkerapproval"
+            },
+            {
+                "codename": "view_constituency"
+            },
+            {
+                "codename": "view_contact"
+            },
+            {
+                "codename": "view_contacttype"
+            },
+            {
+                "codename": "view_county"
+            },
+            {
+                "codename": "view_town"
+            },
+            {
+                "codename": "view_ward"
+            },
+            {
+                "codename": "view_facility"
+            },
+            {
+                "codename": "add_facilityapproval"
+            },
+            {
+                "codename": "change_facilityapproval"
+            },
+            {
+                "codename": "delete_facilityapproval"
+            },
+            {
+                "codename": "view_facilityapproval"
+            },
+            {
+                "codename": "view_facilitycontact"
+            },
+            {
+                "codename": "view_facilityofficer"
+            },
+            {
+                "codename": "view_facilityoperationstate"
+            },
+            {
+                "codename": "view_facilityregulationstatus"
+            },
+            {
+                "codename": "view_facilityservice"
+            },
+            {
+                "codename": "view_facilityservicerating"
+            },
+            {
+                "codename": "view_facilitystatus"
+            },
+            {
+                "codename": "view_facilitytype"
+            },
+            {
+                "codename": "view_facilityunit"
+            },
+            {
+                "codename": "view_facilityunitregulation"
+            },
+            {
+                "codename": "view_facilityupdates"
+            },
+            {
+                "codename": "view_facilityupgrade"
+            },
+            {
+                "codename": "view_owner"
+            },
+            {
+                "codename": "view_ownertype"
+            },
+            {
+                "codename": "view_regulatingbody"
+            },
+            {
+                "codename": "view_regulatingbodycontact"
+            },
+            {
+                "codename": "view_regulationstatus"
+            },
+            {
+                "codename": "view_regulatorybodyuser"
+            },
+            {
+                "codename": "view_constituencyboundary"
+            },
+            {
+                "codename": "view_countyboundary"
+            },
+            {
+                "codename": "view_facilitycoordinates"
+            },
+            {
+                "codename": "view_geocodemethod"
+            },
+            {
+                "codename": "view_geocodesource"
+            },
+            {
+                "codename": "view_wardboundary"
+            }
+        ]
+    },
+    {
+        "group": {
+            "name": "National Administrators"
+        },
+        "permissions": [
+            {
+                "codename": "add_group"
+            },
+            {
+                "codename": "change_group"
+            },
+            {
+                "codename": "delete_group"
+            },
+            {
+                "codename": "add_status"
+            },
+            {
+                "codename": "change_status"
+            },
+            {
+                "codename": "delete_status"
+            },
+            {
+                "codename": "add_constituency"
+            },
+            {
+                "codename": "change_constituency"
+            },
+            {
+                "codename": "delete_constituency"
+            },
+            {
+                "codename": "view_constituency"
+            },
+            {
+                "codename": "add_contacttype"
+            },
+            {
+                "codename": "change_contacttype"
+            },
+            {
+                "codename": "delete_contacttype"
+            },
+            {
+                "codename": "view_contacttype"
+            },
+            {
+                "codename": "add_county"
+            },
+            {
+                "codename": "change_county"
+            },
+            {
+                "codename": "delete_county"
+            },
+            {
+                "codename": "view_county"
+            },
+            {
+                "codename": "view_town"
+            },
+            {
+                "codename": "add_userconstituency"
+            },
+            {
+                "codename": "change_userconstituency"
+            },
+            {
+                "codename": "delete_userconstituency"
+            },
+            {
+                "codename": "add_usercontact"
+            },
+            {
+                "codename": "change_usercontact"
+            },
+            {
+                "codename": "delete_usercontact"
+            },
+            {
+                "codename": "view_usercontact"
+            },
+            {
+                "codename": "add_usercounty"
+            },
+            {
+                "codename": "change_usercounty"
+            },
+            {
+                "codename": "delete_usercounty"
+            },
+            {
+                "codename": "view_usercounty"
+            },
+            {
+                "codename": "add_ward"
+            },
+            {
+                "codename": "change_ward"
+            },
+            {
+                "codename": "delete_ward"
+            },
+            {
+                "codename": "view_ward"
+            },
+            {
+                "codename": "add_jobtitle"
+            },
+            {
+                "codename": "change_jobtitle"
+            },
+            {
+                "codename": "delete_jobtitle"
+            },
+            {
+                "codename": "view_jobtitle"
+            },
+            {
+                "codename": "add_owner"
+            },
+            {
+                "codename": "change_owner"
+            },
+            {
+                "codename": "delete_owner"
+            },
+            {
+                "codename": "view_owner"
+            },
+            {
+                "codename": "add_ownertype"
+            },
+            {
+                "codename": "change_ownertype"
+            },
+            {
+                "codename": "delete_ownertype"
+            },
+            {
+                "codename": "view_ownertype"
+            },
+            {
+                "codename": "add_regulatingbody"
+            },
+            {
+                "codename": "change_regulatingbody"
+            },
+            {
+                "codename": "delete_regulatingbody"
+            },
+            {
+                "codename": "view_regulatingbody"
+            },
+            {
+                "codename": "add_regulatingbodycontact"
+            },
+            {
+                "codename": "change_regulatingbodycontact"
+            },
+            {
+                "codename": "delete_regulatingbodycontact"
+            },
+            {
+                "codename": "view_regulatingbodycontact"
+            },
+            {
+                "codename": "add_regulatorybodyuser"
+            },
+            {
+                "codename": "change_regulatorybodyuser"
+            },
+            {
+                "codename": "delete_regulatorybodyuser"
+            },
+            {
+                "codename": "view_regulatorybodyuser"
+            },
+            {
+                "codename": "add_constituencyboundary"
+            },
+            {
+                "codename": "change_constituencyboundary"
+            },
+            {
+                "codename": "delete_constituencyboundary"
+            },
+            {
+                "codename": "view_constituencyboundary"
+            },
+            {
+                "codename": "add_countyboundary"
+            },
+            {
+                "codename": "change_countyboundary"
+            },
+            {
+                "codename": "delete_countyboundary"
+            },
+            {
+                "codename": "view_countyboundary"
+            },
+            {
+                "codename": "add_geocodemethod"
+            },
+            {
+                "codename": "change_geocodemethod"
+            },
+            {
+                "codename": "delete_geocodemethod"
+            },
+            {
+                "codename": "view_geocodemethod"
+            },
+            {
+                "codename": "add_geocodesource"
+            },
+            {
+                "codename": "change_geocodesource"
+            },
+            {
+                "codename": "delete_geocodesource"
+            },
+            {
+                "codename": "view_geocodesource"
+            },
+            {
+                "codename": "add_wardboundary"
+            },
+            {
+                "codename": "change_wardboundary"
+            },
+            {
+                "codename": "delete_wardboundary"
+            },
+            {
+                "codename": "view_wardboundary"
+            },
+            {
+                "codename": "add_mfloauthapplication"
+            },
+            {
+                "codename": "change_mfloauthapplication"
+            },
+            {
+                "codename": "delete_mfloauthapplication"
+            },
+            {
+                "codename": "view_mfloauthapplication"
+            },
+            {
+                "codename": "add_mfluser"
+            },
+            {
+                "codename": "change_mfluser"
+            },
+            {
+                "codename": "delete_mfluser"
+            },
+            {
+                "codename": "view_mfluser"
+            }
+        ]
+    },
+    {
+        "group": {
+            "name": "County Administrators"
+        },
+        "permissions": [
+            {
+                "codename": "view_constituency"
+            },
+            {
+                "codename": "view_county"
+            },
+            {
+                "codename": "add_town"
+            },
+            {
+                "codename": "change_town"
+            },
+            {
+                "codename": "delete_town"
+            },
+            {
+                "codename": "view_town"
+            },
+            {
+                "codename": "add_userconstituency"
+            },
+            {
+                "codename": "change_userconstituency"
+            },
+            {
+                "codename": "delete_userconstituency"
+            },
+            {
+                "codename": "add_usercontact"
+            },
+            {
+                "codename": "change_usercontact"
+            },
+            {
+                "codename": "delete_usercontact"
+            },
+            {
+                "codename": "view_usercontact"
+            },
+            {
+                "codename": "view_usercounty"
+            },
+            {
+                "codename": "view_ward"
+            },
+            {
+                "codename": "view_constituencyboundary"
+            },
+            {
+                "codename": "view_countyboundary"
+            },
+            {
+                "codename": "view_wardboundary"
             },
             {
                 "codename": "add_mfluser"
