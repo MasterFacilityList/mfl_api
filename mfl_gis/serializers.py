@@ -14,12 +14,14 @@ from .models import (
 
 class GeoCodeSourceSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = GeoCodeSource
 
 
 class GeoCodeMethodSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = GeoCodeMethod
 
@@ -67,12 +69,9 @@ class FacilityCoordinatesDetailSerializer(
 
 class FacilityCoordinateSimpleSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    source_name = serializers.ReadOnlyField(
-        source="source.name"
-    )
-    method_name = serializers.ReadOnlyField(
-        source="method.name"
-    )
+    source_name = serializers.ReadOnlyField(source="source.name")
+    method_name = serializers.ReadOnlyField(source="method.name")
+
     class Meta(object):
         model = FacilityCoordinates
 

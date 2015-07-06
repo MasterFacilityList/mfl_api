@@ -5,6 +5,9 @@
 - *.egg-info/
 - static/*
 + static/.gitkeep
+- data/scripts/
+- data/csvs/
+- docs/
 - .coverage
 - *.pyc
 - *.pyo
