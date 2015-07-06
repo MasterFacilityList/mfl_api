@@ -550,6 +550,7 @@ class Facility(SequenceMixin, AbstractBase):
         return {
             "id": self.physical_address.id,
             "town": self.physical_address.town.name,
+            "town_id": self.physical_address.town.id,
             "address": self.physical_address.address,
             "nearest_landmark": self.physical_address.nearest_landmark,
             "plot_number": self.physical_address.plot_number,
