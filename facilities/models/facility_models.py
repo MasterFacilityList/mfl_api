@@ -6,7 +6,6 @@ import json
 from django.conf import settings
 from django.core import validators
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.exceptions import ValidationError
 from common.models import (
@@ -720,8 +719,7 @@ class Facility(SequenceMixin, AbstractBase):
             self.code = self.generate_next_code_sequence()
         if not self.is_approved:
             super(Facility, self).save(*args, **kwargs)
-            return
-        try:
+        else:
             origi_model = self.__class__.objects.get(id=self.id)
             allow_save = kwargs.pop('allow_save', None)
             if allow_save:
@@ -732,8 +730,6 @@ class Facility(SequenceMixin, AbstractBase):
                     facility_updates=updates, facility=self,
                     created_by=self.updated_by, updated_by=self.updated_by
                 )
-        except ObjectDoesNotExist:
-            super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
