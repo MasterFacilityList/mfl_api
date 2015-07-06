@@ -518,6 +518,7 @@ class TestFacility(BaseTestCase):
             {
                 "id": physical_address.id,
                 "town": town.name,
+                "town_id": town.id,
                 "plot_number": physical_address.plot_number,
                 "nearest_landmark": physical_address.nearest_landmark,
                 "address": physical_address.address,
