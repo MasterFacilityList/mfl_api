@@ -718,6 +718,9 @@ class Facility(SequenceMixin, AbstractBase):
         """
         if not self.code:
             self.code = self.generate_next_code_sequence()
+        if not self.is_approved:
+            super(Facility, self).save(*args, **kwargs)
+            return
         try:
             origi_model = self.__class__.objects.get(id=self.id)
             allow_save = kwargs.pop('allow_save', None)
