@@ -67,6 +67,12 @@ class FacilityCoordinatesDetailSerializer(
 
 class FacilityCoordinateSimpleSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    source_name = serializers.ReadOnlyField(
+        source="source.name"
+    )
+    method_name = serializers.ReadOnlyField(
+        source="method.name"
+    )
     class Meta(object):
         model = FacilityCoordinates
 
