@@ -420,7 +420,14 @@
             "category":{
                "name":"Family Planning"
             }
-         }
+         },
+         {
+            "name": "Curative Services",
+            "description":"Permanent FP",
+           "category":{
+               "name":"Services - Maximum Level of Service 1 - 6"
+            }
+        }
       ]
    }
 ]

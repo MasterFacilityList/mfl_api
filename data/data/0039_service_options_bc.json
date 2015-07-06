@@ -1,0 +1,90 @@
+[
+   
+    {
+      "model":"facilities.ServiceOption",
+      "unique_fields":["service","option"],
+      "records": [
+            
+            {
+                "option": {
+                    "value": "Basic"
+                },
+                "service": {
+                    "name": "Emergency Obstetric Care"
+                }
+            },
+            {
+                "option": {
+                    "value": "Comprehensive"
+                },
+                "service": {
+                    "name": "Emergency Obstetric Care"
+                }
+            },
+            {
+                "option": {
+                    "value": "Basic"
+                },
+                "service": {
+                    "name": "Oral Health Services (Dental Services)"
+                }
+            },
+            {
+                "option": {
+                    "value": "Comprehensive"
+                },
+                "service": {
+                    "name": "Oral Health Services (Dental Services)"
+                }
+            },
+            {
+                "option": {
+                    "value": "Basic"
+                },
+                "service": {
+                    "name": "Dental Laboratory Services"
+                }
+            },
+            {
+                "option": {
+                    "value": "Comprehensive"
+                },
+                "service": {
+                    "name": "Dental Laboratory Services"
+                }
+            },
+            {
+                "option": {
+                    "value": "Basic"
+                },
+                "service": {
+                    "name": "ENT Services"
+                }
+            },
+            {
+                "option": {
+                    "value": "Comprehensive"
+                },
+                "service": {
+                    "name": "ENT Services"
+                }
+            },
+            {
+                "option": {
+                    "value": "Basic"
+                },
+                "service": {
+                    "name": "Emergency Preparedness"
+                }
+            },
+            {
+                "option": {
+                    "value": "Comprehensive"
+                },
+                "service": {
+                    "name": "Emergency Preparedness"
+                }
+            }
+        ]
+    }
+]

@@ -1,5 +1,4 @@
 from distutils.util import strtobool
-
 import django_filters
 
 
@@ -267,9 +266,20 @@ class FacilityFilter(CommonFieldsFilterset):
             return Facility.objects.exclude(id__in=regulated_facilities)
 
     def service_filter(self, value):
-        facility_ids = [
-            fs.facility.id for fs in FacilityService.objects.filter(
-                selected_option__service__category=value)]
+        categories = value.split(',')
+        facility_ids = []
+        cat_len = len(categories)
+
+        for facility in Facility.objects.all():
+            cats_seen = []
+            for cat in categories:
+                service_count = FacilityService.objects.filter(
+                    selected_option__service__category=cat,
+                    facility=facility).count()
+                if service_count > 0:
+                    cats_seen.append(cat)
+            if len(cats_seen) == cat_len:
+                facility_ids.append(facility.id)
 
         return Facility.objects.filter(id__in=facility_ids)
 

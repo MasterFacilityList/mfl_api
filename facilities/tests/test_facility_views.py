@@ -11,7 +11,12 @@ from common.tests.test_views import (
     default
 )
 from common.models import (
-    Ward, UserCounty, County, Constituency, Contact, ContactType)
+    Ward, UserCounty,
+    County,
+    Constituency,
+    Contact,
+    ContactType,
+    UserConstituency)
 
 from ..serializers import (
     OwnerSerializer,
@@ -256,8 +261,10 @@ class TestFacilityView(LoginMixin, APITestCase):
         facility_services = response.data.get('facility_services')
         self.assertEquals(expected_data, facility_services)
 
-    def test_filter_facilities_by_service_categories(self):
+    def test_filter_facilities_by_many_service_categories(self):
         category = mommy.make(ServiceCategory)
+        category_2 = mommy.make(ServiceCategory)
+        mommy.make(ServiceCategory)
         service = mommy.make(Service, category=category)
         option = mommy.make(Option)
         service_option = mommy.make(
@@ -265,10 +272,18 @@ class TestFacilityView(LoginMixin, APITestCase):
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         mommy.make(FacilityService, facility=facility_2)
+
+        service_2 = mommy.make(Service, category=category_2)
+        service_op_2 = mommy.make(
+            ServiceOption, option=option, service=service_2)
+        mommy.make(FacilityService, facility=facility_2)
         mommy.make(
             FacilityService, facility=facility, selected_option=service_option)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_op_2)
 
-        url = self.url + "?service_category={}".format(category.id)
+        url = self.url + "?service_category={},{}".format(
+            category.id, category_2.id)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
@@ -277,6 +292,77 @@ class TestFacilityView(LoginMixin, APITestCase):
             "previous": None,
             "results": [
                 FacilitySerializer(facility).data
+
+            ]
+        }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_filter_facilities_by_one_category(self):
+        category = mommy.make(ServiceCategory)
+        mommy.make(ServiceCategory)
+        service = mommy.make(Service, category=category)
+        option = mommy.make(Option)
+        service_option = mommy.make(
+            ServiceOption, option=option, service=service)
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityService, facility=facility_2)
+        mommy.make(FacilityService, facility=facility_2)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+
+        url = self.url + "?service_category={}".format(
+            category.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+
+            ]
+        }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+    def test_filter_facilities_by_many_service_categories_no_data(self):
+        category = mommy.make(ServiceCategory)
+        category_2 = mommy.make(ServiceCategory)
+        # this category is unlinked thus there is no facility
+        # service linked to the category
+        category_3 = mommy.make(ServiceCategory)
+        mommy.make(ServiceCategory)
+        service = mommy.make(Service, category=category)
+        option = mommy.make(Option)
+        service_option = mommy.make(
+            ServiceOption, option=option, service=service)
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityService, facility=facility_2)
+
+        service_2 = mommy.make(Service, category=category_2)
+        service_op_2 = mommy.make(
+            ServiceOption, option=option, service=service_2)
+        mommy.make(FacilityService, facility=facility_2)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_op_2)
+
+        url = self.url + "?service_category={},{},{}".format(
+            category.id, category_2.id, category_3.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_data = {
+            "count": 0,
+            "next": None,
+            "previous": None,
+            "results": [
 
             ]
         }
@@ -937,6 +1023,36 @@ class TestServicesWithOptionsList(LoginMixin, APITestCase):
                 ServiceSerializer(service).data
             ]
         }
+        self.assertEquals(
+            json.loads(json.dumps(expected_data, default=default)),
+            json.loads(json.dumps(response.data, default=default)))
+
+
+class TestFacilityConsituencyUserFilter(APITestCase):
+    def test_filter_by_constituency(self):
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user_2, county=county)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility = mommy.make(Facility, ward=ward)
+        mommy.make(Facility)
+        mommy.make(
+            UserConstituency, user=user, constituency=constituency,
+            created_by=user_2, updated_by=user_2)
+        url = reverse("api:facilities:facilities_list")
+        self.client.force_authenticate(user)
+        expected_data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                FacilitySerializer(facility).data
+            ]
+        }
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))

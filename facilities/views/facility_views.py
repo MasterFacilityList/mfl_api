@@ -70,6 +70,10 @@ class QuerysetFilterMixin(object):
             elif self.request.user.is_national and not \
                     self.request.user.county:
                 return self.queryset
+            elif self.request.user.constituency and hasattr(
+                    self.queryset.model, 'ward'):
+                return self.queryset.filter(
+                    ward__constituency=self.request.user.constituency)
             else:
                 return self.queryset
         else:

@@ -1,9 +1,0 @@
-regId,regShortName,regName,regDisplayName,regOrder,regActive,regDefaultStatus,regFunction,regFunctionVerb,regAddress,regEmailAdd,regRecordArchived
-1,MOH-DMS,Ministry of Health,Ministry of Health,1,True,Pending Gazettement,Gazettment,Gazette,,,False
-2,KMPDB - Institution,Kenya MPDB - Institution,Kenya MPDB - Institution,2,True,Pending Registration,Registration,Register,,,False
-3,KMPDB - Private Practice,Kenya MPDB - Private Practice,Kenya MPDB - Private Practice,4,True,Pending License,Licensing,License,,,False
-4,COC,Clinical Officers Council,Clinical Officers Council,5,True,Pending License,Licensing,License,,,False
-5,KMLTTB,Kenya Medical Laboratory, Tech & Technologists Board,Kenya Medical Laboratory, Tech & Technologists Board,6,True,Pending Registration,Registration,Register,,,False
-6,Pharmacy & Poisons Board,Pharmacy & Poisons Board,Pharmacy & Poisons Board,7,True,Pending License,Licensing,License,,,False
-7,NCK,Nursing Council of Kenya (Private Practice),Nursing Council of Kenya,3,True,Pending License,Licensing,License,,,False
-8,Other,Other,Other,8,True,Pending Registration,Registration,Register,,,False
