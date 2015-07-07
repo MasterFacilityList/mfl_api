@@ -44,8 +44,12 @@ class DashBoard(APIView):
             return []
 
     def get_facility_constituency_summary(self):
-        constituencies = Constituency.objects.filter(
-            county=self.request.user.county)
+        if self.request.user.county:
+            constituencies = Constituency.objects.filter(
+                county=self.request.user.county)
+        else:
+            constituencies = []
+
         facility_constituency_summary = {}
         for const in constituencies:
             facility_const_count = self.queryset.filter(
@@ -154,15 +158,13 @@ class DashBoard(APIView):
 
     def filter_queryset(self):
         user = self.request.user
-        if user.county:
+        if user.county and not user.is_national:
             return self.queryset.filter(ward__constituency__county=user.county)
         elif user.constituency:
             return self.queryset.filter(ward__constituency=user.constituency)
         elif user.regulator:
             return self.queryset.filter(regulating_body=user.regulator)
         elif user.is_national:
-            return self.queryset
-        else:
             return self.queryset
 
     def get(self, *args, **kwargs):

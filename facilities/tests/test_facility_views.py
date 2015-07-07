@@ -673,6 +673,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": "Kiambu"
                 },
             ],
+            "wards_summary": [],
             "total_facilities": 1,
             "status_summary": [
                 {
@@ -726,6 +727,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             "owner_count": 1,
             "recently_created": 1,
             "county_summary": [],
+            "wards_summary": [],
             "total_facilities": 1,
             "status_summary": [
                 {
@@ -744,6 +746,72 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": constituency.name,
                     "count": 1
                 }
+            ],
+            "types_summary": [
+                {
+                    "count": 1,
+                    "name": facility_type.name
+                },
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(expected_data, response.data)
+
+    def test_get_dashboard_as_sub_county_user(self):
+        self.user.is_national = False
+        self.user.save()
+        constituency = mommy.make(
+            Constituency, county=self.user.county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        mommy.make(
+            UserConstituency, created_by=self.user, updated_by=self.user,
+            user=self.user, constituency=constituency)
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+
+        )
+        expected_data = {
+            "owners_summary": [
+                {
+                    "count": 1,
+                    "name": owner.name
+                },
+            ],
+            "owner_count": 1,
+            "recently_created": 1,
+            "county_summary": [],
+            "wards_summary": [
+                {
+                    "name": ward.name,
+                    "count": 1
+                }
+            ],
+            "total_facilities": 1,
+            "status_summary": [
+                {
+                    "count": 1,
+                    "name": status.name
+                },
+            ],
+            "owner_types": [
+                {
+                    "count": 1,
+                    "name": owner_type. name
+                },
+            ],
+            "constituencies_summary": [
+                {
+                    "count": 1,
+                    "name": constituency. name
+                },
             ],
             "types_summary": [
                 {
