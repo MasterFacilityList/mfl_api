@@ -49,6 +49,9 @@ class CommunityHealthWorkerSerializer(
 
 class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    status_name = serializers.ReadOnlyField(source="status.name")
+    health_unit_workers = CommunityHealthWorkerSerializer(
+        many=True, required=False)
 
     class Meta(object):
         model = CommunityHealthUnit
