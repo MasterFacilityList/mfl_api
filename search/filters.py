@@ -1,7 +1,9 @@
+import re
 from django.conf import settings
 
 import django_filters
 from search.search_utils import ElasticAPI
+from facilities.models import Facility
 
 
 class SearchFilter(django_filters.filters.Filter):
@@ -51,7 +53,12 @@ class SearchFilter(django_filters.filters.Filter):
         ordering = 'CASE %s END' % clauses
         queryset = qs.model.objects.filter(pk__in=pk_list).extra(
             select={'ordering': ordering}, order_by=('ordering',))
-        return queryset
+        m = re.search('\d+', str(value))
+        if m:
+            facility = Facility.objects.filter(code=value)
+            return facility if facility.count() == 1 else queryset
+        else:
+            return queryset
 
 
 class AutoCompleteSearchFilter(SearchFilter):
