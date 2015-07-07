@@ -162,6 +162,8 @@ class DashBoard(APIView):
             return self.queryset.filter(ward__constituency=user.constituency)
         elif user.is_national:
             return self.queryset
+        else:
+            return self.queryset
 
     def get(self, *args, **kwargs):
         total_facilities = self.filter_queryset().count()

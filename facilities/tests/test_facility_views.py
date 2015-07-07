@@ -820,6 +820,12 @@ class TestDashBoardView(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(expected_data, response.data)
 
+    def test_get_dashboard_user_has_no_role(self):
+        user = mommy.make(get_user_model())
+        self.client.force_authenticate(user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+
 
 class TestFacilityContactView(LoginMixin, APITestCase):
     def test_list_facility_contacts(self):
