@@ -758,6 +758,8 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.assertEquals(expected_data, response.data)
 
     def test_get_dashboard_as_sub_county_user(self):
+        user = mommy.make(get_user_model())
+        self.client.force_authenticate(user)
         self.user.is_national = False
         self.user.save()
         constituency = mommy.make(
@@ -769,7 +771,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
         status = mommy.make(FacilityStatus)
         mommy.make(
             UserConstituency, created_by=self.user, updated_by=self.user,
-            user=self.user, constituency=constituency)
+            user=user, constituency=constituency)
         mommy.make(
             Facility,
             ward=ward,
@@ -807,12 +809,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner_type. name
                 },
             ],
-            "constituencies_summary": [
-                {
-                    "count": 1,
-                    "name": constituency. name
-                },
-            ],
+            "constituencies_summary": [],
             "types_summary": [
                 {
                     "count": 1,
