@@ -37,17 +37,21 @@ class SearchFilter(django_filters.filters.Filter):
             instance = qs.model.objects.get(id=obj_id)
             score = hit.get('_score')
             instance.search = score
-            hits_ids_list.append(obj_id)
+            hits_ids_list.append(str(obj_id))
             hits_and_scores.append({'id': obj_id, 'score': score})
 
-        hits_qs = qs.model.objects.filter(id__in=hits_ids_list)
+        pk_list = hits_ids_list
+        clauses = ' '.join(
+            [
+                "WHEN id='%s' THEN '%s'" % (
+                    pk, i) for i, pk in enumerate(pk_list)
+            ]
+        )
 
-        # the filter function expects a queryset and not a list
-        # hence the need to convert the list back to queryset
-        combined_results = list(set(hits_qs).intersection(qs))
-        combined_results_ids = [obj.id for obj in combined_results]
-        final_queryset = qs.model.objects.filter(id__in=combined_results_ids)
-        return final_queryset
+        ordering = 'CASE %s END' % clauses
+        queryset = qs.model.objects.filter(pk__in=pk_list).extra(
+            select={'ordering': ordering}, order_by=('ordering',))
+        return queryset
 
 
 class AutoCompleteSearchFilter(SearchFilter):
