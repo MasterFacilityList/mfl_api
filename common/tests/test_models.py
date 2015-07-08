@@ -182,6 +182,13 @@ class TestCountyModel(BaseTestCase):
             {}
         )
 
+    def test_county_bound(self):
+        county = mommy.make(County)
+        self.assertEqual(
+            county.county_bound,
+            {}
+        )
+
 
 class TestConstituencyModel(BaseTestCase):
     def setUp(self):
@@ -212,6 +219,13 @@ class TestConstituencyModel(BaseTestCase):
         constituency_2 = mommy.make(Constituency, code=None)
         constituency_2_code = int(constituency_1.code) + 1
         self.assertEquals(constituency_2_code, int(constituency_2.code))
+
+    def test_consituency_bound(self):
+        const = mommy.make(Constituency)
+        self.assertEqual(
+            const.constituency_bound,
+            {}
+        )
 
 
 class TestWardModel(BaseTestCase):
