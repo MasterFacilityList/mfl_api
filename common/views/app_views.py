@@ -319,6 +319,7 @@ class TownDetailView(
 
 
 class FilteringSummariesView(views.APIView):
+
     """
         Retrieves filtering summaries
     """
@@ -329,21 +330,21 @@ class FilteringSummariesView(views.APIView):
 
         fields = request.query_params.get('fields', None)
         fields_model_mapping = {
-            'county': County,
-            'facility_type': FacilityType,
-            'constituency': Constituency,
-            'ward': Ward,
-            'operation_status': FacilityStatus,
-            'service_category': ServiceCategory,
-            'owner_type': OwnerType,
-            'owner': Owner
+            'county': (County, ('id', 'name')),
+            'facility_type': (FacilityType, ('id', 'name')),
+            'constituency': (Constituency, ('id', 'name', 'county')),
+            'ward': (Ward, ('id', 'name', 'constituency')),
+            'operation_status': (FacilityStatus, ('id', 'name')),
+            'service_category': (ServiceCategory, ('id', 'name')),
+            'owner_type': (OwnerType, ('id', 'name')),
+            'owner': (Owner, ('id', 'name', 'owner_type')),
         }
         if fields:
             resp = {}
             for key in fields.split(","):
                 if key in fields_model_mapping:
-                    resp[key] = fields_model_mapping[key].objects.values(
-                        'id', 'name').distinct()
+                    model, chosen_fields = fields_model_mapping[key]
+                    resp[key] = model.objects.values(*chosen_fields).distinct()
             res = self.serializer_cls(data=resp).initial_data
         else:
             res = {}

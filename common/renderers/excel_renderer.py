@@ -158,13 +158,12 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
     def render(self, data, media_type, renderer_context):
         self.update_download_headers(renderer_context)
         result_key = data.get('results', None)
-        if result_key:
+        if isinstance(result_key, (list, )):
             return _write_excel_file(data)
-        else:
 
-            # For now we will just support list endpoints.
-            renderer_context['response'].status_code = \
-                status.HTTP_406_NOT_ACCEPTABLE
-            return json.dumps({
-                "detail": "malformed payload. It should be a list endpoint"
-            })
+        # For now we will just support list endpoints.
+        renderer_context['response'].status_code = \
+            status.HTTP_406_NOT_ACCEPTABLE
+        return json.dumps({
+            "detail": "Malformed payload. It should be a list endpoint"
+        })
