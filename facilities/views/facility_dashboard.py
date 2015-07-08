@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.utils import timezone
 
 from rest_framework.views import APIView, Response
-from common.models import County, Constituency
+from common.models import County, Constituency, Ward
 
 from ..models import (
     OwnerType,
@@ -46,6 +46,8 @@ class DashBoard(APIView):
     def get_facility_constituency_summary(self):
         constituencies = Constituency.objects.filter(
             county=self.request.user.county)
+        constituencies = constituencies if self.request.user.county else []
+
         facility_constituency_summary = {}
         for const in constituencies:
             facility_const_count = self.queryset.filter(
@@ -63,27 +65,38 @@ class DashBoard(APIView):
                 })
         return top_10_consts_summary
 
+    def get_facility_ward_summary(self):
+        if self.request.user.constituency:
+            wards = Ward.objects.filter(
+                constituency=self.request.user.constituency)
+        else:
+            wards = []
+        facility_ward_summary = {}
+        for ward in wards:
+            facility_ward_count = self.queryset.filter(
+                ward=ward).count()
+            facility_ward_summary[ward.name] = facility_ward_count
+        top_10_wards = sorted(
+            facility_ward_summary.items(),
+            key=lambda x: x[1], reverse=True)[0:20]
+        top_10_wards_summary = []
+        for item in top_10_wards:
+            top_10_wards_summary.append(
+                {
+                    "name": item[0],
+                    "count": item[1]
+                })
+        return top_10_wards_summary
+
     def get_facility_type_summary(self):
         facility_types = FacilityType.objects.all()
         facility_type_summary = []
         for facility_type in facility_types:
-            if self.request.user.is_national:
-                facility_type_count = self.queryset.filter(
-                    facility_type=facility_type).count()
                 facility_type_summary.append(
                     {
                         "name": facility_type.name,
-                        "count": facility_type_count
-                    })
-            else:
-                facility_type_count = self.queryset.filter(
-                    facility_type=facility_type,
-                    ward__constituency__county=self.request.user.county
-                ).count()
-                facility_type_summary.append(
-                    {
-                        "name": facility_type.name,
-                        "count": facility_type_count
+                        "count": self.filter_queryset().filter(
+                            facility_type=facility_type).count()
                     })
         facility_type_summary_sorted = sorted(
             facility_type_summary,
@@ -95,11 +108,11 @@ class DashBoard(APIView):
         owners = Owner.objects.all()
         facility_owners_summary = []
         for owner in owners:
-            owner_count = self.queryset.filter(owner=owner).count()
             facility_owners_summary.append(
                 {
                     "name": owner.name,
-                    "count": owner_count
+                    "count": self.filter_queryset().filter(
+                        owner=owner).count()
                 })
         return facility_owners_summary
 
@@ -107,88 +120,59 @@ class DashBoard(APIView):
         statuses = FacilityStatus.objects.all()
         status_summary = []
         for status in statuses:
-            if not self.request.user.is_national:
-                status_count = Facility.objects.filter(
-                    operation_status=status,
-                    ward__constituency__county=self.request.user.county
-                ).count()
                 status_summary.append(
                     {
                         "name": status.name,
-                        "count": status_count
+                        "count": self.filter_queryset().filter(
+                            operation_status=status).count()
+                    })
 
-                    })
-            else:
-                status_count = Facility.objects.filter(
-                    operation_status=status).count()
-                status_summary.append(
-                    {
-                        "name": status.name,
-                        "count": status_count
-                    })
         return status_summary
 
     def get_facility_owner_types_summary(self):
         owner_types = OwnerType.objects.all()
         owner_types_summary = []
         for owner_type in owner_types:
-            if self.request.user.is_national:
-                owner_types_count = Facility.objects.filter(
-                    owner__owner_type=owner_type).count()
-                owner_types_summary.append(
-                    {
-                        "name": owner_type.name,
-                        "count": owner_types_count
-                    })
-            else:
-                owner_types_count = Facility.objects.filter(
-                    owner__owner_type=owner_type,
-                    ward__constituency__county=self.request.user.county
-                ).count()
-                owner_types_summary.append(
-                    {
-                        "name": owner_type.name,
-                        "count": owner_types_count
-                    })
+            owner_types_summary.append(
+                {
+                    "name": owner_type.name,
+                    "count": self.filter_queryset().filter(
+                        owner__owner_type=owner_type).count()
+                })
         return owner_types_summary
 
     def get_recently_created_facilities(self):
         right_now = timezone.now()
         three_months_ago = right_now - timedelta(days=90)
-        recent_facilities_count = 0
-        if self.request.user.is_national:
-            recent_facilities_count = Facility.objects.filter(
-                created__gte=three_months_ago).count()
-        else:
-            recent_facilities_count = Facility.objects.filter(
-                created__gte=three_months_ago,
-                ward__constituency__county=self.request.user.county).count()
-        return recent_facilities_count
+        return self.filter_queryset().filter(
+            created__gte=three_months_ago).count()
 
     def get_owner_count(self):
-        if self.request.user.is_national:
-            return Owner.objects.count()
+        return len(list(set(
+            [
+                f.owner for f in self.filter_queryset()
+            ]
+        )))
+
+    def filter_queryset(self):
+        user = self.request.user
+        if user.county and not user.is_national:
+            return self.queryset.filter(ward__constituency__county=user.county)
+        elif user.constituency:
+            return self.queryset.filter(ward__constituency=user.constituency)
+        elif user.is_national:
+            return self.queryset
         else:
-            return len(list(set(
-                [
-                    f.owner for f in Facility.objects.filter(
-                        ward__constituency__county=self.request.user.county)
-                ]
-            )))
+            return self.queryset
 
     def get(self, *args, **kwargs):
-        total_facilities = 0
-        if self.request.user.is_national:
-            total_facilities = Facility.objects.count()
-        else:
-            total_facilities = Facility.objects.filter(
-                ward__constituency__county=self.request.user.county
-            ).count()
+        total_facilities = self.filter_queryset().count()
 
         data = {
             "total_facilities": total_facilities,
             "county_summary": self.get_facility_county_summary(),
             "constituencies_summary": self.get_facility_constituency_summary(),
+            "wards_summary": self.get_facility_ward_summary(),
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),

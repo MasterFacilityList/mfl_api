@@ -28,12 +28,7 @@ def _build_name_from_list(name_list):
     if len(name_list) == 1:
         return name_list[0]
     else:
-        mapping_name = ""
-        index = 0
-        while index < len(name_list):
-            mapping_name = mapping_name + " " + name_list[index]
-            index = index + 1
-        return mapping_name
+        return " ".join(name_list)
 
 
 def sanitize_field_names(sample_keys):

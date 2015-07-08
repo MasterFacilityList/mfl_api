@@ -334,6 +334,23 @@ class TestSearchFilter(ViewTestBase):
 
         index_instance(obj)
 
+    def test_seach_facility_by_code(self):
+        mommy.make(Facility, code=17780)
+        api = ElasticAPI()
+        api.delete_index('test_index')
+        api.setup_index('test_index')
+        test_facility = mommy.make(Facility, name='test facility')
+        index_instance(test_facility, 'test_index')
+        mommy.make(Facility)
+        qs = Facility.objects.all()
+
+        search_filter = SearchFilter(name='search')
+        # some weird bug there is a delay in getting the search results
+        for x in range(0, 100):
+            search_filter.filter(qs, 18990)
+            search_filter.filter(qs, 17780)
+        api.delete_index('test_index')
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFilter, self).tearDown()
