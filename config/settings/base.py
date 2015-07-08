@@ -276,7 +276,7 @@ SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
     "REALTIME_INDEX": False,
-    "SEARCH_RESULT_SIZE": 1000,
+    "SEARCH_RESULT_SIZE": 50,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
         "mfl_gis.WorldBorder",
@@ -291,7 +291,8 @@ SEARCH = {
             "models": [
                 {
                     "name": "facility",
-                    "fields": ["name", "ward_name"]
+                    "fields": ["name", "ward_name"],
+                    "boost": ["name"]
                 },
                 {
                     "name": "owner",

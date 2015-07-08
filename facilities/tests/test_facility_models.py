@@ -527,6 +527,7 @@ class TestFacility(BaseTestCase):
 
     def test_only_one_facility_updated_till_acknowledged(self):
         facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
         facility.name = 'The name has been changed'
         facility.save()
         with self.assertRaises(ValidationError):
@@ -540,11 +541,18 @@ class TestFacility(BaseTestCase):
     def test_latest_approval(self):
         facility = mommy.make(Facility)
         approval = mommy.make(FacilityApproval, facility=facility)
-        self.assertEquals(approval, facility.latest_approval)
+        self.assertEquals(str(approval.id), facility.latest_approval)
 
     def test_no_latest_approval(self):
         facility = mommy.make(Facility)
         self.assertIsNone(facility.latest_approval)
+
+    def test_no_update_approval_before_approving_facility(self):
+        facility = mommy.make(Facility)
+        facility.name = "a good name"
+        facility.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertEquals("a good name", facility_refetched.name)
 
 
 class TestFacilityContact(BaseTestCase):
@@ -744,6 +752,7 @@ class TestFacilityUpdates(BaseTestCase):
             Facility,
             name=original_name,
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
+        mommy.make(FacilityApproval, facility=facility)
 
         facility.name = updated_name
         facility.physical_address = physical_address
@@ -766,6 +775,7 @@ class TestFacilityUpdates(BaseTestCase):
         facility_type = mommy.make(FacilityType)
         regulation_status = mommy.make(FacilityRegulationStatus)
         facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
         facility.operation_status = operation_status
         with self.assertRaises(ValidationError):
             facility.save()

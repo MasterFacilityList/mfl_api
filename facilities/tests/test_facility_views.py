@@ -448,6 +448,7 @@ class TestFacilityView(LoginMixin, APITestCase):
 
     def test_patch_facility(self):
         facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
         url = self.url + "{}/".format(facility.id)
         data = {
             "name": "A new name"
@@ -463,6 +464,7 @@ class TestFacilityView(LoginMixin, APITestCase):
         false_url = self.url + "?has_edits=False"
         facility_a = mommy.make(
             Facility, id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        mommy.make(FacilityApproval, facility=facility_a)
         facility_a.name = 'jina ingine'
         facility_a.save()
         facility_b = mommy.make(Facility)
@@ -671,6 +673,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": "Kiambu"
                 },
             ],
+            "wards_summary": [],
             "total_facilities": 1,
             "status_summary": [
                 {
@@ -724,6 +727,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             "owner_count": 1,
             "recently_created": 1,
             "county_summary": [],
+            "wards_summary": [],
             "total_facilities": 1,
             "status_summary": [
                 {
@@ -752,6 +756,75 @@ class TestDashBoardView(LoginMixin, APITestCase):
         }
         response = self.client.get(self.url)
         self.assertEquals(expected_data, response.data)
+
+    def test_get_dashboard_as_sub_county_user(self):
+        user = mommy.make(get_user_model())
+        self.client.force_authenticate(user)
+        self.user.is_national = False
+        self.user.save()
+        constituency = mommy.make(
+            Constituency, county=self.user.county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        mommy.make(
+            UserConstituency, created_by=self.user, updated_by=self.user,
+            user=user, constituency=constituency)
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+
+        )
+        expected_data = {
+            "owners_summary": [
+                {
+                    "count": 1,
+                    "name": owner.name
+                },
+            ],
+            "owner_count": 1,
+            "recently_created": 1,
+            "county_summary": [],
+            "wards_summary": [
+                {
+                    "name": ward.name,
+                    "count": 1
+                }
+            ],
+            "total_facilities": 1,
+            "status_summary": [
+                {
+                    "count": 1,
+                    "name": status.name
+                },
+            ],
+            "owner_types": [
+                {
+                    "count": 1,
+                    "name": owner_type. name
+                },
+            ],
+            "constituencies_summary": [],
+            "types_summary": [
+                {
+                    "count": 1,
+                    "name": facility_type.name
+                },
+            ]
+        }
+        response = self.client.get(self.url)
+        self.assertEquals(expected_data, response.data)
+
+    def test_get_dashboard_user_has_no_role(self):
+        user = mommy.make(get_user_model())
+        self.client.force_authenticate(user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
 
 
 class TestFacilityContactView(LoginMixin, APITestCase):
@@ -951,6 +1024,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         facility = mommy.make(
             Facility,
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
+        mommy.make(FacilityApproval, facility=facility)
         obj = mommy.make(
             FacilityUpdates,
             facility=facility,
