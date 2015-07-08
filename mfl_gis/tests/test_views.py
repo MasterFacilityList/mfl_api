@@ -124,3 +124,21 @@ class TestPostingFacilityCoordinates(LoginMixin, APITestCase):
         url = self.url + "{}/".format(str(facility_gps.id))
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+
+class TestBoundaryBoundsView(LoginMixin, APITestCase):
+    def test_get_county_boundary(self):
+        boundary = mommy.make(CountyBoundary)
+        url = reverse(
+            "api:mfl_gis:county_bound",
+            kwargs={'pk': str(boundary.id)})
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_get_constituency_boundary(self):
+        boundary = mommy.make(ConstituencyBoundary)
+        url = reverse(
+            "api:mfl_gis:constituency_bound",
+            kwargs={'pk': str(boundary.id)})
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)

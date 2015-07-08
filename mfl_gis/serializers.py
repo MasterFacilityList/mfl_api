@@ -132,6 +132,15 @@ class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
         model = CountyBoundary
 
 
+class CountyBoundSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    bound = serializers.ReadOnlyField()
+
+    class Meta(AbstractBoundarySerializer.Meta):
+        model = CountyBoundary
+        fields = ("bound", )
+
+
 class ConstituencyBoundarySerializer(AbstractBoundarySerializer):
     ward_ids = serializers.ReadOnlyField()
     ward_boundary_ids = serializers.ReadOnlyField()
@@ -155,6 +164,15 @@ class ConstituencyBoundaryDetailSerializer(AbstractBoundarySerializer):
 
     class Meta(AbstractBoundarySerializer.Meta):
         model = ConstituencyBoundary
+
+
+class ConstituencyBoundSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    bound = serializers.ReadOnlyField()
+
+    class Meta(AbstractBoundarySerializer.Meta):
+        model = ConstituencyBoundary
+        fields = ("bound", )
 
 
 class WardBoundarySerializer(AbstractBoundarySerializer):
