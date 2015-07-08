@@ -213,8 +213,8 @@ class TestFacilityView(LoginMixin, APITestCase):
         }
         self.assertEquals(200, response_2.status_code)
         self.assertEquals(
-            load_dump(unregulated_data, default=default),
-            load_dump(response_2.data, default=default)
+            load_dump(unregulated_data['results'], default=default),
+            load_dump(response_2.data['results'], default=default)
         )
 
     def test_retrieve_facility(self):
