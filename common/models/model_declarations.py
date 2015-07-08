@@ -139,15 +139,6 @@ class Constituency(AdministrativeUnitBase):
         on_delete=models.PROTECT)
 
     @property
-    def facility_coordinates(self):
-        """Look up the facilities that are in this unit's boundaries"""
-        try:
-            return _lookup_facility_coordinates(self.constituencyboundary)
-        except:  # Handling RelatedObjectDoesNotExist is a little funky
-            LOGGER.info('No boundaries found for {}'.format(self))
-            return _lookup_facility_coordinates(None)
-
-    @property
     def constituency_bound(self):
         from mfl_gis.models import ConstituencyBoundary
         unit = ConstituencyBoundary.objects.filter(area=self)
