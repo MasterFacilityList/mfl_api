@@ -35,7 +35,9 @@ from .serializers import (
     CountyBoundaryDetailSerializer,
     ConstituencyBoundaryDetailSerializer,
     WardBoundaryDetailSerializer,
-    FacilityCoordinateSimpleSerializer
+    FacilityCoordinateSimpleSerializer,
+    CountyBoundSerializer,
+    ConstituencyBoundSerializer
 )
 from .pagination import GISPageNumberPagination
 from .generics import GISListCreateAPIView
@@ -263,6 +265,15 @@ class CountyBoundaryDetailView(
     serializer_class = CountyBoundaryDetailSerializer
 
 
+class CountyBoundView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a particular county boundary detail
+    """
+    queryset = CountyBoundary.objects.all()
+    serializer_class = CountyBoundSerializer
+
+
 class ConstituencyBoundaryListView(GISListCreateAPIView):
     """
     Lists and creates constituency boundaries
@@ -291,6 +302,15 @@ class ConstituencyBoundaryDetailView(
     """
     queryset = ConstituencyBoundary.objects.all()
     serializer_class = ConstituencyBoundaryDetailSerializer
+
+
+class ConstituencyBoundView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a particular constituency boundary detail
+    """
+    queryset = ConstituencyBoundary.objects.all()
+    serializer_class = ConstituencyBoundSerializer
 
 
 class WardBoundaryListView(GISListCreateAPIView):

@@ -18,7 +18,9 @@ from .views import (
     ConstituencyBoundaryDetailView,
     WardBoundaryDetailView,
     FacilityCoordinatesCreationAndListing,
-    FacilityCoordinatesCreationAndDetail
+    FacilityCoordinatesCreationAndDetail,
+    ConstituencyBoundView,
+    CountyBoundView,
 )
 
 
@@ -88,6 +90,11 @@ urlpatterns = patterns(
             cache_page(cache_seconds)
             (CountyBoundaryDetailView.as_view())),
         name='county_boundary_detail'),
+    url(r'^county_bound/(?P<pk>[^/]+)/$',
+        gzip_page(
+            cache_page(cache_seconds)
+            (CountyBoundView.as_view())),
+        name='county_bound'),
 
     url(r'^constituency_boundaries/$',
         gzip_page(
@@ -99,6 +106,12 @@ urlpatterns = patterns(
             cache_page(cache_seconds)
             (ConstituencyBoundaryDetailView.as_view())),
         name='constituency_boundary_detail'),
+
+    url(r'^constituency_bound/(?P<pk>[^/]+)/$',
+        gzip_page(
+            cache_page(cache_seconds)
+            (ConstituencyBoundView.as_view())),
+        name='constituency_bound'),
 
     url(r'^ward_boundaries/$',
         gzip_page(
