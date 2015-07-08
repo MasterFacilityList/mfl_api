@@ -85,7 +85,7 @@ def _write_excel_file(data):  # noqa
 
         row = 0
         col = 0
-        if len(work_sheet_data) > 1:
+        if len(work_sheet_data) >= 1:
             example_dict = work_sheet_data[0]
             sample_keys = example_dict.keys()
 
