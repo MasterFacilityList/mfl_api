@@ -170,5 +170,5 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
         renderer_context['response'].status_code = \
             status.HTTP_406_NOT_ACCEPTABLE
         return json.dumps({
-            "detail": "Malformed payload. It should be a list endpoint"
+            "detail": "Excel format are only used in list endpoints"
         })

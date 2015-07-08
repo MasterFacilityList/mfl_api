@@ -139,6 +139,7 @@ REST_FRAMEWORK = {
         'common.renderers.ExcelRenderer',
     ),
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
+    'DEFAULT_PAGINATION_CLASS': 'common.paginator.MflPaginationSerializer',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
