@@ -57,11 +57,7 @@ class CountySerializer(AbstractFieldsMixin, GeoModelSerializer):
 
 
 class CountyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
-    from mfl_gis.serializers import CountyBoundarySerializer
-
-    county_boundary = CountyBoundarySerializer(
-        source='countyboundary', read_only=True)
-    facility_coordinates = serializers.ReadOnlyField()
+    bound = serializers.ReadOnlyField(source="county_bound")
 
     class Meta(object):
         model = County
@@ -117,11 +113,7 @@ class ConstituencySerializer(AbstractFieldsMixin, GeoModelSerializer):
 
 
 class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
-    from mfl_gis.serializers import ConstituencyBoundarySerializer
-
-    constituency_boundary = ConstituencyBoundarySerializer(
-        source='constituencyboundary', read_only=True)
-    facility_coordinates = serializers.ReadOnlyField()
+    bound = serializers.ReadOnlyField(source="constituency_bound")
 
     class Meta(object):
         model = Constituency
