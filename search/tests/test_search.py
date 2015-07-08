@@ -58,6 +58,7 @@ CACHES_TEST_SETTINGS = {
     SEARCH=SEARCH_TEST_SETTINGS,
     CACHES=CACHES_TEST_SETTINGS)
 class TestElasticSearchAPI(TestCase):
+
     def setUp(self):
         self.elastic_search_api = ElasticAPI()
         super(TestElasticSearchAPI, self).setUp()

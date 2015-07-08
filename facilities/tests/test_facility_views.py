@@ -56,8 +56,8 @@ from ..models import (
 )
 
 
-def load_dump(x):
-    return json.loads(json.dumps(x))
+def load_dump(x, *args, **kwargs):
+    return json.loads(json.dumps(x, *args, **kwargs))
 
 
 class TestOwnersView(LoginMixin, APITestCase):
@@ -312,17 +312,14 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
 
             ]
         }
         self.assertEquals(
-            load_dump(expected_data, default=default),
-            load_dump(response.data, default=default)
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
         )
 
     def test_filter_facilities_by_many_service_categories_no_data(self):
@@ -757,16 +754,13 @@ class TestFacilityOfficerView(LoginMixin, APITestCase):
     def test_list_facility_officers(self):
         facility_officer = mommy.make(FacilityOfficer)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilityOfficerSerializer(facility_officer).data
             ]
         }
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(expected_data['results'], response.data['results'])
 
     def test_retrive_single_facility_officer(self):
         facility_officer = mommy.make(FacilityOfficer)
@@ -989,16 +983,13 @@ class TestServicesWithOptionsList(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 ServiceSerializer(service).data
             ]
         }
         self.assertEquals(
-            load_dump(expected_data, default=default),
-            load_dump(response.data, default=default)
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
         )
 
 
