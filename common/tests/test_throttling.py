@@ -12,6 +12,7 @@ from .test_views import LoginMixin, default
 
 
 class TestThrottling(LoginMixin, APITestCase):
+
     def test_non_throttled_view(self):
         # the counties view is not throttled:
         url = reverse('api:common:counties_list')
@@ -19,16 +20,13 @@ class TestThrottling(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 CountySerializer(county).data
             ]
         }
         self.assertEquals(
-            json.loads(json.dumps(response.data, default=default)),
-            json.loads(json.dumps(expected_data, default=default)))
+            json.loads(json.dumps(response.data['results'], default=default)),
+            json.loads(json.dumps(expected_data['results'], default=default)))
         # call the url again to confirm it returns
         # throttle rate is once per day
         response_2 = self.client.get(url)
