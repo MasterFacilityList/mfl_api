@@ -149,8 +149,8 @@ class TestOwnersView(LoginMixin, APITestCase):
 
         self.assertEquals(200, response_2.status_code)
         self.assertEquals(
-            load_dump(expected_data_2, default=default),
-            load_dump(response_2.data, default=default)
+            load_dump(expected_data_2['results'], default=default),
+            load_dump(response_2.data['results'], default=default)
         )
 
 
@@ -197,8 +197,8 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            load_dump(regulated_expected_data, default=default),
-            load_dump(response.data, default=default)
+            load_dump(regulated_expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
         )
 
         # get unregulated
@@ -1017,6 +1017,6 @@ class TestFacilityConsituencyUserFilter(APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            load_dump(expected_data, default=default),
-            load_dump(response.data, default=default)
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
         )
