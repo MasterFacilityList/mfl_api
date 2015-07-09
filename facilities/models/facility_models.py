@@ -875,10 +875,7 @@ class FacilityApproval(AbstractBase):
 
     def clean(self, *args, **kwargs):
         self.facility.approved = True
-        try:
-            self.facility.save(allow_save=True)
-        except:
-            self.facility.save()
+        self.facility.save(allow_save=True)
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.created_by)
