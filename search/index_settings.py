@@ -13,7 +13,6 @@ def get_mappings():
             fields_conf = {
                 "properties": {}
             }
-            boost = single_model.get("boost", None)
 
             for field in single_model.get("fields"):
                 field_mapping = {
@@ -23,8 +22,6 @@ def get_mappings():
                     "index_analyzer": "autocomplete",
                     "search_analyzer": "autocomplete"
                 }
-                if boost and field in boost:
-                    field_mapping["boost"] = 2.0
                 fields_conf["properties"][field] = field_mapping
             mappings[single_model.get("name").lower()] = fields_conf
     return mappings
