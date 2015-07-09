@@ -528,6 +528,19 @@ class Facility(SequenceMixin, AbstractBase):
         RegulatingBody, null=True, blank=True)
 
     @property
+    def boundaries(self):
+        from mfl_gis.models import (
+            CountyBoundary, ConstituencyBoundary, WardBoundary)
+
+        return {
+            "county_boundary": str(CountyBoundary.objects.get(
+                area=self.ward.constituency.county).id),
+            "constituency_boundary": str(ConstituencyBoundary.objects.get(
+                area=self.ward.constituency).id),
+            "ward_boundary": str(WardBoundary.objects.get(area=self.ward).id)
+        }
+
+    @property
     def has_edits(self):
         return True if self.latest_update else False
 

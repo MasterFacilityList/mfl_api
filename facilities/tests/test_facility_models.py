@@ -2,6 +2,7 @@ from __future__ import division
 import json
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
@@ -553,6 +554,11 @@ class TestFacility(BaseTestCase):
         facility.save()
         facility_refetched = Facility.objects.get(id=facility.id)
         self.assertEquals("a good name", facility_refetched.name)
+
+    def test_boundaries(self):
+        facility = mommy.make(Facility)
+        with self.assertRaises(ObjectDoesNotExist):
+            facility.boundaries
 
 
 class TestFacilityContact(BaseTestCase):

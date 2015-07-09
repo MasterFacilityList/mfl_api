@@ -253,6 +253,7 @@ class FacilityDetailSerializer(FacilitySerializer):
         read_only=True, required=False)
     coordinates = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField()
+    boundaries = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility
