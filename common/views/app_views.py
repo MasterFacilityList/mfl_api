@@ -60,13 +60,14 @@ from ..utilities import CustomRetrieveUpdateDestroyView
 class FilterAdminUnitsMixin(object):
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
-        if user.is_national:
-            return self.queryset
-        elif user.county and hasattr(self.queryset.model, 'county'):
+        if (user.county and hasattr(
+                self.queryset.model, 'county') and not user.is_national):
             return self.queryset.filter(county=user.county)
         elif (user.constituency and hasattr(
-                self.queryset.model, 'constituency')):
-            return self.request.filter(constituency=user.constituency)
+                self.queryset.model, 'constituency')and not user.is_national):
+            return self.queryset.filter(constituency=user.constituency)
+        else:
+            return self.queryset
 
 
 class ContactView(generics.ListCreateAPIView):
