@@ -261,3 +261,54 @@ class GroupAdminUnitLevelsUnit(LoginMixin, APITestCase):
             })),
             json.loads(json.dumps(response.data.get("admin_level")))
         )
+
+
+class TestUserFiltering(APITestCase):
+    def test_get_users_in_county(self):
+        from common.models import UserCounty, County
+
+        user = mommy.make(MflUser)
+
+        user_2 = mommy.make(MflUser)
+        user_3 = mommy.make(MflUser)
+        user_4 = mommy.make(MflUser)
+
+        county = mommy.make(County)
+        county_2 = mommy.make(County)
+
+        mommy.make(UserCounty, user=user, county=county)
+        mommy.make(UserCounty, user=user_2, county=county)
+        mommy.make(UserCounty, user=user_3, county=county)
+        mommy.make(UserCounty, user=user_4, county=county_2)
+
+        self.client.force_authenticate(user)
+        url = reverse("api:users:mfl_users_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(3, len(response.data.get("results")))
+
+    def test_national_user_sees_all_users(self):
+        from common.models import UserCounty, County
+
+        user = mommy.make(MflUser)
+        user.is_national = True
+        user.save()
+
+        user_2 = mommy.make(MflUser)
+        user_3 = mommy.make(MflUser)
+        user_4 = mommy.make(MflUser)
+
+        county = mommy.make(County)
+        county_2 = mommy.make(County)
+
+        mommy.make(UserCounty, user=user, county=county)
+        mommy.make(UserCounty, user=user_2, county=county)
+        mommy.make(UserCounty, user=user_3, county=county)
+        mommy.make(UserCounty, user=user_4, county=county_2)
+
+        self.client.force_authenticate(user)
+        url = reverse("api:users:mfl_users_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+        self.assertEquals(5, len(response.data.get("results")))

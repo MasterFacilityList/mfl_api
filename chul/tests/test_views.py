@@ -18,6 +18,7 @@ from ..serializers import (
 
 
 class TestCommunityHealthUnitView(ViewTestBase):
+
     def setUp(self):
         self.url = reverse("api:chul:community_health_units_list")
         super(TestCommunityHealthUnitView, self).setUp()
@@ -27,18 +28,16 @@ class TestCommunityHealthUnitView(ViewTestBase):
         health_unit_2 = mommy.make(CommunityHealthUnit)
 
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 CommunityHealthUnitSerializer(health_unit_2).data,
                 CommunityHealthUnitSerializer(health_unit).data
-
             ]
         }
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self._assert_response_data_equality(expected_data, response.data)
+        self._assert_response_data_equality(
+            expected_data['results'], response.data['results']
+        )
 
     def test_retrieve_single_health_unit(self):
         health_unit = mommy.make(CommunityHealthUnit)
@@ -50,6 +49,7 @@ class TestCommunityHealthUnitView(ViewTestBase):
 
 
 class TestCommunityHealthWorkerView(ViewTestBase):
+
     def setUp(self):
         self.url = reverse("api:chul:community_health_workers_list")
         super(TestCommunityHealthWorkerView, self).setUp()
@@ -58,19 +58,17 @@ class TestCommunityHealthWorkerView(ViewTestBase):
         worker_1 = mommy.make(CommunityHealthWorker)
         worker_2 = mommy.make(CommunityHealthWorker)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 CommunityHealthWorkerSerializer(worker_1).data,
                 CommunityHealthWorkerSerializer(worker_2).data
-
             ]
         }
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         self.maxDiff = None
-        self._assert_response_data_equality(expected_data, response.data)
+        self._assert_response_data_equality(
+            expected_data['results'], response.data['results']
+        )
 
     def test_retrieve_single_worker(self):
         worker = mommy.make(CommunityHealthWorker)
@@ -82,6 +80,7 @@ class TestCommunityHealthWorkerView(ViewTestBase):
 
 
 class TestCommunityHealthWokerContactView(ViewTestBase):
+
     def setUp(self):
         self.url = reverse("api:chul:community_health_worker_contacts_list")
         super(TestCommunityHealthWokerContactView, self).setUp()
@@ -90,18 +89,16 @@ class TestCommunityHealthWokerContactView(ViewTestBase):
         contact_1 = mommy.make(CommunityHealthWorkerContact)
         contact_2 = mommy.make(CommunityHealthWorkerContact)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 CommunityHealthWorkerContactSerializer(contact_2).data,
                 CommunityHealthWorkerContactSerializer(contact_1).data
-
             ]
         }
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self._assert_response_data_equality(expected_data, response.data)
+        self._assert_response_data_equality(
+            expected_data['results'], response.data['results']
+        )
 
     def test_retrieve_single_health_worker_contact(self):
         contact = mommy.make(CommunityHealthWorkerContact)

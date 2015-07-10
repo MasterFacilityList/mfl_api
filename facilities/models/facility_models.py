@@ -425,6 +425,10 @@ class FacilityRegulationStatus(AbstractBase):
         return "{}: {}".format(
             self.facility.name, self.regulation_status.name)
 
+    def clean(self, *args, **kwargs):
+        self.facility.regulated = True
+        self.facility.save(allow_save=True)
+
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility regulation statuses'
 
@@ -526,6 +530,8 @@ class Facility(SequenceMixin, AbstractBase):
     attributes = models.TextField(null=True, blank=True)
     regulatory_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True)
+    regulated = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
 
     @property
     def boundaries(self):
@@ -731,6 +737,7 @@ class Facility(SequenceMixin, AbstractBase):
         if not self.code:
             self.code = self.generate_next_code_sequence()
         if not self.is_approved:
+            kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
         else:
             origi_model = self.__class__.objects.get(id=self.id)
@@ -865,6 +872,10 @@ class FacilityApproval(AbstractBase):
     comment = models.TextField()
     is_cancelled = models.BooleanField(
         default=False, help_text='Cancel a facility approval')
+
+    def clean(self, *args, **kwargs):
+        self.facility.approved = True
+        self.facility.save(allow_save=True)
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.created_by)

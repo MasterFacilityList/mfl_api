@@ -20,7 +20,8 @@ from facilities.models import(
     ServiceCategory,
     FacilityType,
     OwnerType,
-    Owner
+    Owner,
+    Service
 )
 from ..serializers import (
     ContactSerializer,
@@ -55,6 +56,25 @@ from ..filters import (
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
+
+
+class FilterAdminUnitsMixin(object):
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        if (user.county and hasattr(
+                self.queryset.model, 'county') and not user.is_national):
+            return self.queryset.filter(county=user.county)
+        elif (user.constituency and hasattr(
+                self.queryset.model, 'constituency')and not user.is_national):
+            return self.queryset.filter(constituency=user.constituency)
+        elif (user.constituency and hasattr(
+                self.queryset.model, 'ward')and not user.is_national):
+            return self.queryset.filter(ward__constituency=user.constituency)
+        elif (user.county and hasattr(
+                self.queryset.model, 'ward')and not user.is_national):
+            return self.queryset.filter(ward__constituency__county=user.county)
+        else:
+            return self.queryset
 
 
 class ContactView(generics.ListCreateAPIView):
@@ -146,7 +166,7 @@ class CountySlimDetailView(
     serializer_class = CountySlimDetailSerializer
 
 
-class WardView(generics.ListCreateAPIView):
+class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     """
     Lists and creates wards
 
@@ -183,7 +203,7 @@ class WardSlimDetailView(
     serializer_class = WardSlimDetailSerializer
 
 
-class ConstituencyView(generics.ListCreateAPIView):
+class ConstituencyView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     """
     Lists and creates constituencies
 
@@ -293,7 +313,7 @@ class UserContactDetailView(
     serializer_class = UserContactSerializer
 
 
-class TownListView(generics.ListCreateAPIView):
+class TownListView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     """
     Lists and creates towns
 
@@ -327,7 +347,6 @@ class FilteringSummariesView(views.APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-
         fields = request.query_params.get('fields', None)
         fields_model_mapping = {
             'county': (County, ('id', 'name')),
@@ -338,6 +357,7 @@ class FilteringSummariesView(views.APIView):
             'service_category': (ServiceCategory, ('id', 'name')),
             'owner_type': (OwnerType, ('id', 'name')),
             'owner': (Owner, ('id', 'name', 'owner_type')),
+            'service': (Service, ('id', 'name', 'category'))
         }
         if fields:
             resp = {}

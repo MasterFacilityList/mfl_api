@@ -20,6 +20,7 @@ def _dict(ordered_dict_val):
 
 
 class TestIsoDateTimeField(LoginMixin, APITestCase):
+
     def test_strp_time_valid_iso_date(self):
         fl = IsoDateTimeField()
         valid_iso_date = '2015-04-14T06:46:32.709388Z'
@@ -43,6 +44,7 @@ class TestIsoDateTimeField(LoginMixin, APITestCase):
 
 
 class TestCommonFieldsFilterset(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestCommonFieldsFilterset, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -57,42 +59,27 @@ class TestCommonFieldsFilterset(LoginMixin, APITestCase):
 
         url_with_no_filter = self.url
         self.assertEquals(
-            _dict(self.client.get(url_with_no_filter).data),
-            _dict({
-                "count": 2,
-                "next": None,
-                "previous": None,
-                "results": [
-                    CountySerializer(inactive_county).data,
-                    CountySerializer(active_county).data
-                ]
-            })
+            _dict(self.client.get(url_with_no_filter).data['results']),
+            _dict([
+                CountySerializer(inactive_county).data,
+                CountySerializer(active_county).data
+            ])
         )
 
         url_with_active_filter = self.url + '?is_active=True'
         self.assertEquals(
-            _dict(self.client.get(url_with_active_filter).data),
-            _dict({
-                "count": 1,
-                "next": None,
-                "previous": None,
-                "results": [
-                    CountySerializer(active_county).data
-                ]
-            })
+            _dict(self.client.get(url_with_active_filter).data['results']),
+            _dict([
+                CountySerializer(active_county).data
+            ])
         )
 
         url_with_inactive_filter = self.url + '?is_active=False'
         self.assertEquals(
-            _dict(self.client.get(url_with_inactive_filter).data),
-            _dict({
-                "count": 1,
-                "next": None,
-                "previous": None,
-                "results": [
-                    CountySerializer(inactive_county).data
-                ]
-            })
+            _dict(self.client.get(url_with_inactive_filter).data['results']),
+            _dict([
+                CountySerializer(inactive_county).data
+            ])
         )
 
     def test_is_deleted_filter(self):
@@ -103,13 +90,8 @@ class TestCommonFieldsFilterset(LoginMixin, APITestCase):
 
         url_with_inactive_filter = self.url + '?is_deleted=False'
         self.assertEquals(
-            _dict(self.client.get(url_with_inactive_filter).data),
-            _dict({
-                "count": 1,
-                "next": None,
-                "previous": None,
-                "results": [
-                    CountySerializer(not_deleted_county).data
-                ]
-            })
+            _dict(self.client.get(url_with_inactive_filter).data['results']),
+            _dict([
+                CountySerializer(not_deleted_county).data
+            ])
         )

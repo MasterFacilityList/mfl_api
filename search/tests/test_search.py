@@ -58,6 +58,7 @@ CACHES_TEST_SETTINGS = {
     SEARCH=SEARCH_TEST_SETTINGS,
     CACHES=CACHES_TEST_SETTINGS)
 class TestElasticSearchAPI(TestCase):
+
     def setUp(self):
         self.elastic_search_api = ElasticAPI()
         super(TestElasticSearchAPI, self).setUp()
@@ -181,14 +182,13 @@ class TestSearchFunctions(ViewTestBase):
         self.assertEquals(200, response.status_code)
 
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
             ]
         }
-        self._assert_response_data_equality(expected_data, response.data)
+        self._assert_response_data_equality(
+            expected_data['results'], response.data['results']
+        )
         self.elastic_search_api.delete_index('test_index')
 
     def test_seach_auto_complete(self):
@@ -206,14 +206,13 @@ class TestSearchFunctions(ViewTestBase):
         self.assertEquals(200, response.status_code)
 
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
             ]
         }
-        self._assert_response_data_equality(expected_data, response.data)
+        self._assert_response_data_equality(
+            expected_data['results'], response.data['results']
+        )
         self.elastic_search_api.delete_index('test_index')
 
     def test_search_facility_multiple_filters(self):
@@ -253,6 +252,7 @@ class TestSearchFunctions(ViewTestBase):
     SEARCH=SEARCH_TEST_SETTINGS,
     CACHES=CACHES_TEST_SETTINGS)
 class TestSearchFilter(ViewTestBase):
+
     def setUp(self):
         self.elastic_search_api = ElasticAPI()
         super(TestSearchFilter, self).setUp()

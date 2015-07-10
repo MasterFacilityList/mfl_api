@@ -16,7 +16,8 @@ from ..models import (
     Ward,
     UserContact,
     UserConstituency,
-    UserCounty
+    UserCounty,
+    Town
 )
 from ..serializers import (
     ContactSerializer,
@@ -75,17 +76,14 @@ class TestViewCounties(LoginMixin, APITestCase):
         url = reverse('api:common:counties_list')
         response = self.client.get(url)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 CountySerializer(county_2).data,
                 CountySerializer(county).data
             ]
         }
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            json.loads(json.dumps(expected_data['results'], default=default)),
+            json.loads(json.dumps(response.data['results'], default=default)))
         self.assertEquals(200, response.status_code)
 
     def test_retrieve_single_county(self):
@@ -103,6 +101,7 @@ class TestViewCounties(LoginMixin, APITestCase):
 
 
 class TestViewConstituencies(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestViewConstituencies, self).setUp()
 
@@ -120,9 +119,6 @@ class TestViewConstituencies(LoginMixin, APITestCase):
         url = reverse('api:common:constituencies_list')
         response = self.client.get(url)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 ConstituencySerializer(constituency_2).data,
                 ConstituencySerializer(constituency).data
@@ -131,8 +127,8 @@ class TestViewConstituencies(LoginMixin, APITestCase):
         # some weird ordering the dumps string
         # json.loads the dumped string to check equality of dicts
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            json.loads(json.dumps(expected_data['results'], default=default)),
+            json.loads(json.dumps(response.data['results'], default=default)))
         self.assertEquals(200, response.status_code)
         self.assertEquals(2, response.data.get('count'))
 
@@ -155,6 +151,7 @@ class TestViewConstituencies(LoginMixin, APITestCase):
 
 
 class TestViewWards(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestViewWards, self).setUp()
 
@@ -173,17 +170,14 @@ class TestViewWards(LoginMixin, APITestCase):
         url = reverse('api:common:wards_list')
         response = self.client.get(url)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 WardSerializer(ward_2).data,
                 WardSerializer(ward_1).data
             ]
         }
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            json.loads(json.dumps(expected_data['results'], default=default)),
+            json.loads(json.dumps(response.data['results'], default=default)))
         self.assertEquals(200, response.status_code)
         self.assertEquals(2, response.data.get('count'))
 
@@ -209,6 +203,7 @@ class TestViewWards(LoginMixin, APITestCase):
 
 
 class TestContactView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestContactView, self).setUp()
         self.url = reverse("api:common:contacts_list")
@@ -224,9 +219,6 @@ class TestContactView(LoginMixin, APITestCase):
             contact='0784636499', contact_type=contact_type_1)
 
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 ContactSerializer(contact_1).data,
                 ContactSerializer(contact).data
@@ -234,8 +226,8 @@ class TestContactView(LoginMixin, APITestCase):
         }
         response = self.client.get(self.url)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            json.loads(json.dumps(expected_data['results'], default=default)),
+            json.loads(json.dumps(response.data['results'], default=default)))
 
     def test_post_created_by_not_supplied(self):
         # Special case, to test AbstractFieldsMixin
@@ -281,6 +273,7 @@ class TestContactView(LoginMixin, APITestCase):
 
 
 class TestContactTypeView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestContactTypeView, self).setUp()
         self.url = reverse("api:common:contact_types_list")
@@ -310,6 +303,7 @@ class TestContactTypeView(LoginMixin, APITestCase):
 
 
 class TestTownView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestTownView, self).setUp()
         self.url = reverse("api:common:towns_list")
@@ -326,6 +320,7 @@ class TestTownView(LoginMixin, APITestCase):
 
 
 class TestAPIRootView(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse('api:root_listing')
         cache.clear()
@@ -383,6 +378,7 @@ class TestAPIRootView(LoginMixin, APITestCase):
 
 
 class TestUserContactView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestUserContactView, self).setUp()
         self.url = reverse("api:common:user_contacts_list")
@@ -392,9 +388,6 @@ class TestUserContactView(LoginMixin, APITestCase):
         user_contact_2 = mommy.make(UserContact)
         response = self.client.get(self.url)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 UserContactSerializer(user_contact_2).data,
                 UserContactSerializer(user_contact_1).data
@@ -403,8 +396,8 @@ class TestUserContactView(LoginMixin, APITestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            json.loads(json.dumps(expected_data['results'], default=default)),
+            json.loads(json.dumps(response.data['results'], default=default)))
 
     def test_retrieve_user_contact(self):
         user_contact = mommy.make(UserContact)
@@ -418,6 +411,7 @@ class TestUserContactView(LoginMixin, APITestCase):
 
 
 class TestAuditableViewMixin(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestAuditableViewMixin, self).setUp()
 
@@ -491,6 +485,7 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
 
 
 class FilteringSummariesView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(FilteringSummariesView, self).setUp()
         self.url = reverse('api:common:filtering_summaries')
@@ -523,6 +518,7 @@ class FilteringSummariesView(LoginMixin, APITestCase):
 
 
 class TestDeleting(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse('api:common:counties_list')
         super(TestDeleting, self).setUp()
@@ -542,6 +538,7 @@ class TestDeleting(LoginMixin, APITestCase):
 
 
 class TestSlimDetailViews(LoginMixin, APITestCase):
+
     def test_get_county_slim_detail_view(self):
         county = mommy.make(County)
         url = reverse('api:common:county_slim_detail', args=[str(county.id)])
@@ -563,6 +560,7 @@ class TestSlimDetailViews(LoginMixin, APITestCase):
 
 
 class TestUserConstituenciesView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestUserConstituenciesView, self).setUp()
         self.url = reverse("api:common:user_constituencies_list")
@@ -578,16 +576,13 @@ class TestUserConstituenciesView(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 UserConstituencySerializer(user_const_1).data
             ]
         }
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            json.loads(json.dumps(expected_data['results'], default=default)),
+            json.loads(json.dumps(response.data['results'], default=default)))
 
     def test_retrieve_single_user_constituency(self):
         user = mommy.make(get_user_model())
@@ -622,3 +617,137 @@ class TestUserConstituenciesView(LoginMixin, APITestCase):
         self.assertEquals(1, UserConstituency.objects.count())
         self.assertIn('id', json.loads(json.dumps(
             response.data, default=default)))
+
+
+class TestFilteringAdminUnits(APITestCase):
+    def setUp(self):
+        self.county = mommy.make(County)
+        self.constituency = mommy.make(Constituency, county=self.county)
+        self.initial_user = mommy.make(get_user_model())
+        mommy.make(UserCounty, user=self.initial_user, county=self.county)
+        super(TestFilteringAdminUnits, self).setUp()
+
+    def test_filter_wards_by_user_constituency(self):
+        user = mommy.make(get_user_model())
+        mommy.make(
+            UserConstituency,
+            user=user, created_by=self.initial_user,
+            constituency=self.constituency,
+            updated_by=self.initial_user)
+        ward_1 = mommy.make(Ward, constituency=self.constituency)
+        ward_2 = mommy.make(Ward, constituency=self.constituency)
+        mommy.make(Ward)
+
+        self.client.force_authenticate(user)
+        url = reverse("api:common:wards_list")
+        response = self.client.get(url)
+        expected_data = [
+            WardSerializer(ward_2).data,
+            WardSerializer(ward_1).data]
+        self.assertEquals(
+            json.loads(
+                json.dumps(expected_data, default=default)),
+            json.loads(
+                json.dumps(
+                    response.data.get("results"), default=default)
+            )
+        )
+
+    def test_filter_consituencies_by_user_county(self):
+        self.maxDiff = None
+        user = mommy.make(get_user_model())
+        mommy.make(
+            UserCounty,
+            user=user, created_by=self.initial_user,
+            county=self.county,
+            updated_by=self.initial_user)
+        const_1 = mommy.make(Constituency, county=self.county)
+        const_2 = mommy.make(Constituency, county=self.county)
+        mommy.make(Constituency)
+
+        self.client.force_authenticate(user)
+        url = reverse("api:common:constituencies_list")
+        response = self.client.get(url)
+        expected_data = [
+            ConstituencySerializer(const_2).data,
+            ConstituencySerializer(const_1).data,
+            ConstituencySerializer(self.constituency).data
+        ]
+        self.assertEquals(
+            json.loads(
+                json.dumps(expected_data, default=default)),
+            json.loads(
+                json.dumps(
+                    response.data.get("results"), default=default)
+            )
+        )
+
+    def test_national_user_sees_everything(self):
+        self.maxDiff = None
+        self.initial_user.is_national = True
+        self.initial_user.save()
+
+        self.client.force_authenticate(self.initial_user)
+
+        # get constituencies
+        url = reverse("api:common:constituencies_list")
+        response = self.client.get(url)
+
+        self.assertEquals(
+            Constituency.objects.count(), len(response.data.get("results"))
+        )
+
+        # get wards
+        url = reverse("api:common:wards_list")
+        response = self.client.get(url)
+        self.assertEquals(
+            Ward.objects.count(), len(response.data.get("results"))
+        )
+
+    def test_filtering_towns(self):
+        county = mommy.make(County)
+        user = mommy.make(get_user_model())
+        mommy.make(UserCounty, user=user, county=county)
+        const = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=const)
+        mommy.make(Town, ward=ward)
+        mommy.make(Town)
+        url = reverse("api:common:towns_list")
+        self.client.force_authenticate(user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, len(response.data.get("results")))
+
+    def test_national_user_sees_all_towns(self):
+        county = mommy.make(County)
+        user = mommy.make(get_user_model())
+        user.is_national = True
+        user.save()
+        mommy.make(UserCounty, user=user, county=county)
+        const = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=const)
+        mommy.make(Town, ward=ward)
+        mommy.make(Town)
+        url = reverse("api:common:towns_list")
+        self.client.force_authenticate(user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, len(response.data.get("results")))
+
+    def test_sub_county_user_sees_only_towns_in_sub_county(self):
+        county = mommy.make(County)
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        mommy.make(UserCounty, user=user, county=county)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(
+            UserConstituency, user=user_2,
+            created_by=user, updated_by=user, constituency=const)
+        ward = mommy.make(Ward, constituency=const)
+        mommy.make(Town, ward=ward)
+        mommy.make(Town)
+        url = reverse("api:common:towns_list")
+        self.client.force_authenticate(user_2)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, len(response.data.get("results")))
