@@ -44,6 +44,7 @@ class ContactSerializer(
 
 class PhysicalAddressSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    town_name = serializers.ReadOnlyField(source='town.name')
 
     class Meta(object):
         model = PhysicalAddress
