@@ -1684,6 +1684,15 @@
                 "codename": "view_facilitystatus"
             },
             {
+                "codename": "add_facilitytype"
+            },
+            {
+                "codename": "change_facilitytype"
+            },
+            {
+                "codename": "delete_facilitytype"
+            },
+            {
                 "codename": "view_facilitytype"
             },
             {
