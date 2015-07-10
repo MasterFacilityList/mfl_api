@@ -66,6 +66,12 @@ class FilterAdminUnitsMixin(object):
         elif (user.constituency and hasattr(
                 self.queryset.model, 'constituency')and not user.is_national):
             return self.queryset.filter(constituency=user.constituency)
+        elif (user.constituency and hasattr(
+                self.queryset.model, 'ward')and not user.is_national):
+            return self.queryset.filter(ward__constituency=user.constituency)
+        elif (user.county and hasattr(
+                self.queryset.model, 'ward')and not user.is_national):
+            return self.queryset.filter(ward__constituency__county=user.county)
         else:
             return self.queryset
 
@@ -306,7 +312,7 @@ class UserContactDetailView(
     serializer_class = UserContactSerializer
 
 
-class TownListView(generics.ListCreateAPIView):
+class TownListView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     """
     Lists and creates towns
 
