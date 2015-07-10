@@ -29,9 +29,9 @@ class GroupAdminUnitLevelListView(generics.ListCreateAPIView):
         'group', 'national_level', 'county_level', 'constituency_level', )
 
 
-class GroupAdminUnitLevelDetailView(CustomRetrieveUpdateDestroyView):
+class GroupAdminUnitLevelDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
-    Retrieves a single group administrative unit level
+    Retrieves a single group's administrative unit level
     """
     queryset = GroupAdminUnitLevel.objects.all()
     serializer_class = GroupAdminUnitLevelSerializer
