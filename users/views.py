@@ -4,16 +4,37 @@ from django.contrib.auth.models import Group, Permission
 
 from common.utilities import CustomRetrieveUpdateDestroyView
 
-from .models import MflUser, MFLOAuthApplication
+from .models import MflUser, MFLOAuthApplication, GroupAdminUnitLevel
 
 from .serializers import (
     MflUserSerializer,
     MFLOAuthApplicationSerializer,
     PermissionSerializer,
-    GroupSerializer
+    GroupSerializer,
+    GroupAdminUnitLevelSerializer
 )
 
-from .filters import MFLUserFilter, PermissionFilter, GroupFilter
+from .filters import (
+    MFLUserFilter, PermissionFilter, GroupFilter, GroupAdminUnitLevelFilter)
+
+
+class GroupAdminUnitLevelListView(generics.ListCreateAPIView):
+    """
+    Creates and lists users groups administrative units of operation
+    """
+    queryset = GroupAdminUnitLevel.objects.all()
+    serializer_class = GroupAdminUnitLevelSerializer
+    filter_class = GroupAdminUnitLevelFilter
+    ordering_fields = (
+        'group', 'national_level', 'county_level', 'constituency_level', )
+
+
+class GroupAdminUnitLevelDetailView(CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a single group administrative unit level
+    """
+    queryset = GroupAdminUnitLevel.objects.all()
+    serializer_class = GroupAdminUnitLevelSerializer
 
 
 class PermissionsListView(generics.ListAPIView):

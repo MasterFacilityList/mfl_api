@@ -1,9 +1,11 @@
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import Group
+
 from model_mommy import mommy
 from common.tests.test_models import BaseTestCase
 
-from ..models import MflUser
+from ..models import MflUser, GroupAdminUnitLevel
 
 
 class TestMflUserModel(BaseTestCase):
@@ -97,3 +99,16 @@ class TestMflUserModel(BaseTestCase):
         }
         with self.assertRaises(ValidationError):
             MflUser.objects.create_user(**data)
+
+
+class TestGroupAdminUnitLevel(BaseTestCase):
+    def test_save(self):
+        group = mommy.make(Group)
+        mommy.make(GroupAdminUnitLevel, group=group, county_level=True)
+        self.assertEquals(1, GroupAdminUnitLevel.objects.count())
+
+    def test_group_admin_unit_level(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                GroupAdminUnitLevel,
+                county_level=True, constituency_level=True)

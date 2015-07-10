@@ -31,5 +31,68 @@
                 "name": "Superusers"
             }
         ]
+    },
+    {
+        "model": "users.GroupAdminUnitLevel",
+        "unique_fields": ["group"],
+        "records": [
+            {
+                "group":{ 
+                    "name": "County Health Records Information Officer"
+                },
+                "county_level": true
+            },
+            {
+                "group":{
+                    "name": "Sub County Health Records Information Officer"
+                },
+                "constituency_level": true
+
+            },
+            {
+                "group": {
+                    "name": "Publishers"
+                },
+                "national_level": true
+            },
+            {
+                "group": {
+                    "name": "Regulators (makers)"
+                },
+                "national_level": true
+            },
+            {
+                "group": {
+                    "name": "Regulators (Approvers)"
+                },
+                "national_level": true
+            },
+            {
+                "group": {
+                    "name": "Public Users"
+                },
+                "national_level": true
+
+            },
+            {
+                "group": {
+                    "name": "National Administrators"
+                },
+                "national_level": true
+            },
+            {
+                "group":{
+                    "name": "County Administrators"
+                },
+                "county_level": true
+
+            },
+            {
+               "group": {
+                    "name": "Superusers"
+                },
+                "national_level": true
+            }
+        ]
     }
 ]

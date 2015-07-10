@@ -8,12 +8,19 @@ from .views import (
     MFLOauthApplicationDetailView,
     PermissionsListView,
     GroupListView,
-    GroupDetailView
+    GroupDetailView,
+    GroupAdminUnitLevelDetailView,
+    GroupAdminUnitLevelListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^group_admin_level/$', GroupAdminUnitLevelListView.as_view(),
+        name='group_admin_unit_levels_list'),
+    url(r'^group_admin_level/(?P<pk>[^/]+)/$',
+        GroupAdminUnitLevelDetailView.as_view(),
+        name='group_admin_unit_level_detail'),
 
     url(r'^applications/$', MFLOauthApplicationListView.as_view(),
         name='mfl_oauth_applications_list'),

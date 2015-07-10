@@ -50,6 +50,10 @@ class GroupAdminUnitLevel(models.Model):
                 "A user group can only be applied to one of "
                 "county, sub-county or national level")
 
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(GroupAdminUnitLevel, self).save(*args, **kwargs)
+
 
 class MflUserManager(BaseUserManager):
 
