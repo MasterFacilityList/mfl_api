@@ -751,3 +751,28 @@ class TestFilteringAdminUnits(APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, len(response.data.get("results")))
+
+    def test_county_user_sees_only_wards_in_county(self):
+        user = mommy.make(get_user_model())
+        mommy.make(
+            UserCounty,
+            user=user,
+            county=self.county)
+        ward_1 = mommy.make(Ward, constituency=self.constituency)
+        ward_2 = mommy.make(Ward, constituency=self.constituency)
+        mommy.make(Ward)
+
+        self.client.force_authenticate(user)
+        url = reverse("api:common:wards_list")
+        response = self.client.get(url)
+        expected_data = [
+            WardSerializer(ward_2).data,
+            WardSerializer(ward_1).data]
+        self.assertEquals(
+            json.loads(
+                json.dumps(expected_data, default=default)),
+            json.loads(
+                json.dumps(
+                    response.data.get("results"), default=default)
+            )
+        )
