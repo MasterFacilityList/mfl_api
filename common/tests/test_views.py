@@ -622,3 +622,29 @@ class TestUserConstituenciesView(LoginMixin, APITestCase):
         self.assertEquals(1, UserConstituency.objects.count())
         self.assertIn('id', json.loads(json.dumps(
             response.data, default=default)))
+
+
+class TestFilteringAdminUnits(APITestCase):
+    def test_filter_consituencies_by_user_county(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        initial_user = mommy.make(get_user_model())
+        mommy.make(UserCounty, user=initial_user, county=county)
+        user = mommy.make(get_user_model())
+        mommy.make(
+            UserConstituency,
+            user=user, created_by=initial_user,
+            constituency=constituency,
+            updated_by=initial_user)
+        const_1 = mommy.make(Constituency, county=county)
+        const_2 = mommy.make(Constituency, county=county)
+        mommy.make(Constituency)
+
+        self.client.force_authenticate(user)
+        url = reverse("api:common:constituencies_list")
+        response = self.client.get(url)
+        expected_data = [
+            ConstituencySerializer(const_1).data,
+            ConstituencySerializer(const_2).data]
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)

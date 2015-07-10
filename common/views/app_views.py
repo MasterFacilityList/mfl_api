@@ -57,6 +57,18 @@ from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
 
 
+class FilterAdminUnitsMixin(object):
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        if user.is_national:
+            return self.queryset
+        elif user.county and hasattr(self.queryset.model, 'county'):
+            return self.queryset.filter(county=user.county)
+        elif (user.constituency and hasattr(
+                self.queryset.model, 'constituency')):
+            return self.request.filter(constituency=user.constituency)
+
+
 class ContactView(generics.ListCreateAPIView):
     """
     Lists and creates contacts
@@ -146,7 +158,7 @@ class CountySlimDetailView(
     serializer_class = CountySlimDetailSerializer
 
 
-class WardView(generics.ListCreateAPIView):
+class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     """
     Lists and creates wards
 
@@ -183,7 +195,7 @@ class WardSlimDetailView(
     serializer_class = WardSlimDetailSerializer
 
 
-class ConstituencyView(generics.ListCreateAPIView):
+class ConstituencyView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     """
     Lists and creates constituencies
 
