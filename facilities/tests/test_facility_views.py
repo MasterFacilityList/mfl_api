@@ -56,7 +56,12 @@ from ..models import (
 )
 
 
+def load_dump(x, *args, **kwargs):
+    return json.loads(json.dumps(x, *args, **kwargs))
+
+
 class TestOwnersView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestOwnersView, self).setUp()
         self.url = reverse('api:facilities:owners_list')
@@ -67,9 +72,6 @@ class TestOwnersView(LoginMixin, APITestCase):
         owner_2 = mommy.make(Owner, owner_type=ownertype)
         response = self.client.get(self.url)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 OwnerSerializer(owner_2).data,
                 OwnerSerializer(owner_1).data
@@ -77,8 +79,9 @@ class TestOwnersView(LoginMixin, APITestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_post(self):
         owner_type = mommy.make(OwnerType)
@@ -109,8 +112,9 @@ class TestOwnersView(LoginMixin, APITestCase):
         expected_data = OwnerSerializer(owner).data
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data, default=default),
+            load_dump(response.data, default=default)
+        )
 
     def test_filtering(self):
         owner_type_1 = mommy.make(OwnerType)
@@ -119,9 +123,6 @@ class TestOwnersView(LoginMixin, APITestCase):
         owner_2 = mommy.make(Owner, name='MOH', owner_type=owner_type_1)
         owner_3 = mommy.make(Owner, name='Private', owner_type=owner_type_2)
         expected_data_1 = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 # Due to ordering in view CHAK will always be first
                 OwnerSerializer(owner_2).data,
@@ -129,9 +130,6 @@ class TestOwnersView(LoginMixin, APITestCase):
             ]
         }
         expected_data_2 = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 OwnerSerializer(owner_3).data
             ]
@@ -142,19 +140,22 @@ class TestOwnersView(LoginMixin, APITestCase):
 
         self.assertEquals(200, response_1.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data_1, default=default)),
-            json.loads(json.dumps(response_1.data, default=default)))
+            load_dump(expected_data_1['results'], default=default),
+            load_dump(response_1.data['results'], default=default)
+        )
 
         url = self.url + "?owner_type={}".format(owner_type_2.id)
         response_2 = self.client.get(url)
 
         self.assertEquals(200, response_2.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data_2, default=default)),
-            json.loads(json.dumps(response_2.data, default=default)))
+            load_dump(expected_data_2['results'], default=default),
+            load_dump(response_2.data['results'], default=default)
+        )
 
 
 class TestFacilityView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityView, self).setUp()
         self.url = reverse('api:facilities:facilities_list')
@@ -166,9 +167,6 @@ class TestFacilityView(LoginMixin, APITestCase):
 
         response = self.client.get(self.url)
         expected_data = {
-            "count": 3,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility_3).data,
                 FacilitySerializer(facility_2).data,
@@ -177,8 +175,9 @@ class TestFacilityView(LoginMixin, APITestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_facilties_that_need_regulation_or_not(self):
         facility_1 = mommy.make(Facility)
@@ -191,9 +190,6 @@ class TestFacilityView(LoginMixin, APITestCase):
 
         url = self.url + "?is_regulated=True"
         regulated_expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility_1).data
             ]
@@ -201,16 +197,14 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(regulated_expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(regulated_expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
         # get unregulated
         url = self.url + "?is_regulated=False"
         response_2 = self.client.get(url)
         unregulated_data = regulated_expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility_3).data,
                 FacilitySerializer(facility_2).data
@@ -219,8 +213,9 @@ class TestFacilityView(LoginMixin, APITestCase):
         }
         self.assertEquals(200, response_2.status_code)
         self.assertEquals(
-            json.loads(json.dumps(unregulated_data, default=default)),
-            json.loads(json.dumps(response_2.data, default=default)))
+            load_dump(unregulated_data['results'], default=default),
+            load_dump(response_2.data['results'], default=default)
+        )
 
     def test_retrieve_facility(self):
         facility = mommy.make(Facility)
@@ -229,8 +224,9 @@ class TestFacilityView(LoginMixin, APITestCase):
         expected_data = FacilityDetailSerializer(facility).data
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data, default=default),
+            load_dump(response.data, default=default)
+        )
 
     def test_get_facility_services(self):
         facility = mommy.make(Facility, name='thifitari')
@@ -287,17 +283,15 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
 
             ]
         }
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_filter_facilities_by_one_category(self):
         category = mommy.make(ServiceCategory)
@@ -318,17 +312,15 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
 
             ]
         }
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_filter_facilities_by_many_service_categories_no_data(self):
         category = mommy.make(ServiceCategory)
@@ -359,24 +351,17 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 0,
-            "next": None,
-            "previous": None,
-            "results": [
-
-            ]
+            "results": []
         }
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_facility_slimmed_down_listing(self):
         url = reverse("api:facilities:facilities_read_list")
         facility = mommy.make(Facility)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilityListSerializer(facility).data
             ]
@@ -384,8 +369,9 @@ class TestFacilityView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_get_approved_facilities(self):
         self.maxDiff = None
@@ -395,30 +381,27 @@ class TestFacilityView(LoginMixin, APITestCase):
         url = self.url + "?is_approved=true"
         response_1 = self.client.get(url)
         expected_data_1 = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
             ]
         }
         self.assertEquals(200, response_1.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data_1, default=default)),
-            json.loads(json.dumps(response_1.data, default=default)))
+            load_dump(expected_data_1['results'], default=default),
+            load_dump(response_1.data['results'], default=default)
+        )
 
         url = self.url + "?is_approved=false"
         response_2 = self.client.get(url)
         expected_data_2 = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility_2).data
             ]
         }
         self.assertEquals(200, response_1.status_code)
-        self.assertEquals(expected_data_2, response_2.data)
+        self.assertEquals(
+            expected_data_2['results'], response_2.data['results']
+        )
 
     def test_get_facility_as_regulator(self):
         self.client.logout()
@@ -431,16 +414,13 @@ class TestFacilityView(LoginMixin, APITestCase):
         facility = mommy.make(Facility, regulatory_body=reg_body)
         mommy.make(Facility)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data,
             ]
         }
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(expected_data['results'], response.data['results'])
 
     def test_get_facility_as_an_anonymous_user(self):
         self.client.logout()
@@ -472,18 +452,12 @@ class TestFacilityView(LoginMixin, APITestCase):
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
 
         true_expected_data = {
-            "next": None,
-            "previous": None,
-            "count": 1,
             "results": [
                 FacilitySerializer(facility_a_refetched).data
             ]
         }
 
         false_expected_data = {
-            "next": None,
-            "previous": None,
-            "count": 1,
             "results": [
                 FacilitySerializer(facility_b).data
             ]
@@ -492,12 +466,14 @@ class TestFacilityView(LoginMixin, APITestCase):
         false_response = self.client.get(false_url)
         self.assertEquals(200, true_response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(true_expected_data, default=default)),
-            json.loads(json.dumps(true_response.data, default=default)))
+            load_dump(true_expected_data['results'], default=default),
+            load_dump(true_response.data['results'], default=default)
+        )
         self.assertEquals(200, true_response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(false_expected_data, default=default)),
-            json.loads(json.dumps(false_response.data, default=default)))
+            load_dump(false_expected_data['results'], default=default),
+            load_dump(false_response.data['results'], default=default)
+        )
 
 
 class CountyAndNationalFilterBackendTest(APITestCase):
@@ -522,13 +498,11 @@ class CountyAndNationalFilterBackendTest(APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         # The response should be filtered out for this user; not national
-        self.assertEquals(
-            len(response.data["results"]),
-            0
-        )
+        self.assertEquals(len(response.data["results"]), 0)
 
 
 class TestFacilityStatusView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityStatusView, self).setUp()
         self.url = reverse("api:facilities:facility_statuses_list")
@@ -539,9 +513,6 @@ class TestFacilityStatusView(LoginMixin, APITestCase):
         status_3 = mommy.make(FacilityStatus, name='CLOSED')
         response = self.client.get(self.url)
         expected_data = {
-            "count": 3,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilityStatusSerializer(status_3).data,
                 FacilityStatusSerializer(status_2).data,
@@ -550,8 +521,9 @@ class TestFacilityStatusView(LoginMixin, APITestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_retrive_facility_status(self):
         status = mommy.make(FacilityStatus, name='OPERTATIONAL')
@@ -562,6 +534,7 @@ class TestFacilityStatusView(LoginMixin, APITestCase):
 
 
 class TestFacilityUnitView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityUnitView, self).setUp()
         self.url = reverse("api:facilities:facility_units_list")
@@ -571,9 +544,6 @@ class TestFacilityUnitView(LoginMixin, APITestCase):
         unit_2 = mommy.make(FacilityUnit)
         response = self.client.get(self.url)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilityUnitSerializer(unit_2).data,
                 FacilityUnitSerializer(unit_1).data
@@ -581,8 +551,9 @@ class TestFacilityUnitView(LoginMixin, APITestCase):
         }
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
     def test_retrieve_facility_unit(self):
         unit = mommy.make(FacilityUnit)
@@ -591,11 +562,13 @@ class TestFacilityUnitView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data, default=default),
+            load_dump(response.data, default=default)
+        )
 
 
 class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
+
     def test_inspection_report(self):
         ward = mommy.make(Ward)
         facility = mommy.make(Facility, ward=ward)
@@ -631,6 +604,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
 
 
 class TestDashBoardView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestDashBoardView, self).setUp()
         self.url = reverse('api:facilities:dashboard')
@@ -828,6 +802,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
 
 
 class TestFacilityContactView(LoginMixin, APITestCase):
+
     def test_list_facility_contacts(self):
         url = reverse('api:facilities:facility_contacts_list')
         facility = mommy.make(Facility)
@@ -844,6 +819,7 @@ class TestFacilityContactView(LoginMixin, APITestCase):
 
 
 class TestFacilityOfficerView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityOfficerView, self).setUp()
         self.url = reverse('api:facilities:facility_officers_list')
@@ -851,16 +827,13 @@ class TestFacilityOfficerView(LoginMixin, APITestCase):
     def test_list_facility_officers(self):
         facility_officer = mommy.make(FacilityOfficer)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilityOfficerSerializer(facility_officer).data
             ]
         }
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(expected_data['results'], response.data['results'])
 
     def test_retrive_single_facility_officer(self):
         facility_officer = mommy.make(FacilityOfficer)
@@ -882,6 +855,7 @@ class TestFacilityOfficerView(LoginMixin, APITestCase):
 
 
 class TestRegulatoryBodyUserView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestRegulatoryBodyUserView, self).setUp()
         self.url = reverse("api:facilities:regulatory_body_users_list")
@@ -891,14 +865,11 @@ class TestRegulatoryBodyUserView(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 RegulatoryBodyUserSerializer(reg_bod_user).data
             ]
         }
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(expected_data['results'], response.data['results'])
 
     def test_retrieving_single_record(self):
         reg_bod_user = mommy.make(RegulatoryBodyUser)
@@ -922,6 +893,7 @@ class TestRegulatoryBodyUserView(LoginMixin, APITestCase):
 
 
 class TestFacilityRegulator(APITestCase):
+
     def test_filtering_facilities_by_regulator(self):
         url = reverse("api:facilities:facilities_list")
         reg_body = mommy.make(RegulatingBody)
@@ -931,19 +903,17 @@ class TestFacilityRegulator(APITestCase):
         self.client.force_authenticate(user)
         mommy.make(Facility)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
             ]
         }
         response = self.client.get(url)
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(expected_data['results'], response.data['results'])
         self.assertEquals(200, response.status_code)
 
 
 class TestFacilityUnitRegulationView(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityUnitRegulationView, self).setUp()
         self.url = reverse("api:facilities:facility_unit_regulations_list")
@@ -954,15 +924,12 @@ class TestFacilityUnitRegulationView(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 2,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilityUnitRegulationSerializer(obj_2).data,
                 FacilityUnitRegulationSerializer(obj_1).data
             ]
         }
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(expected_data['results'], response.data['results'])
 
     def test_retrieve_single_record(self):
         obj = mommy.make(FacilityUnitRegulation)
@@ -985,6 +952,7 @@ class TestFacilityUnitRegulationView(LoginMixin, APITestCase):
 
 
 class TestFacilityUpdates(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityUpdates, self).setUp()
         self.url = reverse('api:facilities:facility_updatess_list')
@@ -998,15 +966,12 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilityUpdatesSerializer(obj).data
 
             ]
         }
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(expected_data['results'], response.data['results'])
 
     def test_retrieving(self):
         update = {
@@ -1052,8 +1017,9 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         expected_data = FacilityUpdatesSerializer(
             facility_updates_refetched).data
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data, default=default),
+            load_dump(response.data, default=default)
+        )
 
     def test_cancelling(self):
         facility = mommy.make(
@@ -1080,6 +1046,7 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
 
 
 class TestServicesWithOptionsList(LoginMixin, APITestCase):
+
     def test_listing_services_with_options(self):
         service = mommy.make(Service)
         option = mommy.make(Option)
@@ -1090,19 +1057,18 @@ class TestServicesWithOptionsList(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 ServiceSerializer(service).data
             ]
         }
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )
 
 
 class TestFacilityConsituencyUserFilter(APITestCase):
+
     def test_filter_by_constituency(self):
         user = mommy.make(get_user_model())
         user_2 = mommy.make(get_user_model())
@@ -1118,9 +1084,6 @@ class TestFacilityConsituencyUserFilter(APITestCase):
         url = reverse("api:facilities:facilities_list")
         self.client.force_authenticate(user)
         expected_data = {
-            "count": 1,
-            "next": None,
-            "previous": None,
             "results": [
                 FacilitySerializer(facility).data
             ]
@@ -1128,5 +1091,6 @@ class TestFacilityConsituencyUserFilter(APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(
-            json.loads(json.dumps(expected_data, default=default)),
-            json.loads(json.dumps(response.data, default=default)))
+            load_dump(expected_data['results'], default=default),
+            load_dump(response.data['results'], default=default)
+        )

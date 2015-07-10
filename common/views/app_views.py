@@ -20,7 +20,8 @@ from facilities.models import(
     ServiceCategory,
     FacilityType,
     OwnerType,
-    Owner
+    Owner,
+    Service
 )
 from ..serializers import (
     ContactSerializer,
@@ -346,7 +347,6 @@ class FilteringSummariesView(views.APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-
         fields = request.query_params.get('fields', None)
         fields_model_mapping = {
             'county': (County, ('id', 'name')),
@@ -357,6 +357,7 @@ class FilteringSummariesView(views.APIView):
             'service_category': (ServiceCategory, ('id', 'name')),
             'owner_type': (OwnerType, ('id', 'name')),
             'owner': (Owner, ('id', 'name', 'owner_type')),
+            'service': (Service, ('id', 'name', 'category'))
         }
         if fields:
             resp = {}
