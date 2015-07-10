@@ -747,7 +747,7 @@ class TestFilteringAdminUnits(APITestCase):
         mommy.make(Town, ward=ward)
         mommy.make(Town)
         url = reverse("api:common:towns_list")
-        self.client.force_authenticate(user)
+        self.client.force_authenticate(user_2)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, len(response.data.get("results")))
