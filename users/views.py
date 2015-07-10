@@ -48,6 +48,18 @@ class UserList(generics.ListCreateAPIView):
     filter_class = MFLUserFilter
     ordering_fields = ('first_name', 'last_name', 'email', 'username',)
 
+    def get_queryset(self, *args, **kwargs):
+        from common.models import UserCounty
+        user = self.request.user
+        if user.county and not user.is_national:
+
+            return MflUser.objects.filter(
+                id__in=[const_user.user.id for const_user in
+                        UserCounty.objects.filter(
+                            county=user.county).distinct()])
+        else:
+            return self.queryset
+
 
 class UserDetailView(CustomRetrieveUpdateDestroyView):
     queryset = MflUser.objects.all()
