@@ -1,6 +1,6 @@
 import logging
 import reversion
-
+import copy
 from collections import OrderedDict
 
 from django.shortcuts import redirect
@@ -132,8 +132,8 @@ class APIRoot(APIView):
     def get(self, request, format=None):
         resp = OrderedDict()
         errors = []
-
-        for model_cls, url_name_dict in MODEL_VIEW_DICT.iteritems():
+        model_dict_copy = copy.copy(MODEL_VIEW_DICT)
+        for model_cls, url_name_dict in model_dict_copy.iteritems():
             try:
                 resp[model_cls._meta.verbose_name] = \
                     _lookup_metadata(url_name_dict, request, model_cls, self)

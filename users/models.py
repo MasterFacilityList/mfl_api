@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import (
     validate_email, RegexValidator, ValidationError)
-from django.contrib.auth.models import make_password
+from django.contrib.auth.models import make_password, Group
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -23,6 +23,36 @@ def check_password_length(raw_password):
         return True
     else:
         return False
+
+
+class GroupAdminUnitLevel(models.Model):
+    group = models.OneToOneField(Group, related_name='admin_level')
+    county_level = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a group applies at the county level')
+    constituency_level = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a group applies at sub-county level')
+    national_level = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a group applies at national level')
+
+    def clean(self, *args, **kwargs):
+
+        def single_true(iterable):
+            i = iter(iterable)
+            return any(i) and not any(i)
+
+        admin_level = [
+            self.county_level, self.constituency_level, self.national_level]
+        if not single_true(admin_level):
+            raise ValidationError(
+                "A user group can only be applied to one of "
+                "county, sub-county or national level")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(GroupAdminUnitLevel, self).save(*args, **kwargs)
 
 
 class MflUserManager(BaseUserManager):

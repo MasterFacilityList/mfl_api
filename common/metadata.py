@@ -65,16 +65,25 @@ class CustomMetadata(SimpleMetadata):
             from .utilities.metadata_helpers import MODEL_VIEW_DICT
             assert hasattr(field.queryset, 'model'), \
                 '{} has no queryset'.format(field)
-            field_info['relational_choices'] = [
-                {
-                    'value': reverse(
-                        MODEL_VIEW_DICT[field.queryset.model]['list_url'],
-                        request=self.request
-                    ),
-                    'display_name':
-                        field.queryset.model._meta.verbose_name_plural
-                }
-            ]
+            try:
+                field_info['relational_choices'] = [
+                    {
+                        'value': reverse(
+                            MODEL_VIEW_DICT[field.queryset.model]['list_url'],
+                            request=self.request
+                        ),
+                        'display_name':
+                            field.queryset.model._meta.verbose_name_plural
+                    }
+                ]
+            except:
+                field_info['relational_choices'] = [
+                    {
+                        'value': reverse(
+                            "api:users:group_admin_unit_levels_list"),
+                        'display_name': 'Group admin unit level'
+                    }
+                ]
         elif hasattr(field, 'choices'):
             field_info['choices'] = [
                 {

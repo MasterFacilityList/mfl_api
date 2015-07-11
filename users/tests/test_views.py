@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
-from ..models import MflUser
+from ..models import MflUser, GroupAdminUnitLevel
 from ..serializers import _lookup_groups
 
 
@@ -223,6 +223,44 @@ class TestDeleting(LoginMixin, APITestCase):
             MflUser.objects.get(id=user.id)
 
         self.assertEquals(1, MflUser.everything.filter(id=user.id).count())
+
+
+class GroupAdminUnitLevelsUnit(LoginMixin, APITestCase):
+    def test_listing(self):
+        group = mommy.make(Group)
+        mommy.make(GroupAdminUnitLevel, group=group, county_level=True)
+        url = reverse("api:users:group_admin_unit_levels_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, len(response.data.get("results")))
+
+    def test_retrieving(self):
+        group = mommy.make(Group)
+        admin_level = mommy.make(
+            GroupAdminUnitLevel, group=group, county_level=True)
+        url = reverse("api:users:group_admin_unit_levels_list")
+        url = url + "{}/".format(str(admin_level.id))
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_retrieving_through_group(self):
+        group = mommy.make(Group)
+        admin_level = mommy.make(
+            GroupAdminUnitLevel, group=group, county_level=True)
+        url = reverse("api:users:groups_list")
+        url = url + "{}/".format(str(group.id))
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            json.loads(json.dumps({
+                "id": admin_level.id,
+                "county_level": True,
+                "national_level": False,
+                "constituency_level": False,
+                "group": group.id
+            })),
+            json.loads(json.dumps(response.data.get("admin_level")))
+        )
 
 
 class TestUserFiltering(APITestCase):

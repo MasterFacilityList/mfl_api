@@ -9,7 +9,7 @@ from common.serializers import (
     UserConstituencySerializer,
     UserContactSerializer)
 from facilities.serializers import RegulatoryBodyUserSerializer
-from .models import MflUser, MFLOAuthApplication
+from .models import MflUser, MFLOAuthApplication, GroupAdminUnitLevel
 
 
 def _lookup_permissions(validated_data):
@@ -38,6 +38,11 @@ def _lookup_groups(validated_data):
             '"{}"" when retrieving groups corresponding to "{}"'
             .format(ex, validated_data)
         )
+
+
+class GroupAdminUnitLevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupAdminUnitLevel
 
 
 class PermissionSerializer(serializers.ModelSerializer):
@@ -81,6 +86,7 @@ class GroupSerializer(serializers.ModelSerializer):
     # to work, the UniqueValidator on this name had to be silenced
     name = serializers.CharField(validators=[])
     permissions = PermissionSerializer(many=True, required=False)
+    admin_level = GroupAdminUnitLevelSerializer(required=False)
 
     @transaction.atomic
     def create(self, validated_data):

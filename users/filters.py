@@ -2,7 +2,12 @@ import django_filters
 
 from django.contrib.auth.models import Permission, Group
 from common.filters import CommonFieldsFilterset
-from .models import MflUser
+from .models import MflUser, GroupAdminUnitLevel
+
+
+class GroupAdminUnitLevelFilter(django_filters.FilterSet):
+    class Meta(object):
+        model = GroupAdminUnitLevel
 
 
 class MFLUserFilter(CommonFieldsFilterset):

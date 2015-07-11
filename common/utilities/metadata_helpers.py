@@ -91,11 +91,14 @@ def _lookup_metadata(url_name_dict, request, model_cls, view):
     """
     # Using an ordered dict to control the presentation
     metadata_dict = OrderedDict()
-    metadata_dict['list_endpoint'] = \
-        _reverse(request, url_name_dict['list_url'])
-    metadata_dict['list_metadata'] = \
-        _resolve_list_metadata(request, url_name_dict['list_url'])
-    metadata_dict['detail_metadata'] = \
-        _resolve_detail_metadata(
-            request, url_name_dict['detail_url'], model_cls)
+    try:
+        metadata_dict['list_endpoint'] = \
+            _reverse(request, url_name_dict['list_url'])
+        metadata_dict['list_metadata'] = \
+            _resolve_list_metadata(request, url_name_dict['list_url'])
+        metadata_dict['detail_metadata'] = \
+            _resolve_detail_metadata(
+                request, url_name_dict['detail_url'], model_cls)
+    except KeyError:
+        print model_cls
     return metadata_dict
