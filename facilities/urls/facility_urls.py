@@ -60,7 +60,8 @@ from ..views import (
     FacilityUnitRegulationDetailView,
     FacilityUpdatesListView,
     FacilityUpdatesDetailView,
-    ServicesWithOptionListView
+    ServicesWithOptionListView,
+    CustomFacilityOfficerView
 )
 
 
@@ -69,6 +70,19 @@ urlpatterns = patterns(
     url(r'^services_with_options/$',
         ServicesWithOptionListView.as_view(),
         name='services_with_options_list'),
+
+    url(r'^officer_facade/$',
+        CustomFacilityOfficerView.as_view(),
+        name='officer_facade_create'),
+
+    url(r'^officer_facade/(?P<facility_id>[^/]+)/$',
+        CustomFacilityOfficerView.as_view(),
+        name='officer_facade_list'),
+
+    url(r'^officer_facade/delete/(?P<pk>[^/]+)/$',
+        CustomFacilityOfficerView.as_view(),
+        name='officer_facade_delete'),
+
     url(r'^facility_updates/$',
         FacilityUpdatesListView.as_view(),
         name='facility_updatess_list'),
