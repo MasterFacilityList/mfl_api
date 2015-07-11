@@ -4,7 +4,7 @@
         "unique_fields": ["name"],
         "records": [
             {
-                "name": "County Health Records Information Officer"                
+                "name": "County Health Records Information Officer"
             },
             {
                 "name": "Sub County Health Records Information Officer"
