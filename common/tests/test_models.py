@@ -281,8 +281,6 @@ class TestPhysicalAddress(BaseTestCase):
     def test_save(self):
         data = {
             "town": mommy.make(Town, name="Nairobi"),
-            "postal_code": "00200",
-            "address": "356",
             "nearest_landmark": "",
             "plot_number": "35135"
         }

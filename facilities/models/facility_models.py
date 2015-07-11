@@ -471,11 +471,6 @@ class Facility(SequenceMixin, AbstractBase):
     description = models.TextField(
         null=True, blank=True,
         help_text="A brief summary of the Facility")
-    location_desc = models.TextField(
-        null=True, blank=True,
-        help_text="This field allows a more detailed description of how to"
-        "locate the facility e.g Joy medical clinic is in Jubilee Plaza"
-        "7th Floor")
     number_of_beds = models.PositiveIntegerField(
         default=0,
         help_text="The number of beds that a facility has. e.g 0")
@@ -569,11 +564,9 @@ class Facility(SequenceMixin, AbstractBase):
             "id": self.physical_address.id,
             "town": self.physical_address.town.name,
             "town_id": self.physical_address.town.id,
-            "address": self.physical_address.address,
             "nearest_landmark": self.physical_address.nearest_landmark,
             "plot_number": self.physical_address.plot_number,
-            "postal_code": self.physical_address.postal_code
-
+            "location_desc": self.physical_address.location_desc
         }
 
     @property
