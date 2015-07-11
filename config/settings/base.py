@@ -276,7 +276,7 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": False,
+    "REALTIME_INDEX": True,
     "SEARCH_RESULT_SIZE": 50,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
