@@ -29,13 +29,13 @@ class GroupAdminUnitLevel(models.Model):
     group = models.OneToOneField(Group, related_name='admin_level')
     county_level = models.BooleanField(
         default=False,
-        help_text='Indicates whether a group applies at county level')
+        help_text='Indicates whether a group applies at the county level')
     constituency_level = models.BooleanField(
         default=False,
-        help_text='Indicates whether a group applies at county level')
+        help_text='Indicates whether a group applies at sub-county level')
     national_level = models.BooleanField(
         default=False,
-        help_text='Indicates whether a group applies at county level')
+        help_text='Indicates whether a group applies at national level')
 
     def clean(self, *args, **kwargs):
 
