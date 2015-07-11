@@ -46,7 +46,6 @@ from ..models import (
     FacilityService,
     FacilityContact,
     FacilityOfficer,
-    FacilityOfficerContact,
     Officer,
     RegulatingBody,
     RegulatoryBodyUser,
