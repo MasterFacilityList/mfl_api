@@ -739,82 +739,6 @@
     },
     {
         "group": {
-            "name": "County Administrators"
-        },
-        "permissions": [
-            {
-                "codename": "view_constituency"
-            },
-            {
-                "codename": "view_county"
-            },
-            {
-                "codename": "add_town"
-            },
-            {
-                "codename": "change_town"
-            },
-            {
-                "codename": "delete_town"
-            },
-            {
-                "codename": "view_town"
-            },
-            {
-                "codename": "add_userconstituency"
-            },
-            {
-                "codename": "change_userconstituency"
-            },
-            {
-                "codename": "delete_userconstituency"
-            },
-            {
-                "codename": "add_usercontact"
-            },
-            {
-                "codename": "change_usercontact"
-            },
-            {
-                "codename": "delete_usercontact"
-            },
-            {
-                "codename": "view_usercontact"
-            },
-            {
-                "codename": "view_usercounty"
-            },
-            {
-                "codename": "view_ward"
-            },
-            {
-                "codename": "view_constituencyboundary"
-            },
-            {
-                "codename": "view_countyboundary"
-            },
-            {
-                "codename": "view_wardboundary"
-            },
-            {
-                "codename": "add_mfluser"
-            },
-            {
-                "codename": "change_mfluser"
-            },
-            {
-                "codename": "delete_mfluser"
-            },
-            {
-                "codename": "view_mfluser"
-            },
-            {
-                "codename": "county_group_marker"
-            }
-        ]
-    },
-    {
-        "group": {
             "name": "Superusers"
         },
         "permissions": [
@@ -1736,6 +1660,70 @@
             },
             {
                 "codename": "view_facilitycoordinates"
+            }
+        ]
+    },
+    {
+        "group": {
+            "name": "County Administrators"
+        },
+        "permissions": [
+            {
+                "codename": "view_constituency"
+            },
+            {
+                "codename": "view_county"
+            },
+            {
+                "codename": "add_userconstituency"
+            },
+            {
+                "codename": "change_userconstituency"
+            },
+            {
+                "codename": "delete_userconstituency"
+            },
+            {
+                "codename": "add_usercontact"
+            },
+            {
+                "codename": "change_usercontact"
+            },
+            {
+                "codename": "delete_usercontact"
+            },
+            {
+                "codename": "view_usercontact"
+            },
+            {
+                "codename": "view_usercounty"
+            },
+            {
+                "codename": "view_ward"
+            },
+            {
+                "codename": "view_constituencyboundary"
+            },
+            {
+                "codename": "view_countyboundary"
+            },
+            {
+                "codename": "view_wardboundary"
+            },
+            {
+                "codename": "add_mfluser"
+            },
+            {
+                "codename": "change_mfluser"
+            },
+            {
+                "codename": "delete_mfluser"
+            },
+            {
+                "codename": "view_mfluser"
+            },
+            {
+                "codename": "county_group_marker"
             }
         ]
     }
