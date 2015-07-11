@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from model_mommy import mommy
 from common.tests.test_models import BaseTestCase
+from django.contrib.auth.models import Group, Permission
 
 from ..models import MflUser
 
@@ -97,3 +98,21 @@ class TestMflUserModel(BaseTestCase):
         }
         with self.assertRaises(ValidationError):
             MflUser.objects.create_user(**data)
+
+
+class TestGroupCountyLevelMarkerProperty(BaseTestCase):
+    def test_group_does_not_have_county_level_marker_permission(self):
+        group = mommy.make(Group)
+        perm = mommy.make(Permission)
+        group.permissions.add(perm.id)
+        county_perm = Permission.objects.get(codename='county_group_marker')
+        self.assertNotIn(county_perm, group.permissions.all())
+        self.assertFalse(group.is_county_level)
+        self.assertIn(perm, group.permissions.all())
+
+    def test_group_has_county_level_marker_permission(self):
+        group = mommy.make(Group)
+        perm = Permission.objects.get(codename='county_group_marker')
+        group.permissions.add(perm.id)
+        self.assertIn(perm, group.permissions.all())
+        self.assertTrue(group.is_county_level)

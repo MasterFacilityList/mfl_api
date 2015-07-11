@@ -807,6 +807,9 @@
             },
             {
                 "codename": "view_mfluser"
+            },
+            {
+                "codename": "county_group_marker"
             }
         ]
     },
