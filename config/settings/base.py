@@ -98,7 +98,8 @@ CORS_ALLOW_HEADERS = (
     'authorization',
     'x-csrftoken',
     'if-modified-since',
-    'if-none-match'
+    'if-none-match',
+    'cache-control'
 )
 AUTH_USER_MODEL = 'users.MflUser'
 ROOT_URLCONF = 'config.urls'
