@@ -286,6 +286,10 @@ SEARCH = {
         "mfl_gis.WardBoundary",
 
     ],
+    "STOP_WORDS": [
+        "centre", "center", "health", "hospital", "clinic", "district",
+        "sub-district", "dispensary", ""
+    ],
     "AUTOCOMPLETE_MODEL_FIELDS": [
         {
             "app": "facilities",
