@@ -1,6 +1,6 @@
 [
     {
-        "model": "facilities.Facility", 
+        "model": "facilities.Facility",
         "unique_fields": [
             "name"
         ],
