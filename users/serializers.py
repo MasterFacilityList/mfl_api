@@ -81,6 +81,7 @@ class GroupSerializer(serializers.ModelSerializer):
     # to work, the UniqueValidator on this name had to be silenced
     name = serializers.CharField(validators=[])
     permissions = PermissionSerializer(many=True, required=False)
+    is_county_level = serializers.ReadOnlyField()
 
     @transaction.atomic
     def create(self, validated_data):

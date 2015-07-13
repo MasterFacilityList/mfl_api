@@ -9,7 +9,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    PermissionsMixin
+    PermissionsMixin,
+    Group
 )
 from django.conf import settings
 from oauth2_provider.models import AbstractApplication
@@ -163,6 +164,22 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         default_permissions = ('add', 'change', 'delete', 'view', )
+
+        # This is not a "true permission"
+        # It is a marker, used to create an is_county_level read only prop
+        # on groups
+        permissions = (
+            (
+                'county_group_marker',
+                'A marker permission for county level groups'
+            ),
+        )
+
+
+Group.is_county_level = property(
+    lambda self: 'county_group_marker' in [
+        perm.codename for perm in self.permissions.all()]
+)
 
 
 class MFLOAuthApplication(AbstractApplication):

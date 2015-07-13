@@ -137,6 +137,142 @@
     },
     {
         "group": {
+            "name": "Sub County Health Records Information Officer"
+        },
+        "permissions": [
+            {
+                "codename": "add_physicaladdress"
+            },
+            {
+                "codename": "change_physicaladdress"
+            },
+            {
+                "codename": "delete_physicaladdress"
+            },
+            {
+                "codename": "view_physicaladdress"
+            },
+            {
+                "codename": "add_facility"
+            },
+            {
+                "codename": "change_facility"
+            },
+            {
+                "codename": "delete_facility"
+            },
+            {
+                "codename": "view_facility"
+            },
+            {
+                "codename": "view_facilityapproval"
+            },
+            {
+                "codename": "add_facilitycontact"
+            },
+            {
+                "codename": "change_facilitycontact"
+            },
+            {
+                "codename": "delete_facilitycontact"
+            },
+            {
+                "codename": "view_facilitycontact"
+            },
+            {
+                "codename": "add_facilityofficer"
+            },
+            {
+                "codename": "change_facilityofficer"
+            },
+            {
+                "codename": "delete_facilityofficer"
+            },
+            {
+                "codename": "view_facilityofficer"
+            },
+            {
+                "codename": "view_facilityoperationstate"
+            },
+            {
+                "codename": "view_facilityregulationstatus"
+            },
+            {
+                "codename": "add_facilityservice"
+            },
+            {
+                "codename": "change_facilityservice"
+            },
+            {
+                "codename": "delete_facilityservice"
+            },
+            {
+                "codename": "view_facilityservice"
+            },
+            {
+                "codename": "change_facilityservicerating"
+            },
+            {
+                "codename": "view_facilityservicerating"
+            },
+            {
+                "codename": "view_facilitystatus"
+            },
+            {
+                "codename": "add_facilitytype"
+            },
+            {
+                "codename": "change_facilitytype"
+            },
+            {
+                "codename": "delete_facilitytype"
+            },
+            {
+                "codename": "view_facilitytype"
+            },
+            {
+                "codename": "add_facilityunit"
+            },
+            {
+                "codename": "change_facilityunit"
+            },
+            {
+                "codename": "delete_facilityunit"
+            },
+            {
+                "codename": "view_facilityunit"
+            },
+            {
+                "codename": "view_facilityunitregulation"
+            },
+            {
+                "codename": "add_facilityupdates"
+            },
+            {
+                "codename": "delete_facilityupdates"
+            },
+            {
+                "codename": "view_facilityupdates"
+            },
+            {
+                "codename": "view_facilityupgrade"
+            },
+            {
+                "codename": "add_facilitycoordinates"
+            },
+            {
+                "codename": "change_facilitycoordinates"
+            },
+            {
+                "codename": "delete_facilitycoordinates"
+            },
+            {
+                "codename": "view_facilitycoordinates"
+            }
+        ]
+    },
+    {
+        "group": {
             "name": "Publishers"
         },
         "permissions": [
@@ -801,6 +937,9 @@
             },
             {
                 "codename": "change_mfluser"
+            },
+            {
+                "codename": "county_group_marker"
             },
             {
                 "codename": "delete_mfluser"
@@ -1597,142 +1736,6 @@
             },
             {
                 "codename": "view_mfluser"
-            }
-        ]
-    },
-    {
-        "group": {
-            "name": "Sub County Health Records Information Officer"
-        },
-        "permissions": [
-            {
-                "codename": "add_physicaladdress"
-            },
-            {
-                "codename": "change_physicaladdress"
-            },
-            {
-                "codename": "delete_physicaladdress"
-            },
-            {
-                "codename": "view_physicaladdress"
-            },
-            {
-                "codename": "add_facility"
-            },
-            {
-                "codename": "change_facility"
-            },
-            {
-                "codename": "delete_facility"
-            },
-            {
-                "codename": "view_facility"
-            },
-            {
-                "codename": "view_facilityapproval"
-            },
-            {
-                "codename": "add_facilitycontact"
-            },
-            {
-                "codename": "change_facilitycontact"
-            },
-            {
-                "codename": "delete_facilitycontact"
-            },
-            {
-                "codename": "view_facilitycontact"
-            },
-            {
-                "codename": "add_facilityofficer"
-            },
-            {
-                "codename": "change_facilityofficer"
-            },
-            {
-                "codename": "delete_facilityofficer"
-            },
-            {
-                "codename": "view_facilityofficer"
-            },
-            {
-                "codename": "view_facilityoperationstate"
-            },
-            {
-                "codename": "view_facilityregulationstatus"
-            },
-            {
-                "codename": "add_facilityservice"
-            },
-            {
-                "codename": "change_facilityservice"
-            },
-            {
-                "codename": "delete_facilityservice"
-            },
-            {
-                "codename": "view_facilityservice"
-            },
-            {
-                "codename": "change_facilityservicerating"
-            },
-            {
-                "codename": "view_facilityservicerating"
-            },
-            {
-                "codename": "view_facilitystatus"
-            },
-            {
-                "codename": "add_facilitytype"
-            },
-            {
-                "codename": "change_facilitytype"
-            },
-            {
-                "codename": "delete_facilitytype"
-            },
-            {
-                "codename": "view_facilitytype"
-            },
-            {
-                "codename": "add_facilityunit"
-            },
-            {
-                "codename": "change_facilityunit"
-            },
-            {
-                "codename": "delete_facilityunit"
-            },
-            {
-                "codename": "view_facilityunit"
-            },
-            {
-                "codename": "view_facilityunitregulation"
-            },
-            {
-                "codename": "add_facilityupdates"
-            },
-            {
-                "codename": "delete_facilityupdates"
-            },
-            {
-                "codename": "view_facilityupdates"
-            },
-            {
-                "codename": "view_facilityupgrade"
-            },
-            {
-                "codename": "add_facilitycoordinates"
-            },
-            {
-                "codename": "change_facilitycoordinates"
-            },
-            {
-                "codename": "delete_facilitycoordinates"
-            },
-            {
-                "codename": "view_facilitycoordinates"
             }
         ]
     }

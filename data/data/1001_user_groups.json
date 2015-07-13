@@ -7,6 +7,16 @@
     },
     {
         "mfluser": {
+            "email": "superuser@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Superusers"
+            }
+        ]
+    },
+    {
+        "mfluser": {
             "email": "national_admin@mfltest.slade360.co.ke"
         },
         "groups": [
@@ -107,6 +117,16 @@
     },
     {
         "mfluser": {
+            "email": "mathare@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
             "email": "kamukunji@mfltest.slade360.co.ke"
         },
         "groups": [
@@ -142,26 +162,6 @@
         "groups": [
             {
                 "name": "Regulators (makers)"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "superuser@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Superusers"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "mathare@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Sub County Health Records Information Officer"
             }
         ]
     }
