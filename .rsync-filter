@@ -3,8 +3,8 @@
 - .tox/
 - htmlcov/
 - *.egg-info/
-- static/*
-+ static/.gitkeep
+- ./static/*
++ ./static/.gitkeep
 - data/scripts/
 - data/csvs/
 - docs/
