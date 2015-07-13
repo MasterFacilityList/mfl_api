@@ -281,14 +281,6 @@ class PhysicalAddress(AbstractBase):
     town = models.ForeignKey(
         Town, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")
-    postal_code = models.CharField(
-        null=True, blank=True,
-        max_length=100,
-        help_text="The 5 digit number for the post office address. e.g 00900")
-    address = models.TextField(
-        null=True, blank=True,
-        help_text="This is the actual post office number of the entity"
-        "e.g 6790")
     nearest_landmark = models.TextField(
         null=True, blank=True,
         help_text="well-known physical features /structure that can be used to"
@@ -297,9 +289,13 @@ class PhysicalAddress(AbstractBase):
         max_length=100, null=True, blank=True,
         help_text="This is the same number found on the title deeds of the"
         "piece of land on which this facility is located")
+    location_desc = models.TextField(
+        null=True, blank=True,
+        help_text="This field allows a more detailed description of "
+        "the location")
 
     def __unicode__(self):
-        return "{}: {}".format(self.postal_code, self.address)
+        return self.town.name
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'physical addresses'

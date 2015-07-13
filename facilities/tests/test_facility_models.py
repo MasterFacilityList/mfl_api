@@ -384,7 +384,8 @@ class TestFacility(BaseTestCase):
         regulating_body = mommy.make(RegulatingBody, name='KMPDB')
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
-        address = mommy.make(PhysicalAddress)
+        town = mommy.make(Town, name="Kapchorua")
+        address = mommy.make(PhysicalAddress, town=town)
         data = {
             "name": "Forces Memorial",
             "description": "Hospital for the armed forces",
@@ -397,7 +398,6 @@ class TestFacility(BaseTestCase):
             "operation_status": operation_status,
             "ward": ward,
             "owner": owner,
-            "location_desc": "it is located along Moi Avenue Nairobi",
             "physical_address": address
         }
         data = self.inject_audit_fields(data)
@@ -522,8 +522,7 @@ class TestFacility(BaseTestCase):
                 "town_id": town.id,
                 "plot_number": physical_address.plot_number,
                 "nearest_landmark": physical_address.nearest_landmark,
-                "address": physical_address.address,
-                "postal_code": physical_address.postal_code
+                "location_desc": physical_address.location_desc
             }, facility.facility_physical_address)
 
     def test_only_one_facility_updated_till_acknowledged(self):
@@ -753,7 +752,8 @@ class TestFacilityUpdates(BaseTestCase):
     def test_facility_updates(self):
         original_name = 'Some facility name'
         updated_name = 'The name has been editted'
-        physical_address = mommy.make(PhysicalAddress)
+        town = mommy.make(Town, name="Kirigiti")
+        physical_address = mommy.make(PhysicalAddress, town=town)
         facility = mommy.make(
             Facility,
             name=original_name,

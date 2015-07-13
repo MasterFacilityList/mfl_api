@@ -237,7 +237,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "open_public_holidays", "owner_type_name",
             "ward_name", "average_rating", "facility_services",
             "created", "updated", "deleted", "active",
-            "abbreviation", "description", "location_desc",
+            "abbreviation", "description",
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
             "parent", "contacts", "is_approved",

@@ -281,15 +281,13 @@ class TestPhysicalAddress(BaseTestCase):
     def test_save(self):
         data = {
             "town": mommy.make(Town, name="Nairobi"),
-            "postal_code": "00200",
-            "address": "356",
             "nearest_landmark": "",
             "plot_number": "35135"
         }
         data = self.inject_audit_fields(data)
         phy = PhysicalAddress.objects.create(**data)
         self.assertEquals(1, PhysicalAddress.objects.count())
-        self.assertEquals("00200: 356", phy.__unicode__())
+        self.assertEquals("Nairobi", phy.__unicode__())
 
 
 class TestUserCountyModel(BaseTestCase):
