@@ -752,7 +752,8 @@ class TestFacilityUpdates(BaseTestCase):
     def test_facility_updates(self):
         original_name = 'Some facility name'
         updated_name = 'The name has been editted'
-        physical_address = mommy.make(PhysicalAddress)
+        town = mommy.make(Town, name="Kirigiti")
+        physical_address = mommy.make(PhysicalAddress, town=town)
         facility = mommy.make(
             Facility,
             name=original_name,
