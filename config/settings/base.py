@@ -288,7 +288,7 @@ SEARCH = {
     ],
     "STOP_WORDS": [
         "centre", "center", "health", "hospital", "clinic", "district",
-        "sub-district", "dispensary", ""
+        "sub-district", "dispensary"
     ],
     "AUTOCOMPLETE_MODEL_FIELDS": [
         {
