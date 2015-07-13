@@ -49,14 +49,22 @@ class UserList(generics.ListCreateAPIView):
     ordering_fields = ('first_name', 'last_name', 'email', 'username',)
 
     def get_queryset(self, *args, **kwargs):
-        from common.models import UserCounty
+        from common.models import UserCounty, UserConstituency
         user = self.request.user
         if user.county and not user.is_national:
-
+            county_users = [
+                const_user.user.id for const_user in
+                UserCounty.objects.filter(
+                    county=user.county).distinct()
+            ]
+            sub_county_users = [
+                const_user.user.id for const_user in
+                UserConstituency.objects.filter(
+                    constituency__county=user.county).distinct()
+            ]
+            area_users = county_users + sub_county_users
             return MflUser.objects.filter(
-                id__in=[const_user.user.id for const_user in
-                        UserCounty.objects.filter(
-                            county=user.county).distinct()])
+                id__in=area_users)
         else:
             return self.queryset
 
