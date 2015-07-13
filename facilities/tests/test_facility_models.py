@@ -384,7 +384,8 @@ class TestFacility(BaseTestCase):
         regulating_body = mommy.make(RegulatingBody, name='KMPDB')
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
-        address = mommy.make(PhysicalAddress)
+        town = mommy.make(Town, name="Kapchorua")
+        address = mommy.make(PhysicalAddress, town=town)
         data = {
             "name": "Forces Memorial",
             "description": "Hospital for the armed forces",
