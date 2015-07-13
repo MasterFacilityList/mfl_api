@@ -27,6 +27,20 @@ def get_mappings():
     return mappings
 
 
+MAPPING = get_mappings()
+MAPPING["doc"] = {
+    "properties": {
+        "text": {
+            "type": "string",
+            "index_options": "docs"
+        }
+    }
+}
+
+
+STOP_WORDS = SEARCH_SETTINGS.get("STOP_WORDS")
+
+
 INDEX_SETTINGS = {
     "settings": {
         "index": {
@@ -45,7 +59,8 @@ INDEX_SETTINGS = {
                         "tokenizer": "standard"
                     },
                     "default": {
-                        "type": "snowball"
+                        "type": "snowball",
+                        "stopwords": STOP_WORDS
                     }
                 },
                 "filter": {
@@ -62,5 +77,5 @@ INDEX_SETTINGS = {
             }
         }
     },
-    "mappings": get_mappings()
+    "mappings": MAPPING
 }
