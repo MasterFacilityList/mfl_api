@@ -227,27 +227,38 @@ class TestDeleting(LoginMixin, APITestCase):
 
 class TestUserFiltering(APITestCase):
     def test_get_users_in_county(self):
-        from common.models import UserCounty, County
+        from common.models import (
+            UserCounty, County, Constituency, UserConstituency)
 
         user = mommy.make(MflUser)
 
         user_2 = mommy.make(MflUser)
         user_3 = mommy.make(MflUser)
         user_4 = mommy.make(MflUser)
+        user_5 = mommy.make(MflUser)
+        user_6 = mommy.make(MflUser)
 
         county = mommy.make(County)
         county_2 = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        const_2 = mommy.make(Constituency, county=county_2)
 
         mommy.make(UserCounty, user=user, county=county)
         mommy.make(UserCounty, user=user_2, county=county)
         mommy.make(UserCounty, user=user_3, county=county)
         mommy.make(UserCounty, user=user_4, county=county_2)
+        mommy.make(
+            UserConstituency, user=user_5, created_by=user,
+            updated_by=user, constituency=const)
+        mommy.make(
+            UserConstituency, user=user_6, created_by=user_4,
+            updated_by=user_4, constituency=const_2)
 
         self.client.force_authenticate(user)
         url = reverse("api:users:mfl_users_list")
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(3, len(response.data.get("results")))
+        self.assertEquals(4, len(response.data.get("results")))
 
     def test_national_user_sees_all_users(self):
         from common.models import UserCounty, County
