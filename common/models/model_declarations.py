@@ -294,5 +294,8 @@ class PhysicalAddress(AbstractBase):
         help_text="This field allows a more detailed description of "
         "the location")
 
+    def __unicode__(self):
+        return self.town.name
+
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'physical addresses'

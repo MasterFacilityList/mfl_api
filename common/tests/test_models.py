@@ -287,7 +287,7 @@ class TestPhysicalAddress(BaseTestCase):
         data = self.inject_audit_fields(data)
         phy = PhysicalAddress.objects.create(**data)
         self.assertEquals(1, PhysicalAddress.objects.count())
-        self.assertEquals("00200: 356", phy.__unicode__())
+        self.assertEquals("Nairobi", phy.__unicode__())
 
 
 class TestUserCountyModel(BaseTestCase):
