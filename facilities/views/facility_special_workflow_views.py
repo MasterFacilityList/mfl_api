@@ -14,6 +14,7 @@ from weasyprint import HTML
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
+from chul.models import CommunityHealthUnit
 
 from ..models import (
     FacilityApproval,
@@ -24,7 +25,10 @@ from ..models import (
     RegulationStatus,
     RegulatoryBodyUser,
     FacilityOperationState,
-    FacilityUpdates
+    FacilityUpdates,
+    FacilityService,
+    FacilityContact,
+    FacilityOfficer
 )
 
 from ..serializers import (
@@ -196,12 +200,29 @@ class FacilityCoverTemplate(DownloadPDFMixin, APIView):
     @never_cache
     def get_cover_report(self, facility_id):
         facility = Facility.objects.get(pk=facility_id)
-        template = loader.get_template('cover_report.txt')
+        template = loader.get_template('cover_report.html')
         report_date = timezone.now().isoformat()
+        services = FacilityService.objects.filter(facility=facility)
+        contacts = FacilityContact.objects.filter(facility=facility)
+        officers = FacilityOfficer.objects.filter(facility=facility)
+        chus = CommunityHealthUnit.objects.filter(facility=facility)
+        try:
+            facility_coordinates = facility.facility_coordinates_through
+        except:
+            facility_coordinates = None
         context = Context(
             {
                 "report_date": report_date,
-                "facility": facility
+                "facility": facility,
+                "services": services,
+                "contacts": contacts,
+                "officers": officers,
+                "chus": chus,
+                "longitude": facility_coordinates.simplify_coordinates.get(
+                    'coordinates')[0] if facility_coordinates else None,
+                "latitude": facility_coordinates.simplify_coordinates.get(
+                    'coordinates')[1] if facility_coordinates else None,
+                "facility_coordinates": facility_coordinates
             }
         )
         file_name = '{}_cover_report'.format(facility.name)

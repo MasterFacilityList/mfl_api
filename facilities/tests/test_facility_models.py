@@ -2,6 +2,7 @@ from __future__ import division
 import json
 
 from django.contrib.auth import get_user_model
+
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from model_mommy import mommy
@@ -656,6 +657,13 @@ class TestFacilityUnitModel(BaseTestCase):
             FacilityUnitRegulation,
             facility_unit=facility_unit, regulation_status=reg_status)
         self.assertEquals(reg_status, obj.regulation_status)
+
+    def test_unique_name(self):
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityUnit, name='honcho', facility=facility)
+        with self.assertRaises(ValidationError):
+            mommy.make(FacilityUnit, name='honcho', facility=facility_2)
 
 
 class TestRegulationStatusModel(BaseTestCase):

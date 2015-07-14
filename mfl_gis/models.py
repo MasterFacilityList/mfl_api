@@ -5,6 +5,7 @@ import json
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models import Union
 from django.contrib.gis.geos import MultiPolygon
+from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -102,7 +103,7 @@ class FacilityCoordinates(GISAbstractBase):
         GeoCodeMethod,
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
-    collection_date = gis_models.DateTimeField(auto_now_add=True)
+    collection_date = gis_models.DateTimeField(default=timezone.now)
 
     def validate_longitude_and_latitude_within_kenya(self):
         try:
