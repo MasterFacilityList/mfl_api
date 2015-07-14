@@ -589,7 +589,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertTemplateUsed(response, 'cover_report.txt')
+        self.assertTemplateUsed(response, 'cover_report.html')
 
     def test_correction_templates(self):
         ward = mommy.make(Ward)

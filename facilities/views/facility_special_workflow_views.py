@@ -206,8 +206,10 @@ class FacilityCoverTemplate(DownloadPDFMixin, APIView):
         contacts = FacilityContact.objects.filter(facility=facility)
         officers = FacilityOfficer.objects.filter(facility=facility)
         chus = CommunityHealthUnit.objects.filter(facility=facility)
-
-        facility_coordinates = facility.facility_coordinates_through
+        try:
+            facility_coordinates = facility.facility_coordinates_through
+        except:
+            facility_coordinates = None
         context = Context(
             {
                 "report_date": report_date,
@@ -217,9 +219,9 @@ class FacilityCoverTemplate(DownloadPDFMixin, APIView):
                 "officers": officers,
                 "chus": chus,
                 "longitude": facility_coordinates.simplify_coordinates.get(
-                    'coordinates')[0],
+                    'coordinates')[0] if facility_coordinates else None,
                 "latitude": facility_coordinates.simplify_coordinates.get(
-                    'coordinates')[1],
+                    'coordinates')[1] if facility_coordinates else None,
                 "facility_coordinates": facility_coordinates
             }
         )
