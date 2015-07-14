@@ -2,10 +2,9 @@ from __future__ import division
 import json
 
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.exceptions import ValidationError as DjangoValidationError
 
-from rest_framework.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
@@ -605,10 +604,15 @@ class TestRegulationStatus(BaseTestCase):
         }
         data = self.inject_audit_fields(data)
         regulation_status = RegulationStatus.objects.create(**data)
-        self.assertEquals(1, RegulationStatus.objects.count())
+        self.assertEquals(2, RegulationStatus.objects.count())
 
         # test unicode
         self.assertEquals("OPERATIONAL", regulation_status.__unicode__())
+
+    def test_only_one_default_regulation_status(self):
+        # the is already a default regulation status from the base class
+        with self.assertRaises(ValidationError):
+            mommy.make(RegulationStatus, is_default=True)
 
 
 class TestFacilityRegulationStatus(BaseTestCase):
@@ -658,7 +662,7 @@ class TestFacilityUnitModel(BaseTestCase):
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         mommy.make(FacilityUnit, name='honcho', facility=facility)
-        with self.assertRaises(DjangoValidationError):
+        with self.assertRaises(ValidationError):
             mommy.make(FacilityUnit, name='honcho', facility=facility_2)
 
 
@@ -666,7 +670,7 @@ class TestRegulationStatusModel(BaseTestCase):
 
     def test_save(self):
         mommy.make(RegulationStatus)
-        self.assertEquals(1, RegulationStatus.objects.count())
+        self.assertEquals(2, RegulationStatus.objects.count())
 
     def test_validate_only_one_initial_state(self):
         mommy.make(

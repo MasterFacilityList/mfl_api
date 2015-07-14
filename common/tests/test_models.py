@@ -21,6 +21,7 @@ from ..models import (
     UserContact,
     UserConstituency
 )
+from facilities.models import RegulationStatus
 
 
 class AbstractBaseModelTest(TestCase):
@@ -110,6 +111,9 @@ class BaseTestCase(TestCase):
             password='mtihani',
             is_national=True
         )
+        mommy.make(
+            RegulationStatus, name="Pending Regulation", is_default=True)
+
         super(BaseTestCase, self).setUp()
 
     def inject_audit_fields(self, data):
