@@ -527,6 +527,7 @@ class Facility(SequenceMixin, AbstractBase):
         RegulatingBody, null=True, blank=True)
     regulated = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
 
     @property
     def boundaries(self):
@@ -866,9 +867,15 @@ class FacilityApproval(AbstractBase):
     is_cancelled = models.BooleanField(
         default=False, help_text='Cancel a facility approval')
 
+    def update_facility_rejection(self):
+        if self.is_cancelled:
+            self.facility.rejected = True
+            self.facility.save(allow_save=True)
+
     def clean(self, *args, **kwargs):
         self.facility.approved = True
         self.facility.save(allow_save=True)
+        self.update_facility_rejection()
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.created_by)

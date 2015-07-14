@@ -1094,3 +1094,21 @@ class TestFacilityConsituencyUserFilter(APITestCase):
             load_dump(expected_data['results'], default=default),
             load_dump(response.data['results'], default=default)
         )
+
+
+class TestFilterRejectedFacilities(LoginMixin, APITestCase):
+    def test_filter_rejected_facilities(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityApproval, is_cancelled=True, facility=facility_2)
+        url = reverse("api:facilities:facilities_list")
+        url = url + "?rejected=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get("count"))
+        expected_data = [FacilitySerializer(facility_2).data]
+        self.assertEquals(
+            load_dump(expected_data, default=default),
+            load_dump(response.data['results'], default=default)
+        )

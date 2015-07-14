@@ -349,6 +349,15 @@ class FacilityFilter(CommonFieldsFilterset):
         action=service_filter)
     has_edits = django_filters.MethodFilter(
         action=facilities_updates_pending_approval)
+    rejected = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    regulated = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    approved = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
 
     class Meta(object):
         model = Facility
