@@ -565,6 +565,16 @@ class TestFacility(BaseTestCase):
         with self.assertRaises(ObjectDoesNotExist):
             facility.boundaries
 
+    def test_facility_publishing(self):
+        facility = mommy.make(Facility, is_published=False)
+        mommy.make(FacilityApproval, facility=facility)
+        facility.is_published = True
+        facility.save()
+        facility_retched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_retched.is_published)
+        self.assertEquals(
+            0, FacilityUpdates.objects.filter(facility=facility).count())
+
 
 class TestFacilityContact(BaseTestCase):
 
