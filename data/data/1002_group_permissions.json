@@ -268,6 +268,9 @@
             },
             {
                 "codename": "view_facilitycoordinates"
+            },
+            {
+                "codename": "county_group_marker"
             }
         ]
     },
@@ -937,9 +940,6 @@
             },
             {
                 "codename": "change_mfluser"
-            },
-            {
-                "codename": "county_group_marker"
             },
             {
                 "codename": "delete_mfluser"
