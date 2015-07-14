@@ -2,9 +2,8 @@ from __future__ import division
 import json
 
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
-from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
@@ -608,6 +607,11 @@ class TestRegulationStatus(BaseTestCase):
 
         # test unicode
         self.assertEquals("OPERATIONAL", regulation_status.__unicode__())
+
+    def test_only_one_default_regulation_status(self):
+        mommy.make(RegulationStatus, is_default=True)
+        with self.assertRaises(ValidationError):
+            mommy.make(RegulationStatus, is_default=True)
 
 
 class TestFacilityRegulationStatus(BaseTestCase):

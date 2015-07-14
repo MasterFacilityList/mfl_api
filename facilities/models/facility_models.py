@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core import validators
 from django.db import models
 
-from rest_framework.exceptions import ValidationError
+from django.core.exceptions import ValidationError
 from common.models import (
     AbstractBase,
     Ward,
@@ -351,6 +351,9 @@ class RegulationStatus(AbstractBase):
         default=False,
         help_text='Indicates whether it is the last state'
         ' in the regulation work-flow')
+    is_default = models.BooleanField(
+        default=False,
+        help_text='The default regulation status for facilties')
 
     @property
     def previous_state_name(self):
@@ -377,9 +380,17 @@ class RegulationStatus(AbstractBase):
         if initial_state.count() > 0 and self.is_initial_state:
             raise ValidationError("Only one Initial state is allowed.")
 
+    def validate_only_one_default_status(self):
+        default_states_count = self.__class__.objects.filter(
+            is_default=True).count()
+        if default_states_count >= 1:
+            raise ValidationError(
+                "Only one default regulation status is allowed")
+
     def clean(self, *args, **kwargs):
         self.validate_only_one_final_state()
         self.validate_only_one_initial_state()
+        self.validate_only_one_default_status()
         super(RegulationStatus, self).clean(*args, **kwargs)
 
     def __unicode__(self):
