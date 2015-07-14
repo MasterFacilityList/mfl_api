@@ -774,7 +774,11 @@ class TestFacilityUnitRegulation(BaseTestCase):
 
 class TestFacilityUpdates(BaseTestCase):
     def test_saving(self):
-        mommy.make(FacilityUpdates)
+        facility = mommy.make(Facility)
+        mommy.make(
+            FacilityUpdates,
+            facility=facility,
+            facility_updates=json.dumps({"name": "new name"}))
         self.assertEquals(1, FacilityUpdates.objects.count())
 
     def test_facility_updates(self):
@@ -831,6 +835,38 @@ class TestFacilityUpdates(BaseTestCase):
             facility_updates=json.dumps(update))
         self.assertIsInstance(
             facility_update.facility_updated_json(), dict)
+
+    def test_update_facility_has_edits(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        self.assertFalse(facility.has_edits)
+
+        facility.name = 'Facility name has been editted'
+        facility.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.has_edits)
+
+        facility_updates = FacilityUpdates.objects.all()[0]
+        facility_updates.approved = True
+        facility_updates.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertFalse(facility_refetched.has_edits)
+
+    def test_update_facility_has_edits_cancel_scenario(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        self.assertFalse(facility.has_edits)
+
+        facility.name = 'Facility name has been editted'
+        facility.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.has_edits)
+
+        facility_updates = FacilityUpdates.objects.all()[0]
+        facility_updates.cancelled = True
+        facility_updates.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertFalse(facility_refetched.has_edits)
 
 
 class TestFacilityUpgrade(BaseTestCase):

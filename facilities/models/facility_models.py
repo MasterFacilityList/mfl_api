@@ -539,6 +539,7 @@ class Facility(SequenceMixin, AbstractBase):
     regulated = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
+    has_edits = models.BooleanField(default=False)
 
     @property
     def boundaries(self):
@@ -552,10 +553,6 @@ class Facility(SequenceMixin, AbstractBase):
                 area=self.ward.constituency).id),
             "ward_boundary": str(WardBoundary.objects.get(area=self.ward).id)
         }
-
-    @property
-    def has_edits(self):
-        return True if self.latest_update else False
 
     @property
     def latest_update(self):
@@ -784,6 +781,20 @@ class FacilityUpdates(AbstractBase):
     def facility_updated_json(self):
         return json.loads(self.facility_updates)
 
+    def update_facility_has_edits(self):
+        if not self.approved and not self.cancelled:
+            self.facility.has_edits = True
+        else:
+            self.facility.has_edits = False
+        old_facility = Facility.objects.get(id=self.facility.id)
+        data = json.loads(self.facility_updates)
+        for key, value in data.items():
+            old_value = getattr(old_facility, key)
+            setattr(self.facility, key, old_value)
+        self.facility.save(allow_save=True)
+
+        self.facility.save(allow_save=True)
+
     def update_facility(self):
         data = json.loads(self.facility_updates)
         for key, value in data.items():
@@ -811,6 +822,7 @@ class FacilityUpdates(AbstractBase):
     def clean(self, *args, **kwargs):
         self.validate_only_one_update_at_a_time()
         self.validate_either_of_approve_or_cancel()
+        self.update_facility_has_edits()
         super(FacilityUpdates, self).clean()
 
     def save(self, *args, **kwargs):

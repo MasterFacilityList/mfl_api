@@ -440,8 +440,8 @@ class TestFacilityView(LoginMixin, APITestCase):
         self.assertEquals(facility.name, facility_retched.name)
 
     def test_get_facilities_with_unacked_updates(self):
-        true_url = self.url + "?has_edits=True"
-        false_url = self.url + "?has_edits=False"
+        true_url = self.url + "?has_edits=true"
+        false_url = self.url + "?has_edits=false"
         facility_a = mommy.make(
             Facility, id='67105b48-0cc0-4de2-8266-e45545f1542f')
         mommy.make(FacilityApproval, facility=facility_a)
