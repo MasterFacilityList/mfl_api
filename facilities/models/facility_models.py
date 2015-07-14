@@ -745,6 +745,9 @@ class Facility(SequenceMixin, AbstractBase):
         if not self.is_approved:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
+        elif self.is_approved and self.is_published:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
         else:
             origi_model = self.__class__.objects.get(id=self.id)
             allow_save = kwargs.pop('allow_save', None)
