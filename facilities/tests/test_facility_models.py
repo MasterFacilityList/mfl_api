@@ -441,6 +441,12 @@ class TestFacility(BaseTestCase):
             facility_approval.comment,
             'It meets all the registration requirements')
 
+    def test_facility_rejection(self):
+        facility = mommy.make(Facility)
+        mommy.make(
+            FacilityApproval, facility=facility, is_cancelled=True)
+        self.assertTrue(facility.rejected)
+
     def test_county(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
