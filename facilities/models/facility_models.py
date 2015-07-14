@@ -905,7 +905,7 @@ class FacilityUnit(AbstractBase):
     The pharmacy will in this case be treated as a facility unit.
     """
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
     regulating_body = models.ForeignKey(
