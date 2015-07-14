@@ -603,13 +603,13 @@ class TestRegulationStatus(BaseTestCase):
         }
         data = self.inject_audit_fields(data)
         regulation_status = RegulationStatus.objects.create(**data)
-        self.assertEquals(1, RegulationStatus.objects.count())
+        self.assertEquals(2, RegulationStatus.objects.count())
 
         # test unicode
         self.assertEquals("OPERATIONAL", regulation_status.__unicode__())
 
     def test_only_one_default_regulation_status(self):
-        mommy.make(RegulationStatus, is_default=True)
+        # the is already a default regulation status from the base class
         with self.assertRaises(ValidationError):
             mommy.make(RegulationStatus, is_default=True)
 
@@ -662,7 +662,7 @@ class TestRegulationStatusModel(BaseTestCase):
 
     def test_save(self):
         mommy.make(RegulationStatus)
-        self.assertEquals(1, RegulationStatus.objects.count())
+        self.assertEquals(2, RegulationStatus.objects.count())
 
     def test_validate_only_one_initial_state(self):
         mommy.make(

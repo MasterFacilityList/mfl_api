@@ -383,7 +383,7 @@ class RegulationStatus(AbstractBase):
     def validate_only_one_default_status(self):
         default_states_count = self.__class__.objects.filter(
             is_default=True).count()
-        if default_states_count >= 1:
+        if self.is_default and default_states_count >= 1:
             raise ValidationError(
                 "Only one default regulation status is allowed")
 
@@ -600,11 +600,12 @@ class Facility(SequenceMixin, AbstractBase):
             # returns in reverse chronological order so just pick the first one
             return self.regulatory_details.filter(is_confirmed=True)[0]
         except IndexError:
-            return []
+            return RegulationStatus.objects.get(is_default=True)
 
     @property
     def is_regulated(self):
-        if self.current_regulatory_status:
+        default_reg_status = RegulationStatus.objects.get(is_default=True)
+        if self.current_regulatory_status != default_reg_status:
             return True
         else:
             return False
