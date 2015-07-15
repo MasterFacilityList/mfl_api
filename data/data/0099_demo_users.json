@@ -140,7 +140,7 @@
                 "username": "john_kmpdb",
                 "password": "pbkdf2_sha256$20000$1Zs23hUqQrrh$jwbsGsXVae7CeLl48gznZSWfBikfdC/yjRpAgWi67cM=",
                 "is_staff": false,
-                "is_national": false,
+                "is_national": true,
                 "is_superuser": false
             },
             {
@@ -150,7 +150,7 @@
                 "username": "susan_coc",
                 "password": "pbkdf2_sha256$20000$hvTeWeTQYczq$nnr95upMhmtmM32KHuNBN4oL5/NcFxlPpBr5WBNmvO0=",
                 "is_staff": false,
-                "is_national": false,
+                "is_national": true,
                 "is_superuser": false
             },
             {
@@ -160,7 +160,7 @@
                 "username": "doe_ncck",
                 "password": "pbkdf2_sha256$20000$E63bjPa2nv6U$+E7ncXyGoZjvCUlRVXoqxwcPbd8bdzwBWkeeiiyYs/o=",
                 "is_staff": false,
-                "is_national": false,
+                "is_national": true,
                 "is_superuser": false
             }
         ]
