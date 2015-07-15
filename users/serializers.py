@@ -139,7 +139,7 @@ class MflUserSerializer(serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
-        new_user = MflUser.objects.create(**validated_data)
+        new_user = MflUser.objects.create_user(**validated_data)
         new_user.save()
         new_user.groups.add(*groups)
 

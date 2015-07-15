@@ -737,25 +737,47 @@ class Facility(SequenceMixin, AbstractBase):
         The updates will appear on the facilty once the updates have been
         approved.
         """
+        from facilities.serializers import FacilityDetailSerializer
         if not self.code:
             self.code = self.generate_next_code_sequence()
         if not self.is_approved:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
-        elif self.is_approved and self.is_published:
+            return
+
+        # Allow publishing facilities without requiring approvals
+        old_details = self.__class__.objects.get(id=self.id)
+        if not old_details.is_published and self.is_published:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
+            return
+        old_details_serialized = FacilityDetailSerializer(old_details).data
+        del old_details_serialized['updated']
+        del old_details_serialized['created']
+        del old_details_serialized['updated_by']
+        new_details_serialized = FacilityDetailSerializer(self).data
+        del new_details_serialized['updated']
+        del new_details_serialized['created']
+        del new_details_serialized['updated_by']
+
+        origi_model = self.__class__.objects.get(id=self.id)
+        allow_save = kwargs.pop('allow_save', None)
+        if allow_save:
+            super(Facility, self).save(*args, **kwargs)
         else:
-            origi_model = self.__class__.objects.get(id=self.id)
-            allow_save = kwargs.pop('allow_save', None)
-            if allow_save:
-                super(Facility, self).save(*args, **kwargs)
-            else:
-                updates = self._dump_updates(origi_model)
-                FacilityUpdates.objects.create(
-                    facility_updates=updates, facility=self,
-                    created_by=self.updated_by, updated_by=self.updated_by
-                )
+            updates = self._dump_updates(origi_model)
+            try:
+                updates.pop('updated_by')
+            except:
+                pass
+            try:
+                updates.pop('updated_by_id')
+            except:
+                pass
+            FacilityUpdates.objects.create(
+                facility_updates=updates, facility=self,
+                created_by=self.updated_by, updated_by=self.updated_by
+            ) if new_details_serialized != old_details_serialized else None
 
     def __unicode__(self):
         return self.name
