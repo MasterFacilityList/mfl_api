@@ -754,8 +754,16 @@ class Facility(SequenceMixin, AbstractBase):
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             return
-        if (FacilityDetailSerializer(old_details).data !=
-                FacilityDetailSerializer(self).data):
+        old_details_serialized = FacilityDetailSerializer(old_details).data
+        del old_details_serialized['updated']
+        del old_details_serialized['created']
+        del old_details_serialized['updated_by']
+        new_details_serialized = FacilityDetailSerializer(self).data
+        del new_details_serialized['updated']
+        del new_details_serialized['created']
+        del new_details_serialized['updated_by']
+
+        if new_details_serialized != old_details_serialized:
 
             origi_model = self.__class__.objects.get(id=self.id)
             allow_save = kwargs.pop('allow_save', None)
