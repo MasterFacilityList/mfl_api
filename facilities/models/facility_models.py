@@ -763,29 +763,24 @@ class Facility(SequenceMixin, AbstractBase):
         del new_details_serialized['created']
         del new_details_serialized['updated_by']
 
-        if new_details_serialized != old_details_serialized:
-
-            origi_model = self.__class__.objects.get(id=self.id)
-            allow_save = kwargs.pop('allow_save', None)
-            if allow_save:
-                super(Facility, self).save(*args, **kwargs)
-            else:
-                updates = self._dump_updates(origi_model)
-                try:
-                    updates.pop('updated_by')
-                except:
-                    pass
-                try:
-                    updates.pop('updated_by_id')
-                except:
-                    pass
-                FacilityUpdates.objects.create(
-                    facility_updates=updates, facility=self,
-                    created_by=self.updated_by, updated_by=self.updated_by
-                )
-        else:
-            kwargs.pop('allow_save', None)
+        origi_model = self.__class__.objects.get(id=self.id)
+        allow_save = kwargs.pop('allow_save', None)
+        if allow_save:
             super(Facility, self).save(*args, **kwargs)
+        else:
+            updates = self._dump_updates(origi_model)
+            try:
+                updates.pop('updated_by')
+            except:
+                pass
+            try:
+                updates.pop('updated_by_id')
+            except:
+                pass
+            FacilityUpdates.objects.create(
+                facility_updates=updates, facility=self,
+                created_by=self.updated_by, updated_by=self.updated_by
+            ) if new_details_serialized != old_details_serialized else None
 
     def __unicode__(self):
         return self.name

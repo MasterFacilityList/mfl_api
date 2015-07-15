@@ -575,7 +575,7 @@ class TestFacility(BaseTestCase):
         self.assertEquals(
             0, FacilityUpdates.objects.filter(facility=facility).count())
 
-    def save_facility_twice():
+    def test_save_facility_twice(self):
         facility = mommy.make(Facility, name="name")
         facility.name = "name"
         facility.save()
