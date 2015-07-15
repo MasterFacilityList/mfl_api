@@ -235,7 +235,7 @@ class FacilityDetailView(
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
-        request.data['updated_by'] = request.user.id
+        request.data['updated_by_id'] = str(request.user.id)
         instance = self.get_object()
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)
