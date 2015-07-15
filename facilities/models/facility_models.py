@@ -443,6 +443,11 @@ class FacilityRegulationStatus(AbstractBase):
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility regulation statuses'
 
+    def save(self, *args, **kwargs):
+        self.regulating_body = self.created_by.regulator if not \
+            self.regulating_body else self.regulating_body
+        super(FacilityRegulationStatus, self).save(*args, **kwargs)
+
 
 @reversion.register
 class FacilityContact(AbstractBase):

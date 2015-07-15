@@ -400,11 +400,15 @@ class TestFacility(BaseTestCase):
             "owner": owner,
             "physical_address": address
         }
+        user = mommy.make(get_user_model())
+        regulator = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         data = self.inject_audit_fields(data)
         facility = Facility.objects.create(**data)
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility,
-            regulating_body=regulating_body, is_confirmed=True)
+            regulating_body=regulating_body, is_confirmed=True,
+            created_by=user)
         self.assertEquals(1, Facility.objects.count())
 
         # Bloody branch misses
@@ -469,8 +473,12 @@ class TestFacility(BaseTestCase):
 
     def test_regulatory_status_name(self):
         facility = mommy.make(Facility)
+        user = mommy.make(get_user_model())
+        regulator = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility_reg_status = mommy.make(
-            FacilityRegulationStatus, facility=facility, is_confirmed=True)
+            FacilityRegulationStatus, facility=facility, is_confirmed=True,
+            created_by=user)
         self.assertEquals(
             facility.regulatory_status_name,
             facility_reg_status.regulation_status.name)
@@ -493,15 +501,23 @@ class TestFacility(BaseTestCase):
         self.assertEquals(facility.facility_type_name, facility_type.name)
 
     def test_is_regulated_is_true(self):
+        user = mommy.make(get_user_model())
+        regulator = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility = mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, is_confirmed=True, facility=facility)
+            FacilityRegulationStatus, is_confirmed=True, facility=facility,
+            created_by=user)
         self.assertTrue(facility.is_regulated)
 
     def test_is_regulated_is_false(self):
+        user = mommy.make(get_user_model())
+        regulator = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility = mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, is_confirmed=False, facility=facility)
+            FacilityRegulationStatus, is_confirmed=False,
+            facility=facility, created_by=user)
         self.assertFalse(facility.is_regulated)
 
     def test_publishing(self):
@@ -633,6 +649,28 @@ class TestRegulationStatus(BaseTestCase):
 class TestFacilityRegulationStatus(BaseTestCase):
 
     def test_save(self):
+        user = mommy.make(get_user_model())
+        regulator = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
+        facility = mommy.make(Facility, name="Nairobi Hospital")
+        status = mommy.make(RegulationStatus, name="SUSPENDED")
+        regulator = mommy.make(RegulatingBody, name='KMPDB')
+        data = {
+            "facility": facility,
+            "regulation_status": status,
+            "reason": "Reports of misconduct by the doctor",
+            "regulating_body": regulator,
+            "created_by": user
+        }
+        data = self.inject_audit_fields(data)
+        facility_reg_status = FacilityRegulationStatus.objects.create(**data)
+        self.assertEquals(1, FacilityRegulationStatus.objects.count())
+
+        #  test unicode
+        expected = "Nairobi Hospital: SUSPENDED"
+        self.assertEquals(expected, facility_reg_status.__unicode__())
+
+    def test_save_regulatory_by_not_provided(self):
         facility = mommy.make(Facility, name="Nairobi Hospital")
         status = mommy.make(RegulationStatus, name="SUSPENDED")
         regulator = mommy.make(RegulatingBody, name='KMPDB')
@@ -643,12 +681,8 @@ class TestFacilityRegulationStatus(BaseTestCase):
             "regulating_body": regulator
         }
         data = self.inject_audit_fields(data)
-        facility_reg_status = FacilityRegulationStatus.objects.create(**data)
+        FacilityRegulationStatus.objects.create(**data)
         self.assertEquals(1, FacilityRegulationStatus.objects.count())
-
-        #  test unicode
-        expected = "Nairobi Hospital: SUSPENDED"
-        self.assertEquals(expected, facility_reg_status.__unicode__())
 
 
 class TestFacilityUnitModel(BaseTestCase):
@@ -815,8 +849,12 @@ class TestFacilityUpdates(BaseTestCase):
 
     def test_updating_forbidden_fields(self):
         operation_status = mommy.make(FacilityStatus)
+        user = mommy.make(get_user_model())
+        regulator = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility_type = mommy.make(FacilityType)
-        regulation_status = mommy.make(FacilityRegulationStatus)
+        regulation_status = mommy.make(
+            FacilityRegulationStatus, created_by=user)
         facility = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility)
         facility.operation_status = operation_status
