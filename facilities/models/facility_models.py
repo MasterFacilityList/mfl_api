@@ -752,6 +752,14 @@ class Facility(SequenceMixin, AbstractBase):
                 super(Facility, self).save(*args, **kwargs)
             else:
                 updates = self._dump_updates(origi_model)
+                try:
+                    updates.pop('updated_by')
+                except:
+                    pass
+                try:
+                    updates.pop('updated_by_id')
+                except:
+                    pass
                 FacilityUpdates.objects.create(
                     facility_updates=updates, facility=self,
                     created_by=self.updated_by, updated_by=self.updated_by
