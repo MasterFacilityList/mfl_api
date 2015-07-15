@@ -444,8 +444,8 @@ class FacilityRegulationStatus(AbstractBase):
         verbose_name_plural = 'facility regulation statuses'
 
     def save(self, *args, **kwargs):
-        if not self.regulating_body:
-            self.regulating_body = self.created_by.regulator
+        self.regulating_body = self.created_by.regulator if not \
+            self.regulating_body else self.regulating_body
         super(FacilityRegulationStatus, self).save(*args, **kwargs)
 
 

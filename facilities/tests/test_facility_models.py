@@ -670,6 +670,20 @@ class TestFacilityRegulationStatus(BaseTestCase):
         expected = "Nairobi Hospital: SUSPENDED"
         self.assertEquals(expected, facility_reg_status.__unicode__())
 
+    def test_save_regulatory_by_not_provided(self):
+        facility = mommy.make(Facility, name="Nairobi Hospital")
+        status = mommy.make(RegulationStatus, name="SUSPENDED")
+        regulator = mommy.make(RegulatingBody, name='KMPDB')
+        data = {
+            "facility": facility,
+            "regulation_status": status,
+            "reason": "Reports of misconduct by the doctor",
+            "regulating_body": regulator
+        }
+        data = self.inject_audit_fields(data)
+        FacilityRegulationStatus.objects.create(**data)
+        self.assertEquals(1, FacilityRegulationStatus.objects.count())
+
 
 class TestFacilityUnitModel(BaseTestCase):
 
