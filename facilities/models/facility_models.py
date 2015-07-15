@@ -740,12 +740,23 @@ class Facility(SequenceMixin, AbstractBase):
         The updates will appear on the facilty once the updates have been
         approved.
         """
+        from facilities.serializers import FacilityDetailSerializer
         if not self.code:
             self.code = self.generate_next_code_sequence()
         if not self.is_approved:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
-        else:
+            return
+
+        # Allow publishing facilities without requiring approvals
+        old_details = self.__class__.objects.get(id=self.id)
+        if not old_details.is_published and self.is_published:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
+            return
+        if (FacilityDetailSerializer(old_details).data !=
+                FacilityDetailSerializer(self).data):
+
             origi_model = self.__class__.objects.get(id=self.id)
             allow_save = kwargs.pop('allow_save', None)
             if allow_save:
@@ -764,6 +775,9 @@ class Facility(SequenceMixin, AbstractBase):
                     facility_updates=updates, facility=self,
                     created_by=self.updated_by, updated_by=self.updated_by
                 )
+        else:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
