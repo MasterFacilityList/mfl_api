@@ -55,6 +55,24 @@ from ..models import (
     FacilityUpdates
 )
 
+from django.contrib.auth.models import Group, Permission
+
+
+class TestGroupAndPermissions(object):
+    def setUp(self):
+        super(TestGroupAndPermissions, self).setUp()
+        self.view_unpublished_perm = Permission.objects.get(
+            codename="view_unpublished_facilities")
+        self.view_approved_perm = Permission.objects.get(
+            codename="view_unapproved_facilities")
+        self.view_classified_perm = Permission.objects.get(
+            codename="view_classified_facilities")
+        self.public_group = mommy.make(Group, name="public")
+        self.admin_group = mommy.make(Group, name="mfl admins")
+        self.admin_group.permissions.add(self.view_unpublished_perm.id)
+        self.admin_group.permissions.add(self.view_approved_perm.id)
+        self.admin_group.permissions.add(self.view_classified_perm.id)
+
 
 def load_dump(x, *args, **kwargs):
     return json.loads(json.dumps(x, *args, **kwargs))
@@ -154,7 +172,7 @@ class TestOwnersView(LoginMixin, APITestCase):
         )
 
 
-class TestFacilityView(LoginMixin, APITestCase):
+class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
 
     def setUp(self):
         super(TestFacilityView, self).setUp()
@@ -410,6 +428,7 @@ class TestFacilityView(LoginMixin, APITestCase):
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
         self.assertIsNotNone(user.regulator)
         self.client.force_authenticate(user)
+        user.groups.add(self.admin_group)
 
         facility = mommy.make(Facility, regulatory_body=reg_body)
         mommy.make(Facility)
@@ -892,12 +911,13 @@ class TestRegulatoryBodyUserView(LoginMixin, APITestCase):
         self.assertEquals(1, RegulatingBody.objects.count())
 
 
-class TestFacilityRegulator(APITestCase):
+class TestFacilityRegulator(TestGroupAndPermissions, APITestCase):
 
     def test_filtering_facilities_by_regulator(self):
         url = reverse("api:facilities:facilities_list")
         reg_body = mommy.make(RegulatingBody)
         user = mommy.make(get_user_model(), password='test')
+        user.groups.add(self.admin_group)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
         facility = mommy.make(Facility, regulatory_body=reg_body)
         self.client.force_authenticate(user)
@@ -1067,7 +1087,7 @@ class TestServicesWithOptionsList(LoginMixin, APITestCase):
         )
 
 
-class TestFacilityConsituencyUserFilter(APITestCase):
+class TestFacilityConsituencyUserFilter(TestGroupAndPermissions, APITestCase):
 
     def test_filter_by_constituency(self):
         user = mommy.make(get_user_model())
@@ -1083,6 +1103,7 @@ class TestFacilityConsituencyUserFilter(APITestCase):
             created_by=user_2, updated_by=user_2)
         url = reverse("api:facilities:facilities_list")
         self.client.force_authenticate(user)
+        user.groups.add(self.admin_group)
         expected_data = {
             "results": [
                 FacilitySerializer(facility).data
