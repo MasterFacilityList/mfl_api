@@ -50,8 +50,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
-                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -105,10 +105,9 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('postal_code', models.CharField(help_text=b'The 5 digit number for the post office address. e.g 00900', max_length=100, null=True, blank=True)),
-                ('address', models.TextField(help_text=b'This is the actual post office number of the entitye.g 6790', null=True, blank=True)),
                 ('nearest_landmark', models.TextField(help_text=b'well-known physical features /structure that can be used to simplify directions to a given place. e.g town market or village ', null=True, blank=True)),
                 ('plot_number', models.CharField(help_text=b'This is the same number found on the title deeds of thepiece of land on which this facility is located', max_length=100, null=True, blank=True)),
+                ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of the location', null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -153,7 +152,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': 'user constituencies',
-                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -220,6 +218,11 @@ class Migration(migrations.Migration):
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.AddField(
+            model_name='town',
+            name='ward',
+            field=models.ForeignKey(blank=True, to='common.Ward', help_text=b'The ward where the town is located', null=True),
+        ),
+        migrations.AddField(
             model_name='physicaladdress',
             name='town',
             field=models.ForeignKey(blank=True, to='common.Town', help_text=b'The town where the entity is located e.g Nakuru', null=True),
@@ -258,6 +261,10 @@ class Migration(migrations.Migration):
             model_name='constituency',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AlterUniqueTogether(
+            name='contact',
+            unique_together=set([('contact', 'contact_type')]),
         ),
         migrations.AlterUniqueTogether(
             name='constituency',

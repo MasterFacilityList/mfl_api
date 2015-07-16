@@ -1,43 +1,67 @@
 [
     {
         "mfluser": {
-            "email": "system@ehealth.or.ke"
-        },
-        "groups": []
-    },
-    {
-        "mfluser": {
-            "email": "national_admin@mfltest.slade360.co.ke"
+            "email": "ncck@mfltest.slade360.co.ke"
         },
         "groups": [
             {
-                "name": "National Administrators"
+                "name": "Regulators (makers)"
             }
         ]
     },
     {
         "mfluser": {
-            "email": "public@mfltest.slade360.co.ke"
+            "email": "coc@mfltest.slade360.co.ke"
         },
         "groups": [
             {
-                "name": "Public Users"
+                "name": "Regulators (makers)"
             }
         ]
     },
     {
         "mfluser": {
-            "email": "mombasa@mfltest.slade360.co.ke"
+            "email": "kmpdb@mfltest.slade360.co.ke"
         },
         "groups": [
             {
-                "name": "County Health Records Information Officer"
+                "name": "Regulators (makers)"
             }
         ]
     },
     {
         "mfluser": {
-            "email": "kilifi@mfltest.slade360.co.ke"
+            "email": "kamukunji@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mathare@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "starehe@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tanariver@mfltest.slade360.co.ke"
         },
         "groups": [
             {
@@ -57,93 +81,41 @@
     },
     {
         "mfluser": {
-            "email": "tanariver@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "County Health Records Information Officer"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "starehe@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Sub County Health Records Information Officer"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "kamukunji@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Sub County Health Records Information Officer"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "coc@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Regulators (makers)"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "ncck@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Regulators (makers)"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "mathare@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Sub County Health Records Information Officer"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "nairobi_admin@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "County Administrators"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "q@mail.com"
-        },
-        "groups": []
-    },
-    {
-        "mfluser": {
-            "email": "p@mail.com"
-        },
-        "groups": []
-    },
-    {
-        "mfluser": {
             "email": "nairobi@mfltest.slade360.co.ke"
         },
         "groups": [
             {
                 "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kilifi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mombasa@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "public@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Public Users"
             }
         ]
     },
@@ -159,11 +131,21 @@
     },
     {
         "mfluser": {
-            "email": "kmpdb@mfltest.slade360.co.ke"
+            "email": "nairobi_admin@mfltest.slade360.co.ke"
         },
         "groups": [
             {
-                "name": "Regulators (makers)"
+                "name": "County Administrators"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "national_admin@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "National Administrators"
             }
         ]
     },
@@ -176,5 +158,11 @@
                 "name": "Superusers"
             }
         ]
+    },
+    {
+        "mfluser": {
+            "email": "system@ehealth.or.ke"
+        },
+        "groups": []
     }
 ]

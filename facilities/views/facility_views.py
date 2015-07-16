@@ -60,27 +60,46 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
+
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and self.request.user.county \
                     and hasattr(self.queryset.model, 'ward'):
-                return self.queryset.filter(
+                self.queryset = self.queryset.filter(
                     ward__constituency__county=self.request.user.county)
 
             elif self.request.user.regulator and hasattr(
                     self.queryset.model, 'regulatory_body'):
-                return self.queryset.filter(
+                self.queryset = self.queryset.filter(
                     regulatory_body=self.request.user.regulator)
             elif self.request.user.is_national and not \
                     self.request.user.county:
-                return self.queryset
+                self.queryset = self.queryset
             elif self.request.user.constituency and hasattr(
                     self.queryset.model, 'ward'):
-                return self.queryset.filter(
+                self.queryset = self.queryset.filter(
                     ward__constituency=self.request.user.constituency)
             else:
-                return self.queryset
+                self.queryset = self.queryset
         else:
-            return self.queryset
+            self.queryset = self.queryset
+        if self.request.user.has_perm("facilities.view_unpublished_facilities") is False and \
+                'is_published' in [
+                    field.name for field in
+                    self.queryset.model._meta.get_fields()]:
+
+            self.queryset = self.queryset.filter(is_published=True)
+        if self.request.user.has_perm("facilities.view_unapproved_facilities") \
+            is False and 'approved' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+            self.queryset = self.queryset.filter(approved=True)
+
+        if self.request.user.has_perm("facilities.view_classified_facilities") is False and \
+            'is_classified' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+            self.queryset = self.queryset.filter(is_classified=False)
+        return self.queryset
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
