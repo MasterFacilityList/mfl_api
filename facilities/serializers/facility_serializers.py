@@ -225,6 +225,9 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     is_approved = serializers.ReadOnlyField()
     has_edits = serializers.ReadOnlyField()
     latest_update = serializers.ReadOnlyField()
+    regulatory_body_name = serializers.ReadOnlyField(
+        source="regulatory_body.name"
+    )
 
     class Meta(object):
         model = Facility
@@ -242,7 +245,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
             "parent", "contacts", "is_approved",
-            "has_edits", "latest_update"]
+            "has_edits", "latest_update", "regulatory_body_name"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):

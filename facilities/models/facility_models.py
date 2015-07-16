@@ -540,7 +540,8 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
     regulatory_body = models.ForeignKey(
-        RegulatingBody, null=True, blank=True)
+        RegulatingBody, null=True, blank=True
+    )
     regulated = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
