@@ -174,6 +174,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
                 'A marker permission for county level groups'
             ),
         )
+        ordering = ('-date_joined', )
 
 
 Group.is_county_level = property(
