@@ -60,6 +60,7 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
+
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and self.request.user.county \
                     and hasattr(self.queryset.model, 'ward'):
@@ -81,14 +82,24 @@ class QuerysetFilterMixin(object):
                 self.queryset = self.queryset
         else:
             self.queryset = self.queryset
+        print self.queryset
+        if self.request.user.has_perm("facilities.view_unpublished_facilities") is False and \
+                'is_published' in [
+                    field.name for field in
+                    self.queryset.model._meta.get_fields()]:
 
-        if self.request.user.has_perm("facilities.view_published_facilities") and \
-                hasattr(self.queryset.model, 'is_published'):
             self.queryset = self.queryset.filter(is_published=True)
-        if self.request.user.has_perm("facilities.view_approved_facilities") and \
-                hasattr(self.queryset.model, 'approved'):
+        if self.request.user.has_perm("facilities.view_unapproved_facilities") \
+            is False and 'approved' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(approved=True)
 
+        if self.request.user.has_perm("facilities.view_classified_facilities") is False and \
+            'is_classified' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+            self.queryset = self.queryset.filter(is_classified=False)
         return self.queryset
 
 

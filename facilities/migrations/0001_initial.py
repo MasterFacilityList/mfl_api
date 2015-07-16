@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name_plural': 'facilities',
-                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('publish_facilities', 'Can publish facilities'), ('view_published_facilities', 'Can view the un published facilities'), ('view_approved_facilities', 'Can view the un published facilities')),
+                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('publish_facilities', 'Can publish facilities'), ('view_unpublished_facilities', 'Can see the un published facilities'), ('view_unapproved_facilities', 'Can see the unapproved facilities')),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
