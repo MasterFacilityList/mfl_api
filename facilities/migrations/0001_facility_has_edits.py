@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('facilities', '0015_merge'),
+        ('facilities', 'set_facility_code_sequence_min_value'),
     ]
 
     operations = [
