@@ -14,7 +14,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0001_initial'),
+        ('common', '__first__'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -32,7 +32,6 @@ class Migration(migrations.Migration):
                 ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each facility', unique=True, editable=False, blank=True)),
                 ('abbreviation', models.CharField(help_text=b'A short name for the facility.', max_length=30, null=True, blank=True)),
                 ('description', models.TextField(help_text=b'A brief summary of the Facility', null=True, blank=True)),
-                ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of how tolocate the facility e.g Joy medical clinic is in Jubilee Plaza7th Floor', null=True, blank=True)),
                 ('number_of_beds', models.PositiveIntegerField(default=0, help_text=b'The number of beds that a facility has. e.g 0')),
                 ('number_of_cots', models.PositiveIntegerField(default=0, help_text=b'The number of cots that a facility has e.g 0')),
                 ('open_whole_day', models.BooleanField(default=False, help_text=b'Does the facility operate 24 hours a day')),
@@ -41,14 +40,16 @@ class Migration(migrations.Migration):
                 ('is_classified', models.BooleanField(default=False, help_text=b"Should the facility geo-codes be visible to the public?Certain facilities are kept 'off-the-map'")),
                 ('is_published', models.BooleanField(default=False, help_text=b'COnfirmation by the CHRIO that the facility is okay')),
                 ('attributes', models.TextField(null=True, blank=True)),
-                ('has_edits', models.BooleanField(default=False, help_text=b'Indicates that a facility has updates that have been made')),
+                ('regulated', models.BooleanField(default=False)),
+                ('approved', models.BooleanField(default=False)),
+                ('rejected', models.BooleanField(default=False)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name_plural': 'facilities',
-                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('publish_facilities', 'Can publish facilities')),
+                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('publish_facilities', 'Can publish facilities'), ('view_published_facilities', 'Can view the un published facilities'), ('view_approved_facilities', 'Can view the un published facilities')),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
@@ -62,6 +63,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('comment', models.TextField()),
+                ('is_cancelled', models.BooleanField(default=False, help_text=b'Cancel a facility approval')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(to='facilities.Facility')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -106,8 +108,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
-                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -242,7 +244,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('name', models.CharField(max_length=100)),
+                ('name', models.CharField(unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A short summary of the facility unit.')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(to='facilities.Facility', on_delete=django.db.models.deletion.PROTECT)),
@@ -281,6 +283,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('approved', models.BooleanField(default=False)),
+                ('cancelled', models.BooleanField(default=False)),
                 ('facility_updates', models.TextField()),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='updates', to='facilities.Facility')),
@@ -492,6 +495,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(help_text=b"A short description of the regulation state or state e.gPENDING_LINCENSING could be descriped as 'waiting for the license tobegin operating' ", null=True, blank=True)),
                 ('is_initial_state', models.BooleanField(default=False, help_text=b'Indicates whether it is the very first statein the regulation workflow.')),
                 ('is_final_state', models.BooleanField(default=False, help_text=b'Indicates whether it is the last state in the regulation work-flow')),
+                ('is_default', models.BooleanField(default=False, help_text=b'The default regulation status for facilties')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('next_status', models.ForeignKey(related_name='next_state', blank=True, to='facilities.RegulationStatus', help_text=b'The regulation_status suceedding this regulation status.', null=True)),
                 ('previous_status', models.ForeignKey(related_name='previous_state', blank=True, to='facilities.RegulationStatus', help_text=b'The regulation_status preceding this regulation status.', null=True)),
@@ -579,7 +583,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('option', models.ForeignKey(to='facilities.Option')),
-                ('service', models.ForeignKey(to='facilities.Service')),
+                ('service', models.ForeignKey(related_name='service_options', to='facilities.Service')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -795,5 +799,9 @@ class Migration(migrations.Migration):
         migrations.AlterUniqueTogether(
             name='facilitytype',
             unique_together=set([('name', 'sub_division')]),
+        ),
+        migrations.AlterUniqueTogether(
+            name='facilityofficer',
+            unique_together=set([('facility', 'officer')]),
         ),
     ]

@@ -63,24 +63,33 @@ class QuerysetFilterMixin(object):
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and self.request.user.county \
                     and hasattr(self.queryset.model, 'ward'):
-                return self.queryset.filter(
+                self.queryset = self.queryset.filter(
                     ward__constituency__county=self.request.user.county)
 
             elif self.request.user.regulator and hasattr(
                     self.queryset.model, 'regulatory_body'):
-                return self.queryset.filter(
+                self.queryset = self.queryset.filter(
                     regulatory_body=self.request.user.regulator)
             elif self.request.user.is_national and not \
                     self.request.user.county:
-                return self.queryset
+                self.queryset = self.queryset
             elif self.request.user.constituency and hasattr(
                     self.queryset.model, 'ward'):
-                return self.queryset.filter(
+                self.queryset = self.queryset.filter(
                     ward__constituency=self.request.user.constituency)
             else:
-                return self.queryset
+                self.queryset = self.queryset
         else:
-            return self.queryset
+            self.queryset = self.queryset
+
+        if self.request.user.has_perm("facilities.view_published_facilities") and \
+                hasattr(self.queryset.model, 'is_published'):
+            self.queryset = self.queryset.filter(is_published=True)
+        if self.request.user.has_perm("facilities.view_approved_facilities") and \
+                hasattr(self.queryset.model, 'approved'):
+            self.queryset = self.queryset.filter(approved=True)
+
+        return self.queryset
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):

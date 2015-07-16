@@ -40,7 +40,9 @@ class Migration(migrations.Migration):
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],
             options={
+                'ordering': ('-date_joined',),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
+                'permissions': (('county_group_marker', 'A marker permission for county level groups'),),
             },
         ),
         migrations.CreateModel(
