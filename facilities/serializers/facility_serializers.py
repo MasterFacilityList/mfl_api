@@ -86,6 +86,7 @@ class FacilityOperationStateSerializer(
 
 class FacilityApprovalSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    done_by = serializers.ReadOnlyField(source="created_by.get_full_name")
 
     class Meta(object):
         model = FacilityApproval
@@ -268,7 +269,8 @@ class FacilityListSerializer(FacilitySerializer):
             'code', 'name', 'id', 'county', 'constituency',
             'facility_type_name', 'owner_name', 'owner_type_name',
             'regulatory_status_name', 'ward', 'operation_status_name',
-            'ward_name', 'is_published', "is_approved", "has_edits"
+            'ward_name', 'is_published', "is_approved", "has_edits",
+            "rejected"
         ]
 
 
