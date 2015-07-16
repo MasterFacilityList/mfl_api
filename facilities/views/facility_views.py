@@ -82,7 +82,6 @@ class QuerysetFilterMixin(object):
                 self.queryset = self.queryset
         else:
             self.queryset = self.queryset
-        print self.queryset
         if self.request.user.has_perm("facilities.view_unpublished_facilities") is False and \
                 'is_published' in [
                     field.name for field in

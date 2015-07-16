@@ -20,11 +20,7 @@ class Command(BaseCommand):
     def _load_user_groups(self, user_groups):
         with transaction.atomic():
             for ug in user_groups:
-                try:
-                    u = MflUser.objects.get(**ug["mfluser"])
-                except MflUser.DoesNotExist:
-                    import pdb
-                    pdb.set_trace()
+                u = MflUser.objects.get(**ug["mfluser"])
                 for g in ug["groups"]:
                     u.groups.add(Group.objects.get(**g))
 
