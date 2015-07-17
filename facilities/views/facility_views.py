@@ -108,8 +108,7 @@ class QuerysetFilterMixin(object):
 class KephLevelListView(generics.ListCreateAPIView):
     """
     Lists and creates the  Kenya Essential Package for health (KEPH)
-    name -- Name of a KEPH
-    value -- Value of the KEPH e.g 1
+    name -- Name of a level 1
     description -- Description the KEPH
     Created --  Date the record was Created
     Updated -- Date the record was Updated

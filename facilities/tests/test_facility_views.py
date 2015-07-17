@@ -1158,8 +1158,7 @@ class TestKephLevel(LoginMixin, APITestCase):
 
     def test_posting(self):
         data = {
-            "name": "level 1",
-            "value": "1"
+            "name": "level 1"
         }
         response = self.client.post(self.url, data)
         self.assertEquals(201, response.status_code)
