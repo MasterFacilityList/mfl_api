@@ -52,7 +52,8 @@ from ..models import (
     FacilityUnitRegulation,
     RegulationStatus,
     FacilityApproval,
-    FacilityUpdates
+    FacilityUpdates,
+    KephLevel
 )
 
 from django.contrib.auth.models import Group, Permission
@@ -1133,3 +1134,41 @@ class TestFilterRejectedFacilities(LoginMixin, APITestCase):
             load_dump(expected_data, default=default),
             load_dump(response.data['results'], default=default)
         )
+
+
+class TestKephLevel(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:facilities:keph_levels_list")
+        super(TestKephLevel, self).setUp()
+
+    def test_listing(self):
+        mommy.make(KephLevel)
+        mommy.make(KephLevel)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, response.data.get("count"))
+
+    def test_retrieving_single_record(self):
+        keph = mommy.make(KephLevel)
+        url = self.url + "{}/".format(str(keph.id))
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_posting(self):
+        data = {
+            "name": "level 1",
+            "value": "1"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+
+    def test_updating(self):
+        keph = mommy.make(KephLevel)
+        data = {
+            "name": "an awesome name"
+        }
+        url = self.url + "{}/".format(str(keph.id))
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        keph_refetched = KephLevel.objects.get(id=keph.id)
+        self.assertEquals("an awesome name", keph_refetched.name)

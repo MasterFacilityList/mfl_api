@@ -29,8 +29,14 @@ from ..models import (
     FacilityOfficer,
     RegulatoryBodyUser,
     FacilityUnitRegulation,
-    FacilityUpdates
+    FacilityUpdates,
+    KephLevel
 )
+
+
+class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = KephLevel
 
 
 class RegulatoryBodyUserSerializer(

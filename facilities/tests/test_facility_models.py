@@ -45,8 +45,20 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     FacilityUpdates,
-    FacilityUpgrade
+    FacilityUpgrade,
+    KephLevel
 )
+
+
+class TestKephLevel(BaseTestCase):
+    def test_save(self):
+        mommy.make(KephLevel)
+        self.assertEquals(1, KephLevel.objects.count())
+
+    def test_unicode(self):
+        keph = mommy.make(KephLevel, name="level", value="1")
+        expected_unicode = "level 1"
+        self.assertEquals(expected_unicode, keph.__unicode__())
 
 
 class TestFacilityOperationState(BaseTestCase):
