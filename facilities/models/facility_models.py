@@ -19,6 +19,24 @@ from common.fields import SequenceField
 
 
 @reversion.register
+class KephLevel(AbstractBase):
+    """
+    Hold the classification of facilities according to
+    Kenya Essential Package for health (KEPH)
+
+    Currenlty there are level 1 to level 6
+    """
+    name = models.CharField(
+        max_length=30, help_text="The name of the KEPH e.g Level 1")
+    description = models.TextField(
+        null=True, blank=True,
+        help_text='A short description of the KEPH level')
+
+    def __unicode__(self):
+        return "{}".format(self.name)
+
+
+@reversion.register
 class OwnerType(AbstractBase):
     """
     Sub divisions of owners of facilities.
@@ -541,10 +559,15 @@ class Facility(SequenceMixin, AbstractBase):
     attributes = models.TextField(null=True, blank=True)
     regulatory_body = models.ForeignKey(
         RegulatingBody, null=True, blank=True)
+
+    # set of boolean to optimize filtering though through tables
     regulated = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
     has_edits = models.BooleanField(default=False)
+    keph_level = models.ForeignKey(
+        KephLevel, null=True, blank=True,
+        help_text='The keph level of the facility')
 
     @property
     def boundaries(self):
@@ -999,6 +1022,9 @@ class ServiceCategory(AbstractBase):
     abbreviation = models.CharField(
         max_length=50, null=True, blank=True,
         help_text='A short form of the category e.g ANC for antenatal')
+    keph_level = models.ForeignKey(
+        KephLevel, null=True, blank=True,
+        help_text="The keph level at which certain services should be offered")
 
     def __unicode__(self):
         return self.name
@@ -1064,6 +1090,7 @@ class Service(SequenceMixin, AbstractBase):
 
     code = SequenceField(unique=True, editable=False)
     options = models.ManyToManyField(Option, through='ServiceOption')
+    has_options = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -1100,7 +1127,7 @@ class FacilityService(AbstractBase):
     A facility can have zero or more services.
     """
     facility = models.ForeignKey(Facility, related_name='facility_services')
-    selected_option = models.ForeignKey(ServiceOption)
+    selected_option = models.ForeignKey(ServiceOption, null=True, blank=True)
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Indiates whether a service has been approved by the CHRIO')
@@ -1108,6 +1135,14 @@ class FacilityService(AbstractBase):
         default=False,
         help_text='Indicates whether a service has been cancelled by the '
         'CHRIO')
+    # For services that do not have options, the service will be linked
+    # directly to the
+    service = models.ForeignKey(Service, blank=True, null=True)
+
+    def validate_either_options_or_service(self):
+        if not self.selected_option and not self.service:
+            raise ValidationError(
+                "An service option or an actual service is required")
 
     @property
     def number_of_ratings(self):
@@ -1115,7 +1150,10 @@ class FacilityService(AbstractBase):
 
     @property
     def service_name(self):
-        return self.selected_option.service.name
+        if self.selected_option:
+            return self.selected_option.service.name
+        else:
+            return self.service.name
 
     @property
     def option_display_value(self):
@@ -1128,6 +1166,9 @@ class FacilityService(AbstractBase):
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)
+
+    def clean(self, *args, **kwargs):
+        self.validate_either_options_or_service()
 
 
 @reversion.register

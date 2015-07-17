@@ -29,8 +29,14 @@ from ..models import (
     FacilityOfficer,
     RegulatoryBodyUser,
     FacilityUnitRegulation,
-    FacilityUpdates
+    FacilityUpdates,
+    KephLevel
 )
+
+
+class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = KephLevel
 
 
 class RegulatoryBodyUserSerializer(
@@ -245,7 +251,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
             "parent", "contacts", "is_approved",
-            "has_edits", "latest_update", "regulatory_body_name"]
+            "has_edits", "latest_update", "regulatory_body_name",
+            "regulatory_body", "keph_level"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -258,6 +265,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     coordinates = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField()
     boundaries = serializers.ReadOnlyField()
+    keph_level_name = serializers.ReadOnlyField(source="keph_level.name")
 
     class Meta(object):
         model = Facility

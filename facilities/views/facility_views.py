@@ -18,7 +18,8 @@ from ..models import (
     FacilityOfficer,
     FacilityUnitRegulation,
     JobTitle,
-    Officer
+    Officer,
+    KephLevel
 )
 
 from ..serializers import (
@@ -30,7 +31,8 @@ from ..serializers import (
     FacilityDetailSerializer,
     FacilityContactSerializer,
     FacilityOfficerSerializer,
-    FacilityUnitRegulationSerializer
+    FacilityUnitRegulationSerializer,
+    KephLevelSerializer
 )
 
 from ..filters import (
@@ -40,7 +42,8 @@ from ..filters import (
     OwnerFilter,
     FacilityContactFilter,
     FacilityOfficerFilter,
-    FacilityUnitRegulationFilter
+    FacilityUnitRegulationFilter,
+    KephLevelFilter
 
 )
 
@@ -100,6 +103,32 @@ class QuerysetFilterMixin(object):
                 self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(is_classified=False)
         return self.queryset
+
+
+class KephLevelListView(generics.ListCreateAPIView):
+    """
+    Lists and creates the  Kenya Essential Package for health (KEPH)
+    name -- Name of a level 1
+    description -- Description the KEPH
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = KephLevel.objects.all()
+    filter_class = KephLevelFilter
+    serializer_class = KephLevelSerializer
+    ordering_fields = ('name', 'value', 'description')
+
+
+class KephLevelDetailView(CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a single KEPH level
+    """
+    queryset = KephLevel.objects.all()
+    serializer_class = KephLevelSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
