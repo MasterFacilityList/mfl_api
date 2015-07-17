@@ -139,6 +139,7 @@ class TestFacilityService(BaseTestCase):
         facility_service = mommy.make(
             FacilityService, facility=facility, selected_option=service_option
         )
+        self.assertTrue(facility_service.service_has_options)
         expected_data = [
             {
                 "id": facility_service.id,

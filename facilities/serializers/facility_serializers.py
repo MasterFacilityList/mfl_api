@@ -140,6 +140,7 @@ class FacilityServiceSerializer(
     option_display_value = serializers.CharField(read_only=True)
     average_rating = serializers.ReadOnlyField()
     number_of_ratings = serializers.ReadOnlyField()
+    service_has_options = serializers.ReadOnlyField()
 
     class Meta(object):
         model = FacilityService

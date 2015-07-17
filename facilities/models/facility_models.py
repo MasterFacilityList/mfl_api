@@ -1139,6 +1139,9 @@ class FacilityService(AbstractBase):
     # directly to the
     service = models.ForeignKey(Service, blank=True, null=True)
 
+    def service_has_options(self):
+        return True if self.selected_option else False
+
     def validate_either_options_or_service(self):
         if not self.selected_option and not self.service:
             raise ValidationError(
