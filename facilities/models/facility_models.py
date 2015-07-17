@@ -1139,6 +1139,7 @@ class FacilityService(AbstractBase):
     # directly to the
     service = models.ForeignKey(Service, blank=True, null=True)
 
+    @property
     def service_has_options(self):
         return True if self.selected_option else False
 

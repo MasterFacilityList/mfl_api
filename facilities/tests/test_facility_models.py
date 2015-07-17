@@ -224,8 +224,9 @@ class TestFacilityService(BaseTestCase):
 
     def test_validate_either_options_or_service_okay(self):
         service = mommy.make(Service)
-        mommy.make(FacilityService, service=service)
+        fs = mommy.make(FacilityService, service=service)
         self.assertEquals(1, FacilityService.objects.count())
+        self.assertFalse(fs.service_has_options)
 
     def test_get_service_name_from_service(self):
         service = mommy.make(Service, name="service name")
@@ -237,9 +238,10 @@ class TestFacilityService(BaseTestCase):
         option = mommy.make(Option)
         service_option = mommy.make(
             ServiceOption, service=service, option=option)
-        facility_service = mommy.make(
+        fs = facility_service = mommy.make(
             FacilityService, selected_option=service_option)
         self.assertEquals("TB Culture", facility_service.service_name)
+        self.assertTrue(fs.service_has_options)
 
 
 class TestServiceModel(BaseTestCase):
