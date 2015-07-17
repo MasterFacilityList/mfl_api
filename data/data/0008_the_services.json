@@ -9,6 +9,7 @@
             "name":"HIV Prevention Services",
             "abbreviation":"HIVPS",
             "description":"HIV Prevention Services",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -17,6 +18,7 @@
             "name":"Condom Promotion and Distribution",
             "abbreviation":"CONDOM",
             "description":"Condom Promotion and Distribution",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -25,6 +27,7 @@
             "name":"Management of STIs",
             "abbreviation":"STI",
             "description":"Management of STIs",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -41,6 +44,7 @@
             "name":"Early Infant Diagnosis",
             "abbreviation":"EID",
             "description":"Early Infant Diagnosis",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -49,6 +53,7 @@
             "name":"PMTCT - ANC",
             "abbreviation":"ANC PMTCT",
             "description":"PMTCT - ANC",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -57,6 +62,7 @@
             "name":"PMTCT - Maternity",
             "abbreviation":"MAT PMTCT",
             "description":"PMTCT - Maternity",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -65,6 +71,7 @@
             "name":"Post Exposure Prophylaxis",
             "abbreviation":"PEP",
             "description":"Post Exposure Prophylaxis",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -73,6 +80,7 @@
             "name":"Diagnostic Counselling and Testing",
             "abbreviation":"DCT",
             "description":"Diagnostic Counselling and Testing",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
             }
@@ -81,6 +89,7 @@
             "name":"Paediatric Antiretroviral Therapy",
             "abbreviation":"Paed ART",
             "description":"Paediatric Antiretroviral Therapy",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Services - Treatment and Care"
             }
@@ -89,6 +98,7 @@
             "name":"Adult Antiretroviral Therapy",
             "abbreviation":"Adult ART",
             "description":"Adult Antiretroviral Therapy",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Services - Treatment and Care"
             }
@@ -97,6 +107,7 @@
             "name":"Home Based Care",
             "abbreviation":"HBC",
             "description":"Home Based Care",
+            "has_options": false,
             "category":{
                "name":"HIV/AIDS Services - Treatment and Care"
             }
@@ -105,6 +116,7 @@
             "name":"Short Term FP",
             "abbreviation":"STFP",
             "description":"Short Term FP",
+            "has_options": false,
             "category":{
                "name":"Family Planning"
             }
@@ -113,6 +125,7 @@
             "name":"Long Term FP",
             "abbreviation":"LTFP",
             "description":"Long Term FP (LTFP)",
+            "has_options": false,
             "category":{
                "name":"Family Planning"
             }
@@ -121,6 +134,7 @@
             "name":"Integrated Services",
             "abbreviation":"YOUTH-Int",
             "description":"Integrated Services",
+            "has_options": false,
             "category":{
                "name":"Comprehensive Youth Friendly Services"
             }
@@ -137,6 +151,7 @@
             "name":"Focused Antenatal Care",
             "abbreviation":"FANC",
             "description":"Focused Antenatal Care",
+            "has_options": false,
             "category":{
                "name":"Antenatal"
             }
@@ -153,6 +168,7 @@
             "name":"Basic Immunization",
             "abbreviation":"IMM-BASIC",
             "description":"Basic Immunization",
+            "has_options": false,
             "category":{
                "name":"Immunization"
             }
@@ -161,6 +177,7 @@
             "name":"Immunization with additional vaccines",
             "abbreviation":"IMM-ADD",
             "description":"Immunization with additional vaccines",
+            "has_options": false,
             "category":{
                "name":"Immunization"
             }
@@ -169,6 +186,7 @@
             "name":"Port Immunization Services",
             "abbreviation":"IMM-PORT",
             "description":"Port Immunization Services",
+            "has_options": false,
             "category":{
                "name":"Immunization"
             }
@@ -193,6 +211,7 @@
             "name":"First Line Treatment",
             "abbreviation":"TB-1st Line",
             "description":"First Line Treatment",
+            "has_options": false,
             "category":{
                "name":"Tuberculosis Diagnosis and Treatments"
             }
@@ -201,6 +220,7 @@
             "name":"MDRTB Treatment",
             "abbreviation":"TB-MDRTB",
             "description":"MDRTB Treatment",
+            "has_options": false,
             "category":{
                "name":"Tuberculosis Diagnosis and Treatments"
             }
