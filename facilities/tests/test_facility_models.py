@@ -56,7 +56,7 @@ class TestKephLevel(BaseTestCase):
         self.assertEquals(1, KephLevel.objects.count())
 
     def test_unicode(self):
-        keph = mommy.make(KephLevel, name="level", value="1")
+        keph = mommy.make(KephLevel, name="level 1")
         expected_unicode = "level 1"
         self.assertEquals(expected_unicode, keph.__unicode__())
 
@@ -118,10 +118,11 @@ class TestFacilityService(BaseTestCase):
         self.assertEquals('savis', facility_service.service_name)
 
     def test_number_of_ratings(self):
-        fs = mommy.make(FacilityService)
+        service = mommy.make(Service)
+        fs = mommy.make(FacilityService, service=service)
         self.assertEquals(0, fs.number_of_ratings)
-
-        fs_2 = mommy.make(FacilityService)
+        service = mommy.make(Service, name="some name")
+        fs_2 = mommy.make(FacilityService, service=service)
         mommy.make(FacilityServiceRating, facility_service=fs_2, rating=1)
         mommy.make(FacilityServiceRating, facility_service=fs_2, rating=5)
         mommy.make(FacilityServiceRating, facility_service=fs_2, rating=3)
@@ -214,6 +215,30 @@ class TestFacilityService(BaseTestCase):
             facility1.average_rating,
             (fs1.average_rating + fs2.average_rating) / 2
         )
+
+    def test_validate_either_options_or_service_not_okay(self):
+        # leverage model_mommy's not population the nullable fields
+        with self.assertRaises(ValidationError):
+            mommy.make(FacilityService)
+
+    def test_validate_either_options_or_service_okay(self):
+        service = mommy.make(Service)
+        mommy.make(FacilityService, service=service)
+        self.assertEquals(1, FacilityService.objects.count())
+
+    def test_get_service_name_from_service(self):
+        service = mommy.make(Service, name="service name")
+        facility_service = mommy.make(FacilityService, service=service)
+        self.assertEquals("service name", facility_service.service_name)
+
+    def test_get_service_name_from_service_options(self):
+        service = mommy.make(Service, name="TB Culture")
+        option = mommy.make(Option)
+        service_option = mommy.make(
+            ServiceOption, service=service, option=option)
+        facility_service = mommy.make(
+            FacilityService, selected_option=service_option)
+        self.assertEquals("TB Culture", facility_service.service_name)
 
 
 class TestServiceModel(BaseTestCase):

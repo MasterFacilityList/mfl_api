@@ -28,13 +28,12 @@ class KephLevel(AbstractBase):
     """
     name = models.CharField(
         max_length=30, help_text="The name of the KEPH e.g Level 1")
-    value = models.PositiveIntegerField(default=0)
     description = models.TextField(
         null=True, blank=True,
         help_text='A short description of the KEPH level')
 
     def __unicode__(self):
-        return "{} {}".format(self.name, self.value)
+        return "{}".format(self.name)
 
 
 @reversion.register
@@ -1140,13 +1139,21 @@ class FacilityService(AbstractBase):
     # directly to the
     service = models.ForeignKey(Service, blank=True, null=True)
 
+    def validate_either_options_or_service(self):
+        if not self.selected_option and not self.service:
+            raise ValidationError(
+                "An service option or an actual service is required")
+
     @property
     def number_of_ratings(self):
         return self.facility_service_ratings.count()
 
     @property
     def service_name(self):
-        return self.selected_option.service.name
+        if self.selected_option:
+            return self.selected_option.service.name
+        else:
+            return self.service.name
 
     @property
     def option_display_value(self):
@@ -1159,6 +1166,9 @@ class FacilityService(AbstractBase):
 
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)
+
+    def clean(self, *args, **kwargs):
+        self.validate_either_options_or_service()
 
 
 @reversion.register
