@@ -264,6 +264,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     coordinates = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField()
     boundaries = serializers.ReadOnlyField()
+    keph_level_name = serializers.ReadOnlyField(source="keph_level.name")
 
     class Meta(object):
         model = Facility
