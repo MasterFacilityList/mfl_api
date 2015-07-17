@@ -251,7 +251,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             "created_by", "updated_by", "facility_type",
             "owner", "physical_address",
             "parent", "contacts", "is_approved",
-            "has_edits", "latest_update", "regulatory_body_name"]
+            "has_edits", "latest_update", "regulatory_body_name",
+            "regulatory_body", "keph_level"]
 
 
 class FacilityDetailSerializer(FacilitySerializer):
