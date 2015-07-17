@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from rest_framework.test import APITestCase
 from model_mommy import mommy
 
-from facilities.models import FacilityService
+from facilities.models import FacilityService, Service
 from ..models import County
 from ..serializers import CountySerializer
 from .test_views import LoginMixin, default
@@ -44,7 +44,8 @@ class TestThrottling(LoginMixin, APITestCase):
     def test_throttled_view(self):
         # facility rating is throttled to once per day
         url = reverse("api:facilities:facility_service_ratings_list")
-        fs = mommy.make(FacilityService)
+        service = mommy.make(Service)
+        fs = mommy.make(FacilityService, service=service)
 
         data = {
             "rating": 1,
