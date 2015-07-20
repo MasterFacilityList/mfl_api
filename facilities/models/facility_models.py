@@ -779,6 +779,11 @@ class Facility(SequenceMixin, AbstractBase):
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             return
+        # enable unpublishing a facility
+        if old_details.is_published and not self.is_published:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
+            return
         old_details_serialized = FacilityDetailSerializer(
             old_details,
             context={
