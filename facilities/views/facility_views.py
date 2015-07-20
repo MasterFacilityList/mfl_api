@@ -467,26 +467,14 @@ class CustomFacilityOfficerView(APIView):
         else:
             facility_officer = self._create_facility_officer(data)
             serialized_officer = FacilityOfficerSerializer(
-                facility_officer,
-                context={
-                    'request': {
-                        "REQUEST_METHOD": "None"
-                    }
-                }
-            ).data
+                facility_officer).data
             return Response(serialized_officer, status=status.HTTP_201_CREATED)
 
     def get(self, *args, **kwargs):
         facility = Facility.objects.get(id=kwargs['facility_id'])
         facility_officers = FacilityOfficer.objects.filter(facility=facility)
         serialized_officers = FacilityOfficerSerializer(
-            facility_officers,
-            context={
-                'request': {
-                    "REQUEST_METHOD": "None"
-                }
-            },
-            many=True).data
+            facility_officers, many=True).data
         return Response(serialized_officers)
 
     def delete(self, *args, **kwargs):

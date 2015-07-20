@@ -785,24 +785,12 @@ class Facility(SequenceMixin, AbstractBase):
             super(Facility, self).save(*args, **kwargs)
             return
         old_details_serialized = FacilityDetailSerializer(
-            old_details,
-            context={
-                'request': {
-                    'REQUEST_METHOD': 'NONE'
-                }
-            }
-        ).data
+            old_details).data
         del old_details_serialized['updated']
         del old_details_serialized['created']
         del old_details_serialized['updated_by']
         new_details_serialized = FacilityDetailSerializer(
-            self,
-            context={
-                'request': {
-                    'REQUEST_METHOD': 'NONE'
-                }
-            }
-        ).data
+            self).data
         del new_details_serialized['updated']
         del new_details_serialized['created']
         del new_details_serialized['updated_by']
