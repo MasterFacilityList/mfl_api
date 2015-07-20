@@ -565,9 +565,6 @@
                 "codename": "view_facility"
             },
             {
-                "codename": "view_unpublished_facilities"
-            },
-            {
                 "codename": "view_facilitycontact"
             },
             {
