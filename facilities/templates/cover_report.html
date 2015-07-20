@@ -1,25 +1,26 @@
 <p>Medical Officer of Health</p>
 <p>{{facility.ward.county}}</p>
 
-<p> Date: {{ report_date | date }}</p>
+<p> Date: {{ now | date }}</p>
 
 <p> TO: Kenya MPDB - Institution</p>
 
 <p> RE: Registration of {{facility.name}} - {{facility.code}}</p>
 
-<p> The County Health Management Team of {{facility.ward.county.name}}has inspected the Medical Centre whose details are below.</p>
+<p> The County Health Management Team of {{facility.ward.county.name}} has inspected the {{facility.facility_type.name}} whose details are below.</p>
 
-<p> Facility Name: {{facility.name}} - {{facility.code}}</p>
-<p> Facility Type: {{facility.facility_type.name}}</p>
-<p> Facility Owner: {{facility.owner.name}}</p>
-<p> County: {{facility.ward.county.name}}</p>
-<p> Constituency: {{facility.ward.constituency.name}}</p>
-<p> We request that you Register this facility.</p>
+<p> <strong>Facility Name:<strong> {{facility.name}} - {{facility.code}}</p>
+<p> <strong>Facility Type:<strong> {{facility.facility_type.name}}</p>
+<p> <strong>Facility Owner:<strong> {{facility.owner.name}}</p>
+<p> <strong>County:<strong> {{facility.ward.county.name}}</p>
+<p> <strong>Constituency:<strong> {{facility.ward.constituency.name}}</p>
+<p> <strong>Ward:<strong> {{facility.ward.name}} </p>
+<p> We request that you register this facility.</p>
 
 <p> The facility details are given on the next page and the inspection report is attached.</p>
 
- <p>Signed</p>
-
+<p>Signed</p>
+<br />
 <p>Medical Officer of Health</p>
 <p>{{ facility.ward.county.name }}</p>
 
@@ -47,14 +48,15 @@
 
 <fieldset>
 <legend><h3>Location</h3></legend>
-<p><strong> directions: </strong> {{facility.physical_address.location_desc}}</p>
+<p><strong> Directions: </strong> {{facility.physical_address.location_desc}}</p>
 <h3>GPS Coordinates:</h3>
-    <p><strong>Longitude: </strong>{{longitude}}</p>
-    <p><strong>Latitude: </strong>{{latitude}} </p>
-    <p><strong>Source: </strong>{{facility_coordinates.source.name}} </p>
-    <p><strong>Method: </strong>{{facility_coordinates.method.name}} </p>
+<p><strong>Longitude: </strong>{{longitude}}</p>
+<p><strong>Latitude: </strong>{{latitude}} </p>
+<p><strong>Source: </strong>{{facility_coordinates.source.name}} </p>
+<p><strong>Method: </strong>{{facility_coordinates.method.name}} </p>
 
 </fieldset>
+<fieldset>
 <h3>Services: </h3>
    <table>
 <thead>
@@ -67,7 +69,6 @@
       <th>
         MFL Service Code
     </th>
-
 </thead>
 {% for service in services %}
 <tr>
@@ -83,8 +84,8 @@
 <tr>
 {% endfor %}
 </table>
-
-
+</fieldset>
+<fieldset>
 <h3>Officer Incharge</h3>
 <table>
 <thead>
@@ -115,11 +116,11 @@
     <td>
     {{officer.officer.registration_number}}
     </td>
-<tr>
+</tr>
 {% endfor %}
-
-
 </table>
+</fieldset>
+<fieldset>
 <h3>Contacts</h3>
 <table>
 <thead>
@@ -138,11 +139,12 @@
     </td>
     <td>
     {{contact.contact.contact}}
-    </td
-<tr>
+    </td>
+</tr>
 {%endfor%}
 </table>
-
+</fieldset>
+<fieldset>
 <h3>Community Health Units </h3>
 <table>
 <thead>
@@ -173,7 +175,7 @@
     <td>
     {{chu.households_monitored}}
     </td>
-
-<tr>
+</tr>
 {% endfor %}
 </table>
+</fieldset>
