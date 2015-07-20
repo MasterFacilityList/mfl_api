@@ -36,13 +36,14 @@ class AbstractFieldsMixin(object):
           - e.t.c
         """
         origi_fields = super(AbstractFieldsMixin, self).get_fields()
-        request = self.context['request']
+        request = self.context.get('request', None)
+        if request is None:
+            return origi_fields
 
         request_method = ""
-        try:
+
+        if hasattr(request, "method"):
             request_method = request.method
-        except AttributeError:
-            request.get('REQUEST_METHOD', None)
 
         if request_method != 'GET':
             return origi_fields
