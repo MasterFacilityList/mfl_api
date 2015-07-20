@@ -649,7 +649,6 @@ class Facility(SequenceMixin, AbstractBase):
 
     @property
     def regulatory_status_name(self):
-        # return "good"
         if hasattr(self.current_regulatory_status, 'regulation_status'):
             return self.current_regulatory_status.regulation_status.name
         else:
