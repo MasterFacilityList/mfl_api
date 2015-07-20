@@ -111,7 +111,7 @@ class BaseTestCase(TestCase):
             password='mtihani',
             is_national=True
         )
-        mommy.make(
+        self.default_regulation_status = mommy.make(
             RegulationStatus, name="Pending Regulation", is_default=True)
 
         super(BaseTestCase, self).setUp()
