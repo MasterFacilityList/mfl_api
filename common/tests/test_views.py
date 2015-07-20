@@ -77,8 +77,18 @@ class TestViewCounties(LoginMixin, APITestCase):
         response = self.client.get(url)
         expected_data = {
             "results": [
-                CountySerializer(county_2).data,
-                CountySerializer(county).data
+                CountySerializer(
+                    county_2,
+                    context={
+                        'request': response.request
+                    }
+                ).data,
+                CountySerializer(
+                    county,
+                    context={
+                        'request': response.request
+                    }
+                ).data
             ]
         }
         self.assertEquals(
@@ -93,7 +103,12 @@ class TestViewCounties(LoginMixin, APITestCase):
         url = reverse('api:common:counties_list')
         url += "{}/".format(county.id)
         response = self.client.get(url)
-        expected_data = CountyDetailSerializer(county).data
+        expected_data = CountyDetailSerializer(
+            county,
+            context={
+                'request': response.request
+            }
+        ).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
@@ -120,8 +135,15 @@ class TestViewConstituencies(LoginMixin, APITestCase):
         response = self.client.get(url)
         expected_data = {
             "results": [
-                ConstituencySerializer(constituency_2).data,
-                ConstituencySerializer(constituency).data
+                ConstituencySerializer(
+                    constituency_2, context={
+                        'request': response.request
+                    }).data,
+                ConstituencySerializer(
+                    constituency,
+                    context={
+                        'request': response.request
+                    }).data
             ]
         }
         # some weird ordering the dumps string
@@ -143,7 +165,11 @@ class TestViewConstituencies(LoginMixin, APITestCase):
         url = reverse('api:common:constituencies_list')
         url += "{}/".format(constituency.id)
         response = self.client.get(url)
-        expected_data = ConstituencyDetailSerializer(constituency).data
+        expected_data = ConstituencyDetailSerializer(
+            constituency,
+            context={
+                'request': response.request
+            }).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
@@ -171,8 +197,16 @@ class TestViewWards(LoginMixin, APITestCase):
         response = self.client.get(url)
         expected_data = {
             "results": [
-                WardSerializer(ward_2).data,
-                WardSerializer(ward_1).data
+                WardSerializer(
+                    ward_2,
+                    context={
+                        'request': response.request
+                    }).data,
+                WardSerializer(
+                    ward_1,
+                    context={
+                        'request': response.request
+                    }).data
             ]
         }
         self.assertEquals(
@@ -195,7 +229,11 @@ class TestViewWards(LoginMixin, APITestCase):
         url = reverse('api:common:wards_list')
         url += "{}/".format(ward.id)
         response = self.client.get(url)
-        expected_data = WardDetailSerializer(ward).data
+        expected_data = WardDetailSerializer(
+            ward,
+            context={
+                'request': response.request
+            }).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
@@ -218,13 +256,23 @@ class TestContactView(LoginMixin, APITestCase):
             Contact,
             contact='0784636499', contact_type=contact_type_1)
 
+        response = self.client.get(self.url)
         expected_data = {
             "results": [
-                ContactSerializer(contact_1).data,
-                ContactSerializer(contact).data
+                ContactSerializer(
+                    contact_1,
+                    context={
+                        'request': response.request
+                    }
+                ).data,
+                ContactSerializer(
+                    contact,
+                    context={
+                        'request': response.request
+                    }
+                ).data
             ]
         }
-        response = self.client.get(self.url)
         self.assertEquals(
             json.loads(json.dumps(expected_data['results'], default=default)),
             json.loads(json.dumps(response.data['results'], default=default)))
@@ -389,8 +437,18 @@ class TestUserContactView(LoginMixin, APITestCase):
         response = self.client.get(self.url)
         expected_data = {
             "results": [
-                UserContactSerializer(user_contact_2).data,
-                UserContactSerializer(user_contact_1).data
+                UserContactSerializer(
+                    user_contact_2,
+                    context={
+                        'request': response.request
+                    }
+                ).data,
+                UserContactSerializer(
+                    user_contact_1,
+                    context={
+                        'request': response.request
+                    }
+                ).data
             ]
 
         }
@@ -404,7 +462,11 @@ class TestUserContactView(LoginMixin, APITestCase):
         url = self.url + "{}/".format(user_contact.id)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        expected_data = UserContactSerializer(user_contact).data
+        expected_data = UserContactSerializer(
+            user_contact,
+            context={
+                'request': response.request
+            }).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
@@ -577,7 +639,12 @@ class TestUserConstituenciesView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         expected_data = {
             "results": [
-                UserConstituencySerializer(user_const_1).data
+                UserConstituencySerializer(
+                    user_const_1,
+                    context={
+                        'request': response.request
+                    }
+                ).data
             ]
         }
         self.assertEquals(
@@ -598,7 +665,11 @@ class TestUserConstituenciesView(LoginMixin, APITestCase):
         url = self.url + "{}/".format(user_const_1.id)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        expected_data = UserConstituencySerializer(user_const_1).data
+        expected_data = UserConstituencySerializer(
+            user_const_1,
+            context={
+                'request': response.request
+            }).data
         self.assertEquals(
             json.loads(json.dumps(expected_data, default=default)),
             json.loads(json.dumps(response.data, default=default)))
@@ -642,8 +713,18 @@ class TestFilteringAdminUnits(APITestCase):
         url = reverse("api:common:wards_list")
         response = self.client.get(url)
         expected_data = [
-            WardSerializer(ward_2).data,
-            WardSerializer(ward_1).data]
+            WardSerializer(
+                ward_2,
+                context={
+                    'request': response.request
+                }
+            ).data,
+            WardSerializer(
+                ward_1,
+                context={
+                    'request': response.request
+                }
+            ).data]
         self.assertEquals(
             json.loads(
                 json.dumps(expected_data, default=default)),
@@ -669,9 +750,24 @@ class TestFilteringAdminUnits(APITestCase):
         url = reverse("api:common:constituencies_list")
         response = self.client.get(url)
         expected_data = [
-            ConstituencySerializer(const_2).data,
-            ConstituencySerializer(const_1).data,
-            ConstituencySerializer(self.constituency).data
+            ConstituencySerializer(
+                const_2,
+                context={
+                    'request': response.request
+                }
+            ).data,
+            ConstituencySerializer(
+                const_1,
+                context={
+                    'request': response.request
+                }
+            ).data,
+            ConstituencySerializer(
+                self.constituency,
+                context={
+                    'request': response.request
+                }
+            ).data
         ]
         self.assertEquals(
             json.loads(
@@ -766,8 +862,18 @@ class TestFilteringAdminUnits(APITestCase):
         url = reverse("api:common:wards_list")
         response = self.client.get(url)
         expected_data = [
-            WardSerializer(ward_2).data,
-            WardSerializer(ward_1).data]
+            WardSerializer(
+                ward_2,
+                context={
+                    'request': response.request
+                }
+            ).data,
+            WardSerializer(
+                ward_1,
+                context={
+                    'request': response.request
+                }
+            ).data]
         self.assertEquals(
             json.loads(
                 json.dumps(expected_data, default=default)),

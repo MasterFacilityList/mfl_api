@@ -20,7 +20,12 @@ class TestCountryBoundariesView(LoginMixin, APITestCase):
         url = reverse(
             'api:mfl_gis:world_border_detail', kwargs={'pk': country.pk})
         response = self.client.get(url)
-        expected_data = WorldBorderDetailSerializer(country).data
+        expected_data = WorldBorderDetailSerializer(
+            country,
+            context={
+                'request': response.request
+            }
+        ).data
         # Silly issues with floats being rounded to different precisions
         # between the serializer and the "round trip through the view" version
         self.assertEqual(
