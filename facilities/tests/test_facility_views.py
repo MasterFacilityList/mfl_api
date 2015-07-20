@@ -604,6 +604,31 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
             load_dump(false_response.data['results'], default=default)
         )
 
+    def test_partial_response_on_list_endpoint(self):
+        url = self.url + "?fields=id,name"
+        facility = mommy.make(Facility)
+        response = self.client.get(url)
+        self.assertEquals(
+            [
+                {
+                    "id": str(facility.id),
+                    "name": facility.name
+                }
+            ],
+            response.data.get("results"))
+
+    def test_partial_response_on_get_single_endpoint(self):
+        facility = mommy.make(Facility)
+        url = self.url + "{}/?fields=id,name".format(str(facility.id))
+        response = self.client.get(url)
+        self.assertEquals(
+            {
+                "id": str(facility.id),
+                "name": facility.name
+            },
+            response.data
+        )
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
 
@@ -669,7 +694,7 @@ class TestFacilityStatusView(LoginMixin, APITestCase):
             load_dump(response.data['results'], default=default)
         )
 
-    def test_retrive_facility_status(self):
+    def test_retrieve_facility_status(self):
         status = mommy.make(FacilityStatus, name='OPERTATIONAL')
         url = self.url + "{}/".format(status.id)
         response = self.client.get(url)

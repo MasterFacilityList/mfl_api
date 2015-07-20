@@ -25,7 +25,14 @@ class TestThrottling(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         expected_data = {
             "results": [
-                CountySerializer(county).data
+                CountySerializer(
+                    county,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data
             ]
         }
         self.assertEquals(

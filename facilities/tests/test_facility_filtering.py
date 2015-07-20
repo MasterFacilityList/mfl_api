@@ -57,7 +57,14 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(2, admin_response.data.get("count"))
         self.assertEquals(
-            FacilitySerializer(Facility.objects.all(), many=True).data,
+            FacilitySerializer(
+                Facility.objects.all(),
+                context={
+                    'request': {
+                        "REQUEST_METHOD": "None"
+                    }
+                },
+                many=True).data,
             admin_response.data.get("results"))
 
         # test public user sees only published facilties
@@ -67,7 +74,17 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, public_response.status_code)
         self.assertEquals(1, public_response.data.get("count"))
         self.assertEquals(
-            load_dump([FacilitySerializer(facility_2).data], default=default),
+            load_dump(
+                [
+                    FacilitySerializer(
+                        facility_2,
+                        context={
+                            'request': {
+                                "REQUEST_METHOD": "None"
+                            }
+                        }
+                    ).data,
+                ], default=default),
             load_dump(public_response.data['results'], default=default)
         )
 
@@ -84,7 +101,14 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(2, admin_response.data.get("count"))
         self.assertEquals(
-            FacilitySerializer(Facility.objects.all(), many=True).data,
+            FacilitySerializer(
+                Facility.objects.all(),
+                context={
+                    'request': {
+                        "REQUEST_METHOD": "None"
+                    }
+                },
+                many=True).data,
             admin_response.data.get("results"))
 
         # test public user sees only approved facilties
@@ -94,7 +118,17 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, public_response.status_code)
         self.assertEquals(1, public_response.data.get("count"))
         self.assertEquals(
-            load_dump([FacilitySerializer(facility_2).data], default=default),
+            load_dump(
+                [
+                    FacilitySerializer(
+                        facility_2,
+                        context={
+                            'request': {
+                                "REQUEST_METHOD": "None"
+                            }
+                        }
+                    ).data
+                ], default=default),
             load_dump(public_response.data['results'], default=default)
         )
 
@@ -111,7 +145,14 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(2, admin_response.data.get("count"))
         self.assertEquals(
-            FacilitySerializer(Facility.objects.all(), many=True).data,
+            FacilitySerializer(
+                Facility.objects.all(),
+                context={
+                    'request': {
+                        "REQUEST_METHOD": "None"
+                    }
+                },
+                many=True).data,
             admin_response.data.get("results"))
 
         # test public user sees only non classified facilties
@@ -121,6 +162,16 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, public_response.status_code)
         self.assertEquals(1, public_response.data.get("count"))
         self.assertEquals(
-            load_dump([FacilitySerializer(facility_2).data], default=default),
+            load_dump(
+                [
+                    FacilitySerializer(
+                        facility_2,
+                        context={
+                            'request': {
+                                "REQUEST_METHOD": "None"
+                            }
+                        }
+                    ).data
+                ], default=default),
             load_dump(public_response.data['results'], default=default)
         )
