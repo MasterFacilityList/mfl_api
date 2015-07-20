@@ -144,6 +144,7 @@ class RegulationStatusDetailView(
 
 
 class DownloadPDFMixin(object):
+
     def download_file(self, doc, file_name):
         doc_file_name = 'temp'
         file_path = os.path.join(settings.BASE_DIR, file_name)
