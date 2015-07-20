@@ -889,6 +889,25 @@ class TestFacilityUpdates(BaseTestCase):
         )
         self.assertEquals(1, FacilityUpdates.objects.count())
 
+    def edit_facility_with_fks_with_fields_called_name(self):
+        regulatory_body = mommy.make(RegulatingBody)
+        facility = mommy.make(Facility, regulatory_body=regulatory_body)
+        facility.regulatory_body = regulatory_body
+        facility.save()
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+    def edit_facility_with_fks_with_boolean_fields_false_first(self):
+        facility = mommy.make(Facility, is_classified=False)
+        facility.is_classified = True
+        facility.save()
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+    def edit_facility_with_fks_with_boolean_fields_true_first(self):
+        facility = mommy.make(Facility, is_classified=True)
+        facility.is_classified = False
+        facility.save()
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
     def test_facility_updates(self):
         original_name = 'Some facility name'
         updated_name = 'The name has been editted'

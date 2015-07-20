@@ -768,11 +768,6 @@ class Facility(SequenceMixin, AbstractBase):
         forbidden_fields = [
             'operation_status', 'regulatory_status', 'facility_type',
             'operation_status_id', 'regulatory_status_id', 'facility_type_id']
-        # for field in fields:
-        #     if hasattr(getattr(self, field), 'id'):
-        #         field_name = field + "_id"
-        #         fields.append(field_name)
-        #         del fields[fields.index(field)]
         data = []
         for field in fields:
             if (getattr(self, field) != getattr(origi_model, field)
@@ -788,11 +783,8 @@ class Facility(SequenceMixin, AbstractBase):
                 data.append(updated_details)
 
         if len(data):
-            try:
-                return json.dumps(data)
-            except:
-                import pdb
-                pdb.set_trace()
+            return json.dumps(data)
+
         else:
             error = "Either no field was editted or you editted all or one"
             " of {} which are not allowed".format(forbidden_fields)
