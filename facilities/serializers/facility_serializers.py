@@ -257,6 +257,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 
 class FacilityDetailSerializer(FacilitySerializer):
+    regulatory_status_name = serializers.CharField(read_only=True)
     facility_services = serializers.ReadOnlyField(
         source="get_facility_services")
     facility_contacts = serializers.ReadOnlyField(

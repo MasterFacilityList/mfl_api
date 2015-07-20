@@ -523,6 +523,12 @@ class TestFacility(BaseTestCase):
             facility.regulatory_status_name,
             facility_reg_status.regulation_status.name)
 
+    def test_default_regulation_status(self):
+        facility = mommy.make(Facility)
+        self.assertEquals(
+            self.default_regulation_status.name,
+            facility.regulatory_status_name)
+
     def test_owner_type_name(self):
         owner_type = mommy.make(OwnerType, name='GAVA')
         owner = mommy.make(Owner, owner_type=owner_type)
