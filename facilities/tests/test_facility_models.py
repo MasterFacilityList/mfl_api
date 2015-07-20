@@ -876,7 +876,17 @@ class TestFacilityUpdates(BaseTestCase):
         mommy.make(
             FacilityUpdates,
             facility=facility,
-            facility_updates=json.dumps({"name": "new name"}))
+            facility_updates=json.dumps(
+                [
+                    {
+                        "actual_value": "Halafu sasa",
+                        "display_value": "Halafu sasa",
+                        "field_name": "name",
+                        "human_field_name": "name"
+                    }
+                ]
+            )
+        )
         self.assertEquals(1, FacilityUpdates.objects.count())
 
     def test_facility_updates(self):
@@ -931,12 +941,19 @@ class TestFacilityUpdates(BaseTestCase):
             mommy.make(FacilityUpdates, approved=True, cancelled=True)
 
     def test_facility_updated_json(self):
-        update = {'name': 'some other name'}
+        update = [
+            {
+                "actual_value": "Halafu sasa",
+                "display_value": "Halafu sasa",
+                "field_name": "name",
+                "human_field_name": "name"
+            }
+        ]
         facility_update = mommy.make(
             FacilityUpdates,
             facility_updates=json.dumps(update))
         self.assertIsInstance(
-            facility_update.facility_updated_json(), dict)
+            facility_update.facility_updated_json(), list)
 
     def test_update_facility_has_edits(self):
         facility = mommy.make(Facility)

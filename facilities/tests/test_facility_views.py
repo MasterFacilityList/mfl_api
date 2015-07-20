@@ -1187,9 +1187,14 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.url = reverse('api:facilities:facility_updatess_list')
 
     def test_listing(self):
-        update = {
-            "name": "some name"
-        }
+        update = [
+            {
+                "actual_value": "Some name",
+                "display_value": "Some name",
+                "field_name": "name",
+                "human_field_name": "name"
+            }
+        ]
         obj = mommy.make(
             FacilityUpdates, facility_updates=json.dumps(update))
         response = self.client.get(self.url)
@@ -1208,9 +1213,14 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.assertEquals(expected_data['results'], response.data['results'])
 
     def test_retrieving(self):
-        update = {
-            "name": "some name"
-        }
+        update = [
+            {
+                "actual_value": "Some name",
+                "display_value": "Some name",
+                "field_name": "name",
+                "human_field_name": "name"
+            }
+        ]
         obj = mommy.make(
             FacilityUpdates, facility_updates=json.dumps(update))
         url = self.url + "{}/".format(obj.id)
@@ -1232,12 +1242,14 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         obj = mommy.make(
             FacilityUpdates,
             facility=facility,
-            facility_updates=json.dumps(
+            facility_updates=json.dumps([
                 {
-                    "name": "jina",
-                    "id": str(facility.id)
+                    "actual_value": "jina",
+                    "display_value": "jina",
+                    "field_name": "name",
+                    "human_field_name": "name"
                 }
-            ))
+            ]))
         facility_refetched = Facility.objects.get(
             id='67105b48-0cc0-4de2-8266-e45545f1542f')
         self.assertTrue(facility_refetched.has_edits)
@@ -1271,11 +1283,14 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         obj = mommy.make(
             FacilityUpdates,
             facility=facility,
-            facility_updates=json.dumps(
+            facility_updates=json.dumps([
                 {
-                    "name": "jina",
-                    "id": str(facility.id)
+                    "actual_value": "jina",
+                    "display_value": "jina",
+                    "field_name": "name",
+                    "human_field_name": "name"
                 }
+            ]
             ))
         url = self.url + "{}/".format(obj.id)
         data = {"cancelled": True}
