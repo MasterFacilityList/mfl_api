@@ -737,24 +737,54 @@ class Facility(SequenceMixin, AbstractBase):
         self.validate_publish(*args, **kwargs)
         super(Facility, self).clean()
 
+    def _get_field_human_attribute(self, field_obj):
+        if hasattr(field_obj, 'name'):
+            return field_obj.name
+        elif hasattr(field_obj, 'town'):
+            return field_obj.town.name
+        elif field_obj is True:
+            return "Yes"
+        elif field_obj is False:
+            return "No"
+        else:
+            return field_obj
+
+    def _get_field_name(self, field):
+        if hasattr(getattr(self, field), 'id'):
+            field_name = field + "_id"
+            return field_name
+        else:
+            return field
+
+    def _get_field_data(self, field):
+        if hasattr(getattr(self, field), 'id'):
+            field_name = field + "_id"
+            return str(getattr(self, field_name))
+        else:
+            return getattr(self, field)
+
     def _dump_updates(self, origi_model):
         fields = [field.name for field in self._meta.fields]
         forbidden_fields = [
             'operation_status', 'regulatory_status', 'facility_type',
             'operation_status_id', 'regulatory_status_id', 'facility_type_id']
-        for field in fields:
-            if hasattr(getattr(self, field), 'id'):
-                field_name = field + "_id"
-                fields.append(field_name)
-                del fields[fields.index(field)]
-        data = {}
-
+        data = []
         for field in fields:
             if (getattr(self, field) != getattr(origi_model, field)
                     and field not in forbidden_fields):
-                data[field] = str(getattr(self, field))
-        if any(data):
+                field_data = getattr(self, field)
+                updated_details = {
+                    "display_value": self._get_field_human_attribute(
+                        field_data),
+                    "actual_value": self._get_field_data(field),
+                    "field_name": self._get_field_name(field),
+                    "human_field_name": field.replace("_", " ")
+                }
+                data.append(updated_details)
+
+        if len(data):
             return json.dumps(data)
+
         else:
             error = "Either no field was editted or you editted all or one"
             " of {} which are not allowed".format(forbidden_fields)
@@ -851,17 +881,18 @@ class FacilityUpdates(AbstractBase):
             self.facility.has_edits = False
         old_facility = Facility.objects.get(id=self.facility.id)
         data = json.loads(self.facility_updates)
-        for key, value in data.items():
-            old_value = getattr(old_facility, key)
-            setattr(self.facility, key, old_value)
-        self.facility.save(allow_save=True)
-
+        for field_changed in data:
+            field_name = field_changed.get("field_name")
+            old_value = getattr(old_facility, field_name)
+            setattr(self.facility, field_name, old_value)
         self.facility.save(allow_save=True)
 
     def update_facility(self):
         data = json.loads(self.facility_updates)
-        for key, value in data.items():
-            setattr(self.facility, key, value)
+        for field_changed in data:
+            field_name = field_changed.get("field_name")
+            value = field_changed.get("actual_value")
+            setattr(self.facility, field_name, value)
         self.facility.save(allow_save=True)
 
     def validate_either_of_approve_or_cancel(self):
