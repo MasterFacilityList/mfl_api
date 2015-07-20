@@ -146,7 +146,6 @@ def serialize_model(obj):
         LOGGER.info("Unable to locate a serializer for model {}".format(
             obj.__class__))
     else:
-
         serialized_data = serializer_cls(obj).data
 
         serialized_data = json.dumps(serialized_data, default=default)

@@ -61,8 +61,22 @@ class TestCommonFieldsFilterset(LoginMixin, APITestCase):
         self.assertEquals(
             _dict(self.client.get(url_with_no_filter).data['results']),
             _dict([
-                CountySerializer(inactive_county).data,
-                CountySerializer(active_county).data
+                CountySerializer(
+                    inactive_county,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data,
+                CountySerializer(
+                    active_county,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data
             ])
         )
 
@@ -70,7 +84,14 @@ class TestCommonFieldsFilterset(LoginMixin, APITestCase):
         self.assertEquals(
             _dict(self.client.get(url_with_active_filter).data['results']),
             _dict([
-                CountySerializer(active_county).data
+                CountySerializer(
+                    active_county,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data
             ])
         )
 
@@ -78,7 +99,14 @@ class TestCommonFieldsFilterset(LoginMixin, APITestCase):
         self.assertEquals(
             _dict(self.client.get(url_with_inactive_filter).data['results']),
             _dict([
-                CountySerializer(inactive_county).data
+                CountySerializer(
+                    inactive_county,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data
             ])
         )
 
@@ -92,6 +120,13 @@ class TestCommonFieldsFilterset(LoginMixin, APITestCase):
         self.assertEquals(
             _dict(self.client.get(url_with_inactive_filter).data['results']),
             _dict([
-                CountySerializer(not_deleted_county).data
+                CountySerializer(
+                    not_deleted_county,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data
             ])
         )

@@ -61,16 +61,19 @@ class CommunityHealthUnitSerializer(
 
 class CommunityHealthWorkerContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = CommunityHealthWorkerContact
 
 
 class StatusSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = Status
 
 
 class CommunityHealthUnitContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = CommunityHealthUnitContact

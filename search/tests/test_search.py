@@ -151,7 +151,14 @@ class TestSearchFunctions(ViewTestBase):
         self.maxDiff = None
         facility = mommy.make(Facility)
         serialized_data = serialize_model(facility)
-        expected_data = FacilitySerializer(facility).data
+        expected_data = FacilitySerializer(
+            facility,
+            context={
+                'request': {
+                    "REQUEST_METHOD": "None"
+                }
+            }
+        ).data
         expected_data = json.dumps(expected_data, default=default)
         self.assertEquals(expected_data, serialized_data.get('data'))
 
@@ -164,7 +171,14 @@ class TestSearchFunctions(ViewTestBase):
 
     def test_default_json_dumps_function(self):
         facility = mommy.make(Facility)
-        data = FacilitySerializer(facility).data
+        data = FacilitySerializer(
+            facility,
+            context={
+                'request': {
+                    "REQUEST_METHOD": "None"
+                }
+            }
+        ).data
         result = json.dumps(data, default=default)
         self.assertIsInstance(result, str)
 
@@ -183,7 +197,14 @@ class TestSearchFunctions(ViewTestBase):
 
         expected_data = {
             "results": [
-                FacilitySerializer(facility).data
+                FacilitySerializer(
+                    facility,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data
             ]
         }
         self._assert_response_data_equality(
@@ -207,7 +228,14 @@ class TestSearchFunctions(ViewTestBase):
 
         expected_data = {
             "results": [
-                FacilitySerializer(facility).data
+                FacilitySerializer(
+                    facility,
+                    context={
+                        'request': {
+                            "REQUEST_METHOD": "None"
+                        }
+                    }
+                ).data
             ]
         }
         self._assert_response_data_equality(
