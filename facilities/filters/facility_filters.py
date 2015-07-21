@@ -153,6 +153,12 @@ class ServiceFilter(CommonFieldsFilterset):
 class FacilityServiceFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
     selected_option = django_filters.AllValuesFilter(lookup_type='exact')
+    is_confirmed = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES, coerce=strtobool
+    )
+    is_cancelled = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES, coerce=strtobool
+    )
 
     class Meta(object):
         model = FacilityService
