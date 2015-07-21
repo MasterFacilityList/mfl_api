@@ -103,7 +103,7 @@ setup(
         "apache-libcloud>=0.17.0",
         "django-environ>=0.3.0",
         "python-coveralls>=2.5.0",
-        "djangorestframework-gis>=0.8.1",
+        "djangorestframework-gis>=0.9.2",
         "django-debug-toolbar>=1.3.0",
         "django-rest-auth>=0.4.0",
         "django-allauth>=0.19.1",
