@@ -949,6 +949,7 @@ class FacilityUpgrade(AbstractBase):
     """
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
+    keph_level = models.ForeignKey(KephLevel, null=True)
     reason = models.TextField()
     is_confirmed = models.BooleanField(
         default=False,
@@ -967,8 +968,8 @@ class FacilityUpgrade(AbstractBase):
                 facility=self.facility, is_confirmed=False, is_cancelled=False
             ).count()
             if type_change_count >= 1:
-                error = "The pending level change has to confirmed"\
-                        "first before another level change is made"
+                error = ("The pending upgrade/downgrade has to be confirmed "
+                         "first before another upgrade/downgrade is made")
                 raise ValidationError(error)
 
     def clean(self):
