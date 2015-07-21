@@ -9,19 +9,23 @@ class Command(BaseCommand):
         mathare = Constituency.objects.get(code=290)
         kamukunji = Constituency.objects.get(code=288)
         starehe = Constituency.objects.get(code=289)
+        all_towns = Town.objects.all()
+        mathare_towns = all_towns[0:10]
+        kamukunji_towns = all_towns[10:20]
+        starehe_towns = all_towns[30:40]
 
         for ward in Ward.objects.filter(constituency=mathare):
-            for town in Town.objects.all()[0:10]:
+            for town in mathare_towns:
                 town.ward = ward
                 town.save()
 
         for ward in Ward.objects.filter(constituency=kamukunji):
-            for town in Town.objects.all()[10:20]:
+            for town in kamukunji_towns:
                 town.ward = ward
                 town.save()
 
         for ward in Ward.objects.filter(constituency=starehe):
-            for town in Town.objects.all()[20:30]:
+            for town in starehe_towns:
                 town.ward = ward
                 town.save()
 
