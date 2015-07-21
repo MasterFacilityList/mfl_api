@@ -43,10 +43,12 @@ class SearchFilter(django_filters.filters.Filter):
             hits_and_scores.append({'id': obj_id, 'score': score})
 
         pk_list = hits_ids_list
+        table_name = "{}_{}.id".format(
+            qs.model._meta.app_label, qs.model.__name__.lower())
         clauses = ' '.join(
             [
-                "WHEN id='%s' THEN '%s'" % (
-                    pk, i) for i, pk in enumerate(pk_list)
+                "WHEN %s='%s' THEN '%s'" % (
+                    table_name, pk, i) for i, pk in enumerate(pk_list)
             ]
         )
 

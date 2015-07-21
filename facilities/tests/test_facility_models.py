@@ -149,7 +149,9 @@ class TestFacilityService(BaseTestCase):
                 "category_name": service_category.name,
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
-                "number_of_ratings": 0
+                "number_of_ratings": 0,
+                "is_cancelled": False,
+                "is_confirmed": False,
             }
         ]
         self.assertEquals(expected_data, facility.get_facility_services)

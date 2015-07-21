@@ -45,6 +45,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_cant_see_unpublished_facilities(self):
         mommy.make(Facility)
+        mommy.make(Facility, rejected=True)
         facility_2 = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility_2)
         self.assertTrue(facility_2.approved)
@@ -58,7 +59,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(2, admin_response.data.get("count"))
         self.assertEquals(
             FacilitySerializer(
-                Facility.objects.all(),
+                Facility.objects.filter(rejected=False),
                 context={
                     'request': {
                         "REQUEST_METHOD": "None"
