@@ -697,7 +697,9 @@ class Facility(SequenceMixin, AbstractBase):
                 "category_name": service.selected_option.service.category.name,
                 "category_id": service.selected_option.service.category.id,
                 "average_rating": service.average_rating,
-                "number_of_ratings": service.number_of_ratings
+                "number_of_ratings": service.number_of_ratings,
+                "is_confirmed": service.is_confirmed,
+                "is_cancelled": service.is_cancelled
             }
             for service in services
         ]
