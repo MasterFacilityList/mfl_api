@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from rest_framework.test import APITestCase
-from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
 from ..models import (
@@ -30,7 +29,6 @@ from ..serializers import (
     UserContactSerializer,
     UserConstituencySerializer
 )
-from ..views import APIRoot
 
 
 def default(obj):
@@ -373,20 +371,6 @@ class TestAPIRootView(LoginMixin, APITestCase):
         self.url = reverse('api:root_listing')
         cache.clear()
         super(TestAPIRootView, self).setUp()
-
-    def test_api_root_exception_path(self):
-        with self.assertRaises(ValidationError) as c:
-            # Auth makes this test really "interesting"
-            # We have to monkey patch the view to trigger the error path
-            root_view = APIRoot()
-
-            class DummyRequest(object):
-                user = get_user_model()()
-
-            root_view.get(request=DummyRequest())
-
-        self.assertEqual(
-            c.exception.message, 'Could not create root / metadata view')
 
     def test_api_and_metadata_root_view(self):
         """
