@@ -1039,7 +1039,7 @@ class TestFacilityUpgrade(BaseTestCase):
         first_level_change.save()
         mommy.make(
             FacilityUpgrade, facility=facility,
-            facility_type=facility_type_2)
+            facility_type=facility_type_2, keph_level=k)
 
     def test_cancelling(self):
         k = mommy.make(KephLevel)
