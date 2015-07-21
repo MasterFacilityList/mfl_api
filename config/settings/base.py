@@ -13,8 +13,7 @@ env = environ.Env(
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# DEBUG = env('DEBUG')
-DEBUG = True
+DEBUG = env('DEBUG')
 SECRET_KEY = env(
     'SECRET_KEY', default='p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8')
 ENV_DB = env.db()
@@ -111,7 +110,7 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 CSRF_COOKIE_HTTPONLY = False
@@ -279,7 +278,7 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": False,
+    "REALTIME_INDEX": True,
     "SEARCH_RESULT_SIZE": 50,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
