@@ -1012,16 +1012,21 @@ class TestFacilityUpdates(BaseTestCase):
 
 
 class TestFacilityUpgrade(BaseTestCase):
+
     def test_saving(self):
-        mommy.make(FacilityUpgrade)
+        k = mommy.make(KephLevel)
+        mommy.make(FacilityUpgrade, keph_level=k)
         self.assertEquals(1, FacilityUpgrade.objects.count())
 
     def test_only_one_facility_upgrade_at_a_time(self):
         facility = mommy.make(Facility)
         facility_type = mommy.make(FacilityType)
         facility_type_2 = mommy.make(FacilityType)
+        k = mommy.make(KephLevel)
         first_level_change = mommy.make(
-            FacilityUpgrade, facility=facility, facility_type=facility_type)
+            FacilityUpgrade, facility=facility, facility_type=facility_type,
+            keph_level=k
+        )
         with self.assertRaises(ValidationError):
             mommy.make(
                 FacilityUpgrade, facility=facility,
@@ -1037,7 +1042,8 @@ class TestFacilityUpgrade(BaseTestCase):
             facility_type=facility_type_2)
 
     def test_cancelling(self):
-        facility_level_change = mommy.make(FacilityUpgrade)
+        k = mommy.make(KephLevel)
+        facility_level_change = mommy.make(FacilityUpgrade, keph_level=k)
         self.assertEquals(1, FacilityUpgrade.objects.count())
         facility_level_change.is_cancelled = True
         facility_level_change.save()
