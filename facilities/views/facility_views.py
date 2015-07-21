@@ -102,9 +102,11 @@ class QuerysetFilterMixin(object):
                 field.name for field in
                 self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(is_classified=False)
+
         if ('rejected' in [
                 field.name for field in
-                self.queryset.model._meta.get_fields()]):
+                self.queryset.model._meta.get_fields()] and 'rejected'
+                not in self.request.query_params):
             self.queryset = self.queryset.filter(rejected=False)
 
         return self.queryset
