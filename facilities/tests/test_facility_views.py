@@ -557,7 +557,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
             "name": "A new name"
         }
         response = self.client.patch(url, data)
-        # error the repoonse status code us not appearing as a 204
+        # error the reponse status code us not appearing as a 204
         self.assertEquals(200, response.status_code)
         facility_retched = Facility.objects.get(id=facility.id)
         self.assertEquals(facility.name, facility_retched.name)

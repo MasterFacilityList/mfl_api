@@ -1,21 +1,12 @@
 import logging
 import reversion
 
-from collections import OrderedDict
-
 from django.shortcuts import redirect
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import RetrieveModelMixin
-from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
-from rest_framework.permissions import IsAdminUser
 
-from ..utilities.metadata_helpers import MODEL_VIEW_DICT, _lookup_metadata
-from ..metadata import CustomMetadata
-
-METADATA_CLASS = CustomMetadata()
 LOGGER = logging.getLogger(__name__)
 
 
@@ -64,17 +55,14 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
 
 class APIRoot(APIView):
     """
-    This view serves as the entry point to the entire API. It also hosts all
-    the metadata.
+    This view serves as the entry point to the entire API.
 
     # Exploring the API
     There are two ways to explore this API:
 
      * the [Swagger](http://swagger.io/)
      [**sandbox** ( click here )](/api/explore/#!/api)
-     * the browsable API - available through clickable links in the metadata
-     listing below
-
+     * the browsable API
     # Authentication
     Anonymous users have **read only** access to *most* ( not all ) views.
     If you want to try out the `POST`, `PUT`, `PATCH` and `DELETE` actions,
@@ -83,72 +71,9 @@ class APIRoot(APIView):
     For the experimental sandbox, you can get suitable credentials from
     [the documentation](http://mfl-api.readthedocs.org/en/latest/). For a live
     instance, you need to request for access from the administrators.
-
-    # Understanding the metadata listing
-    The metadata listing can at first appear to be intimidating, given that it
-    carries metadata for all API views.
-
-    It has a simple structure it is a dictionary ( map ) of dictionaries.
-    Each entry in the dictionary follows the following scheme:
-
-        "<1: Resource Name>": {
-            "list_endpoint": "<2: List URL>",
-            "list_metadata": "<3: List Metadata Payload>",
-            "detail_metadata": <4: Detail Metadata Payload>"
-        }
-
-    ## 1: Resource Name
-    This is the name of a "thing" e.g `county`.
-
-    ## 2: List URL
-    This is a fully qualified URL to a view that **lists** instances of the
-    resource in question. In this server, list views support `GET`
-    ( retrieval of many resources at once ) and `POST` ( creation of new
-    resources ).
-
-    All the links shown in the browseable API are clickable.
-
-    For example: `http://localhost:8000/api/common/counties/` .
-
-    ## 3: List Metadata Payload
-    This payload takes the following form:
-
-        {
-            "name": "<Name of the list view>",
-            "description": "<A human readable description>",
-            "renders": "<a. Output formats for the list API>",
-            "parses": "<b. Input formats for the list API>",
-            "actions": "<c. Actions supported by the list API>"
-        }
-
-    ## 4: Detail Metadata Payload
-
-
-    # Metadata Listing
     """
-    renderer_classes = (JSONRenderer, BrowsableAPIRenderer,)
-    permission_classes = (IsAdminUser,)
-
     def get(self, request, format=None):
-        resp = OrderedDict()
-        errors = []
-
-        for model_cls, url_name_dict in MODEL_VIEW_DICT.iteritems():
-            try:
-                resp[model_cls._meta.verbose_name] = \
-                    _lookup_metadata(url_name_dict, request, model_cls, self)
-            except Exception as e:
-                # There is a good reason for this broad catch
-                # Accumulate and report all errors at once ( re-raising )
-                LOGGER.exception(e)
-                errors.append(e)
-
-        if errors:  # See, our broad Except up there wasn't so evil after all
-            raised_exc = ValidationError(detail=errors)
-            raised_exc.message = 'Could not create root / metadata view'
-            raise raised_exc
-
-        return Response(resp)
+        return Response()
 
 
 def root_redirect_view(request):
