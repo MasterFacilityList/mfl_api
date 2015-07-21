@@ -9,8 +9,6 @@
         frontend_name: "mfl_public_web",
         server_name: mfl-public.azure.slade360.co.ke,
         server_url: "http://mfl.azure.slade360.co.ke/",
-        username: national@mfltest.slade360.co.ke,
-        password: national,
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
         client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
         frontend_tag: "0.0.1a1",
@@ -38,7 +36,7 @@
         server_name: mfl.azure.slade360.co.ke,
         tags: "api-server",
         app_ports: [8000, 8001, 8002, 8003, 8004, 8005],
-        frontend_url: "http://mfl-admin.azure.slade360.co.ke/",
+        frontend_url: "http://mfl-admin.azure.slade360.co.ke",
 
         # drop and recreate database
         setup_new_db: false,
