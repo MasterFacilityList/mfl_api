@@ -9,7 +9,8 @@ BASE_DIR = os.path.dirname(
 env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
     DEBUG=(bool, True),
-    FRONTEND_URL=(str, "http://localhost:8062")
+    FRONTEND_URL=(str, "http://localhost:8062"),
+    REALTIME_INDEX=(bool, False)
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
