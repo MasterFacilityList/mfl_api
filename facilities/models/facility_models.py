@@ -1214,8 +1214,24 @@ class FacilityService(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)
 
+    def validate_unique_service_or_service_option_with_for_facility(self):
+        if self.selected_option:
+            if self.__class__.objects.filter(
+                    selected_option=self.selected_option,
+                    facility=self.facility,
+                    deleted=False):
+                raise ValidationError(
+                    "The Service has already been added to the facility")
+        if self.service:
+            if self.__class__.objects.filter(
+                    service=self.service, facility=self.facility,
+                    deleted=False):
+                raise ValidationError(
+                    "The service has already been added to the facility")
+
     def clean(self, *args, **kwargs):
         self.validate_either_options_or_service()
+        self.validate_unique_service_or_service_option_with_for_facility()
 
 
 @reversion.register
