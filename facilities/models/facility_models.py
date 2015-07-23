@@ -520,6 +520,9 @@ class Facility(SequenceMixin, AbstractBase):
     open_weekends = models.BooleanField(
         default=False,
         help_text="Is the facility_open during weekends?")
+    open_late_night = models.BooleanField(
+        default=False,
+        help_text="Indicates if a facility is open late night e.g upto 11 pm")
     is_classified = models.BooleanField(
         default=False,
         help_text="Should the facility geo-codes be visible to the public?"
