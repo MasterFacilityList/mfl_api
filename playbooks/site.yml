@@ -41,6 +41,7 @@
         # drop and recreate database
         setup_new_db: false,
         django_debug: False,
+        realtime_index: true,
         load_demo_data: false,
         recreate_search_index: false,
 

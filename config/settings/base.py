@@ -9,7 +9,8 @@ BASE_DIR = os.path.dirname(
 env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
     DEBUG=(bool, True),
-    FRONTEND_URL=(str, "http://localhost:8062")
+    FRONTEND_URL=(str, "http://localhost:8062"),
+    REALTIME_INDEX=(bool, False)
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -110,7 +111,7 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 CSRF_COOKIE_HTTPONLY = False
@@ -278,7 +279,7 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": False,
+    "REALTIME_INDEX": env('REALTIME_INDEX', False),
     "SEARCH_RESULT_SIZE": 50,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
