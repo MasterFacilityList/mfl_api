@@ -355,12 +355,13 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
+        service_y = mommy.make(Service)
         mommy.make(FacilityService, facility=facility_2, service=service_x)
 
         service_2 = mommy.make(Service, category=category_2)
         service_op_2 = mommy.make(
             ServiceOption, option=option, service=service_2)
-        mommy.make(FacilityService, facility=facility_2, service=service_x)
+        mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
             FacilityService, facility=facility, selected_option=service_option)
         mommy.make(
@@ -396,8 +397,9 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
+        service_y = mommy.make(Service)
         mommy.make(FacilityService, facility=facility_2, service=service_x)
-        mommy.make(FacilityService, facility=facility_2, service=service_x)
+        mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
             FacilityService, facility=facility, selected_option=service_option)
 
@@ -435,12 +437,13 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
+        service_y = mommy.make(Service)
         mommy.make(FacilityService, facility=facility_2, service=service_x)
 
         service_2 = mommy.make(Service, category=category_2)
         service_op_2 = mommy.make(
             ServiceOption, option=option, service=service_2)
-        mommy.make(FacilityService, facility=facility_2, service=service_x)
+        mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
             FacilityService, facility=facility, selected_option=service_option)
         mommy.make(
