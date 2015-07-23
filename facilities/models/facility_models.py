@@ -1039,7 +1039,7 @@ class FacilityUnit(AbstractBase):
     The pharmacy will in this case be treated as a facility unit.
     """
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
     regulating_body = models.ForeignKey(
@@ -1053,6 +1053,9 @@ class FacilityUnit(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('facility', 'name', )
 
 
 @reversion.register
