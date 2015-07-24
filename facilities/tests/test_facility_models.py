@@ -657,6 +657,15 @@ class TestFacility(BaseTestCase):
         facility_refetched = Facility.objects.get(id=facility.id)
         self.assertFalse(facility_refetched.is_published)
 
+    def test_facility_official_name_not_given(self):
+        facility = mommy.make(Facility)
+        self.assertEquals(facility.name, facility.official_name)
+
+    def test_facility_official_name_given(self):
+        facility = mommy.make(Facility, official_name='jina official')
+        self.assertNotEquals(facility.name, facility.official_name)
+        self.assertEquals(facility.official_name, 'jina official')
+
 
 class TestFacilityContact(BaseTestCase):
 

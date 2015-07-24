@@ -495,7 +495,10 @@ class Facility(SequenceMixin, AbstractBase):
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text='This is the official name of the facility')
+        help_text='This is the unique name of the facility')
+    official_name = models.CharField(
+        max_length=150, null=True, blank=True,
+        help_text='The official name of the facility')
     code = SequenceField(
         unique=True, editable=False,
         help_text='A sequential number allocated to each facility')
@@ -802,6 +805,8 @@ class Facility(SequenceMixin, AbstractBase):
         from facilities.serializers import FacilityDetailSerializer
         if not self.code:
             self.code = self.generate_next_code_sequence()
+        if not self.official_name:
+            self.official_name = self.name
         if not self.is_approved:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
