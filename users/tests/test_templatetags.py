@@ -20,3 +20,12 @@ class TestTemplateTags(TestCase):
             val,
             "{}/#/reset_pwd_confirm/yyyy/1234567".format(settings.FRONTEND_URL)
         )
+
+    def test_subject_header(self):
+        template = (
+            "{% load dj_settings %}"
+            "{% email_subject %} End"
+        )
+        tpl = Template(template)
+        val = tpl.render()
+        self.assertEqual(val, "{} End".format(settings.EMAIL_SUBJECT_PREFIX))
