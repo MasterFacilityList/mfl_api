@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
-    'PAGINATE_BY': 25,
+    'PAGINATE_BY': 30,
     'PAGINATE_BY_PARAM': 'page_size',
     # Should be able to opt in to see all wards at once
     'MAX_PAGINATE_BY': 15000,
