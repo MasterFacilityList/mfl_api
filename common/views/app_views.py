@@ -21,7 +21,8 @@ from facilities.models import(
     FacilityType,
     OwnerType,
     Owner,
-    Service
+    Service,
+    KephLevel
 )
 from ..serializers import (
     ContactSerializer,
@@ -362,7 +363,8 @@ class FilteringSummariesView(views.APIView):
             'service_category': (ServiceCategory, ('id', 'name')),
             'owner_type': (OwnerType, ('id', 'name')),
             'owner': (Owner, ('id', 'name', 'owner_type')),
-            'service': (Service, ('id', 'name', 'category'))
+            'service': (Service, ('id', 'name', 'category')),
+            'keph_level': (KephLevel, ('id', 'name'))
         }
         if fields:
             resp = {}

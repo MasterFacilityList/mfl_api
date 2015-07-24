@@ -41,11 +41,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
 EMAIL_HOST = env('EMAIL_HOST', default='localhost')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default=487)
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='notarealpassword')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
+
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
     'django.contrib.sites',
@@ -403,7 +406,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Master Facilities List]'
+ACCOUNT_EMAIL_SUBJECT_PREFIX = EMAIL_SUBJECT_PREFIX
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_LOGOUT_REDIRECT_URL = '/api/'
 ACCOUNT_SESSION_REMEMBER = True
