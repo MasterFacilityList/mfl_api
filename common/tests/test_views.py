@@ -546,10 +546,10 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
         self.assertEqual(len(parsed_response["revisions"]), 2)
 
 
-class FilteringSummariesView(LoginMixin, APITestCase):
+class TestFilteringSummariesView(LoginMixin, APITestCase):
 
     def setUp(self):
-        super(FilteringSummariesView, self).setUp()
+        super(TestFilteringSummariesView, self).setUp()
         self.url = reverse('api:common:filtering_summaries')
 
     def test_get_summaries(self):
