@@ -126,7 +126,7 @@ class TestGroupSuperUsersProperty(BaseTestCase):
         superuser_perm = Permission.objects.get(
             codename='manipulate_superusers')
         self.assertNotIn(superuser_perm, group.permissions.all())
-        self.assertFalse(group.superusers)
+        self.assertFalse(group.is_superuser_level)
         self.assertIn(perm, group.permissions.all())
 
     def test_group_has_county_level_marker_permission(self):
@@ -134,4 +134,4 @@ class TestGroupSuperUsersProperty(BaseTestCase):
         perm = Permission.objects.get(codename='manipulate_superusers')
         group.permissions.add(perm.id)
         self.assertIn(perm, group.permissions.all())
-        self.assertTrue(group.superusers)
+        self.assertTrue(group.is_superuser_level)

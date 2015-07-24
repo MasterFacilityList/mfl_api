@@ -186,7 +186,7 @@ Group.is_county_level = property(
         perm.codename for perm in self.permissions.all()]
 )
 
-Group.superusers = property(
+Group.is_superuser_level = property(
     lambda self: 'manipulate_superusers' in [
         perm.codename for perm in self.permissions.all()]
 )
