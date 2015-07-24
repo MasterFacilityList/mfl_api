@@ -116,3 +116,22 @@ class TestGroupCountyLevelMarkerProperty(BaseTestCase):
         group.permissions.add(perm.id)
         self.assertIn(perm, group.permissions.all())
         self.assertTrue(group.is_county_level)
+
+
+class TestGroupSuperUsersProperty(BaseTestCase):
+    def test_group_does_not_have_manipulate_superusers_permissions(self):
+        group = mommy.make(Group)
+        perm = mommy.make(Permission)
+        group.permissions.add(perm.id)
+        superuser_perm = Permission.objects.get(
+            codename='manipulate_superusers')
+        self.assertNotIn(superuser_perm, group.permissions.all())
+        self.assertFalse(group.superusers)
+        self.assertIn(perm, group.permissions.all())
+
+    def test_group_has_county_level_marker_permission(self):
+        group = mommy.make(Group)
+        perm = Permission.objects.get(codename='manipulate_superusers')
+        group.permissions.add(perm.id)
+        self.assertIn(perm, group.permissions.all())
+        self.assertTrue(group.superusers)
