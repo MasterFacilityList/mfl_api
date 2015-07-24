@@ -1855,9 +1855,6 @@
                 "codename": "delete_mfluser"
             },
             {
-                "codename": "manipulate_superusers"
-            },
-            {
                 "codename": "view_mfluser"
             }
         ]

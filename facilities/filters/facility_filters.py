@@ -310,6 +310,7 @@ class FacilityFilter(CommonFieldsFilterset):
     description = ListCharFilter(lookup_type='icontains')
 
     facility_type = ListCharFilter(lookup_type='icontains')
+    keph_level = ListCharFilter(lookup_type='exact')
     operation_status = ListCharFilter(lookup_type='icontains')
     ward = ListCharFilter(lookup_type='icontains')
     ward_code = ListCharFilter(name="ward__code", lookup_type='icontains')
