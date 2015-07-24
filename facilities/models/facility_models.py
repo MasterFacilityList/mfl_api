@@ -1222,18 +1222,21 @@ class FacilityService(AbstractBase):
 
     def validate_unique_service_or_service_option_with_for_facility(self):
         if self.selected_option:
+            # You can only one option per sevice
             if self.__class__.objects.filter(
-                    selected_option=self.selected_option,
+                    selected_option__service=self.selected_option.service,
                     facility=self.facility,
                     deleted=False):
-                raise ValidationError(
-                    "The Service has already been added to the facility")
+                error = "The Service {} has already been added to"
+                " the facility".format(self.selected_option.service.name)
+                raise ValidationError(error)
         if self.service:
             if self.__class__.objects.filter(
                     service=self.service, facility=self.facility,
                     deleted=False):
-                raise ValidationError(
-                    "The service has already been added to the facility")
+                error = "The service {} has already been added to the "
+                "facility".format(self.service.name)
+                raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
         self.validate_either_options_or_service()
