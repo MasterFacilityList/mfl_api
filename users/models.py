@@ -21,7 +21,9 @@ USER_MODEL = settings.AUTH_USER_MODEL
 
 def check_password_length(raw_password):
     # use not isalpha in order to allow special characters also
-    if len(raw_password) >= 8 and not raw_password.isalpha():
+    # user not isdigit to make the passsword is not a number
+    if (len(raw_password) >= 8 and not raw_password.isalpha()
+            and not raw_password.isdigit()):
         return True
     else:
         return False
