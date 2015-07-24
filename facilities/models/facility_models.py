@@ -1227,15 +1227,23 @@ class FacilityService(AbstractBase):
                     selected_option__service=self.selected_option.service,
                     facility=self.facility,
                     deleted=False):
-                error = "The Service {} has already been added to"
-                " the facility".format(self.selected_option.service.name)
+                error = {
+                    "selected_option": [
+                        "The service {} with the option {} has"
+                        "already been added to the facility".format(
+                            self.selected_option.service.name,
+                            self.selected_option.option.display_text)]
+                }
                 raise ValidationError(error)
         if self.service:
             if self.__class__.objects.filter(
                     service=self.service, facility=self.facility,
                     deleted=False):
-                error = "The service {} has already been added to the "
-                "facility".format(self.service.name)
+                error = {
+                    "service": [
+                        "The service {} has already been added to the "
+                        "facility".format(self.service.name)]
+                }
                 raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
