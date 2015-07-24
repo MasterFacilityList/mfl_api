@@ -9,9 +9,9 @@ Password: {{user_password}}
 Click on the link given below to login to MFL.
 {{login_url}}
 
+Note: You will be required to change your password once you log in the first time.
 If you have issues regarding this information contact the MFL team using the email helpdesk@ehealth.or.ke
 
 
 Warm Regards,
 The MFL Team http://www.ehealth.or.ke
-
