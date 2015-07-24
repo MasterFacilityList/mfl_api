@@ -1,4 +1,5 @@
 import reversion
+import threading
 
 from django.db import models
 from django.utils import timezone
@@ -67,7 +68,9 @@ class MflUserManager(BaseUserManager):
                           is_superuser=False,
                           last_login=now, date_joined=now, **extra_fields)
         user.save(using=self._db)
-        send_email_on_signup(user, password)
+        thr = threading.Thread(
+            target=send_email_on_signup, args=(user, password), kwargs={})
+        thr.start()
         return user
 
     def create_superuser(self, email, first_name, username,
