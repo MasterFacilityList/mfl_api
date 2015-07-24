@@ -29,6 +29,9 @@
                 "codename": "delete_communityhealthworkerapproval"
             },
             {
+                "codename": "publish_facilities"
+            },
+            {
                 "codename": "view_constituency"
             },
             {
