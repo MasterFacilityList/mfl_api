@@ -27,5 +27,5 @@ class TestTemplateTags(TestCase):
             "{% email_subject %} End"
         )
         tpl = Template(template)
-        val = tpl.render()
+        val = tpl.render(Context())
         self.assertEqual(val, "{} End".format(settings.EMAIL_SUBJECT_PREFIX))
