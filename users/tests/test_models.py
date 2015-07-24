@@ -15,7 +15,7 @@ class TestMflUserModel(BaseTestCase):
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
-            "password": "password",
+            "password": "password1",
         }
         user = MflUser.objects.create_user(**data)
 
@@ -35,7 +35,7 @@ class TestMflUserModel(BaseTestCase):
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
-            "password": "password",
+            "password": "password1",
         }
         user = MflUser.objects.create_superuser(**data)
 
@@ -51,7 +51,7 @@ class TestMflUserModel(BaseTestCase):
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
-            "password": "password",
+            "password": "password1",
         }
         MflUser.objects.create_superuser(**data)
         # mysterious error here
@@ -59,32 +59,32 @@ class TestMflUserModel(BaseTestCase):
         # self.assertTrue("common.add_constituency" in user.permissions)
 
     def test_set_password_does_not_set_for_new_users(self):
-        user = mommy.make(MflUser, password='a great password')
+        user = mommy.make(MflUser, password='a great password 1')
         user.set_password('does not really matter')
         self.assertIsNotNone(user.password_history)
 
     def test_set_password_sets_for_existing_users(self):
-        user = mommy.make(MflUser, password='a very huge password')
+        user = mommy.make(MflUser, password='a very huge password 1')
         user.last_login = timezone.now()
         user.set_password('we now expect the change history to be saved')
         self.assertTrue(user.password_history)
         self.assertEqual(len(user.password_history), 1)
 
     def test_requires_password_change_new_user(self):
-        user = mommy.make(MflUser, password='a very huge password')
+        user = mommy.make(MflUser, password='a very huge password 1')
         self.assertTrue(user.requires_password_change)
 
     def test_requires_password_change_new_user_with_prior_login(self):
-        user = mommy.make(MflUser, password='A very huge password')
+        user = mommy.make(MflUser, password='A very huge password 1')
         user.last_login = timezone.now()
         self.assertTrue(user.requires_password_change)
 
     def test_doesnt_require_password_change_user_with_prior_passwords(self):
-        user = mommy.make(MflUser, password='A very huge password')
+        user = mommy.make(MflUser, password='A very huge password1')
         user.last_login = timezone.now()
-        user.set_password('we now expect the change history to be saved')
+        user.set_password('we now expect the change history to be saved 1')
         self.assertFalse(user.requires_password_change)
-        user.set_password('we now expect the change history to be saved')
+        user.set_password('we now expect the change history to be saved 1')
         self.assertEqual(len(user.password_history), 2)
 
     def test_password_is_greater_than_or_equal_to_6_characters(self):

@@ -790,12 +790,11 @@ class TestFacilityUnitModel(BaseTestCase):
             facility_unit=facility_unit, regulation_status=reg_status)
         self.assertEquals(reg_status, obj.regulation_status)
 
-    def test_unique_name(self):
+    def test_unique_unit_name_in_a_facility(self):
         facility = mommy.make(Facility)
-        facility_2 = mommy.make(Facility)
         mommy.make(FacilityUnit, name='honcho', facility=facility)
         with self.assertRaises(ValidationError):
-            mommy.make(FacilityUnit, name='honcho', facility=facility_2)
+            mommy.make(FacilityUnit, name='honcho', facility=facility)
 
 
 class TestRegulationStatusModel(BaseTestCase):

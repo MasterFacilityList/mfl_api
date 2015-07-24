@@ -638,15 +638,16 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
 class CountyAndNationalFilterBackendTest(APITestCase):
 
     def setUp(self):
+        password = 'mtihani123'
         self.user = get_user_model().objects.create_superuser(
             email='tester@ehealth.or.ke',
             first_name='Test',
             username='test',
-            password='mtihani',
+            password=password,
             is_national=False
         )
         self.user_county = mommy.make(UserCounty, user=self.user)
-        self.client.login(email='tester@ehealth.or.ke', password='mtihani')
+        self.client.login(email='tester@ehealth.or.ke', password=password)
         self.maxDiff = None
         self.url = reverse('api:facilities:facilities_list')
         super(CountyAndNationalFilterBackendTest, self).setUp()
@@ -1110,7 +1111,7 @@ class TestFacilityRegulator(TestGroupAndPermissions, APITestCase):
     def test_filtering_facilities_by_regulator(self):
         url = reverse("api:facilities:facilities_list")
         reg_body = mommy.make(RegulatingBody)
-        user = mommy.make(get_user_model(), password='test')
+        user = mommy.make(get_user_model(), password='test123456')
         user.groups.add(self.admin_group)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
         facility = mommy.make(Facility, regulatory_body=reg_body)

@@ -39,14 +39,15 @@ def default(obj):
 class LoginMixin(object):
 
     def setUp(self):
+        password = 'mtihani124'
         self.user = get_user_model().objects.create_superuser(
             email='tester@ehealth.or.ke',
             first_name='Test',
             username='test',
-            password='mtihani',
+            password=password,
             is_national=True
         )
-        self.client.login(email='tester@ehealth.or.ke', password='mtihani')
+        self.client.login(email='tester@ehealth.or.ke', password=password)
         self.maxDiff = None
         super(LoginMixin, self).setUp()
 

@@ -20,7 +20,8 @@ USER_MODEL = settings.AUTH_USER_MODEL
 
 
 def check_password_length(raw_password):
-    if len(raw_password) >= 4:
+    # use not isalpha in order to allow special characters also
+    if len(raw_password) >= 8 and not raw_password.isalpha():
         return True
     else:
         return False
@@ -31,7 +32,8 @@ class MflUserManager(BaseUserManager):
     def create_user(self, email, first_name,
                     username, password=None, is_staff=False, **extra_fields):
         if not check_password_length(password):
-            error = "The password must be at least 4 characters long"
+            error = "The password must be at least 8"
+            "characters long and have at least one number"
             raise ValidationError(error)
         now = timezone.now()
         validate_email(email)
