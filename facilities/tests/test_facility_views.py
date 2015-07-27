@@ -1,9 +1,9 @@
 import json
-import datetime
 from datetime import timedelta
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from rest_framework.test import APITestCase
 from model_mommy import mommy
@@ -1006,7 +1006,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)
         status = mommy.make(FacilityStatus)
-        right_now = datetime.datetime.now()
+        right_now = timezone.now()
         mommy.make(
             Facility,
             ward=ward,

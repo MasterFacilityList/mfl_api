@@ -13,20 +13,18 @@ from ..models import (
     Facility,
 )
 
-from ..filters import FacilityFilter
-
 
 class DashBoard(APIView):
-    queryset = Facility.objects.all()
-    filter_class = FacilityFilter
+    def get_queryset(self, *args, **kwargs):
+        return Facility.objects.all()
 
     def get_facility_county_summary(self):
         counties = County.objects.all()
         facility_county_summary = {}
         for county in counties:
-            facility_county_count = self.queryset.filter(
+            facility_county_count = self.filter_queryset().filter(
                 ward__constituency__county=county).count()
-            facility_county_summary[county.name] = facility_county_count
+            facility_county_summary[str(county.name)] = facility_county_count
         top_10_counties = sorted(
             facility_county_summary.items(),
             key=lambda x: x[1], reverse=True)[0:20]
@@ -50,9 +48,10 @@ class DashBoard(APIView):
 
         facility_constituency_summary = {}
         for const in constituencies:
-            facility_const_count = self.queryset.filter(
+            facility_const_count = self.filter_queryset().filter(
                 ward__constituency=const).count()
-            facility_constituency_summary[const.name] = facility_const_count
+            facility_constituency_summary[
+                str(const.name)] = facility_const_count
         top_10_consts = sorted(
             facility_constituency_summary.items(),
             key=lambda x: x[1], reverse=True)[0:20]
@@ -73,9 +72,9 @@ class DashBoard(APIView):
             wards = []
         facility_ward_summary = {}
         for ward in wards:
-            facility_ward_count = self.queryset.filter(
+            facility_ward_count = self.filter_queryset().filter(
                 ward=ward).count()
-            facility_ward_summary[ward.name] = facility_ward_count
+            facility_ward_summary[str(ward.name)] = facility_ward_count
         top_10_wards = sorted(
             facility_ward_summary.items(),
             key=lambda x: x[1], reverse=True)[0:20]
@@ -143,19 +142,21 @@ class DashBoard(APIView):
 
     def get_recently_created_facilities(self):
         right_now = timezone.now()
-        three_months_ago = right_now - timedelta(days=90)
-        weekly = right_now - timedelta(days=7)
-        monthly = right_now - timedelta(days=30)
         weekly = self.request.query_params.get('weekly', None)
         monthly = self.request.query_params.get('monthly', None)
         quarterly = self.request.query_params.get('quarterly', None)
+        three_months_ago = right_now - timedelta(days=90)
         if quarterly:
             return self.filter_queryset().filter(
                 created__gte=three_months_ago).count()
+
         if monthly:
+            monthly = right_now - timedelta(days=30)
             return self.filter_queryset().filter(
                 created__gte=monthly).count()
+
         if weekly:
+            weekly = right_now - timedelta(days=7)
             return self.filter_queryset().filter(
                 created__gte=weekly).count()
         return self.filter_queryset().filter(
@@ -164,17 +165,19 @@ class DashBoard(APIView):
     def filter_queryset(self):
         user = self.request.user
         if user.county and not user.is_national:
-            return self.queryset.filter(ward__constituency__county=user.county)
+            return self.get_queryset().filter(
+                ward__constituency__county=user.county)
         elif user.constituency:
-            return self.queryset.filter(ward__constituency=user.constituency)
+            return self.get_queryset().filter(
+                ward__constituency__county=user.constituency.county)
         elif user.is_national:
-            return self.queryset
+            return self.get_queryset()
         else:
-            return self.queryset
+            return self.get_queryset()
 
     def get(self, *args, **kwargs):
         data = {
-            "total_facilities": len(self.queryset),
+            "total_facilities": len(self.filter_queryset()),
             "county_summary": self.get_facility_county_summary(),
             "constituencies_summary": self.get_facility_constituency_summary(),
             "wards_summary": self.get_facility_ward_summary(),
