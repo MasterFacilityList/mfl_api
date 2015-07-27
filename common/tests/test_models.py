@@ -108,7 +108,7 @@ class BaseTestCase(TestCase):
             email='tester1@ehealth.or.ke',
             first_name='Test',
             username='test1',
-            password='mtihani',
+            password='mtihani124',
             is_national=True
         )
         self.default_regulation_status = mommy.make(
@@ -355,22 +355,6 @@ class TestUserConstituencyModel(BaseTestCase):
         # test unicode
         expected_unicode = "{}: {}".format(user, const)
         self.assertEquals(expected_unicode, user_const.__unicode__())
-
-    def test_validate_user_active_in_one_consituency_only(self):
-        county = mommy.make(County)
-        const = mommy.make(Constituency, county=county)
-        const = mommy.make(Constituency, county=county)
-        creator_user = mommy.make(get_user_model())
-        const_2 = mommy.make(Constituency)
-        user = mommy.make(get_user_model())
-        mommy.make(UserCounty, user=creator_user, county=county)
-        mommy.make(
-            UserConstituency, user=user, active=True, constituency=const,
-            created_by=creator_user)
-        with self.assertRaises(ValidationError):
-            mommy.make(
-                UserConstituency, user=user, active=True, constituency=const_2,
-                created_by=creator_user)
 
     def test_validator_constituency_in_creators_county(self):
         county = mommy.make(County)
