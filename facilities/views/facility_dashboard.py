@@ -166,10 +166,8 @@ class DashBoard(APIView):
             return self.queryset
 
     def get(self, *args, **kwargs):
-        total_facilities = self.filter_queryset().count()
-
         data = {
-            "total_facilities": total_facilities,
+            "total_facilities": len(self.queryset),
             "county_summary": self.get_facility_county_summary(),
             "constituencies_summary": self.get_facility_constituency_summary(),
             "wards_summary": self.get_facility_ward_summary(),
