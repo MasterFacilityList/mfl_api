@@ -666,6 +666,16 @@ class TestFacility(BaseTestCase):
         self.assertNotEquals(facility.name, facility.official_name)
         self.assertEquals(facility.official_name, 'jina official')
 
+    def test_service_catalogue_active_true(self):
+        operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
+        facility = mommy.make(Facility, operation_status=operation_status)
+        self.assertTrue(facility.service_catalogue_active)
+
+    def test_service_catalogue_active_false(self):
+        operation_status = mommy.make(FacilityStatus, name="NON OPERATIONAL")
+        facility = mommy.make(Facility, operation_status=operation_status)
+        self.assertFalse(facility.service_catalogue_active)
+
 
 class TestFacilityContact(BaseTestCase):
 
