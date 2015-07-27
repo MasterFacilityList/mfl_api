@@ -233,20 +233,12 @@ class UserConstituency(AbstractBase):
         settings.AUTH_USER_MODEL, related_name='user_constituencies')
     constituency = models.ForeignKey(Constituency)
 
-    def validate_only_one_active_constituency(self):
-        consts = self.__class__.objects.filter(
-            user=self.user, active=True, deleted=False)
-        if consts.count() > 0 and not self.deleted:
-            raise ValidationError(
-                "A user can be active in only one constituency at a time")
-
     def validate_constituency_county_in_creator_county(self):
         if self.constituency.county != self.created_by.county:
             error = "Users created must be in the administrators county"
             raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
-        self.validate_only_one_active_constituency()
         self.validate_constituency_county_in_creator_county()
 
     def __unicode__(self):
