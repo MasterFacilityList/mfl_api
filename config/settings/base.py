@@ -9,7 +9,8 @@ BASE_DIR = os.path.dirname(
 env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
     DEBUG=(bool, True),
-    FRONTEND_URL=(str, "http://localhost:8062")
+    FRONTEND_URL=(str, "http://localhost:8062"),
+    REALTIME_INDEX=(bool, False)
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -40,11 +41,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
 EMAIL_HOST = env('EMAIL_HOST', default='localhost')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default=487)
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='notarealpassword')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
+
 ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost']
 INSTALLED_APPS = (
     'django.contrib.sites',
@@ -110,7 +114,7 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 CSRF_COOKIE_HTTPONLY = False
@@ -147,7 +151,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
-    'PAGINATE_BY': 25,
+    'PAGINATE_BY': 30,
     'PAGINATE_BY_PARAM': 'page_size',
     # Should be able to opt in to see all wards at once
     'MAX_PAGINATE_BY': 15000,
@@ -278,7 +282,7 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": False,
+    "REALTIME_INDEX": env('REALTIME_INDEX', False),
     "SEARCH_RESULT_SIZE": 50,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
@@ -402,7 +406,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Master Facilities List]'
+ACCOUNT_EMAIL_SUBJECT_PREFIX = EMAIL_SUBJECT_PREFIX
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_LOGOUT_REDIRECT_URL = '/api/'
 ACCOUNT_SESSION_REMEMBER = True

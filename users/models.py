@@ -13,10 +13,34 @@ from django.contrib.auth.models import (
     Group
 )
 from django.conf import settings
+from django.template import Context, loader
+from django.core.mail import EmailMultiAlternatives
+
 from oauth2_provider.models import AbstractApplication
 
 
 USER_MODEL = settings.AUTH_USER_MODEL
+
+
+def send_email_on_signup(user, user_password):
+    html_email_template = loader.get_template(
+        "registration/registration_success.html")
+    context = Context(
+        {
+            "user": user,
+            "user_password": user_password,
+            "login_url": settings.FRONTEND_URL
+        }
+    )
+    plain_text = loader.get_template("registration/registration_success.txt")
+    subject = "Account Created"
+    plain_text_content = plain_text.render(context)
+    html_content = html_email_template.render(context)
+    mfl_email = settings.EMAIL_HOST_USER
+    msg = EmailMultiAlternatives(
+        subject, plain_text_content, mfl_email, [user.email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
 
 
 def check_password_length(raw_password):
@@ -47,6 +71,7 @@ class MflUserManager(BaseUserManager):
                           is_superuser=False,
                           last_login=now, date_joined=now, **extra_fields)
         user.save(using=self._db)
+        send_email_on_signup(user, password)
         return user
 
     def create_superuser(self, email, first_name, username,
