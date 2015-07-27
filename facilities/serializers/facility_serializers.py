@@ -268,6 +268,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     latest_approval = serializers.ReadOnlyField()
     boundaries = serializers.ReadOnlyField()
     keph_level_name = serializers.ReadOnlyField(source="keph_level.name")
+    service_catalogue_active = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility

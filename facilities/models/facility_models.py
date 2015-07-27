@@ -575,6 +575,14 @@ class Facility(SequenceMixin, AbstractBase):
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
 
+    # hard code the operational status name in order to avoid more crud
+    @property
+    def service_catalogue_active(self):
+        if self.operation_status.name == "OPERATIONAL":
+            return True
+        else:
+            return False
+
     @property
     def boundaries(self):
         from mfl_gis.models import (
