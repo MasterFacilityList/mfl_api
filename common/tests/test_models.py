@@ -108,7 +108,7 @@ class BaseTestCase(TestCase):
             email='tester1@ehealth.or.ke',
             first_name='Test',
             username='test1',
-            password='mtihani',
+            password='mtihani124',
             is_national=True
         )
         self.default_regulation_status = mommy.make(

@@ -332,6 +332,9 @@ class FacilityFilter(CommonFieldsFilterset):
     open_whole_day = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
+    open_late_night = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
     open_weekends = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)

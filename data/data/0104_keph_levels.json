@@ -3,9 +3,6 @@
         "model": "facilities.KephLevel",
         "records": [
             {
-                "name": "Level 1"
-            },
-            {
                 "name": "Level 2"
             },
             {
@@ -19,6 +16,9 @@
             },
             {
                 "name": "Level 6"
+            },
+            {
+                "name": "Not Classified"
             }
 
         ],

@@ -523,6 +523,9 @@ class Facility(SequenceMixin, AbstractBase):
     open_weekends = models.BooleanField(
         default=False,
         help_text="Is the facility_open during weekends?")
+    open_late_night = models.BooleanField(
+        default=False,
+        help_text="Indicates if a facility is open late night e.g upto 11 pm")
     is_classified = models.BooleanField(
         default=False,
         help_text="Should the facility geo-codes be visible to the public?"
@@ -916,8 +919,8 @@ class FacilityUpdates(AbstractBase):
             pass
         else:
             if updates >= 1:
-                error = "The pending facility update has to be either approved "\
-                    "or cancelled before another one is made"
+                error = ("The pending facility update has to be either"
+                         "approved or cancelled before another one is made")
                 raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
@@ -1041,7 +1044,7 @@ class FacilityUnit(AbstractBase):
     The pharmacy will in this case be treated as a facility unit.
     """
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
     regulating_body = models.ForeignKey(
@@ -1055,6 +1058,9 @@ class FacilityUnit(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('facility', 'name', )
 
 
 @reversion.register
@@ -1219,8 +1225,35 @@ class FacilityService(AbstractBase):
     def __unicode__(self):
         return "{}: {}".format(self.facility, self.selected_option)
 
+    def validate_unique_service_or_service_option_with_for_facility(self):
+        if self.selected_option:
+            # You can only one option per sevice
+            if self.__class__.objects.filter(
+                    selected_option__service=self.selected_option.service,
+                    facility=self.facility,
+                    deleted=False):
+                error = {
+                    "selected_option": [
+                        ("The service {} with the option {} has"
+                         "already been added to the facility").format(
+                            self.selected_option.service.name,
+                            self.selected_option.option.display_text)]
+                }
+                raise ValidationError(error)
+        if self.service:
+            if self.__class__.objects.filter(
+                    service=self.service, facility=self.facility,
+                    deleted=False):
+                error = {
+                    "service": [
+                        ("The service {} has already been added to the "
+                         "facility").format(self.service.name)]
+                }
+                raise ValidationError(error)
+
     def clean(self, *args, **kwargs):
         self.validate_either_options_or_service()
+        self.validate_unique_service_or_service_option_with_for_facility()
 
 
 @reversion.register

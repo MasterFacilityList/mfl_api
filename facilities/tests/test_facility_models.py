@@ -240,10 +240,32 @@ class TestFacilityService(BaseTestCase):
         option = mommy.make(Option)
         service_option = mommy.make(
             ServiceOption, service=service, option=option)
-        fs = facility_service = mommy.make(
+        fs = mommy.make(
             FacilityService, selected_option=service_option)
-        self.assertEquals("TB Culture", facility_service.service_name)
+        self.assertEquals("TB Culture", fs.service_name)
         self.assertTrue(fs.service_has_options)
+
+    def test_validate_unique_service_or_service_option_with_for_facility(self):
+        service = mommy.make(Service, name="TB Culture")
+        facility = mommy.make(Facility)
+        option = mommy.make(Option)
+        service_option = mommy.make(
+            ServiceOption, service=service, option=option)
+
+        # test validation with selected option
+        mommy.make(
+            FacilityService, facility=facility, selected_option=service_option)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityService, facility=facility,
+                selected_option=service_option)
+
+        # test validation with service
+        mommy.make(
+            FacilityService, facility=facility, service=service)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityService, facility=facility, service=service)
 
 
 class TestServiceModel(BaseTestCase):
@@ -777,12 +799,11 @@ class TestFacilityUnitModel(BaseTestCase):
             facility_unit=facility_unit, regulation_status=reg_status)
         self.assertEquals(reg_status, obj.regulation_status)
 
-    def test_unique_name(self):
+    def test_unique_unit_name_in_a_facility(self):
         facility = mommy.make(Facility)
-        facility_2 = mommy.make(Facility)
         mommy.make(FacilityUnit, name='honcho', facility=facility)
         with self.assertRaises(ValidationError):
-            mommy.make(FacilityUnit, name='honcho', facility=facility_2)
+            mommy.make(FacilityUnit, name='honcho', facility=facility)
 
 
 class TestRegulationStatusModel(BaseTestCase):
