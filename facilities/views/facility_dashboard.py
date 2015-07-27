@@ -144,15 +144,22 @@ class DashBoard(APIView):
     def get_recently_created_facilities(self):
         right_now = timezone.now()
         three_months_ago = right_now - timedelta(days=90)
+        weekly = right_now - timedelta(days=7)
+        monthly = right_now - timedelta(days=30)
+        weekly = self.request.query_params.get('weekly', None)
+        monthly = self.request.query_params.get('monthly', None)
+        quarterly = self.request.query_params.get('quarterly', None)
+        if quarterly:
+            return self.filter_queryset().filter(
+                created__gte=three_months_ago).count()
+        if monthly:
+            return self.filter_queryset().filter(
+                created__gte=monthly).count()
+        if weekly:
+            return self.filter_queryset().filter(
+                created__gte=weekly).count()
         return self.filter_queryset().filter(
             created__gte=three_months_ago).count()
-
-    def get_owner_count(self):
-        return len(list(set(
-            [
-                f.owner for f in self.filter_queryset()
-            ]
-        )))
 
     def filter_queryset(self):
         user = self.request.user
@@ -175,8 +182,7 @@ class DashBoard(APIView):
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
             "owner_types": self.get_facility_owner_types_summary(),
-            "recently_created": self.get_recently_created_facilities(),
-            "owner_count": self.get_owner_count()
+            "recently_created": self.get_recently_created_facilities()
         }
 
         return Response(data)
