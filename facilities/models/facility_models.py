@@ -914,8 +914,8 @@ class FacilityUpdates(AbstractBase):
             pass
         else:
             if updates >= 1:
-                error = "The pending facility update has to be either approved "\
-                    "or cancelled before another one is made"
+                error = ("The pending facility update has to be either"
+                         "approved or cancelled before another one is made")
                 raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
@@ -1229,8 +1229,8 @@ class FacilityService(AbstractBase):
                     deleted=False):
                 error = {
                     "selected_option": [
-                        "The service {} with the option {} has"
-                        "already been added to the facility".format(
+                        ("The service {} with the option {} has"
+                         "already been added to the facility").format(
                             self.selected_option.service.name,
                             self.selected_option.option.display_text)]
                 }
@@ -1241,8 +1241,8 @@ class FacilityService(AbstractBase):
                     deleted=False):
                 error = {
                     "service": [
-                        "The service {} has already been added to the "
-                        "facility".format(self.service.name)]
+                        ("The service {} has already been added to the "
+                         "facility").format(self.service.name)]
                 }
                 raise ValidationError(error)
 
