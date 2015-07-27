@@ -58,8 +58,8 @@ class MflUserManager(BaseUserManager):
     def create_user(self, email, first_name,
                     username, password=None, is_staff=False, **extra_fields):
         if not check_password_length(password):
-            error = "The password must be at least 8"
-            "characters long and have at least one number"
+            error = ("The password must be at least 8"
+                     "characters long and have at least one number")
             raise ValidationError(error)
         now = timezone.now()
         validate_email(email)
