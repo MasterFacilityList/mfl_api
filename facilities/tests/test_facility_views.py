@@ -1038,6 +1038,102 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(response.data.get("recently_created"), 2)
 
+    def test_created_last_one_month_param(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        right_now = timezone.now()
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=10)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=3)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=35)
+        )
+        url = self.url + "?monthly=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(response.data.get("recently_created"), 3)
+
+    def test_created_last_one_quarter_param(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        right_now = timezone.now()
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=10)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=3)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=100)
+        )
+        url = self.url + "?quarterly=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(response.data.get("recently_created"), 3)
+
 
 class TestFacilityContactView(LoginMixin, APITestCase):
 
