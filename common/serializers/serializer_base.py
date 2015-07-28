@@ -24,6 +24,42 @@ class AbstractFieldsMixin(object):
 
         return self.Meta.model.objects.create(**validated_data)
 
+    def get_public_fields(self, fields):
+        if isinstance(self.instance, list):
+            if len(self.instance) > 0:
+                non_public_fields = self.instance[0].non_public_fields
+                model_name = self.instance[0].__class__.__name__.lower()
+                app_label = self.instance[0]._meta.app_label
+                instance_mock = self.instance[0]
+            else:
+                return fields
+        else:
+            non_public_fields = self.instance.non_public_fields
+            self.instance.__class__.__name__.lower(),
+            self.instance._meta.app_label
+            instance_mock = self.instance
+        # the view all field model permission must conform to the following
+        # naming convention view_all_modelname_fields
+        view_fields_perm = "{}.view_all_{}_fields".format(
+            model_name, app_label)
+        request = self.context.get('request', None)
+
+        if not request:
+            return fields
+
+        if not hasattr(instance_mock, 'non_public_fields'):
+            return fields
+
+        if not request.user.has_perm(view_fields_perm):
+            all_fields = fields.keys()
+            public_fields = list(set(all_fields) - set(non_public_fields))
+            return {
+                field: fields[field]
+                for field in fields if field in public_fields
+            }
+        else:
+            return fields
+
     def get_fields(self):
         """
         Fetch a subset of fields from the serializer determined by the
@@ -55,4 +91,5 @@ class AbstractFieldsMixin(object):
                 field: origi_fields[field]
                 for field in origi_fields if field in fields
             }
-        return origi_fields
+
+        return self.get_public_fields(origi_fields)

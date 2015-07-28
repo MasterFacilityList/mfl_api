@@ -575,6 +575,19 @@ class Facility(SequenceMixin, AbstractBase):
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
 
+    @property
+    def non_public_fields(self):
+        """
+        The fields that can be seen by anybody
+        """
+        non_public_fields = [
+            "is_approved", "has_edits", "latest_update", "deleted", "active",
+            "search", "is_classified", "is_published", "regulated",
+            "approved", "rejected", "created_by", "updated_by", "created",
+            "updated"
+        ]
+        return non_public_fields
+
     # hard code the operational status name in order to avoid more crud
     @property
     def service_catalogue_active(self):
@@ -876,6 +889,8 @@ class Facility(SequenceMixin, AbstractBase):
                 "Can see the un published facilities"),
             ("view_unapproved_facilities",
                 "Can see the unapproved facilities"),
+            ("view_all_facility_fields",
+                "Can see the all information on a facilities"),
         )
 
 
