@@ -85,11 +85,13 @@ def _lookup_facility_coordinates(area_boundary):
     facility_coordinates = FacilityCoordinates.objects.filter(
         coordinates__contained=area_boundary.mpoly
     ) if area_boundary and area_boundary.mpoly else []
-    return {
-        facility_coordinate.facility.name:
-        json.loads(facility_coordinate.coordinates.geojson)
+    return [
+        {
+            "name": facility_coordinate.facility.name,
+            "geometry": json.loads(facility_coordinate.coordinates.geojson)
+        }
         for facility_coordinate in facility_coordinates
-    }
+    ]
 
 
 @reversion.register

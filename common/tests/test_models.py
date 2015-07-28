@@ -183,7 +183,7 @@ class TestCountyModel(BaseTestCase):
         county = mommy.make(County)
         self.assertEqual(
             county.facility_coordinates,
-            {}
+            []
         )
 
     def test_county_bound(self):
