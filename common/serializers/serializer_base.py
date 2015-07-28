@@ -27,17 +27,18 @@ class AbstractFieldsMixin(object):
     def get_public_fields(self, fields):
         if isinstance(self.instance, list):
             if len(self.instance) > 0:
-                non_public_fields = self.instance[0].non_public_fields
-                model_name = self.instance[0].__class__.__name__.lower()
-                app_label = self.instance[0]._meta.app_label
                 instance_mock = self.instance[0]
             else:
                 return fields
         else:
-            non_public_fields = self.instance.non_public_fields
-            self.instance.__class__.__name__.lower(),
-            self.instance._meta.app_label
             instance_mock = self.instance
+
+        if not hasattr(instance_mock, 'non_public_fields'):
+            return fields
+
+        non_public_fields = instance_mock.non_public_fields
+        model_name = instance_mock.__class__.__name__.lower()
+        app_label = instance_mock._meta.app_label
         # the view all field model permission must conform to the following
         # naming convention view_all_modelname_fields
         view_fields_perm = "{}.view_all_{}_fields".format(
@@ -45,9 +46,6 @@ class AbstractFieldsMixin(object):
         request = self.context.get('request', None)
 
         if not request:
-            return fields
-
-        if not hasattr(instance_mock, 'non_public_fields'):
             return fields
 
         if not request.user.has_perm(view_fields_perm):
