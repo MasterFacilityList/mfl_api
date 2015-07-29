@@ -9,7 +9,7 @@ from common.serializers import (
     UserConstituencySerializer,
     UserContactSerializer)
 from facilities.serializers import RegulatoryBodyUserSerializer
-from .models import MflUser, MFLOAuthApplication
+from .models import MflUser, MFLOAuthApplication, check_password_length
 
 
 def _lookup_permissions(validated_data):
@@ -159,6 +159,7 @@ class MflUserSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
 
         if pwd is not None:
+            check_password_length(pwd)
             instance.set_password(pwd)
 
         instance.save()

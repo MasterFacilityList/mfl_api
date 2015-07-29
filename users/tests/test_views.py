@@ -140,6 +140,15 @@ class TestUserViews(LoginMixin, APITestCase):
         response = self.client.post(create_url, data)
         self.assertEqual(400, response.status_code)
 
+    def test_password_quality_during_reset(self):
+        user = mommy.make(MflUser, password='strong1344')
+        url = reverse('api:users:mfl_users_list') + "{}/".format(user.id)
+        data = {
+            "password": "weak"
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
+
 
 class TestGroupViews(LoginMixin, APITestCase):
 
