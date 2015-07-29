@@ -76,6 +76,9 @@ class AbstractFieldsMixin(PartialResponseMixin):
             app_label, model_name)
         request = self.context.get('request', None)
 
+        if request is None:
+            return fields
+
         if not request.user.has_perm(view_fields_perm):
             all_fields = fields.keys()
             public_fields = list(set(all_fields) - set(non_public_fields))
