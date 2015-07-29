@@ -155,9 +155,6 @@ class FacilityInspectionReport(DownloadPDFMixin, APIView):
 
     @never_cache
     def get(self, request, facility_id, *args, **kwargs):
-        return self.get_inspection_report(facility_id)
-
-    def get_inspection_report(self, facility_id):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('inspection_report.txt')
         report_date = timezone.now().isoformat()
@@ -177,11 +174,8 @@ class FacilityInspectionReport(DownloadPDFMixin, APIView):
 class FacilityCoverTemplate(DownloadPDFMixin, APIView):
     queryset = Facility.objects.all()
 
-    def get(self, request, facility_id, *args, **kwargs):
-        return self.get_cover_report(facility_id)
-
     @never_cache
-    def get_cover_report(self, facility_id):
+    def get(self, request, facility_id, *args, **kwargs):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('cover_report.html')
         report_date = timezone.now().isoformat()
