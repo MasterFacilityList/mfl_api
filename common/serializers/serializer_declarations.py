@@ -76,6 +76,7 @@ class CountySlimDetailSerializer(
 class TownSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
+    ward_name = serializers.ReadOnlyField(source='ward.name')
     class Meta(object):
         model = Town
 
