@@ -155,6 +155,9 @@ class FacilityStatusSerializer(
 
 class RegulatingBodySerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    regulatory_body_type_name = serializers.ReadOnlyField(
+        source='regulatory_body_type.name'
+    )
 
     class Meta(object):
         model = RegulatingBody
@@ -211,6 +214,8 @@ class OfficerSerializer(
 
 
 class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+
+    owner_type_name = serializers.ReadOnlyField(source='owner_type.name')
 
     class Meta(object):
         model = Owner

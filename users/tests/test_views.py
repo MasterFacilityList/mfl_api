@@ -156,12 +156,10 @@ class TestGroupViews(LoginMixin, APITestCase):
             "name": "Documentation Example Group",
             "permissions": [
                 {
-                    "id": 61,
                     "name": "Can add email address",
                     "codename": "add_emailaddress"
                 },
                 {
-                    "id": 62,
                     "name": "Can change email address",
                     "codename": "change_emailaddress"
                 }
@@ -181,7 +179,6 @@ class TestGroupViews(LoginMixin, APITestCase):
                 "name": "Documentation Example Group Updated",
                 "permissions": [
                     {
-                        "id": 61,
                         "name": "Can add email address",
                         "codename": "add_emailaddress"
                     }
