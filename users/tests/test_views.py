@@ -147,6 +147,7 @@ class TestUserViews(LoginMixin, APITestCase):
             "password": "weak"
         }
         response = self.client.patch(url, data)
+
         self.assertEquals(400, response.status_code)
 
 
