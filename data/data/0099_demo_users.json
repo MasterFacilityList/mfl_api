@@ -11,7 +11,8 @@
                 "password": "pbkdf2_sha256$20000$dYRMTD90T5Kb$JmvP0cVhAckLuYCwKDCFVl9AV3Zo7wPl9IKS51HcFX4=",
                 "is_staff": true,
                 "is_national": true,
-                "is_superuser": true
+                "is_superuser": true,
+                "employee_number": 10000
             },
             {
                 "email": "national_admin@mfltest.slade360.co.ke",
@@ -21,7 +22,8 @@
                 "password": "pbkdf2_sha256$20000$8rjWrKD18ZSr$sdZfWENiCopRe066hDZLLlHjJIf2U+63060ZJl5Kj1M=",
                 "is_staff": true,
                 "is_national": true,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10001
             },
             {
                 "email": "nairobi_admin@mfltest.slade360.co.ke",
@@ -31,7 +33,8 @@
                 "password": "pbkdf2_sha256$20000$EvV2Emirwxdj$OH4+CJ3KndqEl/yK4KnoBCS8oPo3Gy6L+szRYtcIQWs=",
                 "is_staff": true,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10002
             },
             {
                 "email": "publisher@mfltest.slade360.co.ke",
@@ -41,7 +44,8 @@
                 "password": "pbkdf2_sha256$20000$xpBHQvCHyhRg$FLmjPLLKE3PhXRGLHTNPzUsFp3XQNcZRiXngBrL7Sf4=",
                 "is_staff": false,
                 "is_national": true,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10003
             },
             {
                 "email": "public@mfltest.slade360.co.ke",
@@ -51,7 +55,8 @@
                 "password": "pbkdf2_sha256$20000$GNbf5V4TQWle$5kZ1rWEDy1exGZ155vbPVi/+pcXNaKoDDVKbK1fqypk=",
                 "is_staff": false,
                 "is_national": true,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10004
             },
             {
                 "email": "mombasa@mfltest.slade360.co.ke",
@@ -61,7 +66,8 @@
                 "password": "pbkdf2_sha256$20000$U1qabgVbVROz$rNtGFuCDo+zQtBEOvPDUKt2a68gbtfjEq/3eL0U1U1Q=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10005
             },
             {
                 "email": "kilifi@mfltest.slade360.co.ke",
@@ -71,7 +77,8 @@
                 "password": "pbkdf2_sha256$20000$5Zt3GyK26NO8$V/6+WaVeafyizKpbLTZ1ktKLdpkMdemc8y5fDjaCR/M=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10006
             },
             {
                 "email": "nairobi@mfltest.slade360.co.ke",
@@ -81,7 +88,8 @@
                 "password": "pbkdf2_sha256$20000$OrQvyLLslgKk$MkWLhxsGH3B1yyLPsQbxi7mMKO9G2GIrv+8GPOq0ibI=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10007
             },
             {
                 "email": "narok@mfltest.slade360.co.ke",
@@ -91,7 +99,8 @@
                 "password": "pbkdf2_sha256$20000$UawPdDwPlsVp$GwsSfA2IC5P8z1TptrTvw1eObrOO4qUCc1CHksiDF1g=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10008
             },
             {
                 "email": "tanariver@mfltest.slade360.co.ke",
@@ -101,7 +110,8 @@
                 "password": "pbkdf2_sha256$20000$ArgfPVUfUomd$me6mDSc1XTTPLuFtGTE6mtgJuwjTVZsCso4D982Ymro=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10009
             },
             {
                 "email": "starehe@mfltest.slade360.co.ke",
@@ -111,7 +121,8 @@
                 "password": "pbkdf2_sha256$20000$vM5dQvxNhl5X$L0GMMJKMxR6TbdzACj3nR09VC5bdaot7I1ioXPh2wUM=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10011
             },
             {
                 "email": "mathare@mfltest.slade360.co.ke",
@@ -121,7 +132,8 @@
                 "password": "pbkdf2_sha256$20000$oJmTBacwdFqL$kl5OsX5GY9EpBz6KY2Cn09uhxpiilu9RG+QuSow+jF0=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10012
             },
             {
                 "email": "kamukunji@mfltest.slade360.co.ke",
@@ -131,7 +143,8 @@
                 "password": "pbkdf2_sha256$20000$CC7MHde2GQpT$MERrHNQHe2Du9U5opY2xaFWLq/amh5/YADyFZr7r02g=",
                 "is_staff": false,
                 "is_national": false,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10013
             },
             {
                 "email": "kmpdb@mfltest.slade360.co.ke",
@@ -141,7 +154,8 @@
                 "password": "pbkdf2_sha256$20000$1Zs23hUqQrrh$jwbsGsXVae7CeLl48gznZSWfBikfdC/yjRpAgWi67cM=",
                 "is_staff": false,
                 "is_national": true,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10014
             },
             {
                 "email": "coc@mfltest.slade360.co.ke",
@@ -151,7 +165,8 @@
                 "password": "pbkdf2_sha256$20000$hvTeWeTQYczq$nnr95upMhmtmM32KHuNBN4oL5/NcFxlPpBr5WBNmvO0=",
                 "is_staff": false,
                 "is_national": true,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10015
             },
             {
                 "email": "ncck@mfltest.slade360.co.ke",
@@ -161,7 +176,8 @@
                 "password": "pbkdf2_sha256$20000$E63bjPa2nv6U$+E7ncXyGoZjvCUlRVXoqxwcPbd8bdzwBWkeeiiyYs/o=",
                 "is_staff": false,
                 "is_national": true,
-                "is_superuser": false
+                "is_superuser": false,
+                "employee_number": 10016z
             }
         ]
     },
