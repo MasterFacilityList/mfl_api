@@ -152,12 +152,7 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility)
         serialized_data = serialize_model(facility)
         expected_data = FacilitySerializer(
-            facility,
-            context={
-                'request': {
-                    "REQUEST_METHOD": "None"
-                }
-            }
+            facility
         ).data
         expected_data = json.dumps(expected_data, default=default)
         self.assertEquals(expected_data, serialized_data.get('data'))
@@ -172,12 +167,7 @@ class TestSearchFunctions(ViewTestBase):
     def test_default_json_dumps_function(self):
         facility = mommy.make(Facility)
         data = FacilitySerializer(
-            facility,
-            context={
-                'request': {
-                    "REQUEST_METHOD": "None"
-                }
-            }
+            facility
         ).data
         result = json.dumps(data, default=default)
         self.assertIsInstance(result, str)
@@ -194,22 +184,9 @@ class TestSearchFunctions(ViewTestBase):
         for x in range(0, 100):
             response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
 
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': {
-                            "REQUEST_METHOD": "None"
-                        }
-                    }
-                ).data
-            ]
-        }
-        self._assert_response_data_equality(
-            expected_data['results'], response.data['results']
-        )
         self.elastic_search_api.delete_index('test_index')
 
     def test_seach_auto_complete(self):
@@ -226,21 +203,8 @@ class TestSearchFunctions(ViewTestBase):
 
         self.assertEquals(200, response.status_code)
 
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': {
-                            "REQUEST_METHOD": "None"
-                        }
-                    }
-                ).data
-            ]
-        }
-        self._assert_response_data_equality(
-            expected_data['results'], response.data['results']
-        )
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
         self.elastic_search_api.delete_index('test_index')
 
     def test_search_facility_multiple_filters(self):
