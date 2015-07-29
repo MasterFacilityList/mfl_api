@@ -43,7 +43,7 @@ class LoginMixin(object):
         self.user = get_user_model().objects.create_superuser(
             email='tester@ehealth.or.ke',
             first_name='Test',
-            username='test',
+            employee_number='124144124124',
             password=password,
             is_national=True
         )
