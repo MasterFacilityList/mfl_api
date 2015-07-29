@@ -13,6 +13,7 @@ from common.tests.test_views import default
 
 
 class TestFacilityFilterApprovedAndPublished(APITestCase):
+
     def setUp(self):
         self.url = reverse("api:facilities:facilities_list")
         self.view_unpublished_perm = Permission.objects.get(
@@ -117,28 +118,6 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         for obj in public_response.data.get("results"):
             self.assertFalse(
                 Facility.objects.get(id=obj.get('id')).is_classified)
-
-    def test_public_user_does_not_see_non_public_fields(self):
-        facility = mommy.make(Facility)
-        mommy.make(FacilityApproval, facility=facility)
-        facility.is_published = True
-        facility.save()
-        self.client.force_authenticate(self.public_user)
-        response = self.client.get(self.url)
-        all_data = load_dump(response.data['results'], default=default)
-        data = all_data[0]
-        self.confirm_dict_does_not_have_keys(data)
-
-    def test_public_user_does_not_see_non_public_fields_on_detail(self):
-        facility = mommy.make(Facility)
-        mommy.make(FacilityApproval, facility=facility)
-        facility.is_published = True
-        facility.save()
-        self.client.force_authenticate(self.public_user)
-        url = self.url + "{}/".format(facility.id)
-        response = self.client.get(url)
-        data = load_dump(response.data, default=default)
-        self.confirm_dict_does_not_have_keys(data)
 
     def confirm_dict_does_not_have_keys(self, data):
         self.assertIsNone(data.get('has_edits'))
