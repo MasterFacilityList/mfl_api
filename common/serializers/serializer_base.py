@@ -26,10 +26,11 @@ class AbstractFieldsMixin(object):
 
     def get_public_fields(self, fields):
         if isinstance(self.instance, list):
-            if len(self.instance) > 0:
-                instance_mock = self.instance[0]
-            else:
-                return fields
+            # if len(self.instance) == 0:
+            #     return fields
+            # else:
+            instance_mock = self.instance[0]
+
         else:
             instance_mock = self.instance
 
@@ -42,11 +43,8 @@ class AbstractFieldsMixin(object):
         # the view all field model permission must conform to the following
         # naming convention view_all_modelname_fields
         view_fields_perm = "{}.view_all_{}_fields".format(
-            model_name, app_label)
+            app_label, model_name)
         request = self.context.get('request', None)
-
-        if not request:
-            return fields
 
         if not request.user.has_perm(view_fields_perm):
             all_fields = fields.keys()
