@@ -29,9 +29,6 @@
                 "codename": "delete_communityhealthworkerapproval"
             },
             {
-                "codename": "publish_facilities"
-            },
-            {
                 "codename": "view_constituency"
             },
             {
@@ -81,6 +78,12 @@
             },
             {
                 "codename": "view_ward"
+            },
+            {
+                "codename": "publish_facilities"
+            },
+            {
+                "codename": "view_all_facility_fields"
             },
             {
                 "codename": "view_classified_facilities"
@@ -219,6 +222,9 @@
                 "codename": "delete_facility"
             },
             {
+                "codename": "view_all_facility_fields"
+            },
+            {
                 "codename": "view_classified_facilities"
             },
             {
@@ -349,6 +355,9 @@
                 "codename": "publish_facilities"
             },
             {
+                "codename": "view_all_facility_fields"
+            },
+            {
                 "codename": "view_classified_facilities"
             },
             {
@@ -409,6 +418,9 @@
             "name": "Regulators (makers)"
         },
         "permissions": [
+            {
+                "codename": "view_all_facility_fields"
+            },
             {
                 "codename": "view_classified_facilities"
             },
@@ -491,6 +503,9 @@
             "name": "Regulators (Approvers)"
         },
         "permissions": [
+            {
+                "codename": "view_all_facility_fields"
+            },
             {
                 "codename": "view_classified_facilities"
             },
@@ -824,6 +839,9 @@
                 "codename": "view_ward"
             },
             {
+                "codename": "view_all_facility_fields"
+            },
+            {
                 "codename": "view_classified_facilities"
             },
             {
@@ -1087,6 +1105,9 @@
             },
             {
                 "codename": "view_ward"
+            },
+            {
+                "codename": "view_all_facility_fields"
             },
             {
                 "codename": "view_classified_facilities"
@@ -1418,6 +1439,9 @@
             },
             {
                 "codename": "publish_facilities"
+            },
+            {
+                "codename": "view_all_facility_fields"
             },
             {
                 "codename": "view_classified_facilities"

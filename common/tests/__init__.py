@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission
 
 from rest_framework.test import APITestCase
 from model_mommy import mommy
@@ -10,7 +11,12 @@ from common.tests.test_views import default
 
 class ViewTestBase(APITestCase):
     def setUp(self):
+        self.admin_group = mommy.make(Group, name="mfl admins")
+        view_fields_perm = Permission.objects.get(
+            codename='view_all_facility_fields')
+        self.admin_group.permissions.add(view_fields_perm.id)
         self.user = mommy.make(get_user_model())
+        self.user.groups.add(self.admin_group)
         self.client.force_authenticate(user=self.user)
         self.maxDiff = None
         super(ViewTestBase, self).setUp()

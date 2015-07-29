@@ -536,19 +536,10 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         facility = mommy.make(Facility, regulatory_body=reg_body)
         mommy.make(Facility)
         response = self.client.get(self.url)
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data,
-            ]
-        }
 
         self.assertEquals(200, response.status_code)
-        self.assertEquals(expected_data['results'], response.data['results'])
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
 
     def test_get_facility_as_an_anonymous_user(self):
         self.client.logout()
@@ -1253,17 +1244,9 @@ class TestFacilityRegulator(TestGroupAndPermissions, APITestCase):
         self.client.force_authenticate(user)
         mommy.make(Facility)
         response = self.client.get(url)
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
-        self.assertEquals(expected_data['results'], response.data['results'])
+
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
         self.assertEquals(200, response.status_code)
 
 
@@ -1489,21 +1472,8 @@ class TestFacilityConsituencyUserFilter(TestGroupAndPermissions, APITestCase):
         self.client.force_authenticate(user)
         user.groups.add(self.admin_group)
         response = self.client.get(url)
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(
-            load_dump(expected_data['results'], default=default),
-            load_dump(response.data['results'], default=default)
-        )
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
 
 
 class TestFilterRejectedFacilities(LoginMixin, APITestCase):

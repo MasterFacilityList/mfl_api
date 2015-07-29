@@ -58,8 +58,38 @@ class AbstractFieldsMixin(PartialResponseMixin):
 
         return self.Meta.model.objects.create(**validated_data)
 
+    def get_public_fields(self, fields):
+        if isinstance(self.instance, list):
+            instance_mock = self.instance[0]
+        else:
+            instance_mock = self.instance
+
+        if not hasattr(instance_mock, 'non_public_fields'):
+            return fields
+
+        non_public_fields = instance_mock.non_public_fields
+        model_name = instance_mock.__class__.__name__.lower()
+        app_label = instance_mock._meta.app_label
+        # the view all field model permission must conform to the following
+        # naming convention view_all_modelname_fields
+        view_fields_perm = "{}.view_all_{}_fields".format(
+            app_label, model_name)
+        request = self.context.get('request', None)
+
+        if not request.user.has_perm(view_fields_perm):
+            all_fields = fields.keys()
+            public_fields = list(set(all_fields) - set(non_public_fields))
+            return {
+                field: fields[field]
+                for field in fields if field in public_fields
+            }
+        else:
+            return fields
+
     def get_fields(self):
         """Overridden to take advantage of partial response"""
         origi_fields = super(AbstractFieldsMixin, self).get_fields()
         request = self.context.get('request', None)
-        return self.strip_fields(request, origi_fields)
+        return self.get_public_fields(
+            self.strip_fields(request, origi_fields)
+        )
