@@ -26,11 +26,7 @@ class AbstractFieldsMixin(object):
 
     def get_public_fields(self, fields):
         if isinstance(self.instance, list):
-            # if len(self.instance) == 0:
-            #     return fields
-            # else:
             instance_mock = self.instance[0]
-
         else:
             instance_mock = self.instance
 

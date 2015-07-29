@@ -578,7 +578,7 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def non_public_fields(self):
         """
-        The fields that can be seen by anybody
+        The fields that can be seen by the allowed people only
         """
         non_public_fields = [
             "is_approved", "has_edits", "latest_update", "deleted", "active",

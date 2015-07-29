@@ -17,7 +17,7 @@ class TestLogin(APITestCase):
     def setUp(self):
         self.user = MflUser.objects.create_user(
             email='user@test.com', first_name='test name',
-            password='password1233', username='username'
+            password='password1233', employee_number='7784448445'
         )
         self.login_url = reverse("api:rest_auth:rest_login")
         self.logout_url = reverse("api:rest_auth:rest_logout")
@@ -25,7 +25,7 @@ class TestLogin(APITestCase):
 
     def test_login(self):
         data = {
-            "username": 'user@test.com',
+            "username": self.user.employee_number,
             "password": 'password1233'
         }
         response = self.client.post(self.login_url, data)
@@ -35,7 +35,7 @@ class TestLogin(APITestCase):
     def test_inactive_user_login(self):
         user = MflUser.objects.create_user(
             email='user2@test.com', first_name='test first name',
-            username='test user name', password='pass_long124124'
+            employee_number='test user name', password='pass_long124124'
         )
         user.is_active = False
         user.save()
@@ -79,7 +79,7 @@ class TestUserViews(LoginMixin, APITestCase):
             "first_name": "Hakuna",
             "last_name": "Ruhusa",
             "other_names": "",
-            "username": "hakunaruhusa",
+            "employee_number": "1224467890",
             "password": "rubbishpass12424"
         }
         response = self.client.post(create_url, post_data)
@@ -89,7 +89,7 @@ class TestUserViews(LoginMixin, APITestCase):
     def test_update_user(self):
         user = MflUser.objects.create(
             email='user@test.com', first_name='pass',
-            username='pass', password='pass_long12424'
+            employee_number='9448855555', password='pass_long12424'
         )
         group = Group.objects.create(name="Test Group")
         update_url = reverse(
@@ -110,7 +110,7 @@ class TestUserViews(LoginMixin, APITestCase):
     def test_update_user_pwd(self):
         user = MflUser.objects.create(
             email='user@test.com', first_name='pass',
-            username='pass', password='pass12r12r12r'
+            employee_number='6444444444', password='pass12r12r12r'
         )
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
@@ -128,7 +128,7 @@ class TestUserViews(LoginMixin, APITestCase):
     def test_failed_create(self):
         create_url = reverse('api:users:mfl_users_list')
         data = {
-            "username": "yusa",
+            "employee_number": "yusa",
             "email": "yusa@yusa.com",
             "groups": [
                 {
