@@ -119,21 +119,6 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
             self.assertFalse(
                 Facility.objects.get(id=obj.get('id')).is_classified)
 
-    def confirm_dict_does_not_have_keys(self, data):
-        self.assertIsNone(data.get('has_edits'))
-        self.assertIsNone(data.get('is_approved'))
-        self.assertIsNone(data.get('latest_update'))
-        self.assertIsNone(data.get('deleted'))
-        self.assertIsNone(data.get('active'))
-        self.assertIsNone(data.get('search'))
-        self.assertIsNone(data.get('is_classified'))
-        self.assertIsNone(data.get('is_published'))
-        self.assertIsNone(data.get('regulated'))
-        self.assertIsNone(data.get('approved'))
-        self.assertIsNone(data.get('rejected'))
-        self.assertIsNone(data.get('created_by'))
-        self.assertIsNone(data.get('updated_by'))
-
     def test_admin_user_sees_all_fields_list_endpoint(self):
         perm = Permission.objects.get(codename="view_all_facility_fields")
         self.admin_group.permissions.add(perm.id)
