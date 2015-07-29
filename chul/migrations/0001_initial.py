@@ -13,7 +13,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '__first__'),
+        ('common', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('facilities', '0001_initial'),
     ]
@@ -35,6 +35,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': 'approval_statuses',
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -98,6 +99,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -133,6 +135,11 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=50, null=True, blank=True)),
                 ('id_number', models.PositiveIntegerField(unique=True, null=True, blank=True)),
             ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
+            },
         ),
         migrations.CreateModel(
             name='CommunityHealthWorkerApproval',
@@ -153,6 +160,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'abstract': False,
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -191,6 +200,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': 'statuses',
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.AddField(
