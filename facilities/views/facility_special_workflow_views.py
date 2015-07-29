@@ -1,11 +1,7 @@
 from django.template import loader, Context
 from django.http import HttpResponse
 from django.utils import timezone
-import os
-from django.core.servers.basehttp import FileWrapper
-from django.utils.encoding import smart_str
 from django.views.decorators.cache import never_cache
-from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework import generics
@@ -145,24 +141,12 @@ class RegulationStatusDetailView(
 
 class DownloadPDFMixin(object):
 
-    def download_file(self, doc, file_name):
-        doc_file_name = 'temp'
-        file_path = os.path.join(settings.BASE_DIR, file_name)
-        doc_file_path = os.path.join(settings.BASE_DIR, doc_file_name)
-        writting_file = open(doc_file_path, 'w')
-        writting_file.write(doc)
-        writting_file.close()
-        HTML(doc_file_path).write_pdf(file_path)
-        download_file = open(file_path)
-        response = HttpResponse(
-            FileWrapper(download_file), content_type='application/pdf')
-        response[
-            'Content-Disposition'] = 'attachment; filename='.format(
-            os.path.basename(file_path)
+    def download_file(self, html, file_name):
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(
+            file_name
         )
-        response['X-Sendfile'] = smart_str(file_path)
-        os.remove(file_path)
-        os.remove(doc_file_path)
+        HTML(string=html).write_pdf(response)
         return response
 
 
@@ -171,9 +155,6 @@ class FacilityInspectionReport(DownloadPDFMixin, APIView):
 
     @never_cache
     def get(self, request, facility_id, *args, **kwargs):
-        return self.get_inspection_report(facility_id)
-
-    def get_inspection_report(self, facility_id):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('inspection_report.txt')
         report_date = timezone.now().isoformat()
@@ -181,25 +162,20 @@ class FacilityInspectionReport(DownloadPDFMixin, APIView):
             facility=facility)
         regulating_body = regulating_bodies[0] if regulating_bodies else None
 
-        context = Context(
-            {
-                "report_date": report_date,
-                "facility": facility,
-                "regulating_body": regulating_body
-            }
-        )
-        file_name = '{}_inspection_report'.format(facility.name)
+        context = Context({
+            "report_date": report_date,
+            "facility": facility,
+            "regulating_body": regulating_body
+        })
+        file_name = '{} inspection report'.format(facility.name.lower())
         return self.download_file(template.render(context), file_name)
 
 
 class FacilityCoverTemplate(DownloadPDFMixin, APIView):
     queryset = Facility.objects.all()
 
-    def get(self, request, facility_id, *args, **kwargs):
-        return self.get_cover_report(facility_id)
-
     @never_cache
-    def get_cover_report(self, facility_id):
+    def get(self, request, facility_id, *args, **kwargs):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('cover_report.html')
         report_date = timezone.now().isoformat()
@@ -211,22 +187,20 @@ class FacilityCoverTemplate(DownloadPDFMixin, APIView):
             facility_coordinates = facility.facility_coordinates_through
         except:
             facility_coordinates = None
-        context = Context(
-            {
-                "report_date": report_date,
-                "facility": facility,
-                "services": services,
-                "contacts": contacts,
-                "officers": officers,
-                "chus": chus,
-                "longitude": facility_coordinates.simplify_coordinates.get(
-                    'coordinates')[0] if facility_coordinates else None,
-                "latitude": facility_coordinates.simplify_coordinates.get(
-                    'coordinates')[1] if facility_coordinates else None,
-                "facility_coordinates": facility_coordinates
-            }
-        )
-        file_name = '{}_cover_report'.format(facility.name)
+        context = Context({
+            "report_date": report_date,
+            "facility": facility,
+            "services": services,
+            "contacts": contacts,
+            "officers": officers,
+            "chus": chus,
+            "longitude": facility_coordinates.simplify_coordinates.get(
+                'coordinates')[0] if facility_coordinates else None,
+            "latitude": facility_coordinates.simplify_coordinates.get(
+                'coordinates')[1] if facility_coordinates else None,
+            "facility_coordinates": facility_coordinates
+        })
+        file_name = '{} cover report'.format(facility.name.lower())
         return self.download_file(template.render(context), file_name)
 
 
@@ -238,14 +212,12 @@ class FacilityCorrectionTemplate(DownloadPDFMixin, APIView):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('correction_template.txt')
         request_date = timezone.now().isoformat()
-        context = Context(
-            {
-                "request_date": request_date,
-                "facility": facility
-            }
-        )
+        context = Context({
+            "request_date": request_date,
+            "facility": facility
+        })
         doc = template.render(context)
-        file_name = '{}_correction_template.pdf'.format(facility.name)
+        file_name = '{} correctiontemplate'.format(facility.name.lower())
         return self.download_file(doc, file_name)
 
 
