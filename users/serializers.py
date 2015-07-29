@@ -91,7 +91,9 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        permissions = _lookup_permissions(validated_data)
+        permissions = _lookup_permissions(
+            self.context['request'].DATA
+        )
         validated_data.pop('permissions', None)
 
         new_group = Group(**validated_data)
@@ -101,7 +103,9 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        permissions = _lookup_permissions(validated_data)
+        permissions = _lookup_permissions(
+            self.context['request'].DATA
+        )
         validated_data.pop('permissions', None)
 
         for attr, value in validated_data.items():

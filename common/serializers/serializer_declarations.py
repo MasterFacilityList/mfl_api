@@ -77,6 +77,7 @@ class TownSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
     ward_name = serializers.ReadOnlyField(source='ward.name')
+
     class Meta(object):
         model = Town
 
@@ -103,6 +104,7 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
 class WardSlimDetailSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = Ward
 
