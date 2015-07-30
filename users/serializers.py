@@ -3,13 +3,14 @@ from django.contrib.auth.models import Group, Permission
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_auth.serializers import PasswordChangeSerializer
 
 from common.serializers import (
     UserCountySerializer,
     UserConstituencySerializer,
     UserContactSerializer)
 from facilities.serializers import RegulatoryBodyUserSerializer
-from .models import MflUser, MFLOAuthApplication, check_password_length
+from .models import MflUser, MFLOAuthApplication, check_password_strength
 
 
 def _lookup_permissions(validated_data):
@@ -159,7 +160,6 @@ class MflUserSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
 
         if pwd is not None:
-            check_password_length(pwd)
             instance.set_password(pwd)
 
         instance.save()
@@ -181,3 +181,21 @@ class MFLOAuthApplicationSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = MFLOAuthApplication
+
+
+class MflPasswordChangeSerializer(PasswordChangeSerializer):
+
+    def validate(self, attrs):
+        super(MflPasswordChangeSerializer, self).validate(attrs)
+        check_password_strength(attrs['new_password1'])
+        self.set_password_form = self.set_password_form_class(
+            user=self.user, data=attrs
+        )
+
+        if not self.set_password_form.is_valid():
+            raise serializers.ValidationError(self.set_password_form.errors)
+        return attrs()
+
+    def save(self):
+        check_password_strength(self.new_password1)
+        self.set_password_form.save()

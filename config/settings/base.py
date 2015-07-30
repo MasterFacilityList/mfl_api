@@ -162,7 +162,6 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': 'iso-8601',
     'DATE_FORMAT': 'iso-8601',
     'TIME_FORMAT': 'iso-8601'
-
 }
 SWAGGER_SETTINGS = {
     'exclude_namespaces': [],
@@ -414,7 +413,9 @@ ACCOUNT_SESSION_REMEMBER = True
 # django_rest_auth settings
 OLD_PASSWORD_FIELD_ENABLED = True
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'users.serializers.MflUserSerializer'
+    'USER_DETAILS_SERIALIZER': 'users.serializers.MflUserSerializer',
+    'PASSWORD_CHANGE_SERIALIZER':
+        'users.serializers.MflPasswordChangeSerializer'
 }
 
 # django-allauth forces this atrocity on us ( true at the time of writing )
