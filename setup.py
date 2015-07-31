@@ -94,6 +94,7 @@ setup(
         "pytest-xdist>=1.11",
         "six>=1.9",
         "django-reversion>=1.8.6",
+        "diff_match_patch",
         "shapely>=1.5.7",
         "wheel>=0.24.0",
         "pytz>=2015.2",
