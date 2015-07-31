@@ -1,6 +1,15 @@
-from rest_framework import serializers
+import json
 
-from common.serializers import AbstractFieldsMixin
+from django.utils import timezone
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
+from common.serializers import (
+    AbstractFieldsMixin,
+    PhysicalAddressSerializer,
+    ContactSerializer
+)
+
 
 from ..models import (
     OwnerType,
@@ -222,6 +231,26 @@ class OwnerSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
         read_only_fields = ('code',)
 
 
+class FacilityContactSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    contact_type = serializers.ReadOnlyField(
+        source="contact.contact_type.name")
+    actual_contact = serializers.ReadOnlyField(source="contact.contact")
+
+    class Meta(object):
+        model = FacilityContact
+
+
+class FacilityUnitSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    regulation_status = serializers.ReadOnlyField()
+    regulating_body_name = serializers.ReadOnlyField(
+        source="regulating_body.name")
+
+    class Meta(object):
+        model = FacilityUnit
+
+
 class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     regulatory_status_name = serializers.CharField(read_only=True)
     facility_type_name = serializers.CharField(read_only=True)
@@ -240,25 +269,136 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     regulatory_body_name = serializers.ReadOnlyField(
         source="regulatory_body.name"
     )
+    owner = serializers.PrimaryKeyRelatedField(
+        required=False, queryset=Owner.objects.all())
 
     class Meta(object):
         model = Facility
-        fields = [
-            "name", "owner_name", "operation_status", "code", "id",
-            "county", "constituency", "ward", "facility_type_name",
-            "operation_status_name", "regulatory_status_name",
-            "facility_type_name", "number_of_beds",
-            "number_of_cots", "is_classified", "is_published",
-            "open_weekends", "open_whole_day",
-            "open_public_holidays", "owner_type_name",
-            "ward_name", "average_rating", "facility_services",
-            "created", "updated", "deleted", "active",
-            "abbreviation", "description",
-            "created_by", "updated_by", "facility_type",
-            "owner", "physical_address",
-            "parent", "contacts", "is_approved",
-            "has_edits", "latest_update", "regulatory_body_name",
-            "regulatory_body", "keph_level"]
+
+    def create(self, validated_data):
+        # prepare the audit fields
+        context = self.context
+        audit_data = {
+            "created_by_id": self.context['request'].user.id,
+            "updated_by_id": self.context['request'].user.id,
+            "created": (
+                validated_data['created'] if
+                validated_data.get('created') else timezone.now()),
+            "updated": (
+                validated_data['update'] if
+                validated_data.get('updated') else timezone.now())
+        }
+        inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
+
+        # create new owners
+        def create_owner(owner_data):
+            inject_audit_fields(owner_data)
+            owner = OwnerSerializer(data=owner_data, context=context)
+            if owner.is_valid():
+                return owner.save()
+            else:
+                raise ValidationError(json.dumps(owner.errors))
+
+        new_owner = self.initial_data.pop('new_owner', None)
+        if new_owner:
+            owner = create_owner(new_owner)
+            validated_data['owner'] = owner
+
+        # create the physical address
+        def create_physical_address(location_data):
+            inject_audit_fields(location_data)
+            location = PhysicalAddressSerializer(
+                data=location_data, context=context)
+            if location.is_valid():
+                return location.save()
+            else:
+                raise ValidationError("errors in creating physical address")
+
+        location = self.initial_data.pop('location_data', None)
+        if location:
+            physical_address = create_physical_address(location)
+            validated_data['physical_address'] = physical_address
+        facility = super(FacilitySerializer, self).create(validated_data)
+
+        contacts = self.initial_data.pop('facility_contacts', None)
+
+        # create faclity services
+        # def create_facility_service(service_data):
+        #     service_data['facility'] = facility.id
+        #     fs = FacilityServiceSerializer(data=service_data)
+        #     if fs.is_valid():
+        #         fs.save()
+        #     else:
+        #         raise ValidationError(fs.errors)
+
+        # create facility units
+        units = self.initial_data.pop('facility_units', None)
+
+        def create_facility_units(unit_data):
+            unit_data['facility'] = facility.id
+            inject_audit_fields(unit_data)
+            unit = FacilityUnitSerializer(data=unit_data, context=context)
+            if unit.is_valid():
+                return unit.save()
+            else:
+                raise ValidationError(json.dumps(unit.errors))
+
+        # create facility officer incharge
+        officers = self.initial_data.pop('facility_officers', None)
+
+        def create_officer(officer_data):
+            inject_audit_fields(officer_data)
+            officer = OfficerSerializer(data=officer_data, context=context)
+            if officer.is_valid():
+                return officer.save()
+            else:
+                raise ValidationError(json.dumps(officer.errors))
+
+        def create_facility_officers(facility_officer_data):
+            officer = create_officer(facility_officer_data)
+            facility_officer = {
+                "officer": officer.id,
+                "facility": facility.id
+            }
+            f_officer = FacilityOfficerSerializer(
+                data=facility_officer, context=context)
+            if f_officer.is_valid():
+                f_officer.save()
+            else:
+                raise ValidationError(json.dumps(officer.errors))
+
+        #  create facility contacts
+        def create_contact(contact_data):
+            contact = ContactSerializer(data=contact_data, context=context)
+            if contact.is_valid():
+                return contact.save()
+            else:
+                raise ValidationError(json.dumps(contact.errors))
+
+        def create_facility_contacts(contact_data):
+            inject_audit_fields(contact_data)
+            contact = create_contact(contact_data)
+            facility_contact_data = {
+                "contact": contact.id,
+                "facility": facility.id
+            }
+            inject_audit_fields(facility_contact_data)
+            f_contact = FacilityContactSerializer(
+                data=facility_contact_data, context=context)
+            if f_contact.is_valid():
+                return f_contact.save()
+            else:
+                raise ValidationError(json.dumps(f_contact.errors))
+
+        # if services:
+        #     map(create_facility_service, services)
+        if units:
+            map(create_facility_units, units)
+        if contacts:
+            map(create_facility_contacts, contacts)
+        if officers:
+            map(create_facility_officers, officers)
+        return facility
 
 
 class FacilityDetailSerializer(FacilitySerializer):
@@ -291,26 +431,6 @@ class FacilityListSerializer(FacilitySerializer):
             'ward_name', 'is_published', "is_approved", "has_edits",
             "rejected"
         ]
-
-
-class FacilityContactSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    contact_type = serializers.ReadOnlyField(
-        source="contact.contact_type.name")
-    actual_contact = serializers.ReadOnlyField(source="contact.contact")
-
-    class Meta(object):
-        model = FacilityContact
-
-
-class FacilityUnitSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    regulation_status = serializers.ReadOnlyField()
-    regulating_body_name = serializers.ReadOnlyField(
-        source="regulating_body.name")
-
-    class Meta(object):
-        model = FacilityUnit
 
 
 class FacilityServiceRatingSerializer(
