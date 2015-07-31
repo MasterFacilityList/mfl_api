@@ -1,5 +1,5 @@
 ---
-- hosts: azure_test_server
+- hosts: all
   name: Install MFL API and front-ends
   sudo: True
   vars:
