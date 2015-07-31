@@ -78,6 +78,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         contact_type = mommy.make(ContactType, name="EMAIL")
         contact_type_2 = mommy.make(ContactType, name="PHONE")
         keph_level = mommy.make(KephLevel)
+
         contacts = [
             {
                 "contact_type": contact_type.id,
@@ -89,6 +90,17 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             }
 
         ]
+        contacts_with_error = [
+            {
+                "contact_type": contact_type.id
+            },
+            {
+                "contact_type": contact_type_2.id
+            }
+
+        ]
+        physical_address_with_error = {
+        }
         physical_address = {
             "town": town.id,
             "nearest_landmark": "It is near the green M-PESA",
@@ -104,10 +116,20 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "abbreviation": "MK",
 
         }
+        new_owner_2 = {
+
+        }
         job_title = mommy.make(JobTitle)
         facility_officers = [
             {
                 "job_title": job_title.id,
+                "name": "Kiprotich Kipngeno",
+                "registration_number": "NURS189/1990"
+            }
+        ]
+        facility_officers_with_error = [
+            {
+                "job_title": 41910510,
                 "name": "Kiprotich Kipngeno",
                 "registration_number": "NURS189/1990"
             }
@@ -138,10 +160,18 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                     "This is the Pharmacy belonging to the hospital"),
                 "regulating_body": regulating_body.id
             }
+        ],
+        facility_units_with_error = [
+            {
+                "name": "The Facilities Pharmacy",
+                "description": (
+                    "This is the Pharmacy belonging to the hospital"),
+                "regulating_body": 11561857195
+            }
         ]
         data = {
-            "name": "Mama Lucy Medical Clinic",
-            "official_name": "Mama Lucy",
+            "name": "First Mama Lucy Medical Clinic",
+            "official_name": "First Mama Lucy",
             "abbreviation": "MLMC",
             "description": "This is an awesome hospital",
             "number_of_cots": 100,
@@ -166,8 +196,60 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(1, Facility.objects.count())
         self.assertEquals(1, Owner.objects.count())
         self.assertEquals(1, PhysicalAddress.objects.count())
-        self.assertEquals(2, Contact.objects.count())
-        self.assertEquals(2, FacilityContact.objects.count())
-        self.assertEquals(1, FacilityUnit.objects.count())
-        self.assertEquals(1, Officer.objects.count())
-        self.assertEquals(1, FacilityOfficer.objects.count())
+
+        data_with_errors = {
+            "name": "Second Mama Lucy Medical Clinic",
+            "official_name": "Second Mama Lucy",
+            "abbreviation": "MLMC",
+            "description": "This is an awesome hospital",
+            "number_of_cots": 100,
+            "number_of_beds": 90,
+            "open_whole_day": True,
+            "open_weekends": True,
+            "open_public_holidays": True,
+            "facility_type": facility_type.id,
+            "ward": ward.id,
+            "operation_status": operation_status.id,
+            "new_owner": new_owner_2,
+            "location_data": physical_address_with_error,
+            "regulatory_body": regulator.id,
+            "facility_contacts": contacts_with_error,
+            "keph_level": keph_level.id,
+            "facility_units": facility_units_with_error,
+            "facility_services": facility_services,
+            "facility_officers": facility_officers_with_error
+        }
+        response = self.client.post(self.url, data_with_errors)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(1, Facility.objects.count())
+        self.assertEquals(1, Owner.objects.count())
+        self.assertEquals(1, PhysicalAddress.objects.count())
+
+        data_with_errors = {
+            "name": "Another Mama Lucy Medical Clinic",
+            "official_name": "Another Mama Lucy",
+            "abbreviation": "MLMC",
+            "description": "This is an awesome hospital",
+            "number_of_cots": 100,
+            "number_of_beds": 90,
+            "open_whole_day": True,
+            "open_weekends": True,
+            "open_public_holidays": True,
+            "facility_type": facility_type.id,
+            "ward": ward.id,
+            "operation_status": operation_status.id,
+            "new_owner": new_owner,
+            "location_data": physical_address_with_error,
+            "regulatory_body": regulator.id,
+            "facility_contacts": contacts_with_error,
+            "keph_level": keph_level.id,
+            "facility_units": facility_units_with_error,
+            "facility_services": facility_services,
+            "facility_officers": facility_officers_with_error
+        }
+
+        response = self.client.post(self.url, data_with_errors)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(1, Facility.objects.count())
+        self.assertEquals(1, Owner.objects.count())
+        self.assertEquals(1, PhysicalAddress.objects.count())

@@ -291,13 +291,15 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
         inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
 
         # create new owners
+        errors = []
+
         def create_owner(owner_data):
             inject_audit_fields(owner_data)
             owner = OwnerSerializer(data=owner_data, context=context)
             if owner.is_valid():
                 return owner.save()
             else:
-                raise ValidationError(json.dumps(owner.errors))
+                errors.append(json.dumps(owner.errors))
 
         new_owner = self.initial_data.pop('new_owner', None)
         if new_owner:
@@ -312,93 +314,15 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             if location.is_valid():
                 return location.save()
             else:
-                raise ValidationError("errors in creating physical address")
+                errors.append("errors in creating physical address")
 
         location = self.initial_data.pop('location_data', None)
         if location:
             physical_address = create_physical_address(location)
             validated_data['physical_address'] = physical_address
-        facility = super(FacilitySerializer, self).create(validated_data)
-
-        contacts = self.initial_data.pop('facility_contacts', None)
-
-        # create faclity services
-        # def create_facility_service(service_data):
-        #     service_data['facility'] = facility.id
-        #     fs = FacilityServiceSerializer(data=service_data)
-        #     if fs.is_valid():
-        #         fs.save()
-        #     else:
-        #         raise ValidationError(fs.errors)
-
-        # create facility units
-        units = self.initial_data.pop('facility_units', None)
-
-        def create_facility_units(unit_data):
-            unit_data['facility'] = facility.id
-            inject_audit_fields(unit_data)
-            unit = FacilityUnitSerializer(data=unit_data, context=context)
-            if unit.is_valid():
-                return unit.save()
-            else:
-                raise ValidationError(json.dumps(unit.errors))
-
-        # create facility officer incharge
-        officers = self.initial_data.pop('facility_officers', None)
-
-        def create_officer(officer_data):
-            inject_audit_fields(officer_data)
-            officer = OfficerSerializer(data=officer_data, context=context)
-            if officer.is_valid():
-                return officer.save()
-            else:
-                raise ValidationError(json.dumps(officer.errors))
-
-        def create_facility_officers(facility_officer_data):
-            officer = create_officer(facility_officer_data)
-            facility_officer = {
-                "officer": officer.id,
-                "facility": facility.id
-            }
-            f_officer = FacilityOfficerSerializer(
-                data=facility_officer, context=context)
-            if f_officer.is_valid():
-                f_officer.save()
-            else:
-                raise ValidationError(json.dumps(officer.errors))
-
-        #  create facility contacts
-        def create_contact(contact_data):
-            contact = ContactSerializer(data=contact_data, context=context)
-            if contact.is_valid():
-                return contact.save()
-            else:
-                raise ValidationError(json.dumps(contact.errors))
-
-        def create_facility_contacts(contact_data):
-            inject_audit_fields(contact_data)
-            contact = create_contact(contact_data)
-            facility_contact_data = {
-                "contact": contact.id,
-                "facility": facility.id
-            }
-            inject_audit_fields(facility_contact_data)
-            f_contact = FacilityContactSerializer(
-                data=facility_contact_data, context=context)
-            if f_contact.is_valid():
-                return f_contact.save()
-            else:
-                raise ValidationError(json.dumps(f_contact.errors))
-
-        # if services:
-        #     map(create_facility_service, services)
-        if units:
-            map(create_facility_units, units)
-        if contacts:
-            map(create_facility_contacts, contacts)
-        if officers:
-            map(create_facility_officers, officers)
-        return facility
+        if errors:
+            raise ValidationError(json.dumps({"detail": errors}))
+        return super(FacilitySerializer, self).create(validated_data)
 
 
 class FacilityDetailSerializer(FacilitySerializer):
