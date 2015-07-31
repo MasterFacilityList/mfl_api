@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 
 class AuditableDetailViewMixin(RetrieveModelMixin):
 
-    def compare_objs(self, fields, old, new, include=['updated', 'updated_by']):
+    def _compare_objs(self, fields, old, new, include=[]):
         output = []
         for fld in fields:
             comp = reversion.helpers.generate_diffs(old, new, fld, None)
@@ -31,17 +31,17 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
 
         return output
 
-    def gen_diffs(self, instance, data, exclusions=['deleted', 'search']):
+    def generate_diffs(self, instance, data, exclude=[], include=[]):
         versions = reversion.get_for_object(instance)
         fieldnames = [
             f.name for f in instance._meta.fields
-            if f.name not in exclusions
+            if f.name not in exclude
         ]
         ans = []
         for i in range(1, len(versions), 1):
             old = versions[i-1]
             new = versions[i]
-            diff = self.compare_objs(fieldnames, old, new)
+            diff = self._compare_objs(fieldnames, old, new, include=include)
             if diff:
                 ans.append(diff)
 
@@ -79,9 +79,16 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         serializer = self.get_serializer(instance)
         data = serializer.data
 
-        if (str(request.query_params.get('include_audit', None)).lower() in
-                facility_filters.TRUTH_NESS):
-            data["revisions"] = self.gen_diffs(instance, data)
+        audit_requested = (
+            str(request.query_params.get('include_audit', None)).lower() in
+            facility_filters.TRUTH_NESS
+        )
+        if audit_requested:
+            data["revisions"] = self.generate_diffs(
+                instance, data,
+                exclude=['deleted', 'search'],
+                include=['updated', 'updated_by']
+            )
 
         return Response(data)
 
