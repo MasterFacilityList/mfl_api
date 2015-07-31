@@ -310,10 +310,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             inject_audit_fields(location_data)
             location = PhysicalAddressSerializer(
                 data=location_data, context=context)
-            if location.is_valid():
-                return location.save()
-            else:
-                errors.append("errors in creating physical address")
+            return location.save() if location.is_valid() else errors.append(
+                "errors in creating physical address")
 
         location = self.initial_data.pop('location_data', None)
         if location:
