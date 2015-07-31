@@ -1,6 +1,8 @@
 import json
 
 from django.utils import timezone
+from django.db import transaction
+
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -274,6 +276,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     class Meta(object):
         model = Facility
 
+    @transaction.atomic
     def create(self, validated_data):
         # prepare the audit fields
         context = self.context
