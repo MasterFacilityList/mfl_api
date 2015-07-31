@@ -6,8 +6,7 @@ from rest_framework.exceptions import ValidationError
 
 from common.serializers import (
     AbstractFieldsMixin,
-    PhysicalAddressSerializer,
-    ContactSerializer
+    PhysicalAddressSerializer
 )
 
 

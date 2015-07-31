@@ -1,67 +1,29 @@
-import json
-from datetime import timedelta
-
 from django.core.urlresolvers import reverse
-from django.contrib.auth import get_user_model
-from django.utils import timezone
 
 from rest_framework.test import APITestCase
 from model_mommy import mommy
 
-from common.tests.test_views import (
-    LoginMixin,
-    default
-)
+from common.tests.test_views import LoginMixin
+
 from common.models import (
-    Ward, UserCounty,
-    County,
-    Constituency,
-    Contact,
+    Ward,
     ContactType,
-    UserConstituency,
     PhysicalAddress,
     Town)
 
-from ..serializers import (
-    OwnerSerializer,
-    FacilitySerializer,
-    FacilityDetailSerializer,
-    FacilityStatusSerializer,
-    FacilityUnitSerializer,
-    FacilityListSerializer,
-    FacilityOfficerSerializer,
-    RegulatoryBodyUserSerializer,
-    FacilityUnitRegulationSerializer,
-    FacilityUpdatesSerializer,
-    ServiceSerializer
-)
 from ..models import (
     OwnerType,
     Owner,
     FacilityStatus,
     Facility,
-    FacilityUnit,
-    FacilityRegulationStatus,
     FacilityType,
-    ServiceCategory,
     Service,
     Option,
     ServiceOption,
-    FacilityService,
-    FacilityContact,
-    FacilityOfficer,
-    Officer,
     RegulatingBody,
-    RegulatoryBodyUser,
-    FacilityUnitRegulation,
-    RegulationStatus,
-    FacilityApproval,
-    FacilityUpdates,
     KephLevel,
     JobTitle
 )
-
-from django.contrib.auth.models import Group, Permission
 
 
 class TestInlinedFacilityCreation(LoginMixin, APITestCase):
