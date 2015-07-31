@@ -1053,7 +1053,8 @@ class FacilityUnit(AbstractBase):
     PPB.
     The pharmacy will in this case be treated as a facility unit.
     """
-    facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
+    facility = models.ForeignKey(
+        Facility, on_delete=models.PROTECT, related_name='facility_units')
     name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
