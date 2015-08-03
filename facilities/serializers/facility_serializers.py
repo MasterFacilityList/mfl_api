@@ -8,7 +8,8 @@ from rest_framework.exceptions import ValidationError
 
 from common.serializers import (
     AbstractFieldsMixin,
-    PhysicalAddressSerializer
+    PhysicalAddressSerializer,
+    ContactSerializer
 )
 
 
@@ -342,6 +343,34 @@ class FacilityDetailSerializer(FacilitySerializer):
     class Meta(object):
         model = Facility
         exclude = ('attributes', )
+
+    def update(self, instance, validated_data):
+        contacts = self.initial_data.pop('contacts', None)
+        super(FacilitySerializer, self).update(instance, validated_data)
+
+        def create_contact(contact_data):
+            contact = ContactSerializer(
+                data=contact_data, context=self.context)
+            if contact.is_valid():
+                return contact.save()
+            else:
+                raise ValidationError(json.dumps(contact.errors))
+
+        def create_facility_contacts(contact_data):
+            contact = create_contact(contact_data)
+            facility_contact_data = {
+                "contact": contact.id,
+                "facility": instance.id
+            }
+            f_contact = FacilityContactSerializer(
+                data=facility_contact_data, context=self.context)
+            if f_contact.is_valid():
+                return f_contact.save()
+            else:
+                raise ValidationError(json.dumps(f_contact.errors))
+        if contacts:
+            map(create_facility_contacts, contacts)
+        return instance
 
 
 class FacilityListSerializer(FacilitySerializer):

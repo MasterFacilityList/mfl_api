@@ -215,3 +215,127 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(1, Facility.objects.count())
         self.assertEquals(1, Owner.objects.count())
         self.assertEquals(1, PhysicalAddress.objects.count())
+
+    def test_update_inlined_facility(self):
+        ward = mommy.make(Ward)
+        town = mommy.make(Town, ward=ward, name="Some name")
+        facility_type = mommy.make(FacilityType)
+        operation_status = mommy.make(FacilityStatus)
+        regulator = mommy.make(RegulatingBody)
+        contact_type = mommy.make(ContactType, name="EMAIL")
+        contact_type_2 = mommy.make(ContactType, name="PHONE")
+        keph_level = mommy.make(KephLevel)
+
+        contacts = [
+            {
+                "contact_type": contact_type.id,
+                "contact": "mamalucy@gmail.com"
+            },
+            {
+                "contact_type": contact_type_2.id,
+                "contact": "0714681919",
+            }
+
+        ]
+        contacts_with_error = [
+            {
+                "contact_type": contact_type.id
+            },
+            {
+                "contact_type": contact_type_2.id
+            }
+
+        ]
+        physical_address = {
+            "town": town.id,
+            "nearest_landmark": "It is near the green M-PESA",
+            "plot_number": "9080/78/",
+            "location_desc": "Along The beast avenue"
+        }
+        owner_type = mommy.make(OwnerType)
+        # owner = mommy.make(Owner, owner_type=owner_type)
+        new_owner = {
+            "owner_type": owner_type.id,
+            "name": "Musa Kamaa",
+            "description": "A private owner based in Kiambu",
+            "abbreviation": "MK",
+
+        }
+        job_title = mommy.make(JobTitle)
+        facility_officers = [
+            {
+                "job_title": job_title.id,
+                "name": "Kiprotich Kipngeno",
+                "registration_number": "NURS189/1990"
+            }
+        ]
+
+        service = mommy.make(Service)
+        service_1 = mommy.make(Service)
+        service_2 = mommy.make(Service)
+        option = mommy.make(Option)
+        service_option = mommy.make(
+            ServiceOption, service=service_2, option=option)
+        facility_services = [
+            {
+                "service": service.id,
+            },
+            {
+                "service": service_1.id,
+            },
+            {
+                "selected_option": service_option.id,
+            }
+
+        ]
+        regulating_body = mommy.make(RegulatingBody)
+        facility_units = [
+            {
+                "name": "The Facilities Pharmacy",
+                "description": (
+                    "This is the Pharmacy belonging to the hospital"),
+                "regulating_body": regulating_body.id
+            }
+        ],
+
+        data = {
+            "name": "First Mama Lucy Medical Clinic",
+            "official_name": "First Mama Lucy",
+            "abbreviation": "MLMC",
+            "description": "This is an awesome hospital",
+            "number_of_cots": 100,
+            "number_of_beds": 90,
+            "open_whole_day": True,
+            "open_weekends": True,
+            "open_public_holidays": True,
+            "facility_type": facility_type.id,
+            "ward": ward.id,
+            "operation_status": operation_status.id,
+            "new_owner": new_owner,
+            "location_data": physical_address,
+            "regulatory_body": regulator.id,
+            "contacts": contacts,
+            "keph_level": keph_level.id,
+            "facility_units": facility_units,
+            "facility_services": facility_services,
+            "facility_officers": facility_officers
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, Facility.objects.count())
+        self.assertEquals(1, Owner.objects.count())
+        self.assertEquals(1, PhysicalAddress.objects.count())
+        facility_id = response.data.get("id")
+        updating_data = {
+            "name": "Facility name editted",
+            "contacts": contacts
+        }
+        url = self.url + "{}/".format(facility_id)
+        response = self.client.patch(url, updating_data)
+        self.assertEquals(200, response.status_code)
+
+        data_with_errors = {
+            "contacts": contacts_with_error
+        }
+        response = self.client.patch(url, data_with_errors)
+        self.assertEquals(400, response.status_code)
