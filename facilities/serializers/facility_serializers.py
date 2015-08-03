@@ -364,11 +364,7 @@ class FacilityDetailSerializer(FacilitySerializer):
             }
             f_contact = FacilityContactSerializer(
                 data=facility_contact_data, context=self.context)
-            if f_contact.is_valid():
-                return f_contact.save()
-            else:
-                raise ValidationError(json.dumps(f_contact.errors))
-        if contacts:
+            return f_contact.save()
             map(create_facility_contacts, contacts)
         return instance
 
