@@ -344,9 +344,23 @@ class FacilityDetailSerializer(FacilitySerializer):
         model = Facility
         exclude = ('attributes', )
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         contacts = self.initial_data.pop('contacts', None)
+        units = self.initial_data.pop('units', None)
+        errors = []
         super(FacilityDetailSerializer, self).update(instance, validated_data)
+        audit_data = {
+            "created_by_id": self.context['request'].user.id,
+            "updated_by_id": self.context['request'].user.id,
+            "created": (
+                validated_data['created'] if
+                validated_data.get('created') else timezone.now()),
+            "updated": (
+                validated_data['update'] if
+                validated_data.get('updated') else timezone.now())
+        }
+        inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
 
         def create_contact(contact_data):
             contact = ContactSerializer(
@@ -354,7 +368,7 @@ class FacilityDetailSerializer(FacilitySerializer):
             if contact.is_valid():
                 return contact.save()
             else:
-                raise ValidationError(json.dumps(contact.errors))
+                errors.append(json.dumps(contact.errors))
 
         def create_facility_contacts(contact_data):
             contact = create_contact(contact_data)
@@ -362,21 +376,27 @@ class FacilityDetailSerializer(FacilitySerializer):
                 "contact": contact,
                 "facility": instance
             }
-            audit_data = {
-                "created_by_id": self.context['request'].user.id,
-                "updated_by_id": self.context['request'].user.id,
-                "created": (
-                    validated_data['created'] if
-                    validated_data.get('created') else timezone.now()),
-                "updated": (
-                    validated_data['update'] if
-                    validated_data.get('updated') else timezone.now())
-            }
-            inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
             inject_audit_fields(facility_contact_data)
-            FacilityContact.objects.create(**facility_contact_data)
+            try:
+                FacilityContact.objects.create(**facility_contact_data)
+            except:
+                error = "The contacts provided did not validate"
+                errors.append(error)
+
+        def create_facility_units(unit_data):
+            unit_data['facility'] = instance.id
+            inject_audit_fields(unit_data)
+            unit = FacilityUnitSerializer(data=unit_data, context=self.context)
+            if unit.is_valid():
+                return unit.save()
+            else:
+                errors.append((json.dumps(unit.errors)))
         if contacts:
             map(create_facility_contacts, contacts)
+        if units:
+            map(create_facility_units, units)
+        if errors:
+            raise ValidationError(errors)
         return instance
 
 

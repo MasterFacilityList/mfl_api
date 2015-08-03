@@ -149,7 +149,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "regulatory_body": regulator.id,
             "facility_contacts": contacts,
             "keph_level": keph_level.id,
-            "facility_units": facility_units,
+            "units": facility_units,
             "facility_services": facility_services,
             "facility_officers": facility_officers
         }
@@ -177,7 +177,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "regulatory_body": regulator.id,
             "facility_contacts": contacts_with_error,
             "keph_level": keph_level.id,
-            "facility_units": facility_units_with_error,
+            "units": facility_units_with_error,
             "facility_services": facility_services,
             "facility_officers": facility_officers_with_error
         }
@@ -205,7 +205,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "regulatory_body": regulator.id,
             "facility_contacts": contacts_with_error,
             "keph_level": keph_level.id,
-            "facility_units": facility_units_with_error,
+            "units": facility_units_with_error,
             "facility_services": facility_services,
             "facility_officers": facility_officers_with_error
         }
@@ -296,7 +296,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                     "This is the Pharmacy belonging to the hospital"),
                 "regulating_body": regulating_body.id
             }
-        ],
+        ]
 
         data = {
             "name": "First Mama Lucy Medical Clinic",
@@ -316,7 +316,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "regulatory_body": regulator.id,
             "contacts": contacts,
             "keph_level": keph_level.id,
-            "facility_units": facility_units,
+            "units": facility_units,
             "facility_services": facility_services,
             "facility_officers": facility_officers
         }
@@ -328,14 +328,29 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         facility_id = response.data.get("id")
         updating_data = {
             "name": "Facility name editted",
-            "contacts": contacts
+            "contacts": contacts,
+            "units": facility_units
         }
         url = self.url + "{}/".format(facility_id)
         response = self.client.patch(url, updating_data)
         self.assertEquals(200, response.status_code)
+        facility_units_with_error = [
+            {
+                "name": ("A very long nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                         "ee eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                         "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                         "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                         "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                         "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
+                "description": (
+                    "This is the Pharmacy belonging to the hospital"),
+                "regulating_body": regulating_body.id
+            }
+        ]
 
         data_with_errors = {
-            "contacts": contacts_with_error
+            "contacts": contacts_with_error,
+            "units": facility_units_with_error
         }
         response = self.client.patch(url, data_with_errors)
         self.assertEquals(400, response.status_code)
