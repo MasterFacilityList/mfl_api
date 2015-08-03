@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group, Permission
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_auth.serializers import PasswordChangeSerializer
 
 from common.serializers import (
     UserCountySerializer,
@@ -11,7 +12,7 @@ from common.serializers import (
     PartialResponseMixin
 )
 from facilities.serializers import RegulatoryBodyUserSerializer
-from .models import MflUser, MFLOAuthApplication
+from .models import MflUser, MFLOAuthApplication, check_password_strength
 
 
 def _lookup_permissions(validated_data):
@@ -202,3 +203,11 @@ class MFLOAuthApplicationSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = MFLOAuthApplication
+
+
+class MflPasswordChangeSerializer(PasswordChangeSerializer):
+
+    def validate(self, attrs):
+        super(MflPasswordChangeSerializer, self).validate(attrs)
+        check_password_strength(attrs['new_password1'])
+        return attrs

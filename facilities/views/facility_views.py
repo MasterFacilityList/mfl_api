@@ -130,7 +130,8 @@ class KephLevelListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'value', 'description')
 
 
-class KephLevelDetailView(CustomRetrieveUpdateDestroyView):
+class KephLevelDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a single KEPH level
     """
@@ -265,8 +266,7 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     )
 
 
-class FacilityListReadOnlyView(
-        QuerysetFilterMixin, AuditableDetailViewMixin, generics.ListAPIView):
+class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
     """
     Returns a slimmed payload of the facility.
     """
@@ -329,8 +329,7 @@ class FacilityContactDetailView(
     serializer_class = FacilityContactSerializer
 
 
-class FacilityOfficerListView(
-        AuditableDetailViewMixin, generics.ListCreateAPIView):
+class FacilityOfficerListView(generics.ListCreateAPIView):
     serializer_class = FacilityOfficerSerializer
     queryset = FacilityOfficer.objects.all()
     filter_class = FacilityOfficerFilter
@@ -345,8 +344,7 @@ class FacilityOfficerDetailView(
     queryset = FacilityOfficer.objects.all()
 
 
-class FacilityUnitRegulationListView(
-        AuditableDetailViewMixin, generics.ListCreateAPIView):
+class FacilityUnitRegulationListView(generics.ListCreateAPIView):
     queryset = FacilityUnitRegulation.objects.all()
     serializer_class = FacilityUnitRegulationSerializer
     filter_class = FacilityUnitRegulationFilter

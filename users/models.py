@@ -43,14 +43,22 @@ def send_email_on_signup(user, user_password):
     msg.send()
 
 
-def check_password_length(raw_password):
+def check_password_strength(raw_password):
     # use not isalpha in order to allow special characters also
     # user not isdigit to make the passsword is not a number
     if (len(raw_password) >= 8 and not raw_password.isalpha()
             and not raw_password.isdigit()):
         return True
     else:
-        return False
+        error = (
+            {
+                "password": [
+                    "The password must be at least 8"
+                    "characters long and have at least one number"
+                ]
+            }
+        )
+        raise ValidationError(error)
 
 
 class MflUserManager(BaseUserManager):
@@ -58,10 +66,7 @@ class MflUserManager(BaseUserManager):
     def create_user(self, email, first_name,
                     employee_number, password=None, is_staff=False,
                     **extra_fields):
-        if not check_password_length(password):
-            error = ("The password must be at least 8"
-                     "characters long and have at least one number")
-            raise ValidationError(error)
+        check_password_strength(password)
         now = timezone.now()
         validate_email(email)
         p = make_password(password)

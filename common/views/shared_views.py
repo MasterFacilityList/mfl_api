@@ -7,48 +7,92 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.mixins import RetrieveModelMixin
 
+from facilities.filters import facility_filters
+
+
 LOGGER = logging.getLogger(__name__)
 
 
 class AuditableDetailViewMixin(RetrieveModelMixin):
-    """
-    A very thin extension of the default `RetrieveModelMixin` that adds audit.
 
-    As at Django REST Framework 3.1, `RetrieveModelMixin` looks like this:
+    def _compare_objs(self, fields, old, new, include=[]):
+        output = []
+        for fld in fields:
+            old_val = old.field_dict.get(fld, '')
+            new_val = new.field_dict.get(fld, '')
 
-        ```
-        class RetrieveModelMixin(object):
-            '''
-            Retrieve a model instance.
-            '''
-            def retrieve(self, request, *args, **kwargs):
-                instance = self.get_object()
-                serializer = self.get_serializer(instance)
-                return Response(serializer.data)
-        ```
+            if old_val != new_val:
+                output.append({
+                    "name": fld,
+                    "old": old_val,
+                    "new": new_val
+                })
 
-    Our variant is not very different...all it does is to look for an
-    `include_audit` GET param ( boolean ) in the request. If it is found,
-    we include that model instance's audit information in the returned
-    representation.
+        obj = {
+            i: new.field_dict.get(i, '') for i in include
+        }
+        obj["updates"] = output
 
-    We are counting on the fact that this API operates only on a single
-    *instance* AND the fact that audit data is optional ( opt-in ); hence
-    the lack of pagination of the revisions.
+        return obj
 
-    Reconstruction will be left to the client / consumer of this API.
-    """
+    def generate_diffs(self, instance, data, exclude=[], include=[]):
+        versions = reversion.get_for_object(instance)
+        fieldnames = [
+            f.name for f in instance._meta.fields
+            if f.name not in exclude
+        ]
+        ans = []
+        for i in range(1, len(versions), 1):
+            new = versions[i-1]
+            old = versions[i]
+            diff = self._compare_objs(fieldnames, old, new, include=include)
+            if diff["updates"]:
+                ans.append(diff)
+
+        return ans
+
     def retrieve(self, request, *args, **kwargs):
+        """
+        A small extension of the default `RetrieveModelMixin` that adds audit.
+
+        As at Django REST Framework 3.1, `RetrieveModelMixin` looks like this:
+
+            ```
+            class RetrieveModelMixin(object):
+                '''
+                Retrieve a model instance.
+                '''
+                def retrieve(self, request, *args, **kwargs):
+                    instance = self.get_object()
+                    serializer = self.get_serializer(instance)
+                    return Response(serializer.data)
+            ```
+
+        Our variant is not very different...all it does is to look for an
+        `include_audit` GET param ( boolean ) in the request. If it is found,
+        we include that model instance's audit information in the returned
+        representation.
+
+        We are counting on the fact that this API operates only on a single
+        *instance* AND the fact that audit data is optional ( opt-in ); hence
+        the lack of pagination of the revisions.
+
+        Reconstruction will be left to the client / consumer of this API.
+        """
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         data = serializer.data
 
-        if str(request.query_params.get('include_audit', None)).lower() in \
-                ['true', 'yes', 'y', '1', 't']:
-            data["revisions"] = [
-                version.field_dict
-                for version in reversion.get_for_object(instance)
-            ]
+        audit_requested = (
+            str(request.query_params.get('include_audit', None)).lower() in
+            facility_filters.TRUTH_NESS
+        )
+        if audit_requested:
+            data["revisions"] = self.generate_diffs(
+                instance, data,
+                exclude=['deleted', 'search'],
+                include=['updated', 'updated_by']
+            )
 
         return Response(data)
 
