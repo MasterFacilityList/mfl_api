@@ -8,7 +8,8 @@ from rest_framework.exceptions import ValidationError
 
 from common.serializers import (
     AbstractFieldsMixin,
-    PhysicalAddressSerializer
+    PhysicalAddressSerializer,
+    ContactSerializer
 )
 
 
@@ -342,6 +343,41 @@ class FacilityDetailSerializer(FacilitySerializer):
     class Meta(object):
         model = Facility
         exclude = ('attributes', )
+
+    def update(self, instance, validated_data):
+        contacts = self.initial_data.pop('contacts', None)
+        super(FacilityDetailSerializer, self).update(instance, validated_data)
+
+        def create_contact(contact_data):
+            contact = ContactSerializer(
+                data=contact_data, context=self.context)
+            if contact.is_valid():
+                return contact.save()
+            else:
+                raise ValidationError(json.dumps(contact.errors))
+
+        def create_facility_contacts(contact_data):
+            contact = create_contact(contact_data)
+            facility_contact_data = {
+                "contact": contact,
+                "facility": instance
+            }
+            audit_data = {
+                "created_by_id": self.context['request'].user.id,
+                "updated_by_id": self.context['request'].user.id,
+                "created": (
+                    validated_data['created'] if
+                    validated_data.get('created') else timezone.now()),
+                "updated": (
+                    validated_data['update'] if
+                    validated_data.get('updated') else timezone.now())
+            }
+            inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
+            inject_audit_fields(facility_contact_data)
+            FacilityContact.objects.create(**facility_contact_data)
+        if contacts:
+            map(create_facility_contacts, contacts)
+        return instance
 
 
 class FacilityListSerializer(FacilitySerializer):
