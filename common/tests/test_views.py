@@ -465,51 +465,42 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
     def test_response_with_no_audit(self):
         county = mommy.make(County)
         url = reverse(
-            'api:common:county_detail', kwargs={'pk': county.pk})
+            'api:common:county_detail', kwargs={'pk': county.pk}
+        )
 
         # First, fetch with no audit
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertTrue(
-            "revisions" not in
-            json.loads(json.dumps(response.data, default=default))
-        )
+        self.assertNotIn("revisions", response.data)
+
+    def test_response_with_audit(self):
+        county = mommy.make(County)
+        url = reverse(
+            'api:common:county_detail', kwargs={'pk': county.pk}
+        ) + "?include_audit=t"
+
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEqual(response.data["revisions"], [])
 
     def test_response_with_audit_single_change(self):
         county_rev_1 = mommy.make(County)
         url = reverse(
-            'api:common:county_detail',
-            kwargs={'pk': county_rev_1.pk}
+            'api:common:county_detail', kwargs={'pk': county_rev_1.pk}
         ) + '?include_audit=true'
 
-        # First, fetch with no audit
+        old_val = county_rev_1.code
+        county_rev_1.code = 34
+        county_rev_1.save()
+
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+        self.assertEqual(len(response.data["revisions"]), 1)
 
-        parsed_response = json.loads(
-            json.dumps(response.data, default=default))
-
-        self.assertTrue("revisions" in parsed_response)
-        self.assertEqual(
-            parsed_response["revisions"][0]["code"],
-            county_rev_1.code
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["id"],
-            str(county_rev_1.id)
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["name"],
-            county_rev_1.name
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["active"],
-            county_rev_1.active
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["deleted"],
-            county_rev_1.deleted
-        )
+        diff = response.data["revisions"][0]
+        self.assertEqual(diff["name"], "code")
+        self.assertEqual(diff["old"], old_val)
+        self.assertEqual(diff["new"], county_rev_1.code)
 
     def test_response_with_audit_two_changes(self):
         county_rev_1 = mommy.make(County)
