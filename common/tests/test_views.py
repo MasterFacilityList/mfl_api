@@ -521,18 +521,18 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEqual(len(response.data["revisions"]), 2)
-        self.assertEqual(len(response.data["revisions"][0]["updates"]), 2)
-        self.assertEqual(len(response.data["revisions"][1]["updates"]), 1)
+        self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
+        self.assertEqual(len(response.data["revisions"][1]["updates"]), 2)
 
         diff1, diff2 = response.data["revisions"][0]["updates"]
         self.assertIn({
             "name": "name",
             "old": "one",
             "new": "Kaunti Yangu"
-        }, diff1)
-        self.assertIn({"name": "code", "old": 98, "new": 99}, diff1)
+        }, diff2)
+        self.assertIn({"name": "code", "old": 98, "new": 99}, diff2)
         self.assertIn(
-            {"name": "name", "old": "Kaunti Yangu", "new": "yeahhh"}, diff2
+            {"name": "name", "old": "Kaunti Yangu", "new": "yeahhh"}, diff1
         )
 
 
