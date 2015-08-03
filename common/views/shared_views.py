@@ -46,7 +46,7 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
             new = versions[i-1]
             old = versions[i]
             diff = self._compare_objs(fieldnames, old, new, include=include)
-            if diff:
+            if diff["updates"]:
                 ans.append(diff)
 
         return ans
