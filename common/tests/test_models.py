@@ -107,7 +107,7 @@ class BaseTestCase(TestCase):
         self.user = get_user_model().objects.create_superuser(
             email='tester1@ehealth.or.ke',
             first_name='Test',
-            username='test1',
+            employee_number='2124124124',
             password='mtihani124',
             is_national=True
         )

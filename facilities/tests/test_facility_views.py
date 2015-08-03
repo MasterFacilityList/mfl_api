@@ -636,6 +636,7 @@ class CountyAndNationalFilterBackendTest(APITestCase):
             email='tester@ehealth.or.ke',
             first_name='Test',
             username='test',
+            employee_number='1241414141',
             password=password,
             is_national=False
         )

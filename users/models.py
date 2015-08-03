@@ -64,14 +64,15 @@ def check_password_strength(raw_password):
 class MflUserManager(BaseUserManager):
 
     def create_user(self, email, first_name,
-                    username, password=None, is_staff=False, **extra_fields):
+                    employee_number, password=None, is_staff=False,
+                    **extra_fields):
         check_password_strength(password)
         now = timezone.now()
         validate_email(email)
         p = make_password(password)
         email = MflUserManager.normalize_email(email)
         user = self.model(email=email, first_name=first_name, password=p,
-                          username=username,
+                          employee_number=employee_number,
                           is_staff=is_staff, is_active=True,
                           is_superuser=False,
                           last_login=now, date_joined=now, **extra_fields)
@@ -79,10 +80,10 @@ class MflUserManager(BaseUserManager):
         send_email_on_signup(user, password)
         return user
 
-    def create_superuser(self, email, first_name, username,
+    def create_superuser(self, email, first_name, employee_number,
                          password, is_staff=True, **extra_fields):
         user = self.create_user(email, first_name,
-                                username, password, **extra_fields)
+                                employee_number, password, **extra_fields)
         user.is_staff = is_staff
         user.is_active = True
         user.is_superuser = True
@@ -111,8 +112,8 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     other_names = models.CharField(max_length=80, null=False, blank=True,
                                    default="")
     username = models.CharField(
-        max_length=60, null=False,
-        blank=False, unique=True,
+        max_length=60, null=True,
+        blank=True, unique=True,
         validators=[RegexValidator(
             regex=r'^\w+$',
             message='Preferred name contain only '
@@ -131,9 +132,11 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         models.TextField(null=True, blank=True),
         null=True, blank=True
     )
+    employee_number = models.CharField(
+        max_length=20, unique=True, null=False, blank=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
+    USERNAME_FIELD = 'employee_number'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
     objects = MflUserManager()
     everything = BaseUserManager()

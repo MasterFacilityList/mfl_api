@@ -11,7 +11,7 @@ class TestMflUserModel(BaseTestCase):
     def test_save_normal_user(self):
         data = {
             "email": "some@email.com",
-            "username": "some",
+            "employee_number": "some",
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
@@ -31,7 +31,7 @@ class TestMflUserModel(BaseTestCase):
         self.assertEquals(2, MflUser.objects.count())
         data = {
             "email": "some@email.com",
-            "username": "some",
+            "employee_number": "some",
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
@@ -47,7 +47,7 @@ class TestMflUserModel(BaseTestCase):
     def test_permissions_property(self):
         data = {
             "email": "some@email.com",
-            "username": "some",
+            "employee_number": "some",
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
@@ -90,7 +90,7 @@ class TestMflUserModel(BaseTestCase):
     def test_password_is_greater_than_or_equal_to_6_characters(self):
         data = {
             "email": "some@email.com",
-            "username": "some",
+            "employee_number": "some",
             "first_name": "jina",
             "last_name": "mwisho",
             "other_names": "jm",
