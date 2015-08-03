@@ -329,7 +329,8 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         updating_data = {
             "name": "Facility name editted",
             "contacts": contacts,
-            "units": facility_units
+            "units": facility_units,
+            "services": facility_services
         }
         url = self.url + "{}/".format(facility_id)
         response = self.client.patch(url, updating_data)
@@ -347,10 +348,16 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                 "regulating_body": regulating_body.id
             }
         ]
+        facility_services_with_error = [
+            {
+                "service": "19811899",
+            }
 
+        ]
         data_with_errors = {
             "contacts": contacts_with_error,
-            "units": facility_units_with_error
+            "units": facility_units_with_error,
+            "services": facility_services_with_error
         }
         response = self.client.patch(url, data_with_errors)
         self.assertEquals(400, response.status_code)
