@@ -483,6 +483,16 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEqual(response.data["revisions"], [])
 
+    def test_response_with_audit_empty_change(self):
+        county = mommy.make(County)
+        url = reverse(
+            'api:common:county_detail', kwargs={'pk': county.pk}
+        ) + "?include_audit=t"
+        county.save()
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEqual(response.data["revisions"], [])
+
     def test_response_with_audit_single_change(self):
         county_rev_1 = mommy.make(County)
         url = reverse(
