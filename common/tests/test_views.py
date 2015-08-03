@@ -496,30 +496,44 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEqual(len(response.data["revisions"]), 1)
+        self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
 
-        diff = response.data["revisions"][0]["updates"]
+        diff = response.data["revisions"][0]["updates"][0]
+
         self.assertEqual(diff["name"], "code")
         self.assertEqual(diff["old"], old_val)
         self.assertEqual(diff["new"], county_rev_1.code)
 
     def test_response_with_audit_two_changes(self):
-        county_rev_1 = mommy.make(County)
+        county_rev_1 = mommy.make(County, name="one", code=98)
         url = reverse(
             'api:common:county_detail',
             kwargs={'pk': county_rev_1.pk}
         ) + '?include_audit=true'
 
         county_rev_1.name = 'Kaunti Yangu'
+        county_rev_1.code = 99
+        county_rev_1.save()
+
+        county_rev_1.name = 'yeahhh'
         county_rev_1.save()
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+        self.assertEqual(len(response.data["revisions"]), 2)
+        self.assertEqual(len(response.data["revisions"][0]["updates"]), 2)
+        self.assertEqual(len(response.data["revisions"][1]["updates"]), 1)
 
-        parsed_response = json.loads(
-            json.dumps(response.data, default=default))
-
-        self.assertTrue("revisions" in parsed_response)
-        self.assertEqual(len(parsed_response["revisions"]), 2)
+        diff1, diff2 = response.data["revisions"][0]["updates"]
+        self.assertIn({
+            "name": "name",
+            "old": "one",
+            "new": "Kaunti Yangu"
+        }, diff1)
+        self.assertIn({"name": "code", "old": 98, "new": 99}, diff1)
+        self.assertIn(
+            {"name": "name", "old": "Kaunti Yangu", "new": "yeahhh"}, diff2
+        )
 
 
 class TestFilteringSummariesView(LoginMixin, APITestCase):
