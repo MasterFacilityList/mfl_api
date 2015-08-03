@@ -72,6 +72,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'reversion',
     'gunicorn',
+    'debug_toolbar',
     'facilities',
     'data_bootstrap',
     'chul',

@@ -181,8 +181,11 @@ class TestSearchFunctions(ViewTestBase):
         url = url + "?search={}".format('Kanyakini')
         response = ""
         # temporary hack there is a delay in getting the search results
-        for x in range(0, 100):
+        while True:
             response = self.client.get(url)
+            if len(response.data.get('results')):
+                break
+
         self.assertEquals(200, response.status_code)
         self.assertEquals(facility, Facility.objects.get(
             id=response.data['results'][0].get("id")))
@@ -198,11 +201,12 @@ class TestSearchFunctions(ViewTestBase):
         url = url + "?search_auto={}".format('Kanya')
         response = ""
         # temporary hack there is a delay in getting the search results
-        for x in range(0, 100):
+        while True:
             response = self.client.get(url)
+            if len(response.data.get('results')):
+                break
 
         self.assertEquals(200, response.status_code)
-
         self.assertEquals(facility, Facility.objects.get(
             id=response.data['results'][0].get("id")))
         self.elastic_search_api.delete_index('test_index')
