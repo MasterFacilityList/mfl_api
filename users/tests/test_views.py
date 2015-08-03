@@ -153,8 +153,6 @@ class TestUserViews(LoginMixin, APITestCase):
             "new_password2": "weak"
         }
         response = self.client.post(url, data)
-        # weired issue in code
-        # actual response_code is 400
         self.assertEquals(400, response.status_code)
         data = {
             "old_password": "strong1344",
@@ -164,6 +162,21 @@ class TestUserViews(LoginMixin, APITestCase):
 
         response = self.client.post(url, data)
         self.assertEquals(200, response.status_code)
+
+    def test_password_quality_missing_fields(self):
+        user = mommy.make(MflUser)
+        user.set_password('strong1344')
+        user.save()
+        self.client.logout()
+        self.client.force_authenticate(user)
+        url = "/api/rest-auth/password/change/"
+        # old_password1 field is left out
+        data = {
+            "old_password": "strong13443463",
+            "new_password2": "weak"
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
 
 
 class TestGroupViews(LoginMixin, APITestCase):
