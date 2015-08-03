@@ -359,12 +359,23 @@ class FacilityDetailSerializer(FacilitySerializer):
         def create_facility_contacts(contact_data):
             contact = create_contact(contact_data)
             facility_contact_data = {
-                "contact": contact.id,
-                "facility": instance.id
+                "contact": contact,
+                "facility": instance
             }
-            f_contact = FacilityContactSerializer(
-                data=facility_contact_data, context=self.context)
-            return f_contact.save()
+            audit_data = {
+                "created_by_id": self.context['request'].user.id,
+                "updated_by_id": self.context['request'].user.id,
+                "created": (
+                    validated_data['created'] if
+                    validated_data.get('created') else timezone.now()),
+                "updated": (
+                    validated_data['update'] if
+                    validated_data.get('updated') else timezone.now())
+            }
+            inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
+            inject_audit_fields(facility_contact_data)
+            FacilityContact.objects.create(**facility_contact_data)
+        if contacts:
             map(create_facility_contacts, contacts)
         return instance
 
