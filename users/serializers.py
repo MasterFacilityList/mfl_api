@@ -206,21 +206,20 @@ class MFLOAuthApplicationSerializer(serializers.ModelSerializer):
 
 
 class MflPasswordChangeSerializer(PasswordChangeSerializer):
-    def raiser(self, excp, message):
-        raise excp(message)
+    # def raiser(self, excp, message):
+    #     raise excp(message)
 
     def validate(self, attrs):
         super(MflPasswordChangeSerializer, self).validate(attrs)
         check_password_strength(attrs['new_password1'])
-        self.set_password_form = self.set_password_form_class(
-            user=self.user, data=attrs
-        )
-
-        return attrs if self.set_password_form.is_valid() else \
-            self.raiser(
-                serializers.ValidationError, self.set_password_form.errors)
-
         return attrs
+        # self.set_password_form = self.set_password_form_class(
+        #     user=self.user, data=attrs
+        # )
+
+        # return attrs if self.set_password_form.is_valid() else \
+        #     self.raiser(
+        #         serializers.ValidationError, self.set_password_form.errors)
 
     def save(self):
         self.set_password_form.save()

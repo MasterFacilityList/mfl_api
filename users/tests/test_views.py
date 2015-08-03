@@ -1,4 +1,5 @@
 import json
+from mock import patch
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
@@ -164,19 +165,29 @@ class TestUserViews(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
 
     def test_password_quality_missing_fields(self):
-        user = mommy.make(MflUser)
-        user.set_password('strong1344')
-        user.save()
-        self.client.logout()
-        self.client.force_authenticate(user)
-        url = "/api/rest-auth/password/change/"
-        # old_password1 field is left out
-        data = {
-            "old_password": "strong13443463",
-            "new_password2": "weak"
-        }
-        response = self.client.post(url, data)
-        self.assertEquals(400, response.status_code)
+
+        class PasswordChangeSerializerInvalid(object):
+            def set_password_form(self):
+                def is_valid():
+                    return False
+        with patch('users.serializers.PasswordChangeSerializer') as \
+                mock_password_change:
+            mock_password_change.return_value = \
+                PasswordChangeSerializerInvalid()
+            user = mommy.make(MflUser)
+            user.set_password('strong1344')
+            user.save()
+            self.client.logout()
+            self.client.force_authenticate(user)
+
+            url = "/api/rest-auth/password/change/"
+            # old_password1 field is left out
+            data = {
+                "old_password": "strong13443463",
+                "new_password2": "weak"
+            }
+            response = self.client.post(url, data)
+            self.assertEquals(400, response.status_code)
 
 
 class TestGroupViews(LoginMixin, APITestCase):
