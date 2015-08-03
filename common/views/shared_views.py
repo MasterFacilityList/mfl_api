@@ -1,6 +1,5 @@
 import logging
 import reversion
-import reversion.helpers
 
 from django.shortcuts import redirect
 
@@ -19,17 +18,22 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
     def _compare_objs(self, fields, old, new, include=[]):
         output = []
         for fld in fields:
-            comp = reversion.helpers.generate_diffs(old, new, fld, None)
-            if len(comp) == 1 and comp[0][0] == 0:
-                continue
+            old_val = old.field_dict.get(fld, '')
+            new_val = new.field_dict.get(fld, '')
 
-            obj = {
-                i: new.field_dict.get(i, '') for i in include
-            }
-            obj[fld] = new.field_dict.get(fld, '')
-            output.append(obj)
+            if old_val != new_val:
+                output.append({
+                    "name": fld,
+                    "old": old_val,
+                    "new": new_val
+                })
 
-        return output
+        obj = {
+            i: new.field_dict.get(i, '') for i in include
+        }
+        obj["updates"] = output
+
+        return obj
 
     def generate_diffs(self, instance, data, exclude=[], include=[]):
         versions = reversion.get_for_object(instance)
@@ -39,8 +43,8 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         ]
         ans = []
         for i in range(1, len(versions), 1):
-            old = versions[i-1]
-            new = versions[i]
+            new = versions[i-1]
+            old = versions[i]
             diff = self._compare_objs(fieldnames, old, new, include=include)
             if diff:
                 ans.append(diff)
