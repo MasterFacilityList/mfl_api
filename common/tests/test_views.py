@@ -497,7 +497,7 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEqual(len(response.data["revisions"]), 1)
 
-        diff = response.data["revisions"][0]
+        diff = response.data["revisions"][0]["updates"]
         self.assertEqual(diff["name"], "code")
         self.assertEqual(diff["old"], old_val)
         self.assertEqual(diff["new"], county_rev_1.code)
