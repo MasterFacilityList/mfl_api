@@ -346,7 +346,7 @@ class FacilityDetailSerializer(FacilitySerializer):
 
     def update(self, instance, validated_data):
         contacts = self.initial_data.pop('contacts', None)
-        super(FacilitySerializer, self).update(instance, validated_data)
+        super(FacilityDetailSerializer, self).update(instance, validated_data)
 
         def create_contact(contact_data):
             contact = ContactSerializer(
