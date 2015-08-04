@@ -22,7 +22,10 @@ from ..models import (
     ServiceOption,
     RegulatingBody,
     KephLevel,
-    JobTitle
+    JobTitle,
+    FacilityService,
+    FacilityContact,
+    FacilityUnit
 )
 
 
@@ -335,6 +338,10 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         url = self.url + "{}/".format(facility_id)
         response = self.client.patch(url, updating_data)
         self.assertEquals(200, response.status_code)
+        self.assertEquals(2, FacilityContact.objects.count())
+        self.assertEquals(1, FacilityUnit.objects.count())
+        self.assertEquals(3, FacilityService.objects.count())
+
         facility_units_with_error = [
             {
                 "name": ("A very long nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
