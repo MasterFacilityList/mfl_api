@@ -348,6 +348,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     def update(self, instance, validated_data):
         contacts = self.initial_data.pop('contacts', None)
         units = self.initial_data.pop('units', None)
+        services = self.initial_data.pop('services', None)
         errors = []
         super(FacilityDetailSerializer, self).update(instance, validated_data)
         audit_data = {
@@ -391,10 +392,23 @@ class FacilityDetailSerializer(FacilitySerializer):
                 return unit.save()
             else:
                 errors.append((json.dumps(unit.errors)))
+
+        def create_facility_services(service_data):
+            service_data['facility'] = instance.id
+            inject_audit_fields(service_data)
+            f_service = FacilityServiceSerializer(
+                data=service_data, context=self.context)
+            if f_service.is_valid():
+                f_service.save()
+            else:
+                errors.append(json.dumps(f_service.errors))
+
         if contacts:
             map(create_facility_contacts, contacts)
         if units:
             map(create_facility_units, units)
+        if services:
+            map(create_facility_services, services)
         if errors:
             raise ValidationError(errors)
         return instance

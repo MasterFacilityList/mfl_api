@@ -22,7 +22,10 @@ from ..models import (
     ServiceOption,
     RegulatingBody,
     KephLevel,
-    JobTitle
+    JobTitle,
+    FacilityService,
+    FacilityContact,
+    FacilityUnit
 )
 
 
@@ -329,11 +332,16 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         updating_data = {
             "name": "Facility name editted",
             "contacts": contacts,
-            "units": facility_units
+            "units": facility_units,
+            "services": facility_services
         }
         url = self.url + "{}/".format(facility_id)
         response = self.client.patch(url, updating_data)
         self.assertEquals(200, response.status_code)
+        self.assertEquals(2, FacilityContact.objects.count())
+        self.assertEquals(1, FacilityUnit.objects.count())
+        self.assertEquals(3, FacilityService.objects.count())
+
         facility_units_with_error = [
             {
                 "name": ("A very long nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
@@ -347,10 +355,16 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                 "regulating_body": regulating_body.id
             }
         ]
+        facility_services_with_error = [
+            {
+                "service": "19811899",
+            }
 
+        ]
         data_with_errors = {
             "contacts": contacts_with_error,
-            "units": facility_units_with_error
+            "units": facility_units_with_error,
+            "services": facility_services_with_error
         }
         response = self.client.patch(url, data_with_errors)
         self.assertEquals(400, response.status_code)
