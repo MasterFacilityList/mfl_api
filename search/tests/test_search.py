@@ -30,6 +30,24 @@ SEARCH_TEST_SETTINGS = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary"],
+    "FULL_TEXT_SEARCH_FIELDS": {
+
+        "models": [
+            {
+                "name": "facility",
+                "fields": [
+                    "name", "county", "constituency", "ward_name",
+                    "facility_services.service_name",
+                    "facility_services.service_name",
+                    "facility_services.category_name",
+                    "facility_physical_address.town",
+                    "facility_physical_address.nearest_landmark",
+                    "facility_physical_address.nearest_landmark"
+                ]
+            }
+        ]
+
+    },
     "AUTOCOMPLETE_MODEL_FIELDS": [
         {
             "app": "facilities",

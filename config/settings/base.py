@@ -296,26 +296,25 @@ SEARCH = {
         "centre", "center", "health", "hospital", "clinic", "district",
         "sub-district", "dispensary"
     ],
-    "FULL_TEXT_SEARCH_FIELDS": [
-        {
-            "app": "facilities",
-            "models": [
-                {
-                    "name": "facility",
-                    "fields": [
-                        "name", "code", "county", "constituency", "ward_name",
-                        "facility_services.service_name", ""
-                        "facility_services.service_name",
-                        "facility_services.category_name",
-                        "facility_physical_address.town",
-                        "facility_physical_address.nearest_landmark",
-                        "facility_physical_address.nearest_landmark"
-                    ]
-                }
-            ]
+    "FULL_TEXT_SEARCH_FIELDS": {
 
-        }
-    ],
+        "models": [
+            {
+                "name": "facility",
+                "fields": [
+                    "name", "county", "constituency", "ward_name",
+                    "facility_services.service_name",
+                    "facility_services.service_name",
+                    "facility_services.category_name",
+                    "facility_physical_address.town",
+                    "facility_physical_address.nearest_landmark",
+                    "facility_physical_address.nearest_landmark"
+                ]
+            }
+        ]
+
+    },
+
     "AUTOCOMPLETE_MODEL_FIELDS": [
         {
             "app": "facilities",
