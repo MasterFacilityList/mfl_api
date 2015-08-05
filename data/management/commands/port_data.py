@@ -10,7 +10,7 @@ from django.template import loader, Context
 import sqlalchemy as sa
 
 
-DEFAULT_DB = "mssql+pyodbc://mfl:Saitan2@192.168.56.101:1433/tiba_public?driver=freetds"  # NOQA
+DEFAULT_DB = "mssql+pyodbc://mfl:pass@192.168.56.101:1433/tiba_public?driver=freetds"  # NOQA
 LOGGER = logging.getLogger(__name__)
 
 BASE_DIR = '/home/titan/savannah/mfl_api'
@@ -309,7 +309,7 @@ SETUP_DATA_CONFIG = [
     },
     {
         "resource_name": "Regulation Statuses",
-        "database": "mssql+pyodbc://mfl:Saitan2@192.168.56.101:1433/tiba_regulator?driver=freetds", # NOQA
+        "database": "mssql+pyodbc://mfl:pass@192.168.56.101:1433/tiba_regulator?driver=freetds", # NOQA
         "mfl_v1_object_name": "lkpRegulatorStatus",
         "mfl_v1_v2_fields_map": [
             {
