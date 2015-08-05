@@ -109,6 +109,9 @@ class JobTitle(AbstractBase):
     name = models.CharField(
         max_length=100,
         help_text="A short name for the job title")
+    abbreviation = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="The short name for the title")
     description = models.TextField(
         null=True, blank=True,
         help_text="A short summary of the job title")
@@ -198,6 +201,8 @@ class FacilityType(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name for the facility type e.g DISPENSARY")
+    abbreviation = models.CharField(
+        max_length=100, null=True, blank=True)
     sub_division = models.CharField(
         max_length=100, null=True, blank=True,
         help_text="This is a further division of the facility type e.g "
@@ -253,6 +258,10 @@ class RegulatingBody(AbstractBase):
         OwnerType, null=True, blank=True,
         help_text='Show the kind of institutions that the body regulates e.g'
         'private facilities')
+    default_status = models.ForeignKey(
+        "RegulationStatus", null=True, blank=True,
+        help_text="The default status for the facilities regulated by "
+        "the particular regulator")
 
     @property
     def postal_address(self):
