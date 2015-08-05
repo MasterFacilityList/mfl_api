@@ -1,0 +1,7 @@
+[
+    {   "unique_fields": {{unique_fields}},
+        "model": {{model_name}},
+        "records": {{data}}
+
+    }
+]
