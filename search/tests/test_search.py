@@ -30,6 +30,24 @@ SEARCH_TEST_SETTINGS = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary"],
+    "FULL_TEXT_SEARCH_FIELDS": {
+
+        "models": [
+            {
+                "name": "facility",
+                "fields": [
+                    "name", "county", "constituency", "ward_name",
+                    "facility_services.service_name",
+                    "facility_services.service_name",
+                    "facility_services.category_name",
+                    "facility_physical_address.town",
+                    "facility_physical_address.nearest_landmark",
+                    "facility_physical_address.nearest_landmark"
+                ]
+            }
+        ]
+
+    },
     "AUTOCOMPLETE_MODEL_FIELDS": [
         {
             "app": "facilities",
@@ -238,6 +256,15 @@ class TestSearchFunctions(ViewTestBase):
 
         self.assertEquals(200, response.status_code)
         self.elastic_search_api.delete_index('test_index')
+
+    def test_get_search_auto_complete_fields(self):
+        search_fields = self.elastic_search_api.get_search_fields('facility')
+        self.assertIsInstance(search_fields, list)
+        self.assertEquals(len(search_fields), 10)
+
+    def test_get_search_auto_complete_fields_si_empty(self):
+        search_fields = self.elastic_search_api.get_search_fields('no_model')
+        self.assertIsNone(search_fields)
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
