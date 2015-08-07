@@ -1,0 +1,7 @@
+[
+    {   "unique_fields": ["name"],
+        "model": "facilities.FacilityStatus",
+        "records": [{"name": "Operational"}, {"name": "Not-Operational"}, {"name": "Pending Opening"}, {"name": "Unknown"}]
+
+    }
+]

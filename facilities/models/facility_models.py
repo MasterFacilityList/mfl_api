@@ -49,6 +49,7 @@ class OwnerType(AbstractBase):
         max_length=100,
         help_text="Short unique name for a particular type of owners. "
         "e.g INDIVIDUAL")
+    abbreviation = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(
         null=True, blank=True,
         help_text="A brief summary of the particular type of owner.")
@@ -107,7 +108,7 @@ class JobTitle(AbstractBase):
      (Nursing Officer I) or Job Group title.Officer
     """
     name = models.CharField(
-        max_length=100,
+        max_length=100, unique=True,
         help_text="A short name for the job title")
     abbreviation = models.CharField(
         max_length=100, null=True, blank=True,
@@ -503,7 +504,7 @@ class Facility(SequenceMixin, AbstractBase):
     Health Centres, Dispensaries, Hospitals etc.
     """
     name = models.CharField(
-        max_length=100, unique=True,
+        max_length=100,
         help_text='This is the unique name of the facility')
     official_name = models.CharField(
         max_length=150, null=True, blank=True,
@@ -556,7 +557,7 @@ class Facility(SequenceMixin, AbstractBase):
         "has been approved to operate, is operating, is temporarily"
         "non-operational, or is closed down")
     ward = models.ForeignKey(
-        Ward,
+        Ward, null=True, blank=True,
         on_delete=models.PROTECT,
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(

@@ -1,0 +1,7 @@
+[
+    {   "unique_fields": ["name"],
+        "model": "common.ContactType",
+        "records": [{"name": "EMAIL"}, {"name": "MOBILE"}, {"name": "LANDLINE"}, {"name": "FAX"}, {"name": "POSTAL"}]
+
+    }
+]

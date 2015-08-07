@@ -1,0 +1,7 @@
+[
+    {   "unique_fields": ["name"],
+        "model": "facilities.JobTitle",
+        "records": [{"name": "Clinical Officer"}, {"name": "County Health Records and Information Officer-MOH"}, {"name": "Director of Public Health and Sanitation"}, {"name": "District Chief Health Administrative Officer"}, {"name": "District Health Records and Information Officer"}, {"name": "District Medical Officer of Health"}, {"name": "District Public Health Nurse"}, {"name": "District Public Health Officer"}, {"name": "Doctor In Charge"}, {"name": "Hospital Director"}, {"name": "Medical Superintendant"}, {"name": "National HIS Facilitator"}, {"name": "National HIS Help Desk and Administration"}, {"name": "National MOH Officer"}, {"name": "Nursing Officer in Charge"}, {"name": "Provincial Aids Co-Ordinator"}, {"name": "Provincial Chief Health Administrative Officer - Medical Services"}, {"name": "Provincial Chief Health Administrative Officer - Public Health and Sanitation"}, {"name": "Provincial Director - Medical Services"}, {"name": "Provincial Health Records and Information Officer - Medical Services"}, {"name": "Provincial Health Records and Information Officer - Public Health and Sanitation"}, {"name": "Provincial Public Health Nurse - Medical Services"}, {"name": "Provincial Public Health Nurse - Public Health and Sanitation"}, {"name": "System Configuration and Programming"}, {"name": "Unknown"}]
+
+    }
+]

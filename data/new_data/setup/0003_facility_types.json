@@ -1,0 +1,7 @@
+[
+    {   "unique_fields": ["name"],
+        "model": "facilities.FacilityType",
+        "records": [{"name": "Blood Bank"}, {"name": "Dental Clinic"}, {"name": "Dispensary"}, {"name": "District Health Office"}, {"name": "District Hospital"}, {"name": "Eye Centre"}, {"name": "Eye Clinic"}, {"name": "Funeral Home (Stand-alone)"}, {"name": "Health Centre"}, {"name": "Health Office"}, {"name": "Health Programme"}, {"name": "Health Project"}, {"name": "Hospital"}, {"name": "Laboratory (Stand-alone)"}, {"name": "Maternity and Nursing Home"}, {"name": "Maternity Home"}, {"name": "Medical Centre"}, {"name": "Medical Clinic"}, {"name": "National Health Office"}, {"name": "National Referral Hospital"}, {"name": "Not in List"}, {"name": "Nursing Home"}, {"name": "Other"}, {"name": "Other Hospital"}, {"name": "Provincial General Hospital"}, {"name": "Provincial Health Office"}, {"name": "Radiology Unit"}, {"name": "Regional Blood Transfusion Centre"}, {"name": "Rural Health Demonstration Centre"}, {"name": "Rural Health Training Centre"}, {"name": "Sub-District Hospital"}, {"name": "Training Institution in Health (Stand-alone)"}, {"name": "VCT Centre (Stand-Alone)"}]
+
+    }
+]

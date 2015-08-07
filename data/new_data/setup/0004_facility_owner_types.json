@@ -1,0 +1,7 @@
+[
+    {   "unique_fields": ["name"],
+        "model": "facilities.OwnerType",
+        "records": [{"name": "Faith Based Organization"}, {"name": "Ministry of Health"}, {"name": "Non-Governmental Organizations"}, {"name": "Other"}, {"name": "Other Public Institution"}, {"name": "Private Institutions and Private Practice"}]
+
+    }
+]

@@ -10,7 +10,7 @@ from django.template import loader, Context
 import sqlalchemy as sa
 
 
-DEFAULT_DB = "mssql+pyodbc://mfl:pass@192.168.56.101:1433/tiba_public?driver=freetds"  # NOQA
+DEFAULT_DB = "mssql+pyodbc://mfl:Saitan2@192.168.56.101:1433/tiba_public?driver=freetds"  # NOQA
 LOGGER = logging.getLogger(__name__)
 
 BASE_DIR = '/home/titan/savannah/mfl_api'
@@ -63,12 +63,34 @@ class CreateJsonFiles(object):
         """
         demo_folder = os.path.join(settings.BASE_DIR, "data/new_data/demo")
         setup_folder = os.path.join(settings.BASE_DIR, "data/new_data/setup")
+        fax_folder = os.path.join(settings.BASE_DIR, "data/new_data/fax")
+        email_folder = os.path.join(settings.BASE_DIR, "data/new_data/email")
+        landline_folder = os.path.join(
+            settings.BASE_DIR, "data/new_data/landline")
+        mobile_folder = os.path.join(settings.BASE_DIR, "data/new_data/mobile")
+        geo_code_folder = os.path.join(
+            settings.BASE_DIR, "data/new_data/geocodes")
         if folder == "demo":
             self._help_create_file(
                 demo_folder, file_name, model_name, unique_fields, data)
         elif folder == "setup":
             self._help_create_file(
                 setup_folder, file_name, model_name, unique_fields, data)
+        elif folder == 'fax':
+            self._help_create_file(
+                fax_folder, file_name, model_name, unique_fields, data)
+        elif folder == 'mobile':
+            self._help_create_file(
+                mobile_folder, file_name, model_name, unique_fields, data)
+        elif folder == 'email':
+            self._help_create_file(
+                email_folder, file_name, model_name, unique_fields, data)
+        elif folder == 'landline':
+            self._help_create_file(
+                landline_folder, file_name, model_name, unique_fields, data)
+        elif folder == 'geocodes':
+            self._help_create_file(
+                geo_code_folder, file_name, model_name, unique_fields, data)
         else:
             LOGGER.error("The folder was given does not exist")
 
@@ -88,20 +110,16 @@ SETUP_DATA_CONFIG = [
         "mfl_v1_object_name": "lkpJobTitles",
         "mfl_v1_v2_fields_map": [
             {
-                "v1": "ttlShortName",
-                "v2": "abbreviation",
-                "v1_pos": 1
-            },
-            {
                 "v1": "ttlName",
                 "v2": "name",
-                "v1_pos": 2
+                "v1_pos": 0
             }
         ],
         "file_name": "0000_job_titles.json",
         "folder": "setup",
         "model_name": "facilities.JobTitle",
         "unique_fields": ['name'],
+        "sql": "SELECT DISTINCT ttlName FROM lkpJobTitles",
         "data": []
     },
     {
@@ -136,7 +154,7 @@ SETUP_DATA_CONFIG = [
         "mfl_v1_v2_fields_map": [
             {
                 "v1": "staShortName",
-                "v1_pos": 1,
+                "v1_pos": 0,
                 "v2": "name"
             }
         ],
@@ -144,7 +162,8 @@ SETUP_DATA_CONFIG = [
         "folder": "setup",
         "model_name": "facilities.FacilityStatus",
         "unique_fields": ["name"],
-        "data": []
+        "data": [],
+        "sql": "SELECT staName from lkpFacilityStatus"
     },
     {
         "resource_name": "Facility Types",
@@ -153,18 +172,19 @@ SETUP_DATA_CONFIG = [
             {
                 "v1": "typName",
                 "v2": "name",
-                "v1_pos": 1
+                "v1_pos": 0
             },
-            {
-                "v1": "typShortName",
-                "v2": "abbreviation",
-                "v1_pos": 2
-            }
+            # {
+            #     "v1": "typShortName",
+            #     "v2": "abbreviation",
+            #     "v1_pos": 1
+            # }
         ],
         "file_name": "0003_facility_types.json",
         "folder": "setup",
-        "model_name": "facilities.RE",
+        "model_name": "facilities.FacilityType",
         "unique_fields": ["name"],
+        "sql": "SELECT DISTINCT typName  from lkpFacilityTypes", # NOQA
         "data": []
     },
     {
@@ -174,39 +194,34 @@ SETUP_DATA_CONFIG = [
             {
                 "v1": "ownName",
                 "v2": "name",
-                "v1_pos": 1
+                "v1_pos": 0
             },
-            {
-                "v1": "ownShortName",
-                "v2": "abbreviation",
-                "v1_pos": 2
-            }
+            # {
+            #     "v1": "ownShortName",
+            #     "v2": "abbreviation",
+            #     "v1_pos": 1
+            # }
         ],
         "file_name": "0004_facility_owner_types.json",
         "folder": "setup",
-        "model_name": "facility.OwnerType",
+        "model_name": "facilities.OwnerType",
         "unique_fields": ["name"],
         "data": [],
-        "sql": "SELECT * from lkpFacilityOwners where ownId > 99",
+        "sql": "SELECT  DISTINCT ownName, ownParent FROM  lkpFacilityOwners WHERE ownParent=0",  # NOQA
     },
     {
         "resource_name": "Facility Owners",
-        "mfl_v1_object_name": "lkpFacilityOwners",
+        "mfl_v1_object_name": "facility_owners_view",
         "mfl_v1_v2_fields_map": [
             {
                 "v1": "ownName",
                 "v2": "name",
-                "v1_pos": 1
+                "v1_pos": 0
             },
             {
-                "v1": "ownShortName",
-                "v2": "abbreviation",
-                "v1_pos": 2
-            },
-            {
-                "v1": "ownName",
+                "v1": "parent_name",
                 "v2": "owner_type",
-                "v1_pos": 2,
+                "v1_pos": 1,
                 "fk_map": [
                     {
                         "field_name": "name"
@@ -216,10 +231,10 @@ SETUP_DATA_CONFIG = [
         ],
         "file_name": "0005_facility_owners.json",
         "folder": "setup",
-        "model_name": "facility.Owner",
-        "unique_fields": ["name"],
+        "model_name": "facilities.Owner",
+        "unique_fields": ["name", "owner_type"],
         "data": [],
-        "sql": "SELECT * from lkpFacilityOwners where ownId < 100",
+        "sql": "SELECT DISTINCT ownName, parent_name FROM facility_owners_view"
     },
     {
         "resource_name": "Regulators",
@@ -252,9 +267,9 @@ SETUP_DATA_CONFIG = [
             }
 
         ],
-        "file_name": "0006_regulatory_bodies.json",
+        "file_name": "0010_regulatory_bodies.json",
         "folder": "setup",
-        "model_name": "facility.RegulatingBody",
+        "model_name": "facilities.RegulatingBody",
         "unique_fields": ["name"],
         "data": []
     },
@@ -270,7 +285,7 @@ SETUP_DATA_CONFIG = [
         ],
         "file_name": "0007_keph_levels.json",
         "folder": "setup",
-        "model_name": "facility.OwnerType",
+        "model_name": "facilities.KephLevel",
         "unique_fields": ["name"],
         "data": []
     },
@@ -309,7 +324,7 @@ SETUP_DATA_CONFIG = [
     },
     {
         "resource_name": "Regulation Statuses",
-        "database": "mssql+pyodbc://mfl:pass@192.168.56.101:1433/tiba_regulator?driver=freetds", # NOQA
+        "database": "mssql+pyodbc://mfl:Saitan2@192.168.56.101:1433/tiba_regulator?driver=freetds", # NOQA
         "mfl_v1_object_name": "lkpRegulatorStatus",
         "mfl_v1_v2_fields_map": [
             {
@@ -318,11 +333,18 @@ SETUP_DATA_CONFIG = [
                 "v2": "name"
             }
         ],
-        "file_name": "0010_regulatory_statuses.json",
+        "file_name": "0006_regulatory_statuses.json",
         "folder": "setup",
         "model_name": "facilities.RegulationStatus",
         "unique_fields": ["name"],
-        "data": []
+        "data": [
+            {"name": "Registered"},
+            {"name": "Licensed"},
+            {"name": "Gazetted"},
+            {"name": "Pending Registration"},
+            {"name": "Pending License"},
+            {"name": "Pending Gazettement"}
+        ]
     },
     {
         "resource_name": "Counties",
@@ -375,7 +397,7 @@ SETUP_DATA_CONFIG = [
         "model_name": "common.Town",
         "unique_fields": ["name"],
         "data": [],
-        "sql": "SELECT Facility_Nearest_Town from tblFacilities"
+        "sql": "SELECT DISTINCT Facility_Nearest_Town from tblFacilities"
     },
     {
         "resource_name": "physical addresses",
@@ -407,9 +429,14 @@ SETUP_DATA_CONFIG = [
         "file_name": "0015_physical_addresses.json",
         "folder": "demo",
         "model_name": "common.PhysicalAddress",
-        "unique_fields": ["name"],
+        "unique_fields": ["plot_number", "location_desc", "town"],
         "data": [],
-        "select": "SELECT Facility_Nearest_Town, Facility_Plot_Number, Location_Description from tblFacilities"  # NOQA
+        "select": ("SELECT DISTINCT"
+                    "Facility_Nearest_Town, Facility_Plot_Number, Location_Description"
+                    "FROM tblFacilities"
+                    "WHERE Facility_Nearest_Town <> NULL AND"
+                    "Facility_Plot_Number <> NULL AND"
+                    "Location_Description <> NULL")  # NOQA
     },
     {
         "resource_name": "Facilities",
@@ -430,26 +457,26 @@ SETUP_DATA_CONFIG = [
                 "v2": "official_name",
                 "v1_pos": 2
             },
-            {
-                "v1": "many fields",
-                "v2": "physical_address",
-                "v1_pos": 3,
-                "fk_map": [
-                    {
-                        "field_name": "name"
-                    }
-                ]
-            },
-            {
-                "v1": "Date_Added",
-                "v2": "created",
-                "v1_pos": 8
-            },
-            {
-                "v1": "Date_Modified",
-                "v2": "updated",
-                "v1_pos": 9
-            },
+            # {
+            #     "v1": "many fields",
+            #     "v2": "physical_address",
+            #     "v1_pos": 3,
+            #     "fk_map": [
+            #         {
+            #             "field_name": "town"
+            #         }
+            #     ]
+            # },
+            # {
+            #     "v1": "Date_Added",
+            #     "v2": "created",
+            #     "v1_pos": 8
+            # },
+            # {
+            #     "v1": "Date_Modified",
+            #     "v2": "updated",
+            #     "v1_pos": 9
+            # },
             {
                 "v1": "Num_Bed",
                 "v2": "number_of_beds",
@@ -503,7 +530,7 @@ SETUP_DATA_CONFIG = [
             {
                 "v1": "staDisplayName",
                 "v2": "operation_status",
-                "v1_pos": 15,
+                "v1_pos": 16,
                 "fk_map": [
                     {
                         "field_name": "name"
@@ -515,15 +542,10 @@ SETUP_DATA_CONFIG = [
         ],
         "file_name": "0016_facilities.json",
         "folder": "setup",
-        "model_name": "common.Ward",
-        "unique_fields": ["code", "name"],
+        "model_name": "facilities.Facility",
+        "unique_fields": ["code"],
         "data": [],
-        "sql": ("SELECT Facility_Code, Facility_Code, Facility_Name,"
-            "Facility_Official_Name, Facility_Nearest_Town,"
-            "Facility_Plot_Number, Location_Description, Open24Hours,"
-            "OpenWeekends, Date_Added, Date_Modified, Num_Beds, Num_Cots,"
-            "typName, ownName, kphName, regName,"
-            "staDisplayName from qryFacilities")
+        "sql": ("SELECT Facility_Code, Facility_Name, Facility_Official_Name, Facility_Nearest_Town, Facility_Plot_Number, Location_Description, Open24Hours, OpenWeekends, Date_Added, Date_Modified, Num_Beds, Num_Cots, typName, ownName, kphName, regName, staDisplayName from qryFacilities WHERE Facility_Code <> Null AND Facility_Name <> NULl")  # NOQA
     },
     {
         "resource_name": "Services Categories",
@@ -540,7 +562,7 @@ SETUP_DATA_CONFIG = [
                 "v1_pos": 2
             }
         ],
-        "file_name": "0017_services.json",
+        "file_name": "0017_services_categories.json",
         "folder": "demo",
         "model_name": "facilities.ServiceCategory",
         "unique_fields": ["name"],
@@ -549,7 +571,7 @@ SETUP_DATA_CONFIG = [
     },
     {
         "resource_name": "Services",
-        "mfl_v1_object_name": "lkpFacilityServices",
+        "mfl_v1_object_name": "facility_services_view",
         "mfl_v1_v2_fields_map": [
             {
                 "v1": "svcName",
@@ -564,7 +586,7 @@ SETUP_DATA_CONFIG = [
             {
                 "v1": "svcParent",
                 "v2": "category",
-                "v1_pos": 3,
+                "v1_pos": 4,
                 "fk_map": [
                     {
                         "field_name": "name"
@@ -577,11 +599,11 @@ SETUP_DATA_CONFIG = [
         "model_name": "facilities.Service",
         "unique_fields": ["name"],
         "data": [],
-        "sql": "SELECT svcId, svcName,svcShortName,svcParent from lkpFacilityServices  WHERE svcId <> 0"  # NOQA
+        "sql": "SELECT svcId, svcName,svcShortName,svcParent, parent_name from facility_services_view  WHERE svcId <> 0"  # NOQA
     },
     {
         "resource_name": "Facility Email Contacts non linked",
-         "mfl_v1_object_name": "tblFacilities",
+         "mfl_v1_object_name": "qryFacilities",
         "mfl_v1_v2_fields_map": [
             {
                 "v1": "Official_Email",
@@ -593,6 +615,7 @@ SETUP_DATA_CONFIG = [
                 "v2": "contact_type",
                 "v1_pos": 0,
                 "v2_value": "EMAIL",
+                "v2_name": "name",
                 "fk_map": [
                     {
                         "field_name": "name"
@@ -601,15 +624,15 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0018_facility_emails_contacts.json",
-        "folder": "demo",
+        "folder": "email",
         "model_name": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT Official_Email from tblFacilities where Official_Email <> NULL"  # NOQA
+        "sql": 'SELECT DISTINCT LTRIM(RTRIM(Official_Email)), Facility_Code, Facility_Name from qryFacilities where Official_Email <> NULL AND Official_Email <> "N/a" AND Official_Email <> "0" AND Official_Email <> "" AND Official_Email <> "none"  AND Official_Email <> "\\" AND Facility_Code <> NULL AND Facility_Name <> NULL'  # NOQA
     },
     {
         "resource_name": "Facility Email Contacts linked",
-        "mfl_v1_object_name": "tblFacilities",
+        "mfl_v1_object_name": "qryFacilities",
         "mfl_v1_v2_fields_map": [
             {
                 "v1": "Facility_Code",
@@ -633,11 +656,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0019_facility_emails_contacts_linked.json",
-        "folder": "demo",
+        "folder": "email",
         "model_name": "facilities.FacilityContact",
         "unique_fields": ["facility", "contact"],
         "data": [],
-        "sql": "SELECT Facility_Code, Official_Email from tblFacilities where Official_Email <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT Facility_Code, LTRIM(RTRIM(Official_Email)), Facility_Name from qryFacilities where Official_Email <> NULL AND Official_Email <> 'none' AND Official_Email <> 'N/a' AND Official_Email <> '' AND Official_Email <> '0' AND Official_Email <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Facility Landline Contacts non linked",
@@ -653,6 +676,7 @@ SETUP_DATA_CONFIG = [
                 "v2": "contact_type",
                 "v1_pos": 0,
                 "v2_value": "LANDLINE",
+                "v2_name": "name",
                 "fk_map": [
                     {
                         "field_name": "name"
@@ -661,11 +685,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0020_facility_landline_contacts.json",
-        "folder": "demo",
+        "folder": "landline",
         "model_name": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT Official_Landline from tblFacilities WHERE Official_Landline <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT LTRIM(RTRIM(Official_Landline)) from qryFacilities where Official_Landline <> NULL AND Official_Landline <> '00000000' AND Official_Landline <> '0000000'  AND Official_Landline <> '00000' AND Official_Landline <>'0000' AND Official_Landline <> 'none' AND Official_Landline <> 'N/a' AND Official_Landline <> '' AND Official_Landline <> '0' AND Official_Landline <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Facility Landline Contacts linked",
@@ -693,11 +717,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0021_facility_landline_contacts_linked.json",
-        "folder": "demo",
+        "folder": "landline",
         "model_name": "facilities.FacilityContact",
         "unique_fields": ["facility", "contact"],
         "data": [],
-        "sql": "SELECT Facility_Code, Official_Landline from tblFacilities WHERE Official_Landline <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT Facility_Code, LTRIM(RTRIM(Official_Landline)) from qryFacilities where Official_Landline <> NULL AND Official_Landline <> '00000000' AND Official_Landline <> '0000000'  AND Official_Landline <> '00000' AND Official_Landline <>'0000' AND Official_Landline <> 'none' AND Official_Landline <> 'N/a' AND Official_Landline <> '' AND Official_Landline <> '0' AND Official_Landline <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Facility FAX Contacts non linked",
@@ -713,6 +737,7 @@ SETUP_DATA_CONFIG = [
                 "v2": "contact_type",
                 "v1_pos": 0,
                 "v2_value": "FAX",
+                "v2_name": "name",
                 "fk_map": [
                     {
                         "field_name": "name"
@@ -721,11 +746,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0022_facility_fax_contacts.json",
-        "folder": "demo",
+        "folder": "fax",
         "model_name": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT Official_Fax from tblFacilities WHERE Official_Fax <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT LTRIM(RTRIM(Official_Fax)) from qryFacilities where Official_Fax <> NULL AND Official_Fax <> '00000000' AND Official_Fax <>'00000000000' AND Official_Fax <> '0000000'  AND Official_Fax <> '-'  AND Official_Fax <> '00000' AND  Official_Fax <> '000' AND Official_Fax <>'0000' AND Official_Fax <> 'none' AND Official_Fax <> '00' AND Official_Fax <> 'N/a' AND Official_Fax <> '' AND Official_Fax <> '0' AND Official_Fax <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Facility FAX Contacts linked",
@@ -753,18 +778,18 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0023_facility_fax_contacts_linked.json",
-        "folder": "demo",
+        "folder": "fax",
         "model_name": "facilities.FacilityContact",
         "unique_fields": ["facility", "contact"],
         "data": [],
-        "sql": "SELECT Facility_Code, Official_Fax from tblFacilities where Official_Fax <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT Facility_Code, LTRIM(RTRIM(Official_Fax)) from qryFacilities where Official_Fax <> NULL AND Official_Fax <> '00000000'  AND Official_Fax <>'00000000000'  AND Official_Fax <> '-' AND Official_Fax <> '0000000'  AND Official_Fax <> '00000' AND Official_Fax <>'0000' AND Official_Fax <> '000' AND Official_Fax <> '00' AND Official_Fax <> 'none' AND Official_Fax <> 'N/a' AND Official_Fax <> '' AND Official_Fax <> '0' AND Official_Fax <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Facility MOBILE Contacts non linked",
          "mfl_v1_object_name": "tblFacilities",
         "mfl_v1_v2_fields_map": [
             {
-                "v1": "Official_MOILE",
+                "v1": "Official_Mobile",
                 "v2": "contact",
                 "v1_pos": 0
             },
@@ -773,6 +798,7 @@ SETUP_DATA_CONFIG = [
                 "v2": "contact_type",
                 "v1_pos": 0,
                 "v2_value": "MOBILE",
+                "v2_name": "name",
                 "fk_map": [
                     {
                         "field_name": "name"
@@ -781,11 +807,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0024_facility_mobile_contacts.json",
-        "folder": "demo",
+        "folder": "mobile",
         "model_name": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT Official_Mobile from tblFacilities WHERE Official_Mobile <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT LTRIM(RTRIM(Official_Mobile)) from qryFacilities where Official_Mobile <> NULL AND Official_Mobile <> '00000000'  AND Official_Mobile <>'00000000000' AND Official_Mobile <>'000000000' AND Official_Mobile <> '0000000000' AND Official_Mobile <> '-' AND Official_Mobile <> '0000000'  AND Official_Mobile <> '00000' AND Official_Mobile <>'0000' AND Official_Mobile <> '000' AND Official_Mobile <> '00' AND Official_Mobile <> 'none' AND Official_Mobile <> 'N/a' AND Official_Mobile <> '' AND Official_Mobile <> '0' AND Official_Mobile <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Facility MOBILE Contacts linked",
@@ -813,11 +839,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0025_facility_mobile_contacts_linked.json",
-        "folder": "demo",
+        "folder": "mobile",
         "model_name": "facilities.FacilityContact",
         "unique_fields": ["facility", "contact"],
         "data": [],
-        "sql": "SELECT Facility_Code, Official_Mobile from tblFacilities WHERE Official_Mobile <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT Facility_Code, LTRIM(RTRIM(Official_Mobile)) from qryFacilities where Official_Mobile <> NULL AND Official_Mobile <> '00000000'  AND Official_Mobile <>'00000000000' AND Official_Mobile <> '0000000000' AND Official_Mobile <>'000000000' AND Official_Mobile <> '-' AND Official_Mobile <> '0000000'  AND Official_Mobile <> '00000' AND Official_Mobile <>'0000' AND Official_Mobile <> '000' AND Official_Mobile <> '00' AND Official_Mobile <> 'none' AND Official_Mobile <> 'N/a' AND Official_Mobile <> '' AND Official_Mobile <> '0' AND Official_Mobile <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Officers",
@@ -849,7 +875,7 @@ SETUP_DATA_CONFIG = [
         "model_name": "facilities.Officer",
         "unique_fields": ["name"],
         "data": [],
-        "sql": "SELECT In_Charge_Name,ttlName, In_Charge_National_ID from qryFacilities WHERE In_Charge_Name <> NULL"   # NOQA
+        "sql": "SELECT DISTINCT LTRIM(RTRIM(In_Charge_Name)), LTRIM(RTRIM(ttlName)), LTRIM(RTRIM(In_Charge_National_ID)) from qryFacilities WHERE In_Charge_Name <> NULL and ttlName <> NULL AND Facility_Code <> NULL AND Facility_Name <> NULL"   # NOQA
     },
     {
         "resource_name": "Facility Officers",
@@ -857,11 +883,11 @@ SETUP_DATA_CONFIG = [
         "mfl_v1_v2_fields_map": [
             {
                 "v1": "In_Charge_Name",
-                "v2": "name",
+                "v2": "officer",
                 "v1_pos": 0,
                 "fk_map": [
                     {
-                        "field_name": "officer"
+                        "field_name": "name"
                     }
                 ]
             },
@@ -878,11 +904,11 @@ SETUP_DATA_CONFIG = [
 
         ],
         "file_name": "0027_facility_officers.json",
-        "folder": "demo",
+        "folder": "non_unique_data",
         "model_name": "facilities.FacilityOfficer",
-        "unique_fields": ["name"],
+        "unique_fields": ["facility", "officer"],
         "data": [],
-        "sql": "SELECT In_Charge_Name,ttlName, In_Charge_National_ID, Facility_Code from qryFacilities WHERE In_Charge_Name <> NULL AND Facility_Code <> NULL"   # NOQA
+        "sql": "SELECT DISTINCT LTRIM(RTRIM(In_Charge_Name)), LTRIM(RTRIM(ttlName)), LTRIM(RTRIM(In_Charge_National_ID)), Facility_Code from qryFacilities WHERE In_Charge_Name <> NULL and ttlName <> NULL AND Facility_Code <> NULL AND Facility_Name <> NULL"   # NOQA
     },
     {
         "resource_name": "Officer Mobile Non Linked",
@@ -906,11 +932,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0028_officer_mobile_contacts.json",
-        "folder": "demo",
-        "model_name": "common.Contact.",
+        "folder": "mobile",
+        "model_name": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT In_Charge_Mobile from qryFacilities WHERE In_Charge_Name <> NULL and In_Charge_Mobile <> NULL"   # NOQA
+        "sql": "SELECT LTRIM(RTRIM(In_Charge_Mobile)), LTRIM(RTRIM(In_Charge_Name))  from qryFacilities WHERE In_Charge_Name <> NULL AND In_Charge_Mobile <> NULL AND In_Charge_Mobile <> '00000000'  AND In_Charge_Mobile <>'00000000000'  AND In_Charge_Mobile <> '-' AND In_Charge_Mobile <> '0000000'  AND In_Charge_Mobile <> '00000' AND In_Charge_Mobile <>'0000' AND In_Charge_Mobile <> '000' AND In_Charge_Mobile <> '00' AND In_Charge_Mobile <> 'none' AND In_Charge_Mobile <> 'N/a' AND In_Charge_Mobile <> '' AND In_Charge_Mobile <> '0' AND In_Charge_Mobile <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Officer Mobile  Linked",
@@ -938,18 +964,18 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0029_officer_mobile_contacts_linked.json",
-        "folder": "demo",
+        "folder": "mobile",
         "model_name": "facilities.OfficerContact.",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT In_Charge_Mobile, In_Charge_Name from qryFacilities WHERE In_Charge_Name <> NULL and In_Charge_Mobile <> NULL"   # NOQA
+        "sql": "SELECT LTRIM(RTRIM(In_Charge_Mobile)), LTRIM(RTRIM(In_Charge_Name)) from qryFacilities WHERE In_Charge_Name <> NULL AND In_Charge_Mobile <> NULL AND In_Charge_Mobile <> '00000000'  AND In_Charge_Mobile <>'00000000000'  AND In_Charge_Mobile <> '-' AND In_Charge_Mobile <> '0000000'  AND In_Charge_Mobile <> '00000' AND In_Charge_Mobile <>'0000' AND In_Charge_Mobile <> '000' AND In_Charge_Mobile <> '00' AND In_Charge_Mobile <> 'none' AND In_Charge_Mobile <> 'N/a' AND In_Charge_Mobile <> '' AND In_Charge_Mobile <> '0' AND In_Charge_Mobile <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Officer EMAIL Non Linked",
         "mfl_v1_object_name": "qryFacilities",
         "mfl_v1_v2_fields_map": [
             {
-                "v1": "In_Charge_EMAIL",
+                "v1": "In_Charge_Email",
                 "v1_pos": 0,
                 "v2": "contact"
             },
@@ -966,11 +992,11 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0030_officer_email_contacts.json",
-        "folder": "demo",
-        "model_name": "common.Contact.",
+        "folder": "email",
+        "model_name": "common.Contact",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT In_Charge_EMAIL from qryFacilities WHERE In_Charge_Name <> NULL and In_Charge_EMAIL <> NULL"   # NOQA
+        "sql": "SELECT LTRIM(RTRIM(In_Charge_Email))  from qryFacilities WHERE In_Charge_Email <> NULL AND In_Charge_Email <> NULL AND In_Charge_Email <> '00000000'  AND In_Charge_Email <>'00000000000'  AND In_Charge_Email <> '-' AND In_Charge_Email <> '0000000'  AND In_Charge_Email <> '00000' AND In_Charge_Email <>'0000' AND In_Charge_Email <> '000' AND In_Charge_Email <> '00' AND In_Charge_Email <> 'none' AND In_Charge_Email <> 'N/a' AND In_Charge_Email <> '' AND In_Charge_Email <> '0' AND In_Charge_Email <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
     {
         "resource_name": "Officer EMAIL  Linked",
@@ -998,14 +1024,36 @@ SETUP_DATA_CONFIG = [
             }
         ],
         "file_name": "0031_officer_email_contacts_linked.json",
-        "folder": "demo",
+        "folder": "email",
         "model_name": "facilities.OfficerContact.",
         "unique_fields": ["contact", "contact_type"],
         "data": [],
-        "sql": "SELECT In_Charge_Email, In_Charge_Name from qryFacilities WHERE In_Charge_Name <> NULL and In_Charge_Email <> NULL"   # NOQA
+        "sql": "SELECT LTRIM(RTRIM(In_Charge_Email)), LTRIM(RTRIM(In_Charge_Name)) from qryFacilities WHERE In_Charge_Email <> NULL AND In_Charge_Email <> NULL AND In_Charge_Email <> '00000000'  AND In_Charge_Email <>'00000000000'  AND In_Charge_Email <> '-' AND In_Charge_Email <> '0000000'  AND In_Charge_Email <> '00000' AND In_Charge_Email <>'0000' AND In_Charge_Email <> '000' AND In_Charge_Email <> '00' AND In_Charge_Email <> 'none' AND In_Charge_Email <> 'N/a' AND In_Charge_Email <> '' AND In_Charge_Email <> '0' AND In_Charge_Email <> '\\' AND Facility_Code <> NULL AND Facility_Name <> NULL"  # NOQA
     },
+     {
+        "resource_name": "Facility Approvals",
+        "mfl_v1_object_name": "qryFacilities",
+        "mfl_v1_v2_fields_map": [
+            {
+                "v1": "Approved",
+                "v2": 'facility',
+                "v1_pos": 0,
+                "fk_map": [
+                    {
+                        "field_name": "code"
+                    }
+                ]
 
-
+            }
+            ],
+        "file_name": "0032_facility_approvals.json",
+        "folder": "demo",
+        "model_name": "facilities.FacilityApproval",
+        "unique_fields": ["facility"],
+        "data": [],
+        "sql": "SELECT Facility_Code, Facility_Name, Approved FROM qryFacilities WHERE Facility_Code <> NULL AND Facility_Name <> NUll AND Approved=1"  # NOQA
+    },
+    
 ]
 
 
@@ -1039,31 +1087,36 @@ def port_data():
             clean_data = []
 
             for obj in database.connect().execute(sql):
+                row_data = {}
                 for field in field_map:
-                    if not field.get("fk_map"):
-                        row_data = {
-                            field.get("v2"):
 
-                                (obj[field.get("v1_pos")].decode('cp1251')
-                                    if obj[field.get("v1_pos")]
-                                    and isinstance(
-                                        obj[field.get("v1_pos")], str) else "")
-                        }
-                        clean_data.append(row_data)
+                    if not field.get("fk_map"):
+                        if obj[field.get("v1_pos")] and isinstance(
+                                obj[field.get("v1_pos")], str):
+                            value = obj[field.get("v1_pos")].decode('cp1251')
+                        else:
+                            value = obj[field.get("v1_pos")]
+                        if value:
+                            row_data[field.get("v2")] = value
                     else:
                         fk = field.get("fk_map")[0]
-                        row_data = {
-                            field.get("v2"): {
-                                fk.get("field_name"):
-                                    (obj[field.get("v1_pos")].decode('cp1251')
-                                        if obj[field.get("v1_pos")]
-                                        and isinstance(
-                                            obj[field.get("v1_pos")],
-                                            str) else "")
-
+                        if not field.get('v2_value'):
+                            if obj[field.get("v1_pos")] and isinstance(
+                                    obj[field.get("v1_pos")], str):
+                                value = obj[field.get("v1_pos")].decode(
+                                    'cp1251')
+                            else:
+                                value = obj[field.get("v1_pos")]
+                            if value and value != "":
+                                row_data[field.get("v2")] = {
+                                    fk.get("field_name"): value
+                                }
+                        else:
+                            row_data[field.get("v2")] = {
+                                fk.get("field_name"): field.get("v2_value")
                             }
-                        }
-                        clean_data.append(row_data)
+
+                clean_data.append(row_data)
 
             data = clean_data
         elif not len(data) and data_path:
@@ -1079,9 +1132,28 @@ def port_data():
         print "{} {} Fetched".format(len(data), resource_name)
 
 
+def get_geo_codes():
+    database = sa.create_engine(DEFAULT_DB)
+    sql = "SELECT " 
+
+
+from data.db_views import __all__
+
+
+def setup_views():
+    database = sa.create_engine(DEFAULT_DB)
+
+    for view in __all__:
+        database.connect().execute(view)
+
+
 from django.core.management import BaseCommand
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        print "Setting up the database views"
+        # setup_views()
+        print "Finished setting up the database views"
+
         port_data()

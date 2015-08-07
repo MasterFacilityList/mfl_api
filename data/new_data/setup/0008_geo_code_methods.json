@@ -1,0 +1,7 @@
+[
+    {   "unique_fields": ["name"],
+        "model": "mfl_gis.GeoCodeMethod",
+        "records": [{"name": "Taken with GPS Device"}, {"name": "Calc from proximity to school, village,markets"}, {"name": "Calc from 1:50,000 scale topographic maps"}, {"name": "Scanned from hand drawn maps"}, {"name": "Other"}, {"name": "Sublocation Centroid Exercise of MOH/ICF Macro`"}]
+
+    }
+]
