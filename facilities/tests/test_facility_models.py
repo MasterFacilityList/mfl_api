@@ -1084,29 +1084,3 @@ class TestFacilityUpgrade(BaseTestCase):
         self.assertEquals(1, FacilityUpgrade.objects.count())
         facility_level_change.is_cancelled = True
         facility_level_change.save()
-
-
-class TestModelCodes(BaseTestCase):
-    def test_regulatory_body_code(self):
-        reg_body = mommy.make(RegulatingBody, code=100)
-        self.assertEquals(100, reg_body.code)
-        reg_body_2 = mommy.make(RegulatingBody)
-        self.assertIsNotNone(reg_body_2.code)
-
-    def test_facility_type_code(self):
-        fac_type = mommy.make(FacilityType, code=1000)
-        self.assertEquals(1000, fac_type.code)
-        fac_type_2 = mommy.make(FacilityType)
-        self.assertIsNotNone(fac_type_2.code)
-
-    def test_owner_type_code(self):
-        owner_type = mommy.make(OwnerType, code=100)
-        self.assertEquals(100, owner_type.code)
-        owner_type_2 = mommy.make(OwnerType)
-        self.assertIsNotNone(owner_type_2.code)
-
-    def test_regulation_status_code(self):
-        reg_status = mommy.make(RegulationStatus, code=100)
-        self.assertEquals(100, reg_status.code)
-        reg_status_2 = mommy.make(RegulationStatus)
-        self.assertIsNotNone(reg_status_2.code)
