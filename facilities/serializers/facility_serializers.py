@@ -258,6 +258,8 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     facility_type_name = serializers.CharField(read_only=True)
     owner_name = serializers.CharField(read_only=True)
     owner_type_name = serializers.CharField(read_only=True)
+    owner_type = serializers.CharField(
+        read_only=True, source='owner.owner_type.pk')
     operation_status_name = serializers.CharField(read_only=True)
     county = serializers.CharField(read_only=True)
     constituency = serializers.CharField(read_only=True)
@@ -339,6 +341,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     boundaries = serializers.ReadOnlyField()
     keph_level_name = serializers.ReadOnlyField(source="keph_level.name")
     service_catalogue_active = serializers.ReadOnlyField()
+    facility_units = FacilityUnitSerializer(many=True, required=False)
 
     class Meta(object):
         model = Facility
