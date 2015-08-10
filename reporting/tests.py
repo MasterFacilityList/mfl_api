@@ -23,8 +23,8 @@ class TestFacilityCountByCountyReport(APITestCase):
         mommy.make(Facility, ward=ward)
         mommy.make(Facility, ward=ward_2)
         mommy.make(Facility, ward=ward_2)
-        url = reverse("api:reporting:facility_by_county_report")
-        response = self.client.get(url)
+        county_url = reverse("api:reporting:facility_count_by_county")
+        response = self.client.get(county_url)
         self.assertEquals(200, response.status_code)
         expected_data = {
             "results": [
@@ -40,3 +40,23 @@ class TestFacilityCountByCountyReport(APITestCase):
             "total": 7
         }
         self.assertEquals(expected_data, response.data)
+
+        constituency_expected_data = {
+            "results": [
+                {
+                    "constituency_name": constituency.name,
+                    "number_of_facilities": 5
+                },
+                {
+                    "constituency_name": constituency_2.name,
+                    "number_of_facilities": 2
+                }
+            ],
+            "total": 7
+        }
+        constituency_url = reverse(
+            "api:reporting:facility_count_by_constituency")
+        constituency_response = self.client.get(constituency_url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            constituency_expected_data, constituency_response.data)

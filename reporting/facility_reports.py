@@ -1,6 +1,6 @@
 from facilities.models import Facility
 from rest_framework.views import APIView, Response
-from common.models import County
+from common.models import County, Constituency
 
 
 class FacilityCountByCountyReport(APIView):
@@ -26,3 +26,31 @@ class FacilityCountByCountyReport(APIView):
             "results": counties_summary,
             "total": Facility.objects.count()
         })
+
+
+class FacilityCountyByConstituencyReport(APIView):
+    def get(self, *args, **kwargs):
+        constituencies = Constituency.objects.all()
+
+        facility_constituency_summary = {}
+        for const in constituencies:
+            facility_const_count = Facility.objects.filter(
+                ward__constituency=const).count()
+            facility_constituency_summary[
+                str(const.name)] = facility_const_count
+        consts = sorted(
+            facility_constituency_summary.items(),
+            key=lambda x: x[1], reverse=True)
+        consts_summary = []
+        for item in consts:
+            consts_summary.append(
+                {
+                    "constituency_name": item[0],
+                    "number_of_facilities": item[1]
+                })
+        return Response(
+            data={
+                "results": consts_summary,
+                "total": Facility.objects.count()
+            }
+        )
