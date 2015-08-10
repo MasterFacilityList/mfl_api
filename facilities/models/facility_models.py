@@ -19,13 +19,16 @@ from common.fields import SequenceField
 
 
 @reversion.register
-class KephLevel(AbstractBase):
+class KephLevel(SequenceMixin, AbstractBase):
     """
     Hold the classification of facilities according to
     Kenya Essential Package for health (KEPH)
 
     Currenlty there are level 1 to level 6
     """
+    code = SequenceField(
+        unique=True, editable=False,
+        help_text='A sequential number allocated to each keph level')
     name = models.CharField(
         max_length=30, help_text="The name of the KEPH e.g Level 1")
     description = models.TextField(
@@ -37,7 +40,7 @@ class KephLevel(AbstractBase):
 
 
 @reversion.register
-class OwnerType(AbstractBase):
+class OwnerType(SequenceMixin, AbstractBase):
     """
     Sub divisions of owners of facilities.
 
@@ -45,6 +48,9 @@ class OwnerType(AbstractBase):
     E.g we could have government, corporate owners, faith based owners
     private owners.
     """
+    code = SequenceField(
+        unique=True, editable=False,
+        help_text='A sequential number allocated to each owner type')
     name = models.CharField(
         max_length=100,
         help_text="Short unique name for a particular type of owners. "
@@ -141,6 +147,10 @@ class OfficerContact(AbstractBase):
 class Officer(AbstractBase):
     """
     Identify officers in-charge of facilities
+
+    In order to indicate whether an officer(practitioner) has a case or not
+    The active field will be used.
+    If the officer has case the active field will be set to false
     """
     name = models.CharField(
         max_length=255,
@@ -192,7 +202,10 @@ class FacilityStatus(AbstractBase):
 
 
 @reversion.register
-class FacilityType(AbstractBase):
+class FacilityType(SequenceMixin, AbstractBase):
+    code = SequenceField(
+        unique=True, editable=False,
+        help_text='A sequential number allocated to each facility type')
     owner_type = models.ForeignKey(
         OwnerType, null=True, blank=True)
     name = models.CharField(
@@ -227,7 +240,7 @@ class RegulatingBodyContact(AbstractBase):
 
 
 @reversion.register
-class RegulatingBody(AbstractBase):
+class RegulatingBody(SequenceMixin, AbstractBase):
     """
     Bodies responsible for licensing of facilities.
 
@@ -238,6 +251,9 @@ class RegulatingBody(AbstractBase):
     In some cases this may not hold e.g a KMPDB and not NCK will licence a
     nursing home owned by a nurse
     """
+    code = SequenceField(
+        unique=True, editable=False,
+        help_text='A sequential number allocated to each regulator')
     name = models.CharField(
         max_length=100, unique=True,
         help_text="The name of the regulating body")
@@ -294,7 +310,7 @@ class RegulatoryBodyUser(AbstractBase):
 
 
 @reversion.register
-class RegulationStatus(AbstractBase):
+class RegulationStatus(SequenceMixin, AbstractBase):
     """
     A Regulation state.
 
@@ -346,6 +362,9 @@ class RegulationStatus(AbstractBase):
             Again just the 'previous' field,  a status can have only one
             'next' field.
     """
+    code = SequenceField(
+        unique=True, editable=False,
+        help_text='A sequential number allocated to each regulation status')
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name representing a state/stage of "
@@ -441,6 +460,9 @@ class FacilityRegulationStatus(AbstractBase):
         max_length=100, null=True, blank=True,
         help_text='The license number that the facility has been '
         'given by the regulator')
+    license_is_expired = models.BooleanField(
+        default=False,
+        help_text='A flag to indicate whether the license is valid or not')
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Has the proposed change been confirmed by higher'
@@ -502,6 +524,9 @@ class Facility(SequenceMixin, AbstractBase):
     code = SequenceField(
         unique=True, editable=False,
         help_text='A sequential number allocated to each facility')
+    registration_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="The registration number given by the regulator")
     abbreviation = models.CharField(
         max_length=30, null=True, blank=True,
         help_text='A short name for the facility.')
