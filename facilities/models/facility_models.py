@@ -141,6 +141,10 @@ class OfficerContact(AbstractBase):
 class Officer(AbstractBase):
     """
     Identify officers in-charge of facilities
+
+    In order to indicate whether an officer(practitioner) has a case or not
+    The active field will be used.
+    If the officer has case the active field will be set to false
     """
     name = models.CharField(
         max_length=255,
@@ -441,14 +445,9 @@ class FacilityRegulationStatus(AbstractBase):
         max_length=100, null=True, blank=True,
         help_text='The license number that the facility has been '
         'given by the regulator')
-    is_confirmed = models.BooleanField(
+    license_is_expired = models.BooleanField(
         default=False,
-        help_text='Has the proposed change been confirmed by higher'
-        ' authorities')
-    is_cancelled = models.BooleanField(
-        default=False,
-        help_text='Has the proposed change been cancelled by a higher'
-        ' authority')
+        help_text='A flag to indicate whether the license is valid or not')
 
     def __unicode__(self):
         return "{}: {}".format(
@@ -502,6 +501,9 @@ class Facility(SequenceMixin, AbstractBase):
     code = SequenceField(
         unique=True, editable=False,
         help_text='A sequential number allocated to each facility')
+    registration_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="The registration number given by the regulator")
     abbreviation = models.CharField(
         max_length=30, null=True, blank=True,
         help_text='A short name for the facility.')
@@ -574,6 +576,20 @@ class Facility(SequenceMixin, AbstractBase):
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
+    bank_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="The name of the facility's banker e.g Equity Bank")
+    branch_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="Branch name of the facility's bank")
+    bank_account = models.CharField(
+        max_length=100, null=True, blank=True)
+    facility_catchment_population = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True, help_text="The population size which the facility serves")
 
     # hard code the operational status name in order to avoid more crud
     @property
@@ -637,7 +653,8 @@ class Facility(SequenceMixin, AbstractBase):
     def current_regulatory_status(self):
         try:
             # returns in reverse chronological order so just pick the first one
-            return self.regulatory_details.filter(is_confirmed=True)[0]
+            return self.regulatory_details.filter(
+                regulation_status__is_default=False)[0]
         except IndexError:
             return RegulationStatus.objects.get(is_default=True)
 
@@ -706,14 +723,15 @@ class Facility(SequenceMixin, AbstractBase):
             {
                 "id": service.id,
                 "service_id": service.selected_option.service.id,
-                "service_name": service.selected_option.service.name,
-                "option_name": service.selected_option.option.display_text,
-                "category_name": service.selected_option.service.category.name,
+                "service_name": str(service.selected_option.service.name),
+                "service_code": service.selected_option.service.code,
+                "option_name": str(
+                    service.selected_option.option.display_text),
+                "category_name": str(
+                    service.selected_option.service.category.name),
                 "category_id": service.selected_option.service.category.id,
                 "average_rating": service.average_rating,
-                "number_of_ratings": service.number_of_ratings,
-                "is_confirmed": service.is_confirmed,
-                "is_cancelled": service.is_cancelled
+                "number_of_ratings": service.number_of_ratings
             }
             for service in services
         ]

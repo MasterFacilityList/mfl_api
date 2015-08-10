@@ -462,7 +462,7 @@ class CustomFacilityOfficerView(APIView):
         return facility_officer
 
     def post(self, *args, **kwargs):
-        data = self.request.DATA
+        data = self.request.data
         valid_data = self.data_is_valid(data)
 
         if valid_data is not True:
