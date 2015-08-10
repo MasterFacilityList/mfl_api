@@ -1104,3 +1104,9 @@ class TestModelCodes(BaseTestCase):
         self.assertEquals(100, owner_type.code)
         owner_type_2 = mommy.make(OwnerType)
         self.assertIsNotNone(owner_type_2.code)
+
+    def test_regulation_status_code(self):
+        reg_status = mommy.make(RegulationStatus, code=100)
+        self.assertEquals(100, reg_status.code)
+        reg_status_2 = mommy.make(RegulationStatus)
+        self.assertIsNotNone(reg_status_2.code)
