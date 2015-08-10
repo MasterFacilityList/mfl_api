@@ -599,6 +599,20 @@ class Facility(SequenceMixin, AbstractBase):
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
+    bank_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="The name of the facility's banker e.g Equity Bank")
+    branch_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="Branch name of the facility's bank")
+    bank_account = models.CharField(
+        max_length=100, null=True, blank=True)
+    facility_catchment_population = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True, help_text="The population size which the facility serves")
 
     # hard code the operational status name in order to avoid more crud
     @property
