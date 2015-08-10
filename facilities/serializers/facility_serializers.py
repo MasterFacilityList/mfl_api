@@ -351,11 +351,14 @@ class FacilityDetailSerializer(FacilitySerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        from ..views.utils import CreateFacilityOfficerHelper
         contacts = self.initial_data.pop('contacts', None)
         units = self.initial_data.pop('units', None)
         services = self.initial_data.pop('services', None)
+        officer_in_charge = self.initial_data.pop('officer_in_charge', None)
         errors = []
-        super(FacilityDetailSerializer, self).update(instance, validated_data)
+        facility = super(FacilityDetailSerializer, self).update(
+            instance, validated_data)
         audit_data = {
             "created_by_id": self.context['request'].user.id,
             "updated_by_id": self.context['request'].user.id,
@@ -407,6 +410,13 @@ class FacilityDetailSerializer(FacilitySerializer):
                 f_service.save()
             else:
                 errors.append(json.dumps(f_service.errors))
+        if officer_in_charge:
+            officer_helper = CreateFacilityOfficerHelper(
+                user=self.context['request'].user)
+            officer_in_charge['facility_id'] = facility.id
+            created_officer = officer_helper.create_officer(officer_in_charge)
+            if not created_officer.get("created"):
+                errors = created_officer.get("detail")
 
         if contacts:
             map(create_facility_contacts, contacts)

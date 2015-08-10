@@ -265,13 +265,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
         }
         job_title = mommy.make(JobTitle)
-        facility_officers = [
-            {
-                "job_title": job_title.id,
-                "name": "Kiprotich Kipngeno",
-                "registration_number": "NURS189/1990"
-            }
-        ]
 
         service = mommy.make(Service)
         service_1 = mommy.make(Service)
@@ -300,6 +293,22 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                 "regulating_body": regulating_body.id
             }
         ]
+        officer_in_charge = {
+            "name": "Brenda Makena",
+            "id_no": "545454545",
+            "reg_no": "DEN/90/2000",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
 
         data = {
             "name": "First Mama Lucy Medical Clinic",
@@ -320,8 +329,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "contacts": contacts,
             "keph_level": keph_level.id,
             "units": facility_units,
-            "facility_services": facility_services,
-            "facility_officers": facility_officers
+            "facility_services": facility_services
         }
         response = self.client.post(self.url, data)
         self.assertEquals(201, response.status_code)
@@ -333,7 +341,8 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "name": "Facility name editted",
             "contacts": contacts,
             "units": facility_units,
-            "services": facility_services
+            "services": facility_services,
+            "officer_in_charge": officer_in_charge
         }
         url = self.url + "{}/".format(facility_id)
         response = self.client.patch(url, updating_data)
@@ -341,6 +350,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(2, FacilityContact.objects.count())
         self.assertEquals(1, FacilityUnit.objects.count())
         self.assertEquals(3, FacilityService.objects.count())
+        self.assertEquals(2, FacilityContact.objects.count())
 
         facility_units_with_error = [
             {
