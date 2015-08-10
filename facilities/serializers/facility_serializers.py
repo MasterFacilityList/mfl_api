@@ -337,12 +337,6 @@ class FacilityDetailSerializer(FacilitySerializer):
     coordinates = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField()
     boundaries = serializers.ReadOnlyField()
-    keph_level_code = serializers.ReadOnlyField(source="keph_level.code")
-    owner_code = serializers.ReadOnlyField(source="owner.code")
-    facility_type_code = serializers.ReadOnlyField(source="facility_type.code")
-    regulation_status_code = serializers.ReadOnlyField(
-        source="regulation_status.code")
-
     service_catalogue_active = serializers.ReadOnlyField()
 
     class Meta(object):
