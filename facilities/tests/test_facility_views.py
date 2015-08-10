@@ -251,9 +251,9 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         facility_2 = mommy.make(Facility)
         facility_3 = mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_1, is_confirmed=True)
+            FacilityRegulationStatus, facility=facility_1)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_2, is_confirmed=False)
+            FacilityRegulationStatus, facility=facility_2)
 
         url = self.url + "?is_regulated=True"
 

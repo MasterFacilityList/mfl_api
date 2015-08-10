@@ -38,6 +38,11 @@ class KephLevel(SequenceMixin, AbstractBase):
     def __unicode__(self):
         return "{}".format(self.name)
 
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(KephLevel, self).save(*args, **kwargs)
+
 
 @reversion.register
 class OwnerType(SequenceMixin, AbstractBase):
@@ -61,6 +66,11 @@ class OwnerType(SequenceMixin, AbstractBase):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+            super(OwnerType, self).save(*args, **kwargs)
 
 
 @reversion.register
@@ -223,6 +233,11 @@ class FacilityType(SequenceMixin, AbstractBase):
     def __unicode__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(FacilityType, self).save(*args, **kwargs)
+
     class Meta(AbstractBase.Meta):
         unique_together = ('name', 'sub_division', )
 
@@ -279,6 +294,11 @@ class RegulatingBody(SequenceMixin, AbstractBase):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(RegulatingBody, self).save(*args, **kwargs)
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulating bodies'
@@ -433,6 +453,11 @@ class RegulationStatus(SequenceMixin, AbstractBase):
     def __unicode__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_next_code_sequence()
+        super(RegulationStatus, self).save(*args, **kwargs)
+
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulation_statuses'
 
@@ -463,14 +488,6 @@ class FacilityRegulationStatus(AbstractBase):
     license_is_expired = models.BooleanField(
         default=False,
         help_text='A flag to indicate whether the license is valid or not')
-    is_confirmed = models.BooleanField(
-        default=False,
-        help_text='Has the proposed change been confirmed by higher'
-        ' authorities')
-    is_cancelled = models.BooleanField(
-        default=False,
-        help_text='Has the proposed change been cancelled by a higher'
-        ' authority')
 
     def __unicode__(self):
         return "{}: {}".format(
@@ -662,7 +679,8 @@ class Facility(SequenceMixin, AbstractBase):
     def current_regulatory_status(self):
         try:
             # returns in reverse chronological order so just pick the first one
-            return self.regulatory_details.filter(is_confirmed=True)[0]
+            return self.regulatory_details.filter(
+                regulation_status__is_default=True)[0]
         except IndexError:
             return RegulationStatus.objects.get(is_default=True)
 
@@ -731,9 +749,12 @@ class Facility(SequenceMixin, AbstractBase):
             {
                 "id": service.id,
                 "service_id": service.selected_option.service.id,
-                "service_name": service.selected_option.service.name,
-                "option_name": service.selected_option.option.display_text,
-                "category_name": service.selected_option.service.category.name,
+                "service_name": str(service.selected_option.service.name),
+                "service_code": service.selected_option.service.code,
+                "option_name": str(
+                    service.selected_option.option.display_text),
+                "category_name": str(
+                    service.selected_option.service.category.name),
                 "category_id": service.selected_option.service.category.id,
                 "average_rating": service.average_rating,
                 "number_of_ratings": service.number_of_ratings,
