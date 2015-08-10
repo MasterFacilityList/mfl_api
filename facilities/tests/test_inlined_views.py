@@ -309,6 +309,16 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                 }
             ]
         }
+        officer_in_charge_with_errors = {
+            "name": "Brenda Makena",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                }
+            ]
+        }
 
         data = {
             "name": "First Mama Lucy Medical Clinic",
@@ -374,7 +384,8 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         data_with_errors = {
             "contacts": contacts_with_error,
             "units": facility_units_with_error,
-            "services": facility_services_with_error
+            "services": facility_services_with_error,
+            "officer_in_charge": officer_in_charge_with_errors
         }
         response = self.client.patch(url, data_with_errors)
         self.assertEquals(400, response.status_code)
