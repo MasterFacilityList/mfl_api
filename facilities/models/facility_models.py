@@ -694,7 +694,7 @@ class Facility(SequenceMixin, AbstractBase):
         try:
             # returns in reverse chronological order so just pick the first one
             return self.regulatory_details.filter(
-                regulation_status__is_default=True)[0]
+                regulation_status__is_default=False)[0]
         except IndexError:
             return RegulationStatus.objects.get(is_default=True)
 
@@ -771,9 +771,7 @@ class Facility(SequenceMixin, AbstractBase):
                     service.selected_option.service.category.name),
                 "category_id": service.selected_option.service.category.id,
                 "average_rating": service.average_rating,
-                "number_of_ratings": service.number_of_ratings,
-                "is_confirmed": service.is_confirmed,
-                "is_cancelled": service.is_cancelled
+                "number_of_ratings": service.number_of_ratings
             }
             for service in services
         ]

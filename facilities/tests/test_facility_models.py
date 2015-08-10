@@ -149,7 +149,8 @@ class TestFacilityService(BaseTestCase):
                 "category_name": service_category.name,
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
-                "number_of_ratings": 0
+                "number_of_ratings": 0,
+                "service_code": service.code
             }
         ]
         self.assertEquals(expected_data, facility.get_facility_services)
@@ -473,7 +474,6 @@ class TestFacility(BaseTestCase):
             created_by=user)
         self.assertEquals(1, Facility.objects.count())
 
-        # Bloody branch misses
         mommy.make(Facility, code=89778)
         mommy.make(Facility, code=None)
 
@@ -582,9 +582,6 @@ class TestFacility(BaseTestCase):
         regulator = mommy.make(RegulatingBody)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility = mommy.make(Facility)
-        mommy.make(
-            FacilityRegulationStatus,
-            facility=facility, created_by=user)
         self.assertFalse(facility.is_regulated)
 
     def test_publishing(self):
@@ -1087,3 +1084,23 @@ class TestFacilityUpgrade(BaseTestCase):
         self.assertEquals(1, FacilityUpgrade.objects.count())
         facility_level_change.is_cancelled = True
         facility_level_change.save()
+
+
+class TestModelCodes(BaseTestCase):
+    def test_regulatory_body_code(self):
+        reg_body = mommy.make(RegulatingBody, code=100)
+        self.assertEquals(100, reg_body.code)
+        reg_body_2 = mommy.make(RegulatingBody)
+        self.assertIsNotNone(reg_body_2.code)
+
+    def test_facility_type_code(self):
+        fac_type = mommy.make(FacilityType, code=1000)
+        self.assertEquals(1000, fac_type.code)
+        fac_type_2 = mommy.make(FacilityType)
+        self.assertIsNotNone(fac_type_2.code)
+
+    def test_owner_type_code(self):
+        owner_type = mommy.make(OwnerType, code=100)
+        self.assertEquals(100, owner_type.code)
+        owner_type_2 = mommy.make(OwnerType)
+        self.assertIsNotNone(owner_type_2.code)
