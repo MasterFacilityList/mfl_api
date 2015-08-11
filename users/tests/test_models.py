@@ -5,7 +5,7 @@ from django.test import Client, TestCase
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
-from ..models import MflUser, MflOauthApplication
+from ..models import MflUser, MFLOAuthApplication
 
 
 class TestMflUserModel(BaseTestCase):
@@ -129,7 +129,7 @@ class TestLastLog(TestCase):
         }
         self.user = MflUser.objects.create_user(self.user_details)
         admin = mommy.make(MflUser)
-        app = MflOauthApplication.objects.create(
+        app = MFLOAuthApplication.objects.create(
             name="test", user=admin, client_type="confidential",
             authorization_grant_type="password"
         )
