@@ -65,7 +65,6 @@ class TestMflUserModel(BaseTestCase):
 
     def test_set_password_sets_for_existing_users(self):
         user = mommy.make(MflUser, password='a very huge password 1')
-        user.last_login = timezone.now()
         user.set_password('we now expect the change history to be saved')
         self.assertTrue(user.password_history)
         self.assertEqual(len(user.password_history), 1)
@@ -76,12 +75,10 @@ class TestMflUserModel(BaseTestCase):
 
     def test_requires_password_change_new_user_with_prior_login(self):
         user = mommy.make(MflUser, password='A very huge password 1')
-        user.last_login = timezone.now()
         self.assertTrue(user.requires_password_change)
 
     def test_doesnt_require_password_change_user_with_prior_passwords(self):
         user = mommy.make(MflUser, password='A very huge password1')
-        user.last_login = timezone.now()
         user.set_password('we now expect the change history to be saved 1')
         self.assertFalse(user.requires_password_change)
         user.set_password('we now expect the change history to be saved 1')

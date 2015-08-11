@@ -150,6 +150,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     user_contacts = UserContactSerializer(many=True, required=False)
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
+    last_login = serializers.ReadOnlyField(source='lastlog')
 
     @transaction.atomic
     def create(self, validated_data):
@@ -193,7 +194,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password_history',)
+        exclude = ('password_history', )
         extra_kwargs = {'password': {'write_only': True}}
 
 
