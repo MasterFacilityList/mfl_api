@@ -1,13 +1,15 @@
-from django.utils import timezone
-from django.core.exceptions import ValidationError
-from model_mommy import mommy
-from common.tests.test_models import BaseTestCase
 from django.contrib.auth.models import Group, Permission
+from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
+from django.tests import Client, TestCase
+from model_mommy import mommy
 
-from ..models import MflUser
+from common.tests.test_models import BaseTestCase
+from ..models import MflUser, MflOauthApplication
 
 
 class TestMflUserModel(BaseTestCase):
+
     def test_save_normal_user(self):
         data = {
             "email": "some@email.com",
@@ -98,6 +100,7 @@ class TestMflUserModel(BaseTestCase):
 
 
 class TestGroupCountyLevelMarkerProperty(BaseTestCase):
+
     def test_group_does_not_have_county_level_marker_permission(self):
         group = mommy.make(Group)
         perm = mommy.make(Permission)
@@ -113,3 +116,69 @@ class TestGroupCountyLevelMarkerProperty(BaseTestCase):
         group.permissions.add(perm.id)
         self.assertIn(perm, group.permissions.all())
         self.assertTrue(group.is_county_level)
+
+
+class TestLastLog(TestCase):
+
+    def setUp(self):
+        self.user_details = {
+            'email': 'tester1@ehealth.or.ke',
+            'first_name': 'Test',
+            'employee_number': '2124124124',
+            'password': 'mtihani124'
+        }
+        self.user = MflUser.objects.create_user(self.user_details)
+        admin = mommy.make(MflUser)
+        app = MflOauthApplication.objects.create(
+            name="test", user=admin, client_type="confidential",
+            authorization_grant_type="password"
+        )
+        self.oauth2_payload = {
+            "grant_type": "password",
+            "username": self.user_details["employee_number"],
+            "password": self.user_details["password"],
+            "client_id": app.client_id,
+            "client_secret": app.client_secret
+        }
+
+    def test_no_initial_login(self):
+        self.assertIsNone(self.user.last_log)
+        self.assertIsNone(self.user.last_login)
+
+    def test_session_login(self):
+        client = Client()
+        self.assertTrue(client.login(
+            username=self.user_details["employee_number"],
+            password=self.user_details["password"]
+        ))
+        self.assertEqual(self.user.last_log, self.user.last_login)
+
+    def test_oauth2_login(self):
+        client = Client()
+        resp = client.post(reverse("token"), self.oauth2_payload)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIsNotNone(self.user.last_log)
+
+    def test_oauth2_login_then_session_login(self):
+        client = Client()
+        resp = client.post(reverse("token"), self.oauth2_payload)
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTrue(client.login(
+            username=self.user_details["employee_number"],
+            password=self.user_details["password"]
+        ))
+
+        self.assertEqual(self.user.last_log, self.user.last_login)
+
+    def test_session_login_then_oauth2_login(self):
+        client = Client()
+        self.assertTrue(client.login(
+            username=self.user_details["employee_number"],
+            password=self.user_details["password"]
+        ))
+        resp = client.post(reverse("token"), self.oauth2_payload)
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertIsNotNone(self.user.last_log)
+        self.assertNotEqual(self.user.last_log, self.user.last_login)
