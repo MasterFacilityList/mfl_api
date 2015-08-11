@@ -127,7 +127,7 @@ class TestLastLog(TestCase):
             'employee_number': '2124124124',
             'password': 'mtihani124'
         }
-        self.user = MflUser.objects.create_user(self.user_details)
+        self.user = MflUser.objects.create_user(**self.user_details)
         admin = mommy.make(MflUser)
         app = MFLOAuthApplication.objects.create(
             name="test", user=admin, client_type="confidential",
