@@ -1194,8 +1194,10 @@ class Service(SequenceMixin, AbstractBase):
 
     def assign_options(self):
         allowed_options = Option.objects.filter(group=self.group)
-        for option in allowed_options:
-            ServiceOption.objects.get_or_create(option=option, service=self)
+        [
+            ServiceOption.objects.get_or_create(
+                option=option, service=self) for option in allowed_options
+        ]
 
     def save(self, *args, **kwargs):
         self.assign_options()
