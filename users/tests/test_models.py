@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from django.tests import Client, TestCase
+from django.test import Client, TestCase
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
