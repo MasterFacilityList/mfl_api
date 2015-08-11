@@ -1,22 +1,22 @@
+import datetime
 import reversion
 
 from django.db import models
 from django.utils import timezone
 from django.core.validators import (
-    validate_email, RegexValidator, ValidationError)
+    validate_email, RegexValidator, ValidationError
+)
 from django.contrib.auth.models import make_password
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-    Group
+    AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
 )
 from django.conf import settings
 from django.template import Context, loader
 from django.core.mail import EmailMultiAlternatives
 
-from oauth2_provider.models import AbstractApplication
+from oauth2_provider.models import AbstractApplication, AccessToken
+from oauth2_provider.settings import oauth2_settings
 
 
 USER_MODEL = settings.AUTH_USER_MODEL
@@ -74,8 +74,7 @@ class MflUserManager(BaseUserManager):
         user = self.model(email=email, first_name=first_name, password=p,
                           employee_number=employee_number,
                           is_staff=is_staff, is_active=True,
-                          is_superuser=False,
-                          last_login=now, date_joined=now, **extra_fields)
+                          is_superuser=False, date_joined=now, **extra_fields)
         user.save(using=self._db)
         send_email_on_signup(user, password)
         return user
@@ -195,6 +194,31 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         user_regulators = RegulatoryBodyUser.objects.filter(
             user=self, active=True)
         return user_regulators[0].regulatory_body if user_regulators else None
+
+    @property
+    def lastlog(self):
+        django_login = self.last_login
+        token_login = None
+
+        try:
+            # not including refresh tokens since they are generated if
+            # access tokens are valid
+            latest_access_token = AccessToken.objects.filter(
+                user=self).latest('expires')
+            delta = datetime.timedelta(
+                seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS
+            )
+            token_login = latest_access_token.expires - delta
+        except AccessToken.DoesNotExist:
+            pass
+
+        if django_login is None or token_login is None:
+            return django_login or token_login
+
+        if token_login > django_login:
+            return token_login
+
+        return django_login
 
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
