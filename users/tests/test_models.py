@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.test import Client, TestCase
+from django.utils import timezone
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
@@ -148,11 +149,8 @@ class TestLastLog(TestCase):
         self.assertIsNone(self.user.last_login)
 
     def test_session_login(self):
-        client = Client()
-        self.assertTrue(client.login(
-            username=self.user_details["employee_number"],
-            password=self.user_details["password"]
-        ))
+        self.user.last_login = timezone.now()
+        self.user.save()
         self.assertEqual(self.user.lastlog, self.user.last_login)
 
     def test_oauth2_login(self):
@@ -169,20 +167,14 @@ class TestLastLog(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn("access_token", json.loads(resp.content))
 
-        session_client = Client()
-        self.assertTrue(session_client.login(
-            username=self.user_details["employee_number"],
-            password=self.user_details["password"]
-        ))
+        self.user.last_login = timezone.now()
+        self.user.save()
 
         self.assertEqual(self.user.lastlog, self.user.last_login)
 
     def test_session_login_then_oauth2_login(self):
-        session_client = Client()
-        self.assertTrue(session_client.login(
-            username=self.user_details["employee_number"],
-            password=self.user_details["password"]
-        ))
+        self.user.last_login = timezone.now()
+        self.user.save()
 
         token_client = Client()
         resp = token_client.post(reverse("token"), self.oauth2_payload)
