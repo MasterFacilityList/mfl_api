@@ -64,6 +64,7 @@ def load_demo_data(*args, **kwargs):
     # Needs to occur after base setup data has been loaded
     load_gis_data()
     manage("createinitialrevisions")
+    manage("load_service_groups")
 
 
 def load_gis_data(*args, **kwargs):

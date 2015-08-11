@@ -1194,13 +1194,11 @@ class Service(SequenceMixin, AbstractBase):
 
     def assign_options(self):
         allowed_options = Option.objects.filter(group=self.group)
-        [self.service_options.add(option.id) for option in allowed_options]
-
-    def clean(self, *args, **kwargs):
-        self.assign_options()
-        super(Service, self).clean(*args, **kwargs)
+        for option in allowed_options:
+            ServiceOption.objects.get_or_create(option=option, service=self)
 
     def save(self, *args, **kwargs):
+        self.assign_options()
         if not self.code:
             self.code = self.generate_next_code_sequence()
         super(Service, self).save(*args, **kwargs)
