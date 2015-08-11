@@ -46,8 +46,21 @@ from ..models import (
     FacilityUnitRegulation,
     FacilityUpdates,
     FacilityUpgrade,
-    KephLevel
+    KephLevel,
+    OptionGroup
 )
+
+
+class TestOptionGroup(BaseTestCase):
+    def test_save(self):
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        self.assertEquals(3, OptionGroup.objects.count())
+
+    def test_unicode(self):
+        option_group = mommy.make(OptionGroup)
+        self.assertEquals(option_group.name, option_group.__unicode__())
 
 
 class TestKephLevel(BaseTestCase):

@@ -1,6 +1,8 @@
 from django.conf.urls import url, patterns
 
 from ..views import (
+    OptionGroupDetailView,
+    OptionGroupListView,
     FacilityStatusListView,
     FacilityStatusDetailView,
     JobTitleListView,
@@ -264,4 +266,10 @@ urlpatterns = patterns(
     url(r'^facilities/$', FacilityListView.as_view(), name='facilities_list'),
     url(r'^facilities/(?P<pk>[^/]+)/$', FacilityDetailView.as_view(),
         name='facility_detail'),
+
+    url(r'^option_groups/$',
+        OptionGroupListView.as_view(),
+        name='option_groups_list'),
+    url(r'^option_groups/(?P<pk>[^/]+)/$', OptionGroupDetailView.as_view(),
+        name='option_group_detail'),
 )

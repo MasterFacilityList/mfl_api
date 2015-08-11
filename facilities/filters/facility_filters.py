@@ -30,7 +30,8 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    OptionGroup
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -52,6 +53,11 @@ BOOLEAN_CHOICES = (
 )
 
 TRUTH_NESS = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+
+
+class OptionGroupFilter(CommonFieldsFilterset):
+    class Meta:
+        model = OptionGroup
 
 
 class KephLevelFilter(CommonFieldsFilterset):

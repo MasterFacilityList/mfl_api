@@ -19,7 +19,8 @@ from ..models import (
     FacilityUnitRegulation,
     JobTitle,
     Officer,
-    KephLevel
+    KephLevel,
+    OptionGroup
 )
 
 from ..serializers import (
@@ -32,7 +33,8 @@ from ..serializers import (
     FacilityContactSerializer,
     FacilityOfficerSerializer,
     FacilityUnitRegulationSerializer,
-    KephLevelSerializer
+    KephLevelSerializer,
+    OptionGroupSerializer
 )
 
 from ..filters import (
@@ -43,7 +45,8 @@ from ..filters import (
     FacilityContactFilter,
     FacilityOfficerFilter,
     FacilityUnitRegulationFilter,
-    KephLevelFilter
+    KephLevelFilter,
+    OptionGroupFilter
 
 )
 
@@ -487,3 +490,16 @@ class CustomFacilityOfficerView(APIView):
         officer.deleted = True
         officer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class OptionGroupListView(generics.ListCreateAPIView):
+    queryset = OptionGroup.objects.all()
+    serializer_class = OptionGroupSerializer
+    filter_class = OptionGroupFilter
+    ordering_fields = ('name', )
+
+
+class OptionGroupDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    queryset = OptionGroup.objects.all()
+    serializer_class = OptionGroupSerializer

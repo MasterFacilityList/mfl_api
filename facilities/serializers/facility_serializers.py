@@ -41,7 +41,8 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    OptionGroup
 )
 
 
@@ -454,3 +455,8 @@ class FacilityUpdatesSerializer(
     class Meta:
         model = FacilityUpdates
         exclude = ('facility_updates', )
+
+
+class OptionGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = OptionGroup

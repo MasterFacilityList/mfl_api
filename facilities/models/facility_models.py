@@ -1121,6 +1121,18 @@ class ServiceCategory(AbstractBase):
 
 
 @reversion.register
+class OptionGroup(AbstractBase):
+    """
+    Groups similar a options available to a service.
+    E.g  options 1 to 6 could fall after keph level group
+    """
+    name = models.CharField(max_length=100, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+@reversion.register
 class Option(AbstractBase):
     """
     services could either be:
@@ -1150,6 +1162,8 @@ class Option(AbstractBase):
         ('DECIMAL', 'Decimal numbers, may have a fraction e.g 3.14'),
         ('TEXT', 'Plain text'),
     ))
+    group = models.ForeignKey(
+        OptionGroup, help_text="The option group where the option lies")
 
     def __unicode__(self):
         return "{}: {}".format(self.option_type, self.display_text)
@@ -1172,8 +1186,19 @@ class Service(SequenceMixin, AbstractBase):
         related_name='category_services')
 
     code = SequenceField(unique=True, editable=False)
+    group = models.ForeignKey(
+        OptionGroup,
+        help_text="The option group containing service options")
     options = models.ManyToManyField(Option, through='ServiceOption')
     has_options = models.BooleanField(default=True)
+
+    def assign_options(self):
+        allowed_options = Option.objects.filter(group=self.group)
+        [self.service_options.add(option.id) for option in allowed_options]
+
+    def clean(self, *args, **kwargs):
+        self.assign_options()
+        super(Service, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         if not self.code:

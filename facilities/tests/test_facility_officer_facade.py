@@ -16,7 +16,8 @@ from ..models import (
     Facility,
     FacilityOfficer,
     OfficerContact,
-    JobTitle
+    JobTitle,
+    OptionGroup
 )
 
 
@@ -153,3 +154,47 @@ class TestFacilityOfficerFacade(LoginMixin, APITestCase):
         response = self.client.post(url, data)
         self.assertEquals(response.status_code, 201)
         self.assertEquals(1, FacilityOfficer.objects.count())
+
+
+class TestOptionGroupsView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestOptionGroupsView, self).setUp()
+        self.url = reverse("api:facilities:option_groups_list")
+
+    def test_post(self):
+        data = {
+            "name": "Option group name"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, OptionGroup.objects.count())
+
+    def test_listing(self):
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get("count"))
+        self.assertEquals(5, len(response.data.get("results")))
+
+    def test_retrieving_a_single_record(self):
+        mommy.make(OptionGroup)
+        option_group = mommy.make(OptionGroup)
+        url = self.url + "{}/".format(option_group.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(option_group.id), response.data.get("id"))
+
+    def test_updating(self):
+        option_group = mommy.make(OptionGroup)
+        data = {
+            "name": "editted"
+        }
+        url = self.url + "{}/".format(option_group.id)
+        response = self.client.patch(url, data)
+        option_group_refetched = OptionGroup.objects.get(id=option_group.id)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(option_group_refetched.name, data.get("name"))

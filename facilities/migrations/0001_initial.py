@@ -232,7 +232,6 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each facility type', unique=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'A short unique name for the facility type e.g DISPENSARY', unique=True, max_length=100)),
                 ('sub_division', models.CharField(help_text=b'This is a further division of the facility type e.g Hospitals can be further divided into District hispitals and Provincial Hospitals.', max_length=100, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -242,7 +241,6 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'default_permissions': ('add', 'change', 'delete', 'view'),
             },
-            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='FacilityUnit',
@@ -355,7 +353,6 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each keph level', unique=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'The name of the KEPH e.g Level 1', max_length=30)),
                 ('description', models.TextField(help_text=b'A short description of the KEPH level', null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -366,7 +363,6 @@ class Migration(migrations.Migration):
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
-            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Officer',
@@ -422,6 +418,24 @@ class Migration(migrations.Migration):
                 ('is_exclusive_option', models.BooleanField(default=True)),
                 ('option_type', models.CharField(max_length=12, choices=[(b'BOOLEAN', b'Yes/No or True/False responses'), (b'INTEGER', b'Integral numbers e.g 1,2,3'), (b'DECIMAL', b'Decimal numbers, may have a fraction e.g 3.14'), (b'TEXT', b'Plain text')])),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
+            name='OptionGroup',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
+                ('name', models.CharField(max_length=100)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -461,7 +475,6 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each owner type', unique=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'Short unique name for a particular type of owners. e.g INDIVIDUAL', max_length=100)),
                 ('description', models.TextField(help_text=b'A brief summary of the particular type of owner.', null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -472,7 +485,6 @@ class Migration(migrations.Migration):
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
             },
-            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='RegulatingBody',
@@ -483,7 +495,6 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each regulator', unique=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'The name of the regulating body', unique=True, max_length=100)),
                 ('abbreviation', models.CharField(help_text=b'A shortform of the name of the regulating body e.g NursingCouncil of Kenya could be abbreviated as NCK.', max_length=50, null=True, blank=True)),
                 ('regulation_verb', models.CharField(max_length=100)),
@@ -494,7 +505,6 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'verbose_name_plural': 'regulating bodies',
             },
-            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='RegulatingBodyContact',
@@ -525,7 +535,6 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('code', common.fields.SequenceField(help_text=b'A sequential number allocated to each regulation status', unique=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'A short unique name representing a state/stage of regulation e.g. PENDING_OPENING ', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b"A short description of the regulation state or state e.gPENDING_LINCENSING could be descriped as 'waiting for the license tobegin operating' ", null=True, blank=True)),
                 ('is_initial_state', models.BooleanField(default=False, help_text=b'Indicates whether it is the very first statein the regulation workflow.')),
@@ -542,7 +551,6 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'verbose_name_plural': 'regulation_statuses',
             },
-            bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.CreateModel(
             name='RegulatoryBodyUser',
@@ -642,6 +650,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='service',
+            name='group',
+            field=models.ForeignKey(help_text=b'The option group containing service options', to='facilities.OptionGroup'),
+        ),
+        migrations.AddField(
+            model_name='service',
             name='options',
             field=models.ManyToManyField(to='facilities.Option', through='facilities.ServiceOption'),
         ),
@@ -677,6 +690,16 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='owner',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='option',
+            name='group',
+            field=models.ForeignKey(help_text=b'The option group where the option lies', to='facilities.OptionGroup'),
+        ),
+        migrations.AddField(
+            model_name='option',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
