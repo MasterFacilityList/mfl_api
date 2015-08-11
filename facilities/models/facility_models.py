@@ -987,7 +987,6 @@ class FacilityLevelChangeReason(AbstractBase):
     """
     reason = models.CharField(max_length=100)
     description = models.TextField()
-    is_upgrade_reason = models.BooleanField(default=True)
 
     def __unicode__(self):
         return str(self.reason)

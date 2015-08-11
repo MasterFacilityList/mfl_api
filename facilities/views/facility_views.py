@@ -120,7 +120,6 @@ class FacilityLevelChangeReasonListView(generics.ListCreateAPIView):
     Lists and creates the  generic upgrade and down grade reasons
     reason --   A reason for  upgrade or downgrade
     description -- Description the reason
-    is_upgrade_reason  -- distinguishes between upgrade and downgrade reasons
     Created --  Date the record was Created
     Updated -- Date the record was Updated
     Created_by -- User who created the record
