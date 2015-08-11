@@ -73,7 +73,6 @@ class TestKephLevel(BaseTestCase):
         self.assertEquals(expected_unicode, keph.__unicode__())
 
 
-
 class TestFacilityOperationState(BaseTestCase):
 
     def test_save(self):
