@@ -41,8 +41,15 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
+
+
+class FacilityLevelChangeReasonSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = FacilityLevelChangeReason
 
 
 class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
