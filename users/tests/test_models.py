@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -157,7 +159,7 @@ class TestLastLog(TestCase):
         client = Client()
         resp = client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
-        self.assertIn("access_token", resp.data)
+        self.assertIn("access_token", json.loads(resp.content))
         self.assertIsNotNone(self.user.lastlog)
         self.assertIsNone(self.user.last_login)
 
@@ -165,7 +167,7 @@ class TestLastLog(TestCase):
         token_client = Client()
         resp = token_client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
-        self.assertIn("access_token", resp.data)
+        self.assertIn("access_token", json.loads(resp.content))
 
         session_client = Client()
         self.assertTrue(session_client.login(
@@ -185,7 +187,7 @@ class TestLastLog(TestCase):
         token_client = Client()
         resp = token_client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
-        self.assertIn("access_token", resp.data)
+        self.assertIn("access_token", json.loads(resp.content))
 
         self.assertIsNotNone(self.user.lastlog)
         self.assertTrue(self.user.lastlog > self.user.last_login)
