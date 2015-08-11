@@ -55,7 +55,8 @@ from ..models import (
     RegulationStatus,
     FacilityApproval,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
 
 from django.contrib.auth.models import Group, Permission
@@ -1536,3 +1537,50 @@ class TestKephLevel(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         keph_refetched = KephLevel.objects.get(id=keph.id)
         self.assertEquals("an awesome name", keph_refetched.name)
+
+
+class TestFacilityLevelChangeReasonView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityLevelChangeReasonView, self).setUp()
+        self.url = reverse("api:facilities:facility_level_change_reasons_list")
+
+    def test_post(self):
+        data = {
+            "reason": "This is a reason",
+            "description": "The description of the reason"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, FacilityLevelChangeReason.objects.count())
+
+    def test_listing(self):
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(5, FacilityLevelChangeReason.objects.count())
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+        self.assertEquals(5, len(response.data.get('results')))
+
+    def test_restrieving(self):
+        reason_1 = mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(2, FacilityLevelChangeReason.objects.count())
+        url = self.url + "{}/".format(reason_1.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(reason_1.id), response.data.get("id"))
+
+    def test_updating(self):
+        reason = mommy.make(FacilityLevelChangeReason)
+        data = {
+            "reason": "reason edited"
+        }
+        url = self.url + "{}/".format(reason.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        reason_refetched = FacilityLevelChangeReason.objects.get(id=reason.id)
+        self.assertEquals(reason_refetched.reason, data.get("reason"))

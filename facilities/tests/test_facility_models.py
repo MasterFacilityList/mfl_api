@@ -46,8 +46,20 @@ from ..models import (
     FacilityUnitRegulation,
     FacilityUpdates,
     FacilityUpgrade,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
+
+
+class TestFacilityLevelChangeReason(BaseTestCase):
+    def test_save(self):
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(1, FacilityLevelChangeReason.objects.count())
+
+    def test_unicode(self):
+        reason = mommy.make(FacilityLevelChangeReason, reason="A funky reason")
+        expected_unicode = "A funky reason"
+        self.assertEquals(expected_unicode, reason.__unicode__())
 
 
 class TestKephLevel(BaseTestCase):
@@ -59,6 +71,7 @@ class TestKephLevel(BaseTestCase):
         keph = mommy.make(KephLevel, name="level 1")
         expected_unicode = "level 1"
         self.assertEquals(expected_unicode, keph.__unicode__())
+
 
 
 class TestFacilityOperationState(BaseTestCase):
