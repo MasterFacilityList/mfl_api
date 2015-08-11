@@ -36,7 +36,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
     def test_post_inlined_facility(self):
         ward = mommy.make(Ward)
-        town = mommy.make(Town, ward=ward, name="Some name")
+        town = mommy.make(Town, name="Some name")
         facility_type = mommy.make(FacilityType)
         operation_status = mommy.make(FacilityStatus)
         regulator = mommy.make(RegulatingBody)
@@ -221,7 +221,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
     def test_update_inlined_facility(self):
         ward = mommy.make(Ward)
-        town = mommy.make(Town, ward=ward, name="Some name")
+        town = mommy.make(Town, name="Some name")
         facility_type = mommy.make(FacilityType)
         operation_status = mommy.make(FacilityStatus)
         regulator = mommy.make(RegulatingBody)
