@@ -19,16 +19,13 @@ from common.fields import SequenceField
 
 
 @reversion.register
-class KephLevel(SequenceMixin, AbstractBase):
+class KephLevel(AbstractBase):
     """
     Hold the classification of facilities according to
     Kenya Essential Package for health (KEPH)
 
     Currenlty there are level 1 to level 6
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each keph level')
     name = models.CharField(
         max_length=30, help_text="The name of the KEPH e.g Level 1")
     description = models.TextField(
@@ -38,14 +35,9 @@ class KephLevel(SequenceMixin, AbstractBase):
     def __unicode__(self):
         return "{}".format(self.name)
 
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_next_code_sequence()
-        super(KephLevel, self).save(*args, **kwargs)
-
 
 @reversion.register
-class OwnerType(SequenceMixin, AbstractBase):
+class OwnerType(AbstractBase):
     """
     Sub divisions of owners of facilities.
 
@@ -53,9 +45,6 @@ class OwnerType(SequenceMixin, AbstractBase):
     E.g we could have government, corporate owners, faith based owners
     private owners.
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each owner type')
     name = models.CharField(
         max_length=100,
         help_text="Short unique name for a particular type of owners. "
@@ -66,11 +55,6 @@ class OwnerType(SequenceMixin, AbstractBase):
 
     def __unicode__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_next_code_sequence()
-            super(OwnerType, self).save(*args, **kwargs)
 
 
 @reversion.register
@@ -212,10 +196,7 @@ class FacilityStatus(AbstractBase):
 
 
 @reversion.register
-class FacilityType(SequenceMixin, AbstractBase):
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each facility type')
+class FacilityType(AbstractBase):
     owner_type = models.ForeignKey(
         OwnerType, null=True, blank=True)
     name = models.CharField(
@@ -232,11 +213,6 @@ class FacilityType(SequenceMixin, AbstractBase):
 
     def __unicode__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_next_code_sequence()
-        super(FacilityType, self).save(*args, **kwargs)
 
     class Meta(AbstractBase.Meta):
         unique_together = ('name', 'sub_division', )
@@ -255,7 +231,7 @@ class RegulatingBodyContact(AbstractBase):
 
 
 @reversion.register
-class RegulatingBody(SequenceMixin, AbstractBase):
+class RegulatingBody(AbstractBase):
     """
     Bodies responsible for licensing of facilities.
 
@@ -266,9 +242,6 @@ class RegulatingBody(SequenceMixin, AbstractBase):
     In some cases this may not hold e.g a KMPDB and not NCK will licence a
     nursing home owned by a nurse
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each regulator')
     name = models.CharField(
         max_length=100, unique=True,
         help_text="The name of the regulating body")
@@ -294,11 +267,6 @@ class RegulatingBody(SequenceMixin, AbstractBase):
 
     def __unicode__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_next_code_sequence()
-        super(RegulatingBody, self).save(*args, **kwargs)
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulating bodies'
@@ -330,7 +298,7 @@ class RegulatoryBodyUser(AbstractBase):
 
 
 @reversion.register
-class RegulationStatus(SequenceMixin, AbstractBase):
+class RegulationStatus(AbstractBase):
     """
     A Regulation state.
 
@@ -382,9 +350,6 @@ class RegulationStatus(SequenceMixin, AbstractBase):
             Again just the 'previous' field,  a status can have only one
             'next' field.
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each regulation status')
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name representing a state/stage of "
@@ -452,11 +417,6 @@ class RegulationStatus(SequenceMixin, AbstractBase):
 
     def __unicode__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = self.generate_next_code_sequence()
-        super(RegulationStatus, self).save(*args, **kwargs)
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'regulation_statuses'
