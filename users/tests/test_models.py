@@ -142,7 +142,7 @@ class TestLastLog(TestCase):
         }
 
     def test_no_initial_login(self):
-        self.assertIsNone(self.user.last_log)
+        self.assertIsNone(self.user.lastlog)
         self.assertIsNone(self.user.last_login)
 
     def test_session_login(self):
@@ -151,13 +151,13 @@ class TestLastLog(TestCase):
             username=self.user_details["employee_number"],
             password=self.user_details["password"]
         ))
-        self.assertEqual(self.user.last_log, self.user.last_login)
+        self.assertEqual(self.user.lastlog, self.user.last_login)
 
     def test_oauth2_login(self):
         client = Client()
         resp = client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
-        self.assertIsNotNone(self.user.last_log)
+        self.assertIsNotNone(self.user.lastlog)
 
     def test_oauth2_login_then_session_login(self):
         client = Client()
@@ -169,7 +169,7 @@ class TestLastLog(TestCase):
             password=self.user_details["password"]
         ))
 
-        self.assertEqual(self.user.last_log, self.user.last_login)
+        self.assertEqual(self.user.lastlog, self.user.last_login)
 
     def test_session_login_then_oauth2_login(self):
         client = Client()
@@ -180,5 +180,5 @@ class TestLastLog(TestCase):
         resp = client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
 
-        self.assertIsNotNone(self.user.last_log)
-        self.assertNotEqual(self.user.last_log, self.user.last_login)
+        self.assertIsNotNone(self.user.lastlog)
+        self.assertNotEqual(self.user.lastlog, self.user.last_login)
