@@ -267,16 +267,6 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 
 class FacilityFilter(CommonFieldsFilterset):
-    def filter_regulated_facilities(self, value):
-        regulated_facilities = [
-            obj.facility.id for obj in FacilityRegulationStatus.objects.filter(
-                is_confirmed=True)]
-
-        if value in TRUTH_NESS:
-            return Facility.objects.filter(id__in=regulated_facilities)
-        else:
-            return Facility.objects.exclude(id__in=regulated_facilities)
-
     def service_filter(self, value):
         categories = value.split(',')
         facility_ids = []
@@ -347,8 +337,6 @@ class FacilityFilter(CommonFieldsFilterset):
     is_published = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
-    is_regulated = django_filters.MethodFilter(
-        action=filter_regulated_facilities)
     is_approved = django_filters.MethodFilter(
         action=filter_approved_facilities)
     service_category = django_filters.MethodFilter(
