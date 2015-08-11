@@ -13,7 +13,8 @@ from common.models import (
     Ward,
     Contact,
     SequenceMixin,
-    PhysicalAddress
+    PhysicalAddress,
+    SubCounty
 )
 from common.fields import SequenceField
 
@@ -590,6 +591,9 @@ class Facility(SequenceMixin, AbstractBase):
         max_length=100,
         null=True,
         blank=True, help_text="The population size which the facility serves")
+    sub_county = models.ForeignKey(
+        SubCounty, null=True, blank=True,
+        help_text='The sub county in which the facility has been assigned')
 
     # hard code the operational status name in order to avoid more crud
     @property
