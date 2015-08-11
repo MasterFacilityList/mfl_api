@@ -346,7 +346,6 @@ class FacilityDetailSerializer(FacilitySerializer):
     coordinates = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField()
     boundaries = serializers.ReadOnlyField()
-    keph_level_name = serializers.ReadOnlyField(source="keph_level.name")
     service_catalogue_active = serializers.ReadOnlyField()
     facility_units = FacilityUnitSerializer(many=True, required=False)
 

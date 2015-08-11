@@ -250,56 +250,27 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
     def test_facilties_that_need_regulation_or_not(self):
         facility_1 = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
-        facility_3 = mommy.make(Facility)
+        mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_1, is_confirmed=True)
+            FacilityRegulationStatus, facility=facility_1)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_2, is_confirmed=False)
+            FacilityRegulationStatus, facility=facility_2)
 
-        url = self.url + "?is_regulated=True"
+        url = self.url + "?regulated=true"
 
         response = self.client.get(url)
-        regulated_expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility_1,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
         self.assertEquals(200, response.status_code)
-        self.assertEquals(
-            load_dump(regulated_expected_data['results'], default=default),
-            load_dump(response.data['results'], default=default)
-        )
-
+        # 2 facilities are not regulated
+        self.assertEquals(2, response.data.get("count"))
+        self.assertEquals(2, len(response.data.get("results")))
         # get unregulated
-        url = self.url + "?is_regulated=False"
+        url = self.url + "?regulated=false"
         response_2 = self.client.get(url)
-        unregulated_data = regulated_expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility_3,
-                    context={
-                        'request': response_2.request
-                    }
-                ).data,
-                FacilitySerializer(
-                    facility_2,
-                    context={
-                        'request': response_2.request
-                    }
-                ).data
 
-            ]
-        }
         self.assertEquals(200, response_2.status_code)
-        self.assertEquals(
-            load_dump(unregulated_data['results'], default=default),
-            load_dump(response_2.data['results'], default=default)
-        )
+        self.assertEquals(1, response_2.data.get("count"))
+        # only one facility is not regulated
+        self.assertEquals(1, len(response_2.data.get("results")))
 
     def test_retrieve_facility(self):
         facility = mommy.make(Facility)
@@ -337,8 +308,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
                 "number_of_ratings": 0,
-                "is_cancelled": False,
-                "is_confirmed": False
+                "service_code": service.code
             }
         ]
         url = self.url + "{}/".format(facility.id)

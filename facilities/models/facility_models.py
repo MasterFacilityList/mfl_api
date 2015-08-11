@@ -19,16 +19,13 @@ from common.fields import SequenceField
 
 
 @reversion.register
-class KephLevel(SequenceMixin, AbstractBase):
+class KephLevel(AbstractBase):
     """
     Hold the classification of facilities according to
     Kenya Essential Package for health (KEPH)
 
     Currenlty there are level 1 to level 6
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each keph level')
     name = models.CharField(
         max_length=30, help_text="The name of the KEPH e.g Level 1")
     description = models.TextField(
@@ -40,7 +37,7 @@ class KephLevel(SequenceMixin, AbstractBase):
 
 
 @reversion.register
-class OwnerType(SequenceMixin, AbstractBase):
+class OwnerType(AbstractBase):
     """
     Sub divisions of owners of facilities.
 
@@ -48,9 +45,6 @@ class OwnerType(SequenceMixin, AbstractBase):
     E.g we could have government, corporate owners, faith based owners
     private owners.
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each owner type')
     name = models.CharField(
         max_length=100,
         help_text="Short unique name for a particular type of owners. "
@@ -202,10 +196,7 @@ class FacilityStatus(AbstractBase):
 
 
 @reversion.register
-class FacilityType(SequenceMixin, AbstractBase):
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each facility type')
+class FacilityType(AbstractBase):
     owner_type = models.ForeignKey(
         OwnerType, null=True, blank=True)
     name = models.CharField(
@@ -240,7 +231,7 @@ class RegulatingBodyContact(AbstractBase):
 
 
 @reversion.register
-class RegulatingBody(SequenceMixin, AbstractBase):
+class RegulatingBody(AbstractBase):
     """
     Bodies responsible for licensing of facilities.
 
@@ -251,9 +242,6 @@ class RegulatingBody(SequenceMixin, AbstractBase):
     In some cases this may not hold e.g a KMPDB and not NCK will licence a
     nursing home owned by a nurse
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each regulator')
     name = models.CharField(
         max_length=100, unique=True,
         help_text="The name of the regulating body")
@@ -310,7 +298,7 @@ class RegulatoryBodyUser(AbstractBase):
 
 
 @reversion.register
-class RegulationStatus(SequenceMixin, AbstractBase):
+class RegulationStatus(AbstractBase):
     """
     A Regulation state.
 
@@ -362,9 +350,6 @@ class RegulationStatus(SequenceMixin, AbstractBase):
             Again just the 'previous' field,  a status can have only one
             'next' field.
     """
-    code = SequenceField(
-        unique=True, editable=False,
-        help_text='A sequential number allocated to each regulation status')
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name representing a state/stage of "
@@ -463,14 +448,6 @@ class FacilityRegulationStatus(AbstractBase):
     license_is_expired = models.BooleanField(
         default=False,
         help_text='A flag to indicate whether the license is valid or not')
-    is_confirmed = models.BooleanField(
-        default=False,
-        help_text='Has the proposed change been confirmed by higher'
-        ' authorities')
-    is_cancelled = models.BooleanField(
-        default=False,
-        help_text='Has the proposed change been cancelled by a higher'
-        ' authority')
 
     def __unicode__(self):
         return "{}: {}".format(
@@ -599,6 +576,20 @@ class Facility(SequenceMixin, AbstractBase):
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
+    bank_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="The name of the facility's banker e.g Equity Bank")
+    branch_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="Branch name of the facility's bank")
+    bank_account = models.CharField(
+        max_length=100, null=True, blank=True)
+    facility_catchment_population = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True, help_text="The population size which the facility serves")
 
     # hard code the operational status name in order to avoid more crud
     @property
@@ -662,7 +653,8 @@ class Facility(SequenceMixin, AbstractBase):
     def current_regulatory_status(self):
         try:
             # returns in reverse chronological order so just pick the first one
-            return self.regulatory_details.filter(is_confirmed=True)[0]
+            return self.regulatory_details.filter(
+                regulation_status__is_default=False)[0]
         except IndexError:
             return RegulationStatus.objects.get(is_default=True)
 
@@ -731,14 +723,15 @@ class Facility(SequenceMixin, AbstractBase):
             {
                 "id": service.id,
                 "service_id": service.selected_option.service.id,
-                "service_name": service.selected_option.service.name,
-                "option_name": service.selected_option.option.display_text,
-                "category_name": service.selected_option.service.category.name,
+                "service_name": str(service.selected_option.service.name),
+                "service_code": service.selected_option.service.code,
+                "option_name": str(
+                    service.selected_option.option.display_text),
+                "category_name": str(
+                    service.selected_option.service.category.name),
                 "category_id": service.selected_option.service.category.id,
                 "average_rating": service.average_rating,
-                "number_of_ratings": service.number_of_ratings,
-                "is_confirmed": service.is_confirmed,
-                "is_cancelled": service.is_cancelled
+                "number_of_ratings": service.number_of_ratings
             }
             for service in services
         ]
