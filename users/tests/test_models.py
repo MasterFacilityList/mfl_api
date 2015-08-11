@@ -157,14 +157,18 @@ class TestLastLog(TestCase):
         client = Client()
         resp = client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
+        self.assertIn("access_token", resp.data)
         self.assertIsNotNone(self.user.lastlog)
+        self.assertIsNone(self.user.last_login)
 
     def test_oauth2_login_then_session_login(self):
-        client = Client()
-        resp = client.post(reverse("token"), self.oauth2_payload)
+        token_client = Client()
+        resp = token_client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
+        self.assertIn("access_token", resp.data)
 
-        self.assertTrue(client.login(
+        session_client = Client()
+        self.assertTrue(session_client.login(
             username=self.user_details["employee_number"],
             password=self.user_details["password"]
         ))
@@ -172,13 +176,16 @@ class TestLastLog(TestCase):
         self.assertEqual(self.user.lastlog, self.user.last_login)
 
     def test_session_login_then_oauth2_login(self):
-        client = Client()
-        self.assertTrue(client.login(
+        session_client = Client()
+        self.assertTrue(session_client.login(
             username=self.user_details["employee_number"],
             password=self.user_details["password"]
         ))
-        resp = client.post(reverse("token"), self.oauth2_payload)
+
+        token_client = Client()
+        resp = token_client.post(reverse("token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
+        self.assertIn("access_token", resp.data)
 
         self.assertIsNotNone(self.user.lastlog)
-        self.assertNotEqual(self.user.lastlog, self.user.last_login)
+        self.assertTrue(self.user.lastlog > self.user.last_login)
