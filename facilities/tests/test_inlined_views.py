@@ -347,15 +347,32 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(1, Owner.objects.count())
         self.assertEquals(1, PhysicalAddress.objects.count())
         facility_id = response.data.get("id")
-        updating_data = {
-            "name": "Facility name editted",
-            "contacts": contacts,
-            "units": facility_units,
-            "services": facility_services,
+
+        updating_data_1 = {
+            "name": "Facility name editted"
+        }
+        updating_data_2 = {
+            "contacts": contacts
+        }
+        updating_data_3 = {
+            "units": facility_units
+        }
+        updating_data_4 = {
+            "services": facility_services
+        }
+        updating_data_5 = {
             "officer_in_charge": officer_in_charge
         }
         url = self.url + "{}/".format(facility_id)
-        response = self.client.patch(url, updating_data)
+        response = self.client.patch(url, updating_data_1)
+        self.assertEquals(200, response.status_code)
+        response = self.client.patch(url, updating_data_2)
+        self.assertEquals(200, response.status_code)
+        response = self.client.patch(url, updating_data_3)
+        self.assertEquals(200, response.status_code)
+        response = self.client.patch(url, updating_data_4)
+        self.assertEquals(200, response.status_code)
+        response = self.client.patch(url, updating_data_5)
         self.assertEquals(200, response.status_code)
         self.assertEquals(2, FacilityContact.objects.count())
         self.assertEquals(1, FacilityUnit.objects.count())
@@ -381,11 +398,21 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             }
 
         ]
-        data_with_errors = {
-            "contacts": contacts_with_error,
-            "units": facility_units_with_error,
-            "services": facility_services_with_error,
+        data_with_errors_1 = {
+            "contacts": contacts_with_error
+        }
+        data_with_errors_2 = {
+            "units": facility_units_with_error
+        }
+        data_with_errors_3 = {
+            "services": facility_services_with_error
+        },
+        data_with_errors_3 = {
             "officer_in_charge": officer_in_charge_with_errors
         }
-        response = self.client.patch(url, data_with_errors)
+        response = self.client.patch(url, data_with_errors_1)
+        self.assertEquals(400, response.status_code)
+        response = self.client.patch(url, data_with_errors_2)
+        self.assertEquals(400, response.status_code)
+        response = self.client.patch(url, data_with_errors_3)
         self.assertEquals(400, response.status_code)

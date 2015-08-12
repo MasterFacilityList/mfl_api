@@ -535,9 +535,7 @@ class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
                 service_data, validated_data)
             f_service = FacilityServiceSerializer(
                 data=service_data, context=self.context)
-            if f_service.is_valid():
-                f_service.save()
-            else:
+            f_service.save() if f_service.is_valid() else \
                 self.inlining_errors.append(json.dumps(f_service.errors))
 
     @transaction.atomic
@@ -554,13 +552,12 @@ class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
             self.user = self.context['request'].user
             officer_in_charge['facility_id'] = facility.id
             created_officer = self.create_officer(officer_in_charge)
-            if not created_officer.get("created"):
-                self.inlining_errors = created_officer.get("detail")
+            self.inlining_errors = created_officer.get("detail") if not \
+                created_officer.get("created") else None
 
         def create_facility_child_entity(entity_creator_callable, entity_data):
             actual_function = getattr(self, entity_creator_callable)
             actual_function(facility, entity_data, validated_data)
-
         if contacts:
             [create_facility_child_entity(
                 "create_facility_contacts", contact) for contact in contacts]
