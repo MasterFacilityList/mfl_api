@@ -14,8 +14,8 @@ class Command(BaseCommand):
         with transaction.atomic():
             for gp in group_permissions:
                 g = Group.objects.get(**gp["group"])
-                for p in gp["permissions"]:
-                    g.permissions.add(Permission.objects.get(**p))
+                for perm in gp["permissions"]:
+                    g.permissions.add(Permission.objects.get(**perm))
 
     def _load_user_groups(self, user_groups):
         with transaction.atomic():
@@ -30,4 +30,5 @@ class Command(BaseCommand):
             self._load_user_groups(json.load(f))
 
         with open(_get_file_path("1002_group_permissions.json"), "rt") as f:
+
             self._load_group_permissions(json.load(f))

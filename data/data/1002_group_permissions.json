@@ -691,9 +691,6 @@
                 "codename": "view_servicecategory"
             }, 
             {
-                "codename": "view_serviceoption"
-            }, 
-            {
                 "codename": "view_constituencyboundary"
             }, 
             {
@@ -957,18 +954,6 @@
             }, 
             {
                 "codename": "view_servicecategory"
-            }, 
-            {
-                "codename": "add_serviceoption"
-            }, 
-            {
-                "codename": "change_serviceoption"
-            }, 
-            {
-                "codename": "delete_serviceoption"
-            }, 
-            {
-                "codename": "view_serviceoption"
             }, 
             {
                 "codename": "add_constituencyboundary"
@@ -1756,18 +1741,6 @@
                 "codename": "view_servicecategory"
             }, 
             {
-                "codename": "add_serviceoption"
-            }, 
-            {
-                "codename": "change_serviceoption"
-            }, 
-            {
-                "codename": "delete_serviceoption"
-            }, 
-            {
-                "codename": "view_serviceoption"
-            }, 
-            {
                 "codename": "add_constituencyboundary"
             }, 
             {
@@ -1936,6 +1909,9 @@
                 "codename": "delete_mfluser"
             }, 
             {
+                "codename": "manipulate_superusers"
+            }, 
+            {
                 "codename": "view_mfluser"
             }
         ]
@@ -2043,9 +2019,6 @@
             }, 
             {
                 "codename": "view_servicecategory"
-            }, 
-            {
-                "codename": "view_serviceoption"
             }, 
             {
                 "codename": "view_constituencyboundary"

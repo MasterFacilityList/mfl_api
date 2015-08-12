@@ -234,12 +234,21 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
                 'county_group_marker',
                 'A marker permission for county level groups'
             ),
+            (
+                'manipulate_superusers',
+                'A permission to create and manipulate superusers'
+            ),
         )
         ordering = ('-date_joined', )
 
 
 Group.is_county_level = property(
     lambda self: 'county_group_marker' in [
+        perm.codename for perm in self.permissions.all()]
+)
+
+Group.is_superuser_level = property(
+    lambda self: 'manipulate_superusers' in [
         perm.codename for perm in self.permissions.all()]
 )
 

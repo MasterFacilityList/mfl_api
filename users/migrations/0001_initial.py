@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ('-date_joined',),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
-                'permissions': (('county_group_marker', 'A marker permission for county level groups'),),
+                'permissions': (('county_group_marker', 'A marker permission for county level groups'), ('manipulate_superusers', 'A permission to create and manipulate superusers')),
             },
         ),
         migrations.CreateModel(
