@@ -20,7 +20,6 @@ from ..models import (
     Option,
     Service,
     FacilityService,
-    ServiceOption,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
@@ -174,14 +173,6 @@ class FacilityServiceFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityService
-
-
-class ServiceOptionFilter(CommonFieldsFilterset):
-    service = django_filters.AllValuesFilter(lookup_type='exact')
-    option = django_filters.AllValuesFilter(lookup_type='exact')
-
-    class Meta(object):
-        model = ServiceOption
 
 
 class OwnerTypeFilter(CommonFieldsFilterset):

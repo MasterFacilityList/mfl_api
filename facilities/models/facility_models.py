@@ -1209,15 +1209,7 @@ class Service(SequenceMixin, AbstractBase):
     options = models.ManyToManyField(Option, through='ServiceOption')
     has_options = models.BooleanField(default=True)
 
-    def assign_options(self):
-        allowed_options = Option.objects.filter(group=self.group)
-        [
-            ServiceOption.objects.get_or_create(
-                option=option, service=self) for option in allowed_options
-        ]
-
     def save(self, *args, **kwargs):
-        self.assign_options()
         if not self.code:
             self.code = self.generate_next_code_sequence()
         super(Service, self).save(*args, **kwargs)
@@ -1234,25 +1226,12 @@ class Service(SequenceMixin, AbstractBase):
 
 
 @reversion.register
-class ServiceOption(AbstractBase):
-    """
-    One service can have multiple options to be selected
-    this is for defining the available choices for a service.
-    """
-    service = models.ForeignKey(Service, related_name='service_options')
-    option = models.ForeignKey(Option)
-
-    def __unicode__(self):
-        return "{}: {}".format(self.service, self.option)
-
-
-@reversion.register
 class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
     """
     facility = models.ForeignKey(Facility, related_name='facility_services')
-    selected_option = models.ForeignKey(ServiceOption, null=True, blank=True)
+    option = models.ForeignKey(Option, null=True, blank=True)
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Indiates whether a service has been approved by the CHRIO')
@@ -1266,10 +1245,10 @@ class FacilityService(AbstractBase):
 
     @property
     def service_has_options(self):
-        return True if self.selected_option else False
+        return True if self.option else False
 
     def validate_either_options_or_service(self):
-        if not self.selected_option and not self.service:
+        if not self.option and not self.service:
             raise ValidationError(
                 "An service option or an actual service is required")
 
@@ -1279,14 +1258,11 @@ class FacilityService(AbstractBase):
 
     @property
     def service_name(self):
-        if self.selected_option:
-            return self.selected_option.service.name
-        else:
             return self.service.name
 
     @property
     def option_display_value(self):
-        return self.selected_option.option.display_text
+        return self.option.display_text
 
     @property
     def average_rating(self):
@@ -1294,33 +1270,19 @@ class FacilityService(AbstractBase):
         return avg['rating__avg'] or 0.0
 
     def __unicode__(self):
-        return "{}: {}".format(self.facility, self.selected_option)
+        return "{}: {}: {}".format(self.facility, self.service, self.option)
 
     def validate_unique_service_or_service_option_with_for_facility(self):
-        if self.selected_option:
-            # You can only one option per sevice
-            if self.__class__.objects.filter(
-                    selected_option__service=self.selected_option.service,
-                    facility=self.facility,
-                    deleted=False):
-                error = {
-                    "selected_option": [
-                        ("The service {} with the option {} has"
-                         "already been added to the facility").format(
-                            self.selected_option.service.name,
-                            self.selected_option.option.display_text)]
-                }
-                raise ValidationError(error)
-        if self.service:
-            if self.__class__.objects.filter(
-                    service=self.service, facility=self.facility,
-                    deleted=False):
-                error = {
-                    "service": [
-                        ("The service {} has already been added to the "
-                         "facility").format(self.service.name)]
-                }
-                raise ValidationError(error)
+
+        if self.__class__.objects.filter(
+                service=self.service, facility=self.facility,
+                deleted=False):
+            error = {
+                "service": [
+                    ("The service {} has already been added to the "
+                     "facility").format(self.service.name)]
+            }
+            raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
         self.validate_either_options_or_service()

@@ -37,8 +37,6 @@ from ..views import (
     ServiceDetailView,
     FacilityServiceListView,
     FacilityServiceDetailView,
-    ServiceOptionListView,
-    ServiceOptionDetailView,
     FacilityApprovalListView,
     FacilityApprovalDetailView,
     FacilityOperationStateListView,
@@ -62,7 +60,6 @@ from ..views import (
     FacilityUnitRegulationDetailView,
     FacilityUpdatesListView,
     FacilityUpdatesDetailView,
-    ServicesWithOptionListView,
     CustomFacilityOfficerView,
     KephLevelListView,
     KephLevelDetailView,
@@ -85,10 +82,6 @@ urlpatterns = patterns(
     url(r'^keph/(?P<pk>[^/]+)/$',
         KephLevelDetailView.as_view(),
         name='keph_level_detail'),
-
-    url(r'^services_with_options/$',
-        ServicesWithOptionListView.as_view(),
-        name='services_with_options_list'),
 
     url(r'^officer_facade/$',
         CustomFacilityOfficerView.as_view(),
@@ -198,11 +191,6 @@ urlpatterns = patterns(
     url(r'^facility_services/(?P<pk>[^/]+)/$',
         FacilityServiceDetailView.as_view(),
         name='facility_service_detail'),
-
-    url(r'^service_options/$', ServiceOptionListView.as_view(),
-        name='service_options_list'),
-    url(r'^service_options/(?P<pk>[^/]+)/$', ServiceOptionDetailView.as_view(),
-        name='service_option_detail'),
 
     url(r'^facility_units/$', FacilityUnitsListView.as_view(),
         name='facility_units_list'),
