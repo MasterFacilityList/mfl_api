@@ -3,6 +3,16 @@
         "model": "users.MflUser",
         "unique_fields": ["email", "username"],
         "records": [
+        {
+                "email": "reporting@mfltest.slade360.co.ke",
+                "first_name": "Dennis",
+                "last_name": "kubasu",
+                "username": "kubasu",
+                "password": "pbkdf2_sha256$20000$J3dCEpKSxg8y$bNYpDV5Jn94vA91rt+UX9RxHIjPtB87qGiMQ/nzq79s=",
+                "is_staff": true,
+                "is_national": true,
+                "employee_number": 30000
+            },
             {
                 "email": "superuser@mfltest.slade360.co.ke",
                 "first_name": "Jane",
