@@ -74,7 +74,7 @@ class CreateFacilityOfficerMixin(object):
 
     def _validate_job_titles(self, data):
         try:
-            JobTitle.objects.get(id=data['title'])
+            JobTitle.objects.get(id=data.get('title', None))
         except JobTitle.DoesNotExist:
             error_message = {
                 "title": ["Job title provided does not exist"]
