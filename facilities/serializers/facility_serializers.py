@@ -58,11 +58,12 @@ class CreateFacilityOfficerMixin(object):
         facility_id = data.get('facility_id', None)
         name = data.get('name', None)
         title = data.get('title', None)
-        id_number = data.get('id_no', None)
-        if not facility_id or not name or not title or not id_number:
-            error_message = "Facility id , name, ID number and"\
-                            "job title of the officer are "\
-                            "required"
+        if not facility_id or not name or not title:
+            error_message = {
+                "Facility id": ["Facility id is required"],
+                "name": ["Name is required"],
+                "Job title": ["Job Title is required"]
+            }
             return error_message
 
     def _validate_facility(self, data):
@@ -70,7 +71,7 @@ class CreateFacilityOfficerMixin(object):
             Facility.objects.get(id=data.get('facility_id', None))
         except Facility.DoesNotExist:
             error_message = {
-                "facility": "Facility provided does not exist"
+                "facility": ["Facility provided does not exist"]
             }
             return error_message
 
@@ -79,8 +80,8 @@ class CreateFacilityOfficerMixin(object):
             JobTitle.objects.get(id=data['title'])
         except JobTitle.DoesNotExist:
             error_message = {
-                "job title": "JobTitle with id {} does not exist".format(
-                    data['title'])
+                "job title": ["JobTitle with id {} does not exist".format(
+                    data['title'])]
             }
             return error_message
 
@@ -514,7 +515,9 @@ class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
             try:
                 FacilityContact.objects.create(**facility_contact_data)
             except:
-                error = "The contacts provided did not validate"
+                error = {
+                    "contacts": ["The contacts provided did not validate"]
+                }
                 self.inlining_errors.append(error)
 
     def create_facility_units(self, instance, unit_data, validated_data):
