@@ -163,11 +163,7 @@
         "mfluser": {
             "email": "reporting@mfltest.slade360.co.ke"
         },
-        "groups": [
-            {
-                "name": "Reporing Groups"
-            }
-        ]
+        "groups": []
     },
     {
         "mfluser": {

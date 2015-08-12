@@ -1942,7 +1942,7 @@
     },
     {
         "group": {
-            "name": "Reporing Groups"
+            "name": "Reporting Group"
         },
         "permissions": [
             {
@@ -2067,9 +2067,6 @@
             },
             {
                 "codename": "view_worldborder"
-            },
-            {
-                "codename": "view_mfloauthapplication"
             }
         ]
     }
