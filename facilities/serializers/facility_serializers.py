@@ -77,7 +77,7 @@ class CreateFacilityOfficerMixin(object):
             JobTitle.objects.get(id=data['title'])
         except JobTitle.DoesNotExist:
             error_message = {
-                "title": ["Job title with does not exist"]
+                "title": ["Job title provided does not exist"]
             }
             return error_message
 
