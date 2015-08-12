@@ -30,7 +30,8 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -52,6 +53,11 @@ BOOLEAN_CHOICES = (
 )
 
 TRUTH_NESS = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+
+
+class FacilityLevelChangeReasonFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityLevelChangeReason
 
 
 class KephLevelFilter(CommonFieldsFilterset):
@@ -303,6 +309,9 @@ class FacilityFilter(CommonFieldsFilterset):
     keph_level = ListCharFilter(lookup_type='exact')
     operation_status = ListCharFilter(lookup_type='icontains')
     ward = ListCharFilter(lookup_type='icontains')
+    sub_county = ListCharFilter(lookup_type='exact')
+    sub_county_code = ListCharFilter(
+        name="sub_county__code", lookup_type='exact')
     ward_code = ListCharFilter(name="ward__code", lookup_type='icontains')
     county_code = ListCharFilter(
         name='ward__constituency__county__code',

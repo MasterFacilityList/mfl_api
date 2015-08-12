@@ -43,7 +43,8 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
 
 
@@ -169,6 +170,12 @@ class CreateFacilityOfficerMixin(object):
                 "created": True,
                 "detail": serialized_officer
             }
+
+
+class FacilityLevelChangeReasonSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = FacilityLevelChangeReason
 
 
 class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):

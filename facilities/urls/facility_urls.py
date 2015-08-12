@@ -63,12 +63,21 @@ from ..views import (
     ServicesWithOptionListView,
     CustomFacilityOfficerView,
     KephLevelListView,
-    KephLevelDetailView
+    KephLevelDetailView,
+    FacilityLevelChangeReasonDetailView,
+    FacilityLevelChangeReasonListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^level_change_reasons/$',
+        FacilityLevelChangeReasonListView.as_view(),
+        name='facility_level_change_reasons_list'),
+    url(r'^level_change_reasons/(?P<pk>[^/]+)/$',
+        FacilityLevelChangeReasonDetailView.as_view(),
+        name='facility_level_change_reason_detail'),
+
     url(r'^keph/$', KephLevelListView.as_view(),
         name='keph_levels_list'),
     url(r'^keph/(?P<pk>[^/]+)/$',

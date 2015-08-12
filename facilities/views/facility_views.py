@@ -16,7 +16,8 @@ from ..models import (
     FacilityContact,
     FacilityOfficer,
     FacilityUnitRegulation,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
 
 from ..serializers import (
@@ -30,7 +31,8 @@ from ..serializers import (
     FacilityOfficerSerializer,
     FacilityUnitRegulationSerializer,
     KephLevelSerializer,
-    CreateFacilityOfficerMixin
+    CreateFacilityOfficerMixin,
+    FacilityLevelChangeReasonSerializer
 )
 
 from ..filters import (
@@ -41,7 +43,8 @@ from ..filters import (
     FacilityContactFilter,
     FacilityOfficerFilter,
     FacilityUnitRegulationFilter,
-    KephLevelFilter
+    KephLevelFilter,
+    FacilityLevelChangeReasonFilter
 
 )
 
@@ -108,6 +111,33 @@ class QuerysetFilterMixin(object):
             self.queryset = self.queryset.filter(rejected=False)
 
         return self.queryset
+
+
+class FacilityLevelChangeReasonListView(generics.ListCreateAPIView):
+    """
+    Lists and creates the  generic upgrade and down grade reasons
+    reason --   A reason for  upgrade or downgrade
+    description -- Description the reason
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = FacilityLevelChangeReason.objects.all()
+    filter_class = FacilityLevelChangeReasonFilter
+    serializer_class = FacilityLevelChangeReasonSerializer
+    ordering_fields = ('reason', 'description', 'is_upgrade_reason')
+
+
+class FacilityLevelChangeReasonDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a single facility level change reason
+    """
+    queryset = FacilityLevelChangeReason.objects.all()
+    serializer_class = FacilityLevelChangeReasonSerializer
 
 
 class KephLevelListView(generics.ListCreateAPIView):
