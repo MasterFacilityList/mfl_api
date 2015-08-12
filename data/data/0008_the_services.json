@@ -1,4 +1,20 @@
 [
+{
+       "model":"facilities.OptionGroup",
+      "unique_fields":["name"],
+      "records":[
+            {
+                "name": "Yes /No Options"
+            },
+            {
+                "name": "Basic Comprehensive Options"
+            },
+            {
+                "name": "Keph Level based groups"
+            }
+      ]
+
+    },
    {
       "model":"facilities.Service",
       "unique_fields":[
