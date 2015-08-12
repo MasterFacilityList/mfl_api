@@ -13,7 +13,8 @@ from common.models import (
     Ward,
     Contact,
     SequenceMixin,
-    PhysicalAddress
+    PhysicalAddress,
+    SubCounty
 )
 from common.fields import SequenceField
 
@@ -141,6 +142,10 @@ class OfficerContact(AbstractBase):
 class Officer(AbstractBase):
     """
     Identify officers in-charge of facilities
+
+    In order to indicate whether an officer(practitioner) has a case or not
+    The active field will be used.
+    If the officer has case the active field will be set to false
     """
     name = models.CharField(
         max_length=255,
@@ -441,14 +446,9 @@ class FacilityRegulationStatus(AbstractBase):
         max_length=100, null=True, blank=True,
         help_text='The license number that the facility has been '
         'given by the regulator')
-    is_confirmed = models.BooleanField(
+    license_is_expired = models.BooleanField(
         default=False,
-        help_text='Has the proposed change been confirmed by higher'
-        ' authorities')
-    is_cancelled = models.BooleanField(
-        default=False,
-        help_text='Has the proposed change been cancelled by a higher'
-        ' authority')
+        help_text='A flag to indicate whether the license is valid or not')
 
     def __unicode__(self):
         return "{}: {}".format(
@@ -502,6 +502,9 @@ class Facility(SequenceMixin, AbstractBase):
     code = SequenceField(
         unique=True, editable=False,
         help_text='A sequential number allocated to each facility')
+    registration_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="The registration number given by the regulator")
     abbreviation = models.CharField(
         max_length=30, null=True, blank=True,
         help_text='A short name for the facility.')
@@ -523,6 +526,9 @@ class Facility(SequenceMixin, AbstractBase):
     open_weekends = models.BooleanField(
         default=False,
         help_text="Is the facility_open during weekends?")
+    open_late_night = models.BooleanField(
+        default=False,
+        help_text="Indicates if a facility is open late night e.g upto 11 pm")
     is_classified = models.BooleanField(
         default=False,
         help_text="Should the facility geo-codes be visible to the public?"
@@ -571,6 +577,31 @@ class Facility(SequenceMixin, AbstractBase):
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
+    bank_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="The name of the facility's banker e.g Equity Bank")
+    branch_name = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="Branch name of the facility's bank")
+    bank_account = models.CharField(
+        max_length=100, null=True, blank=True)
+    facility_catchment_population = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True, help_text="The population size which the facility serves")
+    sub_county = models.ForeignKey(
+        SubCounty, null=True, blank=True,
+        help_text='The sub county in which the facility has been assigned')
+
+    # hard code the operational status name in order to avoid more crud
+    @property
+    def service_catalogue_active(self):
+        if self.operation_status.name == "OPERATIONAL":
+            return True
+        else:
+            return False
 
     @property
     def boundaries(self):
@@ -626,7 +657,8 @@ class Facility(SequenceMixin, AbstractBase):
     def current_regulatory_status(self):
         try:
             # returns in reverse chronological order so just pick the first one
-            return self.regulatory_details.filter(is_confirmed=True)[0]
+            return self.regulatory_details.filter(
+                regulation_status__is_default=False)[0]
         except IndexError:
             return RegulationStatus.objects.get(is_default=True)
 
@@ -694,15 +726,16 @@ class Facility(SequenceMixin, AbstractBase):
         return [
             {
                 "id": service.id,
-                "service_id": service.selected_option.service.id,
-                "service_name": service.selected_option.service.name,
-                "option_name": service.selected_option.option.display_text,
-                "category_name": service.selected_option.service.category.name,
-                "category_id": service.selected_option.service.category.id,
+                "service_id": service.service.id,
+                "service_name": str(service.service.name),
+                "service_code": service.service.code,
+                "option_name": str(
+                    service.option.display_text),
+                "category_name": str(
+                    service.service.category.name),
+                "category_id": service.service.category.id,
                 "average_rating": service.average_rating,
-                "number_of_ratings": service.number_of_ratings,
-                "is_confirmed": service.is_confirmed,
-                "is_cancelled": service.is_cancelled
+                "number_of_ratings": service.number_of_ratings
             }
             for service in services
         ]
@@ -865,6 +898,8 @@ class Facility(SequenceMixin, AbstractBase):
                 "Can see the un published facilities"),
             ("view_unapproved_facilities",
                 "Can see the unapproved facilities"),
+            ("view_all_facility_fields",
+                "Can see the all information on a facilities"),
         )
 
 
@@ -916,8 +951,8 @@ class FacilityUpdates(AbstractBase):
             pass
         else:
             if updates >= 1:
-                error = "The pending facility update has to be either approved "\
-                    "or cancelled before another one is made"
+                error = ("The pending facility update has to be either"
+                         "approved or cancelled before another one is made")
                 raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
@@ -950,6 +985,18 @@ class FacilityOperationState(AbstractBase):
 
 
 @reversion.register
+class FacilityLevelChangeReason(AbstractBase):
+    """
+    Generic reasons for upgrading or downgrading a facility
+    """
+    reason = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return str(self.reason)
+
+
+@reversion.register
 class FacilityUpgrade(AbstractBase):
     """
     Logs the upgrades and the downgrades of a facility.
@@ -957,7 +1004,7 @@ class FacilityUpgrade(AbstractBase):
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
     keph_level = models.ForeignKey(KephLevel, null=True)
-    reason = models.TextField()
+    reason = models.ForeignKey(FacilityLevelChangeReason)
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Indicates whether a facility upgrade or downgrade has been'
@@ -966,6 +1013,7 @@ class FacilityUpgrade(AbstractBase):
         default=False,
         help_text='Indicates whether a facility upgrade or downgrade has been'
         'cancelled or not')
+    is_upgrade = models.BooleanField(default=True)
 
     def validate_only_one_type_change_at_a_time(self):
         if self.is_confirmed or self.is_cancelled:
@@ -1040,8 +1088,9 @@ class FacilityUnit(AbstractBase):
     PPB.
     The pharmacy will in this case be treated as a facility unit.
     """
-    facility = models.ForeignKey(Facility, on_delete=models.PROTECT)
-    name = models.CharField(max_length=100, unique=True)
+    facility = models.ForeignKey(
+        Facility, on_delete=models.PROTECT, related_name='facility_units')
+    name = models.CharField(max_length=100)
     description = models.TextField(
         help_text='A short summary of the facility unit.')
     regulating_body = models.ForeignKey(
@@ -1055,6 +1104,9 @@ class FacilityUnit(AbstractBase):
 
     def __unicode__(self):
         return self.facility.name + ": " + self.name
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('facility', 'name', )
 
 
 @reversion.register
@@ -1083,6 +1135,18 @@ class ServiceCategory(AbstractBase):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'service categories'
+
+
+@reversion.register
+class OptionGroup(AbstractBase):
+    """
+    Groups similar a options available to a service.
+    E.g  options 1 to 6 could fall after keph level group
+    """
+    name = models.CharField(max_length=100, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 @reversion.register
@@ -1115,6 +1179,8 @@ class Option(AbstractBase):
         ('DECIMAL', 'Decimal numbers, may have a fraction e.g 3.14'),
         ('TEXT', 'Plain text'),
     ))
+    group = models.ForeignKey(
+        OptionGroup, help_text="The option group where the option lies")
 
     def __unicode__(self):
         return "{}: {}".format(self.option_type, self.display_text)
@@ -1137,7 +1203,9 @@ class Service(SequenceMixin, AbstractBase):
         related_name='category_services')
 
     code = SequenceField(unique=True, editable=False)
-    options = models.ManyToManyField(Option, through='ServiceOption')
+    group = models.ForeignKey(
+        OptionGroup,
+        help_text="The option group containing service options")
     has_options = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
@@ -1157,25 +1225,12 @@ class Service(SequenceMixin, AbstractBase):
 
 
 @reversion.register
-class ServiceOption(AbstractBase):
-    """
-    One service can have multiple options to be selected
-    this is for defining the available choices for a service.
-    """
-    service = models.ForeignKey(Service, related_name='service_options')
-    option = models.ForeignKey(Option)
-
-    def __unicode__(self):
-        return "{}: {}".format(self.service, self.option)
-
-
-@reversion.register
 class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
     """
     facility = models.ForeignKey(Facility, related_name='facility_services')
-    selected_option = models.ForeignKey(ServiceOption, null=True, blank=True)
+    option = models.ForeignKey(Option, null=True, blank=True)
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Indiates whether a service has been approved by the CHRIO')
@@ -1185,16 +1240,11 @@ class FacilityService(AbstractBase):
         'CHRIO')
     # For services that do not have options, the service will be linked
     # directly to the
-    service = models.ForeignKey(Service, blank=True, null=True)
+    service = models.ForeignKey(Service)
 
     @property
     def service_has_options(self):
-        return True if self.selected_option else False
-
-    def validate_either_options_or_service(self):
-        if not self.selected_option and not self.service:
-            raise ValidationError(
-                "An service option or an actual service is required")
+        return True if self.option else False
 
     @property
     def number_of_ratings(self):
@@ -1202,14 +1252,11 @@ class FacilityService(AbstractBase):
 
     @property
     def service_name(self):
-        if self.selected_option:
-            return self.selected_option.service.name
-        else:
             return self.service.name
 
     @property
     def option_display_value(self):
-        return self.selected_option.option.display_text
+        return self.option.display_text
 
     @property
     def average_rating(self):
@@ -1217,10 +1264,22 @@ class FacilityService(AbstractBase):
         return avg['rating__avg'] or 0.0
 
     def __unicode__(self):
-        return "{}: {}".format(self.facility, self.selected_option)
+        return "{}: {}: {}".format(self.facility, self.service, self.option)
+
+    def validate_unique_service_or_service_option_with_for_facility(self):
+
+        if self.__class__.objects.filter(
+                service=self.service, facility=self.facility,
+                deleted=False):
+            error = {
+                "service": [
+                    ("The service {} has already been added to the "
+                     "facility").format(self.service.name)]
+            }
+            raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
-        self.validate_either_options_or_service()
+        self.validate_unique_service_or_service_option_with_for_facility()
 
 
 @reversion.register

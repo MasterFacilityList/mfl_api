@@ -3,13 +3,16 @@ from django.contrib.auth.models import Group, Permission
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_auth.serializers import PasswordChangeSerializer
 
 from common.serializers import (
     UserCountySerializer,
     UserConstituencySerializer,
-    UserContactSerializer)
+    UserContactSerializer,
+    PartialResponseMixin
+)
 from facilities.serializers import RegulatoryBodyUserSerializer
-from .models import MflUser, MFLOAuthApplication
+from .models import MflUser, MFLOAuthApplication, check_password_strength
 
 
 def _lookup_permissions(validated_data):
@@ -43,12 +46,16 @@ def _lookup_groups(validated_data):
 class PermissionSerializer(serializers.ModelSerializer):
 
     """This is intended to power a read-only view"""
+    id = serializers.ReadOnlyField()
+    name = serializers.ReadOnlyField()
+    codename = serializers.ReadOnlyField()
+
     class Meta(object):
         model = Permission
         fields = ('id', 'name', 'codename',)
 
 
-class GroupSerializer(serializers.ModelSerializer):
+class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     """This is intended to power retrieval, creation and addition of groups
 
@@ -85,7 +92,9 @@ class GroupSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        permissions = _lookup_permissions(validated_data)
+        permissions = _lookup_permissions(
+            self.context['request'].DATA
+        )
         validated_data.pop('permissions', None)
 
         new_group = Group(**validated_data)
@@ -95,7 +104,9 @@ class GroupSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        permissions = _lookup_permissions(validated_data)
+        permissions = _lookup_permissions(
+            self.context['request'].DATA
+        )
         validated_data.pop('permissions', None)
 
         for attr, value in validated_data.items():
@@ -106,11 +117,17 @@ class GroupSerializer(serializers.ModelSerializer):
         instance.permissions.add(*permissions)
         return instance
 
+    def get_fields(self):
+        """Overridden to take advantage of partial response"""
+        origi_fields = super(GroupSerializer, self).get_fields()
+        request = self.context.get('request', None)
+        return self.strip_fields(request, origi_fields)
+
     class Meta(object):
         model = Group
 
 
-class MflUserSerializer(serializers.ModelSerializer):
+class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     """This should allow everything about users to be managed"""
     user_counties = UserCountySerializer(many=True, required=False)
@@ -133,6 +150,7 @@ class MflUserSerializer(serializers.ModelSerializer):
     user_contacts = UserContactSerializer(many=True, required=False)
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
+    last_login = serializers.ReadOnlyField(source='lastlog')
 
     @transaction.atomic
     def create(self, validated_data):
@@ -168,9 +186,15 @@ class MflUserSerializer(serializers.ModelSerializer):
 
         return instance
 
+    def get_fields(self):
+        """Overridden to take advantage of partial response"""
+        origi_fields = super(MflUserSerializer, self).get_fields()
+        request = self.context.get('request', None)
+        return self.strip_fields(request, origi_fields)
+
     class Meta(object):
         model = MflUser
-        exclude = ('password_history',)
+        exclude = ('password_history', )
         extra_kwargs = {'password': {'write_only': True}}
 
 
@@ -180,3 +204,11 @@ class MFLOAuthApplicationSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = MFLOAuthApplication
+
+
+class MflPasswordChangeSerializer(PasswordChangeSerializer):
+
+    def validate(self, attrs):
+        super(MflPasswordChangeSerializer, self).validate(attrs)
+        check_password_strength(attrs['new_password1'])
+        return attrs

@@ -16,8 +16,8 @@ class TestLogin(APITestCase):
 
     def setUp(self):
         self.user = MflUser.objects.create_user(
-            email='user@test.com', first_name='pass',
-            password='password', username='password'
+            email='user@test.com', first_name='test name',
+            password='password1233', employee_number='7784448445'
         )
         self.login_url = reverse("api:rest_auth:rest_login")
         self.logout_url = reverse("api:rest_auth:rest_logout")
@@ -25,8 +25,8 @@ class TestLogin(APITestCase):
 
     def test_login(self):
         data = {
-            "username": 'user@test.com',
-            "password": 'password'
+            "username": self.user.employee_number,
+            "password": 'password1233'
         }
         response = self.client.post(self.login_url, data)
         self.assertTrue(self.user.is_authenticated())
@@ -35,7 +35,7 @@ class TestLogin(APITestCase):
     def test_inactive_user_login(self):
         user = MflUser.objects.create_user(
             email='user2@test.com', first_name='test first name',
-            username='test user name', password='pass_long'
+            employee_number='test user name', password='pass_long124124'
         )
         user.is_active = False
         user.save()
@@ -43,7 +43,7 @@ class TestLogin(APITestCase):
             self.login_url,
             {
                 "username": user.email,
-                "password": 'pass_long'
+                "password": 'pass_long124124'
             }
         )
         self.assertEquals(400, response.status_code)
@@ -79,8 +79,8 @@ class TestUserViews(LoginMixin, APITestCase):
             "first_name": "Hakuna",
             "last_name": "Ruhusa",
             "other_names": "",
-            "username": "hakunaruhusa",
-            "password": "rubbishpass"
+            "employee_number": "1224467890",
+            "password": "rubbishpass12424"
         }
         response = self.client.post(create_url, post_data)
         self.assertEqual(201, response.status_code)
@@ -89,7 +89,7 @@ class TestUserViews(LoginMixin, APITestCase):
     def test_update_user(self):
         user = MflUser.objects.create(
             email='user@test.com', first_name='pass',
-            username='pass', password='pass_long'
+            employee_number='9448855555', password='pass_long12424'
         )
         group = Group.objects.create(name="Test Group")
         update_url = reverse(
@@ -110,13 +110,13 @@ class TestUserViews(LoginMixin, APITestCase):
     def test_update_user_pwd(self):
         user = MflUser.objects.create(
             email='user@test.com', first_name='pass',
-            username='pass', password='pass'
+            employee_number='6444444444', password='pass12r12r12r'
         )
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
         patch_data = {
             "first_name": "Phyll",
-            "password": "yeah_longer",
+            "password": "yeah_longerr1r12",
         }
         response = self.client.patch(update_url, patch_data)
         self.assertEqual(200, response.status_code)
@@ -128,7 +128,7 @@ class TestUserViews(LoginMixin, APITestCase):
     def test_failed_create(self):
         create_url = reverse('api:users:mfl_users_list')
         data = {
-            "username": "yusa",
+            "employee_number": "yusa",
             "email": "yusa@yusa.com",
             "groups": [
                 {
@@ -139,6 +139,45 @@ class TestUserViews(LoginMixin, APITestCase):
         }
         response = self.client.post(create_url, data)
         self.assertEqual(400, response.status_code)
+
+    def test_password_quality_during_reset(self):
+        user = mommy.make(MflUser)
+        user.set_password('strong1344')
+        user.save()
+        self.client.logout()
+        self.client.force_authenticate(user)
+        url = "/api/rest-auth/password/change/"
+        data = {
+            "old_password": "strong1344",
+            "new_password1": "weak",
+            "new_password2": "weak"
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+        data = {
+            "old_password": "strong1344",
+            "new_password1": "#weakMadeStrong999",
+            "new_password2": "#weakMadeStrong999"
+        }
+
+        response = self.client.post(url, data)
+        self.assertEquals(200, response.status_code)
+
+    def test_password_quality_missing_fields(self):
+        user = mommy.make(MflUser)
+        user.set_password('strong1344')
+        user.save()
+        self.client.logout()
+        self.client.force_authenticate(user)
+
+        url = "/api/rest-auth/password/change/"
+        # old_password1 field is left out
+        data = {
+            "old_password": "strong13443463",
+            "new_password2": "weak"
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
 
 
 class TestGroupViews(LoginMixin, APITestCase):
@@ -156,12 +195,10 @@ class TestGroupViews(LoginMixin, APITestCase):
             "name": "Documentation Example Group",
             "permissions": [
                 {
-                    "id": 61,
                     "name": "Can add email address",
                     "codename": "add_emailaddress"
                 },
                 {
-                    "id": 62,
                     "name": "Can change email address",
                     "codename": "change_emailaddress"
                 }
@@ -181,7 +218,6 @@ class TestGroupViews(LoginMixin, APITestCase):
                 "name": "Documentation Example Group Updated",
                 "permissions": [
                     {
-                        "id": 61,
                         "name": "Can add email address",
                         "codename": "add_emailaddress"
                     }

@@ -16,7 +16,8 @@ from ..models import (
     UserContact,
     UserConstituency,
     UserCounty,
-    Town
+    Town,
+    SubCounty
 )
 from ..serializers import (
     ContactSerializer,
@@ -39,14 +40,15 @@ def default(obj):
 class LoginMixin(object):
 
     def setUp(self):
+        password = 'mtihani124'
         self.user = get_user_model().objects.create_superuser(
             email='tester@ehealth.or.ke',
             first_name='Test',
-            username='test',
-            password='mtihani',
+            employee_number='124144124124',
+            password=password,
             is_national=True
         )
-        self.client.login(email='tester@ehealth.or.ke', password='mtihani')
+        self.client.login(email='tester@ehealth.or.ke', password=password)
         self.maxDiff = None
         super(LoginMixin, self).setUp()
 
@@ -464,70 +466,87 @@ class TestAuditableViewMixin(LoginMixin, APITestCase):
     def test_response_with_no_audit(self):
         county = mommy.make(County)
         url = reverse(
-            'api:common:county_detail', kwargs={'pk': county.pk})
+            'api:common:county_detail', kwargs={'pk': county.pk}
+        )
 
         # First, fetch with no audit
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertTrue(
-            "revisions" not in
-            json.loads(json.dumps(response.data, default=default))
-        )
+        self.assertNotIn("revisions", response.data)
+
+    def test_response_with_audit(self):
+        county = mommy.make(County)
+        url = reverse(
+            'api:common:county_detail', kwargs={'pk': county.pk}
+        ) + "?include_audit=t"
+
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEqual(response.data["revisions"], [])
+
+    def test_response_with_audit_empty_change(self):
+        county = mommy.make(County)
+        url = reverse(
+            'api:common:county_detail', kwargs={'pk': county.pk}
+        ) + "?include_audit=t"
+        county.save()
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEqual(response.data["revisions"], [])
 
     def test_response_with_audit_single_change(self):
         county_rev_1 = mommy.make(County)
         url = reverse(
-            'api:common:county_detail',
-            kwargs={'pk': county_rev_1.pk}
+            'api:common:county_detail', kwargs={'pk': county_rev_1.pk}
         ) + '?include_audit=true'
 
-        # First, fetch with no audit
+        old_val = county_rev_1.code
+        county_rev_1.code = 34
+        county_rev_1.save()
+
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+        self.assertEqual(len(response.data["revisions"]), 1)
+        self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
 
-        parsed_response = json.loads(
-            json.dumps(response.data, default=default))
+        diff = response.data["revisions"][0]["updates"][0]
 
-        self.assertTrue("revisions" in parsed_response)
-        self.assertEqual(
-            parsed_response["revisions"][0]["code"],
-            county_rev_1.code
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["id"],
-            str(county_rev_1.id)
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["name"],
-            county_rev_1.name
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["active"],
-            county_rev_1.active
-        )
-        self.assertEqual(
-            parsed_response["revisions"][0]["deleted"],
-            county_rev_1.deleted
-        )
+        self.assertEqual(diff["name"], "code")
+        self.assertEqual(diff["old"], old_val)
+        self.assertEqual(diff["new"], county_rev_1.code)
 
     def test_response_with_audit_two_changes(self):
-        county_rev_1 = mommy.make(County)
+        county_rev_1 = mommy.make(County, name="one", code=98)
         url = reverse(
             'api:common:county_detail',
             kwargs={'pk': county_rev_1.pk}
         ) + '?include_audit=true'
 
         county_rev_1.name = 'Kaunti Yangu'
+        county_rev_1.code = 99
+        county_rev_1.save()
+
+        county_rev_1.name = 'yeahhh'
         county_rev_1.save()
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+        self.assertEqual(len(response.data["revisions"]), 2)
+        self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
+        self.assertEqual(len(response.data["revisions"][1]["updates"]), 2)
 
-        parsed_response = json.loads(
-            json.dumps(response.data, default=default))
+        diff1 = response.data["revisions"][0]["updates"]
+        diff2 = response.data["revisions"][1]["updates"]
 
-        self.assertTrue("revisions" in parsed_response)
-        self.assertEqual(len(parsed_response["revisions"]), 2)
+        self.assertIn({
+            "name": "name",
+            "old": "one",
+            "new": "Kaunti Yangu"
+        }, diff2)
+        self.assertIn({"name": "code", "old": 98, "new": 99}, diff2)
+        self.assertIn(
+            {"name": "name", "old": "Kaunti Yangu", "new": "yeahhh"}, diff1
+        )
 
 
 class TestFilteringSummariesView(LoginMixin, APITestCase):
@@ -784,29 +803,13 @@ class TestFilteringAdminUnits(APITestCase):
             Ward.objects.count(), len(response.data.get("results"))
         )
 
-    def test_filtering_towns(self):
-        county = mommy.make(County)
-        user = mommy.make(get_user_model())
-        mommy.make(UserCounty, user=user, county=county)
-        const = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
-        mommy.make(Town)
-        url = reverse("api:common:towns_list")
-        self.client.force_authenticate(user)
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(1, len(response.data.get("results")))
-
     def test_national_user_sees_all_towns(self):
         county = mommy.make(County)
         user = mommy.make(get_user_model())
         user.is_national = True
         user.save()
         mommy.make(UserCounty, user=user, county=county)
-        const = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
+        mommy.make(Town)
         mommy.make(Town)
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user)
@@ -814,7 +817,7 @@ class TestFilteringAdminUnits(APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(2, len(response.data.get("results")))
 
-    def test_sub_county_user_sees_only_towns_in_sub_county(self):
+    def test_sub_county_user_sees_all_towns(self):
         county = mommy.make(County)
         user = mommy.make(get_user_model())
         user_2 = mommy.make(get_user_model())
@@ -823,14 +826,13 @@ class TestFilteringAdminUnits(APITestCase):
         mommy.make(
             UserConstituency, user=user_2,
             created_by=user, updated_by=user, constituency=const)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
+        mommy.make(Town)
         mommy.make(Town)
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user_2)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(1, len(response.data.get("results")))
+        self.assertEquals(2, len(response.data.get("results")))
 
     def test_county_user_sees_only_wards_in_county(self):
         user = mommy.make(get_user_model())
@@ -866,3 +868,50 @@ class TestFilteringAdminUnits(APITestCase):
                     response.data.get("results"), default=default)
             )
         )
+
+
+class TestSubCountyView(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:common:sub_counties_list")
+        super(TestSubCountyView, self).setUp()
+
+    def test_posting(self):
+        county = mommy.make(County)
+        data = {
+            "name": "test subcounty",
+            "county": county.id
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, SubCounty.objects.count())
+        self.assertIn("id", response.data)
+
+    def test_listing(self):
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get("count"))
+        self.assertEquals(5, SubCounty.objects.count())
+
+    def test_retreiving(self):
+        mommy.make(SubCounty)
+        sub_county = mommy.make(SubCounty)
+        url = self.url + "{}/".format(sub_county.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(sub_county.id), response.data.get("id"))
+
+    def test_updating(self):
+        sub_county = mommy.make(SubCounty)
+        data = {
+            "name": "name has been editted"
+        }
+        url = self.url + "{}/".format(sub_county.id)
+        response = self.client.patch(url, data)
+        ssub_county_refetched = SubCounty.objects.get(id=sub_county.id)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(ssub_county_refetched.name, data.get("name"))

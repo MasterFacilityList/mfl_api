@@ -6,7 +6,6 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
-from common.models import Contact, ContactType
 
 
 from ..models import (
@@ -17,9 +16,9 @@ from ..models import (
     FacilityContact,
     FacilityOfficer,
     FacilityUnitRegulation,
-    JobTitle,
-    Officer,
-    KephLevel
+    KephLevel,
+    OptionGroup,
+    FacilityLevelChangeReason
 )
 
 from ..serializers import (
@@ -32,7 +31,10 @@ from ..serializers import (
     FacilityContactSerializer,
     FacilityOfficerSerializer,
     FacilityUnitRegulationSerializer,
-    KephLevelSerializer
+    KephLevelSerializer,
+    OptionGroupSerializer,
+    CreateFacilityOfficerMixin,
+    FacilityLevelChangeReasonSerializer
 )
 
 from ..filters import (
@@ -43,7 +45,9 @@ from ..filters import (
     FacilityContactFilter,
     FacilityOfficerFilter,
     FacilityUnitRegulationFilter,
-    KephLevelFilter
+    KephLevelFilter,
+    OptionGroupFilter,
+    FacilityLevelChangeReasonFilter
 
 )
 
@@ -112,6 +116,33 @@ class QuerysetFilterMixin(object):
         return self.queryset
 
 
+class FacilityLevelChangeReasonListView(generics.ListCreateAPIView):
+    """
+    Lists and creates the  generic upgrade and down grade reasons
+    reason --   A reason for  upgrade or downgrade
+    description -- Description the reason
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = FacilityLevelChangeReason.objects.all()
+    filter_class = FacilityLevelChangeReasonFilter
+    serializer_class = FacilityLevelChangeReasonSerializer
+    ordering_fields = ('reason', 'description', 'is_upgrade_reason')
+
+
+class FacilityLevelChangeReasonDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a single facility level change reason
+    """
+    queryset = FacilityLevelChangeReason.objects.all()
+    serializer_class = FacilityLevelChangeReasonSerializer
+
+
 class KephLevelListView(generics.ListCreateAPIView):
     """
     Lists and creates the  Kenya Essential Package for health (KEPH)
@@ -130,7 +161,8 @@ class KephLevelListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'value', 'description')
 
 
-class KephLevelDetailView(CustomRetrieveUpdateDestroyView):
+class KephLevelDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     """
     Retrieves a single KEPH level
     """
@@ -265,8 +297,7 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     )
 
 
-class FacilityListReadOnlyView(
-        QuerysetFilterMixin, AuditableDetailViewMixin, generics.ListAPIView):
+class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
     """
     Returns a slimmed payload of the facility.
     """
@@ -329,8 +360,7 @@ class FacilityContactDetailView(
     serializer_class = FacilityContactSerializer
 
 
-class FacilityOfficerListView(
-        AuditableDetailViewMixin, generics.ListCreateAPIView):
+class FacilityOfficerListView(generics.ListCreateAPIView):
     serializer_class = FacilityOfficerSerializer
     queryset = FacilityOfficer.objects.all()
     filter_class = FacilityOfficerFilter
@@ -345,8 +375,7 @@ class FacilityOfficerDetailView(
     queryset = FacilityOfficer.objects.all()
 
 
-class FacilityUnitRegulationListView(
-        AuditableDetailViewMixin, generics.ListCreateAPIView):
+class FacilityUnitRegulationListView(generics.ListCreateAPIView):
     queryset = FacilityUnitRegulation.objects.all()
     serializer_class = FacilityUnitRegulationSerializer
     filter_class = FacilityUnitRegulationFilter
@@ -359,123 +388,26 @@ class FacilityUnitRegulationDetailView(
     serializer_class = FacilityUnitRegulationSerializer
 
 
-class CustomFacilityOfficerView(APIView):
+class CustomFacilityOfficerView(CreateFacilityOfficerMixin, APIView):
     """
     A custom view for creating facility officers.
     Make it less painful to create facility officers via the frontend.
     """
-    def _validate_required_fields(self, data):
-        facility_id = data.get('facility_id', None)
-        name = data.get('name', None)
-        title = data.get('title', None)
-        id_number = data.get('id_no', None)
-        if not facility_id or not name or not title or not id_number:
-            error_message = "Facility id , name, ID number and"\
-                            "job title of the officer are "\
-                            "required"
-            return error_message
-
-    def _validate_facility(self, data):
-        try:
-            Facility.objects.get(id=data.get('facility_id', None))
-        except Facility.DoesNotExist:
-            error_message = {
-                "facility": "Facility provided does not exist"
-            }
-            return error_message
-
-    def _validate_job_titles(self, data):
-        try:
-            JobTitle.objects.get(id=data['title'])
-        except JobTitle.DoesNotExist:
-            error_message = {
-                "job title": "JobTitle with id {} does not exist".format(
-                    data['title'])
-            }
-            return error_message
-
-    def data_is_valid(self, data):
-        errors = [
-            self._validate_required_fields(data),
-            self._validate_facility(data),
-            self._validate_job_titles(data)
-        ]
-        errors = [error for error in errors if error is not None]
-        if errors:
-            return errors
-        else:
-            return True
-
-    def _inject_creating_user(self, attributes_dict):
-        attributes_dict['created_by'] = self.request.user
-        attributes_dict['updated_by'] = self.request.user
-        return attributes_dict
-
-    def _create_contacts(self, data):
-        contacts = data.get('contacts', None)
-        created_contacts = []
-        if contacts:
-            for contact in contacts:
-
-                contact_type = ContactType.objects.get(
-                    id=contact.get('type'))
-                contact_dict = {
-                    "contact_type": contact_type,
-                    "contact": contact.get('contact')
-                }
-                contact_dict = self._inject_creating_user(contact_dict)
-                created_contacts.append(Contact.objects.create(**contact_dict))
-        return created_contacts
-
-    def _create_facility_officer(self, data):
-        facility = Facility.objects.get(id=data['facility_id'])
-        job_title = JobTitle.objects.get(id=data['title'])
-
-        officer_dict = {
-            "name": data['name'],
-            "job_title": job_title,
-        }
-        officer_dict = self._inject_creating_user(officer_dict)
-
-        id_no = data.get('id_no', None)
-        reg_no = data.get('reg_no', None)
-        officer_dict['id_number'] = id_no if id_no else None
-        officer_dict['registration_number'] = reg_no if reg_no else None
-
-        officer = Officer.objects.create(**officer_dict)
-        facility_officer_dict = {
-            "facility": facility,
-            "officer": officer
-        }
-        facility_officer_dict = self._inject_creating_user(
-            facility_officer_dict)
-        facility_officer = FacilityOfficer.objects.create(
-            **facility_officer_dict)
-
-        # link the officer to the contacts
-        created_contacts = self._create_contacts(data)
-        for contact in created_contacts:
-            contact_dict = {
-                "officer": officer,
-                "contact": contact
-            }
-            contact_dict = self._inject_creating_user(contact_dict)
-            OfficerContact.objects.create(**contact_dict)
-        return facility_officer
 
     def post(self, *args, **kwargs):
-        data = self.request.DATA
-        valid_data = self.data_is_valid(data)
+        data = self.request.data
+        self.user = self.request.user
+        created_officer = self.create_officer(data)
 
-        if valid_data is not True:
+        if created_officer.get("created") is not True:
 
             return Response(
-                {"detail": valid_data}, status=status.HTTP_400_BAD_REQUEST)
+                {"detail": created_officer.get("detail")},
+                status=status.HTTP_400_BAD_REQUEST)
         else:
-            facility_officer = self._create_facility_officer(data)
-            serialized_officer = FacilityOfficerSerializer(
-                facility_officer).data
-            return Response(serialized_officer, status=status.HTTP_201_CREATED)
+
+            return Response(
+                created_officer.get("detail"), status=status.HTTP_201_CREATED)
 
     def get(self, *args, **kwargs):
         facility = Facility.objects.get(id=kwargs['facility_id'])
@@ -489,3 +421,16 @@ class CustomFacilityOfficerView(APIView):
         officer.deleted = True
         officer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class OptionGroupListView(generics.ListCreateAPIView):
+    queryset = OptionGroup.objects.all()
+    serializer_class = OptionGroupSerializer
+    filter_class = OptionGroupFilter
+    ordering_fields = ('name', )
+
+
+class OptionGroupDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    queryset = OptionGroup.objects.all()
+    serializer_class = OptionGroupSerializer

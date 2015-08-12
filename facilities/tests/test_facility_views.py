@@ -1,7 +1,9 @@
 import json
+from datetime import timedelta
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from rest_framework.test import APITestCase
 from model_mommy import mommy
@@ -28,8 +30,7 @@ from ..serializers import (
     FacilityOfficerSerializer,
     RegulatoryBodyUserSerializer,
     FacilityUnitRegulationSerializer,
-    FacilityUpdatesSerializer,
-    ServiceSerializer
+    FacilityUpdatesSerializer
 )
 from ..models import (
     OwnerType,
@@ -42,7 +43,6 @@ from ..models import (
     ServiceCategory,
     Service,
     Option,
-    ServiceOption,
     FacilityService,
     FacilityContact,
     FacilityOfficer,
@@ -53,7 +53,8 @@ from ..models import (
     RegulationStatus,
     FacilityApproval,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
 
 from django.contrib.auth.models import Group, Permission
@@ -247,56 +248,27 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
     def test_facilties_that_need_regulation_or_not(self):
         facility_1 = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
-        facility_3 = mommy.make(Facility)
+        mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_1, is_confirmed=True)
+            FacilityRegulationStatus, facility=facility_1)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_2, is_confirmed=False)
+            FacilityRegulationStatus, facility=facility_2)
 
-        url = self.url + "?is_regulated=True"
+        url = self.url + "?regulated=true"
 
         response = self.client.get(url)
-        regulated_expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility_1,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
         self.assertEquals(200, response.status_code)
-        self.assertEquals(
-            load_dump(regulated_expected_data['results'], default=default),
-            load_dump(response.data['results'], default=default)
-        )
-
+        # 2 facilities are not regulated
+        self.assertEquals(2, response.data.get("count"))
+        self.assertEquals(2, len(response.data.get("results")))
         # get unregulated
-        url = self.url + "?is_regulated=False"
+        url = self.url + "?regulated=false"
         response_2 = self.client.get(url)
-        unregulated_data = regulated_expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility_3,
-                    context={
-                        'request': response_2.request
-                    }
-                ).data,
-                FacilitySerializer(
-                    facility_2,
-                    context={
-                        'request': response_2.request
-                    }
-                ).data
 
-            ]
-        }
         self.assertEquals(200, response_2.status_code)
-        self.assertEquals(
-            load_dump(unregulated_data['results'], default=default),
-            load_dump(response_2.data['results'], default=default)
-        )
+        self.assertEquals(1, response_2.data.get("count"))
+        # only one facility is not regulated
+        self.assertEquals(1, len(response_2.data.get("results")))
 
     def test_retrieve_facility(self):
         facility = mommy.make(Facility)
@@ -320,10 +292,8 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         service = mommy.make(Service, name='savis', category=service_category)
         option = mommy.make(
             Option, option_type='BOOLEAN', display_text='Yes/No')
-        service_option = mommy.make(
-            ServiceOption, service=service, option=option)
         facility_service = mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, service=service, option=option)
         expected_data = [
             {
                 "id": facility_service.id,
@@ -334,8 +304,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
                 "number_of_ratings": 0,
-                "is_cancelled": False,
-                "is_confirmed": False
+                "service_code": service.code
             }
         ]
         url = self.url + "{}/".format(facility.id)
@@ -350,21 +319,19 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(ServiceCategory)
         service = mommy.make(Service, category=category)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, option=option, service=service)
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
+        service_y = mommy.make(Service)
         mommy.make(FacilityService, facility=facility_2, service=service_x)
 
         service_2 = mommy.make(Service, category=category_2)
-        service_op_2 = mommy.make(
-            ServiceOption, option=option, service=service_2)
-        mommy.make(FacilityService, facility=facility_2, service=service_x)
+        mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, option=option, service=service)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_op_2)
+            FacilityService, facility=facility,
+            option=option, service=service_2)
 
         url = self.url + "?service_category={},{}".format(
             category.id, category_2.id)
@@ -391,15 +358,14 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(ServiceCategory)
         service = mommy.make(Service, category=category)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, option=option, service=service)
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
+        service_y = mommy.make(Service)
         mommy.make(FacilityService, facility=facility_2, service=service_x)
-        mommy.make(FacilityService, facility=facility_2, service=service_x)
+        mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, option=option, service=service)
 
         url = self.url + "?service_category={}".format(
             category.id)
@@ -430,21 +396,19 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(ServiceCategory)
         service = mommy.make(Service, category=category)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, option=option, service=service)
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
+        service_y = mommy.make(Service)
         mommy.make(FacilityService, facility=facility_2, service=service_x)
 
         service_2 = mommy.make(Service, category=category_2)
-        service_op_2 = mommy.make(
-            ServiceOption, option=option, service=service_2)
-        mommy.make(FacilityService, facility=facility_2, service=service_x)
+        mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, option=option, service=service)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_op_2)
+            FacilityService, facility=facility, option=option,
+            service=service_2)
 
         url = self.url + "?service_category={},{},{}".format(
             category.id, category_2.id, category_3.id)
@@ -531,19 +495,10 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         facility = mommy.make(Facility, regulatory_body=reg_body)
         mommy.make(Facility)
         response = self.client.get(self.url)
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data,
-            ]
-        }
 
         self.assertEquals(200, response.status_code)
-        self.assertEquals(expected_data['results'], response.data['results'])
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
 
     def test_get_facility_as_an_anonymous_user(self):
         self.client.logout()
@@ -635,15 +590,17 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
 class CountyAndNationalFilterBackendTest(APITestCase):
 
     def setUp(self):
+        password = 'mtihani123'
         self.user = get_user_model().objects.create_superuser(
             email='tester@ehealth.or.ke',
             first_name='Test',
             username='test',
-            password='mtihani',
+            employee_number='1241414141',
+            password=password,
             is_national=False
         )
         self.user_county = mommy.make(UserCounty, user=self.user)
-        self.client.login(email='tester@ehealth.or.ke', password='mtihani')
+        self.client.login(email='tester@ehealth.or.ke', password=password)
         self.maxDiff = None
         self.url = reverse('api:facilities:facilities_list')
         super(CountyAndNationalFilterBackendTest, self).setUp()
@@ -829,7 +786,6 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
-            "owner_count": 1,
             "recently_created": 1,
             "county_summary": [
                 {
@@ -893,7 +849,6 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
-            "owner_count": 1,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [],
@@ -956,7 +911,6 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
-            "owner_count": 1,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [
@@ -994,6 +948,188 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.client.force_authenticate(user)
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
+
+    def test_created_last_one_week_param(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        right_now = timezone.now()
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=10)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=3)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now
+        )
+        url = self.url + "?weekly=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(response.data.get("recently_created"), 2)
+
+    def test_created_last_one_month_param(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        right_now = timezone.now()
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=10)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=3)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=35)
+        )
+        url = self.url + "?monthly=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(response.data.get("recently_created"), 3)
+
+    def test_created_last_one_quarter_param(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        right_now = timezone.now()
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=10)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=3)
+
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=100)
+        )
+        url = self.url + "?quarterly=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(response.data.get("recently_created"), 3)
+
+    def test_fields_response(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=constituency)
+        facility_type = mommy.make(FacilityType)
+        owner_type = mommy.make(OwnerType)
+        owner = mommy.make(Owner, owner_type=owner_type)
+        status = mommy.make(FacilityStatus)
+        right_now = timezone.now()
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=10)
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=3)
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now
+        )
+        mommy.make(
+            Facility,
+            ward=ward,
+            facility_type=facility_type,
+            owner=owner,
+            operation_status=status,
+            created=right_now - timedelta(days=100)
+        )
+        url = self.url + "?quarterly=true&fields=recently_created"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(response.data, {"recently_created": 3})
 
 
 class TestFacilityContactView(LoginMixin, APITestCase):
@@ -1107,24 +1243,16 @@ class TestFacilityRegulator(TestGroupAndPermissions, APITestCase):
     def test_filtering_facilities_by_regulator(self):
         url = reverse("api:facilities:facilities_list")
         reg_body = mommy.make(RegulatingBody)
-        user = mommy.make(get_user_model(), password='test')
+        user = mommy.make(get_user_model(), password='test123456')
         user.groups.add(self.admin_group)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=reg_body)
         facility = mommy.make(Facility, regulatory_body=reg_body)
         self.client.force_authenticate(user)
         mommy.make(Facility)
         response = self.client.get(url)
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
-        self.assertEquals(expected_data['results'], response.data['results'])
+
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
         self.assertEquals(200, response.status_code)
 
 
@@ -1305,33 +1433,6 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.assertNotEquals('jina', obj_refetched.name)
 
 
-class TestServicesWithOptionsList(LoginMixin, APITestCase):
-
-    def test_listing_services_with_options(self):
-        service = mommy.make(Service)
-        option = mommy.make(Option)
-        mommy.make(
-            ServiceOption, service=service, option=option)
-        mommy.make(Service)
-        url = reverse("api:facilities:services_with_options_list")
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        expected_data = {
-            "results": [
-                ServiceSerializer(
-                    service,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
-        self.assertEquals(
-            load_dump(expected_data['results'], default=default),
-            load_dump(response.data['results'], default=default)
-        )
-
-
 class TestFacilityConsituencyUserFilter(TestGroupAndPermissions, APITestCase):
 
     def test_filter_by_constituency(self):
@@ -1350,21 +1451,8 @@ class TestFacilityConsituencyUserFilter(TestGroupAndPermissions, APITestCase):
         self.client.force_authenticate(user)
         user.groups.add(self.admin_group)
         response = self.client.get(url)
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(
-            load_dump(expected_data['results'], default=default),
-            load_dump(response.data['results'], default=default)
-        )
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
 
 
 class TestFilterRejectedFacilities(LoginMixin, APITestCase):
@@ -1426,3 +1514,50 @@ class TestKephLevel(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         keph_refetched = KephLevel.objects.get(id=keph.id)
         self.assertEquals("an awesome name", keph_refetched.name)
+
+
+class TestFacilityLevelChangeReasonView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityLevelChangeReasonView, self).setUp()
+        self.url = reverse("api:facilities:facility_level_change_reasons_list")
+
+    def test_post(self):
+        data = {
+            "reason": "This is a reason",
+            "description": "The description of the reason"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, FacilityLevelChangeReason.objects.count())
+
+    def test_listing(self):
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(5, FacilityLevelChangeReason.objects.count())
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+        self.assertEquals(5, len(response.data.get('results')))
+
+    def test_restrieving(self):
+        reason_1 = mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(2, FacilityLevelChangeReason.objects.count())
+        url = self.url + "{}/".format(reason_1.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(reason_1.id), response.data.get("id"))
+
+    def test_updating(self):
+        reason = mommy.make(FacilityLevelChangeReason)
+        data = {
+            "reason": "reason edited"
+        }
+        url = self.url + "{}/".format(reason.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        reason_refetched = FacilityLevelChangeReason.objects.get(id=reason.id)
+        self.assertEquals(reason_refetched.reason, data.get("reason"))

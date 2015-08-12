@@ -72,12 +72,14 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'reversion',
     'gunicorn',
+    'debug_toolbar',
     'facilities',
     'data_bootstrap',
     'chul',
     'data',
     'mfl_gis',
     'search',
+    'reporting'
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
@@ -162,7 +164,6 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': 'iso-8601',
     'DATE_FORMAT': 'iso-8601',
     'TIME_FORMAT': 'iso-8601'
-
 }
 SWAGGER_SETTINGS = {
     'exclude_namespaces': [],
@@ -296,6 +297,25 @@ SEARCH = {
         "centre", "center", "health", "hospital", "clinic", "district",
         "sub-district", "dispensary"
     ],
+    "FULL_TEXT_SEARCH_FIELDS": {
+
+        "models": [
+            {
+                "name": "facility",
+                "fields": [
+                    "name", "county", "constituency", "ward_name",
+                    "facility_services.service_name",
+                    "facility_services.service_name",
+                    "facility_services.category_name",
+                    "facility_physical_address.town",
+                    "facility_physical_address.nearest_landmark",
+                    "facility_physical_address.nearest_landmark"
+                ]
+            }
+        ]
+
+    },
+
     "AUTOCOMPLETE_MODEL_FIELDS": [
         {
             "app": "facilities",
@@ -303,7 +323,7 @@ SEARCH = {
                 {
                     "name": "facility",
                     "fields": ["name", "ward_name"],
-                    "boost": ["name"]
+                    "boost": ["name"],
                 },
                 {
                     "name": "owner",
@@ -414,7 +434,9 @@ ACCOUNT_SESSION_REMEMBER = True
 # django_rest_auth settings
 OLD_PASSWORD_FIELD_ENABLED = True
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'users.serializers.MflUserSerializer'
+    'USER_DETAILS_SERIALIZER': 'users.serializers.MflUserSerializer',
+    'PASSWORD_CHANGE_SERIALIZER':
+        'users.serializers.MflPasswordChangeSerializer'
 }
 
 # django-allauth forces this atrocity on us ( true at the time of writing )

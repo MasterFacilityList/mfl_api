@@ -10,9 +10,15 @@ from ..models import (
     UserCounty,
     UserContact,
     Town,
-    UserConstituency
+    UserConstituency,
+    SubCounty
 )
 from .serializer_base import AbstractFieldsMixin
+
+
+class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = SubCounty
 
 
 class UserContactSerializer(
@@ -76,6 +82,8 @@ class CountySlimDetailSerializer(
 class TownSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
+    ward_name = serializers.ReadOnlyField(source='ward.name')
+
     class Meta(object):
         model = Town
 
@@ -102,6 +110,7 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
 class WardSlimDetailSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = Ward
 

@@ -35,7 +35,6 @@ from ..models import (
     FacilityServiceRating,
     ServiceCategory,
     Service,
-    ServiceOption,
     FacilityService,
     FacilityApproval,
     FacilityOperationState,
@@ -46,8 +45,33 @@ from ..models import (
     FacilityUnitRegulation,
     FacilityUpdates,
     FacilityUpgrade,
-    KephLevel
+    KephLevel,
+    OptionGroup,
+    FacilityLevelChangeReason
 )
+
+
+class TestOptionGroup(BaseTestCase):
+    def test_save(self):
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        mommy.make(OptionGroup)
+        self.assertEquals(3, OptionGroup.objects.count())
+
+    def test_unicode(self):
+        option_group = mommy.make(OptionGroup)
+        self.assertEquals(option_group.name, option_group.__unicode__())
+
+
+class TestFacilityLevelChangeReason(BaseTestCase):
+    def test_save(self):
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(1, FacilityLevelChangeReason.objects.count())
+
+    def test_unicode(self):
+        reason = mommy.make(FacilityLevelChangeReason, reason="A funky reason")
+        expected_unicode = "A funky reason"
+        self.assertEquals(expected_unicode, reason.__unicode__())
 
 
 class TestKephLevel(BaseTestCase):
@@ -94,24 +118,14 @@ class TestOption(BaseTestCase):
         self.assertEqual(str(instance), 'BOOLEAN: Yes/No')
 
 
-class TestServiceOption(BaseTestCase):
-
-    def test_unicode(self):
-        service = Service(name='savis')
-        option = Option(option_type='BOOLEAN', display_text='Yes/No')
-        service_option = ServiceOption(service=service, option=option)
-        self.assertEqual(str(service_option), 'savis: BOOLEAN: Yes/No')
-
-
 class TestFacilityService(BaseTestCase):
 
     def test_unicode(self):
         facility = Facility(name='thifitari')
         service = Service(name='savis')
         option = Option(option_type='BOOLEAN', display_text='Yes/No')
-        service_option = ServiceOption(service=service, option=option)
         facility_service = FacilityService(
-            facility=facility, selected_option=service_option)
+            facility=facility, option=option, service=service)
         self.assertEqual(
             str(facility_service), 'thifitari: savis: BOOLEAN: Yes/No')
         self.assertEquals('Yes/No', facility_service.option_display_value)
@@ -134,10 +148,8 @@ class TestFacilityService(BaseTestCase):
         service = mommy.make(Service, name='savis', category=service_category)
         option = mommy.make(
             Option, option_type='BOOLEAN', display_text='Yes/No')
-        service_option = mommy.make(
-            ServiceOption, service=service, option=option)
         facility_service = mommy.make(
-            FacilityService, facility=facility, selected_option=service_option
+            FacilityService, facility=facility, service=service, option=option
         )
         self.assertTrue(facility_service.service_has_options)
         expected_data = [
@@ -150,8 +162,7 @@ class TestFacilityService(BaseTestCase):
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
                 "number_of_ratings": 0,
-                "is_cancelled": False,
-                "is_confirmed": False,
+                "service_code": service.code
             }
         ]
         self.assertEquals(expected_data, facility.get_facility_services)
@@ -159,16 +170,13 @@ class TestFacilityService(BaseTestCase):
     def test_average_rating(self):
         facility1 = mommy.make(Facility)
         service1, service2 = mommy.make(Service), mommy.make(Service)
-        soption1, soption2 = (
-            mommy.make(ServiceOption, service=service1),
-            mommy.make(ServiceOption, service=service2)
-        )
+
         fs1, fs2 = (
             mommy.make(
-                FacilityService, facility=facility1, selected_option=soption1
+                FacilityService, facility=facility1, service=service1,
             ),
             mommy.make(
-                FacilityService, facility=facility1, selected_option=soption2
+                FacilityService, facility=facility1, service=service2
             )
         )
         fs1_ratings = [
@@ -185,16 +193,13 @@ class TestFacilityService(BaseTestCase):
         # add some noise
         facility2 = mommy.make(Facility)
         service3, service4 = mommy.make(Service), mommy.make(Service)
-        soption3, soption4 = (
-            mommy.make(ServiceOption, service=service3),
-            mommy.make(ServiceOption, service=service4)
-        )
+
         fs3, fs4 = (
             mommy.make(
-                FacilityService, facility=facility2, selected_option=soption3
+                FacilityService, facility=facility2, service=service3
             ),
             mommy.make(
-                FacilityService, facility=facility2, selected_option=soption4
+                FacilityService, facility=facility2, service=service4
             )
         )
 
@@ -219,11 +224,6 @@ class TestFacilityService(BaseTestCase):
             (fs1.average_rating + fs2.average_rating) / 2
         )
 
-    def test_validate_either_options_or_service_not_okay(self):
-        # leverage model_mommy's not population the nullable fields
-        with self.assertRaises(ValidationError):
-            mommy.make(FacilityService)
-
     def test_validate_either_options_or_service_okay(self):
         service = mommy.make(Service)
         fs = mommy.make(FacilityService, service=service)
@@ -238,12 +238,23 @@ class TestFacilityService(BaseTestCase):
     def test_get_service_name_from_service_options(self):
         service = mommy.make(Service, name="TB Culture")
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, service=service, option=option)
-        fs = facility_service = mommy.make(
-            FacilityService, selected_option=service_option)
-        self.assertEquals("TB Culture", facility_service.service_name)
+        fs = mommy.make(
+            FacilityService, option=option, service=service)
+        self.assertEquals("TB Culture", fs.service_name)
         self.assertTrue(fs.service_has_options)
+
+    def test_validate_unique_service_or_service_option_with_for_facility(self):
+        service = mommy.make(Service, name="TB Culture")
+        facility = mommy.make(Facility)
+        option = mommy.make(Option)
+
+        # test validation with option
+        mommy.make(
+            FacilityService, facility=facility, option=option, service=service)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                FacilityService, facility=facility,
+                option=option, service=service)
 
 
 class TestServiceModel(BaseTestCase):
@@ -449,11 +460,10 @@ class TestFacility(BaseTestCase):
         facility = Facility.objects.create(**data)
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility,
-            regulating_body=regulating_body, is_confirmed=True,
+            regulating_body=regulating_body,
             created_by=user)
         self.assertEquals(1, Facility.objects.count())
 
-        # Bloody branch misses
         mommy.make(Facility, code=89778)
         mommy.make(Facility, code=None)
 
@@ -519,8 +529,7 @@ class TestFacility(BaseTestCase):
         regulator = mommy.make(RegulatingBody)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility_reg_status = mommy.make(
-            FacilityRegulationStatus, facility=facility, is_confirmed=True,
-            created_by=user)
+            FacilityRegulationStatus, facility=facility, created_by=user)
         self.assertEquals(
             facility.regulatory_status_name,
             facility_reg_status.regulation_status.name)
@@ -554,7 +563,7 @@ class TestFacility(BaseTestCase):
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility = mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, is_confirmed=True, facility=facility,
+            FacilityRegulationStatus, facility=facility,
             created_by=user)
         self.assertTrue(facility.is_regulated)
 
@@ -563,9 +572,6 @@ class TestFacility(BaseTestCase):
         regulator = mommy.make(RegulatingBody)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility = mommy.make(Facility)
-        mommy.make(
-            FacilityRegulationStatus, is_confirmed=False,
-            facility=facility, created_by=user)
         self.assertFalse(facility.is_regulated)
 
     def test_publishing(self):
@@ -665,6 +671,16 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility, official_name='jina official')
         self.assertNotEquals(facility.name, facility.official_name)
         self.assertEquals(facility.official_name, 'jina official')
+
+    def test_service_catalogue_active_true(self):
+        operation_status = mommy.make(FacilityStatus, name="OPERATIONAL")
+        facility = mommy.make(Facility, operation_status=operation_status)
+        self.assertTrue(facility.service_catalogue_active)
+
+    def test_service_catalogue_active_false(self):
+        operation_status = mommy.make(FacilityStatus, name="NON OPERATIONAL")
+        facility = mommy.make(Facility, operation_status=operation_status)
+        self.assertFalse(facility.service_catalogue_active)
 
 
 class TestFacilityContact(BaseTestCase):
@@ -777,12 +793,11 @@ class TestFacilityUnitModel(BaseTestCase):
             facility_unit=facility_unit, regulation_status=reg_status)
         self.assertEquals(reg_status, obj.regulation_status)
 
-    def test_unique_name(self):
+    def test_unique_unit_name_in_a_facility(self):
         facility = mommy.make(Facility)
-        facility_2 = mommy.make(Facility)
         mommy.make(FacilityUnit, name='honcho', facility=facility)
         with self.assertRaises(ValidationError):
-            mommy.make(FacilityUnit, name='honcho', facility=facility_2)
+            mommy.make(FacilityUnit, name='honcho', facility=facility)
 
 
 class TestRegulationStatusModel(BaseTestCase):
@@ -827,9 +842,8 @@ class TestFacilityServiceRating(BaseTestCase):
     def test_unicode(self):
         facility = mommy.make(Facility, name='fac')
         service = mommy.make(Service, name='serv')
-        soption = mommy.make(ServiceOption, service=service)
         facility_service = mommy.make(
-            FacilityService, facility=facility, selected_option=soption
+            FacilityService, facility=facility, service=service
         )
         rating = mommy.make(
             FacilityServiceRating, facility_service=facility_service,

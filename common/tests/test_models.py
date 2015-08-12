@@ -19,7 +19,8 @@ from ..models import (
     PhysicalAddress,
     UserCounty,
     UserContact,
-    UserConstituency
+    UserConstituency,
+    SubCounty
 )
 from facilities.models import RegulationStatus
 
@@ -107,8 +108,8 @@ class BaseTestCase(TestCase):
         self.user = get_user_model().objects.create_superuser(
             email='tester1@ehealth.or.ke',
             first_name='Test',
-            username='test1',
-            password='mtihani',
+            employee_number='2124124124',
+            password='mtihani124',
             is_national=True
         )
         self.default_regulation_status = mommy.make(
@@ -183,7 +184,7 @@ class TestCountyModel(BaseTestCase):
         county = mommy.make(County)
         self.assertEqual(
             county.facility_coordinates,
-            {}
+            []
         )
 
     def test_county_bound(self):
@@ -356,22 +357,6 @@ class TestUserConstituencyModel(BaseTestCase):
         expected_unicode = "{}: {}".format(user, const)
         self.assertEquals(expected_unicode, user_const.__unicode__())
 
-    def test_validate_user_active_in_one_consituency_only(self):
-        county = mommy.make(County)
-        const = mommy.make(Constituency, county=county)
-        const = mommy.make(Constituency, county=county)
-        creator_user = mommy.make(get_user_model())
-        const_2 = mommy.make(Constituency)
-        user = mommy.make(get_user_model())
-        mommy.make(UserCounty, user=creator_user, county=county)
-        mommy.make(
-            UserConstituency, user=user, active=True, constituency=const,
-            created_by=creator_user)
-        with self.assertRaises(ValidationError):
-            mommy.make(
-                UserConstituency, user=user, active=True, constituency=const_2,
-                created_by=creator_user)
-
     def test_validator_constituency_in_creators_county(self):
         county = mommy.make(County)
         county_2 = mommy.make(County)
@@ -393,3 +378,14 @@ class TestUserConstituencyModel(BaseTestCase):
             mommy.make(UserConstituency, user=user_2, constituency=const_2)
         # test user constituencies
         self.assertEquals(const, user.constituency)
+
+
+class TestSubCounty(TestCase):
+    def test_save(self):
+        mommy.make(SubCounty)
+        self.assertEquals(1, SubCounty.objects.count())
+
+    def test_unicode(self):
+        name = "awesome name"
+        sub_county = mommy.make(SubCounty, name=name)
+        self.assertEquals(name, sub_county.name)

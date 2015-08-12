@@ -15,6 +15,7 @@ ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
 AUTO_COMPLETE_MODELS = settings.SEARCH.get('AUTOCOMPLETE_MODEL_FIELDS')
 INDEX_NAME = settings.SEARCH.get('INDEX_NAME')
 SEARCH_RESULT_SIZE = settings.SEARCH.get('SEARCH_RESULT_SIZE')
+SEARCH_FIELDS = settings.SEARCH.get('FULL_TEXT_SEARCH_FIELDS')
 LOGGER = logging.getLogger(__name__)
 
 
@@ -55,18 +56,24 @@ class ElasticAPI(object):
         result = requests.delete(url)
         return result
 
+    def get_search_fields(self, model_name):
+        for field in SEARCH_FIELDS.get("models"):
+            if field.get("name") == model_name:
+                return field.get("fields")
+
     def search_document(self, index_name, instance_type, query):
         document_type = instance_type.__name__.lower()
         url = "{}{}/{}/_search".format(
             ELASTIC_URL, index_name, document_type)
+        search_fields = self.get_search_fields(document_type)
+        fields = search_fields if self.get_search_fields(document_type) else \
+            ["_all"]
         data = {
             "from": 0,
             "size": SEARCH_RESULT_SIZE,
             "query": {
                 "fuzzy_like_this": {
-                    "fields": [
-                        "_all"
-                    ],
+                    "fields": fields,
                     "like_text": query,
                     "max_query_terms": 12
                 }

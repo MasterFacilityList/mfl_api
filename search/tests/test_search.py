@@ -30,6 +30,24 @@ SEARCH_TEST_SETTINGS = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary"],
+    "FULL_TEXT_SEARCH_FIELDS": {
+
+        "models": [
+            {
+                "name": "facility",
+                "fields": [
+                    "name", "county", "constituency", "ward_name",
+                    "facility_services.service_name",
+                    "facility_services.service_name",
+                    "facility_services.category_name",
+                    "facility_physical_address.town",
+                    "facility_physical_address.nearest_landmark",
+                    "facility_physical_address.nearest_landmark"
+                ]
+            }
+        ]
+
+    },
     "AUTOCOMPLETE_MODEL_FIELDS": [
         {
             "app": "facilities",
@@ -152,12 +170,7 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility)
         serialized_data = serialize_model(facility)
         expected_data = FacilitySerializer(
-            facility,
-            context={
-                'request': {
-                    "REQUEST_METHOD": "None"
-                }
-            }
+            facility
         ).data
         expected_data = json.dumps(expected_data, default=default)
         self.assertEquals(expected_data, serialized_data.get('data'))
@@ -172,12 +185,7 @@ class TestSearchFunctions(ViewTestBase):
     def test_default_json_dumps_function(self):
         facility = mommy.make(Facility)
         data = FacilitySerializer(
-            facility,
-            context={
-                'request': {
-                    "REQUEST_METHOD": "None"
-                }
-            }
+            facility
         ).data
         result = json.dumps(data, default=default)
         self.assertIsInstance(result, str)
@@ -191,25 +199,15 @@ class TestSearchFunctions(ViewTestBase):
         url = url + "?search={}".format('Kanyakini')
         response = ""
         # temporary hack there is a delay in getting the search results
-        for x in range(0, 100):
+        while True:
             response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
+            if len(response.data.get('results')):
+                break
 
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': {
-                            "REQUEST_METHOD": "None"
-                        }
-                    }
-                ).data
-            ]
-        }
-        self._assert_response_data_equality(
-            expected_data['results'], response.data['results']
-        )
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
+
         self.elastic_search_api.delete_index('test_index')
 
     def test_seach_auto_complete(self):
@@ -221,26 +219,14 @@ class TestSearchFunctions(ViewTestBase):
         url = url + "?search_auto={}".format('Kanya')
         response = ""
         # temporary hack there is a delay in getting the search results
-        for x in range(0, 100):
+        while True:
             response = self.client.get(url)
+            if len(response.data.get('results')):
+                break
 
         self.assertEquals(200, response.status_code)
-
-        expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': {
-                            "REQUEST_METHOD": "None"
-                        }
-                    }
-                ).data
-            ]
-        }
-        self._assert_response_data_equality(
-            expected_data['results'], response.data['results']
-        )
+        self.assertEquals(facility, Facility.objects.get(
+            id=response.data['results'][0].get("id")))
         self.elastic_search_api.delete_index('test_index')
 
     def test_search_facility_multiple_filters(self):
@@ -270,6 +256,15 @@ class TestSearchFunctions(ViewTestBase):
 
         self.assertEquals(200, response.status_code)
         self.elastic_search_api.delete_index('test_index')
+
+    def test_get_search_auto_complete_fields(self):
+        search_fields = self.elastic_search_api.get_search_fields('facility')
+        self.assertIsInstance(search_fields, list)
+        self.assertEquals(len(search_fields), 10)
+
+    def test_get_search_auto_complete_fields_si_empty(self):
+        search_fields = self.elastic_search_api.get_search_fields('no_model')
+        self.assertIsNone(search_fields)
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')

@@ -20,7 +20,6 @@ from ..models import (
     Option,
     Service,
     FacilityService,
-    ServiceOption,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
@@ -30,7 +29,9 @@ from ..models import (
     RegulatoryBodyUser,
     FacilityUnitRegulation,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    OptionGroup,
+    FacilityLevelChangeReason
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -52,6 +53,16 @@ BOOLEAN_CHOICES = (
 )
 
 TRUTH_NESS = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+
+
+class OptionGroupFilter(CommonFieldsFilterset):
+    class Meta:
+        model = OptionGroup
+
+
+class FacilityLevelChangeReasonFilter(CommonFieldsFilterset):
+    class Meta:
+        model = FacilityLevelChangeReason
 
 
 class KephLevelFilter(CommonFieldsFilterset):
@@ -78,9 +89,7 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(
         name='facility_service__facility',
         lookup_type='exact')
-    service = django_filters.AllValuesFilter(
-        name='facility_service__selected_option.service',
-        lookup_type='exact')
+    service = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
@@ -152,7 +161,7 @@ class ServiceFilter(CommonFieldsFilterset):
 
 class FacilityServiceFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
-    selected_option = django_filters.AllValuesFilter(lookup_type='exact')
+    option = django_filters.AllValuesFilter(lookup_type='exact')
     is_confirmed = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES, coerce=strtobool
     )
@@ -162,14 +171,6 @@ class FacilityServiceFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityService
-
-
-class ServiceOptionFilter(CommonFieldsFilterset):
-    service = django_filters.AllValuesFilter(lookup_type='exact')
-    option = django_filters.AllValuesFilter(lookup_type='exact')
-
-    class Meta(object):
-        model = ServiceOption
 
 
 class OwnerTypeFilter(CommonFieldsFilterset):
@@ -267,16 +268,6 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 
 class FacilityFilter(CommonFieldsFilterset):
-    def filter_regulated_facilities(self, value):
-        regulated_facilities = [
-            obj.facility.id for obj in FacilityRegulationStatus.objects.filter(
-                is_confirmed=True)]
-
-        if value in TRUTH_NESS:
-            return Facility.objects.filter(id__in=regulated_facilities)
-        else:
-            return Facility.objects.exclude(id__in=regulated_facilities)
-
     def service_filter(self, value):
         categories = value.split(',')
         facility_ids = []
@@ -286,7 +277,7 @@ class FacilityFilter(CommonFieldsFilterset):
             cats_seen = []
             for cat in categories:
                 service_count = FacilityService.objects.filter(
-                    selected_option__service__category=cat,
+                    service__category=cat,
                     facility=facility).count()
                 if service_count > 0:
                     cats_seen.append(cat)
@@ -313,6 +304,9 @@ class FacilityFilter(CommonFieldsFilterset):
     keph_level = ListCharFilter(lookup_type='exact')
     operation_status = ListCharFilter(lookup_type='icontains')
     ward = ListCharFilter(lookup_type='icontains')
+    sub_county = ListCharFilter(lookup_type='exact')
+    sub_county_code = ListCharFilter(
+        name="sub_county__code", lookup_type='exact')
     ward_code = ListCharFilter(name="ward__code", lookup_type='icontains')
     county_code = ListCharFilter(
         name='ward__constituency__county__code',
@@ -332,6 +326,9 @@ class FacilityFilter(CommonFieldsFilterset):
     open_whole_day = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
+    open_late_night = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
     open_weekends = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
@@ -344,8 +341,6 @@ class FacilityFilter(CommonFieldsFilterset):
     is_published = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
-    is_regulated = django_filters.MethodFilter(
-        action=filter_regulated_facilities)
     is_approved = django_filters.MethodFilter(
         action=filter_approved_facilities)
     service_category = django_filters.MethodFilter(

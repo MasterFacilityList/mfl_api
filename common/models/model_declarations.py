@@ -85,11 +85,13 @@ def _lookup_facility_coordinates(area_boundary):
     facility_coordinates = FacilityCoordinates.objects.filter(
         coordinates__contained=area_boundary.mpoly
     ) if area_boundary and area_boundary.mpoly else []
-    return {
-        facility_coordinate.facility.name:
-        json.loads(facility_coordinate.coordinates.geojson)
+    return [
+        {
+            "name": facility_coordinate.facility.name,
+            "geometry": json.loads(facility_coordinate.coordinates.geojson)
+        }
         for facility_coordinate in facility_coordinates
-    }
+    ]
 
 
 @reversion.register
@@ -181,6 +183,16 @@ class Ward(AdministrativeUnitBase):
 
 
 @reversion.register
+class SubCounty(AdministrativeUnitBase):
+    """
+    A county cab be sub divided into sub counties.
+
+    The sub-counties do not necessarily map to constituencies
+    """
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+
+
+@reversion.register
 class UserCounty(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of.
@@ -233,20 +245,12 @@ class UserConstituency(AbstractBase):
         settings.AUTH_USER_MODEL, related_name='user_constituencies')
     constituency = models.ForeignKey(Constituency)
 
-    def validate_only_one_active_constituency(self):
-        consts = self.__class__.objects.filter(
-            user=self.user, active=True, deleted=False)
-        if consts.count() > 0 and not self.deleted:
-            raise ValidationError(
-                "A user can be active in only one constituency at a time")
-
     def validate_constituency_county_in_creator_county(self):
         if self.constituency.county != self.created_by.county:
             error = "Users created must be in the administrators county"
             raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
-        self.validate_only_one_active_constituency()
         self.validate_constituency_county_in_creator_county()
 
     def __unicode__(self):
@@ -261,9 +265,6 @@ class Town(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True, null=True, blank=True,
         help_text="Name of the town")
-    ward = models.ForeignKey(
-        Ward, null=True, blank=True,
-        help_text='The ward where the town is located')
 
     def __unicode__(self):
         return self.name
