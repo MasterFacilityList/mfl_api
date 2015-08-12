@@ -6,6 +6,8 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from common.models import ContactType, Contact
+
 from common.serializers import (
     AbstractFieldsMixin,
     PhysicalAddressSerializer,
@@ -46,13 +48,133 @@ from ..models import (
 )
 
 
+class CreateFacilityOfficerMixin(object):
+
+    """Mixin to create facility officers."""
+
+    def _validate_required_fields(self, data):
+        errs = {}
+        if data.get('facility_id', None) is None:
+            errs["facility_id"] = ["Facility is required"]
+        if data.get('name', None) is None:
+            errs["name"] = ["Name is Required"]
+        if data.get('title', None) is None:
+            errs["title"] = ["Job title is required"]
+
+        return errs
+
+    def _validate_facility(self, data):
+        try:
+            Facility.objects.get(id=data.get('facility_id', None))
+        except Facility.DoesNotExist:
+            error_message = {
+                "facility_id": ["Facility provided does not exist"]
+            }
+            return error_message
+
+    def _validate_job_titles(self, data):
+        try:
+            JobTitle.objects.get(id=data.get('title', None))
+        except JobTitle.DoesNotExist:
+            error_message = {
+                "title": ["Job title provided does not exist"]
+            }
+            return error_message
+
+    def data_is_valid(self, data):
+        errors = [
+            self._validate_required_fields(data),
+            self._validate_facility(data),
+            self._validate_job_titles(data)
+        ]
+        errors = [error for error in errors if error]
+        if errors:
+            return errors
+        else:
+            return True
+
+    def _inject_creating_user(self, attributes_dict):
+        attributes_dict['created_by'] = self.user
+        attributes_dict['updated_by'] = self.user
+        return attributes_dict
+
+    def _create_contacts(self, data):
+        contacts = data.get('contacts', [])
+        created_contacts = []
+
+        for contact in contacts:
+            contact_type = ContactType.objects.get(id=contact.get('type'))
+            contact_dict = {
+                "contact_type": contact_type,
+                "contact": contact.get('contact')
+            }
+            contact_dict = self._inject_creating_user(contact_dict)
+            created_contacts.append(Contact.objects.create(**contact_dict))
+
+        return created_contacts
+
+    def _create_facility_officer(self, data):
+        facility = Facility.objects.get(id=data['facility_id'])
+        job_title = JobTitle.objects.get(id=data['title'])
+
+        officer_dict = {
+            "name": data['name'],
+            "job_title": job_title,
+        }
+        officer_dict = self._inject_creating_user(officer_dict)
+
+        id_no = data.get('id_no', None)
+        reg_no = data.get('reg_no', None)
+        officer_dict['id_number'] = id_no if id_no else None
+        officer_dict['registration_number'] = reg_no if reg_no else None
+
+        officer = Officer.objects.create(**officer_dict)
+        facility_officer_dict = {
+            "facility": facility,
+            "officer": officer
+        }
+        facility_officer_dict = self._inject_creating_user(
+            facility_officer_dict)
+        facility_officer = FacilityOfficer.objects.create(
+            **facility_officer_dict)
+
+        # link the officer to the contacts
+        created_contacts = self._create_contacts(data)
+        for contact in created_contacts:
+            contact_dict = {
+                "officer": officer,
+                "contact": contact
+            }
+            contact_dict = self._inject_creating_user(contact_dict)
+            OfficerContact.objects.create(**contact_dict)
+        return facility_officer
+
+    def create_officer(self, data):
+        valid_data = self.data_is_valid(data)
+
+        if valid_data is not True:
+            return {
+                "created": False,
+                "detail": valid_data
+            }
+
+        facility_officer = self._create_facility_officer(data)
+        serialized_officer = FacilityOfficerSerializer(facility_officer).data
+        return {
+            "created": True,
+            "detail": serialized_officer
+        }
+
+
 class FacilityLevelChangeReasonSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta:
         model = FacilityLevelChangeReason
 
 
 class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta:
         model = KephLevel
 
@@ -335,7 +457,7 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
         return super(FacilitySerializer, self).create(validated_data)
 
 
-class FacilityDetailSerializer(FacilitySerializer):
+class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
     regulatory_status_name = serializers.CharField(read_only=True)
     facility_services = serializers.ReadOnlyField(
         source="get_facility_services")
@@ -353,13 +475,9 @@ class FacilityDetailSerializer(FacilitySerializer):
         model = Facility
         exclude = ('attributes', )
 
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        contacts = self.initial_data.pop('contacts', None)
-        units = self.initial_data.pop('units', None)
-        services = self.initial_data.pop('services', None)
-        errors = []
-        super(FacilityDetailSerializer, self).update(instance, validated_data)
+    inlining_errors = []
+
+    def inject_audit_fields(self, dict_a, validated_data):
         audit_data = {
             "created_by_id": self.context['request'].user.id,
             "updated_by_id": self.context['request'].user.id,
@@ -370,56 +488,83 @@ class FacilityDetailSerializer(FacilitySerializer):
                 validated_data['update'] if
                 validated_data.get('updated') else timezone.now())
         }
-        inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
+        dict_a.update(audit_data)
+        return dict_a
 
-        def create_contact(contact_data):
+    def create_contact(self, contact_data):
             contact = ContactSerializer(
                 data=contact_data, context=self.context)
             if contact.is_valid():
                 return contact.save()
             else:
-                errors.append(json.dumps(contact.errors))
+                self.inlining_errors.append(json.dumps(contact.errors))
 
-        def create_facility_contacts(contact_data):
-            contact = create_contact(contact_data)
+    def create_facility_contacts(self, instance, contact_data, validated_data):
+            contact = self.create_contact(contact_data)
             facility_contact_data = {
                 "contact": contact,
                 "facility": instance
             }
-            inject_audit_fields(facility_contact_data)
+            facility_contact_data = self.inject_audit_fields(
+                facility_contact_data, validated_data)
             try:
                 FacilityContact.objects.create(**facility_contact_data)
             except:
-                error = "The contacts provided did not validate"
-                errors.append(error)
+                error = {
+                    "contacts": ["The contacts provided did not validate"]
+                }
+                self.inlining_errors.append(error)
 
-        def create_facility_units(unit_data):
+    def create_facility_units(self, instance, unit_data, validated_data):
             unit_data['facility'] = instance.id
-            inject_audit_fields(unit_data)
+            unit_data = self.inject_audit_fields(unit_data, validated_data)
             unit = FacilityUnitSerializer(data=unit_data, context=self.context)
             if unit.is_valid():
                 return unit.save()
             else:
-                errors.append((json.dumps(unit.errors)))
+                self.inlining_errors.append((json.dumps(unit.errors)))
 
-        def create_facility_services(service_data):
+    def create_facility_services(self, instance, service_data, validated_data):
             service_data['facility'] = instance.id
-            inject_audit_fields(service_data)
+            service_data = self.inject_audit_fields(
+                service_data, validated_data)
             f_service = FacilityServiceSerializer(
                 data=service_data, context=self.context)
-            if f_service.is_valid():
-                f_service.save()
-            else:
-                errors.append(json.dumps(f_service.errors))
+            f_service.save() if f_service.is_valid() else \
+                self.inlining_errors.append(json.dumps(f_service.errors))
 
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        contacts = self.initial_data.pop('contacts', None)
+        units = self.initial_data.pop('units', None)
+        services = self.initial_data.pop('services', None)
+        officer_in_charge = self.initial_data.pop('officer_in_charge', None)
+
+        facility = super(FacilityDetailSerializer, self).update(
+            instance, validated_data)
+
+        if officer_in_charge:
+            self.user = self.context['request'].user
+            officer_in_charge['facility_id'] = facility.id
+            created_officer = self.create_officer(officer_in_charge)
+            self.inlining_errors = created_officer.get("detail") if not \
+                created_officer.get("created") else None
+
+        def create_facility_child_entity(entity_creator_callable, entity_data):
+            actual_function = getattr(self, entity_creator_callable)
+            actual_function(facility, entity_data, validated_data)
         if contacts:
-            map(create_facility_contacts, contacts)
+            [create_facility_child_entity(
+                "create_facility_contacts", contact) for contact in contacts]
+
         if units:
-            map(create_facility_units, units)
+            [create_facility_child_entity(
+                "create_facility_units", unit) for unit in units]
         if services:
-            map(create_facility_services, services)
-        if errors:
-            raise ValidationError(errors)
+            [create_facility_child_entity(
+                "create_facility_services", service) for service in services]
+        if self.inlining_errors:
+            raise ValidationError(self.inlining_errors)
         return instance
 
 

@@ -113,7 +113,6 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('reason', models.CharField(max_length=100)),
                 ('description', models.TextField()),
-                ('is_upgrade_reason', models.BooleanField(default=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
@@ -855,6 +854,11 @@ class Migration(migrations.Migration):
             model_name='facility',
             name='regulatory_body',
             field=models.ForeignKey(blank=True, to='facilities.RegulatingBody', null=True),
+        ),
+        migrations.AddField(
+            model_name='facility',
+            name='sub_county',
+            field=models.ForeignKey(blank=True, to='common.SubCounty', help_text=b'The sub county in which the facility has been assigned', null=True),
         ),
         migrations.AddField(
             model_name='facility',
