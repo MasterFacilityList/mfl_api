@@ -55,7 +55,8 @@ from ..models import (
     RegulationStatus,
     FacilityApproval,
     FacilityUpdates,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
 
 from django.contrib.auth.models import Group, Permission
@@ -249,56 +250,27 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
     def test_facilties_that_need_regulation_or_not(self):
         facility_1 = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
-        facility_3 = mommy.make(Facility)
+        mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_1, is_confirmed=True)
+            FacilityRegulationStatus, facility=facility_1)
         mommy.make(
-            FacilityRegulationStatus, facility=facility_2, is_confirmed=False)
+            FacilityRegulationStatus, facility=facility_2)
 
-        url = self.url + "?is_regulated=True"
+        url = self.url + "?regulated=true"
 
         response = self.client.get(url)
-        regulated_expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility_1,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
         self.assertEquals(200, response.status_code)
-        self.assertEquals(
-            load_dump(regulated_expected_data['results'], default=default),
-            load_dump(response.data['results'], default=default)
-        )
-
+        # 2 facilities are not regulated
+        self.assertEquals(2, response.data.get("count"))
+        self.assertEquals(2, len(response.data.get("results")))
         # get unregulated
-        url = self.url + "?is_regulated=False"
+        url = self.url + "?regulated=false"
         response_2 = self.client.get(url)
-        unregulated_data = regulated_expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility_3,
-                    context={
-                        'request': response_2.request
-                    }
-                ).data,
-                FacilitySerializer(
-                    facility_2,
-                    context={
-                        'request': response_2.request
-                    }
-                ).data
 
-            ]
-        }
         self.assertEquals(200, response_2.status_code)
-        self.assertEquals(
-            load_dump(unregulated_data['results'], default=default),
-            load_dump(response_2.data['results'], default=default)
-        )
+        self.assertEquals(1, response_2.data.get("count"))
+        # only one facility is not regulated
+        self.assertEquals(1, len(response_2.data.get("results")))
 
     def test_retrieve_facility(self):
         facility = mommy.make(Facility)
@@ -336,8 +308,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
                 "number_of_ratings": 0,
-                "is_cancelled": False,
-                "is_confirmed": False
+                "service_code": service.code
             }
         ]
         url = self.url + "{}/".format(facility.id)
@@ -1582,3 +1553,50 @@ class TestKephLevel(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         keph_refetched = KephLevel.objects.get(id=keph.id)
         self.assertEquals("an awesome name", keph_refetched.name)
+
+
+class TestFacilityLevelChangeReasonView(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestFacilityLevelChangeReasonView, self).setUp()
+        self.url = reverse("api:facilities:facility_level_change_reasons_list")
+
+    def test_post(self):
+        data = {
+            "reason": "This is a reason",
+            "description": "The description of the reason"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, FacilityLevelChangeReason.objects.count())
+
+    def test_listing(self):
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(5, FacilityLevelChangeReason.objects.count())
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+        self.assertEquals(5, len(response.data.get('results')))
+
+    def test_restrieving(self):
+        reason_1 = mommy.make(FacilityLevelChangeReason)
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(2, FacilityLevelChangeReason.objects.count())
+        url = self.url + "{}/".format(reason_1.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(reason_1.id), response.data.get("id"))
+
+    def test_updating(self):
+        reason = mommy.make(FacilityLevelChangeReason)
+        data = {
+            "reason": "reason edited"
+        }
+        url = self.url + "{}/".format(reason.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        reason_refetched = FacilityLevelChangeReason.objects.get(id=reason.id)
+        self.assertEquals(reason_refetched.reason, data.get("reason"))

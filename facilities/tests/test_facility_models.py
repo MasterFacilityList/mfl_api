@@ -46,8 +46,20 @@ from ..models import (
     FacilityUnitRegulation,
     FacilityUpdates,
     FacilityUpgrade,
-    KephLevel
+    KephLevel,
+    FacilityLevelChangeReason
 )
+
+
+class TestFacilityLevelChangeReason(BaseTestCase):
+    def test_save(self):
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(1, FacilityLevelChangeReason.objects.count())
+
+    def test_unicode(self):
+        reason = mommy.make(FacilityLevelChangeReason, reason="A funky reason")
+        expected_unicode = "A funky reason"
+        self.assertEquals(expected_unicode, reason.__unicode__())
 
 
 class TestKephLevel(BaseTestCase):
@@ -150,8 +162,7 @@ class TestFacilityService(BaseTestCase):
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
                 "number_of_ratings": 0,
-                "is_cancelled": False,
-                "is_confirmed": False,
+                "service_code": service.code
             }
         ]
         self.assertEquals(expected_data, facility.get_facility_services)
@@ -471,11 +482,10 @@ class TestFacility(BaseTestCase):
         facility = Facility.objects.create(**data)
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility,
-            regulating_body=regulating_body, is_confirmed=True,
+            regulating_body=regulating_body,
             created_by=user)
         self.assertEquals(1, Facility.objects.count())
 
-        # Bloody branch misses
         mommy.make(Facility, code=89778)
         mommy.make(Facility, code=None)
 
@@ -541,8 +551,7 @@ class TestFacility(BaseTestCase):
         regulator = mommy.make(RegulatingBody)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility_reg_status = mommy.make(
-            FacilityRegulationStatus, facility=facility, is_confirmed=True,
-            created_by=user)
+            FacilityRegulationStatus, facility=facility, created_by=user)
         self.assertEquals(
             facility.regulatory_status_name,
             facility_reg_status.regulation_status.name)
@@ -576,7 +585,7 @@ class TestFacility(BaseTestCase):
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility = mommy.make(Facility)
         mommy.make(
-            FacilityRegulationStatus, is_confirmed=True, facility=facility,
+            FacilityRegulationStatus, facility=facility,
             created_by=user)
         self.assertTrue(facility.is_regulated)
 
@@ -585,9 +594,6 @@ class TestFacility(BaseTestCase):
         regulator = mommy.make(RegulatingBody)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
         facility = mommy.make(Facility)
-        mommy.make(
-            FacilityRegulationStatus, is_confirmed=False,
-            facility=facility, created_by=user)
         self.assertFalse(facility.is_regulated)
 
     def test_publishing(self):

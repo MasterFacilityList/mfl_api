@@ -27,7 +27,7 @@ class PartialResponseMixin(object):
         if request_method != 'GET':
             return origi_fields
 
-        fields = request.QUERY_PARAMS.get('fields', None)
+        fields = request.query_params.get('fields', None)
         if isinstance(fields, six.string_types) and fields:
             fields = fields.split(',')
             return {

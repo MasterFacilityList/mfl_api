@@ -183,6 +183,16 @@ class Ward(AdministrativeUnitBase):
 
 
 @reversion.register
+class SubCounty(AdministrativeUnitBase):
+    """
+    A county cab be sub divided into sub counties.
+
+    The sub-counties do not necessarily map to constituencies
+    """
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+
+
+@reversion.register
 class UserCounty(AbstractBase):
     """
     Will store a record of the counties that a user has been incharge of.

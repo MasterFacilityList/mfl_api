@@ -19,7 +19,8 @@ from ..models import (
     PhysicalAddress,
     UserCounty,
     UserContact,
-    UserConstituency
+    UserConstituency,
+    SubCounty
 )
 from facilities.models import RegulationStatus
 
@@ -377,3 +378,14 @@ class TestUserConstituencyModel(BaseTestCase):
             mommy.make(UserConstituency, user=user_2, constituency=const_2)
         # test user constituencies
         self.assertEquals(const, user.constituency)
+
+
+class TestSubCounty(TestCase):
+    def test_save(self):
+        mommy.make(SubCounty)
+        self.assertEquals(1, SubCounty.objects.count())
+
+    def test_unicode(self):
+        name = "awesome name"
+        sub_county = mommy.make(SubCounty, name=name)
+        self.assertEquals(name, sub_county.name)
