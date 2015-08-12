@@ -29,7 +29,8 @@ from ..serializers import (
     FacilityContactSerializer,
     FacilityOfficerSerializer,
     FacilityUnitRegulationSerializer,
-    KephLevelSerializer
+    KephLevelSerializer,
+    CreateFacilityOfficerMixin
 )
 
 from ..filters import (
@@ -43,8 +44,6 @@ from ..filters import (
     KephLevelFilter
 
 )
-
-from .utils import CreateFacilityOfficerHelper
 
 
 class QuerysetFilterMixin(object):
@@ -356,7 +355,7 @@ class FacilityUnitRegulationDetailView(
     serializer_class = FacilityUnitRegulationSerializer
 
 
-class CustomFacilityOfficerView(APIView):
+class CustomFacilityOfficerView(CreateFacilityOfficerMixin, APIView):
     """
     A custom view for creating facility officers.
     Make it less painful to create facility officers via the frontend.
@@ -364,9 +363,8 @@ class CustomFacilityOfficerView(APIView):
 
     def post(self, *args, **kwargs):
         data = self.request.data
-
-        officer_helper = CreateFacilityOfficerHelper(user=self.request.user)
-        created_officer = officer_helper.create_officer(data)
+        self.user = self.request.user
+        created_officer = self.create_officer(data)
 
         if created_officer.get("created") is not True:
 
