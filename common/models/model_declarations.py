@@ -265,9 +265,6 @@ class Town(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True, null=True, blank=True,
         help_text="Name of the town")
-    ward = models.ForeignKey(
-        Ward, null=True, blank=True,
-        help_text='The ward where the town is located')
 
     def __unicode__(self):
         return self.name
