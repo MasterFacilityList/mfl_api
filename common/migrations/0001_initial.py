@@ -240,11 +240,6 @@ class Migration(migrations.Migration):
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
         migrations.AddField(
-            model_name='town',
-            name='ward',
-            field=models.ForeignKey(blank=True, to='common.Ward', help_text=b'The ward where the town is located', null=True),
-        ),
-        migrations.AddField(
             model_name='physicaladdress',
             name='town',
             field=models.ForeignKey(blank=True, to='common.Town', help_text=b'The town where the entity is located e.g Nakuru', null=True),

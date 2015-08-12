@@ -76,12 +76,6 @@ class FilterAdminUnitsMixin(object):
                 self.queryset.model, 'constituency') and not user.is_national
                 and hasattr(self.queryset.model, 'county')):
             return self.queryset.filter(constituency__county=user.county)
-        elif (user.constituency and hasattr(
-                self.queryset.model, 'ward')and not user.is_national):
-            return self.queryset.filter(ward__constituency=user.constituency)
-        elif (user.county and hasattr(
-                self.queryset.model, 'ward')and not user.is_national):
-            return self.queryset.filter(ward__constituency__county=user.county)
         else:
             return self.queryset
 
