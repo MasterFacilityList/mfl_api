@@ -191,6 +191,9 @@ class SubCounty(AdministrativeUnitBase):
     """
     county = models.ForeignKey(County, on_delete=models.PROTECT)
 
+    class Meta(AbstractBase.Meta):
+        pass
+
 
 @reversion.register
 class UserCounty(AbstractBase):

@@ -17,7 +17,7 @@ class Status(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta(object):
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'statuses'
 
 
@@ -46,7 +46,7 @@ class ApprovalStatus(AbstractBase):
     def __unicode__(self):
         return self.name
 
-    class Meta(object):
+    class Meta(AbstractBase.Meta):
         verbose_name_plural = 'approval_statuses'
 
 
@@ -99,7 +99,7 @@ class EntityApprovalAbstractBase(AbstractBase):
     comment = models.TextField()
     approval_date = models.DateField(default=timezone.now)
 
-    class Meta(object):
+    class Meta(AbstractBase.Meta):
         abstract = True
 
 
@@ -149,7 +149,7 @@ class CommunityHealthWorker(AbstractBase):
     def __unicode__(self):
         return str(self.id_number)
 
-    class Meta(object):
+    class Meta(AbstractBase.Meta):
         unique_together = ('id_number', 'health_unit')
 
     @property

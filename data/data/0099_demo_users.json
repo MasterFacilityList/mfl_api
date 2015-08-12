@@ -9,7 +9,6 @@
                 "last_name": "kubasu",
                 "username": "kubasu",
                 "password": "pbkdf2_sha256$20000$J3dCEpKSxg8y$bNYpDV5Jn94vA91rt+UX9RxHIjPtB87qGiMQ/nzq79s=",
-                "is_staff": true,
                 "is_national": true,
                 "employee_number": 30000
             },
