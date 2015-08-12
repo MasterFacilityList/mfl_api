@@ -137,6 +137,26 @@ class TestFacilityOfficerFacade(LoginMixin, APITestCase):
         response = self.client.post(url, data)
         self.assertEquals(400, response.status_code)
 
+    def test_post_officer_facility_no_job_title(self):
+        contact_type = mommy.make(ContactType)
+
+        data = {
+            "reg_no": "DEN/90/2000",
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                }
+            ]
+        }
+        url = reverse("api:facilities:officer_facade_create")
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+
     def test_post_officer_no_contacts(self):
         facility = mommy.make(Facility)
         job_title = mommy.make(JobTitle)

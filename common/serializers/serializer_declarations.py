@@ -10,9 +10,15 @@ from ..models import (
     UserCounty,
     UserContact,
     Town,
-    UserConstituency
+    UserConstituency,
+    SubCounty
 )
 from .serializer_base import AbstractFieldsMixin
+
+
+class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = SubCounty
 
 
 class UserContactSerializer(
