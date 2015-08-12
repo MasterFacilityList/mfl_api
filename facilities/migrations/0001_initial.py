@@ -103,6 +103,26 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='FacilityLevelChangeReason',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
+                ('reason', models.CharField(max_length=100)),
+                ('description', models.TextField()),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='FacilityOfficer',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
@@ -311,9 +331,9 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('reason', models.TextField()),
                 ('is_confirmed', models.BooleanField(default=False, help_text=b'Indicates whether a facility upgrade or downgrade has been confirmed')),
                 ('is_cancelled', models.BooleanField(default=False, help_text=b'Indicates whether a facility upgrade or downgrade has beencancelled or not')),
+                ('is_upgrade', models.BooleanField(default=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='facility_upgrades', to='facilities.Facility')),
                 ('facility_type', models.ForeignKey(to='facilities.FacilityType')),
@@ -434,7 +454,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('name', models.CharField(max_length=100)),
+                ('name', models.CharField(unique=True, max_length=100)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
@@ -730,6 +750,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facilityupgrade',
+            name='reason',
+            field=models.ForeignKey(to='facilities.FacilityLevelChangeReason'),
+        ),
+        migrations.AddField(
+            model_name='facilityupgrade',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
@@ -862,6 +887,11 @@ class Migration(migrations.Migration):
             model_name='facility',
             name='regulatory_body',
             field=models.ForeignKey(blank=True, to='facilities.RegulatingBody', null=True),
+        ),
+        migrations.AddField(
+            model_name='facility',
+            name='sub_county',
+            field=models.ForeignKey(blank=True, to='common.SubCounty', help_text=b'The sub county in which the facility has been assigned', null=True),
         ),
         migrations.AddField(
             model_name='facility',

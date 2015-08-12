@@ -47,6 +47,7 @@ from ..models import (
     FacilityUpdates,
     FacilityUpgrade,
     KephLevel,
+<<<<<<< HEAD
     OptionGroup
 )
 
@@ -61,6 +62,21 @@ class TestOptionGroup(BaseTestCase):
     def test_unicode(self):
         option_group = mommy.make(OptionGroup)
         self.assertEquals(option_group.name, option_group.__unicode__())
+=======
+    FacilityLevelChangeReason
+)
+
+
+class TestFacilityLevelChangeReason(BaseTestCase):
+    def test_save(self):
+        mommy.make(FacilityLevelChangeReason)
+        self.assertEquals(1, FacilityLevelChangeReason.objects.count())
+
+    def test_unicode(self):
+        reason = mommy.make(FacilityLevelChangeReason, reason="A funky reason")
+        expected_unicode = "A funky reason"
+        self.assertEquals(expected_unicode, reason.__unicode__())
+>>>>>>> f2448f07547fe079dc6aadf8a37a4ef6a0b602bd
 
 
 class TestKephLevel(BaseTestCase):

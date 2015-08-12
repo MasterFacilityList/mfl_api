@@ -16,7 +16,8 @@ from ..models import (
     UserContact,
     UserConstituency,
     UserCounty,
-    Town
+    Town,
+    SubCounty
 )
 from ..serializers import (
     ContactSerializer,
@@ -884,3 +885,50 @@ class TestFilteringAdminUnits(APITestCase):
                     response.data.get("results"), default=default)
             )
         )
+
+
+class TestSubCountyView(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:common:sub_counties_list")
+        super(TestSubCountyView, self).setUp()
+
+    def test_posting(self):
+        county = mommy.make(County)
+        data = {
+            "name": "test subcounty",
+            "county": county.id
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, SubCounty.objects.count())
+        self.assertIn("id", response.data)
+
+    def test_listing(self):
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get("count"))
+        self.assertEquals(5, SubCounty.objects.count())
+
+    def test_retreiving(self):
+        mommy.make(SubCounty)
+        sub_county = mommy.make(SubCounty)
+        url = self.url + "{}/".format(sub_county.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(sub_county.id), response.data.get("id"))
+
+    def test_updating(self):
+        sub_county = mommy.make(SubCounty)
+        data = {
+            "name": "name has been editted"
+        }
+        url = self.url + "{}/".format(sub_county.id)
+        response = self.client.patch(url, data)
+        ssub_county_refetched = SubCounty.objects.get(id=sub_county.id)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(ssub_county_refetched.name, data.get("name"))

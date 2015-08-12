@@ -13,7 +13,8 @@ from common.models import (
     Ward,
     Contact,
     SequenceMixin,
-    PhysicalAddress
+    PhysicalAddress,
+    SubCounty
 )
 from common.fields import SequenceField
 
@@ -590,6 +591,9 @@ class Facility(SequenceMixin, AbstractBase):
         max_length=100,
         null=True,
         blank=True, help_text="The population size which the facility serves")
+    sub_county = models.ForeignKey(
+        SubCounty, null=True, blank=True,
+        help_text='The sub county in which the facility has been assigned')
 
     # hard code the operational status name in order to avoid more crud
     @property
@@ -981,6 +985,18 @@ class FacilityOperationState(AbstractBase):
 
 
 @reversion.register
+class FacilityLevelChangeReason(AbstractBase):
+    """
+    Generic reasons for upgrading or downgrading a facility
+    """
+    reason = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return str(self.reason)
+
+
+@reversion.register
 class FacilityUpgrade(AbstractBase):
     """
     Logs the upgrades and the downgrades of a facility.
@@ -988,7 +1004,7 @@ class FacilityUpgrade(AbstractBase):
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
     keph_level = models.ForeignKey(KephLevel, null=True)
-    reason = models.TextField()
+    reason = models.ForeignKey(FacilityLevelChangeReason)
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Indicates whether a facility upgrade or downgrade has been'
@@ -997,6 +1013,7 @@ class FacilityUpgrade(AbstractBase):
         default=False,
         help_text='Indicates whether a facility upgrade or downgrade has been'
         'cancelled or not')
+    is_upgrade = models.BooleanField(default=True)
 
     def validate_only_one_type_change_at_a_time(self):
         if self.is_confirmed or self.is_cancelled:
