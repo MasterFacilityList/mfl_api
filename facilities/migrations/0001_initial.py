@@ -638,26 +638,6 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'service categories',
             },
         ),
-        migrations.CreateModel(
-            name='ServiceOption',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('deleted', models.BooleanField(default=False)),
-                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('option', models.ForeignKey(to='facilities.Option')),
-                ('service', models.ForeignKey(related_name='service_options', to='facilities.Service')),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ('-updated', '-created'),
-                'default_permissions': ('add', 'change', 'delete', 'view'),
-                'abstract': False,
-            },
-        ),
         migrations.AddField(
             model_name='service',
             name='category',
@@ -672,11 +652,6 @@ class Migration(migrations.Migration):
             model_name='service',
             name='group',
             field=models.ForeignKey(help_text=b'The option group containing service options', to='facilities.OptionGroup'),
-        ),
-        migrations.AddField(
-            model_name='service',
-            name='options',
-            field=models.ManyToManyField(to='facilities.Option', through='facilities.ServiceOption'),
         ),
         migrations.AddField(
             model_name='service',
@@ -795,13 +770,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facilityservice',
-            name='selected_option',
-            field=models.ForeignKey(blank=True, to='facilities.ServiceOption', null=True),
+            name='option',
+            field=models.ForeignKey(blank=True, to='facilities.Option', null=True),
         ),
         migrations.AddField(
             model_name='facilityservice',
             name='service',
-            field=models.ForeignKey(blank=True, to='facilities.Service', null=True),
+            field=models.ForeignKey(to='facilities.Service'),
         ),
         migrations.AddField(
             model_name='facilityservice',

@@ -19,7 +19,6 @@ from ..models import (
     FacilityType,
     Service,
     Option,
-    ServiceOption,
     RegulatingBody,
     KephLevel,
     JobTitle,
@@ -103,8 +102,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         service_1 = mommy.make(Service)
         service_2 = mommy.make(Service)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, service=service_2, option=option)
         facility_services = [
             {
                 "service": service.id,
@@ -113,7 +110,8 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                 "service": service_1.id,
             },
             {
-                "selected_option": service_option.id,
+                "option": option.id,
+                "service": service_2.id
             }
 
         ]
@@ -277,8 +275,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         service_1 = mommy.make(Service)
         service_2 = mommy.make(Service)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, service=service_2, option=option)
         facility_services = [
             {
                 "service": service.id,
@@ -287,7 +283,8 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                 "service": service_1.id,
             },
             {
-                "selected_option": service_option.id,
+                "option": option.id,
+                "service": service_2.id
             }
 
         ]

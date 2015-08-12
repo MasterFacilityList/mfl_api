@@ -726,14 +726,14 @@ class Facility(SequenceMixin, AbstractBase):
         return [
             {
                 "id": service.id,
-                "service_id": service.selected_option.service.id,
-                "service_name": str(service.selected_option.service.name),
-                "service_code": service.selected_option.service.code,
+                "service_id": service.service.id,
+                "service_name": str(service.service.name),
+                "service_code": service.service.code,
                 "option_name": str(
-                    service.selected_option.option.display_text),
+                    service.option.display_text),
                 "category_name": str(
-                    service.selected_option.service.category.name),
-                "category_id": service.selected_option.service.category.id,
+                    service.service.category.name),
+                "category_id": service.service.category.id,
                 "average_rating": service.average_rating,
                 "number_of_ratings": service.number_of_ratings
             }
@@ -1206,7 +1206,6 @@ class Service(SequenceMixin, AbstractBase):
     group = models.ForeignKey(
         OptionGroup,
         help_text="The option group containing service options")
-    options = models.ManyToManyField(Option, through='ServiceOption')
     has_options = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
@@ -1241,7 +1240,7 @@ class FacilityService(AbstractBase):
         'CHRIO')
     # For services that do not have options, the service will be linked
     # directly to the
-    service = models.ForeignKey(Service, blank=True, null=True)
+    service = models.ForeignKey(Service)
 
     @property
     def service_has_options(self):

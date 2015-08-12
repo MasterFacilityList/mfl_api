@@ -89,9 +89,7 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(
         name='facility_service__facility',
         lookup_type='exact')
-    service = django_filters.AllValuesFilter(
-        name='facility_service__selected_option.service',
-        lookup_type='exact')
+    service = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
@@ -163,7 +161,7 @@ class ServiceFilter(CommonFieldsFilterset):
 
 class FacilityServiceFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
-    selected_option = django_filters.AllValuesFilter(lookup_type='exact')
+    option = django_filters.AllValuesFilter(lookup_type='exact')
     is_confirmed = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES, coerce=strtobool
     )
@@ -279,7 +277,7 @@ class FacilityFilter(CommonFieldsFilterset):
             cats_seen = []
             for cat in categories:
                 service_count = FacilityService.objects.filter(
-                    selected_option__service__category=cat,
+                    service__category=cat,
                     facility=facility).count()
                 if service_count > 0:
                     cats_seen.append(cat)
