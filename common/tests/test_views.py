@@ -803,29 +803,13 @@ class TestFilteringAdminUnits(APITestCase):
             Ward.objects.count(), len(response.data.get("results"))
         )
 
-    def test_filtering_towns(self):
-        county = mommy.make(County)
-        user = mommy.make(get_user_model())
-        mommy.make(UserCounty, user=user, county=county)
-        const = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
-        mommy.make(Town)
-        url = reverse("api:common:towns_list")
-        self.client.force_authenticate(user)
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(1, len(response.data.get("results")))
-
     def test_national_user_sees_all_towns(self):
         county = mommy.make(County)
         user = mommy.make(get_user_model())
         user.is_national = True
         user.save()
         mommy.make(UserCounty, user=user, county=county)
-        const = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
+        mommy.make(Town)
         mommy.make(Town)
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user)
@@ -833,7 +817,7 @@ class TestFilteringAdminUnits(APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(2, len(response.data.get("results")))
 
-    def test_sub_county_user_sees_only_towns_in_sub_county(self):
+    def test_sub_county_user_sees_all_towns(self):
         county = mommy.make(County)
         user = mommy.make(get_user_model())
         user_2 = mommy.make(get_user_model())
@@ -842,14 +826,13 @@ class TestFilteringAdminUnits(APITestCase):
         mommy.make(
             UserConstituency, user=user_2,
             created_by=user, updated_by=user, constituency=const)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
+        mommy.make(Town)
         mommy.make(Town)
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user_2)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(1, len(response.data.get("results")))
+        self.assertEquals(2, len(response.data.get("results")))
 
     def test_county_user_sees_only_wards_in_county(self):
         user = mommy.make(get_user_model())
