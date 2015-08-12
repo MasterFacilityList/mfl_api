@@ -1246,11 +1246,6 @@ class FacilityService(AbstractBase):
     def service_has_options(self):
         return True if self.option else False
 
-    def validate_either_options_or_service(self):
-        if not self.option and not self.service:
-            raise ValidationError(
-                "An service option or an actual service is required")
-
     @property
     def number_of_ratings(self):
         return self.facility_service_ratings.count()
@@ -1284,7 +1279,6 @@ class FacilityService(AbstractBase):
             raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
-        self.validate_either_options_or_service()
         self.validate_unique_service_or_service_option_with_for_facility()
 
 
