@@ -49,29 +49,26 @@ from ..models import (
 
 
 class CreateFacilityOfficerMixin(object):
-    """
-    A custom view for creating facility officers.
-    Make it less painful to create facility officers via the frontend.
-    """
+
+    """Mixin to create facility officers."""
 
     def _validate_required_fields(self, data):
-        facility_id = data.get('facility_id', None)
-        name = data.get('name', None)
-        title = data.get('title', None)
-        if not facility_id or not name or not title:
-            error_message = {
-                "Facility id": ["Facility id is required"],
-                "name": ["Name is required"],
-                "Job title": ["Job Title is required"]
-            }
-            return error_message
+        errs = {}
+        if data.get('facility_id', None) is None:
+            errs["facility_id"] = ["Facility is required"]
+        if data.get('name', None) is None:
+            errs["name"] = ["Name is Required"]
+        if data.get('title', None) is None:
+            errs["title"] = ["Job title is required"]
+
+        return errs
 
     def _validate_facility(self, data):
         try:
             Facility.objects.get(id=data.get('facility_id', None))
         except Facility.DoesNotExist:
             error_message = {
-                "facility": ["Facility provided does not exist"]
+                "facility_id": ["Facility provided does not exist"]
             }
             return error_message
 
@@ -80,8 +77,7 @@ class CreateFacilityOfficerMixin(object):
             JobTitle.objects.get(id=data['title'])
         except JobTitle.DoesNotExist:
             error_message = {
-                "job title": ["JobTitle with id {} does not exist".format(
-                    data['title'])]
+                "title": ["Job title with does not exist"]
             }
             return error_message
 
@@ -91,7 +87,7 @@ class CreateFacilityOfficerMixin(object):
             self._validate_facility(data),
             self._validate_job_titles(data)
         ]
-        errors = [error for error in errors if error is not None]
+        errors = [error for error in errors if error]
         if errors:
             return errors
         else:
@@ -103,19 +99,18 @@ class CreateFacilityOfficerMixin(object):
         return attributes_dict
 
     def _create_contacts(self, data):
-        contacts = data.get('contacts', None)
+        contacts = data.get('contacts', [])
         created_contacts = []
-        if contacts:
-            for contact in contacts:
 
-                contact_type = ContactType.objects.get(
-                    id=contact.get('type'))
-                contact_dict = {
-                    "contact_type": contact_type,
-                    "contact": contact.get('contact')
-                }
-                contact_dict = self._inject_creating_user(contact_dict)
-                created_contacts.append(Contact.objects.create(**contact_dict))
+        for contact in contacts:
+            contact_type = ContactType.objects.get(id=contact.get('type'))
+            contact_dict = {
+                "contact_type": contact_type,
+                "contact": contact.get('contact')
+            }
+            contact_dict = self._inject_creating_user(contact_dict)
+            created_contacts.append(Contact.objects.create(**contact_dict))
+
         return created_contacts
 
     def _create_facility_officer(self, data):
@@ -158,28 +153,28 @@ class CreateFacilityOfficerMixin(object):
         valid_data = self.data_is_valid(data)
 
         if valid_data is not True:
-
             return {
                 "created": False,
                 "detail": valid_data
             }
-        else:
-            facility_officer = self._create_facility_officer(data)
-            serialized_officer = FacilityOfficerSerializer(
-                facility_officer).data
-            return {
-                "created": True,
-                "detail": serialized_officer
-            }
+
+        facility_officer = self._create_facility_officer(data)
+        serialized_officer = FacilityOfficerSerializer(facility_officer).data
+        return {
+            "created": True,
+            "detail": serialized_officer
+        }
 
 
 class FacilityLevelChangeReasonSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta:
         model = FacilityLevelChangeReason
 
 
 class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta:
         model = KephLevel
 
