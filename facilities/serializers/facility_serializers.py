@@ -492,7 +492,8 @@ class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
                 validated_data['update'] if
                 validated_data.get('updated') else timezone.now())
         }
-        lambda dict_a: dict_a.update(audit_data)
+        dict_a.update(audit_data)
+        return dict_a
 
     def create_contact(self, contact_data):
             contact = ContactSerializer(
@@ -508,7 +509,8 @@ class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
                 "contact": contact,
                 "facility": instance
             }
-            self.inject_audit_fields(facility_contact_data, validated_data)
+            facility_contact_data = self.inject_audit_fields(
+                facility_contact_data, validated_data)
             try:
                 FacilityContact.objects.create(**facility_contact_data)
             except:
@@ -517,7 +519,7 @@ class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
 
     def create_facility_units(self, instance, unit_data, validated_data):
             unit_data['facility'] = instance.id
-            self.inject_audit_fields(unit_data, validated_data)
+            unit_data = self.inject_audit_fields(unit_data, validated_data)
             unit = FacilityUnitSerializer(data=unit_data, context=self.context)
             if unit.is_valid():
                 return unit.save()
@@ -526,7 +528,8 @@ class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
 
     def create_facility_services(self, instance, service_data, validated_data):
             service_data['facility'] = instance.id
-            self.inject_audit_fields(service_data, validated_data)
+            service_data = self.inject_audit_fields(
+                service_data, validated_data)
             f_service = FacilityServiceSerializer(
                 data=service_data, context=self.context)
             if f_service.is_valid():
