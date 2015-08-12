@@ -161,6 +161,16 @@
     },
     {
         "mfluser": {
+            "email": "reporting@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Reporing Groups"
+            }
+        ]
+    },
+    {
+        "mfluser": {
             "email": "system@ehealth.or.ke"
         },
         "groups": []
