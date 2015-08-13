@@ -1,74 +1,44 @@
-from facilities.models import Facility, OwnerType
+from django.apps import apps
+
+from facilities.models import Facility
 from rest_framework.views import APIView, Response
-from common.models import County, Constituency
+
+from .report_config import REPORTS
 
 
-class FacilityCountByCountyReport(APIView):
-    def get(self, *args, **kwargs):
-        counties = County.objects.all()
-        facility_county_summary = {}
-        for county in counties:
-            facility_county_count = Facility.objects.filter(
-                ward__constituency__county=county).count()
-            facility_county_summary[str(county.name)] = facility_county_count
-        top_counties = sorted(
-            facility_county_summary.items(),
-            key=lambda x: x[1], reverse=True)
-        facility_county_summary
-        counties_summary = []
-        for item in top_counties:
-            counties_summary.append(
-                {
-                    "county_name": item[0],
-                    "number_of_facilities": item[1]
-                })
-        return Response(data={
-            "results": counties_summary,
-            "total": Facility.objects.count()
-        })
+class FIlterReportMixin(object):
+    def get_report_data(self, *args, **kwargs):
+        report_type = self.request.query_params.get(
+            "report_type", "facility_count_by_county")
 
-
-class FacilityCountyByConstituencyReport(APIView):
-    def get(self, *args, **kwargs):
-        constituencies = Constituency.objects.all()
-
-        facility_constituency_summary = {}
-        for const in constituencies:
-            facility_const_count = Facility.objects.filter(
-                ward__constituency=const).count()
-            facility_constituency_summary[
-                str(const.name)] = facility_const_count
-        consts = sorted(
-            facility_constituency_summary.items(),
-            key=lambda x: x[1], reverse=True)
-        consts_summary = []
-        for item in consts:
-            consts_summary.append(
-                {
-                    "constituency_name": item[0],
-                    "number_of_facilities": item[1]
-                })
-        return Response(
-            data={
-                "results": consts_summary,
-                "total": Facility.objects.count()
+        report_config = REPORTS[report_type]
+        app_label, model_name = report_config.get(
+            "filter_fields").get("model").split('.')
+        filter_field_name = report_config.get(
+            "filter_fields").get("filter_field_name")
+        model = apps.get_model(app_label, model_name)
+        model_instances = model.objects.all()
+        return_instance_name = report_config.get(
+            "filter_fields").get("return_field")[0]
+        return_count_name = report_config.get(
+            "filter_fields").get("return_field")[1]
+        data = []
+        for instance in model_instances:
+            filiter_data = {
+                filter_field_name: instance
             }
-        )
-
-
-class FaclityCountyByOwnerCategory(APIView):
-    def get(self, *args, **kwargs):
-        owner_types = OwnerType.objects.all()
-        owner_types_summary = []
-        for owner_type in owner_types:
-            owner_types_summary.append(
+            count = Facility.objects.filter(**filiter_data).count()
+            instance_name = instance. name
+            data.append(
                 {
-                    "type_category": owner_type.name,
-                    "number_of_facilities": Facility.objects.filter(
-                        owner__owner_type=owner_type).count()
-                })
-        data = {
-            "results": owner_types_summary,
-            "total": Facility.objects.count()
-        }
+                    return_instance_name: instance_name,
+                    return_count_name: count
+                }
+            )
+        return data
+
+
+class ReportView(FIlterReportMixin, APIView):
+    def get(self, *args, **kwargs):
+        data = self.get_report_data()
         return Response(data=data)
