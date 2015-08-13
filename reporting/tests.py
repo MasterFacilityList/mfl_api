@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
-from facilities.models import Facility
+from facilities.models import Facility, OwnerType, Owner
 from common.models import Ward, County, Constituency
 from model_mommy import mommy
 
@@ -60,3 +60,29 @@ class TestFacilityCountByCountyReport(APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(
             constituency_expected_data, constituency_response.data)
+
+    def test_get_facility_count_by_owner_category(self):
+        url = reverse("api:reporting:facility_count_by_owner_category")
+        cat_1 = mommy.make(OwnerType)
+        cat_2 = mommy.make(OwnerType)
+        owner_1 = mommy.make(Owner, owner_type=cat_1)
+        owner_2 = mommy.make(Owner, owner_type=cat_2)
+        mommy.make(Facility, owner=owner_1)
+        mommy.make(Facility, owner=owner_2)
+        expected_data = {
+            "results": [
+                {
+                    "type_category": cat_2.name,
+                    "number_of_facilities": 1
+                },
+                {
+                    "type_category": cat_1.name,
+                    "number_of_facilities": 1
+                }
+            ],
+            "total": 2
+        }
+        self.maxDiff = None
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(expected_data, response.data)
