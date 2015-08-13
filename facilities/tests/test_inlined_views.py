@@ -24,7 +24,8 @@ from ..models import (
     JobTitle,
     FacilityService,
     FacilityContact,
-    FacilityUnit
+    FacilityUnit,
+    FacilityOfficer
 )
 
 
@@ -84,20 +85,33 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
         }
         job_title = mommy.make(JobTitle)
-        facility_officers = [
-            {
-                "job_title": job_title.id,
-                "name": "Kiprotich Kipngeno",
-                "registration_number": "NURS189/1990"
-            }
-        ]
-        facility_officers_with_error = [
-            {
-                "job_title": 41910510,
-                "name": "Kiprotich Kipngeno",
-                "registration_number": "NURS189/1990"
-            }
-        ]
+        officer_in_charge = {
+            "name": "Brenda Makena",
+            "id_no": "545454545",
+            "reg_no": "DEN/90/2000",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
+        officer_in_charge_with_errors = {
+            "name": "Brenda Makena",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                }
+            ]
+        }
+
         service = mommy.make(Service)
         service_1 = mommy.make(Service)
         service_2 = mommy.make(Service)
@@ -152,7 +166,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "keph_level": keph_level.id,
             "units": facility_units,
             "facility_services": facility_services,
-            "facility_officers": facility_officers
+            "officer_in_charge": officer_in_charge
         }
         response = self.client.post(self.url, data)
         self.assertEquals(201, response.status_code)
@@ -180,13 +194,14 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "keph_level": keph_level.id,
             "units": facility_units_with_error,
             "facility_services": facility_services,
-            "facility_officers": facility_officers_with_error
+            "officer_in_charge": officer_in_charge_with_errors
         }
         response = self.client.post(self.url, data_with_errors)
         self.assertEquals(400, response.status_code)
         self.assertEquals(1, Facility.objects.count())
         self.assertEquals(1, Owner.objects.count())
         self.assertEquals(1, PhysicalAddress.objects.count())
+        self.assertEquals(1, FacilityOfficer.objects.count())
 
         data_with_errors = {
             "name": "Another Mama Lucy Medical Clinic",
@@ -208,7 +223,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             "keph_level": keph_level.id,
             "units": facility_units_with_error,
             "facility_services": facility_services,
-            "facility_officers": facility_officers_with_error
+            "officer_in_charge": officer_in_charge_with_errors
         }
 
         response = self.client.post(self.url, data_with_errors)
