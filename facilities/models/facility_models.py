@@ -36,9 +36,6 @@ class KephLevel(AbstractBase):
     def __unicode__(self):
         return "{}".format(self.name)
 
-    class Meta(AbstractBase.Meta):
-        pass
-
 
 @reversion.register
 class OwnerType(AbstractBase):
@@ -997,9 +994,6 @@ class FacilityLevelChangeReason(AbstractBase):
 
     def __unicode__(self):
         return str(self.reason)
-
-    class Meta(AbstractBase.Meta):
-        pass
 
 
 @reversion.register
