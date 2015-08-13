@@ -25,9 +25,8 @@ def custom_exception_handler(exc, context):
         return response
 
     if isinstance(exc, ValidationError):
-        data = {'detail': ['Validation Error: {}'.format(exc)]}
         LOGGER.error(exc)
-        return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(exc, status=status.HTTP_400_BAD_REQUEST)
     else:
         data = {'detail': ['Server Error: {}'.format(exc.__class__.__name__)]}
 
