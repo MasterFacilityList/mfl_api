@@ -17,6 +17,13 @@ REPORTS = {
             "filter_field_name": "ward__constituency",
             "return_field": ["constituency_name", "number_of_facilities"]
         },
+        "extra_filters": {
+            "county": {
+                "path": "common.County",
+                "filter_field_name": "ward__constituency__county"
+            }
+
+        },
         "top_level_field": "total"
     },
 
@@ -30,15 +37,24 @@ REPORTS = {
         "top_level_field": "total"
     },
 
-    # facility county by owners
+    # facility count by owners
     "facility_count_by_owner": {
         "filter_fields": {
             "model": "facilities.Owner",
             "filter_field_name": "owner",
             "return_field": ["owner", "number_of_facilities"]
         },
+        "extra_filters": {
+            "owner_type": {
+                "path": "facilities.OwnerType",
+                "filter_field_name": "owner__owner_type"
+            }
+        },
         "top_level_field": "total"
     },
+
+
+    # facility county by facility types
     "facility_count_by_facility_type": {
         "filter_fields": {
             "model": "facilities.FacilityType",
