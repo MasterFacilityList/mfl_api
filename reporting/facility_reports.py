@@ -1,56 +1,91 @@
+from django.apps import apps
+
 from facilities.models import Facility
 from rest_framework.views import APIView, Response
-from common.models import County, Constituency
+
+from .report_config import REPORTS
 
 
-class FacilityCountByCountyReport(APIView):
-    def get(self, *args, **kwargs):
-        counties = County.objects.all()
-        facility_county_summary = {}
-        for county in counties:
-            facility_county_count = Facility.objects.filter(
-                ward__constituency__county=county).count()
-            facility_county_summary[str(county.name)] = facility_county_count
-        top_10_counties = sorted(
-            facility_county_summary.items(),
-            key=lambda x: x[1], reverse=True)
-        facility_county_summary
-        counties_summary = []
-        for item in top_10_counties:
-            counties_summary.append(
-                {
-                    "county_name": item[0],
-                    "number_of_facilities": item[1]
-                })
-        return Response(data={
-            "results": counties_summary,
-            "total": Facility.objects.count()
-        })
+class FilterReportMixin(object):
+    queryset = Facility.objects.all()
 
+    def _prepare_filters(self, filtering_data):
+        filtering_data = filtering_data.split('=')
+        return filtering_data[0], filtering_data[1]
 
-class FacilityCountyByConstituencyReport(APIView):
-    def get(self, *args, **kwargs):
-        constituencies = Constituency.objects.all()
+    def _build_dict_filter(self, filter_field_name, value):
+        return {
+            filter_field_name: value
+        }
 
-        facility_constituency_summary = {}
-        for const in constituencies:
-            facility_const_count = Facility.objects.filter(
-                ward__constituency=const).count()
-            facility_constituency_summary[
-                str(const.name)] = facility_const_count
-        consts = sorted(
-            facility_constituency_summary.items(),
-            key=lambda x: x[1], reverse=True)
-        consts_summary = []
-        for item in consts:
-            consts_summary.append(
-                {
-                    "constituency_name": item[0],
-                    "number_of_facilities": item[1]
-                })
-        return Response(
-            data={
-                "results": consts_summary,
-                "total": Facility.objects.count()
+    def _filter_queryset(self, filter_dict):
+        return self.queryset.filter(**filter_dict)
+
+    def _filter_relation_obj(self, model, field_name, value):
+        filter_dict = {
+            field_name: value
+        }
+        return model.objects.filter(**filter_dict)
+
+    def _filter_by_extra_params(
+            self, report_config, more_filters_params, model):
+        more_filters = self._prepare_filters(more_filters_params)
+
+        requested_filters = report_config.get(
+            'extra_filters')[more_filters[0]]
+        requested_filters_filter_field_name = requested_filters.get(
+            "filter_field_name")
+        filtering_dict = self._build_dict_filter(
+            requested_filters_filter_field_name, more_filters[1])
+
+        self.queryset = self._filter_queryset(filtering_dict)
+        model_instances = self._filter_relation_obj(
+            model, more_filters[0], more_filters[1])
+        return model_instances
+
+    def get_report_data(self, *args, **kwargs):
+        report_type = self.request.query_params.get(
+            "report_type", "facility_count_by_county")
+
+        more_filters_params = self.request.query_params.get("filters", None)
+
+        report_config = REPORTS[report_type]
+        app_label, model_name = report_config.get(
+            "filter_fields").get("model").split('.')
+        filter_field_name = report_config.get(
+            "filter_fields").get("filter_field_name")
+        model = apps.get_model(app_label, model_name)
+        model_instances = model.objects.all()
+
+        if more_filters_params:
+            model_instances = self._filter_by_extra_params(
+                report_config, more_filters_params, model)
+
+        return_instance_name = report_config.get(
+            "filter_fields").get("return_field")[0]
+        return_count_name = report_config.get(
+            "filter_fields").get("return_field")[1]
+        data = []
+
+        for instance in model_instances:
+            filiter_data = {
+                filter_field_name: instance
             }
-        )
+            count = self.queryset.filter(**filiter_data).count()
+            instance_name = instance. name
+            data.append(
+                {
+                    return_instance_name: instance_name,
+                    return_count_name: count
+                }
+            )
+        return {
+            "results": data,
+            "total": self.queryset.count()
+        }
+
+
+class ReportView(FilterReportMixin, APIView):
+    def get(self, *args, **kwargs):
+        data = self.get_report_data()
+        return Response(data=data)
