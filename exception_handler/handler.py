@@ -18,18 +18,18 @@ def custom_exception_handler(exc, context):
     hence handling them here will provide a generic message that won't
     be helpful for that context..therefore they are better handled by the
     users themselves.
-"""
+    """
 
     response = exception_handler(exc, context)
     if response:
         return response
 
     if isinstance(exc, ValidationError):
-        data = {'detail': 'Validation Error: {}'.format(exc)}
+        data = {'detail': ['Validation Error: {}'.format(exc)]}
         LOGGER.error(exc)
         return Response(data, status=status.HTTP_400_BAD_REQUEST)
     else:
-        data = {'detail': 'Server Error: {}'.format(exc.__class__.__name__)}
+        data = {'detail': ['Server Error: {}'.format(exc.__class__.__name__)]}
 
         # Keep this or you'll pull your hair out when **** hits the fan
         import traceback
