@@ -164,7 +164,8 @@ class FilterReportMixin(object):
                     }
                 )
             data.append(county_data)
-        return data, 0
+        totals = []
+        return data, totals
 
     def _get_facility_constituency_data(self):
         owner_cagegory = self.request.query_params.get("owner_category")
@@ -193,7 +194,8 @@ class FilterReportMixin(object):
                     }
                 )
             data.append(county_data)
-        return data, 0
+            totals = []
+        return data, totals
 
 
 class ReportView(FilterReportMixin, APIView):
