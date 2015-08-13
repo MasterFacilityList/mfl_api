@@ -167,8 +167,8 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def get_full_name(self):
-        return "{0} {1} {2}".format(
-            self.first_name, self.last_name, self.other_names)
+        names = [self.first_name, self.last_name, self.other_names]
+        return " ".join([i for i in names if i])
 
     @property
     def permissions(self):
