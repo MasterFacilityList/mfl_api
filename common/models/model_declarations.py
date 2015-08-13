@@ -15,6 +15,7 @@ LOGGER = logging.getLogger(__file__)
 
 @reversion.register
 class ContactType(AbstractBase):
+
     """
     Captures the different types of contacts that we have in the real world.
 
@@ -34,6 +35,7 @@ class ContactType(AbstractBase):
 
 @reversion.register
 class Contact(AbstractBase):
+
     """
     Holds ways in which entities can communicate.
 
@@ -59,6 +61,7 @@ class Contact(AbstractBase):
 
 
 class AdministrativeUnitBase(SequenceMixin, AbstractBase):
+
     """Base class for County, Constituency and Ward"""
     name = models.CharField(
         max_length=100,
@@ -96,6 +99,7 @@ def _lookup_facility_coordinates(area_boundary):
 
 @reversion.register
 class County(AdministrativeUnitBase):
+
     """
     This is the largest administrative/political division in Kenya.
 
@@ -125,6 +129,7 @@ class County(AdministrativeUnitBase):
 
 @reversion.register
 class Constituency(AdministrativeUnitBase):
+
     """
     Counties in Kenya are divided into constituencies.
 
@@ -153,6 +158,7 @@ class Constituency(AdministrativeUnitBase):
 
 @reversion.register
 class Ward(AdministrativeUnitBase):
+
     """
     The Kenyan counties are sub divided into wards.
 
@@ -184,6 +190,7 @@ class Ward(AdministrativeUnitBase):
 
 @reversion.register
 class SubCounty(AdministrativeUnitBase):
+
     """
     A county cab be sub divided into sub counties.
 
@@ -194,6 +201,7 @@ class SubCounty(AdministrativeUnitBase):
 
 @reversion.register
 class UserCounty(AbstractBase):
+
     """
     Will store a record of the counties that a user has been incharge of.
 
@@ -227,6 +235,7 @@ class UserCounty(AbstractBase):
 
 @reversion.register
 class UserContact(AbstractBase):
+
     """
     Stores a user's contacts.
     """
@@ -261,6 +270,7 @@ class UserConstituency(AbstractBase):
         verbose_name_plural = 'user constituencies'
 
 
+@reversion.register
 class Town(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True, null=True, blank=True,
@@ -272,6 +282,7 @@ class Town(AbstractBase):
 
 @reversion.register
 class PhysicalAddress(AbstractBase):
+
     """
     The physical properties of a facility.
 

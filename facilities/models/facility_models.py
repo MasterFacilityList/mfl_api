@@ -903,6 +903,7 @@ class Facility(SequenceMixin, AbstractBase):
         )
 
 
+@reversion.register
 class FacilityUpdates(AbstractBase):
     """
     Buffers facility updates until when they are approved upon

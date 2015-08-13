@@ -1,5 +1,4 @@
 import datetime
-import reversion
 
 from django.db import models
 from django.utils import timezone
@@ -94,7 +93,6 @@ class MflUserManager(BaseUserManager):
             MflUserManager, self).get_queryset().filter(deleted=False)
 
 
-@reversion.register
 class MflUser(AbstractBaseUser, PermissionsMixin):
     """
     Add custom behaviour to the user model.
