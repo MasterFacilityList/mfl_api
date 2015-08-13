@@ -113,6 +113,8 @@ class AbstractBase(models.Model):
         # must @reversion.register
         with transaction.atomic(), reversion.create_revision():
             super(AbstractBase, self).save(*args, **kwargs)
+            # is this better than using the middleware??
+            reversion.set_user(self.updated_by)
 
     def delete(self, *args, **kwargs):
         # Mark the field model deleted

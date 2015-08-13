@@ -22,8 +22,8 @@ class ContactType(AbstractBase):
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="A short name, preferrably 6 characters long, representing a"
-        "certain type of contact e.g EMAIL")
+        help_text="A short name, preferrably 6 characters long, "
+        "representing a certain type of contact e.g EMAIL")
     description = models.TextField(
         null=True, blank=True,
         help_text='A brief description of the contact type.')

@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 class AuditableDetailViewMixin(RetrieveModelMixin):
 
-    def _compare_objs(self, fields, old, new, include=[]):
+    def _compare_objs(self, fields, old, new):
         output = []
         for fld in fields:
             old_val = old.field_dict.get(fld, '')
@@ -28,14 +28,9 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
                     "new": new_val
                 })
 
-        obj = {
-            i: new.field_dict.get(i, '') for i in include
-        }
-        obj["updates"] = output
+        return output
 
-        return obj
-
-    def generate_diffs(self, instance, data, exclude=[], include=[]):
+    def generate_diffs(self, instance, data, exclude=[]):
         versions = reversion.get_for_object(instance)
         fieldnames = [
             f.name for f in instance._meta.fields
@@ -45,9 +40,13 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         for i in range(1, len(versions), 1):
             new = versions[i-1]
             old = versions[i]
-            diff = self._compare_objs(fieldnames, old, new, include=include)
-            if diff["updates"]:
-                ans.append(diff)
+            diff = self._compare_objs(fieldnames, old, new)
+            if diff:
+                ans.append({
+                    "updates": diff,
+                    "updated_by": new.revision.user.get_full_name,
+                    "updated_on": new.revision.date_created
+                })
 
         return ans
 
@@ -91,13 +90,13 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
             data["revisions"] = self.generate_diffs(
                 instance, data,
                 exclude=['deleted', 'search'],
-                include=['updated', 'updated_by']
             )
 
         return Response(data)
 
 
 class APIRoot(APIView):
+
     """
     This view serves as the entry point to the entire API.
 
@@ -116,6 +115,7 @@ class APIRoot(APIView):
     [the documentation](http://mfl-api.readthedocs.org/en/latest/). For a live
     instance, you need to request for access from the administrators.
     """
+
     def get(self, request, format=None):
         return Response()
 
