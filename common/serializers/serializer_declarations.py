@@ -90,7 +90,7 @@ class TownSerializer(
 
 class WardSerializer(AbstractFieldsMixin, GeoModelSerializer):
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
-    consituency_name = serializers.ReadOnlyField(source="constituency.name")
+    constituency_name = serializers.ReadOnlyField(source="constituency.name")
 
     class Meta(object):
         model = Ward
@@ -105,7 +105,7 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     facility_coordinates = serializers.ReadOnlyField()
     county = CountySerializer(read_only=True)
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
-    consituency_name = serializers.ReadOnlyField(source="constituency.name")
+    constituency_name = serializers.ReadOnlyField(source="constituency.name")
 
     class Meta(object):
         model = Ward
@@ -115,7 +115,7 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 class WardSlimDetailSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
-    consituency_name = serializers.ReadOnlyField(source="constituency.name")
+    constituency_name = serializers.ReadOnlyField(source="constituency.name")
 
     class Meta(object):
         model = Ward
