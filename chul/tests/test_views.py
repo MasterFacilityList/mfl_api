@@ -76,13 +76,13 @@ class TestCommunityHealthWorkerView(ViewTestBase):
         expected_data = {
             "results": [
                 CommunityHealthWorkerSerializer(
-                    worker_1,
+                    worker_2,
                     context={
                         'request': response.request
                     }
                 ).data,
                 CommunityHealthWorkerSerializer(
-                    worker_2,
+                    worker_1,
                     context={
                         'request': response.request
                     }
