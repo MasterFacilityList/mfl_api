@@ -1,5 +1,4 @@
 import datetime
-import reversion
 
 from django.db import models
 from django.utils import timezone
@@ -94,7 +93,6 @@ class MflUserManager(BaseUserManager):
             MflUserManager, self).get_queryset().filter(deleted=False)
 
 
-@reversion.register
 class MflUser(AbstractBaseUser, PermissionsMixin):
     """
     Add custom behaviour to the user model.
@@ -167,8 +165,8 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def get_full_name(self):
-        return "{0} {1} {2}".format(
-            self.first_name, self.last_name, self.other_names)
+        names = [self.first_name, self.last_name, self.other_names]
+        return " ".join([i for i in names if i])
 
     @property
     def permissions(self):
@@ -234,12 +232,21 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
                 'county_group_marker',
                 'A marker permission for county level groups'
             ),
+            (
+                'manipulate_superusers',
+                'A permission to create and manipulate superusers'
+            ),
         )
         ordering = ('-date_joined', )
 
 
 Group.is_county_level = property(
     lambda self: 'county_group_marker' in [
+        perm.codename for perm in self.permissions.all()]
+)
+
+Group.is_superuser_level = property(
+    lambda self: 'manipulate_superusers' in [
         perm.codename for perm in self.permissions.all()]
 )
 

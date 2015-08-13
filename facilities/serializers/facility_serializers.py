@@ -34,7 +34,6 @@ from ..models import (
     Service,
     FacilityService,
     FacilityServiceRating,
-    ServiceOption,
     FacilityApproval,
     FacilityOperationState,
     FacilityUpgrade,
@@ -44,6 +43,7 @@ from ..models import (
     FacilityUnitRegulation,
     FacilityUpdates,
     KephLevel,
+    OptionGroup,
     FacilityLevelChangeReason
 )
 
@@ -251,23 +251,8 @@ class OptionSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
         model = Option
 
 
-class ServiceOptionSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    display_text = serializers.ReadOnlyField(source="option.display_text")
-    value = serializers.ReadOnlyField(source="option.value")
-    is_exclusive_option = serializers.ReadOnlyField(
-        source="option.is_exclusive_option"
-    )
-    option_type = serializers.ReadOnlyField(source="option.option_type")
-    service_name = serializers.ReadOnlyField(source="service.name")
-
-    class Meta(object):
-        model = ServiceOption
-
-
 class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True)
-    service_options = ServiceOptionSerializer(many=True, required=False)
 
     class Meta(object):
         model = Service
@@ -606,3 +591,8 @@ class FacilityUpdatesSerializer(
     class Meta:
         model = FacilityUpdates
         exclude = ('facility_updates', )
+
+
+class OptionGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = OptionGroup

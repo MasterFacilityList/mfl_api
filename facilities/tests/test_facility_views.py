@@ -30,8 +30,7 @@ from ..serializers import (
     FacilityOfficerSerializer,
     RegulatoryBodyUserSerializer,
     FacilityUnitRegulationSerializer,
-    FacilityUpdatesSerializer,
-    ServiceSerializer
+    FacilityUpdatesSerializer
 )
 from ..models import (
     OwnerType,
@@ -44,7 +43,6 @@ from ..models import (
     ServiceCategory,
     Service,
     Option,
-    ServiceOption,
     FacilityService,
     FacilityContact,
     FacilityOfficer,
@@ -294,10 +292,8 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         service = mommy.make(Service, name='savis', category=service_category)
         option = mommy.make(
             Option, option_type='BOOLEAN', display_text='Yes/No')
-        service_option = mommy.make(
-            ServiceOption, service=service, option=option)
         facility_service = mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, service=service, option=option)
         expected_data = [
             {
                 "id": facility_service.id,
@@ -323,8 +319,6 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(ServiceCategory)
         service = mommy.make(Service, category=category)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, option=option, service=service)
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
@@ -332,13 +326,12 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(FacilityService, facility=facility_2, service=service_x)
 
         service_2 = mommy.make(Service, category=category_2)
-        service_op_2 = mommy.make(
-            ServiceOption, option=option, service=service_2)
         mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, option=option, service=service)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_op_2)
+            FacilityService, facility=facility,
+            option=option, service=service_2)
 
         url = self.url + "?service_category={},{}".format(
             category.id, category_2.id)
@@ -365,8 +358,6 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(ServiceCategory)
         service = mommy.make(Service, category=category)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, option=option, service=service)
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
@@ -374,7 +365,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(FacilityService, facility=facility_2, service=service_x)
         mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, option=option, service=service)
 
         url = self.url + "?service_category={}".format(
             category.id)
@@ -405,8 +396,6 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(ServiceCategory)
         service = mommy.make(Service, category=category)
         option = mommy.make(Option)
-        service_option = mommy.make(
-            ServiceOption, option=option, service=service)
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         service_x = mommy.make(Service)
@@ -414,13 +403,12 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         mommy.make(FacilityService, facility=facility_2, service=service_x)
 
         service_2 = mommy.make(Service, category=category_2)
-        service_op_2 = mommy.make(
-            ServiceOption, option=option, service=service_2)
         mommy.make(FacilityService, facility=facility_2, service=service_y)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_option)
+            FacilityService, facility=facility, option=option, service=service)
         mommy.make(
-            FacilityService, facility=facility, selected_option=service_op_2)
+            FacilityService, facility=facility, option=option,
+            service=service_2)
 
         url = self.url + "?service_category={},{},{}".format(
             category.id, category_2.id, category_3.id)
@@ -1443,33 +1431,6 @@ class TestFacilityUpdates(LoginMixin, APITestCase):
         self.assertFalse(response.data.get('approved'))
         self.assertTrue(response.data.get('cancelled'))
         self.assertNotEquals('jina', obj_refetched.name)
-
-
-class TestServicesWithOptionsList(LoginMixin, APITestCase):
-
-    def test_listing_services_with_options(self):
-        service = mommy.make(Service)
-        option = mommy.make(Option)
-        mommy.make(
-            ServiceOption, service=service, option=option)
-        mommy.make(Service)
-        url = reverse("api:facilities:services_with_options_list")
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        expected_data = {
-            "results": [
-                ServiceSerializer(
-                    service,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-            ]
-        }
-        self.assertEquals(
-            load_dump(expected_data['results'], default=default),
-            load_dump(response.data['results'], default=default)
-        )
 
 
 class TestFacilityConsituencyUserFilter(TestGroupAndPermissions, APITestCase):

@@ -1,4 +1,20 @@
 [
+{
+       "model":"facilities.OptionGroup",
+      "unique_fields":["name"],
+      "records":[
+            {
+                "name": "Yes /No Options"
+            },
+            {
+                "name": "Basic Comprehensive Options"
+            },
+            {
+                "name": "Keph Level based groups"
+            }
+      ]
+
+    },
    {
       "model":"facilities.Service",
       "unique_fields":[
@@ -12,7 +28,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Condom Promotion and Distribution",
@@ -21,7 +40,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Management of STIs",
@@ -30,6 +52,9 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
+            },
+            "group": {
+                        "name": "Yes /No Options"
             }
          },
          {
@@ -38,7 +63,10 @@
             "description":"Voluntary Counselling and Testing",
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Early Infant Diagnosis",
@@ -47,7 +75,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"PMTCT - ANC",
@@ -56,7 +87,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"PMTCT - Maternity",
@@ -65,7 +99,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Post Exposure Prophylaxis",
@@ -74,7 +111,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Diagnostic Counselling and Testing",
@@ -83,7 +123,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Paediatric Antiretroviral Therapy",
@@ -92,7 +135,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Services - Treatment and Care"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Adult Antiretroviral Therapy",
@@ -101,7 +147,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Services - Treatment and Care"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+                }
          },
          {
             "name":"Home Based Care",
@@ -110,7 +159,10 @@
             "has_options": false,
             "category":{
                "name":"HIV/AIDS Services - Treatment and Care"
-            }
+            },
+            "group": {
+                        "name": "Yes /No Options"
+               }
          },
          {
             "name":"Short Term FP",
@@ -119,7 +171,11 @@
             "has_options": false,
             "category":{
                "name":"Family Planning"
-            }
+            },
+            "group": {
+                     "name": "Basic Comprehensive Options"
+               }
+
          },
          {
             "name":"Long Term FP",
@@ -128,7 +184,10 @@
             "has_options": false,
             "category":{
                "name":"Family Planning"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Integrated Services",
@@ -137,7 +196,10 @@
             "has_options": false,
             "category":{
                "name":"Comprehensive Youth Friendly Services"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Stand Alone Services",
@@ -145,7 +207,10 @@
             "description":"Stand Alone services",
             "category":{
                "name":"Comprehensive Youth Friendly Services"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Focused Antenatal Care",
@@ -154,7 +219,10 @@
             "has_options": false,
             "category":{
                "name":"Antenatal"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Specialized ANC",
@@ -162,7 +230,10 @@
             "description":"Specialized ANC",
             "category":{
                "name":"Antenatal"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Basic Immunization",
@@ -171,7 +242,10 @@
             "has_options": false,
             "category":{
                "name":"Immunization"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Immunization with additional vaccines",
@@ -180,7 +254,10 @@
             "has_options": false,
             "category":{
                "name":"Immunization"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Port Immunization Services",
@@ -189,7 +266,10 @@
             "has_options": false,
             "category":{
                "name":"Immunization"
-            }
+            },
+             "group": {
+                     "name": "Basic Comprehensive Options"
+               }
          },
          {
             "name":"Smear Microscopy",
@@ -197,7 +277,11 @@
             "description":"Smear Microscopy",
             "category":{
                "name":"Tuberculosis Diagnosis and Treatments"
-            }
+            },
+             "group": {
+                     "name": "Keph Level based groups"
+               }
+
          },
          {
             "name":"Tuberculosis Culture",
@@ -205,7 +289,10 @@
             "description":"Tuberculosis Culture",
             "category":{
                "name":"Tuberculosis Diagnosis and Treatments"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"First Line Treatment",
@@ -214,7 +301,10 @@
             "has_options": false,
             "category":{
                "name":"Tuberculosis Diagnosis and Treatments"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"MDRTB Treatment",
@@ -223,7 +313,10 @@
             "has_options": false,
             "category":{
                "name":"Tuberculosis Diagnosis and Treatments"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Rehabilitative Health Services - Occupational Health",
@@ -231,7 +324,10 @@
             "description":"Rehabilitative Health Services - Occupational Health",
             "category":{
                "name":"Rehabilitative Health Services - Occupational Health"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Facility Based Blood Collection Service",
@@ -239,7 +335,10 @@
             "description":"Facility Based Blood Collection Service",
             "category":{
                "name":"Blood Transfusion"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Facility Based Blood Transfusion Service",
@@ -247,7 +346,10 @@
             "description":"Facility Based Blood Transfusion Service",
             "category":{
                "name":"Blood Transfusion"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Services for Female Genital Mutilation (FGM) Survivors",
@@ -255,7 +357,10 @@
             "description":"Services for Female Genital Mutilation (FGM) Survivors",
             "category":{
                "name":"Services for Gender Based Violence Survivors"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Port Health Services",
@@ -263,7 +368,10 @@
             "description":"Port Health Services",
             "category":{
                "name":"Other Services"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Mortuary Services",
@@ -271,7 +379,10 @@
             "description":"Mortuary Services",
             "category":{
                "name":"Other Services"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Services for Sexual Violence Survivors",
@@ -279,7 +390,10 @@
             "description":"Services for Sexual Violence Survivors",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Maternity Services",
@@ -287,7 +401,10 @@
             "description":"Maternity Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Integrated Management of Childhood Illnesses",
@@ -295,7 +412,10 @@
             "description":"Integrated Management of Childhood Illnesses",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Nutrition Services",
@@ -303,7 +423,10 @@
             "description":"Nutrition Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Radiology Services",
@@ -311,7 +434,10 @@
             "description":"Radiology Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Surgical Services",
@@ -319,7 +445,10 @@
             "description":"Surgical Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Ambulance Sevices",
@@ -327,7 +456,10 @@
             "description":"Ambulance Sevices",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Opthalmic Services",
@@ -335,7 +467,10 @@
             "description":"Opthalmic Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Mental Health Services",
@@ -343,7 +478,10 @@
             "description":"Mental Health Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Laboratory Services",
@@ -351,7 +489,10 @@
             "description":"Laboratory Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Rehabilitative Health Services - Physiotherapy",
@@ -359,7 +500,10 @@
             "description":"Rehabilitative Health Services - Physiotherapy",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Environmental Health Services",
@@ -367,7 +511,10 @@
             "description":"Environmental Health Services",
             "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Emergency Obstetric Care",
@@ -375,7 +522,10 @@
             "description":"Emergency Obstetric Care",
             "category":{
                "name":"Services - Choose Basic or Comprehensive"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Oral Health Services (Dental Services)",
@@ -383,7 +533,10 @@
             "description":"Oral Health Services (Dental Services)",
             "category":{
                "name":"Services - Choose Basic or Comprehensive"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Dental Laboratory Services",
@@ -391,7 +544,10 @@
             "description":"Dental Laboratory Services",
             "category":{
                "name":"Services - Choose Basic or Comprehensive"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"ENT Services",
@@ -399,7 +555,10 @@
             "description":"ENT Services",
             "category":{
                "name":"Services - Choose Basic or Comprehensive"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Emergency Preparedness",
@@ -407,7 +566,10 @@
             "description":"Emergency Preparedness",
             "category":{
                "name":"Services - Choose Basic or Comprehensive"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Provider Initiated Counselling and Testing",
@@ -415,7 +577,10 @@
             "description":"Provider Initiated Counselling and Testing",
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Voluntary Male Circumcision",
@@ -423,7 +588,10 @@
             "description":"Voluntary Male Circumcision",
             "category":{
                "name":"HIV/AIDS Prevention Services"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Rehabilitative Health Services - Orthopaedic Technology",
@@ -431,7 +599,10 @@
             "description":"Rehabilitative Health Services - Orthopaedic Technology",
             "category":{
                "name":"Rehabilitative Health Services - Occupational Health"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name":"Permanent FP",
@@ -439,14 +610,20 @@
             "description":"Permanent FP",
             "category":{
                "name":"Family Planning"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
          },
          {
             "name": "Curative Services",
             "description":"Permanent FP",
            "category":{
                "name":"Services - Maximum Level of Service 1 - 6"
-            }
+            },
+            "group": {
+                     "name": "Keph Level based groups"
+               }
         }
       ]
    }
