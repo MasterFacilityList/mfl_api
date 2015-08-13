@@ -809,8 +809,8 @@ class TestFilteringAdminUnits(APITestCase):
         user.is_national = True
         user.save()
         mommy.make(UserCounty, user=user, county=county)
-        mommy.make(Town)
-        mommy.make(Town)
+        mommy.make(Town, name='The shire')
+        mommy.make(Town, name='sparta')
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user)
         response = self.client.get(url)
@@ -826,8 +826,8 @@ class TestFilteringAdminUnits(APITestCase):
         mommy.make(
             UserConstituency, user=user_2,
             created_by=user, updated_by=user, constituency=const)
-        mommy.make(Town)
-        mommy.make(Town)
+        mommy.make(Town, name='Rome')
+        mommy.make(Town, name='Rivendell')
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user_2)
         response = self.client.get(url)

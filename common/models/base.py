@@ -46,12 +46,14 @@ def get_utc_localized_datetime(datetime_instance):
 
 
 class CustomDefaultManager(models.Manager):
+
     def get_queryset(self):
         return super(
             CustomDefaultManager, self).get_queryset().filter(deleted=False)
 
 
 class AbstractBase(models.Model):
+
     """
     Provides auditing attributes to a model.
 
@@ -113,7 +115,7 @@ class AbstractBase(models.Model):
         # must @reversion.register
         with transaction.atomic(), reversion.create_revision():
             super(AbstractBase, self).save(*args, **kwargs)
-            # is this better than using the middleware??
+            # hmm....is this better than using the revision middleware ??
             reversion.set_user(self.updated_by)
 
     def delete(self, *args, **kwargs):
@@ -132,6 +134,7 @@ class AbstractBase(models.Model):
 
 
 class SequenceMixin(object):
+
     """
     Intended to be mixed into models with a `code` `SequenceField`
     """
