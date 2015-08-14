@@ -715,7 +715,7 @@ class Facility(SequenceMixin, AbstractBase):
         approvals = FacilityApproval.objects.filter(
             facility=self, is_cancelled=False)
         if approvals:
-            return str(approvals[0].id)
+            return approvals[0]
         else:
             return None
 

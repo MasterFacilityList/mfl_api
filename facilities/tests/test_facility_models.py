@@ -617,7 +617,7 @@ class TestFacility(BaseTestCase):
     def test_latest_approval(self):
         facility = mommy.make(Facility)
         approval = mommy.make(FacilityApproval, facility=facility)
-        self.assertEquals(str(approval.id), facility.latest_approval)
+        self.assertEquals(approval.id, facility.latest_approval.id)
 
     def test_no_latest_approval(self):
         facility = mommy.make(Facility)
