@@ -187,5 +187,11 @@ class DashBoard(APIView):
             "owner_types": self.get_facility_owner_types_summary(),
             "recently_created": self.get_recently_created_facilities()
         }
-
+        fields = self.request.query_params.get("fields", None)
+        if fields:
+            required = fields.split(",")
+            required_data = {
+                i: data[i] for i in data if i in required
+            }
+            return Response(required_data)
         return Response(data)

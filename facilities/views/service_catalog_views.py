@@ -7,8 +7,7 @@ from ..models import (
     ServiceCategory,
     Option,
     Service,
-    FacilityService,
-    ServiceOption
+    FacilityService
 )
 
 from ..serializers import (
@@ -16,17 +15,13 @@ from ..serializers import (
     ServiceCategorySerializer,
     OptionSerializer,
     ServiceSerializer,
-    FacilityServiceSerializer,
-    ServiceOptionSerializer
-
+    FacilityServiceSerializer
 )
 from ..filters import (
     ServiceCategoryFilter,
     OptionFilter,
     ServiceFilter,
-    FacilityServiceFilter,
-    ServiceOptionFilter
-
+    FacilityServiceFilter
 )
 
 
@@ -153,40 +148,3 @@ class FacilityServiceRatingDetailView(CustomRetrieveUpdateDestroyView):
     """
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
-
-
-class ServiceOptionListView(generics.ListCreateAPIView):
-    """
-    Lists and creates service options
-
-    service -- A service's pk
-    option -- An option's pk
-    Created --  Date the record was Created
-    Updated -- Date the record was Updated
-    Created_by -- User who created the record
-    Updated_by -- User who updated the record
-    active  -- Boolean is the record active
-    deleted -- Boolean is the record deleted
-    """
-    queryset = ServiceOption.objects.all()
-    serializer_class = ServiceOptionSerializer
-    filter_class = ServiceOptionFilter
-    ordering_fields = ('service', 'option',)
-
-
-class ServiceOptionDetailView(
-        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
-    """
-    Retrieves a particular service option
-    """
-    queryset = ServiceOption.objects.all()
-    serializer_class = ServiceOptionSerializer
-
-
-class ServicesWithOptionListView(ServiceListView):
-
-    def get_queryset(self, *args, **kwargs):
-        return Service.objects.filter(
-            id__in=ServiceOption.objects.values_list(
-                'service', flat=True)
-        ).distinct()

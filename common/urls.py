@@ -24,12 +24,21 @@ from .views import (
     PhysicalAddressDetailView,
     FilteringSummariesView,
     UserConstituencyDetailView,
-    UserConstituencyListView
+    UserConstituencyListView,
+    SubCountyDetailView,
+    SubCountyListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^sub_counties/$',
+        SubCountyListView.as_view(),
+        name='sub_counties_list'),
+    url(r'^sub_counties/(?P<pk>[^/]+)/$',
+        SubCountyDetailView.as_view(),
+        name='sub_county_detail'),
+
     url(r'^user_constituencies/$',
         UserConstituencyListView.as_view(),
         name='user_constituencies_list'),

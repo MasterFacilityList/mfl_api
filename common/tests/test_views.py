@@ -16,7 +16,8 @@ from ..models import (
     UserContact,
     UserConstituency,
     UserCounty,
-    Town
+    Town,
+    SubCounty
 )
 from ..serializers import (
     ContactSerializer,
@@ -802,37 +803,21 @@ class TestFilteringAdminUnits(APITestCase):
             Ward.objects.count(), len(response.data.get("results"))
         )
 
-    def test_filtering_towns(self):
-        county = mommy.make(County)
-        user = mommy.make(get_user_model())
-        mommy.make(UserCounty, user=user, county=county)
-        const = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
-        mommy.make(Town)
-        url = reverse("api:common:towns_list")
-        self.client.force_authenticate(user)
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(1, len(response.data.get("results")))
-
     def test_national_user_sees_all_towns(self):
         county = mommy.make(County)
         user = mommy.make(get_user_model())
         user.is_national = True
         user.save()
         mommy.make(UserCounty, user=user, county=county)
-        const = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
-        mommy.make(Town)
+        mommy.make(Town, name='The shire')
+        mommy.make(Town, name='sparta')
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(2, len(response.data.get("results")))
 
-    def test_sub_county_user_sees_only_towns_in_sub_county(self):
+    def test_sub_county_user_sees_all_towns(self):
         county = mommy.make(County)
         user = mommy.make(get_user_model())
         user_2 = mommy.make(get_user_model())
@@ -841,14 +826,13 @@ class TestFilteringAdminUnits(APITestCase):
         mommy.make(
             UserConstituency, user=user_2,
             created_by=user, updated_by=user, constituency=const)
-        ward = mommy.make(Ward, constituency=const)
-        mommy.make(Town, ward=ward)
-        mommy.make(Town)
+        mommy.make(Town, name='Rome')
+        mommy.make(Town, name='Rivendell')
         url = reverse("api:common:towns_list")
         self.client.force_authenticate(user_2)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(1, len(response.data.get("results")))
+        self.assertEquals(2, len(response.data.get("results")))
 
     def test_county_user_sees_only_wards_in_county(self):
         user = mommy.make(get_user_model())
@@ -884,3 +868,50 @@ class TestFilteringAdminUnits(APITestCase):
                     response.data.get("results"), default=default)
             )
         )
+
+
+class TestSubCountyView(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:common:sub_counties_list")
+        super(TestSubCountyView, self).setUp()
+
+    def test_posting(self):
+        county = mommy.make(County)
+        data = {
+            "name": "test subcounty",
+            "county": county.id
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, SubCounty.objects.count())
+        self.assertIn("id", response.data)
+
+    def test_listing(self):
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        mommy.make(SubCounty)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get("count"))
+        self.assertEquals(5, SubCounty.objects.count())
+
+    def test_retreiving(self):
+        mommy.make(SubCounty)
+        sub_county = mommy.make(SubCounty)
+        url = self.url + "{}/".format(sub_county.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(str(sub_county.id), response.data.get("id"))
+
+    def test_updating(self):
+        sub_county = mommy.make(SubCounty)
+        data = {
+            "name": "name has been editted"
+        }
+        url = self.url + "{}/".format(sub_county.id)
+        response = self.client.patch(url, data)
+        ssub_county_refetched = SubCounty.objects.get(id=sub_county.id)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(ssub_county_refetched.name, data.get("name"))

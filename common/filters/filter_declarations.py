@@ -10,7 +10,8 @@ from ..models import (
     PhysicalAddress,
     UserContact,
     Town,
-    UserConstituency
+    UserConstituency,
+    SubCounty
 
 )
 from .filter_shared import (
@@ -18,6 +19,11 @@ from .filter_shared import (
     ListCharFilter,
     ListIntegerFilter
 )
+
+
+class SubCountyFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = SubCounty
 
 
 class UserConstituencyFilter(CommonFieldsFilterset):

@@ -13,7 +13,8 @@ from ..models import (
     UserCounty,
     UserContact,
     Town,
-    UserConstituency
+    UserConstituency,
+    SubCounty
 )
 from facilities.models import(
     FacilityStatus,
@@ -41,7 +42,8 @@ from ..serializers import (
     UserContactSerializer,
     TownSerializer,
     FilteringSummariesSerializer,
-    UserConstituencySerializer
+    UserConstituencySerializer,
+    SubCountySerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -53,7 +55,8 @@ from ..filters import (
     UserCountyFilter,
     UserContactFilter,
     TownFilter,
-    UserConstituencyFilter
+    UserConstituencyFilter,
+    SubCountyFilter
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
@@ -73,14 +76,37 @@ class FilterAdminUnitsMixin(object):
                 self.queryset.model, 'constituency') and not user.is_national
                 and hasattr(self.queryset.model, 'county')):
             return self.queryset.filter(constituency__county=user.county)
-        elif (user.constituency and hasattr(
-                self.queryset.model, 'ward')and not user.is_national):
-            return self.queryset.filter(ward__constituency=user.constituency)
-        elif (user.county and hasattr(
-                self.queryset.model, 'ward')and not user.is_national):
-            return self.queryset.filter(ward__constituency__county=user.county)
         else:
             return self.queryset
+
+
+class SubCountyListView(generics.ListCreateAPIView):
+    """
+    Lists and creates sub counties
+
+    county  --  A county pk
+    name  -- The name of the sub county
+    code --  The code given to the sub county
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = SubCounty.objects.all()
+    serializer_class = SubCountySerializer
+    ordering_fields = ('name', 'code', 'county')
+    filter_class = SubCountyFilter
+
+
+class SubCountyDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a patricular contact
+    """
+    queryset = SubCounty.objects.all()
+    serializer_class = SubCountySerializer
 
 
 class ContactView(generics.ListCreateAPIView):

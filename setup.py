@@ -75,7 +75,7 @@ setup(
         "Fabric>=1.10",
         "coverage>=3.7",
         "psycopg2>=2.5",
-        "djangorestframework>=3.1",
+        "djangorestframework>=3.1.0,<3.2.0",
         "django-filter>=0.9",
         'dj_database_url>=0.3.0,<=0.4.0',
         "flake8>=2.3",

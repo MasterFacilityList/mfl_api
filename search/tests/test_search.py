@@ -257,6 +257,15 @@ class TestSearchFunctions(ViewTestBase):
         self.assertEquals(200, response.status_code)
         self.elastic_search_api.delete_index('test_index')
 
+    def test_get_search_auto_complete_fields(self):
+        search_fields = self.elastic_search_api.get_search_fields('facility')
+        self.assertIsInstance(search_fields, list)
+        self.assertEquals(len(search_fields), 10)
+
+    def test_get_search_auto_complete_fields_si_empty(self):
+        search_fields = self.elastic_search_api.get_search_fields('no_model')
+        self.assertIsNone(search_fields)
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFunctions, self).tearDown()

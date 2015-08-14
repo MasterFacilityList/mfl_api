@@ -1,6 +1,8 @@
 from django.conf.urls import url, patterns
 
 from ..views import (
+    OptionGroupDetailView,
+    OptionGroupListView,
     FacilityStatusListView,
     FacilityStatusDetailView,
     JobTitleListView,
@@ -35,8 +37,6 @@ from ..views import (
     ServiceDetailView,
     FacilityServiceListView,
     FacilityServiceDetailView,
-    ServiceOptionListView,
-    ServiceOptionDetailView,
     FacilityApprovalListView,
     FacilityApprovalDetailView,
     FacilityOperationStateListView,
@@ -60,24 +60,28 @@ from ..views import (
     FacilityUnitRegulationDetailView,
     FacilityUpdatesListView,
     FacilityUpdatesDetailView,
-    ServicesWithOptionListView,
     CustomFacilityOfficerView,
     KephLevelListView,
-    KephLevelDetailView
+    KephLevelDetailView,
+    FacilityLevelChangeReasonDetailView,
+    FacilityLevelChangeReasonListView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^level_change_reasons/$',
+        FacilityLevelChangeReasonListView.as_view(),
+        name='facility_level_change_reasons_list'),
+    url(r'^level_change_reasons/(?P<pk>[^/]+)/$',
+        FacilityLevelChangeReasonDetailView.as_view(),
+        name='facility_level_change_reason_detail'),
+
     url(r'^keph/$', KephLevelListView.as_view(),
         name='keph_levels_list'),
     url(r'^keph/(?P<pk>[^/]+)/$',
         KephLevelDetailView.as_view(),
         name='keph_level_detail'),
-
-    url(r'^services_with_options/$',
-        ServicesWithOptionListView.as_view(),
-        name='services_with_options_list'),
 
     url(r'^officer_facade/$',
         CustomFacilityOfficerView.as_view(),
@@ -188,11 +192,6 @@ urlpatterns = patterns(
         FacilityServiceDetailView.as_view(),
         name='facility_service_detail'),
 
-    url(r'^service_options/$', ServiceOptionListView.as_view(),
-        name='service_options_list'),
-    url(r'^service_options/(?P<pk>[^/]+)/$', ServiceOptionDetailView.as_view(),
-        name='service_option_detail'),
-
     url(r'^facility_units/$', FacilityUnitsListView.as_view(),
         name='facility_units_list'),
     url(r'^facility_units/(?P<pk>[^/]+)/$', FacilityUnitDetailView.as_view(),
@@ -264,4 +263,10 @@ urlpatterns = patterns(
     url(r'^facilities/$', FacilityListView.as_view(), name='facilities_list'),
     url(r'^facilities/(?P<pk>[^/]+)/$', FacilityDetailView.as_view(),
         name='facility_detail'),
+
+    url(r'^option_groups/$',
+        OptionGroupListView.as_view(),
+        name='option_groups_list'),
+    url(r'^option_groups/(?P<pk>[^/]+)/$', OptionGroupDetailView.as_view(),
+        name='option_group_detail'),
 )

@@ -10,9 +10,17 @@ from ..models import (
     UserCounty,
     UserContact,
     Town,
-    UserConstituency
+    UserConstituency,
+    SubCounty
 )
 from .serializer_base import AbstractFieldsMixin
+
+
+class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    county_name = serializers.ReadOnlyField(source="county.name")
+
+    class Meta(object):
+        model = SubCounty
 
 
 class UserContactSerializer(
@@ -76,13 +84,13 @@ class CountySlimDetailSerializer(
 class TownSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
-    ward_name = serializers.ReadOnlyField(source='ward.name')
-
     class Meta(object):
         model = Town
 
 
 class WardSerializer(AbstractFieldsMixin, GeoModelSerializer):
+    county_name = serializers.ReadOnlyField(source="constituency.county.name")
+    constituency_name = serializers.ReadOnlyField(source="constituency.name")
 
     class Meta(object):
         model = Ward
@@ -96,6 +104,8 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
         source='wardboundary', read_only=True)
     facility_coordinates = serializers.ReadOnlyField()
     county = CountySerializer(read_only=True)
+    county_name = serializers.ReadOnlyField(source="constituency.county.name")
+    constituency_name = serializers.ReadOnlyField(source="constituency.name")
 
     class Meta(object):
         model = Ward
@@ -104,12 +114,15 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
 
 class WardSlimDetailSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    county_name = serializers.ReadOnlyField(source="constituency.county.name")
+    constituency_name = serializers.ReadOnlyField(source="constituency.name")
 
     class Meta(object):
         model = Ward
 
 
 class ConstituencySerializer(AbstractFieldsMixin, GeoModelSerializer):
+    county_name = serializers.ReadOnlyField(source="county.name")
 
     class Meta(object):
         model = Constituency
@@ -118,6 +131,7 @@ class ConstituencySerializer(AbstractFieldsMixin, GeoModelSerializer):
 
 class ConstituencyDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     bound = serializers.ReadOnlyField(source="constituency_bound")
+    county_name = serializers.ReadOnlyField(source="county.name")
 
     class Meta(object):
         model = Constituency

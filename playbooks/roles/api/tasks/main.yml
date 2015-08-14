@@ -38,7 +38,7 @@
   pip: chdir=/opt/mfl_api requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
 
 - name: run fab setup_db
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup_db >> /tmp/fab_setup_db.log executable=/bin/bash"
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup_db executable=/bin/bash"
   when: setup_new_db
 
 - name: run the Django migrations and collectstatic
@@ -50,11 +50,11 @@
     - restart supervisor
 
 - name: run fab load_demo_data
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab load_demo_data >> /tmp/fab_load_data.log executable=/bin/bash"
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab load_demo_data executable=/bin/bash"
   when: load_demo_data
 
 - name: run fab recreate_search_index
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab recreate_search_index >> /tmp/fab_recreate_search_index.log executable=/bin/bash"
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab recreate_search_index executable=/bin/bash"
   when: recreate_search_index
 
 - name: clear and warm api cache
