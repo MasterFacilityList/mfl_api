@@ -391,6 +391,9 @@ class FacilitySerializer(
     )
     owner = serializers.PrimaryKeyRelatedField(
         required=False, queryset=Owner.objects.all())
+    date_requested = serializers.ReadOnlyField(source='created')
+    date_approved = serializers.ReadOnlyField(
+        source='latest_approval.created')
 
     class Meta(object):
         model = Facility
@@ -463,7 +466,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     facility_physical_address = serializers.DictField(
         read_only=True, required=False)
     coordinates = serializers.ReadOnlyField()
-    latest_approval = serializers.ReadOnlyField()
+    latest_approval = serializers.ReadOnlyField(source='latest_approval.id')
     boundaries = serializers.ReadOnlyField()
     service_catalogue_active = serializers.ReadOnlyField()
     facility_units = FacilityUnitSerializer(many=True, required=False)
