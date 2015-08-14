@@ -367,7 +367,9 @@ class FacilityUnitSerializer(
         model = FacilityUnit
 
 
-class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+class FacilitySerializer(
+        AbstractFieldsMixin, CreateFacilityOfficerMixin,
+        serializers.ModelSerializer):
     regulatory_status_name = serializers.CharField(read_only=True)
     facility_type_name = serializers.CharField(read_only=True)
     owner_name = serializers.CharField(read_only=True)
@@ -439,10 +441,20 @@ class FacilitySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
             validated_data['physical_address'] = physical_address
         if errors:
             raise ValidationError(json.dumps({"detail": errors}))
-        return super(FacilitySerializer, self).create(validated_data)
+        facility = super(FacilitySerializer, self).create(validated_data)
+
+        officer_in_charge = self.initial_data.pop("officer_in_charge", None)
+        if officer_in_charge:
+            self.user = self.context['request'].user
+            officer_in_charge['facility_id'] = facility.id
+            created_officer = self.create_officer(officer_in_charge)
+            errors.append(created_officer.get("detail")) if not \
+                created_officer.get("created") else None
+
+        return facility
 
 
-class FacilityDetailSerializer(CreateFacilityOfficerMixin, FacilitySerializer):
+class FacilityDetailSerializer(FacilitySerializer):
     regulatory_status_name = serializers.CharField(read_only=True)
     facility_services = serializers.ReadOnlyField(
         source="get_facility_services")
