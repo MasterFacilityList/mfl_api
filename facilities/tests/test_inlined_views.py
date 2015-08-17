@@ -8,7 +8,6 @@ from common.tests.test_views import LoginMixin
 from common.models import (
     Ward,
     ContactType,
-    PhysicalAddress,
     Town)
 
 from ..models import (
@@ -172,7 +171,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, Facility.objects.count())
         self.assertEquals(1, Owner.objects.count())
-        self.assertEquals(1, PhysicalAddress.objects.count())
 
         data_with_errors = {
             "name": "Second Mama Lucy Medical Clinic",
@@ -200,7 +198,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(400, response.status_code)
         self.assertEquals(1, Facility.objects.count())
         self.assertEquals(1, Owner.objects.count())
-        self.assertEquals(1, PhysicalAddress.objects.count())
         self.assertEquals(1, FacilityOfficer.objects.count())
 
         data_with_errors = {
@@ -230,7 +227,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(400, response.status_code)
         self.assertEquals(1, Facility.objects.count())
         self.assertEquals(1, Owner.objects.count())
-        self.assertEquals(1, PhysicalAddress.objects.count())
 
     def test_update_inlined_facility(self):
         ward = mommy.make(Ward)
@@ -357,7 +353,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, Facility.objects.count())
         self.assertEquals(1, Owner.objects.count())
-        self.assertEquals(1, PhysicalAddress.objects.count())
         facility_id = response.data.get("id")
 
         updating_data_1 = {
