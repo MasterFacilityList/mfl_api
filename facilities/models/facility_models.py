@@ -555,9 +555,6 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
-    physical_address = models.ForeignKey(
-        PhysicalAddress, null=True, blank=True,
-        help_text="Postal and courier addressing for the facility")
 
     contacts = models.ManyToManyField(
         Contact, through=FacilityContact,
@@ -643,17 +640,6 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def ward_name(self):
         return self.ward.name
-
-    @property
-    def facility_physical_address(self):
-        return {
-            "id": self.physical_address.id,
-            "town": self.physical_address.town.name,
-            "town_id": self.physical_address.town.id,
-            "nearest_landmark": self.physical_address.nearest_landmark,
-            "plot_number": self.physical_address.plot_number,
-            "location_desc": self.physical_address.location_desc
-        }
 
     @property
     def get_county(self):

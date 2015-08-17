@@ -450,8 +450,6 @@ class FacilityDetailSerializer(FacilitySerializer):
         source="get_facility_services")
     facility_contacts = serializers.ReadOnlyField(
         read_only=True, source="get_facility_contacts")
-    facility_physical_address = serializers.DictField(
-        read_only=True, required=False)
     coordinates = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField(source='latest_approval.id')
     boundaries = serializers.ReadOnlyField()
