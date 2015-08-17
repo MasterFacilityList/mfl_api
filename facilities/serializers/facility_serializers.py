@@ -457,6 +457,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     boundaries = serializers.ReadOnlyField()
     service_catalogue_active = serializers.ReadOnlyField()
     facility_units = FacilityUnitSerializer(many=True, required=False)
+    officer_in_charge = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility

@@ -779,6 +779,27 @@ class Facility(SequenceMixin, AbstractBase):
         except ZeroDivisionError:
             return 0
 
+    def officer_in_charge(self):
+        officer = FacilityOfficer.objects.filter(active=True, facility=self)
+        if officer:
+            officer_contacts = OfficerContact.objects.filter(
+                officer=officer[0].officer)
+            contacts = []
+            for contact in officer_contacts:
+                contacts.append({
+                    "type": contact.contact.contact_type.id,
+                    "contact_type_name": contact.contact.contact_type.name,
+                    "contact": contact.contact.contact
+                })
+            return {
+                "name": officer[0].officer.name,
+                "reg_no": officer[0].officer.registration_number,
+                "id_number": officer[0].officer.id_number,
+                "title": officer[0].officer.job_title.id,
+                "title_name": officer[0].officer.job_title.name,
+                "contacts": contacts
+            }
+
     @property
     def coordinates(self):
         try:
