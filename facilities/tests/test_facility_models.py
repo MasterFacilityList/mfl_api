@@ -11,7 +11,6 @@ from common.tests.test_models import BaseTestCase
 from common.models import (
     Contact,
     Ward,
-    PhysicalAddress,
     ContactType,
     County,
     Constituency,
@@ -438,7 +437,6 @@ class TestFacility(BaseTestCase):
         owner = mommy.make(Owner, name="MOH")
         ward = mommy.make(Ward)
         town = mommy.make(Town, name="Kapchorua")
-        address = mommy.make(PhysicalAddress, town=town)
         data = {
             "name": "Forces Memorial",
             "description": "Hospital for the armed forces",
@@ -450,7 +448,8 @@ class TestFacility(BaseTestCase):
             "open_whole_day": True,
             "operation_status": operation_status,
             "ward": ward,
-            "owner": owner
+            "owner": owner,
+            "town": town
         }
         user = mommy.make(get_user_model())
         regulator = mommy.make(RegulatingBody)
@@ -583,7 +582,7 @@ class TestFacility(BaseTestCase):
         constituency = mommy.make(Constituency, county=county, name='Pokot')
         ward = mommy.make(Ward, name='Chepalungu', constituency=constituency)
         facility = mommy.make(
-            Facility, ward=ward)
+            Facility, ward=ward, town=town)
 
         # test county
         self.assertEquals('Bomet', facility.get_county)

@@ -802,8 +802,6 @@ class Facility(SequenceMixin, AbstractBase):
     def _get_field_human_attribute(self, field_obj):
         if hasattr(field_obj, 'name'):
             return field_obj.name
-        elif hasattr(field_obj, 'town'):
-            return field_obj.town.name
         elif field_obj is True:
             return "Yes"
         elif field_obj is False:
