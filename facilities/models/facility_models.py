@@ -765,6 +765,7 @@ class Facility(SequenceMixin, AbstractBase):
         except ZeroDivisionError:
             return 0
 
+    @property
     def officer_in_charge(self):
         officer = FacilityOfficer.objects.filter(active=True, facility=self)
         if officer:
@@ -785,6 +786,7 @@ class Facility(SequenceMixin, AbstractBase):
                 "title_name": officer[0].officer.job_title.name,
                 "contacts": contacts
             }
+        return None
 
     @property
     def coordinates(self):

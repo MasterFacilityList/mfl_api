@@ -450,8 +450,7 @@ class TestFacility(BaseTestCase):
             "open_whole_day": True,
             "operation_status": operation_status,
             "ward": ward,
-            "owner": owner,
-            "physical_address": address
+            "owner": owner
         }
         user = mommy.make(get_user_model())
         regulator = mommy.make(RegulatingBody)
@@ -580,26 +579,16 @@ class TestFacility(BaseTestCase):
 
     def test_facility_get_properties(self):
         town = mommy.make(Town, name='Londiani')
-        physical_address = mommy.make(PhysicalAddress, town=town)
         county = mommy.make(County, name='Bomet')
         constituency = mommy.make(Constituency, county=county, name='Pokot')
         ward = mommy.make(Ward, name='Chepalungu', constituency=constituency)
         facility = mommy.make(
-            Facility, ward=ward, physical_address=physical_address)
+            Facility, ward=ward)
 
         # test county
         self.assertEquals('Bomet', facility.get_county)
         self.assertEquals('Pokot', facility.get_constituency)
         self.assertEquals('Chepalungu', facility.ward_name)
-        self.assertEquals(
-            {
-                "id": physical_address.id,
-                "town": town.name,
-                "town_id": town.id,
-                "plot_number": physical_address.plot_number,
-                "nearest_landmark": physical_address.nearest_landmark,
-                "location_desc": physical_address.location_desc
-            }, facility.facility_physical_address)
 
     def test_only_one_facility_updated_till_acknowledged(self):
         facility = mommy.make(Facility)
@@ -681,6 +670,49 @@ class TestFacility(BaseTestCase):
         operation_status = mommy.make(FacilityStatus, name="NON OPERATIONAL")
         facility = mommy.make(Facility, operation_status=operation_status)
         self.assertFalse(facility.service_catalogue_active)
+
+    def test_facility_officer_in_charge_none(self):
+        facility = mommy.make(Facility)
+        self.assertIsNone(facility.officer_in_charge)
+
+    def test_facility_officer_in_charge_without_contacts(self):
+        facility = mommy.make(Facility)
+        officer = mommy.make(Officer)
+        mommy.make(FacilityOfficer, facility=facility, officer=officer)
+        self.assertIsNotNone(facility.officer_in_charge)
+        expected = {
+            "name": officer.name,
+            "reg_no": officer.registration_number,
+            "id_number": officer.id_number,
+            "title": officer.job_title.id,
+            "title_name": officer.job_title.name,
+            "contacts": []
+        }
+        self.assertEquals(expected, facility.officer_in_charge)
+
+    def test_facility_officer_incharge_with_contacts(self):
+        facility = mommy.make(Facility)
+        officer = mommy.make(Officer)
+        contact = mommy.make(Contact)
+        mommy.make(OfficerContact, officer=officer, contact=contact)
+        mommy.make(FacilityOfficer, facility=facility, officer=officer)
+        self.assertIsNotNone(facility.officer_in_charge)
+        expected = {
+            "name": officer.name,
+            "reg_no": officer.registration_number,
+            "id_number": officer.id_number,
+            "title": officer.job_title.id,
+            "title_name": officer.job_title.name,
+            "contacts": [
+                {
+                    "type": contact.contact_type.id,
+                    "contact_type_name": contact.contact_type.name,
+                    "contact": contact.contact
+                }
+            ]
+        }
+
+        self.assertEquals(expected, facility.officer_in_charge)
 
 
 class TestFacilityContact(BaseTestCase):
@@ -941,15 +973,14 @@ class TestFacilityUpdates(BaseTestCase):
         original_name = 'Some facility name'
         updated_name = 'The name has been editted'
         town = mommy.make(Town, name="Kirigiti")
-        physical_address = mommy.make(PhysicalAddress, town=town)
         facility = mommy.make(
             Facility,
-            name=original_name,
+            name=original_name, town=town,
             id='cafb2fb8-c6a3-419e-a120-8522634ace73')
         mommy.make(FacilityApproval, facility=facility)
 
         facility.name = updated_name
-        facility.physical_address = physical_address
+        facility.town = town
         facility.save()
         self.assertEquals(1, FacilityUpdates.objects.count())
         facility_refetched = Facility.objects.get(
