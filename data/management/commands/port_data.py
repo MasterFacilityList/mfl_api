@@ -303,7 +303,7 @@ SETUP_DATA_CONFIG = [
         "folder": "setup",
         "model_name": "mfl_gis.GeoCodeMethod",
         "unique_fields": ["name"],
-        "sql": "SELECT LTRIM(RTRIM(geoName)) FROM lkpGeoCodeMethod WHERE geoName <> NULL",
+        "sql": "SELECT LTRIM(RTRIM(geoName)) FROM lkpGeoCodeMethod WHERE geoName <> NULL",  # NOQA
         "data": []
     },
     {
@@ -321,7 +321,7 @@ SETUP_DATA_CONFIG = [
         "model_name": "mfl_gis.GeoCodeSource",
         "unique_fields": ["name"],
         "data": [],
-        "sql": "SELECT DISTINCT LTRIM(RTRIM(Source_of_GeoCode)) from qryFacilities WHERE Source_of_GeoCode <> NULL "
+        "sql": "SELECT DISTINCT LTRIM(RTRIM(Source_of_GeoCode)) from qryFacilities WHERE Source_of_GeoCode <> NULL "  # NOQA
     },
     {
         "resource_name": "Regulation Statuses",
@@ -398,41 +398,7 @@ SETUP_DATA_CONFIG = [
         "model_name": "common.Town",
         "unique_fields": ["name"],
         "data": [],
-        "sql": "SELECT DISTINCT LOWER(LTRIM(RTRIM(Facility_Nearest_Town))) from qryFacilities WHERE Facility_Nearest_Town <> NULL"
-    },
-    {
-        "resource_name": "physical addresses",
-        "mfl_v1_object_name": "qryFacilities",
-        "mfl_v1_v2_fields_map": [
-            {
-                "v1": "Facility_Nearest_Town",
-                "v2": "town",
-                "v1_pos": 0,
-                "fk_map": [
-                    {
-                        "field_name": "name"
-                    }
-                ]
-
-            },
-            {
-                "v1": "Facility_Plot_Number",
-                "v2": "plot_number",
-                "v1_pos": 1
-            },
-            {
-                "v1": "Location_Description",
-                "v2": "location_desc",
-                "v1_pos": 2
-
-            }
-        ],
-        "file_name": "0015_physical_addresses.json",
-        "folder": "demo",
-        "model_name": "common.PhysicalAddress",
-        "unique_fields": ["plot_number", "location_desc", "town"],
-        "data": [],
-        "sql": "SELECT LOWER(LTRIM(RTRIM(Facility_Nearest_Town))), LTRIM(RTRIM(Facility_Plot_Number)), Location_Description FROM qryFacilities WHERE Facility_Nearest_Town <> NULL AND Facility_Plot_Number <> NULL AND Location_Description <> NULL"  # NOQA
+        "sql": "SELECT DISTINCT LOWER(LTRIM(RTRIM(Facility_Nearest_Town))) from qryFacilities WHERE Facility_Nearest_Town <> NULL"  # NOQA
     },
     {
         "resource_name": "Facilities",
@@ -453,26 +419,33 @@ SETUP_DATA_CONFIG = [
                 "v2": "official_name",
                 "v1_pos": 2
             },
-            # {
-            #     "v1": "many fields",
-            #     "v2": "physical_address",
-            #     "v1_pos": 3,
-            #     "fk_map": [
-            #         {
-            #             "field_name": "town"
-            #         }
-            #     ]
-            # },
+
             {
                 "v1": "Date_Added",
                 "v2": "created",
                 "v1_pos": 8
             },
-            # {
-            #     "v1": "Date_Modified",
-            #     "v2": "updated",
-            #     "v1_pos": 9
-            # },
+            {
+                "v1": "Facility_Nearest_Town",
+                "v2": "town",
+                "v1_pos": 3,
+                "fk_map": [
+                    {
+                        "field_name": "name"
+                    }
+                ]
+            },
+            {
+                "v1": "Location_Description",
+                "v2": "location_desc",
+                "v1_pos": 5
+            },
+            {
+                "v1": "Facility_Plot_Number",
+                "v2": "plot_number",
+                "v1_pos": 4
+            },
+
             {
                 "v1": "Num_Bed",
                 "v2": "number_of_beds",
@@ -537,11 +510,11 @@ SETUP_DATA_CONFIG = [
 
         ],
         "file_name": "0016_facilities.json",
-        "folder": "setup",
+        "folder": "demo",
         "model_name": "facilities.Facility",
         "unique_fields": ["code"],
         "data": [],
-        "sql": ("SELECT Facility_Code, Facility_Name, Facility_Official_Name, Facility_Nearest_Town, Facility_Plot_Number, Location_Description, Open24Hours, OpenWeekends, CONVERT(VARCHAR, Date_Added, 126), Date_Modified, Num_Beds, Num_Cots, typName, ownName, kphName, regName, staDisplayName from qryFacilities WHERE Facility_Code <> Null AND Facility_Name <> NULl")  # NOQA
+        "sql": ("SELECT Facility_Code, Facility_Name, Facility_Official_Name, LOWER(LTRIM(RTRIM(Facility_Nearest_Town))), LOWER(LTRIM(RTRIM(Facility_Plot_Number))), Location_Description, Open24Hours, OpenWeekends, CONVERT(VARCHAR, Date_Added, 126), Date_Modified, Num_Beds, Num_Cots, typName, ownName, kphName, regName, staDisplayName from qryFacilities WHERE Facility_Code <> Null AND Facility_Name <> NULl")  # NOQA
     },
     # {
     #     "resource_name": "Services Categories",
@@ -1098,8 +1071,8 @@ SETUP_DATA_CONFIG = [
         "model_name": "facilities.FacilityApproval",
         "unique_fields": ["facility"],
         "data": [],
-        "sql": "SELECT Facility_Code, Facility_latitude, facility_longitude, Source_of_GeoCode, CONVERT(VARCHAR, Date_Of_GeoCode, 126), geoName FROM qryFacilities WHERE Facility_Code <> NULL AND Facility_Name <> NUll AND Approved=1"  # NOQA
-    },
+        "sql": "SELECT Facility_Code, Facility_latitude, facility_longitude, LTRIM(RTRIM(Source_of_GeoCode)), CONVERT(VARCHAR, Date_Of_GeoCode, 126), LTRIM(RTRIM(geoName)) FROM qryFacilities WHERE Facility_Code <> NULL AND Facility_Name <> NUll AND  Approved=1 AND Source_of_GeoCode <> NULL AND geoName <> NULL"  # NOQA
+    }
 
 ]
 

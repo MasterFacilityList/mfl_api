@@ -273,7 +273,7 @@ class UserConstituency(AbstractBase):
 @reversion.register
 class Town(AbstractBase):
     name = models.CharField(
-        max_length=100, unique=True, null=True, blank=True,
+        max_length=255, unique=True, null=True, blank=True,
         help_text="Name of the town")
 
     def __unicode__(self):
