@@ -1,7 +1,0 @@
-[
-    {   "unique_fields": ["name"],
-        "model": "facilities.ServiceCategory",
-        "records": [{"abbreviation": "HIVPS", "name": "HIV Prevention Services"}, {"abbreviation": "HIVTC", "name": "HIV/AIDS Services - Treatment and Care"}, {"abbreviation": "FP", "name": "Family Planning"}, {"abbreviation": "CYFS", "name": "Comprehensive Youth Friendly Services"}, {"abbreviation": "ANC", "name": "Antenatal"}, {"abbreviation": "IMM", "name": "Immunization"}, {"abbreviation": "TB", "name": "Tuberculosis Diagnosis and Treatments"}, {"abbreviation": "RHSOH", "name": "Rehabilitative Health Services - Occupational Health"}, {"abbreviation": "BT", "name": "Blood Transfusion"}, {"abbreviation": "SGBVS", "name": "Services for Gender Based Violence Survivors"}, {"abbreviation": "OS", "name": "Other Services"}, {"abbreviation": "SML", "name": "Services - Maximum Level of Service 1 - 6"}, {"abbreviation": "SBCS", "name": "Services - Choose Basic or Comprehensive"}]
-
-    }
-]

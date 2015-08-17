@@ -2,11 +2,11 @@
     {
         "model": "facilities.ServiceCategory",
         "unique_fields": ["name"],
-      
+
         "records": [
            {
                 "name": "HIV/AIDS Prevention Services"
-     
+
             },
             {
                 "name": "HIV/AIDS Services - Treatment and Care"
@@ -19,7 +19,7 @@
             },
             {
                 "name": "Antenatal"
-     
+
             },
             {
                 "name": "Tuberculosis Diagnosis and Treatments"
@@ -44,11 +44,11 @@
             },
             {
                 "name": "Emergency Obstetric Care (EOC)"
-     
+
             },
             {
                 "name": "Maternity Services"
-     
+
             },
             {
                 "name": "Services for GenderBasedViolence Survivors"
@@ -82,5 +82,5 @@
         ]
     }
 
-    
+
 ]

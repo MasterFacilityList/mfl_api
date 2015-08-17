@@ -1,20 +1,4 @@
 [
-{
-       "model":"facilities.OptionGroup",
-      "unique_fields":["name"],
-      "records":[
-            {
-                "name": "Yes /No Options"
-            },
-            {
-                "name": "Basic Comprehensive Options"
-            },
-            {
-                "name": "Keph Level based groups"
-            }
-      ]
-
-    },
    {
       "model":"facilities.Service",
       "unique_fields":[
@@ -279,7 +263,7 @@
                "name":"Tuberculosis Diagnosis and Treatments"
             },
              "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
 
          },
@@ -291,7 +275,7 @@
                "name":"Tuberculosis Diagnosis and Treatments"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -303,7 +287,7 @@
                "name":"Tuberculosis Diagnosis and Treatments"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -315,7 +299,7 @@
                "name":"Tuberculosis Diagnosis and Treatments"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -326,7 +310,7 @@
                "name":"Rehabilitative Health Services - Occupational Health"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -337,7 +321,7 @@
                "name":"Blood Transfusion"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -348,7 +332,7 @@
                "name":"Blood Transfusion"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -359,7 +343,7 @@
                "name":"Services for Gender Based Violence Survivors"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -370,7 +354,7 @@
                "name":"Other Services"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -381,7 +365,7 @@
                "name":"Other Services"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -392,7 +376,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -403,7 +387,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -414,7 +398,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -425,7 +409,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -436,7 +420,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -447,7 +431,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -458,7 +442,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -469,7 +453,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -480,7 +464,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -491,7 +475,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -502,7 +486,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -513,7 +497,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -524,7 +508,7 @@
                "name":"Services - Choose Basic or Comprehensive"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -535,7 +519,7 @@
                "name":"Services - Choose Basic or Comprehensive"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -546,7 +530,7 @@
                "name":"Services - Choose Basic or Comprehensive"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -557,7 +541,7 @@
                "name":"Services - Choose Basic or Comprehensive"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -568,7 +552,7 @@
                "name":"Services - Choose Basic or Comprehensive"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -579,7 +563,7 @@
                "name":"HIV/AIDS Prevention Services"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -590,7 +574,7 @@
                "name":"HIV/AIDS Prevention Services"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -601,7 +585,7 @@
                "name":"Rehabilitative Health Services - Occupational Health"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -612,7 +596,7 @@
                "name":"Family Planning"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
          },
          {
@@ -622,7 +606,7 @@
                "name":"Services - Maximum Level of Service 1 - 6"
             },
             "group": {
-                     "name": "Keph Level based groups"
+                     "name": "Keph Level based options"
                }
         }
       ]
