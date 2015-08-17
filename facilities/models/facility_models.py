@@ -13,8 +13,8 @@ from common.models import (
     Ward,
     Contact,
     SequenceMixin,
-    PhysicalAddress,
-    SubCounty, Town
+    SubCounty,
+    Town
 )
 from common.fields import SequenceField
 
