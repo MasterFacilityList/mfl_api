@@ -13,8 +13,8 @@ from common.models import (
     Ward,
     Contact,
     SequenceMixin,
-    PhysicalAddress,
-    SubCounty
+    SubCounty,
+    Town
 )
 from common.fields import SequenceField
 
@@ -555,9 +555,6 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
-    physical_address = models.ForeignKey(
-        PhysicalAddress, null=True, blank=True,
-        help_text="Postal and courier addressing for the facility")
 
     contacts = models.ManyToManyField(
         Contact, through=FacilityContact,
@@ -594,6 +591,21 @@ class Facility(SequenceMixin, AbstractBase):
     sub_county = models.ForeignKey(
         SubCounty, null=True, blank=True,
         help_text='The sub county in which the facility has been assigned')
+    town = models.ForeignKey(
+        Town, null=True, blank=True,
+        help_text="The town where the entity is located e.g Nakuru")
+    nearest_landmark = models.TextField(
+        null=True, blank=True,
+        help_text="well-known physical features /structure that can be used to"
+        " simplify directions to a given place. e.g town market or village ")
+    plot_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="This is the same number found on the title deeds of the"
+        "piece of land on which this facility is located")
+    location_desc = models.TextField(
+        null=True, blank=True,
+        help_text="This field allows a more detailed description of "
+        "the location")
 
     # hard code the operational status name in order to avoid more crud
     @property
@@ -628,17 +640,6 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def ward_name(self):
         return self.ward.name
-
-    @property
-    def facility_physical_address(self):
-        return {
-            "id": self.physical_address.id,
-            "town": self.physical_address.town.name,
-            "town_id": self.physical_address.town.id,
-            "nearest_landmark": self.physical_address.nearest_landmark,
-            "plot_number": self.physical_address.plot_number,
-            "location_desc": self.physical_address.location_desc
-        }
 
     @property
     def get_county(self):
@@ -765,6 +766,29 @@ class Facility(SequenceMixin, AbstractBase):
             return 0
 
     @property
+    def officer_in_charge(self):
+        officer = FacilityOfficer.objects.filter(active=True, facility=self)
+        if officer:
+            officer_contacts = OfficerContact.objects.filter(
+                officer=officer[0].officer)
+            contacts = []
+            for contact in officer_contacts:
+                contacts.append({
+                    "type": contact.contact.contact_type.id,
+                    "contact_type_name": contact.contact.contact_type.name,
+                    "contact": contact.contact.contact
+                })
+            return {
+                "name": officer[0].officer.name,
+                "reg_no": officer[0].officer.registration_number,
+                "id_number": officer[0].officer.id_number,
+                "title": officer[0].officer.job_title.id,
+                "title_name": officer[0].officer.job_title.name,
+                "contacts": contacts
+            }
+        return None
+
+    @property
     def coordinates(self):
         try:
             return self.facility_coordinates_through.id
@@ -778,8 +802,6 @@ class Facility(SequenceMixin, AbstractBase):
     def _get_field_human_attribute(self, field_obj):
         if hasattr(field_obj, 'name'):
             return field_obj.name
-        elif hasattr(field_obj, 'town'):
-            return field_obj.town.name
         elif field_obj is True:
             return "Yes"
         elif field_obj is False:
