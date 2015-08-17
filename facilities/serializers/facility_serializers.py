@@ -10,7 +10,6 @@ from common.models import ContactType, Contact
 
 from common.serializers import (
     AbstractFieldsMixin,
-    PhysicalAddressSerializer,
     ContactSerializer
 )
 
@@ -430,18 +429,6 @@ class FacilitySerializer(
             owner = create_owner(new_owner)
             validated_data['owner'] = owner
 
-        # create the physical address
-        def create_physical_address(location_data):
-            inject_audit_fields(location_data)
-            location = PhysicalAddressSerializer(
-                data=location_data, context=context)
-            return location.save() if location.is_valid() else errors.append(
-                "errors in creating physical address")
-
-        location = self.initial_data.pop('location_data', None)
-        if location:
-            physical_address = create_physical_address(location)
-            validated_data['physical_address'] = physical_address
         if errors:
             raise ValidationError(json.dumps({"detail": errors}))
         facility = super(FacilitySerializer, self).create(validated_data)

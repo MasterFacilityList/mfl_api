@@ -14,7 +14,7 @@ from common.models import (
     Contact,
     SequenceMixin,
     PhysicalAddress,
-    SubCounty
+    SubCounty, Town
 )
 from common.fields import SequenceField
 
@@ -594,6 +594,21 @@ class Facility(SequenceMixin, AbstractBase):
     sub_county = models.ForeignKey(
         SubCounty, null=True, blank=True,
         help_text='The sub county in which the facility has been assigned')
+    town = models.ForeignKey(
+        Town, null=True, blank=True,
+        help_text="The town where the entity is located e.g Nakuru")
+    nearest_landmark = models.TextField(
+        null=True, blank=True,
+        help_text="well-known physical features /structure that can be used to"
+        " simplify directions to a given place. e.g town market or village ")
+    plot_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="This is the same number found on the title deeds of the"
+        "piece of land on which this facility is located")
+    location_desc = models.TextField(
+        null=True, blank=True,
+        help_text="This field allows a more detailed description of "
+        "the location")
 
     # hard code the operational status name in order to avoid more crud
     @property
