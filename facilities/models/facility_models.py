@@ -606,6 +606,10 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True,
         help_text="This field allows a more detailed description of "
         "the location")
+    closed = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a facility has been closed by'
+        ' the regulator')
 
     # hard code the operational status name in order to avoid more crud
     @property
