@@ -2,7 +2,8 @@ from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
 
 from model_mommy import mommy
-from facilities.models import Facility, FacilityType, KephLevel
+from facilities.models import (
+    Facility, FacilityType, KephLevel, FacilityUpgrade)
 from common.models import Ward, County, Constituency
 
 
@@ -60,5 +61,11 @@ class TestFacilityCountByCountyReport(APITestCase):
         mommy.make(Facility, keph_level=keph_level_2)
         url = reverse("api:reporting:reports")
         url = url + "?report_type=facility_keph_level_report"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_get_upgrade_downgrade_report(self):
+        url = reverse("api:reporting:upgrade_downgrade_report")
+        mommy.make(FacilityUpgrade, _quantity=5)
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)

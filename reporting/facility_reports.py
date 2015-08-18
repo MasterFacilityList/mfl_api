@@ -1,6 +1,10 @@
 from django.apps import apps
 
-from facilities.models import Facility, FacilityType, KephLevel
+from facilities.models import (
+    Facility,
+    FacilityType,
+    KephLevel,
+    FacilityUpgrade)
 from common.models import County, Constituency
 from rest_framework.views import APIView, Response
 
@@ -205,4 +209,25 @@ class ReportView(FilterReportMixin, APIView):
         return Response(data={
             "results": data,
             "total": totals
+        })
+
+
+class FacilityUpgradeDowngrade(APIView):
+    def get(self, *args, **kwargs):
+        all_changes = FacilityUpgrade.objects.all()
+        facilities_ids = [change.facility.id for change in all_changes]
+        changed_facilities = Facility.objects.filter(id__in=facilities_ids)
+        results = []
+        for county in County.objects.all():
+            facility_count = changed_facilities.filter(
+                ward__constituency__county=county).count()
+            data = {
+                "county": county.name,
+                "county_id": county.id,
+                "changes": facility_count
+            }
+            results.append(data)
+        return Response(data={
+            "total_number_of_changes": len(facilities_ids),
+            "results": results
         })
