@@ -89,12 +89,14 @@ class QuerysetFilterMixin(object):
                 self.queryset = self.queryset
         else:
             self.queryset = self.queryset
+
         if self.request.user.has_perm("facilities.view_unpublished_facilities") is False and \
                 'is_published' in [
                     field.name for field in
                     self.queryset.model._meta.get_fields()]:
 
             self.queryset = self.queryset.filter(is_published=True)
+
         if self.request.user.has_perm("facilities.view_unapproved_facilities") \
             is False and 'approved' in [
                 field.name for field in
@@ -112,6 +114,12 @@ class QuerysetFilterMixin(object):
                 self.queryset.model._meta.get_fields()] and 'rejected'
                 not in self.request.query_params):
             self.queryset = self.queryset.filter(rejected=False)
+
+        if self.request.user.has_perm("facilities.view_closed_facilities") is False and \
+            'closed' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+            self.queryset = self.queryset.filter(closed=False)
 
         return self.queryset
 

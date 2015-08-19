@@ -22,6 +22,8 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
             codename="view_unapproved_facilities")
         self.view_classified_perm = Permission.objects.get(
             codename="view_classified_facilities")
+        self.view_closed_perm = Permission.objects.get(
+            codename="view_closed_facilities")
         self.public_group = mommy.make(Group, name="public")
         view_fields_perm = Permission.objects.get(
             codename='view_all_facility_fields')
@@ -30,6 +32,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.admin_group.permissions.add(self.view_approved_perm.id)
         self.admin_group.permissions.add(self.view_classified_perm.id)
         self.admin_group.permissions.add(view_fields_perm.id)
+        self.admin_group.permissions.add(self.view_closed_perm.id)
 
         self.admin_user = mommy.make(MflUser, first_name='admin')
         self.public_user = mommy.make(MflUser, first_name='public')
@@ -170,6 +173,20 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
     def test_get_empy_list(self):
         # test admin user sees all facilities
         self.client.force_authenticate(self.admin_user)
+        admin_response = self.client.get(self.url)
+        self.assertEquals(200, admin_response.status_code)
+        self.assertEquals(0, admin_response.data.get("count"))
+
+    def test_admin_user_sees_closed_facilities(self):
+        mommy.make(Facility, closed=True)
+        self.client.force_authenticate(self.admin_user)
+        admin_response = self.client.get(self.url)
+        self.assertEquals(200, admin_response.status_code)
+        self.assertEquals(1, admin_response.data.get("count"))
+
+    def test_public_does_not_see_closed_facilities(self):
+        mommy.make(Facility, closed=True)
+        self.client.force_authenticate(self.public_user)
         admin_response = self.client.get(self.url)
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(0, admin_response.data.get("count"))

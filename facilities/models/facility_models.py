@@ -610,6 +610,10 @@ class Facility(SequenceMixin, AbstractBase):
         default=False,
         help_text='Indicates whether a facility has been closed by'
         ' the regulator')
+    closed_date = models.DateTimeField(
+        null=True, blank=True, help_text='Date the facility was closed')
+    closing_reason = models.TextField(
+        null=True, blank=True, help_text="Reason for closing the facility")
 
     # hard code the operational status name in order to avoid more crud
     @property
@@ -921,6 +925,7 @@ class Facility(SequenceMixin, AbstractBase):
         verbose_name_plural = 'facilities'
         permissions = (
             ("view_classified_facilities", "Can see classified facilities"),
+            ("view_closed_facilities", "Can see closed facilities"),
             ("publish_facilities", "Can publish facilities"),
             ("view_unpublished_facilities",
                 "Can see the un published facilities"),
