@@ -616,6 +616,14 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True,
         help_text="This field allows a more detailed description of "
         "the location")
+    closed = models.BooleanField(
+        default=False,
+        help_text='Indicates whether a facility has been closed by'
+        ' the regulator')
+    closed_date = models.DateTimeField(
+        null=True, blank=True, help_text='Date the facility was closed')
+    closing_reason = models.TextField(
+        null=True, blank=True, help_text="Reason for closing the facility")
 
     # hard code the operational status name in order to avoid more crud
     @property
@@ -741,7 +749,9 @@ class Facility(SequenceMixin, AbstractBase):
                 "service_name": str(service.service.name),
                 "service_code": service.service.code,
                 "option_name": str(
-                    service.option.display_text),
+                    service.option.display_text) if service.option else "N/A",
+                "option": str(
+                    service.option.id) if service.option else None,
                 "category_name": str(
                     service.service.category.name),
                 "category_id": service.service.category.id,
@@ -925,6 +935,8 @@ class Facility(SequenceMixin, AbstractBase):
         verbose_name_plural = 'facilities'
         permissions = (
             ("view_classified_facilities", "Can see classified facilities"),
+            ("view_closed_facilities", "Can see closed facilities"),
+            ("view_rejected_facilities", "Can see rejected facilities"),
             ("publish_facilities", "Can publish facilities"),
             ("view_unpublished_facilities",
                 "Can see the un published facilities"),
@@ -1036,7 +1048,7 @@ class FacilityUpgrade(AbstractBase):
     """
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
-    keph_level = models.ForeignKey(KephLevel, null=True)
+    keph_level = models.ForeignKey(KephLevel, null=True, blank=True)
     reason = models.ForeignKey(FacilityLevelChangeReason)
     is_confirmed = models.BooleanField(
         default=False,
@@ -1047,6 +1059,10 @@ class FacilityUpgrade(AbstractBase):
         help_text='Indicates whether a facility upgrade or downgrade has been'
         'cancelled or not')
     is_upgrade = models.BooleanField(default=True)
+    current_keph_level_name = models.CharField(
+        max_length=100, null=True, blank=True)
+    current_facility_type_name = models.CharField(
+        max_length=100, null=True, blank=True)
 
     def validate_only_one_type_change_at_a_time(self):
         if self.is_confirmed or self.is_cancelled:
@@ -1060,9 +1076,16 @@ class FacilityUpgrade(AbstractBase):
                          "first before another upgrade/downgrade is made")
                 raise ValidationError(error)
 
+    def populate_current_keph_level_and_facility_type(self):
+
+        self.current_facility_type_name = self.facility.facility_type.name
+        self.current_keph_level_name = self.facility.keph_level.name \
+            if self.facility.keph_level else "N/A"
+
     def clean(self):
         super(FacilityUpgrade, self).clean()
         self.validate_only_one_type_change_at_a_time()
+        self.populate_current_keph_level_and_facility_type()
 
 
 @reversion.register

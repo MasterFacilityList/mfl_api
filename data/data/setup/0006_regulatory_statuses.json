@@ -1,7 +1,0 @@
-[
-    {   "unique_fields": ["name"],
-        "model": "facilities.RegulationStatus",
-        "records": [{"name": "Registered"}, {"name": "Licensed"}, {"name": "Gazetted"}, {"name": "Pending Registration"}, {"name": "Pending License"}, {"name": "Pending Gazettement"}]
-
-    }
-]
