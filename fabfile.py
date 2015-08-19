@@ -63,21 +63,21 @@ def load_setup_data(*args, **kwargs):
 def load_demo_data(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
 
-    data_files_1 = join(BASE_DIR, 'data/new_data/setup/*.json')
-    data_files_2 = join(BASE_DIR, 'data/data/0*.json')
-    data_files_3 = join(BASE_DIR, 'data/new_data/demo_part_1/*.json')
-    data_files_4 = join(BASE_DIR, 'data/new_data/facilities/*.json')
-    data_files_5 = join(BASE_DIR, 'data/new_data/demo_part_2/*.json')
+    data_files_1 = join(BASE_DIR, 'data/data/setup/*.json')
+    data_files_2 = join(BASE_DIR, 'data/v2_data/0*.json')
+    data_files_3 = join(BASE_DIR, 'data/data/demo/*.json')
+    data_files_4 = join(BASE_DIR, 'data/data/facilities/*.json')
+    data_files_6 = join(BASE_DIR, 'data/data/geocodes/*.json')
+    data_files_6 = join(BASE_DIR, 'data/data/approvals/*.json')
     manage('bootstrap', data_files_1)
     manage('bootstrap', data_files_2)
     manage('bootstrap', data_files_3)
     manage('bootstrap', data_files_4)
-    manage('bootstrap', data_files_5)
     manage('load_groups')
 
     # Needs to occur after base setup data has been loaded
     load_gis_data()
-    manage('load_geo_codes')
+    manage('bootstrap', data_files_6)
     manage("createinitialrevisions")
 
 

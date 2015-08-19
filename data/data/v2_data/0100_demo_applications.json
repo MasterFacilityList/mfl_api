@@ -1,0 +1,32 @@
+[
+    {
+        "model": "users.mfloauthapplication",
+        "unique_fields": ["client_id"],
+        "records": [
+            {
+                "redirect_uris": "",
+                "name": "mfl-public-frontend",
+                "client_type": "confidential",
+                "user": {
+                    "email": "national_admin@mfltest.slade360.co.ke"
+                },
+                "client_id": "xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5",
+                "skip_authorization": false,
+                "client_secret": "PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx",
+                "authorization_grant_type": "password"
+            },
+            {
+                "client_id": "5O1KlpwBb96ANWe27ZQOpbWSF4DZDm4sOytwdzGv",
+                "redirect_uris": "",
+                "client_type": "confidential",
+                "authorization_grant_type": "password",
+                "client_secret": "PqV0dHbkjXAtJYhY9UOCgRVi5BzLhiDxGU91kbt5EoayQ5SYOoJBYRYAYlJl2RetUeDMpSvhe9DaQr0HKHan0B9ptVyoLvOqpekiOmEqUJ6HZKuIoma0pvqkkKDU9GPv",
+                "name": "mfl-admin-frontend",
+                "skip_authorization": false,
+                "user": {
+                    "email": "national_admin@mfltest.slade360.co.ke"
+                }
+            }
+        ]
+    }
+]

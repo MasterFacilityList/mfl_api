@@ -61,7 +61,8 @@ class CreateJsonFiles(object):
         """
         Creates a single json file
         """
-        demo_folder = os.path.join(settings.BASE_DIR, "data/new_data/demo")
+        demo_folder = os.path.join(settings.BASE_DIR, "data/new_data/demo_part_1")
+        demo_folder_2 = os.path.join(settings.BASE_DIR, "data/new_data/demo_part_2")
         setup_folder = os.path.join(settings.BASE_DIR, "data/new_data/setup")
         fax_folder = os.path.join(settings.BASE_DIR, "data/new_data/fax")
         email_folder = os.path.join(settings.BASE_DIR, "data/new_data/email")
@@ -76,6 +77,9 @@ class CreateJsonFiles(object):
         elif folder == "setup":
             self._help_create_file(
                 setup_folder, file_name, model_name, unique_fields, data)
+        elif folder == "demo2":
+            self._help_create_file(
+                demo_folder_2, file_name, model_name, unique_fields, data)
         elif folder == 'fax':
             self._help_create_file(
                 fax_folder, file_name, model_name, unique_fields, data)
@@ -1016,7 +1020,7 @@ SETUP_DATA_CONFIG = [
             }
             ],
         "file_name": "00_facility_approvals.json",
-        "folder": "geocodes",
+        "folder": "demo2",
         "model_name": "facilities.FacilityApproval",
         "unique_fields": ["facility"],
         "data": [],

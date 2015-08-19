@@ -1,0 +1,198 @@
+[
+    {
+        "model": "common.County",
+        "unique_fields": [
+            "code"
+        ],
+        "records": [
+            {
+                "code": 1,
+                "name": "MOMBASA"
+            },
+            {
+                "code": 2,
+                "name": "KWALE"
+            },
+            {
+                "code": 3,
+                "name": "KILIFI"
+            },
+            {
+                "code": 4,
+                "name": "TANA RIVER"
+            },
+            {
+                "code": 5,
+                "name": "LAMU"
+            },
+            {
+                "code": 6,
+                "name": "TAITA TAVETA"
+            },
+            {
+                "code": 7,
+                "name": "GARISSA"
+            },
+            {
+                "code": 8,
+                "name": "WAJIR"
+            },
+            {
+                "code": 9,
+                "name": "MANDERA"
+            },
+            {
+                "code": 10,
+                "name": "MARSABIT"
+            },
+            {
+                "code": 11,
+                "name": "ISIOLO"
+            },
+            {
+                "code": 12,
+                "name": "MERU"
+            },
+            {
+                "code": 13,
+                "name": "THARAKA-NITHI"
+            },
+            {
+                "code": 14,
+                "name": "EMBU"
+            },
+            {
+                "code": 15,
+                "name": "KITUI"
+            },
+            {
+                "code": 16,
+                "name": "MACHAKOS"
+            },
+            {
+                "code": 17,
+                "name": "MAKUENI"
+            },
+            {
+                "code": 18,
+                "name": "NYANDARUA"
+            },
+            {
+                "code": 19,
+                "name": "NYERI"
+            },
+            {
+                "code": 20,
+                "name": "KIRINYAGA"
+            },
+            {
+                "code": 21,
+                "name": "MURANG'A"
+            },
+            {
+                "code": 22,
+                "name": "KIAMBU"
+            },
+            {
+                "code": 23,
+                "name": "TURKANA"
+            },
+            {
+                "code": 24,
+                "name": "WEST POKOT"
+            },
+            {
+                "code": 25,
+                "name": "SAMBURU"
+            },
+            {
+                "code": 26,
+                "name": "TRANS NZOIA"
+            },
+            {
+                "code": 27,
+                "name": "UASIN GISHU"
+            },
+            {
+                "code": 28,
+                "name": "ELEGEYO-MARAKWET"
+            },
+            {
+                "code": 29,
+                "name": "NANDI"
+            },
+            {
+                "code": 30,
+                "name": "BARINGO"
+            },
+            {
+                "code": 31,
+                "name": "LAIKIPIA"
+            },
+            {
+                "code": 32,
+                "name": "NAKURU"
+            },
+            {
+                "code": 33,
+                "name": "NAROK"
+            },
+            {
+                "code": 34,
+                "name": "KAJIADO"
+            },
+            {
+                "code": 35,
+                "name": "KERICHO"
+            },
+            {
+                "code": 36,
+                "name": "BOMET"
+            },
+            {
+                "code": 37,
+                "name": "KAKAMEGA"
+            },
+            {
+                "code": 38,
+                "name": "VIHIGA"
+            },
+            {
+                "code": 39,
+                "name": "BUNGOMA"
+            },
+            {
+                "code": 40,
+                "name": "BUSIA"
+            },
+            {
+                "code": 41,
+                "name": "SIAYA"
+            },
+            {
+                "code": 42,
+                "name": "KISUMU"
+            },
+            {
+                "code": 43,
+                "name": "HOMA BAY"
+            },
+            {
+                "code": 44,
+                "name": "MIGORI"
+            },
+            {
+                "code": 45,
+                "name": "KISII"
+            },
+            {
+                "code": 46,
+                "name": "NYAMIRA"
+            },
+            {
+                "code": 47,
+                "name": "NAIROBI"
+            }
+        ]
+    }
+]
