@@ -104,7 +104,7 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
                     "previous_facility_type":
                         facility_upgrade.current_facility_type_name,
                     "current_facility_type":
-                        facility_upgrade.current_facility_type_name,
+                        facility_upgrade.facility_type.name,
                     "reason": facility_upgrade.reason.reason
                 }
             ]
@@ -120,13 +120,13 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
                 {
                     "name": facility_1.name,
                     "code": facility_1.code,
-                    "current_keph_level": facility_upgrade_2.keph_level,
+                    "current_keph_level": facility_upgrade_2.keph_level.name,
                     "previous_keph_level":
                         facility_upgrade_2.current_keph_level_name,
                     "previous_facility_type":
                         facility_upgrade_2.current_facility_type_name,
                     "current_facility_type":
-                        facility_upgrade_2.current_facility_type_name,
+                        facility_upgrade_2.facility_type.name,
                     "reason": facility_upgrade_2.reason.reason
                 }
             ]
