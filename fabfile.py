@@ -56,15 +56,11 @@ def psql(query, no_sudo=False, is_file=False):
         local('{} psql -c "{}"'.format(sudo, query))
 
 
-def load_setup_data(*args, **kwargs):
-    pass
-
-
 def load_demo_data(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
 
     data_files_1 = join(BASE_DIR, 'data/data/setup/*.json')
-    data_files_2 = join(BASE_DIR, 'data/v2_data/0*.json')
+    data_files_2 = join(BASE_DIR, 'data/data/v2_data/0*.json')
     data_files_3 = join(BASE_DIR, 'data/data/demo/*.json')
     data_files_4 = join(BASE_DIR, 'data/data/facilities/*.json')
     data_files_6 = join(BASE_DIR, 'data/data/geocodes/*.json')
