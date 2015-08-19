@@ -101,7 +101,8 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
                     "previous_facility_type":
                         facility_upgrade.current_facility_type_name,
                     "current_facility_type":
-                        facility_upgrade.current_facility_type_name
+                        facility_upgrade.current_facility_type_name,
+                    "reason": facility_upgrade.reason.reason
                 }
             ]
         }
@@ -122,7 +123,8 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
                     "previous_facility_type":
                         facility_upgrade_2.current_facility_type_name,
                     "current_facility_type":
-                        facility_upgrade_2.current_facility_type_name
+                        facility_upgrade_2.current_facility_type_name,
+                    "reason": facility_upgrade_2.reason.reason
                 }
             ]
         }

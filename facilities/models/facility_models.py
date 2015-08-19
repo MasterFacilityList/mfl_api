@@ -1059,8 +1059,10 @@ class FacilityUpgrade(AbstractBase):
                 raise ValidationError(error)
 
     def populate_current_keph_level_and_facility_type(self):
+
         self.current_facility_type_name = self.facility.facility_type.name
-        self.current_keph_level_name = self.facility.keph_level.name
+        self.current_keph_level_name = self.facility.keph_level.name \
+            if self.facility.keph_level else "N/A"
 
     def clean(self):
         super(FacilityUpgrade, self).clean()
