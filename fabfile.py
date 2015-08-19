@@ -56,13 +56,28 @@ def psql(query, no_sudo=False, is_file=False):
         local('{} psql -c "{}"'.format(sudo, query))
 
 
+def load_setup_data(*args, **kwargs):
+    pass
+
+
 def load_demo_data(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
-    data_files = join(BASE_DIR, 'data/data/0*.json')
-    manage('bootstrap', data_files)
+
+    data_files_1 = join(BASE_DIR, 'data/data/setup/*.json')
+    data_files_2 = join(BASE_DIR, 'data/v2_data/0*.json')
+    data_files_3 = join(BASE_DIR, 'data/data/demo/*.json')
+    data_files_4 = join(BASE_DIR, 'data/data/facilities/*.json')
+    data_files_6 = join(BASE_DIR, 'data/data/geocodes/*.json')
+    data_files_6 = join(BASE_DIR, 'data/data/approvals/*.json')
+    manage('bootstrap', data_files_1)
+    manage('bootstrap', data_files_2)
+    manage('bootstrap', data_files_3)
+    manage('bootstrap', data_files_4)
     manage('load_groups')
+
     # Needs to occur after base setup data has been loaded
     load_gis_data()
+    manage('bootstrap', data_files_6)
     manage("createinitialrevisions")
 
 
