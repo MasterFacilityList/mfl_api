@@ -126,8 +126,6 @@ def setup_db(*args, **kwargs):
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
-    sql_file = join(BASE_DIR, "mfl_sql_dump.sql")
-    psql("psql db_name < {}".format(sql_file))
 
 
 def clear_cache():
