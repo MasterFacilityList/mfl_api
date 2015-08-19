@@ -736,6 +736,8 @@ class Facility(SequenceMixin, AbstractBase):
                 "service_code": service.service.code,
                 "option_name": str(
                     service.option.display_text) if service.option else "N/A",
+                "option": str(
+                    service.option.id) if service.option else None,
                 "category_name": str(
                     service.service.category.name),
                 "category_id": service.service.category.id,
