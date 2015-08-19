@@ -1,7 +1,0 @@
-[
-    {   "unique_fields": {{unique_fields | safe}},
-        "model": "{{model_name | safe }}",
-        "records": {{data | safe }}
-
-    }
-]
