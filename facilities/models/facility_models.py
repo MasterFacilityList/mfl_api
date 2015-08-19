@@ -926,6 +926,7 @@ class Facility(SequenceMixin, AbstractBase):
         permissions = (
             ("view_classified_facilities", "Can see classified facilities"),
             ("view_closed_facilities", "Can see closed facilities"),
+            ("view_rejected_facilities", "Can see rejected facilities"),
             ("publish_facilities", "Can publish facilities"),
             ("view_unpublished_facilities",
                 "Can see the un published facilities"),
