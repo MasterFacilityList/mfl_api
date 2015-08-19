@@ -300,6 +300,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
                 "service_id": service.id,
                 "service_name": service.name,
                 "option_name": option.display_text,
+                "option": str(option.id),
                 "category_name": service_category.name,
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
