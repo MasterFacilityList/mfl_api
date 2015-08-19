@@ -80,13 +80,15 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         constituency = mommy.make(Constituency, county=county)
         ward = mommy.make(Ward, constituency=constituency)
         facility = mommy.make(Facility, ward=ward, keph_level=keph_level)
-        facility_upgrade = mommy.make(FacilityUpgrade, facility=facility)
+        facility_upgrade = mommy.make(
+            FacilityUpgrade, keph_level=keph_level, facility=facility)
 
         county_1 = mommy.make(County)
         constituency_1 = mommy.make(Constituency, county=county_1)
         ward_1 = mommy.make(Ward, constituency=constituency_1)
         facility_1 = mommy.make(Facility, ward=ward_1, keph_level=keph_level)
-        facility_upgrade_2 = mommy.make(FacilityUpgrade, facility=facility_1)
+        facility_upgrade_2 = mommy.make(
+            FacilityUpgrade, keph_level=keph_level, facility=facility_1)
 
         url = main_url + "?county={}".format(county.id)
         expected_data = {
@@ -95,7 +97,8 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
                 {
                     "name": facility.name,
                     "code": facility.code,
-                    "current_keph_level": facility_upgrade.keph_level,
+                    "current_keph_level":
+                    facility_upgrade.facility.keph_level.name,
                     "previous_keph_level":
                         facility_upgrade.current_keph_level_name,
                     "previous_facility_type":

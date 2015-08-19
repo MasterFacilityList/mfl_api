@@ -244,7 +244,8 @@ class FacilityUpgradeDowngrade(APIView):
                 data = {
                     "name": facility.name,
                     "code": facility.code,
-                    "current_keph_level": latest_facility_change.keph_level.name,
+                    "current_keph_level":
+                        latest_facility_change.keph_level.name,
                     "previous_keph_level":
                         latest_facility_change.current_keph_level_name,
                     "previous_facility_type":

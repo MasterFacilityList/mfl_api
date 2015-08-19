@@ -97,4 +97,4 @@ mfl_models_graph.png
 .fab_tasks~
 static/*
 data/data/*
-
+*.sql
