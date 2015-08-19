@@ -65,6 +65,7 @@ def load_demo_data(*args, **kwargs):
     data_files_4 = join(BASE_DIR, 'data/data/facilities/*.json')
     data_files_6 = join(BASE_DIR, 'data/data/geocodes/*.json')
     data_files_7 = join(BASE_DIR, 'data/data/approvals/*.json')
+    data_files_8 = join(BASE_DIR, 'data/data/last/*.json')
     manage('bootstrap', data_files_1)
     manage('bootstrap', data_files_2)
     manage('bootstrap', data_files_3)
@@ -75,6 +76,7 @@ def load_demo_data(*args, **kwargs):
     load_gis_data()
     manage('bootstrap', data_files_6)
     manage('bootstrap', data_files_7)
+    manage('bootstrap', data_files_8)
     manage("createinitialrevisions")
 
 
