@@ -57,6 +57,11 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def load_demo_data(*args, **kwargs):
+    """Loads data through fixture"""
+    manage("loaddata", "mfl_fixture.json")
+
+
+def load_demo_data_from_scratch(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
 
     data_files_1 = join(BASE_DIR, 'data/data/setup/*.json')
