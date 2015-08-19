@@ -1,0 +1,66 @@
+[
+    {
+        "model": "facilities.FacilityLevelChangeReason",
+        "unique_fields": ["reason"],
+
+        "records": [
+            {
+                "reason": "Political Upgrade",
+                "description": "The facility upgrade was done through a political figure"
+            },
+            {
+                "reason": "Bought More Equipment",
+                "description": "The facility bought more equipment thus was able to offer more services"
+            },
+            {
+                "reason": "Increase in Bed capacity",
+                "description": "The number of beds in the facility were increased"
+            }
+
+        ]
+    },
+    {
+        "model": "facilities.FacilityUpgrade",
+        "unique_fields": ["facility"],
+
+        "records": [
+            {
+
+                "facility": {
+                    "code": 19680
+
+                },
+                "facility_type": {
+                    "name": "District Health Office"
+                },
+                "keph_level": {
+                    "name": "Level 5"
+                },
+                "reason": {
+                    "reason": "Increase in Bed capacity"
+                }
+
+            },
+            {
+
+                "facility": {
+                    "code": 19476
+
+                },
+                "facility_type": {
+                    "name": "Dental Clinic"
+                },
+                "keph_level": {
+                    "name": "Level 5"
+                },
+                    "reason": {"reason": "Bought More Equipment"
+                }
+
+            }
+
+
+        ]
+    }
+
+
+]
