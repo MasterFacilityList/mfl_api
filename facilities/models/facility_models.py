@@ -1032,7 +1032,7 @@ class FacilityUpgrade(AbstractBase):
     """
     facility = models.ForeignKey(Facility, related_name='facility_upgrades')
     facility_type = models.ForeignKey(FacilityType)
-    keph_level = models.ForeignKey(KephLevel, null=True)
+    keph_level = models.ForeignKey(KephLevel, null=True, blank=True)
     reason = models.ForeignKey(FacilityLevelChangeReason)
     is_confirmed = models.BooleanField(
         default=False,
@@ -1043,6 +1043,10 @@ class FacilityUpgrade(AbstractBase):
         help_text='Indicates whether a facility upgrade or downgrade has been'
         'cancelled or not')
     is_upgrade = models.BooleanField(default=True)
+    current_keph_level_name = models.CharField(
+        max_length=100, null=True, blank=True)
+    current_facility_type_name = models.CharField(
+        max_length=100, null=True, blank=True)
 
     def validate_only_one_type_change_at_a_time(self):
         if self.is_confirmed or self.is_cancelled:
@@ -1056,9 +1060,16 @@ class FacilityUpgrade(AbstractBase):
                          "first before another upgrade/downgrade is made")
                 raise ValidationError(error)
 
+    def populate_current_keph_level_and_facility_type(self):
+
+        self.current_facility_type_name = self.facility.facility_type.name
+        self.current_keph_level_name = self.facility.keph_level.name \
+            if self.facility.keph_level else "N/A"
+
     def clean(self):
         super(FacilityUpgrade, self).clean()
         self.validate_only_one_type_change_at_a_time()
+        self.populate_current_keph_level_and_facility_type()
 
 
 @reversion.register
