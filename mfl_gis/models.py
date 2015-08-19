@@ -194,10 +194,10 @@ class FacilityCoordinates(GISAbstractBase):
         }
 
     def clean(self):
-        # self.validate_longitude_and_latitude_within_kenya()
-        # self.validate_longitude_and_latitude_within_county()
-        # self.validate_longitude_and_latitude_within_constituency()
-        # self.validate_longitude_and_latitude_within_ward()
+        self.validate_longitude_and_latitude_within_kenya()
+        self.validate_longitude_and_latitude_within_county()
+        self.validate_longitude_and_latitude_within_constituency()
+        self.validate_longitude_and_latitude_within_ward()
         super(FacilityCoordinates, self).clean()
 
     def __unicode__(self):
