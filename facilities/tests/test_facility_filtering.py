@@ -24,6 +24,8 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
             codename="view_classified_facilities")
         self.view_closed_perm = Permission.objects.get(
             codename="view_closed_facilities")
+        self.view_rejected_perm = Permission.objects.get(
+            codename="view_rejected_facilities")
         self.public_group = mommy.make(Group, name="public")
         view_fields_perm = Permission.objects.get(
             codename='view_all_facility_fields')
@@ -33,6 +35,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.admin_group.permissions.add(self.view_classified_perm.id)
         self.admin_group.permissions.add(view_fields_perm.id)
         self.admin_group.permissions.add(self.view_closed_perm.id)
+        self.admin_group.permissions.add(self.view_rejected_perm.id)
 
         self.admin_user = mommy.make(MflUser, first_name='admin')
         self.public_user = mommy.make(MflUser, first_name='public')
@@ -62,9 +65,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.client.force_authenticate(self.admin_user)
         admin_response = self.client.get(self.url)
         self.assertEquals(200, admin_response.status_code)
-        self.assertEquals(2, admin_response.data.get("count"))
-        for obj in admin_response.data.get("results"):
-            self.assertFalse(Facility.objects.get(id=obj.get('id')).rejected)
+        self.assertEquals(3, admin_response.data.get("count"))
 
         # test public user sees only published facilties
         self.client.logout()
@@ -75,6 +76,8 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         for obj in public_response.data.get("results"):
             self.assertTrue(
                 Facility.objects.get(id=obj.get('id')).is_published)
+            self.assertFalse(
+                Facility.objects.get(id=obj.get('id')).rejected)
 
     def test_public_cant_see_unapproved_facilities(self):
         mommy.make(Facility)
@@ -186,6 +189,20 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_does_not_see_closed_facilities(self):
         mommy.make(Facility, closed=True)
+        self.client.force_authenticate(self.public_user)
+        admin_response = self.client.get(self.url)
+        self.assertEquals(200, admin_response.status_code)
+        self.assertEquals(0, admin_response.data.get("count"))
+
+    def test_admin_user_sees_rejected_facilities(self):
+        mommy.make(Facility, rejected=True)
+        self.client.force_authenticate(self.admin_user)
+        admin_response = self.client.get(self.url)
+        self.assertEquals(200, admin_response.status_code)
+        self.assertEquals(1, admin_response.data.get("count"))
+
+    def test_public_does_not_see_rejected_facilities(self):
+        mommy.make(Facility, rejected=True)
         self.client.force_authenticate(self.public_user)
         admin_response = self.client.get(self.url)
         self.assertEquals(200, admin_response.status_code)

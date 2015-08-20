@@ -109,10 +109,10 @@ class QuerysetFilterMixin(object):
                 self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(is_classified=False)
 
-        if ('rejected' in [
+        if self.request.user.has_perm("facilities.view_rejected_facilities") \
+            is False and ('rejected' in [
                 field.name for field in
-                self.queryset.model._meta.get_fields()] and 'rejected'
-                not in self.request.query_params):
+                self.queryset.model._meta.get_fields()]):
             self.queryset = self.queryset.filter(rejected=False)
 
         if self.request.user.has_perm("facilities.view_closed_facilities") is False and \

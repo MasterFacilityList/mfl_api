@@ -51,13 +51,19 @@ class Migration(migrations.Migration):
                 ('branch_name', models.CharField(help_text=b"Branch name of the facility's bank", max_length=100, null=True, blank=True)),
                 ('bank_account', models.CharField(max_length=100, null=True, blank=True)),
                 ('facility_catchment_population', models.CharField(help_text=b'The population size which the facility serves', max_length=100, null=True, blank=True)),
+                ('nearest_landmark', models.TextField(help_text=b'well-known physical features /structure that can be used to simplify directions to a given place. e.g town market or village ', null=True, blank=True)),
+                ('plot_number', models.CharField(help_text=b'This is the same number found on the title deeds of thepiece of land on which this facility is located', max_length=100, null=True, blank=True)),
+                ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of the location', null=True, blank=True)),
+                ('closed', models.BooleanField(default=False, help_text=b'Indicates whether a facility has been closed by the regulator')),
+                ('closed_date', models.DateTimeField(help_text=b'Date the facility was closed', null=True, blank=True)),
+                ('closing_reason', models.TextField(help_text=b'Reason for closing the facility', null=True, blank=True)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name_plural': 'facilities',
-                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('publish_facilities', 'Can publish facilities'), ('view_unpublished_facilities', 'Can see the un published facilities'), ('view_unapproved_facilities', 'Can see the unapproved facilities'), ('view_all_facility_fields', 'Can see the all information on a facilities')),
+                'permissions': (('view_classified_facilities', 'Can see classified facilities'), ('view_closed_facilities', 'Can see closed facilities'), ('view_rejected_facilities', 'Can see rejected facilities'), ('publish_facilities', 'Can publish facilities'), ('view_unpublished_facilities', 'Can see the un published facilities'), ('view_unapproved_facilities', 'Can see the unapproved facilities'), ('view_all_facility_fields', 'Can see the all information on a facilities')),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
@@ -334,6 +340,8 @@ class Migration(migrations.Migration):
                 ('is_confirmed', models.BooleanField(default=False, help_text=b'Indicates whether a facility upgrade or downgrade has been confirmed')),
                 ('is_cancelled', models.BooleanField(default=False, help_text=b'Indicates whether a facility upgrade or downgrade has beencancelled or not')),
                 ('is_upgrade', models.BooleanField(default=True)),
+                ('current_keph_level_name', models.CharField(max_length=100, null=True, blank=True)),
+                ('current_facility_type_name', models.CharField(max_length=100, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='facility_upgrades', to='facilities.Facility')),
                 ('facility_type', models.ForeignKey(to='facilities.FacilityType')),
@@ -721,7 +729,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facilityupgrade',
             name='keph_level',
-            field=models.ForeignKey(to='facilities.KephLevel', null=True),
+            field=models.ForeignKey(blank=True, to='facilities.KephLevel', null=True),
         ),
         migrations.AddField(
             model_name='facilityupgrade',
@@ -855,11 +863,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facility',
-            name='physical_address',
-            field=models.ForeignKey(blank=True, to='common.PhysicalAddress', help_text=b'Postal and courier addressing for the facility', null=True),
-        ),
-        migrations.AddField(
-            model_name='facility',
             name='regulatory_body',
             field=models.ForeignKey(blank=True, to='facilities.RegulatingBody', null=True),
         ),
@@ -867,6 +870,11 @@ class Migration(migrations.Migration):
             model_name='facility',
             name='sub_county',
             field=models.ForeignKey(blank=True, to='common.SubCounty', help_text=b'The sub county in which the facility has been assigned', null=True),
+        ),
+        migrations.AddField(
+            model_name='facility',
+            name='town',
+            field=models.ForeignKey(blank=True, to='common.Town', help_text=b'The town where the entity is located e.g Nakuru', null=True),
         ),
         migrations.AddField(
             model_name='facility',
