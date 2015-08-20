@@ -411,7 +411,9 @@ class FacilitySerializer(
                 validated_data['update'] if
                 validated_data.get('updated') else timezone.now())
         }
-        inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
+
+        def inject_audit_fields(dict_a):
+            return dict_a.update(audit_data)
 
         # create new owners
         errors = []
