@@ -860,7 +860,7 @@ class Facility(SequenceMixin, AbstractBase):
             " of {} which are not allowed".format(forbidden_fields)
             raise ValidationError(error)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # NOQA
         """
         Overide the save method in order to capture updates to a facility.
         This creates a record of the updates in the FacilityUpdates model.
