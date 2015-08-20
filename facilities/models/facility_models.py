@@ -850,8 +850,8 @@ class Facility(SequenceMixin, AbstractBase):
             'operation_status_id', 'regulatory_status_id', 'facility_type_id']
         data = []
         for field in fields:
-            if (getattr(self, field) != getattr(origi_model, field)
-                    and field not in forbidden_fields):
+            if (getattr(self, field) != getattr(origi_model, field) and
+                    field not in forbidden_fields):
                 field_data = getattr(self, field)
                 updated_details = {
                     "display_value": self._get_field_human_attribute(
@@ -870,7 +870,7 @@ class Facility(SequenceMixin, AbstractBase):
             " of {} which are not allowed".format(forbidden_fields)
             raise ValidationError(error)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # NOQA
         """
         Overide the save method in order to capture updates to a facility.
         This creates a record of the updates in the FacilityUpdates model.
@@ -898,6 +898,19 @@ class Facility(SequenceMixin, AbstractBase):
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             return
+
+        # enable closing a facility
+        if not old_details.closed and self.closed:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
+            return
+
+        # enable opening a facility
+        if old_details.closed and not self.closed:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
+            return
+
         old_details_serialized = FacilityDetailSerializer(
             old_details).data
         del old_details_serialized['updated']
