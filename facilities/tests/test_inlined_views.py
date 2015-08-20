@@ -8,7 +8,8 @@ from common.tests.test_views import LoginMixin
 from common.models import (
     Ward,
     ContactType,
-    Town)
+    Town,
+    Contact)
 
 from ..models import (
     OwnerType,
