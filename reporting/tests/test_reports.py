@@ -80,13 +80,14 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         constituency = mommy.make(Constituency, county=county)
         ward = mommy.make(Ward, constituency=constituency)
         facility = mommy.make(Facility, ward=ward, keph_level=keph_level)
-        facility_upgrade = mommy.make(FacilityUpgrade, facility=facility)
-
+        facility_upgrade = mommy.make(
+            FacilityUpgrade, keph_level=keph_level, facility=facility)
         county_1 = mommy.make(County)
         constituency_1 = mommy.make(Constituency, county=county_1)
         ward_1 = mommy.make(Ward, constituency=constituency_1)
         facility_1 = mommy.make(Facility, ward=ward_1, keph_level=keph_level)
-        facility_upgrade_2 = mommy.make(FacilityUpgrade, facility=facility_1)
+        facility_upgrade_2 = mommy.make(
+            FacilityUpgrade, keph_level=keph_level, facility=facility_1)
 
         url = main_url + "?county={}".format(county.id)
         expected_data = {
@@ -95,13 +96,14 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
                 {
                     "name": facility.name,
                     "code": facility.code,
-                    "current_keph_level": facility_upgrade.keph_level,
+                    "current_keph_level":
+                    facility_upgrade.facility.keph_level.name,
                     "previous_keph_level":
                         facility_upgrade.current_keph_level_name,
                     "previous_facility_type":
                         facility_upgrade.current_facility_type_name,
                     "current_facility_type":
-                        facility_upgrade.current_facility_type_name,
+                        facility_upgrade.facility_type.name,
                     "reason": facility_upgrade.reason.reason
                 }
             ]
@@ -117,13 +119,13 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
                 {
                     "name": facility_1.name,
                     "code": facility_1.code,
-                    "current_keph_level": facility_upgrade_2.keph_level,
+                    "current_keph_level": facility_upgrade_2.keph_level.name,
                     "previous_keph_level":
                         facility_upgrade_2.current_keph_level_name,
                     "previous_facility_type":
                         facility_upgrade_2.current_facility_type_name,
                     "current_facility_type":
-                        facility_upgrade_2.current_facility_type_name,
+                        facility_upgrade_2.facility_type.name,
                     "reason": facility_upgrade_2.reason.reason
                 }
             ]

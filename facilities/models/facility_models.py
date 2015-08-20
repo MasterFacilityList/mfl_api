@@ -50,6 +50,7 @@ class OwnerType(AbstractBase):
         max_length=100,
         help_text="Short unique name for a particular type of owners. "
         "e.g INDIVIDUAL")
+    abbreviation = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(
         null=True, blank=True,
         help_text="A brief summary of the particular type of owner.")
@@ -108,8 +109,11 @@ class JobTitle(AbstractBase):
      (Nursing Officer I) or Job Group title.Officer
     """
     name = models.CharField(
-        max_length=100,
+        max_length=100, unique=True,
         help_text="A short name for the job title")
+    abbreviation = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="The short name for the title")
     description = models.TextField(
         null=True, blank=True,
         help_text="A short summary of the job title")
@@ -203,6 +207,8 @@ class FacilityType(AbstractBase):
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short unique name for the facility type e.g DISPENSARY")
+    abbreviation = models.CharField(
+        max_length=100, null=True, blank=True)
     sub_division = models.CharField(
         max_length=100, null=True, blank=True,
         help_text="This is a further division of the facility type e.g "
@@ -258,6 +264,10 @@ class RegulatingBody(AbstractBase):
         OwnerType, null=True, blank=True,
         help_text='Show the kind of institutions that the body regulates e.g'
         'private facilities')
+    default_status = models.ForeignKey(
+        "RegulationStatus", null=True, blank=True,
+        help_text="The default status for the facilities regulated by "
+        "the particular regulator")
 
     @property
     def postal_address(self):
@@ -494,7 +504,7 @@ class Facility(SequenceMixin, AbstractBase):
     Health Centres, Dispensaries, Hospitals etc.
     """
     name = models.CharField(
-        max_length=100, unique=True,
+        max_length=100,
         help_text='This is the unique name of the facility')
     official_name = models.CharField(
         max_length=150, null=True, blank=True,
@@ -840,8 +850,8 @@ class Facility(SequenceMixin, AbstractBase):
             'operation_status_id', 'regulatory_status_id', 'facility_type_id']
         data = []
         for field in fields:
-            if (getattr(self, field) != getattr(origi_model, field)
-                    and field not in forbidden_fields):
+            if (getattr(self, field) != getattr(origi_model, field) and
+                    field not in forbidden_fields):
                 field_data = getattr(self, field)
                 updated_details = {
                     "display_value": self._get_field_human_attribute(
@@ -860,7 +870,7 @@ class Facility(SequenceMixin, AbstractBase):
             " of {} which are not allowed".format(forbidden_fields)
             raise ValidationError(error)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # NOQA
         """
         Overide the save method in order to capture updates to a facility.
         This creates a record of the updates in the FacilityUpdates model.
@@ -888,6 +898,19 @@ class Facility(SequenceMixin, AbstractBase):
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             return
+
+        # enable closing a facility
+        if not old_details.closed and self.closed:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
+            return
+
+        # enable opening a facility
+        if old_details.closed and not self.closed:
+            kwargs.pop('allow_save', None)
+            super(Facility, self).save(*args, **kwargs)
+            return
+
         old_details_serialized = FacilityDetailSerializer(
             old_details).data
         del old_details_serialized['updated']
@@ -1101,7 +1124,7 @@ class FacilityApproval(AbstractBase):
         self.update_facility_rejection()
 
     def __unicode__(self):
-        return "{}: {}".format(self.facility, self.created_by)
+        return "{}".format(self.facility.name)
 
 
 @reversion.register
