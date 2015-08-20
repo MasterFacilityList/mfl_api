@@ -716,6 +716,7 @@ class TestFacility(BaseTestCase):
 
     def test_closing_facility(self):
         facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
         facility.closed = True
         now = timezone.now()
         facility.closed_date = now
@@ -730,6 +731,7 @@ class TestFacility(BaseTestCase):
 
     def test_opening_closed_facility(self):
         facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
         facility.closed = True
         now = timezone.now()
         facility.closed_date = now
