@@ -1,0 +1,2040 @@
+[
+    {
+        "model": "common.Constituency",
+        "unique_fields": [
+            "code"
+        ],
+        "records": [
+            {
+                "county": {
+                    "code": 1
+                },
+                "code": 1,
+                "name": "CHANGAMWE"
+            },
+            {
+                "county": {
+                    "code": 1
+                },
+                "code": 2,
+                "name": "JOMVU"
+            },
+            {
+                "county": {
+                    "code": 1
+                },
+                "code": 3,
+                "name": "KISAUNI"
+            },
+            {
+                "county": {
+                    "code": 1
+                },
+                "code": 4,
+                "name": "NYALI"
+            },
+            {
+                "county": {
+                    "code": 1
+                },
+                "code": 5,
+                "name": "LIKONI"
+            },
+            {
+                "county": {
+                    "code": 1
+                },
+                "code": 6,
+                "name": "MVITA"
+            },
+            {
+                "county": {
+                    "code": 2
+                },
+                "code": 7,
+                "name": "MSAMBWENI"
+            },
+            {
+                "county": {
+                    "code": 2
+                },
+                "code": 8,
+                "name": "LUNGA LUNGA"
+            },
+            {
+                "county": {
+                    "code": 2
+                },
+                "code": 9,
+                "name": "MATUGA"
+            },
+            {
+                "county": {
+                    "code": 2
+                },
+                "code": 10,
+                "name": "KINANGO"
+            },
+            {
+                "county": {
+                    "code": 3
+                },
+                "code": 11,
+                "name": "KILIFI NORTH"
+            },
+            {
+                "county": {
+                    "code": 3
+                },
+                "code": 12,
+                "name": "KILIFI SOUTH"
+            },
+            {
+                "county": {
+                    "code": 3
+                },
+                "code": 13,
+                "name": "KALOLENI"
+            },
+            {
+                "county": {
+                    "code": 3
+                },
+                "code": 14,
+                "name": "RABAI"
+            },
+            {
+                "county": {
+                    "code": 3
+                },
+                "code": 15,
+                "name": "GANZE"
+            },
+            {
+                "county": {
+                    "code": 3
+                },
+                "code": 16,
+                "name": "MALINDI"
+            },
+            {
+                "county": {
+                    "code": 3
+                },
+                "code": 17,
+                "name": "MAGARINI"
+            },
+            {
+                "county": {
+                    "code": 4
+                },
+                "code": 18,
+                "name": "GARSEN"
+            },
+            {
+                "county": {
+                    "code": 4
+                },
+                "code": 19,
+                "name": "GALOLE"
+            },
+            {
+                "county": {
+                    "code": 4
+                },
+                "code": 20,
+                "name": "BURA"
+            },
+            {
+                "county": {
+                    "code": 5
+                },
+                "code": 21,
+                "name": "LAMU EAST"
+            },
+            {
+                "county": {
+                    "code": 5
+                },
+                "code": 22,
+                "name": "LAMU WEST"
+            },
+            {
+                "county": {
+                    "code": 6
+                },
+                "code": 23,
+                "name": "TAVETA"
+            },
+            {
+                "county": {
+                    "code": 6
+                },
+                "code": 24,
+                "name": "WUNDANYI"
+            },
+            {
+                "county": {
+                    "code": 6
+                },
+                "code": 25,
+                "name": "MWATATE"
+            },
+            {
+                "county": {
+                    "code": 6
+                },
+                "code": 26,
+                "name": "VOI"
+            },
+            {
+                "county": {
+                    "code": 7
+                },
+                "code": 27,
+                "name": "GARISSA TOWNSHIP"
+            },
+            {
+                "county": {
+                    "code": 7
+                },
+                "code": 28,
+                "name": "BALAMBALA"
+            },
+            {
+                "county": {
+                    "code": 7
+                },
+                "code": 29,
+                "name": "LAGDERA"
+            },
+            {
+                "county": {
+                    "code": 7
+                },
+                "code": 30,
+                "name": "DAADAB"
+            },
+            {
+                "county": {
+                    "code": 7
+                },
+                "code": 31,
+                "name": "FAFI"
+            },
+            {
+                "county": {
+                    "code": 7
+                },
+                "code": 32,
+                "name": "IJARA"
+            },
+            {
+                "county": {
+                    "code": 8
+                },
+                "code": 33,
+                "name": "WAJIR NORTH"
+            },
+            {
+                "county": {
+                    "code": 8
+                },
+                "code": 34,
+                "name": "WAJIR EAST"
+            },
+            {
+                "county": {
+                    "code": 8
+                },
+                "code": 35,
+                "name": "TARBAJ"
+            },
+            {
+                "county": {
+                    "code": 8
+                },
+                "code": 36,
+                "name": "WAJIR WEST"
+            },
+            {
+                "county": {
+                    "code": 8
+                },
+                "code": 37,
+                "name": "ELDAS"
+            },
+            {
+                "county": {
+                    "code": 8
+                },
+                "code": 38,
+                "name": "WAJIR SOUTH"
+            },
+            {
+                "county": {
+                    "code": 9
+                },
+                "code": 39,
+                "name": "MANDERA WEST"
+            },
+            {
+                "county": {
+                    "code": 9
+                },
+                "code": 40,
+                "name": "BANISSA"
+            },
+            {
+                "county": {
+                    "code": 9
+                },
+                "code": 41,
+                "name": "MANDERA NORTH"
+            },
+            {
+                "county": {
+                    "code": 9
+                },
+                "code": 42,
+                "name": "MANDERA SOUTH"
+            },
+            {
+                "county": {
+                    "code": 9
+                },
+                "code": 43,
+                "name": "MANDERA EAST"
+            },
+            {
+                "county": {
+                    "code": 9
+                },
+                "code": 44,
+                "name": "LAFEY"
+            },
+            {
+                "county": {
+                    "code": 10
+                },
+                "code": 45,
+                "name": "MOYALE"
+            },
+            {
+                "county": {
+                    "code": 10
+                },
+                "code": 46,
+                "name": "NORTH HORR"
+            },
+            {
+                "county": {
+                    "code": 10
+                },
+                "code": 47,
+                "name": "SAKU"
+            },
+            {
+                "county": {
+                    "code": 10
+                },
+                "code": 48,
+                "name": "LAISAMIS"
+            },
+            {
+                "county": {
+                    "code": 11
+                },
+                "code": 49,
+                "name": "ISIOLO NORTH"
+            },
+            {
+                "county": {
+                    "code": 11
+                },
+                "code": 50,
+                "name": "ISIOLO SOUTH"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 51,
+                "name": "IGEMBE SOUTH"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 52,
+                "name": "IGEMBE CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 53,
+                "name": "IGEMBE NORTH"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 54,
+                "name": "TIGANIA WEST"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 55,
+                "name": "TIGANIA EAST"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 56,
+                "name": "NORTH IMENTI"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 57,
+                "name": "BUURI"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 58,
+                "name": "CENTRAL IMENTI"
+            },
+            {
+                "county": {
+                    "code": 12
+                },
+                "code": 59,
+                "name": "SOUTH IMENTI"
+            },
+            {
+                "county": {
+                    "code": 13
+                },
+                "code": 60,
+                "name": "MAARA"
+            },
+            {
+                "county": {
+                    "code": 13
+                },
+                "code": 61,
+                "name": "CHUKA/IGAMBANG'OMBE"
+            },
+            {
+                "county": {
+                    "code": 13
+                },
+                "code": 62,
+                "name": "THARAKA"
+            },
+            {
+                "county": {
+                    "code": 14
+                },
+                "code": 63,
+                "name": "MANYATTA"
+            },
+            {
+                "county": {
+                    "code": 14
+                },
+                "code": 64,
+                "name": "RUNYENJES"
+            },
+            {
+                "county": {
+                    "code": 14
+                },
+                "code": 65,
+                "name": "MBEERE SOUTH"
+            },
+            {
+                "county": {
+                    "code": 14
+                },
+                "code": 66,
+                "name": "MBEERE NORTH"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 67,
+                "name": "MWINGI NORTH"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 68,
+                "name": "MWINGI WEST"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 69,
+                "name": "MWINGI CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 70,
+                "name": "KITUI WEST"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 71,
+                "name": "KITUI RURAL"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 72,
+                "name": "KITUI CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 73,
+                "name": "KITUI EAST"
+            },
+            {
+                "county": {
+                    "code": 15
+                },
+                "code": 74,
+                "name": "KITUI SOUTH"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 75,
+                "name": "MASINGA"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 76,
+                "name": "YATTA"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 77,
+                "name": "KANGUNDO"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 78,
+                "name": "MATUNGULU"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 79,
+                "name": "KATHIANI"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 80,
+                "name": "MAVOKO"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 81,
+                "name": "MACHAKOS TOWN"
+            },
+            {
+                "county": {
+                    "code": 16
+                },
+                "code": 82,
+                "name": "MWALA"
+            },
+            {
+                "county": {
+                    "code": 17
+                },
+                "code": 83,
+                "name": "MBOONI"
+            },
+            {
+                "county": {
+                    "code": 17
+                },
+                "code": 84,
+                "name": "KILOME"
+            },
+            {
+                "county": {
+                    "code": 17
+                },
+                "code": 85,
+                "name": "KAITI"
+            },
+            {
+                "county": {
+                    "code": 17
+                },
+                "code": 86,
+                "name": "MAKUENI"
+            },
+            {
+                "county": {
+                    "code": 17
+                },
+                "code": 87,
+                "name": "KIBWEZI WEST"
+            },
+            {
+                "county": {
+                    "code": 17
+                },
+                "code": 88,
+                "name": "KIBWEZI EAST"
+            },
+            {
+                "county": {
+                    "code": 18
+                },
+                "code": 89,
+                "name": "KINANGOP"
+            },
+            {
+                "county": {
+                    "code": 18
+                },
+                "code": 90,
+                "name": "KIPIPIRI"
+            },
+            {
+                "county": {
+                    "code": 18
+                },
+                "code": 91,
+                "name": "OL KALOU"
+            },
+            {
+                "county": {
+                    "code": 18
+                },
+                "code": 92,
+                "name": "OL JOROK"
+            },
+            {
+                "county": {
+                    "code": 18
+                },
+                "code": 93,
+                "name": "NDARAGWA"
+            },
+            {
+                "county": {
+                    "code": 19
+                },
+                "code": 94,
+                "name": "TETU"
+            },
+            {
+                "county": {
+                    "code": 19
+                },
+                "code": 95,
+                "name": "KIENI"
+            },
+            {
+                "county": {
+                    "code": 19
+                },
+                "code": 96,
+                "name": "MATHIRA"
+            },
+            {
+                "county": {
+                    "code": 19
+                },
+                "code": 97,
+                "name": "OTHAYA"
+            },
+            {
+                "county": {
+                    "code": 19
+                },
+                "code": 98,
+                "name": "MUKURWEINI"
+            },
+            {
+                "county": {
+                    "code": 19
+                },
+                "code": 99,
+                "name": "NYERI TOWN"
+            },
+            {
+                "county": {
+                    "code": 20
+                },
+                "code": 100,
+                "name": "MWEA"
+            },
+            {
+                "county": {
+                    "code": 20
+                },
+                "code": 101,
+                "name": "GICHUGU"
+            },
+            {
+                "county": {
+                    "code": 20
+                },
+                "code": 102,
+                "name": "NDIA"
+            },
+            {
+                "county": {
+                    "code": 20
+                },
+                "code": 103,
+                "name": "KIRINYAGA CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 21
+                },
+                "code": 104,
+                "name": "KANGEMA"
+            },
+            {
+                "county": {
+                    "code": 21
+                },
+                "code": 105,
+                "name": "MATHIOYA"
+            },
+            {
+                "county": {
+                    "code": 21
+                },
+                "code": 106,
+                "name": "KIHARU"
+            },
+            {
+                "county": {
+                    "code": 21
+                },
+                "code": 107,
+                "name": "KIGUMO"
+            },
+            {
+                "county": {
+                    "code": 21
+                },
+                "code": 108,
+                "name": "MARAGWA"
+            },
+            {
+                "county": {
+                    "code": 21
+                },
+                "code": 109,
+                "name": "KANDARA"
+            },
+            {
+                "county": {
+                    "code": 21
+                },
+                "code": 110,
+                "name": "GATANGA"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 111,
+                "name": "GATUNDU SOUTH"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 112,
+                "name": "GATUNDU NORTH"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 113,
+                "name": "JUJA"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 114,
+                "name": "THIKA TOWN"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 115,
+                "name": "RUIRU"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 116,
+                "name": "GITHUNGURI"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 117,
+                "name": "KIAMBU"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 118,
+                "name": "KIAMBAA"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 119,
+                "name": "KABETE"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 120,
+                "name": "KIKUYU"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 121,
+                "name": "LIMURU"
+            },
+            {
+                "county": {
+                    "code": 22
+                },
+                "code": 122,
+                "name": "LARI"
+            },
+            {
+                "county": {
+                    "code": 23
+                },
+                "code": 123,
+                "name": "TURKANA NORTH"
+            },
+            {
+                "county": {
+                    "code": 23
+                },
+                "code": 124,
+                "name": "TURKANA WEST"
+            },
+            {
+                "county": {
+                    "code": 23
+                },
+                "code": 125,
+                "name": "TURKANA CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 23
+                },
+                "code": 126,
+                "name": "LOIMA"
+            },
+            {
+                "county": {
+                    "code": 23
+                },
+                "code": 127,
+                "name": "TURKANA SOUTH"
+            },
+            {
+                "county": {
+                    "code": 23
+                },
+                "code": 128,
+                "name": "TURKANA EAST"
+            },
+            {
+                "county": {
+                    "code": 24
+                },
+                "code": 129,
+                "name": "KAPENGURIA"
+            },
+            {
+                "county": {
+                    "code": 24
+                },
+                "code": 130,
+                "name": "SIGOR"
+            },
+            {
+                "county": {
+                    "code": 24
+                },
+                "code": 131,
+                "name": "KACHELIBA"
+            },
+            {
+                "county": {
+                    "code": 24
+                },
+                "code": 132,
+                "name": "POKOT SOUTH"
+            },
+            {
+                "county": {
+                    "code": 25
+                },
+                "code": 133,
+                "name": "SAMBURU WEST"
+            },
+            {
+                "county": {
+                    "code": 25
+                },
+                "code": 134,
+                "name": "SAMBURU NORTH"
+            },
+            {
+                "county": {
+                    "code": 25
+                },
+                "code": 135,
+                "name": "SAMBURU EAST"
+            },
+            {
+                "county": {
+                    "code": 26
+                },
+                "code": 136,
+                "name": "KWANZA"
+            },
+            {
+                "county": {
+                    "code": 26
+                },
+                "code": 137,
+                "name": "ENDEBESS"
+            },
+            {
+                "county": {
+                    "code": 26
+                },
+                "code": 138,
+                "name": "SABOTI"
+            },
+            {
+                "county": {
+                    "code": 26
+                },
+                "code": 139,
+                "name": "KIMININI"
+            },
+            {
+                "county": {
+                    "code": 26
+                },
+                "code": 140,
+                "name": "CHERANGANY"
+            },
+            {
+                "county": {
+                    "code": 27
+                },
+                "code": 141,
+                "name": "SOY"
+            },
+            {
+                "county": {
+                    "code": 27
+                },
+                "code": 142,
+                "name": "TURBO"
+            },
+            {
+                "county": {
+                    "code": 27
+                },
+                "code": 143,
+                "name": "MOIBEN"
+            },
+            {
+                "county": {
+                    "code": 27
+                },
+                "code": 144,
+                "name": "AINABKOI"
+            },
+            {
+                "county": {
+                    "code": 27
+                },
+                "code": 145,
+                "name": "KAPSERET"
+            },
+            {
+                "county": {
+                    "code": 27
+                },
+                "code": 146,
+                "name": "KESSES"
+            },
+            {
+                "county": {
+                    "code": 28
+                },
+                "code": 147,
+                "name": "MARAKWET EAST"
+            },
+            {
+                "county": {
+                    "code": 24
+                },
+                "code": 148,
+                "name": "MARAKWET WEST"
+            },
+            {
+                "county": {
+                    "code": 28
+                },
+                "code": 149,
+                "name": "KEIYO NORTH"
+            },
+            {
+                "county": {
+                    "code": 28
+                },
+                "code": 150,
+                "name": "KEIYO SOUTH"
+            },
+            {
+                "county": {
+                    "code": 29
+                },
+                "code": 151,
+                "name": "TINDERET"
+            },
+            {
+                "county": {
+                    "code": 29
+                },
+                "code": 152,
+                "name": "ALDAI"
+            },
+            {
+                "county": {
+                    "code": 29
+                },
+                "code": 153,
+                "name": "NANDI HILLS"
+            },
+            {
+                "county": {
+                    "code": 29
+                },
+                "code": 154,
+                "name": "CHESUMEI"
+            },
+            {
+                "county": {
+                    "code": 29
+                },
+                "code": 155,
+                "name": "EMGWEN"
+            },
+            {
+                "county": {
+                    "code": 29
+                },
+                "code": 156,
+                "name": "MOSOP"
+            },
+            {
+                "county": {
+                    "code": 30
+                },
+                "code": 157,
+                "name": "TIATY"
+            },
+            {
+                "county": {
+                    "code": 30
+                },
+                "code": 158,
+                "name": "BARINGO NORTH"
+            },
+            {
+                "county": {
+                    "code": 30
+                },
+                "code": 159,
+                "name": "BARINGO CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 30
+                },
+                "code": 160,
+                "name": "BARINGO SOUTH"
+            },
+            {
+                "county": {
+                    "code": 30
+                },
+                "code": 161,
+                "name": "MOGOTIO"
+            },
+            {
+                "county": {
+                    "code": 30
+                },
+                "code": 162,
+                "name": "ELDAMA RAVINE"
+            },
+            {
+                "county": {
+                    "code": 31
+                },
+                "code": 163,
+                "name": "LAIKIPIA WEST"
+            },
+            {
+                "county": {
+                    "code": 31
+                },
+                "code": 164,
+                "name": "LAIKIPIA EAST"
+            },
+            {
+                "county": {
+                    "code": 31
+                },
+                "code": 165,
+                "name": "LAIKIPIA NORTH"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 166,
+                "name": "MOLO"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 167,
+                "name": "NJORO"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 168,
+                "name": "NAIVASHA"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 169,
+                "name": "GILGIL"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 170,
+                "name": "KURESOI SOUTH"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 171,
+                "name": "KURESOI NORTH"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 172,
+                "name": "SUBUKIA"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 173,
+                "name": "RONGAI"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 174,
+                "name": "BAHATI"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 175,
+                "name": "NAKURU TOWN WEST"
+            },
+            {
+                "county": {
+                    "code": 32
+                },
+                "code": 176,
+                "name": "NAKURU TOWN EAST"
+            },
+            {
+                "county": {
+                    "code": 33
+                },
+                "code": 177,
+                "name": "KILGORIS"
+            },
+            {
+                "county": {
+                    "code": 33
+                },
+                "code": 178,
+                "name": "EMURUA DIKIRR"
+            },
+            {
+                "county": {
+                    "code": 33
+                },
+                "code": 179,
+                "name": "NAROK NORTH"
+            },
+            {
+                "county": {
+                    "code": 33
+                },
+                "code": 180,
+                "name": "NAROK EAST"
+            },
+            {
+                "county": {
+                    "code": 33
+                },
+                "code": 181,
+                "name": "NAROK SOUTH"
+            },
+            {
+                "county": {
+                    "code": 33
+                },
+                "code": 182,
+                "name": "NAROK WEST"
+            },
+            {
+                "county": {
+                    "code": 34
+                },
+                "code": 183,
+                "name": "KAJIADO NORTH"
+            },
+            {
+                "county": {
+                    "code": 34
+                },
+                "code": 184,
+                "name": "KAJIADO CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 34
+                },
+                "code": 185,
+                "name": "KAJIADO EAST"
+            },
+            {
+                "county": {
+                    "code": 34
+                },
+                "code": 186,
+                "name": "KAJIADO WEST"
+            },
+            {
+                "county": {
+                    "code": 34
+                },
+                "code": 187,
+                "name": "KAJIADO SOUTH"
+            },
+            {
+                "county": {
+                    "code": 35
+                },
+                "code": 188,
+                "name": "KIPKELION EAST"
+            },
+            {
+                "county": {
+                    "code": 35
+                },
+                "code": 189,
+                "name": "KIPKELION WEST"
+            },
+            {
+                "county": {
+                    "code": 35
+                },
+                "code": 190,
+                "name": "AINAMOI"
+            },
+            {
+                "county": {
+                    "code": 35
+                },
+                "code": 191,
+                "name": "BURETI"
+            },
+            {
+                "county": {
+                    "code": 35
+                },
+                "code": 192,
+                "name": "BELGUT"
+            },
+            {
+                "county": {
+                    "code": 35
+                },
+                "code": 193,
+                "name": "SIGOWET/SOIN"
+            },
+            {
+                "county": {
+                    "code": 36
+                },
+                "code": 194,
+                "name": "SOTIK"
+            },
+            {
+                "county": {
+                    "code": 36
+                },
+                "code": 195,
+                "name": "CHEPALUNGU"
+            },
+            {
+                "county": {
+                    "code": 36
+                },
+                "code": 196,
+                "name": "BOMET EAST"
+            },
+            {
+                "county": {
+                    "code": 36
+                },
+                "code": 197,
+                "name": "BOMET CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 36
+                },
+                "code": 198,
+                "name": "KONOIN"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 199,
+                "name": "LUGARI"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 200,
+                "name": "LIKUYANI"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 201,
+                "name": "MALAVA"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 202,
+                "name": "LURAMBI"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 203,
+                "name": "NAVAKHOLO"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 204,
+                "name": "MUMIAS WEST"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 205,
+                "name": "MUMIAS EAST"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 206,
+                "name": "MATUNGU"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 207,
+                "name": "BUTERE"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 208,
+                "name": "KHWISERO"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 209,
+                "name": "SHINYALU"
+            },
+            {
+                "county": {
+                    "code": 37
+                },
+                "code": 210,
+                "name": "IKOLOMANI"
+            },
+            {
+                "county": {
+                    "code": 38
+                },
+                "code": 211,
+                "name": "VIHIGA"
+            },
+            {
+                "county": {
+                    "code": 38
+                },
+                "code": 212,
+                "name": "SABATIA"
+            },
+            {
+                "county": {
+                    "code": 38
+                },
+                "code": 213,
+                "name": "HAMISI"
+            },
+            {
+                "county": {
+                    "code": 38
+                },
+                "code": 214,
+                "name": "LUANDA"
+            },
+            {
+                "county": {
+                    "code": 38
+                },
+                "code": 215,
+                "name": "EMUHAYA"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 216,
+                "name": "MT. ELGON"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 217,
+                "name": "SIRISIA"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 218,
+                "name": "KABUCHAI"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 219,
+                "name": "BUMULA"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 220,
+                "name": "KANDUYI"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 221,
+                "name": "WEBUYE EAST"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 222,
+                "name": "WEBUTE WEST"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 223,
+                "name": "KIMILILI"
+            },
+            {
+                "county": {
+                    "code": 39
+                },
+                "code": 224,
+                "name": "TONGAREN"
+            },
+            {
+                "county": {
+                    "code": 40
+                },
+                "code": 225,
+                "name": "TESO NORTH"
+            },
+            {
+                "county": {
+                    "code": 40
+                },
+                "code": 226,
+                "name": "TESO SOUTH"
+            },
+            {
+                "county": {
+                    "code": 40
+                },
+                "code": 227,
+                "name": "NAMBALE"
+            },
+            {
+                "county": {
+                    "code": 40
+                },
+                "code": 228,
+                "name": "MATAYOS"
+            },
+            {
+                "county": {
+                    "code": 40
+                },
+                "code": 229,
+                "name": "BUTULA"
+            },
+            {
+                "county": {
+                    "code": 40
+                },
+                "code": 230,
+                "name": "FUNYULA"
+            },
+            {
+                "county": {
+                    "code": 40
+                },
+                "code": 231,
+                "name": "BUDALANGI"
+            },
+            {
+                "county": {
+                    "code": 41
+                },
+                "code": 232,
+                "name": "UGENYA"
+            },
+            {
+                "county": {
+                    "code": 41
+                },
+                "code": 233,
+                "name": "UGUNJA"
+            },
+            {
+                "county": {
+                    "code": 41
+                },
+                "code": 234,
+                "name": "ALEGO USONGA"
+            },
+            {
+                "county": {
+                    "code": 41
+                },
+                "code": 235,
+                "name": "GEM"
+            },
+            {
+                "county": {
+                    "code": 41
+                },
+                "code": 236,
+                "name": "BONDO"
+            },
+            {
+                "county": {
+                    "code": 41
+                },
+                "code": 237,
+                "name": "RARIEDA"
+            },
+            {
+                "county": {
+                    "code": 42
+                },
+                "code": 238,
+                "name": "KISUMU EAST"
+            },
+            {
+                "county": {
+                    "code": 42
+                },
+                "code": 239,
+                "name": "KISUMU WEST"
+            },
+            {
+                "county": {
+                    "code": 42
+                },
+                "code": 240,
+                "name": "KISUMU CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 42
+                },
+                "code": 241,
+                "name": "SEME"
+            },
+            {
+                "county": {
+                    "code": 42
+                },
+                "code": 242,
+                "name": "NYANDO"
+            },
+            {
+                "county": {
+                    "code": 42
+                },
+                "code": 243,
+                "name": "MUHORONI"
+            },
+            {
+                "county": {
+                    "code": 42
+                },
+                "code": 244,
+                "name": "NYAKACH"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 245,
+                "name": "KASIPUL"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 246,
+                "name": "KABONDO KASIPUL"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 247,
+                "name": "KARACHUONYO"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 248,
+                "name": "RANGWE"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 249,
+                "name": "HOMA BAY TOWN"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 250,
+                "name": "NDHIWA"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 251,
+                "name": "MBITA"
+            },
+            {
+                "county": {
+                    "code": 43
+                },
+                "code": 252,
+                "name": "SUBA"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 253,
+                "name": "RONGO"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 254,
+                "name": "AWENDO"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 255,
+                "name": "SUNA EAST"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 256,
+                "name": "SUNA WEST"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 257,
+                "name": "URIRI"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 258,
+                "name": "NYATIKE"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 259,
+                "name": "KURIA WEST"
+            },
+            {
+                "county": {
+                    "code": 44
+                },
+                "code": 260,
+                "name": "KURIA EAST"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 261,
+                "name": "BONCHARI"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 262,
+                "name": "SOUTH MUGIRANGO"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 263,
+                "name": "BOMACHOGE BORABU"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 264,
+                "name": "BOBASI"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 265,
+                "name": "BOMACHOGE CHACHE"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 266,
+                "name": "NYARIBARI MASABA"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 267,
+                "name": "NYARIBARI CHACHE"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 268,
+                "name": "KITUTU CHACHE NORTH"
+            },
+            {
+                "county": {
+                    "code": 45
+                },
+                "code": 269,
+                "name": "KITUTU CHACHE SOUTH"
+            },
+            {
+                "county": {
+                    "code": 46
+                },
+                "code": 270,
+                "name": "KITUTU MASABA"
+            },
+            {
+                "county": {
+                    "code": 46
+                },
+                "code": 271,
+                "name": "WEST MUGIRANGO"
+            },
+            {
+                "county": {
+                    "code": 46
+                },
+                "code": 272,
+                "name": "NORTH MUGIRANGO"
+            },
+            {
+                "county": {
+                    "code": 46
+                },
+                "code": 273,
+                "name": "BORABU"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 274,
+                "name": "WESTLANDS"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 275,
+                "name": "DAGORETTI NORTH"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 276,
+                "name": "DAGORETTI SOUTH"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 277,
+                "name": "LANGATA"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 278,
+                "name": "KIBRA"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 279,
+                "name": "ROYSAMBU"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 280,
+                "name": "KASARANI"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 281,
+                "name": "RUARAKA"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 282,
+                "name": "EMBAKASI SOUTH"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 283,
+                "name": "EMBAKASI NORTH"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 284,
+                "name": "EMBAKASI CENTRAL"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 285,
+                "name": "EMBAKASI EAST"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 286,
+                "name": "EMBAKASI WEST"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 287,
+                "name": "MAKADARA"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 288,
+                "name": "KAMUKUNJI"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 289,
+                "name": "STAREHE"
+            },
+            {
+                "county": {
+                    "code": 47
+                },
+                "code": 290,
+                "name": "MATHARE"
+            }
+        ]
+    }
+]

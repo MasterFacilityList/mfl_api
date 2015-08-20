@@ -82,7 +82,6 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         facility = mommy.make(Facility, ward=ward, keph_level=keph_level)
         facility_upgrade = mommy.make(
             FacilityUpgrade, keph_level=keph_level, facility=facility)
-
         county_1 = mommy.make(County)
         constituency_1 = mommy.make(Constituency, county=county_1)
         ward_1 = mommy.make(Ward, constituency=constituency_1)
