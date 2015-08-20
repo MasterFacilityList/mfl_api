@@ -357,6 +357,8 @@ class FacilityFilter(CommonFieldsFilterset):
     approved = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
+    closed = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES, coerce=strtobool)
 
     class Meta(object):
         model = Facility

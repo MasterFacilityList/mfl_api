@@ -1,6 +1,10 @@
 from django.apps import apps
 
-from facilities.models import Facility, FacilityType, KephLevel
+from facilities.models import (
+    Facility,
+    FacilityType,
+    KephLevel,
+    FacilityUpgrade)
 from common.models import County, Constituency
 from rest_framework.views import APIView, Response
 
@@ -206,3 +210,53 @@ class ReportView(FilterReportMixin, APIView):
             "results": data,
             "total": totals
         })
+
+
+class FacilityUpgradeDowngrade(APIView):
+    def get(self, *args, **kwargs):
+        county = self.request.query_params.get('county', None)
+        all_changes = FacilityUpgrade.objects.all()
+        facilities_ids = [change.facility.id for change in all_changes]
+        changed_facilities = Facility.objects.filter(id__in=facilities_ids)
+        if not county:
+            results = []
+            for county in County.objects.all():
+                facility_count = changed_facilities.filter(
+                    ward__constituency__county=county).count()
+                data = {
+                    "county": county.name,
+                    "county_id": county.id,
+                    "changes": facility_count
+                }
+                results.append(data)
+            return Response(data={
+                "total_number_of_changes": len(facilities_ids),
+                "results": results
+            })
+        else:
+
+            facilities = changed_facilities.filter(
+                ward__constituency__county_id=county)
+            records = []
+            for facility in facilities:
+                latest_facility_change = FacilityUpgrade.objects.filter(
+                    facility=facility)[0]
+                data = {
+                    "name": facility.name,
+                    "code": facility.code,
+                    "current_keph_level":
+                        latest_facility_change.keph_level.name,
+                    "previous_keph_level":
+                        latest_facility_change.current_keph_level_name,
+                    "previous_facility_type":
+                        latest_facility_change.current_facility_type_name,
+                    "current_facility_type":
+                        latest_facility_change.facility_type.name,
+                    "reason": latest_facility_change.reason.reason
+                }
+                records.append(data)
+
+            return Response(data={
+                "total_facilities_changed": len(facilities),
+                "facilities": records
+            })

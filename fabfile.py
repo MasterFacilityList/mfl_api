@@ -57,12 +57,34 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def load_demo_data(*args, **kwargs):
+    """Loads data through fixture"""
+    manage("loaddata", "mfl_fixture.json")
+
+
+def load_demo_data_from_scratch(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
-    data_files = join(BASE_DIR, 'data/data/0*.json')
-    manage('bootstrap', data_files)
+
+    data_files_1 = join(BASE_DIR, 'data/data/setup/*.json')
+    data_files_2 = join(BASE_DIR, 'data/data/admin_units/*.json')
+    data_files_3 = join(BASE_DIR, 'data/data/v2_data/*.json')
+    data_files_4 = join(BASE_DIR, 'data/data/demo/*.json')
+    data_files_5 = join(BASE_DIR, 'data/data/facilities/*.json')
+    data_files_6 = join(BASE_DIR, 'data/data/geocodes/*.json')
+    data_files_7 = join(BASE_DIR, 'data/data/approvals/*.json')
+    data_files_8 = join(BASE_DIR, 'data/data/last/*.json')
+
+    manage('bootstrap', data_files_1)
+    manage('bootstrap', data_files_2)
+    manage('bootstrap', data_files_3)
+    manage('bootstrap', data_files_4)
+    manage('bootstrap', data_files_5)
     manage('load_groups')
+
     # Needs to occur after base setup data has been loaded
     load_gis_data()
+    manage('bootstrap', data_files_6)
+    manage('bootstrap', data_files_7)
+    manage('bootstrap', data_files_8)
     manage("createinitialrevisions")
 
 
@@ -111,6 +133,7 @@ def setup_db(*args, **kwargs):
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
+    load_demo_data()
 
 
 def clear_cache():

@@ -157,6 +157,7 @@ class TestFacilityService(BaseTestCase):
                 "service_id": service.id,
                 "service_name": service.name,
                 "option_name": option.display_text,
+                "option": str(option.id),
                 "category_name": service_category.name,
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
@@ -1070,11 +1071,13 @@ class TestFacilityUpgrade(BaseTestCase):
 
     def test_saving(self):
         k = mommy.make(KephLevel)
-        mommy.make(FacilityUpgrade, keph_level=k)
+        facility = mommy.make(Facility, keph_level=k)
+        mommy.make(FacilityUpgrade, keph_level=k, facility=facility)
         self.assertEquals(1, FacilityUpgrade.objects.count())
 
     def test_only_one_facility_upgrade_at_a_time(self):
-        facility = mommy.make(Facility)
+        keph_level = mommy.make(KephLevel)
+        facility = mommy.make(Facility, keph_level=keph_level)
         facility_type = mommy.make(FacilityType)
         facility_type_2 = mommy.make(FacilityType)
         k = mommy.make(KephLevel)
@@ -1099,7 +1102,9 @@ class TestFacilityUpgrade(BaseTestCase):
 
     def test_cancelling(self):
         k = mommy.make(KephLevel)
-        facility_level_change = mommy.make(FacilityUpgrade, keph_level=k)
+        facility = mommy.make(Facility, keph_level=k)
+        facility_level_change = mommy.make(
+            FacilityUpgrade, facility=facility, keph_level=k)
         self.assertEquals(1, FacilityUpgrade.objects.count())
         facility_level_change.is_cancelled = True
         facility_level_change.save()
