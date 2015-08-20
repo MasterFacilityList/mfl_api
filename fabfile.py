@@ -133,7 +133,6 @@ def setup_db(*args, **kwargs):
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
     manage('migrate')
-    load_demo_data()
 
 
 def clear_cache():
