@@ -492,20 +492,15 @@ class FacilityDetailSerializer(FacilitySerializer):
             contact = self.create_contact(contact_data)
             if contact:
                 facility_contact_data = {
-                    "contact": str(contact.id),
-                    "facility": str(instance.id)
+                    "contact": contact,
+                    "facility": instance
                 }
                 facility_contact_data = self.inject_audit_fields(
                     facility_contact_data, validated_data)
                 try:
                     FacilityContact.objects.get(**facility_contact_data)
                 except FacilityContact.DoesNotExist:
-                    contact_data = FacilityContactSerializer(
-                        data=facility_contact_data, context=self.context)
-                    if contact_data.is_valid():
-                        contact_data.save()
-                    else:
-                        self.inlining_errors.append(contact_data.errors)
+                    FacilityContact.objects.create(**facility_contact_data)
 
     def create_facility_units(self, instance, unit_data, validated_data):
             unit_data['facility'] = instance.id

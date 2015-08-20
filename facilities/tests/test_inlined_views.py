@@ -55,12 +55,18 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             }
 
         ]
+        mommy.make(
+            Contact, contact_type=contact_type, contact="x@y.com")
         contacts_with_error = [
             {
                 "contact_type": contact_type.id
             },
             {
                 "contact_type": contact_type_2.id
+            },
+            {
+                "contact_type": contact_type.id,
+                "contact": "x@y.com"
             }
 
         ]
