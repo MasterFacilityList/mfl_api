@@ -244,18 +244,19 @@ class FacilityUpgradeDowngrade(APIView):
                 data = {
                     "name": facility.name,
                     "code": facility.code,
-                    "current_keph_level": latest_facility_change.keph_level,
+                    "current_keph_level":
+                        latest_facility_change.keph_level.name,
                     "previous_keph_level":
                         latest_facility_change.current_keph_level_name,
                     "previous_facility_type":
                         latest_facility_change.current_facility_type_name,
                     "current_facility_type":
-                        latest_facility_change.current_facility_type_name,
+                        latest_facility_change.facility_type.name,
                     "reason": latest_facility_change.reason.reason
                 }
                 records.append(data)
 
-                return Response(data={
-                    "total_facilities_changed": len(facilities),
-                    "facilities": records
-                })
+            return Response(data={
+                "total_facilities_changed": len(facilities),
+                "facilities": records
+            })
