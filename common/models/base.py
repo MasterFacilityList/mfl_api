@@ -1,10 +1,8 @@
 import logging
 import uuid
 import pytz
-import reversion
 
 from django.db import models
-from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.conf import settings
