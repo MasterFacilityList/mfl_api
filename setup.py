@@ -78,7 +78,7 @@ setup(
         "djangorestframework>=3.1.0,<3.2.0",
         "django-filter>=0.9,<1.0.0",
         'dj_database_url>=0.3.0,<=0.4.0',
-        "flake8>=2.3,<2.4.0",
+        "flake8==2.3",
         "django-cors-headers>=1.0,<1.1.0",
         "virtualenv>=12.0,<12.1.0",
         "pip>=6.0,<7.0.0",

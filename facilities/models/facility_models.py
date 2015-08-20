@@ -840,8 +840,8 @@ class Facility(SequenceMixin, AbstractBase):
             'operation_status_id', 'regulatory_status_id', 'facility_type_id']
         data = []
         for field in fields:
-            if (getattr(self, field) != getattr(origi_model, field)
-                    and field not in forbidden_fields):
+            if (getattr(self, field) != getattr(origi_model, field) and
+                    field not in forbidden_fields):
                 field_data = getattr(self, field)
                 updated_details = {
                     "display_value": self._get_field_human_attribute(
