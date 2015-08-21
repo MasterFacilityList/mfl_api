@@ -694,7 +694,8 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility)
         officer = mommy.make(Officer)
         contact = mommy.make(Contact)
-        mommy.make(OfficerContact, officer=officer, contact=contact)
+        officer_contact = mommy.make(
+            OfficerContact, officer=officer, contact=contact)
         mommy.make(FacilityOfficer, facility=facility, officer=officer)
         self.assertIsNotNone(facility.officer_in_charge)
         expected = {
@@ -705,6 +706,7 @@ class TestFacility(BaseTestCase):
             "title_name": officer.job_title.name,
             "contacts": [
                 {
+                    "id": officer_contact.id,
                     "type": contact.contact_type.id,
                     "contact_type_name": contact.contact_type.name,
                     "contact": contact.contact
