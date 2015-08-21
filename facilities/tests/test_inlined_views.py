@@ -8,7 +8,8 @@ from common.tests.test_views import LoginMixin
 from common.models import (
     Ward,
     ContactType,
-    Town)
+    Town,
+    Contact)
 
 from ..models import (
     OwnerType,
@@ -54,12 +55,18 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
             }
 
         ]
+        mommy.make(
+            Contact, contact_type=contact_type, contact="x@y.com")
         contacts_with_error = [
             {
                 "contact_type": contact_type.id
             },
             {
                 "contact_type": contact_type_2.id
+            },
+            {
+                "contact_type": contact_type.id,
+                "contact": "x@y.com"
             }
 
         ]

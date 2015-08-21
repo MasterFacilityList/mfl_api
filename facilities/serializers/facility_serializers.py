@@ -411,7 +411,9 @@ class FacilitySerializer(
                 validated_data['update'] if
                 validated_data.get('updated') else timezone.now())
         }
-        inject_audit_fields = lambda dict_a: dict_a.update(audit_data)
+
+        def inject_audit_fields(dict_a):
+            return dict_a.update(audit_data)
 
         # create new owners
         errors = []
@@ -488,19 +490,17 @@ class FacilityDetailSerializer(FacilitySerializer):
 
     def create_facility_contacts(self, instance, contact_data, validated_data):
             contact = self.create_contact(contact_data)
-            facility_contact_data = {
-                "contact": contact,
-                "facility": instance
-            }
-            facility_contact_data = self.inject_audit_fields(
-                facility_contact_data, validated_data)
-            try:
-                FacilityContact.objects.create(**facility_contact_data)
-            except:
-                error = {
-                    "contacts": ["The contacts provided did not validate"]
+            if contact:
+                facility_contact_data = {
+                    "contact": contact,
+                    "facility": instance
                 }
-                self.inlining_errors.append(error)
+                facility_contact_data = self.inject_audit_fields(
+                    facility_contact_data, validated_data)
+                try:
+                    FacilityContact.objects.get(**facility_contact_data)
+                except FacilityContact.DoesNotExist:
+                    FacilityContact.objects.create(**facility_contact_data)
 
     def create_facility_units(self, instance, unit_data, validated_data):
             unit_data['facility'] = instance.id

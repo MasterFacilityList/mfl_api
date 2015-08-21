@@ -2,7 +2,7 @@ from __future__ import division
 import json
 
 from django.contrib.auth import get_user_model
-
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from model_mommy import mommy
@@ -157,6 +157,7 @@ class TestFacilityService(BaseTestCase):
                 "service_id": service.id,
                 "service_name": service.name,
                 "option_name": option.display_text,
+                "option": str(option.id),
                 "category_name": service_category.name,
                 "category_id": service_category.id,
                 "average_rating": facility_service.average_rating,
@@ -713,6 +714,47 @@ class TestFacility(BaseTestCase):
 
         self.assertEquals(expected, facility.officer_in_charge)
 
+    def test_closing_facility(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        facility.closed = True
+        now = timezone.now()
+        facility.closed_date = now
+        facility.closing_reason = "A good reason for closing"
+        facility.save()
+        self.assertEquals(0, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.closed)
+        self.assertEquals(facility_refetched.closed_date, now)
+        self.assertEquals(
+            facility_refetched.closing_reason, "A good reason for closing")
+
+    def test_opening_closed_facility(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        facility.closed = True
+        now = timezone.now()
+        facility.closed_date = now
+        facility.closing_reason = "A good reason for closing"
+        facility.save()
+        self.assertEquals(0, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.closed)
+        self.assertEquals(facility_refetched.closed_date, now)
+        self.assertEquals(
+            facility_refetched.closing_reason, "A good reason for closing")
+
+        facility.closed = False
+        facility.closing_reason = "A good reason for opening the facility"
+        facility.save()
+
+        self.assertEquals(0, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertFalse(facility_refetched.closed)
+        self.assertEquals(
+            facility_refetched.closing_reason,
+            "A good reason for opening the facility")
+
 
 class TestFacilityContact(BaseTestCase):
 
@@ -1070,11 +1112,13 @@ class TestFacilityUpgrade(BaseTestCase):
 
     def test_saving(self):
         k = mommy.make(KephLevel)
-        mommy.make(FacilityUpgrade, keph_level=k)
+        facility = mommy.make(Facility, keph_level=k)
+        mommy.make(FacilityUpgrade, keph_level=k, facility=facility)
         self.assertEquals(1, FacilityUpgrade.objects.count())
 
     def test_only_one_facility_upgrade_at_a_time(self):
-        facility = mommy.make(Facility)
+        keph_level = mommy.make(KephLevel)
+        facility = mommy.make(Facility, keph_level=keph_level)
         facility_type = mommy.make(FacilityType)
         facility_type_2 = mommy.make(FacilityType)
         k = mommy.make(KephLevel)
@@ -1099,7 +1143,9 @@ class TestFacilityUpgrade(BaseTestCase):
 
     def test_cancelling(self):
         k = mommy.make(KephLevel)
-        facility_level_change = mommy.make(FacilityUpgrade, keph_level=k)
+        facility = mommy.make(Facility, keph_level=k)
+        facility_level_change = mommy.make(
+            FacilityUpgrade, facility=facility, keph_level=k)
         self.assertEquals(1, FacilityUpgrade.objects.count())
         facility_level_change.is_cancelled = True
         facility_level_change.save()
