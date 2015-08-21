@@ -185,15 +185,15 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
 
         url = reverse("api:reporting:upgrade_downgrade_report")
 
-        this_week_url = url + "?weekly=true"
+        this_week_url = url + "?last_week=true"
         response = self.client.get(this_week_url)
         self.assertEquals(1, response.data.get("total_number_of_changes"))
 
-        this_month_url = url + "?monthly=true"
+        this_month_url = url + "?last_month=true"
         response = self.client.get(this_month_url)
         self.assertEquals(2, response.data.get("total_number_of_changes"))
 
-        last_3_months_url = url + "?quarterly=true"
+        last_3_months_url = url + "?last_three_months=true"
         response = self.client.get(last_3_months_url)
         self.assertEquals(3, response.data.get("total_number_of_changes"))
 

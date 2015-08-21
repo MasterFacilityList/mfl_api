@@ -1,4 +1,4 @@
-"""Module to hold contants variable to be used throught the code base"""
+"""Module to hold constant variable to be used throughtout the code base"""
 
 
 BOOLEAN_CHOICES = (

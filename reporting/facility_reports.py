@@ -223,9 +223,10 @@ class FacilityUpgradeDowngrade(APIView):
         upgrade = self.request.query_params.get('upgrade', None)
 
         right_now = timezone.now()
-        weekly = self.request.query_params.get('weekly', None)
-        monthly = self.request.query_params.get('monthly', None)
-        quarterly = self.request.query_params.get('quarterly', None)
+        last_week = self.request.query_params.get('last_week', None)
+        last_month = self.request.query_params.get('last_month', None)
+        last_three_months = self.request.query_params.get(
+            'last_three_months', None)
         three_months_ago = right_now - timedelta(days=90)
         last_one_week = right_now - timedelta(days=7)
         last_one_month = right_now - timedelta(days=30)
@@ -239,11 +240,11 @@ class FacilityUpgradeDowngrade(APIView):
         else:
             all_changes = FacilityUpgrade.objects.all()
 
-        if weekly:
+        if last_week:
             all_changes = all_changes.filter(created__gte=last_one_week)
-        if monthly:
+        if last_month:
             all_changes = all_changes.filter(created__gte=last_one_month)
-        if quarterly:
+        if last_three_months:
             all_changes = all_changes.filter(created__gte=three_months_ago)
 
         facilities_ids = [change.facility.id for change in all_changes]
