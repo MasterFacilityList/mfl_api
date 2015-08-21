@@ -108,6 +108,7 @@ class AbstractBase(models.Model):
         self.full_clean(exclude=None)
         self.preserve_created_and_created_by()
         self.validate_updated_date_greater_than_created()
+        super(AbstractBase, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         # Mark the field model deleted
