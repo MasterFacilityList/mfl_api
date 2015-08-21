@@ -985,7 +985,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             operation_status=status,
             created=right_now
         )
-        url = self.url + "?weekly=true"
+        url = self.url + "?last_week=true"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(response.data.get("recently_created"), 2)
@@ -1033,7 +1033,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             operation_status=status,
             created=right_now - timedelta(days=35)
         )
-        url = self.url + "?monthly=true"
+        url = self.url + "?last_month=true"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(response.data.get("recently_created"), 3)
@@ -1081,7 +1081,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             operation_status=status,
             created=right_now - timedelta(days=100)
         )
-        url = self.url + "?quarterly=true"
+        url = self.url + "?last_three_months=true"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(response.data.get("recently_created"), 3)

@@ -706,10 +706,11 @@ class TestFacility(BaseTestCase):
             "title_name": officer.job_title.name,
             "contacts": [
                 {
-                    "id": officer_contact.id,
+                    "officer_contact_id": officer_contact.id,
                     "type": contact.contact_type.id,
                     "contact_type_name": contact.contact_type.name,
-                    "contact": contact.contact
+                    "contact": contact.contact,
+                    "contact_id": contact.id
                 }
             ]
         }
