@@ -1,3 +1,7 @@
+from datetime import timedelta
+
+from django.utils import timezone
+
 from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
 
@@ -133,3 +137,66 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         response_2 = self.client.get(url)
         self.assertEquals(200, response_2.status_code)
         self.assertEquals(expected_data_2, response_2.data)
+
+    def test_facility_upgrade_downgrade_report_filter_by_upgrade(self):
+        keph_level = mommy.make(KephLevel)
+        keph_level_1 = mommy.make(KephLevel)
+        facility = mommy.make(Facility, keph_level=keph_level)
+        facility_2 = mommy.make(Facility, keph_level=keph_level_1)
+        facility_3 = mommy.make(Facility, keph_level=keph_level_1)
+        mommy.make(FacilityUpgrade, facility=facility, is_upgrade=True)
+        mommy.make(FacilityUpgrade, facility=facility_2, is_upgrade=True)
+        mommy.make(FacilityUpgrade, facility=facility_3, is_upgrade=False)
+
+        url = reverse("api:reporting:upgrade_downgrade_report")
+
+        upgrade_url = url + "?upgrade=true"
+        response = self.client.get(upgrade_url)
+        self.assertEquals(2, response.data.get("total_number_of_changes"))
+
+        downgrade_url = url + "?upgrade=false"
+        response = self.client.get(downgrade_url)
+        self.assertEquals(1, response.data.get("total_number_of_changes"))
+
+    def test_facility_upgrade_downgrade_report_filter_by_dates(self):
+        keph_level = mommy.make(KephLevel)
+        keph_level_1 = mommy.make(KephLevel)
+        facility = mommy.make(Facility, keph_level=keph_level)
+        facility_2 = mommy.make(Facility, keph_level=keph_level_1)
+        facility_3 = mommy.make(Facility, keph_level=keph_level_1)
+        facility_4 = mommy.make(Facility, keph_level=keph_level_1)
+
+        within_this_week = timezone.now() - timedelta(days=5)
+        within_this_month = timezone.now() - timedelta(days=20)
+        within_last_three_months = timezone.now() - timedelta(days=80)
+        long_ago = timezone.now() - timedelta(days=1000)
+
+        mommy.make(
+            FacilityUpgrade, facility=facility, created=within_this_week)
+        mommy.make(
+            FacilityUpgrade, facility=facility_2,
+            created=within_this_month)
+        mommy.make(
+            FacilityUpgrade, facility=facility_3,
+            created=within_last_three_months)
+        mommy.make(
+            FacilityUpgrade, facility=facility_4,
+            created=long_ago)
+
+        url = reverse("api:reporting:upgrade_downgrade_report")
+
+        this_week_url = url + "?weekly=true"
+        response = self.client.get(this_week_url)
+        self.assertEquals(1, response.data.get("total_number_of_changes"))
+
+        this_month_url = url + "?monthly=true"
+        response = self.client.get(this_month_url)
+        self.assertEquals(2, response.data.get("total_number_of_changes"))
+
+        last_3_months_url = url + "?quarterly=true"
+        response = self.client.get(last_3_months_url)
+        self.assertEquals(3, response.data.get("total_number_of_changes"))
+
+        # all changes
+        response = self.client.get(url)
+        self.assertEquals(4, response.data.get("total_number_of_changes"))
