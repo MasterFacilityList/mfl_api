@@ -1,10 +1,8 @@
 import logging
 import uuid
 import pytz
-import reversion
 
 from django.db import models
-from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.conf import settings
@@ -110,13 +108,7 @@ class AbstractBase(models.Model):
         self.full_clean(exclude=None)
         self.preserve_created_and_created_by()
         self.validate_updated_date_greater_than_created()
-
-        # In order for auditability to work, all descendants of AbstractBase
-        # must @reversion.register
-        with transaction.atomic(), reversion.create_revision():
-            super(AbstractBase, self).save(*args, **kwargs)
-            # hmm....is this better than using the revision middleware ??
-            reversion.set_user(self.updated_by)
+        super(AbstractBase, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         # Mark the field model deleted
