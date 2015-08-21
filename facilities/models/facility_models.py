@@ -2,6 +2,7 @@ from __future__ import division
 
 import reversion
 import json
+import logging
 
 from django.conf import settings
 from django.core import validators
@@ -17,6 +18,8 @@ from common.models import (
     Town
 )
 from common.fields import SequenceField
+
+LOGGER = logging.getLogger(__name__)
 
 
 @reversion.register
@@ -864,12 +867,9 @@ class Facility(SequenceMixin, AbstractBase):
 
         if len(data):
             return json.dumps(data)
-
         else:
-            # error = "Either no field was editted or you editted all or one"
-            # " of {} which are not allowed".format(forbidden_fields)
-            # raise ValidationError(error)
-            pass
+            message = "The facility was not scheduled for update"
+            LOGGER.info(message)
 
     def save(self, *args, **kwargs):  # NOQA
         """
