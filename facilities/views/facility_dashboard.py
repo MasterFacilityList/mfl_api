@@ -148,8 +148,9 @@ class DashBoard(APIView):
             'last_three_months', None)
         three_months_ago = right_now - timedelta(days=90)
         if last_week:
+            weekly = right_now - timedelta(days=7)
             return self.filter_queryset().filter(
-                created__gte=three_months_ago).count()
+                created__gte=weekly).count()
 
         if last_month:
             monthly = right_now - timedelta(days=30)
@@ -157,9 +158,9 @@ class DashBoard(APIView):
                 created__gte=monthly).count()
 
         if last_three_months:
-            weekly = right_now - timedelta(days=7)
             return self.filter_queryset().filter(
-                created__gte=weekly).count()
+                created__gte=three_months_ago).count()
+
         return self.filter_queryset().filter(
             created__gte=three_months_ago).count()
 
