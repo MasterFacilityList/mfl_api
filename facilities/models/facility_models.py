@@ -797,10 +797,11 @@ class Facility(SequenceMixin, AbstractBase):
             contacts = []
             for contact in officer_contacts:
                 contacts.append({
-                    "id": contact.id,
+                    "officer_contact_id": contact.id,
                     "type": contact.contact.contact_type.id,
                     "contact_type_name": contact.contact.contact_type.name,
-                    "contact": contact.contact.contact
+                    "contact": contact.contact.contact,
+                    "contact_id": contact.contact.id
                 })
             return {
                 "name": officer[0].officer.name,
