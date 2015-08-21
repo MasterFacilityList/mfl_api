@@ -3,13 +3,15 @@ from datetime import timedelta
 from django.apps import apps
 from django.utils import timezone
 
+from rest_framework.views import APIView, Response
+
 from facilities.models import (
     Facility,
     FacilityType,
     KephLevel,
     FacilityUpgrade)
+from common.constants import TRUTH_NESS, FALSE_NESS
 from common.models import County, Constituency
-from rest_framework.views import APIView, Response
 
 from .report_config import REPORTS
 
@@ -228,10 +230,10 @@ class FacilityUpgradeDowngrade(APIView):
         last_one_week = right_now - timedelta(days=7)
         last_one_month = right_now - timedelta(days=30)
 
-        if upgrade is True or upgrade == "true":
+        if upgrade in TRUTH_NESS:
             all_changes = FacilityUpgrade.objects.filter(
                 is_upgrade=True)
-        elif upgrade is False or upgrade == "false":
+        elif upgrade in FALSE_NESS:
             all_changes = FacilityUpgrade.objects.filter(
                 is_upgrade=False)
         else:
