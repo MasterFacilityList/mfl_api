@@ -1047,14 +1047,10 @@ class TestFacilityUpdates(BaseTestCase):
         facility = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility)
         facility.operation_status = operation_status
-        with self.assertRaises(ValidationError):
-            facility.save()
         facility.regulatory_status = regulation_status
-        with self.assertRaises(ValidationError):
-            facility.save()
         facility.facility_type = facility_type
-        with self.assertRaises(ValidationError):
-            facility.save()
+        facility.save()
+        self.assertEquals(0, FacilityUpdates.objects.count())
 
     def test_approve_and_cancel_validation(self):
         with self.assertRaises(ValidationError):

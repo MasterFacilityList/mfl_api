@@ -2,6 +2,7 @@ from __future__ import division
 
 import reversion
 import json
+import logging
 
 from django.conf import settings
 from django.core import validators
@@ -17,6 +18,8 @@ from common.models import (
     Town
 )
 from common.fields import SequenceField
+
+LOGGER = logging.getLogger(__name__)
 
 
 @reversion.register
@@ -864,11 +867,9 @@ class Facility(SequenceMixin, AbstractBase):
 
         if len(data):
             return json.dumps(data)
-
         else:
-            error = "Either no field was editted or you editted all or one"
-            " of {} which are not allowed".format(forbidden_fields)
-            raise ValidationError(error)
+            message = "The facility was not scheduled for update"
+            LOGGER.info(message)
 
     def save(self, *args, **kwargs):  # NOQA
         """
@@ -936,10 +937,11 @@ class Facility(SequenceMixin, AbstractBase):
                 updates.pop('updated_by_id')
             except:
                 pass
-            FacilityUpdates.objects.create(
-                facility_updates=updates, facility=self,
-                created_by=self.updated_by, updated_by=self.updated_by
-            ) if new_details_serialized != old_details_serialized else None
+            if updates:
+                FacilityUpdates.objects.create(
+                    facility_updates=updates, facility=self,
+                    created_by=self.updated_by, updated_by=self.updated_by
+                ) if new_details_serialized != old_details_serialized else None
 
     def __unicode__(self):
         return self.name
