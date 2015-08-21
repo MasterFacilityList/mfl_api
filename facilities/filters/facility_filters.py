@@ -39,20 +39,7 @@ from common.filters.filter_shared import (
     ListCharFilter
 )
 
-BOOLEAN_CHOICES = (
-    ('false', 'False'),
-    ('true', 'True'),
-    ('yes', 'True'),
-    ('no', 'False'),
-    ('Yes', 'True'),
-    ('No', 'False'),
-    ('y', 'True'),
-    ('n', 'False'),
-    ('Y', 'True'),
-    ('N', 'False')
-)
-
-TRUTH_NESS = ['True', 'true', 't', 'T', 'Y', 'y', 'yes', 'Yes']
+from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class OptionGroupFilter(CommonFieldsFilterset):

@@ -1,4 +1,3 @@
-import re
 from django.conf import settings
 
 import django_filters
@@ -55,8 +54,8 @@ class SearchFilter(django_filters.filters.Filter):
         ordering = 'CASE %s END' % clauses
         queryset = qs.model.objects.filter(pk__in=pk_list).extra(
             select={'ordering': ordering}, order_by=('ordering',))
-        m = re.search('\d+', str(value))
-        if m:
+
+        if str(value).isdigit():
             facility = Facility.objects.filter(code=value)
             return facility if facility.count() == 1 else queryset
         else:
