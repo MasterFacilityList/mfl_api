@@ -107,8 +107,12 @@ class CreateFacilityOfficerMixin(object):
                 "contact_type": contact_type,
                 "contact": contact.get('contact')
             }
-            contact_dict = self._inject_creating_user(contact_dict)
-            created_contacts.append(Contact.objects.create(**contact_dict))
+            try:
+                created_contacts.append(Contact.objects.get(**contact_dict))
+            except Contact.DoesNotExist:
+                contact_dict = self._inject_creating_user(contact_dict)
+                contact_dict = self._inject_creating_user(contact_dict)
+                created_contacts.append(Contact.objects.create(**contact_dict))
 
         return created_contacts
 
@@ -481,12 +485,15 @@ class FacilityDetailSerializer(FacilitySerializer):
         return dict_a
 
     def create_contact(self, contact_data):
-            contact = ContactSerializer(
-                data=contact_data, context=self.context)
-            if contact.is_valid():
-                return contact.save()
-            else:
-                self.inlining_errors.append(json.dumps(contact.errors))
+            try:
+                Contact.objects.get(**contact_data)
+            except Contact.DoesNotExist:
+                contact = ContactSerializer(
+                    data=contact_data, context=self.context)
+                if contact.is_valid():
+                    return contact.save()
+                else:
+                    self.inlining_errors.append(json.dumps(contact.errors))
 
     def create_facility_contacts(self, instance, contact_data, validated_data):
             contact = self.create_contact(contact_data)
