@@ -79,7 +79,6 @@ def load_demo_data_from_scratch(*args, **kwargs):
     manage('bootstrap', data_files_4)
     manage('bootstrap', data_files_5)
     manage('load_groups')
-
     # Needs to occur after base setup data has been loaded
     load_gis_data()
     manage('bootstrap', data_files_6)

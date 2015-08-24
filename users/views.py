@@ -65,8 +65,23 @@ class UserList(generics.ListCreateAPIView):
             area_users = county_users + sub_county_users
             return MflUser.objects.filter(
                 id__in=area_users)
+        elif user.is_national:
+            # Should see the county users and the national users
+            # Also should not see the system user
+            county_users = [
+                county_user.user.id for county_user in
+                UserCounty.objects.all().distinct()
+            ]
+            national_users = [
+                nat_user.id for nat_user in MflUser.objects.filter(
+                    is_national=True)
+            ]
+            all_users = county_users + national_users
+            return MflUser.objects.filter(
+                id__in=all_users)
         else:
-            return self.queryset
+            # The user is not allowed to see the users
+            return MflUser.objects.none()
 
 
 class UserDetailView(CustomRetrieveUpdateDestroyView):
