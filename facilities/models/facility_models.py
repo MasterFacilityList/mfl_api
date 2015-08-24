@@ -1264,7 +1264,9 @@ class Option(AbstractBase):
         ('TEXT', 'Plain text'),
     ))
     group = models.ForeignKey(
-        OptionGroup, help_text="The option group where the option lies")
+        OptionGroup,
+        help_text="The option group where the option lies",
+        related_name='options')
 
     def __unicode__(self):
         return "{}: {}".format(self.option_type, self.display_text)
@@ -1352,9 +1354,9 @@ class FacilityService(AbstractBase):
 
     def validate_unique_service_or_service_option_with_for_facility(self):
 
-        if self.__class__.objects.filter(
+        if len(self.__class__.objects.filter(
                 service=self.service, facility=self.facility,
-                deleted=False):
+                deleted=False)) > 1:
             error = {
                 "service": [
                     ("The service {} has already been added to the "
