@@ -326,7 +326,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         }
         officer_in_charge_with_errors = {
             "name": "Brenda Makena",
-            "title": str(job_title.id),
             "contacts": [
                 {
                     "type": str(contact_type.id),
@@ -420,8 +419,8 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         }
         data_with_errors_3 = {
             "services": facility_services_with_error
-        },
-        data_with_errors_3 = {
+        }
+        data_with_errors_4 = {
             "officer_in_charge": officer_in_charge_with_errors
         }
         response = self.client.patch(url, data_with_errors_1)
@@ -429,4 +428,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         response = self.client.patch(url, data_with_errors_2)
         self.assertEquals(400, response.status_code)
         response = self.client.patch(url, data_with_errors_3)
+        self.assertEquals(400, response.status_code)
+        response = self.client.patch(url, data_with_errors_4)
         self.assertEquals(400, response.status_code)
