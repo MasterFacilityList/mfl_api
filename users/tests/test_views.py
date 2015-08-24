@@ -262,6 +262,10 @@ class TestDeleting(LoginMixin, APITestCase):
 
 
 class TestUserFiltering(APITestCase):
+    def setUp(self):
+        self.url = reverse("api:users:mfl_users_list")
+        super(TestUserFiltering, self).setUp()
+
     def test_get_users_in_county(self):
         from common.models import (
             UserCounty, County, Constituency, UserConstituency)
@@ -291,8 +295,7 @@ class TestUserFiltering(APITestCase):
             updated_by=user_4, constituency=const_2)
 
         self.client.force_authenticate(user)
-        url = reverse("api:users:mfl_users_list")
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(4, len(response.data.get("results")))
 
@@ -316,8 +319,15 @@ class TestUserFiltering(APITestCase):
         mommy.make(UserCounty, user=user_4, county=county_2)
 
         self.client.force_authenticate(user)
-        url = reverse("api:users:mfl_users_list")
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
 
-        self.assertEquals(5, len(response.data.get("results")))
+        self.assertEquals(4, len(response.data.get("results")))
+
+    def test_users_with_no_priviledges_see_no_user(self):
+        user = mommy.make(MflUser)
+        mommy.make(MflUser)
+        mommy.make(MflUser)
+        self.client.force_authenticate(user)
+        response = self.client.get(self.url)
+        self.assertEquals([], response.data.get("results"))
