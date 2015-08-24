@@ -56,10 +56,6 @@ def psql(query, no_sudo=False, is_file=False):
         local('{} psql -c "{}"'.format(sudo, query))
 
 
-def load_setup_data(*args, **kwargs):
-    pass
-
-
 def load_demo_data(*args, **kwargs):
     """Loads data through fixture"""
     manage("loaddata", "mfl_fixture.json")
