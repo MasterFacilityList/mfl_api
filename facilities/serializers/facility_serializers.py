@@ -393,6 +393,7 @@ class FacilitySerializer(
     date_requested = serializers.ReadOnlyField(source='created')
     date_approved = serializers.ReadOnlyField(
         source='latest_approval.created')
+    latest_approval_or_rejection = serializers.ReadOnlyField()
 
     class Meta(object):
         model = Facility

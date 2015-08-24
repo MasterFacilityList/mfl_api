@@ -742,6 +742,17 @@ class Facility(SequenceMixin, AbstractBase):
             return None
 
     @property
+    def latest_approval_or_rejection(self):
+        approvals = FacilityApproval.objects.filter(facility=self)
+        if approvals:
+            return {
+                "id": str(approvals[0].id),
+                "comment": str(approvals[0].comment)
+            }
+        else:
+            return None
+
+    @property
     def get_facility_services(self):
         """Digests the facility_services for the sake of frontend."""
         services = self.facility_services.all()
