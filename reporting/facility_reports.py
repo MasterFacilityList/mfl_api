@@ -4,6 +4,7 @@ from django.apps import apps
 from django.utils import timezone
 
 from rest_framework.views import APIView, Response
+from rest_framework.exceptions import NotFound
 
 from facilities.models import (
     Facility,
@@ -84,7 +85,10 @@ class FilterReportMixin(object):
 
         more_filters_params = self.request.query_params.get("filters", None)
 
-        report_config = REPORTS[report_type]
+        report_config = REPORTS.get(report_type, None)
+        if report_config is None:
+            raise NotFound(detail="Report not found.")
+
         group_by = report_config.get("group_by")
         app_label, model_name = report_config.get(
             "filter_fields").get("model").split('.')
@@ -144,19 +148,14 @@ class FilterReportMixin(object):
         return data, totals
 
     def _get_facility_keph_level_data(self):
-        owner_cagegory = self.request.query_params.get("owner_category")
+        owner_category = self.request.query_params.get("owner_category")
         county = self.request.query_params.get("county")
 
         data = []
 
         for county in County.objects.all():
-            county_data = {
-                "county": county.name,
-                "facilities": []
-            }
             for level in KephLevel.objects.all():
-
-                if not owner_cagegory:
+                if not owner_category:
                     count = Facility.objects.filter(
                         keph_level=level,
                         ward__constituency__county=county).count()
@@ -164,15 +163,16 @@ class FilterReportMixin(object):
                     count = Facility.objects.filter(
                         level=level,
                         ward__constituency__county=county,
-                        owner__owner_type=owner_cagegory).count()
+                        owner__owner_type=owner_category).count()
 
-                county_data["facilities"].append(
+                data.append(
                     {
+                        "county": county.name,
                         "keph_level": level.name,
                         "number_of_facilities": count
                     }
                 )
-            data.append(county_data)
+
         totals = []
         return data, totals
 
