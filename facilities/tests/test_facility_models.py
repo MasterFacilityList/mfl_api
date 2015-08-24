@@ -758,6 +758,24 @@ class TestFacility(BaseTestCase):
             facility_refetched.closing_reason,
             "A good reason for opening the facility")
 
+    def test_facility_latest_approval_or_rejection(self):
+        facility = mommy.make(Facility)
+        fa = mommy.make(
+            FacilityApproval, facility=facility, comment="some reason")
+        self.assertEquals(
+            {
+                "id": str(fa.id),
+                "comment": str(fa.comment)
+            },
+            facility.latest_approval_or_rejection
+        )
+
+    def test_facility_latest_approval_or_rejection_none(self):
+        facility = mommy.make(Facility)
+        self.assertIsNone(
+            facility.latest_approval_or_rejection
+        )
+
 
 class TestFacilityContact(BaseTestCase):
 
