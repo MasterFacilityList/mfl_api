@@ -142,23 +142,25 @@ class DashBoard(APIView):
 
     def get_recently_created_facilities(self):
         right_now = timezone.now()
-        weekly = self.request.query_params.get('weekly', None)
-        monthly = self.request.query_params.get('monthly', None)
-        quarterly = self.request.query_params.get('quarterly', None)
+        last_week = self.request.query_params.get('last_week', None)
+        last_month = self.request.query_params.get('last_month', None)
+        last_three_months = self.request.query_params.get(
+            'last_three_months', None)
         three_months_ago = right_now - timedelta(days=90)
-        if quarterly:
+        if last_week:
+            weekly = right_now - timedelta(days=7)
             return self.filter_queryset().filter(
-                created__gte=three_months_ago).count()
+                created__gte=weekly).count()
 
-        if monthly:
+        if last_month:
             monthly = right_now - timedelta(days=30)
             return self.filter_queryset().filter(
                 created__gte=monthly).count()
 
-        if weekly:
-            weekly = right_now - timedelta(days=7)
+        if last_three_months:
             return self.filter_queryset().filter(
-                created__gte=weekly).count()
+                created__gte=three_months_ago).count()
+
         return self.filter_queryset().filter(
             created__gte=three_months_ago).count()
 

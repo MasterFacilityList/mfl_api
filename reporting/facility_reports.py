@@ -1,12 +1,17 @@
+from datetime import timedelta
+
 from django.apps import apps
+from django.utils import timezone
+
+from rest_framework.views import APIView, Response
 
 from facilities.models import (
     Facility,
     FacilityType,
     KephLevel,
     FacilityUpgrade)
+from common.constants import TRUTH_NESS, FALSE_NESS
 from common.models import County, Constituency
-from rest_framework.views import APIView, Response
 
 from .report_config import REPORTS
 
@@ -215,7 +220,33 @@ class ReportView(FilterReportMixin, APIView):
 class FacilityUpgradeDowngrade(APIView):
     def get(self, *args, **kwargs):
         county = self.request.query_params.get('county', None)
-        all_changes = FacilityUpgrade.objects.all()
+        upgrade = self.request.query_params.get('upgrade', None)
+
+        right_now = timezone.now()
+        last_week = self.request.query_params.get('last_week', None)
+        last_month = self.request.query_params.get('last_month', None)
+        last_three_months = self.request.query_params.get(
+            'last_three_months', None)
+        three_months_ago = right_now - timedelta(days=90)
+        last_one_week = right_now - timedelta(days=7)
+        last_one_month = right_now - timedelta(days=30)
+
+        if upgrade in TRUTH_NESS:
+            all_changes = FacilityUpgrade.objects.filter(
+                is_upgrade=True)
+        elif upgrade in FALSE_NESS:
+            all_changes = FacilityUpgrade.objects.filter(
+                is_upgrade=False)
+        else:
+            all_changes = FacilityUpgrade.objects.all()
+
+        if last_week:
+            all_changes = all_changes.filter(created__gte=last_one_week)
+        if last_month:
+            all_changes = all_changes.filter(created__gte=last_one_month)
+        if last_three_months:
+            all_changes = all_changes.filter(created__gte=three_months_ago)
+
         facilities_ids = [change.facility.id for change in all_changes]
         changed_facilities = Facility.objects.filter(id__in=facilities_ids)
         if not county:
@@ -244,18 +275,19 @@ class FacilityUpgradeDowngrade(APIView):
                 data = {
                     "name": facility.name,
                     "code": facility.code,
-                    "current_keph_level": latest_facility_change.keph_level,
+                    "current_keph_level":
+                        latest_facility_change.keph_level.name,
                     "previous_keph_level":
                         latest_facility_change.current_keph_level_name,
                     "previous_facility_type":
                         latest_facility_change.current_facility_type_name,
                     "current_facility_type":
-                        latest_facility_change.current_facility_type_name,
+                        latest_facility_change.facility_type.name,
                     "reason": latest_facility_change.reason.reason
                 }
                 records.append(data)
 
-                return Response(data={
-                    "total_facilities_changed": len(facilities),
-                    "facilities": records
-                })
+            return Response(data={
+                "total_facilities_changed": len(facilities),
+                "facilities": records
+            })

@@ -66,15 +66,16 @@ class FilterAdminUnitsMixin(object):
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
         if (user.county and hasattr(
-                self.queryset.model, 'county') and not user.is_national
-                and not hasattr(self.queryset.model, 'constituency')):
+                self.queryset.model, 'county') and not
+                user.is_national and not
+                hasattr(self.queryset.model, 'constituency')):
             return self.queryset.filter(county=user.county)
         elif (user.constituency and hasattr(
                 self.queryset.model, 'constituency')and not user.is_national):
             return self.queryset.filter(constituency=user.constituency)
         elif (user.county and hasattr(
-                self.queryset.model, 'constituency') and not user.is_national
-                and hasattr(self.queryset.model, 'county')):
+                self.queryset.model, 'constituency') and not
+                user.is_national and hasattr(self.queryset.model, 'county')):
             return self.queryset.filter(constituency__county=user.county)
         else:
             return self.queryset

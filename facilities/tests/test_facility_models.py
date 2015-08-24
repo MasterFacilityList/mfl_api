@@ -2,7 +2,7 @@ from __future__ import division
 import json
 
 from django.contrib.auth import get_user_model
-
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from model_mommy import mommy
@@ -694,7 +694,8 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility)
         officer = mommy.make(Officer)
         contact = mommy.make(Contact)
-        mommy.make(OfficerContact, officer=officer, contact=contact)
+        officer_contact = mommy.make(
+            OfficerContact, officer=officer, contact=contact)
         mommy.make(FacilityOfficer, facility=facility, officer=officer)
         self.assertIsNotNone(facility.officer_in_charge)
         expected = {
@@ -705,14 +706,57 @@ class TestFacility(BaseTestCase):
             "title_name": officer.job_title.name,
             "contacts": [
                 {
+                    "officer_contact_id": officer_contact.id,
                     "type": contact.contact_type.id,
                     "contact_type_name": contact.contact_type.name,
-                    "contact": contact.contact
+                    "contact": contact.contact,
+                    "contact_id": contact.id
                 }
             ]
         }
 
         self.assertEquals(expected, facility.officer_in_charge)
+
+    def test_closing_facility(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        facility.closed = True
+        now = timezone.now()
+        facility.closed_date = now
+        facility.closing_reason = "A good reason for closing"
+        facility.save()
+        self.assertEquals(0, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.closed)
+        self.assertEquals(facility_refetched.closed_date, now)
+        self.assertEquals(
+            facility_refetched.closing_reason, "A good reason for closing")
+
+    def test_opening_closed_facility(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        facility.closed = True
+        now = timezone.now()
+        facility.closed_date = now
+        facility.closing_reason = "A good reason for closing"
+        facility.save()
+        self.assertEquals(0, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.closed)
+        self.assertEquals(facility_refetched.closed_date, now)
+        self.assertEquals(
+            facility_refetched.closing_reason, "A good reason for closing")
+
+        facility.closed = False
+        facility.closing_reason = "A good reason for opening the facility"
+        facility.save()
+
+        self.assertEquals(0, FacilityUpdates.objects.count())
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertFalse(facility_refetched.closed)
+        self.assertEquals(
+            facility_refetched.closing_reason,
+            "A good reason for opening the facility")
 
 
 class TestFacilityContact(BaseTestCase):
@@ -1006,14 +1050,10 @@ class TestFacilityUpdates(BaseTestCase):
         facility = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility)
         facility.operation_status = operation_status
-        with self.assertRaises(ValidationError):
-            facility.save()
         facility.regulatory_status = regulation_status
-        with self.assertRaises(ValidationError):
-            facility.save()
         facility.facility_type = facility_type
-        with self.assertRaises(ValidationError):
-            facility.save()
+        facility.save()
+        self.assertEquals(0, FacilityUpdates.objects.count())
 
     def test_approve_and_cancel_validation(self):
         with self.assertRaises(ValidationError):

@@ -115,9 +115,9 @@ def _get_code_and_name(feature, name_field, code_field):
     # Inefficient, but this is used in a one off operation
     for ward in malformed_geojson_wards:
         if (
-            _feature_has_ward_name(feature)
-            and feature.get('OBJECTID') == ward['OBJECTID']
-            and feature.get('Ward_Name') == ward['Ward_Name']
+            _feature_has_ward_name(feature) and
+            feature.get('OBJECTID') == ward['OBJECTID'] and
+            feature.get('Ward_Name') == ward['Ward_Name']
         ):
             return ward['CODE'], ward['Ward_Name']
 
