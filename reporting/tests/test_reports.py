@@ -13,6 +13,7 @@ from common.tests.test_views import LoginMixin
 
 
 class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityCountByCountyReport, self).setUp()
 
@@ -21,6 +22,12 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         url = reverse("api:reporting:reports")
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+    def test_get_undefined_report(self):
+        mommy.make(Facility, _quantity=5)
+        url = reverse("api:reporting:reports")
+        response = self.client.get(url+"?report_type=hakuna_kitu")
+        self.assertEquals(404, response.status_code)
 
     def test_get_reports_with_extra_filtering(self):
         county = mommy.make(County)
