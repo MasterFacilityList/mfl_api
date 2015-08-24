@@ -176,8 +176,6 @@ class PostOptionGroupWithOptionsView(APIView):
 
     def _save_option_group(self, option_group):
         option_group = self._inject_user_from_request(option_group)
-        import pdb
-        pdb.set_trace()
         created_option_group = OptionGroup.objects.create(**option_group)
         return created_option_group
 

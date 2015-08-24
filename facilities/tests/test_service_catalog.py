@@ -52,7 +52,7 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
         self.assertEquals(6, Option.objects.count())
         self.assertEquals(1, OptionGroup.objects.count())
 
-    def _test_post_option_group_name_uniqueness(self):
+    def test_post_option_group_name_uniqueness(self):
         data_1 = {
             "option_group": "KEPH Level Option Group test 2",
             "options": [
@@ -75,5 +75,6 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
         }
         response = self.client.post(self.url, data_1)
         self.assertEquals(201, response.status_code)
+
         response_2 = self.client.post(self.url, data_2)
-        self.assertEquals(400, response_2.status_code)
+        self.assertEquals(201, response_2.status_code)

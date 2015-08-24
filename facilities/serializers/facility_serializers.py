@@ -597,5 +597,7 @@ class FacilityUpdatesSerializer(
 
 
 class OptionGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    options = OptionSerializer(required=False, many=True)
+
     class Meta:
         model = OptionGroup
