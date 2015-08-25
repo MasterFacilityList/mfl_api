@@ -182,7 +182,7 @@ class PostOptionGroupWithOptionsView(APIView):
 
     def post(self, *args, **kwargs):
         data = self.request.data
-        option_group = data.get('option_group')
+        option_group = data.get('name')
         option_group_dict = {
             "name": option_group
         }

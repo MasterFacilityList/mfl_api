@@ -13,7 +13,7 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
     def test_post_option_group_invalid_data(self):
         self.assertEquals(0, OptionGroup.objects.count())
         data = {
-            "option_group": "test 6",
+            "name": "test 6",
             "options": [
                 {
                     "value": "LEVEL 7 test ",
@@ -30,7 +30,7 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
 
         # try posting the same data again
         data = {
-            "option_group": "test 6",
+            "name": "test 6",
             "options": [
                 {
                     "value": "LEVEL 8 test ",
@@ -46,7 +46,7 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
 
     def test_post_invalid_option(self):
         data = {
-            "option_group": "test 4",
+            "name": "test 4",
             "options": [
                 {
                     # value key is deliberately left out
