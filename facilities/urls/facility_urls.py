@@ -64,12 +64,21 @@ from ..views import (
     KephLevelListView,
     KephLevelDetailView,
     FacilityLevelChangeReasonDetailView,
-    FacilityLevelChangeReasonListView
+    FacilityLevelChangeReasonListView,
+    PostOptionGroupWithOptionsView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^option_group_with_options/$',
+        PostOptionGroupWithOptionsView.as_view(),
+        name='post_option_group_with_options'),
+
+    url(r'^option_group_with_options/(?P<pk>[^/]+)/$',
+        PostOptionGroupWithOptionsView.as_view(),
+        name='delete_option_group_with_options'),
+
     url(r'^level_change_reasons/$',
         FacilityLevelChangeReasonListView.as_view(),
         name='facility_level_change_reasons_list'),

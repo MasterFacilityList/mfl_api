@@ -1,4 +1,9 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.views import Response, APIView
+
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
 
@@ -6,6 +11,7 @@ from ..models import (
     FacilityServiceRating,
     ServiceCategory,
     Option,
+    OptionGroup,
     Service,
     FacilityService
 )
@@ -15,6 +21,7 @@ from ..serializers import (
     ServiceCategorySerializer,
     OptionSerializer,
     ServiceSerializer,
+    OptionGroupSerializer,
     FacilityServiceSerializer
 )
 from ..filters import (
@@ -148,3 +155,66 @@ class FacilityServiceRatingDetailView(CustomRetrieveUpdateDestroyView):
     """
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
+
+
+class PostOptionGroupWithOptionsView(APIView):
+    serializer_class = OptionGroupSerializer
+
+    def _save_option_group(self, option_group):
+        option_group = self._inject_user_from_request(option_group)
+
+        try:
+            group_in_db = OptionGroup.objects.get(id=option_group['id'])
+            for key, value in option_group.iteritems():
+                setattr(group_in_db, key, value)
+            group_in_db.save()
+            return group_in_db
+        except (KeyError, OptionGroup.DoesNotExist):
+            created_option_group = OptionGroup.objects.create(**option_group)
+            return created_option_group
+
+    def _inject_user_from_request(self, dict_obj):
+        dict_obj['created_by_id'] = self.request.user.id
+        dict_obj['updated_by_id'] = self.request.user.id
+        return dict_obj
+
+    def _save_options(self, options, option_group):
+        for option in options:
+            try:
+                option_in_db = Option.objects.get(id=option["id"])
+                option.pop("group", None)
+                option.pop("created_by", None)
+                option.pop("updated_by", None)
+                option.pop('id')
+                for key, value in option.iteritems():
+                    setattr(option_in_db, key, value)
+                option_in_db.save()
+
+            except (KeyError, Option.DoesNotExist):
+                option['group'] = option_group
+                option = self._inject_user_from_request(option)
+                Option.objects.create(**option)
+
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        option_group = data.get('name')
+        option_group_dict = {
+            "name": option_group
+        }
+        option_group_dict["id"] = data.get('id') if data.get('id') else None
+        options = data.get('options')
+
+        created_group = self._save_option_group(option_group_dict)
+        self._save_options(options, created_group)
+        return Response(data=OptionGroupSerializer(
+            created_group).data, status=status.HTTP_201_CREATED)
+
+    def delete(self, *args, **kwargs):
+        option_group_id = kwargs.pop('pk', None)
+        option_group = get_object_or_404(OptionGroup, id=option_group_id)
+        [
+            option.delete() for option in Option.objects.filter(
+                group=option_group)
+        ]
+        option_group.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
