@@ -230,3 +230,13 @@ class PostOptionGroupWithOptionsView(APIView):
             self._save_options(options, created_group)
             return Response(data=OptionGroupSerializer(
                 created_group).data, status=status.HTTP_200_OK)
+
+    def delete(self, *args, **kwargs):
+        data = self.request.data
+        option_group = data.get('name')
+        option_group_id = data.get('id')
+        option_group = OptionGroup.objects.get(id=option_group_id)
+        for option in Option.objects.filter(group=option_group):
+            option.delete()
+        option_group.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
