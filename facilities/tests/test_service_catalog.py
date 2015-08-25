@@ -16,8 +16,8 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
             "option_group": "test 6",
             "options": [
                 {
-                    "value": "LEVEL 6 test ",
-                    "display_text": "LEVEL 6 test",
+                    "value": "LEVEL 7 test ",
+                    "display_text": "LEVEL 7 test",
                     "option_type": "TEXT"
                 }
             ]
@@ -33,8 +33,8 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
             "option_group": "test 6",
             "options": [
                 {
-                    "value": "LEVEL 6 test ",
-                    "display_text": "LEVEL 6 test",
+                    "value": "LEVEL 8 test ",
+                    "display_text": "LEVEL 8 test",
                     "option_type": "TEXT"
                 }
             ]
@@ -50,7 +50,7 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
             "options": [
                 {
                     # value key is deliberately left out
-                    "display_text": "LEVEL 6 test",
+                    "display_text": "LEVEL 4 test",
                     "option_type": "TEXT"
                 }
             ]
