@@ -157,12 +157,12 @@ class FacilityServiceRatingDetailView(CustomRetrieveUpdateDestroyView):
 
 class PostOptionGroupWithOptionsView(APIView):
     serializer_class = OptionGroupSerializer
-    errors = []
+    errors = {}
 
     def _validate_option_group_name_value_ok(self, option_group):
         option_group_obj = OptionGroupSerializer(data=option_group)
         if not option_group_obj.is_valid():
-            self.errors.append(option_group_obj.errors)
+            self.errors = option_group_obj.errors
 
     def _save_option_group(self, option_group):
         option_group = self._inject_user_from_request(option_group)
@@ -189,11 +189,11 @@ class PostOptionGroupWithOptionsView(APIView):
         options = data.get('options')
         self._validate_option_group_name_value_ok(option_group_dict)
 
-        if len(self.errors) is 0:
+        if bool(self.errors):
+            return Response(
+                data=self.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
             created_group = self._save_option_group(option_group_dict)
             self._save_options(options, created_group)
             return Response(data=OptionGroupSerializer(
                 created_group).data, status=status.HTTP_201_CREATED)
-        else:
-            data = {"detail": self.errors}
-            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
