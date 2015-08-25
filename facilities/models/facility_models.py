@@ -1356,7 +1356,7 @@ class FacilityService(AbstractBase):
 
         if len(self.__class__.objects.filter(
                 service=self.service, facility=self.facility,
-                deleted=False)) > 1:
+                deleted=False)) == 1:
             error = {
                 "service": [
                     ("The service {} has already been added to the "
