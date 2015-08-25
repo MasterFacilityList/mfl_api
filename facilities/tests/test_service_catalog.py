@@ -106,7 +106,7 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
                 }
             ]
         }
-        response = self.client.patch(self.url, data)
+        response = self.client.post(self.url, data)
         self.assertEquals(400, response.status_code)
 
     def test_delete(self):

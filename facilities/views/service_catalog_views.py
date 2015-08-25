@@ -159,7 +159,6 @@ class FacilityServiceRatingDetailView(CustomRetrieveUpdateDestroyView):
 
 class PostOptionGroupWithOptionsView(APIView):
     serializer_class = OptionGroupSerializer
-    errors = {}
 
     def _save_option_group(self, option_group):
         option_group = self._inject_user_from_request(option_group)
@@ -205,38 +204,17 @@ class PostOptionGroupWithOptionsView(APIView):
         option_group_dict["id"] = data.get('id') if data.get('id') else None
         options = data.get('options')
 
-        if bool(self.errors):
-            return Response(
-                data=self.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            created_group = self._save_option_group(option_group_dict)
-            self._save_options(options, created_group)
-            return Response(data=OptionGroupSerializer(
-                created_group).data, status=status.HTTP_201_CREATED)
-
-    def patch(self, *args, **kwargs):
-        data = self.request.data
-        option_group = data.get('name')
-        option_group_id = data.get('id')
-        option_group_dict = {
-            "name": option_group,
-            "id": option_group_id
-        }
-        options = data.get('options')
-
-        if bool(self.errors):
-            return Response(
-                data=self.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            created_group = self._save_option_group(option_group_dict)
-            self._save_options(options, created_group)
-            return Response(data=OptionGroupSerializer(
-                created_group).data, status=status.HTTP_200_OK)
+        created_group = self._save_option_group(option_group_dict)
+        self._save_options(options, created_group)
+        return Response(data=OptionGroupSerializer(
+            created_group).data, status=status.HTTP_201_CREATED)
 
     def delete(self, *args, **kwargs):
         option_group_id = kwargs.pop('pk', None)
         option_group = get_object_or_404(OptionGroup, id=option_group_id)
-        for option in Option.objects.filter(group=option_group):
-            option.delete()
+        [
+            option.delete() for option in Option.objects.filter(
+                group=option_group)
+        ]
         option_group.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
