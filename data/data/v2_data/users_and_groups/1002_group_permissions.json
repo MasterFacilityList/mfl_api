@@ -207,6 +207,18 @@
         },
         "permissions": [
             {
+                "codename": "view_constituency"
+            },
+            {
+                "codename": "view_contact"
+            },
+            {
+                "codename": "view_contacttype"
+            },
+            {
+                "codename": "view_county"
+            },
+            {
                 "codename": "add_physicaladdress"
             },
             {
@@ -217,6 +229,24 @@
             },
             {
                 "codename": "view_physicaladdress"
+            },
+            {
+                "codename": "add_town"
+            },
+            {
+                "codename": "change_town"
+            },
+            {
+                "codename": "delete_town"
+            },
+            {
+                "codename": "view_town"
+            },
+            {
+                "codename": "add_usercontact"
+            },
+            {
+                "codename": "view_ward"
             },
             {
                 "codename": "add_facility"
@@ -342,6 +372,27 @@
                 "codename": "view_facilityupgrade"
             },
             {
+                "codename": "view_owner"
+            },
+            {
+                "codename": "view_ownertype"
+            },
+            {
+                "codename": "view_regulatingbody"
+            },
+            {
+                "codename": "view_regulatingbodycontact"
+            },
+            {
+                "codename": "view_regulationstatus"
+            },
+            {
+                "codename": "view_regulatorybodyuser"
+            },
+            {
+                "codename": "view_countyboundary"
+            },
+            {
                 "codename": "add_facilitycoordinates"
             },
             {
@@ -352,6 +403,15 @@
             },
             {
                 "codename": "view_facilitycoordinates"
+            },
+            {
+                "codename": "view_geocodemethod"
+            },
+            {
+                "codename": "view_geocodesource"
+            },
+            {
+                "codename": "view_wardboundary"
             },
             {
                 "codename": "county_group_marker"
