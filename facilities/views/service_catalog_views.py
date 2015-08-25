@@ -234,9 +234,7 @@ class PostOptionGroupWithOptionsView(APIView):
                 created_group).data, status=status.HTTP_200_OK)
 
     def delete(self, *args, **kwargs):
-        data = self.request.data
-        option_group = data.get('name')
-        option_group_id = data.get('id')
+        option_group_id = kwargs['pk']
         option_group = get_object_or_404(OptionGroup, id=option_group_id)
         for option in Option.objects.filter(group=option_group):
             option.delete()
