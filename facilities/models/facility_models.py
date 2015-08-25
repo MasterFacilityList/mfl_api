@@ -1131,7 +1131,11 @@ class FacilityApproval(AbstractBase):
     def update_facility_rejection(self):
         if self.is_cancelled:
             self.facility.rejected = True
-            self.facility.save(allow_save=True)
+            self.facility.approved = False
+        else:
+            self.facility.rejected = False
+            self.facility.approved = True
+        self.facility.save(allow_save=True)
 
     def clean(self, *args, **kwargs):
         self.facility.approved = True
