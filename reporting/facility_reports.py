@@ -195,6 +195,7 @@ class FilterReportMixin(object):
 
 
 class ReportView(FilterReportMixin, APIView):
+
     def get(self, *args, **kwargs):
         data, totals = self.get_report_data()
 
@@ -205,6 +206,7 @@ class ReportView(FilterReportMixin, APIView):
 
 
 class FacilityUpgradeDowngrade(APIView):
+
     def get(self, *args, **kwargs):
         county = self.request.query_params.get('county', None)
         upgrade = self.request.query_params.get('upgrade', None)
@@ -276,5 +278,5 @@ class FacilityUpgradeDowngrade(APIView):
 
             return Response(data={
                 "total_facilities_changed": len(facilities),
-                "facilities": records
+                "results": records
             })

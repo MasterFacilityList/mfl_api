@@ -103,7 +103,7 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         url = main_url + "?county={}".format(county.id)
         expected_data = {
             "total_facilities_changed": 1,
-            "facilities": [
+            "results": [
                 {
                     "name": facility.name,
                     "code": facility.code,
@@ -126,7 +126,7 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         url = main_url + "?county={}".format(county_1.id)
         expected_data_2 = {
             "total_facilities_changed": 1,
-            "facilities": [
+            "results": [
                 {
                     "name": facility_1.name,
                     "code": facility_1.code,
