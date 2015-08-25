@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.views import Response, APIView
@@ -235,7 +237,7 @@ class PostOptionGroupWithOptionsView(APIView):
         data = self.request.data
         option_group = data.get('name')
         option_group_id = data.get('id')
-        option_group = OptionGroup.objects.get(id=option_group_id)
+        option_group = get_object_or_404(OptionGroup, id=option_group_id)
         for option in Option.objects.filter(group=option_group):
             option.delete()
         option_group.delete()

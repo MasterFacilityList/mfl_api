@@ -118,3 +118,14 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
         self.client.delete(self.url, data)
         self.assertEquals(0, OptionGroup.objects.count())
         self.assertEquals(0, Option.objects.count())
+
+    def test_delete_not_found(self):
+        group = mommy.make(OptionGroup)
+        mommy.make(Option, group=group)
+        data = {
+            "id": str(group.id)
+        }
+        group.delete()
+        response = self.client.delete(self.url, data)
+
+        self.assertEquals(404, response.status_code)

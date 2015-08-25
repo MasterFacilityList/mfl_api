@@ -1266,7 +1266,7 @@ class Option(AbstractBase):
     group = models.ForeignKey(
         OptionGroup,
         help_text="The option group where the option lies",
-        related_name='options')
+        related_name='options', on_delete=models.PROTECT)
 
     def __unicode__(self):
         return "{}: {}".format(self.option_type, self.display_text)
