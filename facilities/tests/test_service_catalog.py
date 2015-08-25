@@ -1,7 +1,9 @@
-from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
-from common.tests.test_views import LoginMixin
 
+from rest_framework.test import APITestCase
+from model_mommy import mommy
+
+from common.tests.test_views import LoginMixin
 from facilities.models import Option, OptionGroup
 
 
@@ -56,4 +58,53 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
             ]
         }
         response = self.client.post(self.url, data)
+        self.assertEquals(400, response.status_code)
+
+    def test_update_options(self):
+        option = mommy.make(Option)
+        group = mommy.make(OptionGroup)
+        data = {
+            "id": str(group.id),
+            "name": "test",
+            "options": [
+                {
+                    "value": "LEVEL 8 test ",
+                    "display_text": "LEVEL 4 test",
+                    "option_type": "TEXT"
+                },
+                {
+                    "id": str(option.id),
+                    "value": "value_editted",
+                    "display_text": "LEVEL 4 test",
+                    "option_type": "TEXT"
+                }
+            ]
+        }
+        response = self.client.patch(self.url, data)
+        self.assertEquals(200, response.status_code)
+        option_refteched = Option.objects.get(id=option.id)
+        group_refteched = OptionGroup.objects.get(id=group.id)
+        self.assertEquals(str(option_refteched.value), "value_editted")
+        self.assertEquals(str(group_refteched.name), "test")
+        self.assertEquals(2, OptionGroup.objects.count())
+        self.assertEquals(2, Option.objects.count())
+
+    def test_update_options_error(self):
+        option = mommy.make(Option)
+        data = {
+            "options": [
+                {
+                    "value": "LEVEL 8 test ",
+                    "display_text": "LEVEL 4 test",
+                    "option_type": "TEXT"
+                },
+                {
+                    "id": str(option.id),
+                    "value": "value_editted",
+                    "display_text": "LEVEL 4 test",
+                    "option_type": "TEXT"
+                }
+            ]
+        }
+        response = self.client.patch(self.url, data)
         self.assertEquals(400, response.status_code)

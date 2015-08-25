@@ -166,8 +166,15 @@ class PostOptionGroupWithOptionsView(APIView):
 
     def _save_option_group(self, option_group):
         option_group = self._inject_user_from_request(option_group)
-        created_option_group = OptionGroup.objects.create(**option_group)
-        return created_option_group
+        try:
+            group_in_db = OptionGroup.objects.get(id=option_group['id'])
+            for key, value in option_group.iteritems():
+                setattr(group_in_db, key, value)
+            group_in_db.save()
+            return group_in_db
+        except KeyError:
+            created_option_group = OptionGroup.objects.create(**option_group)
+            return created_option_group
 
     def _inject_user_from_request(self, dict_obj):
         dict_obj['created_by_id'] = self.request.user.id
@@ -176,9 +183,15 @@ class PostOptionGroupWithOptionsView(APIView):
 
     def _save_options(self, options, option_group):
         for option in options:
-            option['group'] = option_group
-            option = self._inject_user_from_request(option)
-            Option.objects.create(**option)
+            try:
+                option_in_db = Option.objects.get(id=option["id"])
+                for key, value in option.iteritems():
+                    setattr(option_in_db, key, value)
+                option_in_db.save()
+            except KeyError:
+                option['group'] = option_group
+                option = self._inject_user_from_request(option)
+                Option.objects.create(**option)
 
     def post(self, *args, **kwargs):
         data = self.request.data
@@ -197,3 +210,23 @@ class PostOptionGroupWithOptionsView(APIView):
             self._save_options(options, created_group)
             return Response(data=OptionGroupSerializer(
                 created_group).data, status=status.HTTP_201_CREATED)
+
+    def patch(self, *args, **kwargs):
+        data = self.request.data
+        option_group = data.get('name')
+        option_group_id = data.get('id')
+        option_group_dict = {
+            "name": option_group,
+            "id": option_group_id
+        }
+        options = data.get('options')
+        self._validate_option_group_name_value_ok(option_group_dict)
+
+        if bool(self.errors):
+            return Response(
+                data=self.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            created_group = self._save_option_group(option_group_dict)
+            self._save_options(options, created_group)
+            return Response(data=OptionGroupSerializer(
+                created_group).data, status=status.HTTP_200_OK)
