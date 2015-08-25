@@ -159,20 +159,6 @@ class PostOptionGroupWithOptionsView(APIView):
     serializer_class = OptionGroupSerializer
     errors = []
 
-    def _validate_option_group_name_value_ok(self, option_group):
-        option_group_obj = OptionGroupSerializer(data=option_group)
-        if not option_group_obj.is_valid():
-            self.errors.append(option_group_obj.errors)
-
-    def _validate_option(self, options):
-        for option in options:
-            required = ["value", "display_text", "option_type"]
-            if not set(required) <= set(option.keys()):
-                error = [
-                    "Ensure option has value, display text and option type"
-                ]
-                self.errors.append({"option": error})
-
     def _save_option_group(self, option_group):
         option_group = self._inject_user_from_request(option_group)
         created_option_group = OptionGroup.objects.create(**option_group)
@@ -196,8 +182,6 @@ class PostOptionGroupWithOptionsView(APIView):
             "name": option_group
         }
         options = data.get('options')
-        self._validate_option_group_name_value_ok(option_group_dict)
-        self._validate_option(options)
         if len(self.errors) is 0:
             created_group = self._save_option_group(option_group_dict)
             self._save_options(options, created_group)
