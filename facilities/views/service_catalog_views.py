@@ -161,20 +161,16 @@ class PostOptionGroupWithOptionsView(APIView):
     serializer_class = OptionGroupSerializer
     errors = {}
 
-    def _validate_option_group_name_value_ok(self, option_group):
-        option_group_obj = OptionGroupSerializer(data=option_group)
-        if not option_group_obj.is_valid():
-            self.errors = option_group_obj.errors
-
     def _save_option_group(self, option_group):
         option_group = self._inject_user_from_request(option_group)
+
         try:
             group_in_db = OptionGroup.objects.get(id=option_group['id'])
             for key, value in option_group.iteritems():
                 setattr(group_in_db, key, value)
             group_in_db.save()
             return group_in_db
-        except KeyError:
+        except (KeyError, OptionGroup.DoesNotExist):
             created_option_group = OptionGroup.objects.create(**option_group)
             return created_option_group
 
@@ -187,10 +183,15 @@ class PostOptionGroupWithOptionsView(APIView):
         for option in options:
             try:
                 option_in_db = Option.objects.get(id=option["id"])
+                option.pop("group", None)
+                option.pop("created_by", None)
+                option.pop("updated_by", None)
+                option.pop('id')
                 for key, value in option.iteritems():
                     setattr(option_in_db, key, value)
                 option_in_db.save()
-            except KeyError:
+
+            except (KeyError, Option.DoesNotExist):
                 option['group'] = option_group
                 option = self._inject_user_from_request(option)
                 Option.objects.create(**option)
@@ -201,8 +202,8 @@ class PostOptionGroupWithOptionsView(APIView):
         option_group_dict = {
             "name": option_group
         }
+        option_group_dict["id"] = data.get('id') if data.get('id') else None
         options = data.get('options')
-        self._validate_option_group_name_value_ok(option_group_dict)
 
         if bool(self.errors):
             return Response(
@@ -222,7 +223,6 @@ class PostOptionGroupWithOptionsView(APIView):
             "id": option_group_id
         }
         options = data.get('options')
-        self._validate_option_group_name_value_ok(option_group_dict)
 
         if bool(self.errors):
             return Response(
@@ -234,7 +234,7 @@ class PostOptionGroupWithOptionsView(APIView):
                 created_group).data, status=status.HTTP_200_OK)
 
     def delete(self, *args, **kwargs):
-        option_group_id = kwargs['pk']
+        option_group_id = kwargs.pop('pk', None)
         option_group = get_object_or_404(OptionGroup, id=option_group_id)
         for option in Option.objects.filter(group=option_group):
             option.delete()

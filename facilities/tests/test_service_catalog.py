@@ -80,8 +80,8 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
                 }
             ]
         }
-        response = self.client.patch(self.url, data)
-        self.assertEquals(200, response.status_code)
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
         option_refteched = Option.objects.get(id=option.id)
         group_refteched = OptionGroup.objects.get(id=group.id)
         self.assertEquals(str(option_refteched.value), "value_editted")
@@ -111,11 +111,9 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
 
     def test_delete(self):
         group = mommy.make(OptionGroup)
-        mommy.make(Option, group=group)
         url = self.url + str(group.id) + "/"
         self.client.delete(url)
         self.assertEquals(0, OptionGroup.objects.count())
-        self.assertEquals(0, Option.objects.count())
 
     def test_delete_not_found(self):
         group = mommy.make(OptionGroup)
