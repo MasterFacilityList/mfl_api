@@ -166,7 +166,6 @@ class PostOptionGroupWithOptionsView(APIView):
 
     def _validate_option(self, options):
         for option in options:
-
             required = ["value", "display_text", "option_type"]
             if not set(required) <= set(option.keys()):
                 error = [
