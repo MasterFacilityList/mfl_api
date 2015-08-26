@@ -15,8 +15,27 @@ LOGGER = logging.getLogger(__name__)
 
 class AuditableDetailViewMixin(RetrieveModelMixin):
 
-    def _compare_objs(self, fields, old, new):
+    def _resolve_field(self, model_class, field, version, follows):
+        # since `model_class` represents the current representation of the
+        # model, what will happen if field is deleted from model ??
+        model_field = model_class._meta.get_field(field)
+        fallback = version.field_dict.get(field, '')
+
+        if model_field.is_relation:
+            followed_model_class = model_field.related_model
+            for f in follows:
+                if (f.content_type.model_class() == followed_model_class and
+                        f.field_dict['id'] == fallback):
+                    # What happens to M2M fields?
+                    return f.object_repr
+
+        return fallback
+
+    def _compare_objs(self, model_class, fields, old, new):
         output = []
+        old_follows = old.revision.version_set.exclude(pk=old.pk)
+        new_follows = new.revision.version_set.exclude(pk=new.pk)
+
         for fld in fields:
             old_val = old.field_dict.get(fld, '')
             new_val = new.field_dict.get(fld, '')
@@ -24,8 +43,12 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
             if old_val != new_val:
                 output.append({
                     "name": fld,
-                    "old": old_val,
-                    "new": new_val
+                    "old": self._resolve_field(
+                        model_class, fld, old, old_follows
+                    ),
+                    "new": self._resolve_field(
+                        model_class, fld, new, new_follows
+                    )
                 })
 
         return output
@@ -40,7 +63,7 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         for i in range(1, len(versions), 1):
             new = versions[i-1]
             old = versions[i]
-            diff = self._compare_objs(fieldnames, old, new)
+            diff = self._compare_objs(instance.__class__, fieldnames, old, new)
             if diff:
                 ans.append({
                     "updates": diff,
