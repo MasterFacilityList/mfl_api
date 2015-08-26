@@ -17,10 +17,15 @@ def manage(command, args=''):
 
 def reset_migrations(*args, **kwargs):
     """Neccessary for circle ci to be able to run tests"""
-
-    local('cd facilities/migrations && ls | grep -v "set_facility_code_sequence_min_value.py" | xargs rm')
-    # # local('cd users/migrations && ls | grep -v "0001_initial.py" | xargs rm')
-    local('cd common/migrations && ls | grep -v "admin_unit_codes.py" | xargs rm')
+    del_facility_migrations = """
+        cd facilities/migrations && ls | grep -v
+        "set_facility_code_sequence_min_value.py" | xargs rm
+    """
+    del_common_migrations = """
+        cd common/migrations && ls | grep -v "admin_unit_codes.py" | xargs rm
+    """
+    local(del_facility_migrations)  #
+    local(del_common_migrations)
     local('rm -r chul/migrations')
     local('rm -r mfl_gis/migrations')
     local('rm -r users/migrations')
@@ -34,11 +39,9 @@ def reset_migrations(*args, **kwargs):
 
 def test():
     """Dev and release - run the test suite"""
-    reset_migrations()
-    # local('python setup.py check')
-    # local('pip install tox')
-    # local('tox -r -c tox.ini')
-    local('tox')
+    local('python setup.py check')
+    local('pip install tox')
+    local('tox -r -c tox.ini')
 
 
 def deploy():
