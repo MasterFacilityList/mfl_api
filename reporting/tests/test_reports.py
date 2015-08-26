@@ -207,3 +207,90 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         # all changes
         response = self.client.get(url)
         self.assertEquals(4, response.data.get("total_number_of_changes"))
+
+
+class TestBedsAndCots(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestBedsAndCots, self).setUp()
+        self.base_url = reverse("api:reporting:reports")
+        self.coun1 = mommy.make(County)
+        self.coun2 = mommy.make(County)
+        self.coun3 = mommy.make(County)
+
+        self.cons1 = mommy.make(Constituency, county=self.coun1)
+        self.cons2 = mommy.make(Constituency, county=self.coun1)
+        self.cons3 = mommy.make(Constituency, county=self.coun2)
+
+        self.ward1 = mommy.make(Ward, constituency=self.cons1)
+        self.ward2 = mommy.make(Ward, constituency=self.cons1)
+        self.ward3 = mommy.make(Ward, constituency=self.cons2)
+
+        mommy.make(
+            Facility, ward=self.ward1, number_of_cots=2, number_of_beds=5,
+            _quantity=2
+        )
+        mommy.make(Facility, ward=self.ward1)
+
+        mommy.make(
+            Facility, ward=self.ward2, number_of_cots=2, number_of_beds=5
+        )
+        mommy.make(
+            Facility, _quantity=3, number_of_beds=2, number_of_cots=4,
+            ward=self.ward3
+        )
+
+    def test_beds_and_cots_without_filter(self):
+        params = [
+            "beds_and_cots_by_county", "beds_and_cots_by_constituency",
+            "beds_and_cots_by_ward"
+        ]
+        for i in params:
+            response = self.client.get("{}?report_type={}".format(
+                self.base_url, i
+            ))
+            self.assertEquals(200, response.status_code)
+            data = response.data
+            self.assertEqual(data['total']['total_cots'], 12)
+            self.assertEqual(data['total']['total_beds'], 27)
+            self.assertEqual(len(data['results']), 3)
+
+    def test_constituency_with_county_filter(self):
+        response = self.client.get("{}?report_type={}&county={}".format(
+            self.base_url, "beds_and_cots_by_constituency", str(self.coun1.pk)
+        ))
+        self.assertEquals(200, response.status_code)
+        data = response.data
+        self.assertEqual(data['total']['total_cots'], 12)
+        self.assertEqual(data['total']['total_beds'], 27)
+        self.assertEqual(len(data['results']), 3)
+
+    def test_constituency_with_county_filter_empty_county(self):
+        response = self.client.get("{}?report_type={}&county={}".format(
+            self.base_url, "beds_and_cots_by_constituency", str(self.coun3.pk)
+        ))
+        self.assertEquals(200, response.status_code)
+        data = response.data
+        self.assertEqual(data['total']['total_cots'], 0)
+        self.assertEqual(data['total']['total_beds'], 0)
+        self.assertEqual(len(data['results']), 0)
+
+    def test_ward_with_constituency_filter(self):
+        response = self.client.get("{}?report_type={}&constituency={}".format(
+            self.base_url, "beds_and_cots_by_ward", str(self.cons1.pk)
+        ))
+        self.assertEquals(200, response.status_code)
+        data = response.data
+        self.assertEqual(data['total']['total_cots'], 6)
+        self.assertEqual(data['total']['total_beds'], 15)
+        self.assertEqual(len(data['results']), 2)
+
+    def test_ward_with_constituency_filter_empty_constituency(self):
+        response = self.client.get("{}?report_type={}&constituency={}".format(
+            self.base_url, "beds_and_cots_by_ward", str(self.cons3.pk)
+        ))
+        self.assertEquals(200, response.status_code)
+        data = response.data
+        self.assertEqual(data['total']['total_cots'], 0)
+        self.assertEqual(data['total']['total_beds'], 0)
+        self.assertEqual(len(data['results']), 0)
