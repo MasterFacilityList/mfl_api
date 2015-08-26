@@ -148,7 +148,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('name', models.CharField(help_text=b'Name of the town', max_length=100, unique=True, null=True, blank=True)),
+                ('name', models.CharField(help_text=b'Name of the town', max_length=255, unique=True, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],

@@ -8,7 +8,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('common', 'county_seq'),
-        ('common', 'ward_seq'),
         ('common', 'constituency_code'),
     ]
 
