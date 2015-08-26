@@ -19,7 +19,7 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         # since `model_class` represents the current representation of the
         # model, what will happen if field is deleted from model ??
         model_field = model_class._meta.get_field(field)
-        fallback = version.field_dict.get(field, '')
+        fallback = version.field_dict.get(field, None)
 
         if model_field.is_relation:
             followed_model_class = model_field.related_model
