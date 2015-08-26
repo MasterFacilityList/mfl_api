@@ -251,7 +251,7 @@ class TestBedsAndCots(LoginMixin, APITestCase):
             ))
             self.assertEquals(200, response.status_code)
             data = response.data
-            self.assertEqual(data['total']['total_cots'], 12)
+            self.assertEqual(data['total']['total_cots'], 18)
             self.assertEqual(data['total']['total_beds'], 27)
             self.assertEqual(len(data['results']), 3)
 
@@ -261,7 +261,7 @@ class TestBedsAndCots(LoginMixin, APITestCase):
         ))
         self.assertEquals(200, response.status_code)
         data = response.data
-        self.assertEqual(data['total']['total_cots'], 12)
+        self.assertEqual(data['total']['total_cots'], 18)
         self.assertEqual(data['total']['total_beds'], 27)
         self.assertEqual(len(data['results']), 3)
 
