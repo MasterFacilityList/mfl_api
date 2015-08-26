@@ -957,7 +957,7 @@ class Facility(SequenceMixin, AbstractBase):
                 ) if new_details_serialized != old_details_serialized else None
 
     def __unicode__(self):
-        return self.name
+        return self.name.replace('\xa0', ' ')
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facilities'

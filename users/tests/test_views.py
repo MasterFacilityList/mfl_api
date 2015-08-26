@@ -193,6 +193,9 @@ class TestGroupViews(LoginMixin, APITestCase):
     def test_create_and_update_group(self):
         data = {
             "name": "Documentation Example Group",
+            "is_national": True,
+            "is_regulator": True,
+            "is_administrator": True,
             "permissions": [
                 {
                     "name": "Can add email address",
@@ -216,6 +219,9 @@ class TestGroupViews(LoginMixin, APITestCase):
             update_url,
             {
                 "name": "Documentation Example Group Updated",
+                "is_national": True,
+                "is_regulator": False,
+                "is_administrator": True,
                 "permissions": [
                     {
                         "name": "Can add email address",
@@ -230,6 +236,9 @@ class TestGroupViews(LoginMixin, APITestCase):
     def test_failed_create(self):
         data = {
             "name": "Documentation Example Group",
+            "is_national": True,
+            "is_regulator": True,
+            "is_administrator": True,
             "permissions": [
                 {
                     "id": 67897,

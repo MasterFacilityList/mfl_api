@@ -707,7 +707,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='option',
             name='group',
-            field=models.ForeignKey(help_text=b'The option group where the option lies', to='facilities.OptionGroup'),
+            field=models.ForeignKey(related_name='options', on_delete=django.db.models.deletion.PROTECT, to='facilities.OptionGroup', help_text=b'The option group where the option lies'),
         ),
         migrations.AddField(
             model_name='option',
@@ -892,7 +892,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='ward',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, blank=True, to='common.Ward', help_text=b'County ward in which the facility is located', null=True),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Ward', help_text=b'County ward in which the facility is located'),
         ),
         migrations.AlterUniqueTogether(
             name='regulatorybodyuser',

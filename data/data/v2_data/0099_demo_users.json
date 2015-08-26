@@ -34,28 +34,8 @@
                 "is_superuser": false,
                 "employee_number": 10001
             },
-            {
-                "email": "nairobi_admin@mfltest.slade360.co.ke",
-                "first_name": "Mtumishi",
-                "last_name": "Mzalendo",
-                "username": "nairobi_admin",
-                "password": "pbkdf2_sha256$20000$EvV2Emirwxdj$OH4+CJ3KndqEl/yK4KnoBCS8oPo3Gy6L+szRYtcIQWs=",
-                "is_staff": true,
-                "is_national": false,
-                "is_superuser": false,
-                "employee_number": 10002
-            },
-            {
-                "email": "publisher@mfltest.slade360.co.ke",
-                "first_name": "Wairimu",
-                "last_name": "Cherono",
-                "username": "publisher",
-                "password": "pbkdf2_sha256$20000$xpBHQvCHyhRg$FLmjPLLKE3PhXRGLHTNPzUsFp3XQNcZRiXngBrL7Sf4=",
-                "is_staff": false,
-                "is_national": true,
-                "is_superuser": false,
-                "employee_number": 10003
-            },
+
+
             {
                 "email": "public@mfltest.slade360.co.ke",
                 "first_name": "public",
@@ -213,14 +193,6 @@
             {
                 "user": {
                     "email": "nairobi@mfltest.slade360.co.ke"
-                },
-                "county": {
-                    "code": 47
-                }
-            },
-            {
-                "user": {
-                    "email": "nairobi_admin@mfltest.slade360.co.ke"
                 },
                 "county": {
                     "code": 47

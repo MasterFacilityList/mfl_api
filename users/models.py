@@ -223,32 +223,60 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         default_permissions = ('add', 'change', 'delete', 'view', )
-
-        # This is not a "true permission"
-        # It is a marker, used to create an is_county_level read only prop
-        # on groups
-        permissions = (
-            (
-                'county_group_marker',
-                'A marker permission for county level groups'
-            ),
-            (
-                'manipulate_superusers',
-                'A permission to create and manipulate superusers'
-            ),
-        )
         ordering = ('-date_joined', )
 
 
-Group.is_county_level = property(
-    lambda self: 'county_group_marker' in [
-        perm.codename for perm in self.permissions.all()]
-)
+class CustomGroup(models.Model):
+    group = models.OneToOneField(
+        Group,
+        on_delete=models.PROTECT, related_name='custom_group_fields')
+    regulator = models.BooleanField(
+        default=False,
+        help_text="Are the regulators in this group?")
+    national = models.BooleanField(
+        default=False,
+        help_text='Will the users in this group see all facilities in the'
+        'country?')
+    administrator = models.BooleanField(
+        default=False,
+        help_text='Will the users in this group administor user rights?')
+    county_level = models.BooleanField(
+        default=False,
+        help_text='Will the user be creating sub county users?')
 
-Group.is_superuser_level = property(
-    lambda self: 'manipulate_superusers' in [
-        perm.codename for perm in self.permissions.all()]
-)
+
+class ProxyGroup(Group):
+
+    @property
+    def is_regulator(self):
+        try:
+            return CustomGroup.objects.get(group=self).regulator
+        except CustomGroup.DoesNotExist:
+            return False
+
+    @property
+    def is_administrator(self):
+        try:
+            return CustomGroup.objects.get(group=self).administrator
+        except CustomGroup.DoesNotExist:
+            return False
+
+    @property
+    def is_national(self):
+        try:
+            return CustomGroup.objects.get(group=self).national
+        except CustomGroup.DoesNotExist:
+            return False
+
+    @property
+    def is_county_level(self):
+        try:
+            return CustomGroup.objects.get(group=self).county_level
+        except CustomGroup.DoesNotExist:
+            return False
+
+    class Meta:
+        proxy = True
 
 
 class MFLOAuthApplication(AbstractApplication):
