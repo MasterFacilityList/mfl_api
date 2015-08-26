@@ -32,6 +32,9 @@
             },
             {
                 "name": "Reporting Group"
+            },
+            {
+                "name": "Facility Viewing Group"
             }
         ]
     }
