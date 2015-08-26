@@ -97,13 +97,15 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
     is_national = serializers.ReadOnlyField()
     is_administrator = serializers.ReadOnlyField()
     is_county_level = serializers.ReadOnlyField()
+    is_sub_county_level = serializers.ReadOnlyField()
 
     @transaction.atomic
     def create(self, validated_data):
-        regulator = validated_data.pop('is_regulator', False)
-        national = validated_data.pop('is_national', False)
-        admin = validated_data.pop('is_administrator', False)
-        county_level = validated_data.pop('is_county_level', False)
+        regulator = self.initial_data.pop('is_regulator', False)
+        national = self.initial_data.pop('is_national', False)
+        admin = self.initial_data.pop('is_administrator', False)
+        county_level = self.initial_data.pop('is_county_level', False)
+        sub_county_level = self.initial_data.pop('is_sub_county_level', False)
         permissions = _lookup_permissions(
             self.context['request'].DATA
         )
@@ -117,6 +119,7 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
             "national": national,
             "administrator": admin,
             'county_level': county_level,
+            'sub_county_level': sub_county_level,
             "group": new_group
         }
         CustomGroup.objects.create(**custom_group_data)
@@ -130,8 +133,10 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
             'is_national', instance.is_national)
         admin = self.initial_data.pop(
             'is_administrator', instance.is_administrator)
-        county_level = validated_data.pop(
+        county_level = self.initial_data.pop(
             'is_county_level', instance.is_county_level)
+        sub_county_level = self.initial_data.pop(
+            'is_sub_county_level', instance.is_sub_county_level)
         permissions = _lookup_permissions(
             self.context['request'].DATA
         )
@@ -148,6 +153,7 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
             "national": national,
             "administrator": admin,
             "county_level": county_level,
+            "sub_county_level": sub_county_level,
             "group": instance
         }
         try:

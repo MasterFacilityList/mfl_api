@@ -243,6 +243,10 @@ class CustomGroup(models.Model):
     county_level = models.BooleanField(
         default=False,
         help_text='Will the user be creating sub county users?')
+    sub_county_level = models.BooleanField(
+        default=False,
+        help_text='Will the user be creating users below the sub county level '
+        'users?')
 
 
 class ProxyGroup(Group):
@@ -270,6 +274,13 @@ class ProxyGroup(Group):
 
     @property
     def is_county_level(self):
+        try:
+            return CustomGroup.objects.get(group=self).county_level
+        except CustomGroup.DoesNotExist:
+            return False
+
+    @property
+    def is_sub_county_level(self):
         try:
             return CustomGroup.objects.get(group=self).county_level
         except CustomGroup.DoesNotExist:

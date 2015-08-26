@@ -175,12 +175,14 @@ class TestCustomAndProxyGroup(TestCase):
             regulator=True,
             national=True,
             administrator=True,
+            sub_county_level=True,
             county_level=True)
         proxy_group = ProxyGroup.objects.get(id=group.id)
         self.assertTrue(proxy_group.is_administrator)
         self.assertTrue(proxy_group.is_regulator)
         self.assertTrue(proxy_group.is_national)
         self.assertTrue(proxy_group.is_county_level)
+        self.assertTrue(proxy_group.is_sub_county_level)
 
     def test_group_boolean_fields_false(self):
         group = mommy.make(Group)
@@ -190,3 +192,4 @@ class TestCustomAndProxyGroup(TestCase):
         self.assertFalse(proxy_group.is_regulator)
         self.assertFalse(proxy_group.is_national)
         self.assertFalse(proxy_group.is_county_level)
+        self.assertFalse(proxy_group.is_sub_county_level)
