@@ -111,6 +111,9 @@ class FacilityOperationStateFilter(CommonFieldsFilterset):
 class FacilityApprovalFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
     comment = django_filters.CharFilter(lookup_type='icontains')
+    is_cancelled = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
 
     class Meta(object):
         model = FacilityApproval
