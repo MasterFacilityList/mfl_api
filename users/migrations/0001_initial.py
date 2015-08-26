@@ -13,7 +13,7 @@ import django.core.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0006_require_contenttypes_0002'),
+        ('auth', '0007_auto_20150826_0844'),
     ]
 
     operations = [

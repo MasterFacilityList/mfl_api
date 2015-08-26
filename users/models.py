@@ -250,6 +250,10 @@ Group.is_superuser_level = property(
         perm.codename for perm in self.permissions.all()]
 )
 
+Group.add_to_class('is_regulator', models.BooleanField(default=False))
+Group.add_to_class('is_national', models.BooleanField(default=False))
+Group.add_to_class('is_administrator', models.BooleanField(default=False))
+
 
 class MFLOAuthApplication(AbstractApplication):
 
