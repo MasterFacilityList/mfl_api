@@ -5,7 +5,7 @@
         },
         "groups": [
             {
-                "name": "Regulators (makers)"
+                "name": "Regulators"
             }
         ]
     },
@@ -15,7 +15,7 @@
         },
         "groups": [
             {
-                "name": "Regulators (makers)"
+                "name": "Regulators"
             }
         ]
     },
@@ -25,7 +25,7 @@
         },
         "groups": [
             {
-                "name": "Regulators (makers)"
+                "name": "Regulators"
             }
         ]
     },
@@ -116,26 +116,6 @@
         "groups": [
             {
                 "name": "Public Users"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "publisher@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Publishers"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "nairobi_admin@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "County Administrators"
             }
         ]
     },
