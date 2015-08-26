@@ -1,6 +1,9 @@
+import functools
+
 from datetime import timedelta
 
 from django.apps import apps
+from django.db.models import Sum
 from django.utils import timezone
 
 from rest_framework.views import APIView, Response
@@ -82,6 +85,36 @@ class FilterReportMixin(object):
             return self._get_facility_keph_level_data()
         if report_type == "facility_constituency_report":
             return self._get_facility_constituency_data()
+
+        if report_type == "beds_and_cots_by_county":
+            return self._get_beds_and_cots({
+                'ward__constituency__county__name': 'county_name',
+                'ward__constituency__county': 'county'
+            })
+
+        if report_type == "beds_and_cots_by_constituency":
+            county_id = self.request.query_params.get("county", None)
+            filters = (
+                {} if county_id is None
+                else {"ward__constituency__county": county_id}
+            )
+            return self._get_beds_and_cots(vals={
+                'ward__constituency__name': 'constituency_name',
+                'ward__constituency': 'constituency'
+            }, filters=filters)
+
+        if report_type == "beds_and_cots_by_ward":
+            constituency_id = self.request.query_params.get(
+                "constituency", None
+            )
+            filters = (
+                {} if constituency_id is None
+                else {"ward__constituency": constituency_id}
+            )
+            return self._get_beds_and_cots(
+                vals={'ward__name': 'ward_name', 'ward': "ward"},
+                filters=filters
+            )
 
         more_filters_params = self.request.query_params.get("filters", None)
 
@@ -193,8 +226,28 @@ class FilterReportMixin(object):
             totals = []
         return data, totals
 
+    def _get_beds_and_cots(self, vals={}, filters={}):
+        fields = vals.keys()
+        assert len(fields) == 2
+        items = Facility.objects.values(*fields).filter(**filters).annotate(
+            cots=Sum('number_of_cots'), beds=Sum('number_of_beds')
+        ).order_by()
+
+        total_cots = functools.reduce(lambda x, y: x+y['cots'], items, 0)
+        total_beds = functools.reduce(lambda x, y: x+y['beds'], items, 0)
+
+        return [
+            {
+                'cots': p['cots'],
+                'beds': p['beds'],
+                vals[fields[0]]: p[fields[0]],
+                vals[fields[1]]: p[fields[1]]
+            } for p in items
+        ], {"total_cots": total_cots, "total_beds": total_beds}
+
 
 class ReportView(FilterReportMixin, APIView):
+
     def get(self, *args, **kwargs):
         data, totals = self.get_report_data()
 
@@ -205,6 +258,7 @@ class ReportView(FilterReportMixin, APIView):
 
 
 class FacilityUpgradeDowngrade(APIView):
+
     def get(self, *args, **kwargs):
         county = self.request.query_params.get('county', None)
         upgrade = self.request.query_params.get('upgrade', None)
