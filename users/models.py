@@ -1,3 +1,4 @@
+import reversion
 import datetime
 
 from django.db import models
@@ -8,7 +9,7 @@ from django.core.validators import (
 from django.contrib.auth.models import make_password
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
+    AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 )
 from django.conf import settings
 from django.template import Context, loader
@@ -16,9 +17,6 @@ from django.core.mail import EmailMultiAlternatives
 
 from oauth2_provider.models import AbstractApplication, AccessToken
 from oauth2_provider.settings import oauth2_settings
-
-
-USER_MODEL = settings.AUTH_USER_MODEL
 
 
 def send_email_on_signup(user, user_password):
@@ -257,3 +255,10 @@ class MFLOAuthApplication(AbstractApplication):
         verbose_name = 'mfl oauth application'
         verbose_name_plural = 'mfl oauth applications'
         default_permissions = ('add', 'change', 'delete', 'view', )
+
+
+# model registration done here
+reversion.register(MFLOAuthApplication, follow=['user'])
+reversion.register(Permission)
+reversion.register(Group, follow=['permissions'])
+reversion.register(MflUser, follow=['groups', 'user_permissions'])

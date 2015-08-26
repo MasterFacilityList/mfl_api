@@ -83,7 +83,7 @@ class GeoCodeMethod(GISAbstractBase):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'source', 'method', ])
 class FacilityCoordinates(GISAbstractBase):
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
@@ -334,7 +334,7 @@ class WorldBorder(AdministrativeUnitBoundary):
         ) if self.mpoly else {}
 
 
-@reversion.register
+@reversion.register(follow=['area'])
 class CountyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(County)
 
@@ -354,7 +354,7 @@ class CountyBoundary(AdministrativeUnitBoundary):
         verbose_name_plural = 'county boundaries'
 
 
-@reversion.register
+@reversion.register(follow=['area'])
 class ConstituencyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Constituency)
 
@@ -374,7 +374,7 @@ class ConstituencyBoundary(AdministrativeUnitBoundary):
         verbose_name_plural = 'constituency boundaries'
 
 
-@reversion.register
+@reversion.register(follow=['area'])
 class WardBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Ward)
 

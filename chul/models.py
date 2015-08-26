@@ -10,6 +10,7 @@ from facilities.models import Facility
 
 @reversion.register
 class Status(AbstractBase):
+
     """
     Indicates the of operation of a community health unit.
     e.g  fully-functional, semi-functional, functional
@@ -26,6 +27,7 @@ class Status(AbstractBase):
 
 @reversion.register
 class Approver(AbstractBase):
+
     """
     These are the bodies or the people that approve a community health unit.
     """
@@ -41,6 +43,7 @@ class Approver(AbstractBase):
 
 @reversion.register
 class ApprovalStatus(AbstractBase):
+
     """
     Status of a community health unit indicating whether it has been
     approved or not.
@@ -55,8 +58,9 @@ class ApprovalStatus(AbstractBase):
         verbose_name_plural = 'approval_statuses'
 
 
-@reversion.register
+@reversion.register(follow=['health_unit', 'contact'])
 class CommunityHealthUnitContact(AbstractBase):
+
     """
     The contacts of the health unit may be email, fax mobile etc.
     """
@@ -67,8 +71,9 @@ class CommunityHealthUnitContact(AbstractBase):
         return "{}: {}".format(self.health_unit, self.contact)
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'status', 'contacts'])
 class CommunityHealthUnit(SequenceMixin, AbstractBase):
+
     """
     This is a health service delivery structure within a defined geographical
     area covering a population of approximately 5,000 people.
@@ -97,8 +102,8 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         super(CommunityHealthUnit, self).save(*args, **kwargs)
 
 
-@reversion.register
 class EntityApprovalAbstractBase(AbstractBase):
+
     """
     Links an entity to its approver.
     """
@@ -111,8 +116,9 @@ class EntityApprovalAbstractBase(AbstractBase):
         abstract = True
 
 
-@reversion.register
+@reversion.register(follow=['approver', 'approval_status', 'health_unit', ])
 class CommunityHealthUnitApproval(EntityApprovalAbstractBase):
+
     """
     Links a community health unit to its approver.
     """
@@ -125,8 +131,9 @@ class CommunityHealthUnitApproval(EntityApprovalAbstractBase):
             self.approver, self.approval_status, self.health_unit)
 
 
-@reversion.register
+@reversion.register(follow=['health_worker', 'contact'])
 class CommunityHealthWorkerContact(AbstractBase):
+
     """
     The contacts of the healh worker.
 
@@ -139,8 +146,9 @@ class CommunityHealthWorkerContact(AbstractBase):
         return "{}: {}".format(self.health_worker, self.contact)
 
 
-@reversion.register
+@reversion.register(follow=['health_unit', 'contacts'])
 class CommunityHealthWorker(AbstractBase):
+
     """
     A person who is incharge of a certain community health area.
 
@@ -169,8 +177,9 @@ class CommunityHealthWorker(AbstractBase):
             self.first_name, self.last_name)
 
 
-@reversion.register
+@reversion.register(follow=['approver', 'approval_status', 'health_worker', ])
 class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
+
     """
     Shows when a health worker was approved and by who.
     """

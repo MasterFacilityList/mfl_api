@@ -62,7 +62,7 @@ class OwnerType(AbstractBase):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['owner_type'])
 class Owner(AbstractBase, SequenceMixin):
     """
     Entity that has exclusive legal rights to the facility.
@@ -125,7 +125,7 @@ class JobTitle(AbstractBase):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['officer', 'contact'])
 class OfficerContact(AbstractBase):
     """
     The contact details of the officer incharge.
@@ -145,7 +145,7 @@ class OfficerContact(AbstractBase):
         return "{}: {}".format(self.officer.name, self.contact.contact)
 
 
-@reversion.register
+@reversion.register(follow=['job_title', 'contacts'])
 class Officer(AbstractBase):
     """
     Identify officers in-charge of facilities
@@ -203,7 +203,7 @@ class FacilityStatus(AbstractBase):
         verbose_name_plural = 'facility statuses'
 
 
-@reversion.register
+@reversion.register(follow=['preceding', ])
 class FacilityType(AbstractBase):
     owner_type = models.ForeignKey(
         OwnerType, null=True, blank=True)
@@ -228,7 +228,7 @@ class FacilityType(AbstractBase):
         unique_together = ('name', 'sub_division', )
 
 
-@reversion.register
+@reversion.register(follow=['regulating_body', 'contact'])
 class RegulatingBodyContact(AbstractBase):
     """
     A regulating body contacts.
@@ -240,7 +240,7 @@ class RegulatingBodyContact(AbstractBase):
         return "{}: {}".format(self.regulating_body, self.contact)
 
 
-@reversion.register
+@reversion.register(follow=['contacts', 'regulatory_body_type', 'default_status'])  # noqa
 class RegulatingBody(AbstractBase):
     """
     Bodies responsible for licensing of facilities.
@@ -286,7 +286,7 @@ class RegulatingBody(AbstractBase):
         verbose_name_plural = 'regulating bodies'
 
 
-@reversion.register
+@reversion.register(follow=['regulatory_body', 'user'])
 class RegulatoryBodyUser(AbstractBase):
     """
     Links user to a regulatory body.
@@ -311,7 +311,7 @@ class RegulatoryBodyUser(AbstractBase):
         unique_together = ('regulatory_body', 'user', )
 
 
-@reversion.register
+@reversion.register(follow=['previous_status', 'next_status', ])
 class RegulationStatus(AbstractBase):
     """
     A Regulation state.
@@ -436,7 +436,7 @@ class RegulationStatus(AbstractBase):
         verbose_name_plural = 'regulation_statuses'
 
 
-@reversion.register
+@reversion.register(follow=['regulating_body', 'regulation_status'])
 class FacilityRegulationStatus(AbstractBase):
     """
     Shows the regulation status of a facility.
@@ -480,7 +480,7 @@ class FacilityRegulationStatus(AbstractBase):
         super(FacilityRegulationStatus, self).save(*args, **kwargs)
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'contact'])
 class FacilityContact(AbstractBase):
     """
     The facility contact.
@@ -498,7 +498,10 @@ class FacilityContact(AbstractBase):
             self.facility.name, self.contact.contact)
 
 
-@reversion.register
+@reversion.register(follow=[
+    'facility_type', 'operation_status', 'ward', 'owner', 'contacts',
+    'parent', 'regulatory_body', 'keph_level', 'sub_county', 'town'
+])
 class Facility(SequenceMixin, AbstractBase):
     """
     A health institution in Kenya.
@@ -546,8 +549,6 @@ class Facility(SequenceMixin, AbstractBase):
         default=False,
         help_text="Should the facility geo-codes be visible to the public?"
         "Certain facilities are kept 'off-the-map'")
-
-    # publishing is done at the county level
     is_published = models.BooleanField(
         default=False,
         help_text="COnfirmation by the CHRIO that the facility is okay")
@@ -568,7 +569,6 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
         Owner, help_text="A link to the organization that owns the facility")
-
     contacts = models.ManyToManyField(
         Contact, through=FacilityContact,
         help_text='Facility contacts - email, phone, fax, postal etc')
@@ -576,17 +576,17 @@ class Facility(SequenceMixin, AbstractBase):
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
-    regulatory_body = models.ForeignKey(
-        RegulatingBody, null=True, blank=True)
+    regulatory_body = models.ForeignKey(RegulatingBody, null=True, blank=True)
+    keph_level = models.ForeignKey(
+        KephLevel, null=True, blank=True,
+        help_text='The keph level of the facility')
 
     # set of boolean to optimize filtering though through tables
     regulated = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
     has_edits = models.BooleanField(default=False)
-    keph_level = models.ForeignKey(
-        KephLevel, null=True, blank=True,
-        help_text='The keph level of the facility')
+
     bank_name = models.CharField(
         max_length=100,
         null=True, blank=True,
@@ -595,12 +595,10 @@ class Facility(SequenceMixin, AbstractBase):
         max_length=100,
         null=True, blank=True,
         help_text="Branch name of the facility's bank")
-    bank_account = models.CharField(
-        max_length=100, null=True, blank=True)
+    bank_account = models.CharField(max_length=100, null=True, blank=True)
     facility_catchment_population = models.CharField(
-        max_length=100,
-        null=True,
-        blank=True, help_text="The population size which the facility serves")
+        max_length=100, null=True, blank=True,
+        help_text="The population size which the facility serves")
     sub_county = models.ForeignKey(
         SubCounty, null=True, blank=True,
         help_text='The sub county in which the facility has been assigned')
@@ -975,7 +973,7 @@ class Facility(SequenceMixin, AbstractBase):
         )
 
 
-@reversion.register
+@reversion.register(follow=['facility'])
 class FacilityUpdates(AbstractBase):
     """
     Buffers facility updates until when they are approved upon
@@ -1040,7 +1038,7 @@ class FacilityUpdates(AbstractBase):
         super(FacilityUpdates, self).save(*args, **kwargs)
 
 
-@reversion.register
+@reversion.register(follow=['operation_status', 'facility', ])
 class FacilityOperationState(AbstractBase):
     """
     logs chages to the operation_status of a facility.
@@ -1069,7 +1067,7 @@ class FacilityLevelChangeReason(AbstractBase):
         return str(self.reason)
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'facility_type', 'keph_level', 'reason'])  # noqa
 class FacilityUpgrade(AbstractBase):
     """
     Logs the upgrades and the downgrades of a facility.
@@ -1116,7 +1114,7 @@ class FacilityUpgrade(AbstractBase):
         self.populate_current_keph_level_and_facility_type()
 
 
-@reversion.register
+@reversion.register(follow=['facility', ])
 class FacilityApproval(AbstractBase):
     """
     Before a facility is visible to the public it is first approved
@@ -1146,7 +1144,7 @@ class FacilityApproval(AbstractBase):
         return "{}".format(self.facility.name)
 
 
-@reversion.register
+@reversion.register(follow=['facility_unit', 'regulation_status'])
 class FacilityUnitRegulation(AbstractBase):
     """
     Creates a facility units regulation status.
@@ -1165,7 +1163,7 @@ class FacilityUnitRegulation(AbstractBase):
         return custom_unicode
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'regulating_body'])
 class FacilityUnit(AbstractBase):
     """
     Autonomous units within a facility that are regulated differently from the
@@ -1197,7 +1195,7 @@ class FacilityUnit(AbstractBase):
         unique_together = ('facility', 'name', )
 
 
-@reversion.register
+@reversion.register(follow=['keph_level', ])
 class ServiceCategory(AbstractBase):
     """
     Categorisation of health services. e.g Immunisation, Antenatal,
@@ -1237,7 +1235,7 @@ class OptionGroup(AbstractBase):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['group'])
 class Option(AbstractBase):
     """
     services could either be:
@@ -1276,7 +1274,7 @@ class Option(AbstractBase):
         return "{}: {}".format(self.option_type, self.display_text)
 
 
-@reversion.register
+@reversion.register(follow=['category', 'group', ])
 class Service(SequenceMixin, AbstractBase):
     """
     A health service.
@@ -1314,7 +1312,7 @@ class Service(SequenceMixin, AbstractBase):
         verbose_name_plural = 'services'
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'option', 'service'])
 class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
@@ -1372,7 +1370,7 @@ class FacilityService(AbstractBase):
         self.validate_unique_service_or_service_option_with_for_facility()
 
 
-@reversion.register
+@reversion.register(follow=['facility_service', ])
 class FacilityServiceRating(AbstractBase):
 
     """Rating of a facility's service"""
@@ -1396,7 +1394,7 @@ class FacilityServiceRating(AbstractBase):
         )
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'officer'])
 class FacilityOfficer(AbstractBase):
     """
     A facility can have more than one officer. This models links the two.

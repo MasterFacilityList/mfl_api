@@ -33,7 +33,7 @@ class ContactType(AbstractBase):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['contact_type'])
 class Contact(AbstractBase):
 
     """
@@ -127,7 +127,7 @@ class County(AdministrativeUnitBase):
         verbose_name_plural = 'counties'
 
 
-@reversion.register
+@reversion.register(follow=['county'])
 class Constituency(AdministrativeUnitBase):
 
     """
@@ -156,7 +156,7 @@ class Constituency(AdministrativeUnitBase):
         unique_together = ('name', 'county')
 
 
-@reversion.register
+@reversion.register(follow=['constituency'])
 class Ward(AdministrativeUnitBase):
 
     """
@@ -188,7 +188,7 @@ class Ward(AdministrativeUnitBase):
             return _lookup_facility_coordinates(None)
 
 
-@reversion.register
+@reversion.register(follow=['county'])
 class SubCounty(AdministrativeUnitBase):
 
     """
@@ -199,7 +199,7 @@ class SubCounty(AdministrativeUnitBase):
     county = models.ForeignKey(County, on_delete=models.PROTECT)
 
 
-@reversion.register
+@reversion.register(follow=['user', 'county'])
 class UserCounty(AbstractBase):
 
     """
@@ -233,7 +233,7 @@ class UserCounty(AbstractBase):
         verbose_name_plural = 'user_counties'
 
 
-@reversion.register
+@reversion.register(follow=['user', 'contact'])
 class UserContact(AbstractBase):
 
     """
@@ -248,7 +248,7 @@ class UserContact(AbstractBase):
         return "{}: {}".format(self.user.get_full_name, self.contact.contact)
 
 
-@reversion.register
+@reversion.register(follow=['user', 'constituency'])
 class UserConstituency(AbstractBase):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='user_constituencies')
@@ -280,7 +280,7 @@ class Town(AbstractBase):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['town', ])
 class PhysicalAddress(AbstractBase):
 
     """
