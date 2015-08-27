@@ -1,6 +1,22 @@
 [
     {
         "mfluser": {
+            "email": "nairobi_admin@mfltest.slade360.co.ke"
+        },
+        "groups": []
+    },
+    {
+        "mfluser": {
+            "email": "facility_viewing@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Facility Viewing Group"
+            }
+        ]
+    },
+    {
+        "mfluser": {
             "email": "ncck@mfltest.slade360.co.ke"
         },
         "groups": [

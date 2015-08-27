@@ -3,7 +3,7 @@
         "model": "users.MflUser",
         "unique_fields": ["email", "username"],
         "records": [
-        {
+            {
                 "email": "reporting@mfltest.slade360.co.ke",
                 "first_name": "Dennis",
                 "last_name": "kubasu",
@@ -11,6 +11,15 @@
                 "password": "pbkdf2_sha256$20000$J3dCEpKSxg8y$bNYpDV5Jn94vA91rt+UX9RxHIjPtB87qGiMQ/nzq79s=",
                 "is_national": true,
                 "employee_number": 30000
+            },
+            {
+               "email": "facility_viewing@mfltest.slade360.co.ke",
+               "first_name": "Martin",
+               "last_name": "Kibichu",
+               "username": "Kibichu",
+               "password": "pbkdf2_sha256$20000$BsmsUdw3kUSm$xbw5SahtteWTZZ1k6vioZQHMOTUMm/juh8yHYvNG6X4=",
+               "is_national": true,
+               "employee_number": 50000
             },
             {
                 "email": "superuser@mfltest.slade360.co.ke",
