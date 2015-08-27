@@ -235,7 +235,7 @@ class TestGroupViews(LoginMixin, APITestCase):
 
     def test_custom_group_does_not_exist(self):
         group = mommy.make(Group)
-        self.assertEquals(0, CustomGroup.objects.all())
+        self.assertEquals(0, CustomGroup.objects.count())
         update_url = reverse(
             'api:users:group_detail', kwargs={'pk': group.id})
         data = {
@@ -244,7 +244,7 @@ class TestGroupViews(LoginMixin, APITestCase):
             "is_administrator": True,
         }
         self.client.patch(update_url, data)
-        self.assertEquals(1, CustomGroup.objects.all())
+        self.assertEquals(1, CustomGroup.objects.count())
 
     def test_failed_create(self):
         data = {
