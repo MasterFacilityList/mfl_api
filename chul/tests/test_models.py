@@ -16,6 +16,7 @@ from ..models import (
 
 
 class TestCommunityHealthUnit(TestCase):
+
     def test_save(self):
         health_unit = mommy.make(CommunityHealthUnit)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
@@ -29,6 +30,7 @@ class TestCommunityHealthUnit(TestCase):
 
 
 class TestCommunityHealthWorkerModel(TestCase):
+
     def test_save(self):
         health_worker = mommy.make(
             CommunityHealthWorker, id_number='12345678')
@@ -47,6 +49,7 @@ class TestCommunityHealthWorkerModel(TestCase):
 
 
 class TestCommunityHealthWorkerContact(TestCase):
+
     def test_save(self):
         hw_contact = mommy.make(CommunityHealthWorkerContact)
         self.assertEquals(1, CommunityHealthWorkerContact.objects.count())
@@ -58,6 +61,7 @@ class TestCommunityHealthWorkerContact(TestCase):
 
 
 class TestModels(TestCase):
+
     def test_save(self):
         models = [
             CommunityHealthUnit, CommunityHealthWorker,

@@ -8,11 +8,13 @@ from ..models import (
 
 
 class TestWorldBoundaryModel(BaseTestCase):
+
     def test_geom_property(self):
         self.assertEqual(WorldBorder().geometry, {})
 
 
 class TestGeoCodeSourceModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "Kenya Medical Research Institute",
@@ -30,6 +32,7 @@ class TestGeoCodeSourceModel(BaseTestCase):
 
 
 class TesGeoCodeMethodModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "Taken with GPS device",
@@ -44,6 +47,7 @@ class TesGeoCodeMethodModel(BaseTestCase):
 
 
 class TestFacilityCoordinatesModel(BaseTestCase):
+
     def setUp(self):
         # Linked to geographic units ( county, ward, constituency) that
         # do not have boundaries; intended to test validation

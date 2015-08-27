@@ -1,7 +1,7 @@
 import reversion
 
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, encoding
 
 from common.models import AbstractBase, Contact, SequenceMixin
 from common.fields import SequenceField
@@ -9,6 +9,7 @@ from facilities.models import Facility
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class Status(AbstractBase):
 
     """
@@ -18,7 +19,7 @@ class Status(AbstractBase):
     name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta(AbstractBase.Meta):
@@ -26,6 +27,7 @@ class Status(AbstractBase):
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class Approver(AbstractBase):
 
     """
@@ -37,11 +39,12 @@ class Approver(AbstractBase):
     abbreviation = models.CharField(
         max_length=50, help_text='A short name for the approver.')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class ApprovalStatus(AbstractBase):
 
     """
@@ -51,7 +54,7 @@ class ApprovalStatus(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta(AbstractBase.Meta):
@@ -59,6 +62,7 @@ class ApprovalStatus(AbstractBase):
 
 
 @reversion.register(follow=['health_unit', 'contact'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthUnitContact(AbstractBase):
 
     """
@@ -67,11 +71,12 @@ class CommunityHealthUnitContact(AbstractBase):
     health_unit = models.ForeignKey('CommunityHealthUnit')
     contact = models.ForeignKey(Contact)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.health_unit, self.contact)
+    def __str__(self):
+        return "{}: ({})".format(self.health_unit, self.contact)
 
 
 @reversion.register(follow=['facility', 'status', 'contacts'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
     """
@@ -93,7 +98,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     contacts = models.ManyToManyField(
         Contact, through=CommunityHealthUnitContact)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -117,6 +122,7 @@ class EntityApprovalAbstractBase(AbstractBase):
 
 
 @reversion.register(follow=['approver', 'approval_status', 'health_unit', ])
+@encoding.python_2_unicode_compatible
 class CommunityHealthUnitApproval(EntityApprovalAbstractBase):
 
     """
@@ -126,12 +132,12 @@ class CommunityHealthUnitApproval(EntityApprovalAbstractBase):
         CommunityHealthUnit,
         related_name='health_unit_approvals')
 
-    def __unicode__(self):
-        return "{}: {}: {}".format(
-            self.approver, self.approval_status, self.health_unit)
+    def __str__(self):
+        return "{}: {}".format(self.health_unit, self.approval_status)
 
 
 @reversion.register(follow=['health_worker', 'contact'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthWorkerContact(AbstractBase):
 
     """
@@ -142,11 +148,12 @@ class CommunityHealthWorkerContact(AbstractBase):
     health_worker = models.ForeignKey('CommunityHealthWorker')
     contact = models.ForeignKey(Contact)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.health_worker, self.contact)
+    def __str__(self):
+        return "{}: ({})".format(self.health_worker, self.contact)
 
 
 @reversion.register(follow=['health_unit', 'contacts'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthWorker(AbstractBase):
 
     """
@@ -165,19 +172,19 @@ class CommunityHealthWorker(AbstractBase):
     contacts = models.ManyToManyField(
         Contact, through=CommunityHealthWorkerContact)
 
-    def __unicode__(self):
-        return str(self.id_number)
+    def __str__(self):
+        return "{} ({})".format(self.first_name, self.id_number)
 
     class Meta(AbstractBase.Meta):
         unique_together = ('id_number', 'health_unit')
 
     @property
     def name(self):
-        return "{} {}".format(
-            self.first_name, self.last_name)
+        return "{} {}".format(self.first_name, self.last_name).strip()
 
 
 @reversion.register(follow=['approver', 'approval_status', 'health_worker', ])
+@encoding.python_2_unicode_compatible
 class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
 
     """
@@ -186,6 +193,5 @@ class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
     health_worker = models.ForeignKey(
         CommunityHealthWorker, related_name='health_worker_approvals')
 
-    def __unicode__(self):
-        return "{}: {}: {}".format(
-            self.approver, self.approval_status, self.health_worker)
+    def __str__(self):
+        return "{}: {}".format(self.health_worker, self.approval_status)

@@ -115,9 +115,13 @@ class AbstractBase(models.Model):
         self.deleted = True
         self.save()
 
+    def __str__(self):
+        raise NotImplementedError(
+            "child models need to define their representation"
+        )
+
     def __unicode__(self):
-        """Default if child models do not define their string representation"""
-        return '{} {}'.format(self._meta.verbose_name, self.pk)
+        return self.__str__()
 
     class Meta(object):
         ordering = ('-updated', '-created',)

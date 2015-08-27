@@ -2,7 +2,7 @@ import reversion
 import datetime
 
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, encoding
 from django.core.validators import (
     validate_email, RegexValidator, ValidationError
 )
@@ -91,7 +91,9 @@ class MflUserManager(BaseUserManager):
             MflUserManager, self).get_queryset().filter(deleted=False)
 
 
+@encoding.python_2_unicode_compatible
 class MflUser(AbstractBaseUser, PermissionsMixin):
+
     """
     Add custom behaviour to the user model.
 
@@ -150,8 +152,8 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
             self.password_history = [make_password(
                 raw_password)] if self.is_authenticated else None
 
-    def __unicode__(self):
-        return self.email
+    def __str__(self):
+        return self.get_full_name
 
     @property
     def get_short_name(self):
@@ -238,6 +240,18 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         ordering = ('-date_joined', )
 
 
+@encoding.python_2_unicode_compatible
+class MFLOAuthApplication(AbstractApplication):
+
+    def __str__(self):
+        return self.name or self.client_id
+
+    class Meta(object):
+        verbose_name = 'mfl oauth application'
+        verbose_name_plural = 'mfl oauth applications'
+        default_permissions = ('add', 'change', 'delete', 'view', )
+
+# adding properties to auth.Group model
 Group.is_county_level = property(
     lambda self: 'county_group_marker' in [
         perm.codename for perm in self.permissions.all()]
@@ -247,14 +261,6 @@ Group.is_superuser_level = property(
     lambda self: 'manipulate_superusers' in [
         perm.codename for perm in self.permissions.all()]
 )
-
-
-class MFLOAuthApplication(AbstractApplication):
-
-    class Meta(object):
-        verbose_name = 'mfl oauth application'
-        verbose_name_plural = 'mfl oauth applications'
-        default_permissions = ('add', 'change', 'delete', 'view', )
 
 
 # model registration done here
