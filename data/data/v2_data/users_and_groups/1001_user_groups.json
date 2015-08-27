@@ -1,11 +1,39 @@
 [
     {
         "mfluser": {
+            "email": "publisher@mfltest.slade360.co.ke"
+        },
+        "groups": []
+    },
+    {
+        "mfluser": {
+            "email": "nairobi_admin@mfltest.slade360.co.ke"
+        },
+        "groups": []
+    },
+    {
+        "mfluser": {
+            "email": "facility_viewing@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Facility Viewing Group"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mariker.rian@gmail.com"
+        },
+        "groups": []
+    },
+    {
+        "mfluser": {
             "email": "ncck@mfltest.slade360.co.ke"
         },
         "groups": [
             {
-                "name": "Regulators (makers)"
+                "name": "Regulators"
             }
         ]
     },
@@ -15,7 +43,7 @@
         },
         "groups": [
             {
-                "name": "Regulators (makers)"
+                "name": "Regulators"
             }
         ]
     },
@@ -25,7 +53,7 @@
         },
         "groups": [
             {
-                "name": "Regulators (makers)"
+                "name": "Regulators"
             }
         ]
     },
@@ -116,26 +144,6 @@
         "groups": [
             {
                 "name": "Public Users"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "publisher@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Publishers"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "nairobi_admin@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "County Administrators"
             }
         ]
     },
