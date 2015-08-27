@@ -14,6 +14,15 @@ from facilities.models import Facility
 LOGGER = logging.getLogger(__name__)
 
 
+class CustomGeoManager(gis_models.GeoManager):
+    """
+    Ensure that deleted items are not returned in a gis queryset  by default
+    """
+    def get_queryset(self):
+        return super(
+            CustomGeoManager, self).get_queryset().filter(deleted=False)
+
+
 class GISAbstractBase(AbstractBase, gis_models.Model):
     """
     We've intentionally duplicated the `AbstractBase` in the `common` app
@@ -26,7 +35,7 @@ class GISAbstractBase(AbstractBase, gis_models.Model):
     We've kept the fields that are in the `common` `AbstractBase` because
     we want to have the same kind of base behavior.
     """
-    objects = gis_models.GeoManager()
+    objects = CustomGeoManager()
     everything = gis_models.GeoManager()
 
     class Meta(AbstractBase.Meta):
@@ -281,23 +290,23 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
             return json.loads(
                 polygon.simplify(
-                    tolerance=(1.0 / 10 ** PRECISION)
+                    tolerance=(1.0 / 10 ** precision)
                 ).geojson
             )
 
         # 3 decimal places for the web map ( about 10 meter accuracy )
-        PRECISION = 3
-        TOLERANCE = (1.0 / 10 ** PRECISION)
+        precision = 3
+        tolerance = (1.0 / 10 ** precision)
         geojson_dict = _simplify(
-            tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
+            tolerance=tolerance, geometry=self.mpoly.cascaded_union
         )
         original_coordinates = geojson_dict['coordinates']
         assert original_coordinates
         new_coordinates = [
             [
                 [
-                    round(coordinate_pair[0], PRECISION),
-                    round(coordinate_pair[1], PRECISION)
+                    round(coordinate_pair[0], precision),
+                    round(coordinate_pair[1], precision)
                 ]
                 for coordinate_pair in original_coordinates[0]
                 if coordinate_pair and
