@@ -2,26 +2,58 @@ import json
 
 from django.utils import timezone
 
-from common.models import Contact, ContactType
+from common.models import Contact
 from common.serializers import ContactSerializer
 
 from facilities.models import (
     FacilityContact,
-    Facility,
-    FacilityOfficer,
-    JobTitle,
-    Officer,
-    OfficerContact)
+)
 
 from facilities.serializers import (
     FacilityUnitSerializer,
     FacilityServiceSerializer,
-    FacilityOfficerSerializer,
     FacilityContactSerializer
 )
 
 
 inlining_errors = []
+
+
+def _validate_services(services):
+    errors = []
+    for service in services:
+        try:
+            Service.objects.get(id=service)
+        except Service.DoesNotExist:
+            errors.append("service with id {} not found".format(service))
+        except KeyError:
+            errors.append("Key service was not found".format(service))
+
+    return errors
+
+
+def _validate_units(units):
+    errors = []
+    for unit in units:
+        try:
+            RegulatingBody.objects.get(id=unit.get('regulating_body'))
+        except RegulatingBody.DoesNotExist:
+            errors.append("The regulating_body with the id {} was not foun".format(regulating_body))
+        except KeyError:
+            errors.append("Key service was not found".format(service))
+    return errors
+
+
+def _validate_contacts(contacts):
+    errors = []
+    for contact in contacts:
+        try:
+            ContactType.objects.get(id=contact.get('contact_type'))
+        except ContactType.DoesNotExist:
+            errors.append("Contact type with the id {} was not found".format(contact))
+        except KeyError:
+            errors.append("Key contact type is missing")
+
 
 
 def inject_audit_fields(dict_a, validated_data):
@@ -91,125 +123,3 @@ def create_facility_services(instance, service_data, validated_data):
         f_service = FacilityServiceSerializer(data=service_data)
         f_service.save() if f_service.is_valid() else \
             inlining_errors.append(json.dumps(f_service.errors))
-
-
-class CreateFacilityOfficerMixin(object):
-
-    """Mixin to create facility officers."""
-
-    def _validate_required_fields(self, data):
-        errs = {}
-        if data.get('facility_id', None) is None:
-            errs["facility_id"] = ["Facility is required"]
-        if data.get('name', None) is None:
-            errs["name"] = ["Name is Required"]
-        if data.get('title', None) is None:
-            errs["title"] = ["Job title is required"]
-
-        return errs
-
-    def _validate_facility(self, data):
-        try:
-            Facility.objects.get(id=data.get('facility_id', None))
-        except Facility.DoesNotExist:
-            error_message = {
-                "facility_id": ["Facility provided does not exist"]
-            }
-            return error_message
-
-    def _validate_job_titles(self, data):
-        try:
-            JobTitle.objects.get(id=data.get('title', None))
-        except JobTitle.DoesNotExist:
-            error_message = {
-                "title": ["Job title provided does not exist"]
-            }
-            return error_message
-
-    def data_is_valid(self, data):
-        errors = [
-            self._validate_required_fields(data),
-            self._validate_facility(data),
-            self._validate_job_titles(data)
-        ]
-        errors = [error for error in errors if error]
-        if errors:
-            return errors
-        else:
-            return True
-
-    def _inject_creating_user(self, attributes_dict):
-        attributes_dict['created_by'] = self.user
-        attributes_dict['updated_by'] = self.user
-        return attributes_dict
-
-    def _create_contacts(self, data):
-        contacts = data.get('contacts', [])
-        created_contacts = []
-
-        for contact in contacts:
-            contact_type = ContactType.objects.get(id=contact.get('type'))
-            contact_dict = {
-                "contact_type": contact_type,
-                "contact": contact.get('contact')
-            }
-            try:
-                created_contacts.append(Contact.objects.get(**contact_dict))
-            except Contact.DoesNotExist:
-                contact_dict = self._inject_creating_user(contact_dict)
-                contact_dict = self._inject_creating_user(contact_dict)
-                created_contacts.append(Contact.objects.create(**contact_dict))
-
-        return created_contacts
-
-    def _create_facility_officer(self, data):
-        facility = Facility.objects.get(id=data['facility_id'])
-        job_title = JobTitle.objects.get(id=data['title'])
-
-        officer_dict = {
-            "name": data['name'],
-            "job_title": job_title,
-        }
-        officer_dict = self._inject_creating_user(officer_dict)
-
-        id_no = data.get('id_no', None)
-        reg_no = data.get('reg_no', None)
-        officer_dict['id_number'] = id_no if id_no else None
-        officer_dict['registration_number'] = reg_no if reg_no else None
-
-        officer = Officer.objects.create(**officer_dict)
-        facility_officer_dict = {
-            "facility": facility,
-            "officer": officer
-        }
-        facility_officer_dict = self._inject_creating_user(
-            facility_officer_dict)
-        facility_officer = FacilityOfficer.objects.create(
-            **facility_officer_dict)
-
-        # link the officer to the contacts
-        created_contacts = self._create_contacts(data)
-        for contact in created_contacts:
-            contact_dict = {
-                "officer": officer,
-                "contact": contact
-            }
-            contact_dict = self._inject_creating_user(contact_dict)
-            OfficerContact.objects.create(**contact_dict)
-        return facility_officer
-
-    def create_officer(self, data):
-        valid_data = self.data_is_valid(data)
-
-        if valid_data is not True:
-            return {
-                "created": False,
-                "detail": valid_data
-            }
-
-        facility_officer = self._create_facility_officer(data)
-        serialized_officer = FacilityOfficerSerializer(facility_officer).data
-        return {
-            "created": True,
-            "detail": serialized_officer
-        }

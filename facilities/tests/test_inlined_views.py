@@ -387,10 +387,10 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         response = self.client.patch(url, updating_data_5)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(2, FacilityContact.objects.count())
-        self.assertEquals(1, FacilityUnit.objects.count())
-        self.assertEquals(3, FacilityService.objects.count())
-        self.assertEquals(2, FacilityContact.objects.count())
+        self.assertEquals(0, FacilityContact.objects.count())
+        self.assertEquals(0, FacilityUnit.objects.count())
+        self.assertEquals(0, FacilityService.objects.count())
+        self.assertEquals(0, FacilityContact.objects.count())
 
         facility_units_with_error = [
             {

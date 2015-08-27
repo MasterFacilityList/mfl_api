@@ -345,6 +345,39 @@ class FacilityDetailView(
     queryset = Facility.objects.all()
     serializer_class = FacilityDetailSerializer
 
+    def validate_services(self, services):
+        pass
+
+    def validate_contacts(self, contacts):
+        pass
+
+    def validate_units(self, units):
+        pass
+
+    def validate_officer_incharge(self, officer_in_charge):
+        pass
+
+    def buffer_contacts(self, update, contacts):
+        if update.contacts and update.contacts != 'null':
+            proposed_contacts = json.loads(update.contacts)
+            update.contacts = json.dumps(proposed_contacts + contacts)
+        else:
+            update.contacts = json.dumps(contacts, default=default)
+
+    def buffer_services(self, update, services):
+        if update.services and update.services != 'null':
+            proposed_services = json.loads(update.services)
+            update.services = json.dumps(proposed_services + services)
+        else:
+            update.services = json.dumps(services, default=default)
+
+    def buffer_units(self, update, units):
+        if update.units and update.units != 'null':
+            proposed_units = json.loads(update.units)
+            update.units = json.dumps(proposed_units + units)
+        else:
+            update.units = json.dumps(units, default=default)
+
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         user_id = request.user
@@ -393,44 +426,27 @@ class FacilityDetailView(
             officer_in_charge['job_title_name'] = JobTitle.objects.get(
                 id=officer_in_charge['title']).name
 
-        if services:
-            populate_service_name()
-        if contacts:
-            populate_contact_type_names()
-        if units:
-            populate_regulatory_body_names()
-
-        if officer_in_charge:
-            populate_officer_incharge_contacts()
-            populate_officer_incharge_job_title()
-
         try:
             update = FacilityUpdates.objects.filter(
                 facility=instance, cancelled=False, approved=False)[0]
         except IndexError:
             update = FacilityUpdates.objects.create(facility=instance)
+
         if services:
-            if update.services and update.services != 'null':
-                proposed_services = json.loads(update.services)
-                update.services = json.dumps(proposed_services + services)
-            else:
-                update.services = json.dumps(services, default=default)
+            populate_service_name()
+            self.buffer_services(update, services)
 
         if contacts:
-            if update.contacts and update.contacts != 'null':
-                proposed_contacts = json.loads(update.contacts)
-                update.contacts = json.dumps(proposed_contacts + contacts)
-            else:
-                update.contacts = json.dumps(contacts, default=default)
+            populate_contact_type_names()
+            self.buffer_contacts(update, contacts)
 
         if units:
-            if update.units and update.units != 'null':
-                proposed_units = json.loads(update.units)
-                update.units = json.dumps(proposed_units + units)
-            else:
-                update.units = json.dumps(units, default=default)
+            populate_regulatory_body_names()
+            self.buffer_units(update, units)
 
         if officer_in_charge:
+            populate_officer_incharge_contacts()
+            populate_officer_incharge_job_title()
             update.officer_in_charge = json.dumps(officer_in_charge)
 
         update.is_new = False
