@@ -42,6 +42,14 @@ class TesGeoCodeMethodModel(BaseTestCase):
         # test unicode
         self.assertEquals("Taken with GPS device", method.__unicode__())
 
+    def test_deletion(self):
+        method = mommy.make(GeoCodeMethod)
+        mommy.make(GeoCodeMethod)
+        self.assertEquals(2, GeoCodeMethod.objects.count())
+        method.delete()
+        self.assertEquals(1, GeoCodeMethod.objects.count())
+        self.assertEquals(2, GeoCodeMethod.everything.count())
+
 
 class TestFacilityCoordinatesModel(BaseTestCase):
     def setUp(self):
