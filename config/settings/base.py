@@ -291,6 +291,8 @@ SEARCH = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
+        "users.CustomGroup",
+        "users.ProxyGroup"
 
     ],
     "STOP_WORDS": [
