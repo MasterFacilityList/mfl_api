@@ -985,6 +985,10 @@ class FacilityUpdates(AbstractBase):
     approved = models.BooleanField(default=False)
     cancelled = models.BooleanField(default=False)
     facility_updates = models.TextField()
+    contacts = models.TextField(null=True, blank=True)
+    services = models.TextField(null=True, blank=True)
+    officer_in_charge = models.TextField(null=True, blank=True)
+    units = models.TextField(null=True, blank=True)
 
     def facility_updated_json(self):
         return json.loads(self.facility_updates)
