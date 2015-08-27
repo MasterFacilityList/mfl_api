@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
-from ..models import MflUser
+from ..models import MflUser, CustomGroup
 from ..serializers import _lookup_groups
 
 
@@ -232,6 +232,19 @@ class TestGroupViews(LoginMixin, APITestCase):
         )
         self.assertEqual(update_response.status_code, 200)
         self.assertEqual(len(update_response.data['permissions']), 1)
+
+    def test_custom_group_does_not_exist(self):
+        group = mommy.make(Group)
+        self.assertEquals(0, CustomGroup.objects.all())
+        update_url = reverse(
+            'api:users:group_detail', kwargs={'pk': group.id})
+        data = {
+            "is_national": True,
+            "is_regulator": False,
+            "is_administrator": True,
+        }
+        self.client.patch(update_url, data)
+        self.assertEquals(1, CustomGroup.objects.all())
 
     def test_failed_create(self):
         data = {
