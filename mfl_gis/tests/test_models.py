@@ -48,7 +48,7 @@ class TesGeoCodeMethodModel(BaseTestCase):
         self.assertEquals(2, GeoCodeMethod.objects.count())
         method.delete()
         self.assertEquals(1, GeoCodeMethod.objects.count())
-        self.assertEquals(2, GeoCodeMethod.everything.all())
+        self.assertEquals(2, GeoCodeMethod.everything.count())
 
 
 class TestFacilityCoordinatesModel(BaseTestCase):
