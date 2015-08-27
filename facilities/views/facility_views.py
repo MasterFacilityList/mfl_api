@@ -1,3 +1,6 @@
+import json
+import uuid
+
 from django.contrib.auth.models import AnonymousUser
 
 from rest_framework import generics
@@ -6,6 +9,7 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
+from common.models import ContactType
 
 
 from ..models import (
@@ -18,7 +22,12 @@ from ..models import (
     FacilityUnitRegulation,
     KephLevel,
     OptionGroup,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    FacilityUpdates,
+    Service,
+    Option,
+    RegulatingBody,
+    JobTitle
 )
 
 from ..serializers import (
@@ -50,6 +59,11 @@ from ..filters import (
     FacilityLevelChangeReasonFilter
 
 )
+
+
+def default(obj):
+    if isinstance(obj, uuid.UUID):
+        return str(obj)
 
 
 class QuerysetFilterMixin(object):
@@ -336,11 +350,92 @@ class FacilityDetailView(
         user_id = request.user
         del user_id
         request.data['updated_by_id'] = request.user.id
+
+        services = request.data.pop('services', None)
+        contacts = request.data.pop('contacts', None)
+        units = request.data.pop('units', None)
+        officer_in_charge = request.data.pop(
+            'officer_in_charge', None)
+
         instance = self.get_object()
+
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+
+        def populate_service_name():
+            for service in services:
+                id = service.get('service')
+                obj = Service.objects.get(id=id)
+                service['name'] = obj.name
+                option = service.get('option', None)
+                if option:
+                    service['display_name'] = Option.objects.get(
+                        id=option).display_text
+
+        def populate_contact_type_names():
+            for contact in contacts:
+                contact['contact_type_name'] = ContactType.objects.get(
+                    id=contact.get('contact_type')).name
+
+        def populate_regulatory_body_names():
+            for unit in units:
+                unit['regulating_body_name'] = RegulatingBody.objects.get(
+                    id=unit['regulating_body']).name
+
+        def populate_officer_incharge_contacts():
+            for contact in officer_in_charge['contacts']:
+                contact['contact_type_name'] = ContactType.objects.get(
+                    id=contact.get('type')).name
+
+        def populate_officer_incharge_job_title():
+            officer_in_charge['job_title_name'] = JobTitle.objects.get(
+                id=officer_in_charge['title']).name
+
+        if services:
+            populate_service_name()
+        if contacts:
+            populate_contact_type_names()
+        if units:
+            populate_regulatory_body_names()
+
+        if officer_in_charge:
+            populate_officer_incharge_contacts()
+            populate_officer_incharge_job_title()
+
+        try:
+            update = FacilityUpdates.objects.filter(
+                facility=instance, cancelled=False, approved=False)[0]
+        except IndexError:
+            update = FacilityUpdates.objects.create(facility=instance)
+        if services:
+            if update.services and update.services != 'null':
+                proposed_services = json.loads(update.services)
+                update.services = json.dumps(proposed_services + services)
+            else:
+                update.services = json.dumps(services, default=default)
+
+        if contacts:
+            if update.contacts and update.contacts != 'null':
+                proposed_contacts = json.loads(update.contacts)
+                update.contacts = json.dumps(proposed_contacts + contacts)
+            else:
+                update.contacts = json.dumps(contacts, default=default)
+
+        if units:
+            if update.units and update.units != 'null':
+                proposed_units = json.loads(update.units)
+                update.units = json.dumps(proposed_units + units)
+            else:
+                update.units = json.dumps(units, default=default)
+
+        if officer_in_charge:
+            update.officer_in_charge = json.dumps(officer_in_charge)
+
+        update.is_new = False
+        update.save()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
