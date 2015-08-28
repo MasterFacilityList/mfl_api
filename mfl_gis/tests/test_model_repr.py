@@ -20,10 +20,7 @@ class TestModelRepr(ModelReprMixin, TestCase):
         s = models.GeoCodeSource.objects.create(name="gcs")
         m = models.GeoCodeMethod.objects.create(name="gcm")
         self.check_repr(
-            mommy.make_recipe(
-                'mfl_gis.tests.facility_coordinates_recipe',
-                facility=f, source=s, method=m
-            ),
+            models.FacilityCoordinates(facility=f, source=s, method=m),
             "fac:gcs:gcm"
         )
 
