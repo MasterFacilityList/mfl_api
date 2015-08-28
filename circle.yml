@@ -15,8 +15,8 @@ test:
   override:
     - python setup.py check
     - case $CIRCLE_NODE_INDEX in 0) tox -vre py27;; 1) tox -vre docs ;; esac:
-      parallel: true
-      timeout: 300
+        parallel: true
+        timeout: 300
 
 
 general:
