@@ -37,6 +37,14 @@ class TesGeoCodeMethodModel(BaseTestCase):
         GeoCodeMethod.objects.create(**data)
         self.assertEquals(1, GeoCodeMethod.objects.count())
 
+    def test_deletion(self):
+        method = mommy.make(GeoCodeMethod)
+        mommy.make(GeoCodeMethod)
+        self.assertEquals(2, GeoCodeMethod.objects.count())
+        method.delete()
+        self.assertEquals(1, GeoCodeMethod.objects.count())
+        self.assertEquals(2, GeoCodeMethod.everything.count())
+
 
 class TestFacilityCoordinatesModel(BaseTestCase):
 

@@ -1186,7 +1186,6 @@ class FacilityApproval(AbstractBase):
         self.facility.save(allow_save=True)
 
     def clean(self, *args, **kwargs):
-        self.facility.approved = True
         self.facility.save(allow_save=True)
         self.update_facility_rejection()
 
