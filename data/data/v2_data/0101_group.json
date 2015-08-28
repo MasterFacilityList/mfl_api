@@ -5,27 +5,20 @@
         "records": [
             {
                 "name": "County Health Records Information Officer"
+
             },
             {
                 "name": "Sub County Health Records Information Officer"
             },
             {
-                "name": "Publishers"
+                "name": "Regulators"
             },
-            {
-                "name": "Regulators (makers)"
-            },
-            {
-                "name": "Regulators (Approvers)"
-            },
+
             {
                 "name": "Public Users"
             },
             {
                 "name": "National Administrators"
-            },
-            {
-                "name": "County Administrators"
             },
             {
                 "name": "Superusers"
@@ -34,7 +27,7 @@
                 "name": "Reporting Group"
             },
             {
-                "name": "Facility Viewing Group"
+              "name": "Facility Viewing Group"
             }
         ]
     }

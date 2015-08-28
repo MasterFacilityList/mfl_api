@@ -13,9 +13,9 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0001_initial'),
+        ('common', 'admin_unit_codes'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('facilities', '0001_initial'),
+        ('facilities', 'set_facility_code_sequence_min_value'),
     ]
 
     operations = [
@@ -34,8 +34,10 @@ class Migration(migrations.Migration):
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'verbose_name_plural': 'approval_statuses',
+                'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
+                'verbose_name_plural': 'approval_statuses',
             },
         ),
         migrations.CreateModel(
@@ -98,8 +100,9 @@ class Migration(migrations.Migration):
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'abstract': False,
+                'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
             },
         ),
         migrations.CreateModel(
@@ -137,8 +140,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
-                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
         ),
         migrations.CreateModel(
@@ -159,9 +162,9 @@ class Migration(migrations.Migration):
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'abstract': False,
                 'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
             },
         ),
         migrations.CreateModel(
@@ -199,9 +202,10 @@ class Migration(migrations.Migration):
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'verbose_name_plural': 'statuses',
                 'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
+                'verbose_name_plural': 'statuses',
             },
         ),
         migrations.AddField(

@@ -13,6 +13,7 @@ class Command(BaseCommand):
     def _load_group_permissions(self, group_permissions):
         with transaction.atomic():
             for gp in group_permissions:
+
                 g = Group.objects.get(**gp["group"])
                 for perm in gp["permissions"]:
                     g.permissions.add(Permission.objects.get(**perm))
