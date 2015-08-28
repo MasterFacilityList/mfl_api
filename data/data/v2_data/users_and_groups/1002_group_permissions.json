@@ -1892,30 +1892,6 @@
     },
     {
         "group": {
-            "name": "Publishers"
-        },
-        "permissions": []
-    },
-    {
-        "group": {
-            "name": "Regulators (makers)"
-        },
-        "permissions": []
-    },
-    {
-        "group": {
-            "name": "Regulators (Approvers)"
-        },
-        "permissions": []
-    },
-    {
-        "group": {
-            "name": "County Administrators"
-        },
-        "permissions": []
-    },
-    {
-        "group": {
             "name": "Facility Viewing Group"
         },
         "permissions": [

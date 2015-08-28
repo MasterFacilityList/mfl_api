@@ -29,7 +29,10 @@ SEARCH_TEST_SETTINGS = {
         "mfl_gis.WorldBorder",
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
-        "mfl_gis.WardBoundary"],
+        "mfl_gis.WardBoundary",
+        "users.CustomGroup",
+        "users.ProxyGroup"
+    ],
     "FULL_TEXT_SEARCH_FIELDS": {
 
         "models": [

@@ -1,6 +1,6 @@
 import json
 
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.test import Client, TestCase
@@ -8,7 +8,7 @@ from django.utils import timezone
 from model_mommy import mommy
 
 from common.tests.test_models import BaseTestCase
-from ..models import MflUser, MFLOAuthApplication
+from ..models import MflUser, MFLOAuthApplication, ProxyGroup, CustomGroup
 
 
 class TestMflUserModel(BaseTestCase):
@@ -100,44 +100,6 @@ class TestMflUserModel(BaseTestCase):
             MflUser.objects.create_user(**data)
 
 
-class TestGroupCountyLevelMarkerProperty(BaseTestCase):
-
-    def test_group_does_not_have_county_level_marker_permission(self):
-        group = mommy.make(Group)
-        perm = mommy.make(Permission)
-        group.permissions.add(perm.id)
-        county_perm = Permission.objects.get(codename='county_group_marker')
-        self.assertNotIn(county_perm, group.permissions.all())
-        self.assertFalse(group.is_county_level)
-        self.assertIn(perm, group.permissions.all())
-
-    def test_group_has_county_level_marker_permission(self):
-        group = mommy.make(Group)
-        perm = Permission.objects.get(codename='county_group_marker')
-        group.permissions.add(perm.id)
-        self.assertIn(perm, group.permissions.all())
-        self.assertTrue(group.is_county_level)
-
-
-class TestGroupSuperUsersProperty(BaseTestCase):
-    def test_group_does_not_have_manipulate_superusers_permissions(self):
-        group = mommy.make(Group)
-        perm = mommy.make(Permission)
-        group.permissions.add(perm.id)
-        superuser_perm = Permission.objects.get(
-            codename='manipulate_superusers')
-        self.assertNotIn(superuser_perm, group.permissions.all())
-        self.assertFalse(group.is_superuser_level)
-        self.assertIn(perm, group.permissions.all())
-
-    def test_group_has_county_level_marker_permission(self):
-        group = mommy.make(Group)
-        perm = Permission.objects.get(codename='manipulate_superusers')
-        group.permissions.add(perm.id)
-        self.assertIn(perm, group.permissions.all())
-        self.assertTrue(group.is_superuser_level)
-
-
 class TestLastLog(TestCase):
 
     def setUp(self):
@@ -200,3 +162,32 @@ class TestLastLog(TestCase):
 
         self.assertIsNotNone(self.user.lastlog)
         self.assertTrue(self.user.lastlog > self.user.last_login)
+
+
+class TestCustomAndProxyGroup(TestCase):
+    def test_group_boolean_fields_true(self):
+        group = mommy.make(Group)
+        mommy.make(
+            CustomGroup,
+            group=group,
+            regulator=True,
+            national=True,
+            administrator=True,
+            sub_county_level=True,
+            county_level=True)
+        proxy_group = ProxyGroup.objects.get(id=group.id)
+        self.assertTrue(proxy_group.is_administrator)
+        self.assertTrue(proxy_group.is_regulator)
+        self.assertTrue(proxy_group.is_national)
+        self.assertTrue(proxy_group.is_county_level)
+        self.assertTrue(proxy_group.is_sub_county_level)
+
+    def test_group_boolean_fields_false(self):
+        group = mommy.make(Group)
+        mommy.make(CustomGroup)
+        proxy_group = ProxyGroup.objects.get(id=group.id)
+        self.assertFalse(proxy_group.is_administrator)
+        self.assertFalse(proxy_group.is_regulator)
+        self.assertFalse(proxy_group.is_national)
+        self.assertFalse(proxy_group.is_county_level)
+        self.assertFalse(proxy_group.is_sub_county_level)

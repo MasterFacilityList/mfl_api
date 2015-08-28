@@ -73,7 +73,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'reversion',
     'gunicorn',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'facilities',
     'data_bootstrap',
     'chul',
@@ -292,6 +292,8 @@ SEARCH = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
+        "users.CustomGroup",
+        "users.ProxyGroup"
 
     ],
     "STOP_WORDS": [

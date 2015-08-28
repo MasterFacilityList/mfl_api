@@ -21,3 +21,10 @@ class TestModelRepr(ModelReprMixin, TestCase):
             models.MFLOAuthApplication(client_id="client id"),
             "client id"
         )
+
+    def test_custom_group(self):
+        g = models.Group.objects.create(name="ha")
+        self.check_repr(models.CustomGroup(group=g), "ha")
+
+    def test_proxy_group(self):
+        self.check_repr(models.ProxyGroup(name="ha"), "ha")
