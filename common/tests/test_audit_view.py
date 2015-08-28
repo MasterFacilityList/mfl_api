@@ -85,7 +85,7 @@ class TestAuditableViewMixin(APITestCase):
         (os.getenv('CI', None) or os.getenv('CIRCLECI', None)) == 'true',
         reason='something unpleasant is happening in CIRCLECI'
     )
-    def test_response_with_audit_two_changes(self):
+    def test_response_with_audit_two_changes(self):  # pragma: no cover
         url = self._get_detail_url(self.status_id)
 
         init_data = RegulationStatus.objects.values(
