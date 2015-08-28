@@ -27,8 +27,6 @@ class TestMflUserModel(BaseTestCase):
         # the base  test case class comes with another user
         self.assertEquals(3, MflUser.objects.count())
 
-        # test unicode
-        self.assertEquals('some@email.com', user.__unicode__())
         self.assertEquals("jina", user.get_short_name)
         self.assertEquals("jina mwisho jm", user.get_full_name)
 

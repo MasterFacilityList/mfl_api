@@ -22,13 +22,8 @@ class TestGeoCodeSourceModel(BaseTestCase):
             "abbreviation": "KEMRI"
         }
         data = self.inject_audit_fields(data)
-        source = GeoCodeSource.objects.create(**data)
+        GeoCodeSource.objects.create(**data)
         self.assertEquals(1, GeoCodeSource.objects.count())
-
-        # test unicode
-        self.assertEquals(
-            "Kenya Medical Research Institute",
-            source.__unicode__())
 
 
 class TesGeoCodeMethodModel(BaseTestCase):
@@ -39,11 +34,8 @@ class TesGeoCodeMethodModel(BaseTestCase):
             "description": "GPS device was used to get the geo codes"
         }
         data = self.inject_audit_fields(data)
-        method = GeoCodeMethod.objects.create(**data)
+        GeoCodeMethod.objects.create(**data)
         self.assertEquals(1, GeoCodeMethod.objects.count())
-
-        # test unicode
-        self.assertEquals("Taken with GPS device", method.__unicode__())
 
 
 class TestFacilityCoordinatesModel(BaseTestCase):
@@ -69,10 +61,6 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         self.assertEquals(1, FacilityCoordinates.objects.count())
         self.assertEquals(
             facility_gps.id, facility_gps.facility.coordinates)
-
-        # test unicode
-        self.assertEquals(
-            facility_gps.facility.name, facility_gps.__unicode__())
 
     def test_simplify_coordinates(self):
         facility_gps = mommy.make_recipe(
