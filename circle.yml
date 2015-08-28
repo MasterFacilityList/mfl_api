@@ -5,18 +5,19 @@ machine:
   services:
     - elasticsearch
 
-checkout:
-  post:
-    - cp .env-example .env
 
 dependencies:
   override:
     - pip install tox
 
+
 test:
   override:
     - python setup.py check
-    - tox -r
+    - case $CIRCLE_NODE_INDEX in 0) tox -vre py27;; 1) tox -vre docs ;; esac:
+      parallel: true
+      timeout: 300
+
 
 general:
   artifacts:
