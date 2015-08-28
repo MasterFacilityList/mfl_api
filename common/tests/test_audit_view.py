@@ -81,6 +81,10 @@ class TestAuditableViewMixin(APITestCase):
         self.assertEqual(diff["old"], old_val)
         self.assertEqual(diff["new"], "changed")
 
+    @pytest.mark.xfail(
+        (os.getenv('CI', None) or os.getenv('CIRCLECI', None)) == 'true',
+        reason='something unpleasant is happening in CIRCLECI'
+    )
     def test_response_with_audit_two_changes(self):
         url = self._get_detail_url(self.status_id)
 
@@ -140,10 +144,6 @@ class TestAuditableViewMixin(APITestCase):
         self.assertEqual(diff["old"], None)
         self.assertEqual(diff["new"], "previous status")
 
-    @pytest.mark.xfail(
-        (os.getenv('CI', None) or os.getenv('CIRCLECI', None)) == 'true',
-        reason='something unpleasant is happening in CIRCLECI'
-    )
     def test_response_with_audit_two_fk_changes(self):
         url = self._get_detail_url(self.status_id)
 
