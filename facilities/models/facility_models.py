@@ -1029,12 +1029,13 @@ class FacilityUpdates(AbstractBase):
         self.facility.save(allow_save=True)
 
     def update_facility(self):
-        data = json.loads(self.facility_updates)
-        for field_changed in data:
-            field_name = field_changed.get("field_name")
-            value = field_changed.get("actual_value")
-            setattr(self.facility, field_name, value)
-        self.facility.save(allow_save=True)
+        if self.facility_updates:
+            data = json.loads(self.facility_updates)
+            for field_changed in data:
+                field_name = field_changed.get("field_name")
+                value = field_changed.get("actual_value")
+                setattr(self.facility, field_name, value)
+            self.facility.save(allow_save=True)
 
     def update_facility_services(self):
         from facilities.utils import create_facility_services
@@ -1100,6 +1101,8 @@ class FacilityUpdates(AbstractBase):
             self.update_facility_units() if self.units else None
             self.update_facility_contacts() if self.contacts else None
             self.update_facility_services() if self.services else None
+            self.facility.has_edits = False
+            self.facility.save(allow_save=True)
         super(FacilityUpdates, self).save(*args, **kwargs)
 
 
@@ -1422,7 +1425,7 @@ class FacilityService(AbstractBase):
 
         if len(self.__class__.objects.filter(
                 service=self.service, facility=self.facility,
-                deleted=False)) == 1:
+                deleted=False)) == 1 and self.deleted:
             error = {
                 "service": [
                     ("The service {} has already been added to the "

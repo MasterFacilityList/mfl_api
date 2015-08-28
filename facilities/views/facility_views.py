@@ -9,7 +9,7 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
-from common.models import ContactType
+from common.models import ContactType, County
 
 
 from ..models import (
@@ -61,6 +61,14 @@ from ..filters import (
 )
 
 
+from ..utils import (
+    _validate_services,
+    _validate_units,
+    _validate_contacts
+
+)
+
+
 def default(obj):
     if isinstance(obj, uuid.UUID):
         return str(obj)
@@ -81,7 +89,7 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-
+        nairobi = County.objects.get(code=47)
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and \
                     self.request.user.county \
@@ -99,7 +107,7 @@ class QuerysetFilterMixin(object):
             elif self.request.user.constituency and hasattr(
                     self.queryset.model, 'ward'):
                 self.queryset = self.queryset.filter(
-                    ward__constituency=self.request.user.constituency)
+                    ward__constituency__county=nairobi)
             else:
                 self.queryset = self.queryset
         else:
@@ -344,18 +352,7 @@ class FacilityDetailView(
     """
     queryset = Facility.objects.all()
     serializer_class = FacilityDetailSerializer
-
-    def validate_services(self, services):
-        pass
-
-    def validate_contacts(self, contacts):
-        pass
-
-    def validate_units(self, units):
-        pass
-
-    def validate_officer_incharge(self, officer_in_charge):
-        pass
+    validation_errors = {}
 
     def buffer_contacts(self, update, contacts):
         if update.contacts and update.contacts != 'null':
@@ -383,76 +380,93 @@ class FacilityDetailView(
         user_id = request.user
         del user_id
         request.data['updated_by_id'] = request.user.id
-
-        services = request.data.pop('services', None)
-        contacts = request.data.pop('contacts', None)
-        units = request.data.pop('units', None)
-        officer_in_charge = request.data.pop(
-            'officer_in_charge', None)
-
         instance = self.get_object()
+        if not instance.approved:
+            serializer = self.get_serializer(
+                instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
-        serializer = self.get_serializer(
-            instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        else:
+            services = request.data.pop('services', [])
+            contacts = request.data.pop('contacts', [])
+            units = request.data.pop('units', [])
+            officer_in_charge = request.data.pop(
+                'officer_in_charge', None)
 
-        def populate_service_name():
-            for service in services:
-                id = service.get('service')
-                obj = Service.objects.get(id=id)
-                service['name'] = obj.name
-                option = service.get('option', None)
-                if option:
-                    service['display_name'] = Option.objects.get(
-                        id=option).display_text
+            def populate_service_name():
+                for service in services:
+                    id = service.get('service')
+                    obj = Service.objects.get(id=id)
+                    service['name'] = obj.name
+                    option = service.get('option', None)
+                    if option:
+                        service['display_name'] = Option.objects.get(
+                            id=option).display_text
 
-        def populate_contact_type_names():
-            for contact in contacts:
-                contact['contact_type_name'] = ContactType.objects.get(
-                    id=contact.get('contact_type')).name
+            def populate_contact_type_names():
+                for contact in contacts:
+                    contact['contact_type_name'] = ContactType.objects.get(
+                        id=contact.get('contact_type')).name
 
-        def populate_regulatory_body_names():
-            for unit in units:
-                unit['regulating_body_name'] = RegulatingBody.objects.get(
-                    id=unit['regulating_body']).name
+            def populate_regulatory_body_names():
+                for unit in units:
+                    unit['regulating_body_name'] = RegulatingBody.objects.get(
+                        id=unit['regulating_body']).name
 
-        def populate_officer_incharge_contacts():
-            for contact in officer_in_charge['contacts']:
-                contact['contact_type_name'] = ContactType.objects.get(
-                    id=contact.get('type')).name
+            def populate_officer_incharge_contacts():
+                for contact in officer_in_charge['contacts']:
+                    contact['contact_type_name'] = ContactType.objects.get(
+                        id=contact.get('type')).name
 
-        def populate_officer_incharge_job_title():
-            officer_in_charge['job_title_name'] = JobTitle.objects.get(
-                id=officer_in_charge['title']).name
+            def populate_officer_incharge_job_title():
+                officer_in_charge['job_title_name'] = JobTitle.objects.get(
+                    id=officer_in_charge['title']).name
 
-        try:
-            update = FacilityUpdates.objects.filter(
-                facility=instance, cancelled=False, approved=False)[0]
-        except IndexError:
-            update = FacilityUpdates.objects.create(facility=instance)
+            try:
+                update = FacilityUpdates.objects.filter(
+                    facility=instance, cancelled=False, approved=False)[0]
+            except IndexError:
+                update = FacilityUpdates.objects.create(facility=instance)
 
-        if services:
+            def _validate_payload():
+                service_errors = _validate_services(services)
+
+                if service_errors:
+                    self.validation_errors.update({"services": service_errors})
+
+                contact_errors = _validate_contacts(contacts)
+                if contact_errors:
+                    self.validation_errors.update({"contacts": contact_errors})
+
+                unit_errors = _validate_units(units)
+                if unit_errors:
+                    self.validation_errors.update({"units": unit_errors})
+
+            _validate_payload()
+            if any(self.validation_errors):
+                return Response(
+                    data=self.validation_errors,
+                    status=status.HTTP_400_BAD_REQUEST)
+
             populate_service_name()
             self.buffer_services(update, services)
 
-        if contacts:
             populate_contact_type_names()
             self.buffer_contacts(update, contacts)
 
-        if units:
             populate_regulatory_body_names()
             self.buffer_units(update, units)
 
-        if officer_in_charge:
-            populate_officer_incharge_contacts()
-            populate_officer_incharge_job_title()
-            update.officer_in_charge = json.dumps(officer_in_charge)
+            if officer_in_charge:
+                populate_officer_incharge_contacts()
+                populate_officer_incharge_job_title()
+                update.officer_in_charge = json.dumps(officer_in_charge)
+            update.is_new = False
+            update.save()
 
-        update.is_new = False
-        update.save()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FacilityContactListView(generics.ListCreateAPIView):

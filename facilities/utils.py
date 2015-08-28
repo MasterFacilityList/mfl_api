@@ -1,12 +1,15 @@
 import json
+import uuid
 
 from django.utils import timezone
 
-from common.models import Contact
+from common.models import Contact, ContactType
 from common.serializers import ContactSerializer
 
 from facilities.models import (
     FacilityContact,
+    Service,
+    RegulatingBody,
 )
 
 from facilities.serializers import (
@@ -19,15 +22,26 @@ from facilities.serializers import (
 inlining_errors = []
 
 
+def _is_valid_uuid(field):
+    try:
+        uuid.UUID(field)
+        return True
+    except ValueError:
+        return False
+
+
 def _validate_services(services):
     errors = []
     for service in services:
+        if not _is_valid_uuid(service.get('service', None)):
+            return errors.append("Service has a badly formed uuid")
         try:
-            Service.objects.get(id=service)
+            Service.objects.get(id=service.get('service'))
         except Service.DoesNotExist:
-            errors.append("service with id {} not found".format(service))
+            errors.append("service with id {} not found".format(
+                service.get('service')))
         except KeyError:
-            errors.append("Key service was not found".format(service))
+            errors.append("Key service was not found")
 
     return errors
 
@@ -35,25 +49,37 @@ def _validate_services(services):
 def _validate_units(units):
     errors = []
     for unit in units:
+        if not _is_valid_uuid(unit.get('regulating_body', None)):
+            return errors.append("Regulating body has a badly formed uuid")
         try:
             RegulatingBody.objects.get(id=unit.get('regulating_body'))
         except RegulatingBody.DoesNotExist:
-            errors.append("The regulating_body with the id {} was not foun".format(regulating_body))
+            errors.append(
+                "The regulating_body with the id {} was not "
+                "found".format(unit.get("regulating_body")))
         except KeyError:
-            errors.append("Key service was not found".format(service))
+            errors.append(
+                "Key regulating_body is missing")
+
     return errors
 
 
 def _validate_contacts(contacts):
     errors = []
     for contact in contacts:
+        if not _is_valid_uuid(contact.get('contact_type', None)):
+            return errors.append("Contact has a badly formed uuid")
         try:
             ContactType.objects.get(id=contact.get('contact_type'))
         except ContactType.DoesNotExist:
-            errors.append("Contact type with the id {} was not found".format(contact))
+            errors.append("Contact type with the id {} was not found".format(
+                contact))
         except KeyError:
             errors.append("Key contact type is missing")
+        if contact.get('contact') is None:
+            errors.append("The contact field is missing")
 
+    return errors
 
 
 def inject_audit_fields(dict_a, validated_data):
