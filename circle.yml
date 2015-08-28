@@ -9,6 +9,8 @@ machine:
 dependencies:
   override:
     - pip install tox
+  post:
+    - cp .env-example .env
 
 
 test:
