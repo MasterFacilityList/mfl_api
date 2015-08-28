@@ -34,17 +34,6 @@ class AbstractBaseModelTest(TestCase):
         self.user_1 = mommy.make(settings.AUTH_USER_MODEL)
         self.user_2 = mommy.make(settings.AUTH_USER_MODEL)
 
-    def test_unicode(self):
-        from ..models import AbstractBase
-
-        class TestModel(AbstractBase):
-
-            class Meta:
-                abstract = True
-
-        ct = TestModel(id=uuid.uuid4())
-        self.assertEqual(str(ct), 'test model ' + str(ct.pk))
-
     def test_validate_updated_date_greater_than_created(self):
         fake = ContactType(created=self.leo, updated=self.jana)
 
@@ -245,13 +234,6 @@ class TestWardModel(BaseTestCase):
         self.assertEquals(county, ward.county)
 
 
-class TestTown(BaseTestCase):
-
-    def test_unicode_(self):
-        town = mommy.make(Town, name='Nyairofi')
-        self.assertEquals('Nyairofi', str(town))
-
-
 class TestPhysicalAddress(BaseTestCase):
 
     def test_save(self):
@@ -348,8 +330,3 @@ class TestSubCounty(TestCase):
     def test_save(self):
         mommy.make(SubCounty)
         self.assertEquals(1, SubCounty.objects.count())
-
-    def test_unicode(self):
-        name = "awesome name"
-        sub_county = mommy.make(SubCounty, name=name)
-        self.assertEquals(name, sub_county.name)

@@ -89,35 +89,13 @@ class TestFacilityOperationState(BaseTestCase):
 
 class TestServiceCategory(BaseTestCase):
 
-    def test_unicode(self):
-        instance = ServiceCategory(name='test name')
-        self.assertEqual(str(instance), 'test name')
-
     def test_service_count_in_category(self):
         category = mommy.make(ServiceCategory)
         mommy.make(Service, category=category)
         self.assertEquals(1, category.services_count)
 
 
-class TestOption(BaseTestCase):
-
-    def test_unicode(self):
-        instance = Option(option_type='BOOLEAN', display_text='Yes/No')
-        self.assertEqual(str(instance), 'BOOLEAN: Yes/No')
-
-
 class TestFacilityService(BaseTestCase):
-
-    def test_unicode(self):
-        facility = Facility(name='thifitari')
-        service = Service(name='savis')
-        option = Option(option_type='BOOLEAN', display_text='Yes/No')
-        facility_service = FacilityService(
-            facility=facility, option=option, service=service)
-        self.assertEqual(
-            str(facility_service), 'thifitari: savis: BOOLEAN: Yes/No')
-        self.assertEquals('Yes/No', facility_service.option_display_value)
-        self.assertEquals('savis', facility_service.service_name)
 
     def test_number_of_ratings(self):
         service = mommy.make(Service)
@@ -879,22 +857,8 @@ class TestRegulationStatusModel(BaseTestCase):
         self.assertEquals("", status.next_state_name)
 
 
-class TestFacilityServiceRating(BaseTestCase):
-
-    def test_unicode(self):
-        facility = mommy.make(Facility, name='fac')
-        service = mommy.make(Service, name='serv')
-        facility_service = mommy.make(
-            FacilityService, facility=facility, service=service
-        )
-        rating = mommy.make(
-            FacilityServiceRating, facility_service=facility_service,
-            rating=5
-        )
-        self.assertEqual(str(rating), "serv (fac): 5")
-
-
 class TestFacilityOfficer(BaseTestCase):
+
     def test_saving(self):
         mommy.make(FacilityOfficer)
         self.assertEquals(1, FacilityOfficer.objects.count())
