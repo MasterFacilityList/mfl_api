@@ -1,10 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 from rest_framework.test import APITestCase
 
 from facilities.models import RegulationStatus
 
 
+@override_settings(CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+})
 class TestAuditableViewMixin(APITestCase):
 
     def setUp(self):
@@ -91,9 +97,9 @@ class TestAuditableViewMixin(APITestCase):
         response = self.client.get(url + '?include_audit=true')
         self.assertEquals(200, response.status_code)
         self.assertEqual(len(response.data["revisions"]), 2)
+
         self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
         self.assertEqual(len(response.data["revisions"][1]["updates"]), 1)
-
         diff1 = response.data["revisions"][0]["updates"]
         diff2 = response.data["revisions"][1]["updates"]
 
