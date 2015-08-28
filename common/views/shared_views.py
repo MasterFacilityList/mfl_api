@@ -49,7 +49,7 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
 
         return output
 
-    def generate_diffs(self, instance, data, exclude=[]):
+    def generate_diffs(self, instance, exclude=[]):
         versions = reversion.get_for_object(instance)
         fieldnames = [
             f.name for f in instance._meta.fields
@@ -107,8 +107,7 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         )
         if audit_requested:
             data["revisions"] = self.generate_diffs(
-                instance, data,
-                exclude=['deleted', 'search'],
+                instance, exclude=['deleted', 'search'],
             )
 
         return Response(data)

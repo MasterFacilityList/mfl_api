@@ -33,5 +33,5 @@ class ModelReprMixin(object):
     def check_repr(self, instance, expected):
         self.assertEqual(str(instance), expected)
         self.assertEqual(instance.__str__(), expected)
-        if six.PY2:
+        if six.PY2:  # pragma: no cover
             self.assertEqual(instance.__unicode__(), expected)

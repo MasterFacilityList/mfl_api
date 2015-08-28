@@ -97,6 +97,17 @@ class TestServiceCategory(BaseTestCase):
 
 class TestFacilityService(BaseTestCase):
 
+    def test_unicode(self):
+        f = Facility(name='thifitari')
+        s = Service(name='savis')
+        o = Option(option_type='BOOLEAN', display_text='Yes/No')
+        facility_service = FacilityService(facility=f, option=o, service=s)
+        self.assertEqual(
+            str(facility_service), 'thifitari: savis (BOOLEAN: Yes/No)'
+        )
+        self.assertEquals('Yes/No', facility_service.option_display_value)
+        self.assertEquals('savis', facility_service.service_name)
+
     def test_number_of_ratings(self):
         service = mommy.make(Service)
         fs = mommy.make(FacilityService, service=service)
