@@ -10,12 +10,13 @@ checkout:
     - cp .env-example .env
 
 dependencies:
-  post:
-    - pip install fabric
+  override:
+    - pip install tox
 
 test:
   override:
-    - fab test
+    - python setup.py check
+    - tox -r
 
 general:
   artifacts:
