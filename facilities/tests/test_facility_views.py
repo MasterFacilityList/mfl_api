@@ -1562,3 +1562,76 @@ class TestFacilityLevelChangeReasonView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         reason_refetched = FacilityLevelChangeReason.objects.get(id=reason.id)
         self.assertEquals(reason_refetched.reason, data.get("reason"))
+
+
+class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestRegulatoryBodyContacts, self).setUp()
+
+    def test_save(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            "contacts": [
+                {
+                    "contact": "jina@mail.com",
+                    "contact_type": mommy.make(ContactType, name="EAMIL").id
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, RegulatingBody.objects.count())
+        self.assertEquals(1, Contact.objects.count())
+
+    def test_save_errors(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            "contacts": [
+                {
+                    "contact": "jina@mail.com"
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, RegulatingBody.objects.count())
+        self.assertEquals(0, Contact.objects.count())
+
+    def test_save_contact_missing(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            "contacts": [
+                {
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, RegulatingBody.objects.count())
+        self.assertEquals(0, Contact.objects.count())
+
+    def test_save_contact_type_invalid(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        contact_type = mommy.make(ContactType, name="EAMIL")
+        contact_type_id = contact_type.id
+        contact_type.delete()
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            "contacts": [
+                {
+                    "contact": "jina@mail.com",
+                    "contact_type": contact_type_id
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, RegulatingBody.objects.count())
+        self.assertEquals(0, Contact.objects.count())

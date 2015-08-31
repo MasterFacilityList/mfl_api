@@ -246,7 +246,8 @@ class RegulatingBodyContact(AbstractBase):
     """
     A regulating body contacts.
     """
-    regulating_body = models.ForeignKey('RegulatingBody')
+    regulating_body = models.ForeignKey(
+        'RegulatingBody', related_name='reg_contacts')
     contact = models.ForeignKey(Contact)
 
     def __str__(self):
