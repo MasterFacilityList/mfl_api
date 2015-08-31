@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from distutils.util import strtobool
 import django_filters
 
@@ -285,6 +287,17 @@ class FacilityFilter(CommonFieldsFilterset):
         else:
             return Facility.objects.exclude(id__in=approved_facilities)
 
+    def facilities_pending_approval(self, value):
+        if value in TRUTH_NESS:
+            return Facility.objects.filter(
+                Q(rejected=False),
+                Q(has_edits=True) | Q(approved=False)
+            )
+        else:
+            return Facility.objects.filter(
+                Q(rejected=True) |
+                Q(has_edits=False) & Q(approved=True))
+
     id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
@@ -349,6 +362,8 @@ class FacilityFilter(CommonFieldsFilterset):
         coerce=strtobool)
     closed = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES, coerce=strtobool)
+    pending_approval = django_filters.MethodFilter(
+        action=facilities_pending_approval)
 
     class Meta(object):
         model = Facility
