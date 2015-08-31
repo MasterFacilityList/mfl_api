@@ -4,6 +4,7 @@ import json
 
 from django.db import models
 from django.conf import settings
+from django.utils import encoding
 
 from rest_framework.exceptions import ValidationError
 
@@ -14,6 +15,7 @@ LOGGER = logging.getLogger(__file__)
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class ContactType(AbstractBase):
 
     """
@@ -29,11 +31,12 @@ class ContactType(AbstractBase):
         null=True, blank=True,
         help_text='A brief description of the contact type.')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['contact_type'])
+@encoding.python_2_unicode_compatible
 class Contact(AbstractBase):
 
     """
@@ -53,8 +56,8 @@ class Contact(AbstractBase):
         " or phone number",
         on_delete=models.PROTECT)
 
-    def __unicode__(self):
-        return "{}::{}".format(self.contact_type.name, self.contact)
+    def __str__(self):
+        return "{}: {}".format(self.contact_type.name, self.contact)
 
     class Meta(AbstractBase.Meta):
         unique_together = ('contact', 'contact_type')
@@ -69,9 +72,6 @@ class AdministrativeUnitBase(SequenceMixin, AbstractBase):
     code = SequenceField(
         unique=True,
         help_text="A unique_code 4 digit number representing the region.")
-
-    def __unicode__(self):
-        return self.name
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -98,6 +98,7 @@ def _lookup_facility_coordinates(area_boundary):
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class County(AdministrativeUnitBase):
 
     """
@@ -123,11 +124,15 @@ class County(AdministrativeUnitBase):
         unit = CountyBoundary.objects.filter(area=self)
         return unit[0].bound if len(unit) else {}
 
+    def __str__(self):
+        return self.name
+
     class Meta(AdministrativeUnitBase.Meta):
         verbose_name_plural = 'counties'
 
 
-@reversion.register
+@reversion.register(follow=['county'])
+@encoding.python_2_unicode_compatible
 class Constituency(AdministrativeUnitBase):
 
     """
@@ -145,6 +150,9 @@ class Constituency(AdministrativeUnitBase):
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.name
+
     @property
     def constituency_bound(self):
         from mfl_gis.models import ConstituencyBoundary
@@ -156,7 +164,8 @@ class Constituency(AdministrativeUnitBase):
         unique_together = ('name', 'county')
 
 
-@reversion.register
+@reversion.register(follow=['constituency'])
+@encoding.python_2_unicode_compatible
 class Ward(AdministrativeUnitBase):
 
     """
@@ -174,6 +183,9 @@ class Ward(AdministrativeUnitBase):
         help_text="The constituency where the ward is located.",
         on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.name
+
     @property
     def county(self):
         return self.constituency.county
@@ -188,7 +200,8 @@ class Ward(AdministrativeUnitBase):
             return _lookup_facility_coordinates(None)
 
 
-@reversion.register
+@reversion.register(follow=['county'])
+@encoding.python_2_unicode_compatible
 class SubCounty(AdministrativeUnitBase):
 
     """
@@ -198,8 +211,12 @@ class SubCounty(AdministrativeUnitBase):
     """
     county = models.ForeignKey(County, on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.name
 
-@reversion.register
+
+@reversion.register(follow=['user', 'county'])
+@encoding.python_2_unicode_compatible
 class UserCounty(AbstractBase):
 
     """
@@ -212,8 +229,8 @@ class UserCounty(AbstractBase):
         on_delete=models.PROTECT)
     county = models.ForeignKey(County, on_delete=models.PROTECT)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.user.email, self.county.name)
+    def __str__(self):
+        return "{}: {}".format(self.user, self.county)
 
     def validate_only_one_county_active(self):
         """
@@ -233,7 +250,8 @@ class UserCounty(AbstractBase):
         verbose_name_plural = 'user_counties'
 
 
-@reversion.register
+@reversion.register(follow=['user', 'contact'])
+@encoding.python_2_unicode_compatible
 class UserContact(AbstractBase):
 
     """
@@ -244,11 +262,12 @@ class UserContact(AbstractBase):
         related_name='user_contacts', on_delete=models.PROTECT)
     contact = models.ForeignKey(Contact)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.user.get_full_name, self.contact.contact)
+    def __str__(self):
+        return "{}: ({})".format(self.user, self.contact)
 
 
-@reversion.register
+@reversion.register(follow=['user', 'constituency'])
+@encoding.python_2_unicode_compatible
 class UserConstituency(AbstractBase):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='user_constituencies')
@@ -262,25 +281,26 @@ class UserConstituency(AbstractBase):
     def clean(self, *args, **kwargs):
         self.validate_constituency_county_in_creator_county()
 
-    def __unicode__(self):
-        custom_unicode = "{}: {}".format(self.user, self.constituency)
-        return custom_unicode
+    def __str__(self):
+        return "{}: {}".format(self.user, self.constituency)
 
     class Meta:
         verbose_name_plural = 'user constituencies'
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class Town(AbstractBase):
     name = models.CharField(
         max_length=255, unique=True, null=True, blank=True,
         help_text="Name of the town")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['town', ])
+@encoding.python_2_unicode_compatible
 class PhysicalAddress(AbstractBase):
 
     """
@@ -306,8 +326,8 @@ class PhysicalAddress(AbstractBase):
         help_text="This field allows a more detailed description of "
         "the location")
 
-    def __unicode__(self):
-        return self.town.name
+    def __str__(self):
+        return self.location_desc
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'physical addresses'

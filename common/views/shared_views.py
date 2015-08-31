@@ -15,8 +15,27 @@ LOGGER = logging.getLogger(__name__)
 
 class AuditableDetailViewMixin(RetrieveModelMixin):
 
+    def _resolve_field(self, field, version):
+        # since `model_class` represents the current representation of the
+        # model, what will happen if field is deleted from model ??
+        model_class = version.object.__class__
+        model_field = model_class._meta.get_field(field)
+        fallback = version.field_dict.get(field, None)
+        follows = version.revision.version_set.exclude(pk=version.pk)
+
+        if model_field.is_relation:
+            followed_model_class = model_field.related_model
+            for f in follows:
+                if (f.content_type.model_class() == followed_model_class and
+                        f.field_dict['id'] == fallback):
+                    # What happens to M2M fields?
+                    return f.object_repr
+
+        return fallback
+
     def _compare_objs(self, fields, old, new):
         output = []
+
         for fld in fields:
             old_val = old.field_dict.get(fld, '')
             new_val = new.field_dict.get(fld, '')
@@ -24,13 +43,13 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
             if old_val != new_val:
                 output.append({
                     "name": fld,
-                    "old": old_val,
-                    "new": new_val
+                    "old": self._resolve_field(fld, old),
+                    "new": self._resolve_field(fld, new)
                 })
 
         return output
 
-    def generate_diffs(self, instance, data, exclude=[]):
+    def generate_diffs(self, instance, exclude=[]):
         versions = reversion.get_for_object(instance)
         fieldnames = [
             f.name for f in instance._meta.fields
@@ -88,8 +107,7 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         )
         if audit_requested:
             data["revisions"] = self.generate_diffs(
-                instance, data,
-                exclude=['deleted', 'search'],
+                instance, exclude=['deleted', 'search'],
             )
 
         return Response(data)

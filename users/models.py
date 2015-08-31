@@ -1,14 +1,15 @@
+import reversion
 import datetime
 
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, encoding
 from django.core.validators import (
     validate_email, RegexValidator, ValidationError
 )
 from django.contrib.auth.models import make_password
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
+    AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 )
 from django.conf import settings
 from django.template import Context, loader
@@ -16,9 +17,6 @@ from django.core.mail import EmailMultiAlternatives
 
 from oauth2_provider.models import AbstractApplication, AccessToken
 from oauth2_provider.settings import oauth2_settings
-
-
-USER_MODEL = settings.AUTH_USER_MODEL
 
 
 def send_email_on_signup(user, user_password):
@@ -93,7 +91,9 @@ class MflUserManager(BaseUserManager):
             MflUserManager, self).get_queryset().filter(deleted=False)
 
 
+@encoding.python_2_unicode_compatible
 class MflUser(AbstractBaseUser, PermissionsMixin):
+
     """
     Add custom behaviour to the user model.
 
@@ -152,8 +152,8 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
             self.password_history = [make_password(
                 raw_password)] if self.is_authenticated else None
 
-    def __unicode__(self):
-        return self.email
+    def __str__(self):
+        return self.get_full_name
 
     @property
     def get_short_name(self):
@@ -226,29 +226,43 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         ordering = ('-date_joined', )
 
 
+@encoding.python_2_unicode_compatible
+class MFLOAuthApplication(AbstractApplication):
+
+    def __str__(self):
+        return self.name or self.client_id
+
+    class Meta(object):
+        verbose_name = 'mfl oauth application'
+        verbose_name_plural = 'mfl oauth applications'
+        default_permissions = ('add', 'change', 'delete', 'view', )
+
+
+@encoding.python_2_unicode_compatible
 class CustomGroup(models.Model):
     group = models.OneToOneField(
-        Group,
-        on_delete=models.PROTECT, related_name='custom_group_fields')
+        Group, on_delete=models.PROTECT, related_name='custom_group_fields')
     regulator = models.BooleanField(
-        default=False,
-        help_text="Are the regulators in this group?")
+        default=False, help_text="Are the regulators in this group?")
     national = models.BooleanField(
         default=False,
-        help_text='Will the users in this group see all facilities in the'
+        help_text='Will the users in this group see all facilities in the '
         'country?')
     administrator = models.BooleanField(
         default=False,
         help_text='Will the users in this group administor user rights?')
     county_level = models.BooleanField(
-        default=False,
-        help_text='Will the user be creating sub county users?')
+        default=False, help_text='Will the user be creating sub county users?')
     sub_county_level = models.BooleanField(
         default=False,
         help_text='Will the user be creating users below the sub county level '
         'users?')
 
+    def __str__(self):
+        return "{}".format(self.group)
 
+
+@encoding.python_2_unicode_compatible
 class ProxyGroup(Group):
 
     @property
@@ -289,10 +303,13 @@ class ProxyGroup(Group):
     class Meta:
         proxy = True
 
+    def __str__(self):
+        return self.name
 
-class MFLOAuthApplication(AbstractApplication):
 
-    class Meta(object):
-        verbose_name = 'mfl oauth application'
-        verbose_name_plural = 'mfl oauth applications'
-        default_permissions = ('add', 'change', 'delete', 'view', )
+# model registration done here
+reversion.register(MFLOAuthApplication, follow=['user'])
+reversion.register(Permission)
+reversion.register(Group, follow=['permissions'])
+reversion.register(MflUser, follow=['groups', 'user_permissions'])
+reversion.register(CustomGroup, follow=['group'])
