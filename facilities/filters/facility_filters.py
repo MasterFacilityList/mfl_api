@@ -290,10 +290,13 @@ class FacilityFilter(CommonFieldsFilterset):
     def facilities_pending_approval(self, value):
         if value in TRUTH_NESS:
             return Facility.objects.filter(
+                Q(rejected=False),
                 Q(has_edits=True) | Q(approved=False)
             )
         else:
-            return Facility.objects.filter(approved=True, has_edits=False)
+            return Facility.objects.filter(
+                Q(rejected=True) |
+                Q(has_edits=False) & Q(approved=True))
 
     id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
