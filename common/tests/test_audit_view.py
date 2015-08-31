@@ -1,11 +1,13 @@
 import os
 import pytest
+import reversion
 
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 from rest_framework.test import APITestCase
 
+from common.views import AuditableDetailViewMixin
 from facilities.models import RegulationStatus
 
 
@@ -178,3 +180,14 @@ class TestAuditableViewMixin(APITestCase):
             {"name": "previous_status", "old": None, "new": "previous status"},
             {"name": "next_status", "old": None, "new": "next status"},
         ], diff)
+
+    def test_ghost_field(self):
+        advm = AuditableDetailViewMixin()
+        url = self._get_detail_url(self.status_id)
+
+        resp = self.client.patch(url, {"name": "changed"})
+        self.assertEqual(resp.status_code, 200)
+
+        o = RegulationStatus.objects.get(id=self.status_id)
+        v = reversion.get_for_object(o)[0]
+        self.assertEqual(advm._resolve_field('not-existent', v), None)
