@@ -1,6 +1,7 @@
 import logging
 import reversion
 
+from django.core.exceptions import FieldDoesNotExist
 from django.shortcuts import redirect
 
 from rest_framework.views import APIView
@@ -16,11 +17,15 @@ LOGGER = logging.getLogger(__name__)
 class AuditableDetailViewMixin(RetrieveModelMixin):
 
     def _resolve_field(self, field, version):
-        # since `model_class` represents the current representation of the
-        # model, what will happen if field is deleted from model ??
         model_class = version.object.__class__
-        model_field = model_class._meta.get_field(field)
         fallback = version.field_dict.get(field, None)
+        try:
+            model_field = model_class._meta.get_field(field)
+        except FieldDoesNotExist:
+            # since `model_class` represents the current representation of the
+            # model, what will happen if field is deleted from model ??
+            return fallback
+
         follows = version.revision.version_set.exclude(pk=version.pk)
 
         if model_field.is_relation:
