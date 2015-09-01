@@ -1,7 +1,7 @@
 import reversion
 
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, encoding
 
 from common.models import AbstractBase, Contact, SequenceMixin
 from common.fields import SequenceField
@@ -9,7 +9,9 @@ from facilities.models import Facility
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class Status(AbstractBase):
+
     """
     Indicates the of operation of a community health unit.
     e.g  fully-functional, semi-functional, functional
@@ -17,7 +19,7 @@ class Status(AbstractBase):
     name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta(AbstractBase.Meta):
@@ -25,7 +27,9 @@ class Status(AbstractBase):
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class Approver(AbstractBase):
+
     """
     These are the bodies or the people that approve a community health unit.
     """
@@ -35,12 +39,14 @@ class Approver(AbstractBase):
     abbreviation = models.CharField(
         max_length=50, help_text='A short name for the approver.')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class ApprovalStatus(AbstractBase):
+
     """
     Status of a community health unit indicating whether it has been
     approved or not.
@@ -48,27 +54,31 @@ class ApprovalStatus(AbstractBase):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'approval_statuses'
 
 
-@reversion.register
+@reversion.register(follow=['health_unit', 'contact'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthUnitContact(AbstractBase):
+
     """
     The contacts of the health unit may be email, fax mobile etc.
     """
     health_unit = models.ForeignKey('CommunityHealthUnit')
     contact = models.ForeignKey(Contact)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.health_unit, self.contact)
+    def __str__(self):
+        return "{}: ({})".format(self.health_unit, self.contact)
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'status', 'contacts'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthUnit(SequenceMixin, AbstractBase):
+
     """
     This is a health service delivery structure within a defined geographical
     area covering a population of approximately 5,000 people.
@@ -88,7 +98,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     contacts = models.ManyToManyField(
         Contact, through=CommunityHealthUnitContact)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -97,8 +107,8 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         super(CommunityHealthUnit, self).save(*args, **kwargs)
 
 
-@reversion.register
 class EntityApprovalAbstractBase(AbstractBase):
+
     """
     Links an entity to its approver.
     """
@@ -111,8 +121,10 @@ class EntityApprovalAbstractBase(AbstractBase):
         abstract = True
 
 
-@reversion.register
+@reversion.register(follow=['approver', 'approval_status', 'health_unit', ])
+@encoding.python_2_unicode_compatible
 class CommunityHealthUnitApproval(EntityApprovalAbstractBase):
+
     """
     Links a community health unit to its approver.
     """
@@ -120,13 +132,14 @@ class CommunityHealthUnitApproval(EntityApprovalAbstractBase):
         CommunityHealthUnit,
         related_name='health_unit_approvals')
 
-    def __unicode__(self):
-        return "{}: {}: {}".format(
-            self.approver, self.approval_status, self.health_unit)
+    def __str__(self):
+        return "{}: {}".format(self.health_unit, self.approval_status)
 
 
-@reversion.register
+@reversion.register(follow=['health_worker', 'contact'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthWorkerContact(AbstractBase):
+
     """
     The contacts of the healh worker.
 
@@ -135,12 +148,14 @@ class CommunityHealthWorkerContact(AbstractBase):
     health_worker = models.ForeignKey('CommunityHealthWorker')
     contact = models.ForeignKey(Contact)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.health_worker, self.contact)
+    def __str__(self):
+        return "{}: ({})".format(self.health_worker, self.contact)
 
 
-@reversion.register
+@reversion.register(follow=['health_unit', 'contacts'])
+@encoding.python_2_unicode_compatible
 class CommunityHealthWorker(AbstractBase):
+
     """
     A person who is incharge of a certain community health area.
 
@@ -157,26 +172,26 @@ class CommunityHealthWorker(AbstractBase):
     contacts = models.ManyToManyField(
         Contact, through=CommunityHealthWorkerContact)
 
-    def __unicode__(self):
-        return str(self.id_number)
+    def __str__(self):
+        return "{} ({})".format(self.first_name, self.id_number)
 
     class Meta(AbstractBase.Meta):
         unique_together = ('id_number', 'health_unit')
 
     @property
     def name(self):
-        return "{} {}".format(
-            self.first_name, self.last_name)
+        return "{} {}".format(self.first_name, self.last_name).strip()
 
 
-@reversion.register
+@reversion.register(follow=['approver', 'approval_status', 'health_worker', ])
+@encoding.python_2_unicode_compatible
 class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
+
     """
     Shows when a health worker was approved and by who.
     """
     health_worker = models.ForeignKey(
         CommunityHealthWorker, related_name='health_worker_approvals')
 
-    def __unicode__(self):
-        return "{}: {}: {}".format(
-            self.approver, self.approval_status, self.health_worker)
+    def __str__(self):
+        return "{}: {}".format(self.health_worker, self.approval_status)

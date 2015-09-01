@@ -5,7 +5,7 @@ import json
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models import Union
 from django.contrib.gis.geos import MultiPolygon
-from django.utils import timezone
+from django.utils import timezone, encoding
 from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
@@ -14,7 +14,19 @@ from facilities.models import Facility
 LOGGER = logging.getLogger(__name__)
 
 
+class CustomGeoManager(gis_models.GeoManager):
+
+    """
+    Ensure that deleted items are not returned in a gis queryset  by default
+    """
+
+    def get_queryset(self):
+        return super(
+            CustomGeoManager, self).get_queryset().filter(deleted=False)
+
+
 class GISAbstractBase(AbstractBase, gis_models.Model):
+
     """
     We've intentionally duplicated the `AbstractBase` in the `common` app
     because we wanted to confine the impact of GIS ( Geographic ) stuff
@@ -26,7 +38,7 @@ class GISAbstractBase(AbstractBase, gis_models.Model):
     We've kept the fields that are in the `common` `AbstractBase` because
     we want to have the same kind of base behavior.
     """
-    objects = gis_models.GeoManager()
+    objects = CustomGeoManager()
     everything = gis_models.GeoManager()
 
     class Meta(AbstractBase.Meta):
@@ -34,7 +46,9 @@ class GISAbstractBase(AbstractBase, gis_models.Model):
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class GeoCodeSource(GISAbstractBase):
+
     """
     Where the geo-code came from.
 
@@ -55,12 +69,14 @@ class GeoCodeSource(GISAbstractBase):
         max_length=10, null=True, blank=True,
         help_text="An acronym of the collecting or e.g SAM")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class GeoCodeMethod(GISAbstractBase):
+
     """
     Method used to capture the geo-code.
 
@@ -79,12 +95,14 @@ class GeoCodeMethod(GISAbstractBase):
         help_text="A short description of the method",
         null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'source', 'method', ])
+@encoding.python_2_unicode_compatible
 class FacilityCoordinates(GISAbstractBase):
+
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
 
@@ -200,8 +218,8 @@ class FacilityCoordinates(GISAbstractBase):
         self.validate_longitude_and_latitude_within_ward()
         super(FacilityCoordinates, self).clean()
 
-    def __unicode__(self):
-        return self.facility.name
+    def __str__(self):
+        return "{}:{}:{}".format(self.facility, self.source, self.method)
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'facility coordinates'
@@ -209,6 +227,7 @@ class FacilityCoordinates(GISAbstractBase):
 
 
 class AdministrativeUnitBoundary(GISAbstractBase):
+
     """Base class for the models that implement administrative boundaries
 
     All common operations and fields are here.
@@ -281,23 +300,23 @@ class AdministrativeUnitBoundary(GISAbstractBase):
 
             return json.loads(
                 polygon.simplify(
-                    tolerance=(1.0 / 10 ** PRECISION)
+                    tolerance=(1.0 / 10 ** precision)
                 ).geojson
             )
 
         # 3 decimal places for the web map ( about 10 meter accuracy )
-        PRECISION = 3
-        TOLERANCE = (1.0 / 10 ** PRECISION)
+        precision = 3
+        tolerance = (1.0 / 10 ** precision)
         geojson_dict = _simplify(
-            tolerance=TOLERANCE, geometry=self.mpoly.cascaded_union
+            tolerance=tolerance, geometry=self.mpoly.cascaded_union
         )
         original_coordinates = geojson_dict['coordinates']
         assert original_coordinates
         new_coordinates = [
             [
                 [
-                    round(coordinate_pair[0], PRECISION),
-                    round(coordinate_pair[1], PRECISION)
+                    round(coordinate_pair[0], precision),
+                    round(coordinate_pair[1], precision)
                 ]
                 for coordinate_pair in original_coordinates[0]
                 if coordinate_pair and
@@ -308,15 +327,14 @@ class AdministrativeUnitBoundary(GISAbstractBase):
         geojson_dict['coordinates'] = new_coordinates
         return geojson_dict
 
-    def __unicode__(self):
-        return self.name
-
     class Meta(GISAbstractBase.Meta):
         abstract = True
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class WorldBorder(AdministrativeUnitBoundary):
+
     """World boundaries
 
     Source: http://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
@@ -333,8 +351,12 @@ class WorldBorder(AdministrativeUnitBoundary):
             )['mpoly__union'].geojson
         ) if self.mpoly else {}
 
+    def __str__(self):
+        return self.name
 
-@reversion.register
+
+@reversion.register(follow=['area'])
+@encoding.python_2_unicode_compatible
 class CountyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(County)
 
@@ -350,13 +372,20 @@ class CountyBoundary(AdministrativeUnitBoundary):
         ).values_list('id', flat=True)
         return constituency_boundary_ids
 
+    def __str__(self):
+        return self.name
+
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'county boundaries'
 
 
-@reversion.register
+@reversion.register(follow=['area'])
+@encoding.python_2_unicode_compatible
 class ConstituencyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Constituency)
+
+    def __str__(self):
+        return self.name
 
     @property
     def ward_ids(self):
@@ -374,9 +403,13 @@ class ConstituencyBoundary(AdministrativeUnitBoundary):
         verbose_name_plural = 'constituency boundaries'
 
 
-@reversion.register
+@reversion.register(follow=['area'])
+@encoding.python_2_unicode_compatible
 class WardBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Ward)
+
+    def __str__(self):
+        return self.name
 
     @property
     def facility_ids(self):

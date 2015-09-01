@@ -51,37 +51,26 @@ from ..models import (
 
 
 class TestOptionGroup(BaseTestCase):
+
     def test_save(self):
         mommy.make(OptionGroup)
         mommy.make(OptionGroup)
         mommy.make(OptionGroup)
         self.assertEquals(3, OptionGroup.objects.count())
 
-    def test_unicode(self):
-        option_group = mommy.make(OptionGroup)
-        self.assertEquals(option_group.name, option_group.__unicode__())
-
 
 class TestFacilityLevelChangeReason(BaseTestCase):
+
     def test_save(self):
         mommy.make(FacilityLevelChangeReason)
         self.assertEquals(1, FacilityLevelChangeReason.objects.count())
 
-    def test_unicode(self):
-        reason = mommy.make(FacilityLevelChangeReason, reason="A funky reason")
-        expected_unicode = "A funky reason"
-        self.assertEquals(expected_unicode, reason.__unicode__())
-
 
 class TestKephLevel(BaseTestCase):
+
     def test_save(self):
         mommy.make(KephLevel)
         self.assertEquals(1, KephLevel.objects.count())
-
-    def test_unicode(self):
-        keph = mommy.make(KephLevel, name="level 1")
-        expected_unicode = "level 1"
-        self.assertEquals(expected_unicode, keph.__unicode__())
 
 
 class TestFacilityOperationState(BaseTestCase):
@@ -100,33 +89,22 @@ class TestFacilityOperationState(BaseTestCase):
 
 class TestServiceCategory(BaseTestCase):
 
-    def test_unicode(self):
-        instance = ServiceCategory(name='test name')
-        self.assertEqual(str(instance), 'test name')
-
     def test_service_count_in_category(self):
         category = mommy.make(ServiceCategory)
         mommy.make(Service, category=category)
         self.assertEquals(1, category.services_count)
 
 
-class TestOption(BaseTestCase):
-
-    def test_unicode(self):
-        instance = Option(option_type='BOOLEAN', display_text='Yes/No')
-        self.assertEqual(str(instance), 'BOOLEAN: Yes/No')
-
-
 class TestFacilityService(BaseTestCase):
 
     def test_unicode(self):
-        facility = Facility(name='thifitari')
-        service = Service(name='savis')
-        option = Option(option_type='BOOLEAN', display_text='Yes/No')
-        facility_service = FacilityService(
-            facility=facility, option=option, service=service)
+        f = Facility(name='thifitari')
+        s = Service(name='savis')
+        o = Option(option_type='BOOLEAN', display_text='Yes/No')
+        facility_service = FacilityService(facility=f, option=o, service=s)
         self.assertEqual(
-            str(facility_service), 'thifitari: savis: BOOLEAN: Yes/No')
+            str(facility_service), 'thifitari: savis (BOOLEAN: Yes/No)'
+        )
         self.assertEquals('Yes/No', facility_service.option_display_value)
         self.assertEquals('savis', facility_service.service_name)
 
@@ -260,11 +238,8 @@ class TestFacilityService(BaseTestCase):
 class TestServiceModel(BaseTestCase):
 
     def test_save_without_code(self):
-        service = mommy.make(Service, name='some name')
+        mommy.make(Service, name='some name')
         self.assertEquals(1, Service.objects.count())
-
-        # test unicode
-        self.assertEquals('some name', service.__unicode__())
 
     def test_save_with_code(self):
         service = mommy.make(Service, code='1341')
@@ -284,11 +259,8 @@ class TestOwnerTypes(BaseTestCase):
             "description": "The the faith based organisation owners"
         }
         data = self.inject_audit_fields(data)
-        owner_type = OwnerType.objects.create(**data)
+        OwnerType.objects.create(**data)
         self.assertEquals(1, OwnerType.objects.count())
-
-        # test unicode
-        self.assertEquals("FBO", owner_type.__unicode__())
 
 
 class TestOwnerModel(BaseTestCase):
@@ -311,8 +283,6 @@ class TestOwnerModel(BaseTestCase):
         owner_with_code = mommy.make(Owner, code=679879)
         self.assertTrue(owner_with_code.code >= 1)
 
-        # test unicode
-        self.assertEquals("CHAK", owner.__unicode__())
         self.assertIsNotNone(owner.code)
 
     def test_owner_code_sequence(self):
@@ -331,11 +301,8 @@ class TestJobTitleModel(BaseTestCase):
             "description": "some good description"
         }
         data = self.inject_audit_fields(data)
-        jt = JobTitle.objects.create(**data)
+        JobTitle.objects.create(**data)
         self.assertEquals(1, JobTitle.objects.count())
-
-        # test unicode
-        self.assertEquals("Nurse officer incharge", jt.__unicode__())
 
 
 class TestOfficer(BaseTestCase):
@@ -348,11 +315,8 @@ class TestOfficer(BaseTestCase):
             "job_title": jt
         }
         data = self.inject_audit_fields(data)
-        officer = Officer.objects.create(**data)
+        Officer.objects.create(**data)
         self.assertEquals(1, Officer.objects.count())
-
-        # test unicode
-        self.assertEquals("Kimani Maruge", officer.__unicode__())
 
 
 class TestOfficerContactModel(BaseTestCase):
@@ -368,10 +332,6 @@ class TestOfficerContactModel(BaseTestCase):
         contact = OfficerContact.objects.create(**data)
         self.assertEquals(1, OfficerContact.objects.count())
 
-        # test unicode
-        expected = "Maruge: maruge@gmail.com"
-        self.assertEquals(expected, contact.__unicode__())
-
 
 class TestFacilityStatusModel(BaseTestCase):
 
@@ -381,10 +341,7 @@ class TestFacilityStatusModel(BaseTestCase):
             "description": "The Facility is operating normally"
         }
         data = self.inject_audit_fields(data)
-        fs = FacilityStatus.objects.create(**data)
-
-        # test unicode
-        self.assertEquals('OPERATIONAL', fs.__unicode__())
+        FacilityStatus.objects.create(**data)
 
 
 class TestFacilityTypeModel(BaseTestCase):
@@ -395,11 +352,8 @@ class TestFacilityTypeModel(BaseTestCase):
             "sub_division": "District Hospital"
         }
         data = self.inject_audit_fields(data)
-        facility_type = FacilityType.objects.create(**data)
+        FacilityType.objects.create(**data)
         self.assertEquals(1, FacilityType.objects.count())
-
-        # test unicode
-        self.assertEquals("Hospital", facility_type.__unicode__())
 
 
 class TestRegulatingBodyModel(BaseTestCase):
@@ -411,13 +365,8 @@ class TestRegulatingBodyModel(BaseTestCase):
             "regulation_verb": "Gazette"
         }
         data = self.inject_audit_fields(data)
-        regulating_body = RegulatingBody.objects.create(**data)
+        RegulatingBody.objects.create(**data)
         self.assertEquals(1, RegulatingBody.objects.count())
-
-        # test unicode
-        self.assertEquals(
-            "Director of Medical Services",
-            regulating_body.__unicode__())
 
     def test_regulating_body_postal_address(self):
         postal = mommy.make(ContactType, name='POSTAL')
@@ -466,8 +415,6 @@ class TestFacility(BaseTestCase):
         mommy.make(Facility, code=89778)
         mommy.make(Facility, code=None)
 
-        #  test unicode
-        self.assertEquals("Forces Memorial", facility.__unicode__())
         self.assertIsNotNone(facility.code)
         self.assertEquals(
             facility_reg_status,
@@ -792,9 +739,6 @@ class TestFacilityContact(BaseTestCase):
         data = self.inject_audit_fields(data)
         facility_contact = FacilityContact.objects.create(**data)
 
-        # test unicode
-        expected = "Nairobi Hospital: 075689267"
-        self.assertEquals(expected, facility_contact.__unicode__())
         expected_data = [
             {
                 "id": facility_contact.id,
@@ -814,11 +758,8 @@ class TestRegulationStatus(BaseTestCase):
             "description": "The facility is operating normally."
         }
         data = self.inject_audit_fields(data)
-        regulation_status = RegulationStatus.objects.create(**data)
+        RegulationStatus.objects.create(**data)
         self.assertEquals(2, RegulationStatus.objects.count())
-
-        # test unicode
-        self.assertEquals("OPERATIONAL", regulation_status.__unicode__())
 
     def test_only_one_default_regulation_status(self):
         # the is already a default regulation status from the base class
@@ -843,12 +784,8 @@ class TestFacilityRegulationStatus(BaseTestCase):
             "created_by": user
         }
         data = self.inject_audit_fields(data)
-        facility_reg_status = FacilityRegulationStatus.objects.create(**data)
+        FacilityRegulationStatus.objects.create(**data)
         self.assertEquals(1, FacilityRegulationStatus.objects.count())
-
-        #  test unicode
-        expected = "Nairobi Hospital: SUSPENDED"
-        self.assertEquals(expected, facility_reg_status.__unicode__())
 
     def test_save_regulatory_by_not_provided(self):
         facility = mommy.make(Facility, name="Nairobi Hospital")
@@ -931,28 +868,15 @@ class TestRegulationStatusModel(BaseTestCase):
         self.assertEquals("", status.next_state_name)
 
 
-class TestFacilityServiceRating(BaseTestCase):
-
-    def test_unicode(self):
-        facility = mommy.make(Facility, name='fac')
-        service = mommy.make(Service, name='serv')
-        facility_service = mommy.make(
-            FacilityService, facility=facility, service=service
-        )
-        rating = mommy.make(
-            FacilityServiceRating, facility_service=facility_service,
-            rating=5
-        )
-        self.assertEqual(str(rating), "serv (fac): 5")
-
-
 class TestFacilityOfficer(BaseTestCase):
+
     def test_saving(self):
         mommy.make(FacilityOfficer)
         self.assertEquals(1, FacilityOfficer.objects.count())
 
 
 class TestRegulatoryBodyUserModel(BaseTestCase):
+
     def test_saving(self):
         reg_body = mommy.make(RegulatoryBodyUser)
         self.assertEquals(1, RegulatoryBodyUser.objects.count())
@@ -964,32 +888,16 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
         self.assertIsNotNone(reg_body.user.regulator)
         self.assertEquals(reg_body.user.regulator, reg_body.regulatory_body)
 
-    def test_unicode(self):
-        reg_body = mommy.make(RegulatingBody)
-        user = mommy.make(get_user_model())
-        user_reg = mommy.make(
-            RegulatoryBodyUser, regulatory_body=reg_body, user=user)
-        expected_unicode = "{}: {}".format(reg_body, user)
-        self.assertEquals(expected_unicode, user_reg.__unicode__())
-
 
 class TestFacilityUnitRegulation(BaseTestCase):
+
     def test_saving(self):
         mommy.make(FacilityUnitRegulation)
         self.assertEquals(1, FacilityUnitRegulation.objects.count())
 
-    def test_unicode(self):
-        facility_unit = mommy.make(FacilityUnit)
-        regulation_status = mommy.make(RegulationStatus)
-
-        obj = mommy.make(
-            FacilityUnitRegulation,
-            facility_unit=facility_unit, regulation_status=regulation_status)
-        expected_unicode = "{}: {}".format(facility_unit, regulation_status)
-        self.assertEquals(expected_unicode, obj.__unicode__())
-
 
 class TestFacilityUpdates(BaseTestCase):
+
     def test_saving(self):
         facility = mommy.make(Facility)
         mommy.make(

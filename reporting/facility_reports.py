@@ -233,8 +233,10 @@ class FilterReportMixin(object):
             cots=Sum('number_of_cots'), beds=Sum('number_of_beds')
         ).order_by()
 
-        total_cots = functools.reduce(lambda x, y: x+y['cots'], items, 0)
-        total_beds = functools.reduce(lambda x, y: x+y['beds'], items, 0)
+        total_cots, total_beds = functools.reduce(
+            lambda x, y: (x[0]+y['cots'], x[1]+y['beds']),
+            items, (0, 0)
+        )
 
         return [
             {

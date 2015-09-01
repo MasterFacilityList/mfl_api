@@ -8,11 +8,13 @@ from ..models import (
 
 
 class TestWorldBoundaryModel(BaseTestCase):
+
     def test_geom_property(self):
         self.assertEqual(WorldBorder().geometry, {})
 
 
 class TestGeoCodeSourceModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "Kenya Medical Research Institute",
@@ -20,30 +22,32 @@ class TestGeoCodeSourceModel(BaseTestCase):
             "abbreviation": "KEMRI"
         }
         data = self.inject_audit_fields(data)
-        source = GeoCodeSource.objects.create(**data)
+        GeoCodeSource.objects.create(**data)
         self.assertEquals(1, GeoCodeSource.objects.count())
-
-        # test unicode
-        self.assertEquals(
-            "Kenya Medical Research Institute",
-            source.__unicode__())
 
 
 class TesGeoCodeMethodModel(BaseTestCase):
+
     def test_save(self):
         data = {
             "name": "Taken with GPS device",
             "description": "GPS device was used to get the geo codes"
         }
         data = self.inject_audit_fields(data)
-        method = GeoCodeMethod.objects.create(**data)
+        GeoCodeMethod.objects.create(**data)
         self.assertEquals(1, GeoCodeMethod.objects.count())
 
-        # test unicode
-        self.assertEquals("Taken with GPS device", method.__unicode__())
+    def test_deletion(self):
+        method = mommy.make(GeoCodeMethod)
+        mommy.make(GeoCodeMethod)
+        self.assertEquals(2, GeoCodeMethod.objects.count())
+        method.delete()
+        self.assertEquals(1, GeoCodeMethod.objects.count())
+        self.assertEquals(2, GeoCodeMethod.everything.count())
 
 
 class TestFacilityCoordinatesModel(BaseTestCase):
+
     def setUp(self):
         # Linked to geographic units ( county, ward, constituency) that
         # do not have boundaries; intended to test validation
@@ -65,10 +69,6 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         self.assertEquals(1, FacilityCoordinates.objects.count())
         self.assertEquals(
             facility_gps.id, facility_gps.facility.coordinates)
-
-        # test unicode
-        self.assertEquals(
-            facility_gps.facility.name, facility_gps.__unicode__())
 
     def test_simplify_coordinates(self):
         facility_gps = mommy.make_recipe(

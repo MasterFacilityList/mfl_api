@@ -7,9 +7,10 @@ from model_mommy import mommy
 from users.models import MflUser
 from facilities.models import Facility, FacilityApproval
 from facilities.tests.test_facility_views import load_dump
+from facilities.serializers import FacilitySerializer
 
 
-from common.tests.test_views import default
+from common.tests.test_views import default, LoginMixin
 
 
 class TestFacilityFilterApprovedAndPublished(APITestCase):
@@ -207,3 +208,39 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         admin_response = self.client.get(self.url)
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(0, admin_response.data.get("count"))
+
+
+class TestFacilitiesPendingApprovalFilter(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:facilities:facilities_list")
+        super(TestFacilitiesPendingApprovalFilter, self).setUp()
+
+    def test_get_facilities_pending_approval(self):
+        self.maxDiff = None
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility_2)
+        facility_3 = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility_3)
+        facility_3.name = 'new name'
+        facility_3.save()
+
+        url = self.url + "?pending_approval=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, response.data.get("count"))
+
+        expected_results = [
+            FacilitySerializer(facility).data,
+            FacilitySerializer(facility_3).data]
+        self.assertListEqual(
+            sorted(load_dump(expected_results, default=default)),
+            sorted(load_dump(response.data.get("results"), default=default)))
+
+        url = self.url + "?pending_approval=false"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        expected_results = [
+            FacilitySerializer(facility_2).data
+        ]
+        self.assertListEqual(expected_results, response.data.get("results"))

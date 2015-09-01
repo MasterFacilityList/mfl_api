@@ -414,80 +414,22 @@
                 "codename": "view_wardboundary"
             },
             {
-                "codename": "county_group_marker"
+                "codename": "add_mfluser"
+            },
+            {
+                "codename": "change_mfluser"
+            },
+            {
+                "codename": "delete_mfluser"
+            },
+            {
+                "codename": "view_mfluser"
             }
         ]
     },
     {
         "group": {
-            "name": "Publishers"
-        },
-        "permissions": [
-            {
-                "codename": "publish_facilities"
-            },
-            {
-                "codename": "view_all_facility_fields"
-            },
-            {
-                "codename": "view_classified_facilities"
-            },
-            {
-                "codename": "view_facility"
-            },
-            {
-                "codename": "view_unapproved_facilities"
-            },
-            {
-                "codename": "view_unpublished_facilities"
-            },
-            {
-                "codename": "view_facilityapproval"
-            },
-            {
-                "codename": "view_facilitycontact"
-            },
-            {
-                "codename": "view_facilityofficer"
-            },
-            {
-                "codename": "view_facilityoperationstate"
-            },
-            {
-                "codename": "view_facilityregulationstatus"
-            },
-            {
-                "codename": "view_facilityservice"
-            },
-            {
-                "codename": "view_facilityservicerating"
-            },
-            {
-                "codename": "view_facilitystatus"
-            },
-            {
-                "codename": "view_facilitytype"
-            },
-            {
-                "codename": "view_facilityunit"
-            },
-            {
-                "codename": "view_facilityunitregulation"
-            },
-            {
-                "codename": "view_facilityupdates"
-            },
-            {
-                "codename": "view_facilityupgrade"
-            },
-            {
-                "codename": "view_facilitycoordinates"
-            }
-        ]
-    },
-    {
-        "group": {
-            "name": "Regulators (makers)"
+            "name": "Regulators"
         },
         "permissions": [
             {
@@ -504,91 +446,6 @@
             },
             {
                 "codename": "view_rejected_facilities"
-            },
-            {
-                "codename": "view_unapproved_facilities"
-            },
-            {
-                "codename": "view_unpublished_facilities"
-            },
-            {
-                "codename": "view_facilitycontact"
-            },
-            {
-                "codename": "view_facilityofficer"
-            },
-            {
-                "codename": "view_facilityoperationstate"
-            },
-            {
-                "codename": "add_facilityregulationstatus"
-            },
-            {
-                "codename": "change_facilityregulationstatus"
-            },
-            {
-                "codename": "delete_facilityregulationstatus"
-            },
-            {
-                "codename": "view_facilityregulationstatus"
-            },
-            {
-                "codename": "view_facilityservice"
-            },
-            {
-                "codename": "view_facilityservicerating"
-            },
-            {
-                "codename": "view_facilitystatus"
-            },
-            {
-                "codename": "view_facilitytype"
-            },
-            {
-                "codename": "view_facilityunit"
-            },
-            {
-                "codename": "add_facilityunitregulation"
-            },
-            {
-                "codename": "change_facilityunitregulation"
-            },
-            {
-                "codename": "delete_facilityunitregulation"
-            },
-            {
-                "codename": "view_facilityunitregulation"
-            },
-            {
-                "codename": "view_regulatingbody"
-            },
-            {
-                "codename": "view_regulatingbodycontact"
-            },
-            {
-                "codename": "view_regulationstatus"
-            },
-            {
-                "codename": "view_regulatorybodyuser"
-            },
-            {
-                "codename": "view_facilitycoordinates"
-            }
-        ]
-    },
-    {
-        "group": {
-            "name": "Regulators (Approvers)"
-        },
-        "permissions": [
-            {
-                "codename": "view_all_facility_fields"
-            },
-            {
-                "codename": "view_classified_facilities"
-            },
-            {
-                "codename": "view_facility"
             },
             {
                 "codename": "view_unapproved_facilities"
@@ -1104,91 +961,6 @@
             },
             {
                 "codename": "view_mfloauthapplication"
-            },
-            {
-                "codename": "add_mfluser"
-            },
-            {
-                "codename": "change_mfluser"
-            },
-            {
-                "codename": "delete_mfluser"
-            },
-            {
-                "codename": "view_mfluser"
-            }
-        ]
-    },
-    {
-        "group": {
-            "name": "County Administrators"
-        },
-        "permissions": [
-            {
-                "codename": "view_constituency"
-            },
-            {
-                "codename": "view_county"
-            },
-            {
-                "codename": "add_town"
-            },
-            {
-                "codename": "change_town"
-            },
-            {
-                "codename": "delete_town"
-            },
-            {
-                "codename": "view_town"
-            },
-            {
-                "codename": "add_userconstituency"
-            },
-            {
-                "codename": "change_userconstituency"
-            },
-            {
-                "codename": "delete_userconstituency"
-            },
-            {
-                "codename": "add_usercontact"
-            },
-            {
-                "codename": "change_usercontact"
-            },
-            {
-                "codename": "delete_usercontact"
-            },
-            {
-                "codename": "view_usercontact"
-            },
-            {
-                "codename": "view_usercounty"
-            },
-            {
-                "codename": "view_ward"
-            },
-            {
-                "codename": "view_all_facility_fields"
-            },
-            {
-                "codename": "view_classified_facilities"
-            },
-            {
-                "codename": "view_unapproved_facilities"
-            },
-            {
-                "codename": "view_unpublished_facilities"
-            },
-            {
-                "codename": "view_constituencyboundary"
-            },
-            {
-                "codename": "view_countyboundary"
-            },
-            {
-                "codename": "view_wardboundary"
             },
             {
                 "codename": "add_mfluser"
@@ -1987,9 +1759,6 @@
                 "codename": "delete_mfluser"
             },
             {
-                "codename": "manipulate_superusers"
-            },
-            {
                 "codename": "view_mfluser"
             }
         ]
@@ -2118,6 +1887,136 @@
             },
             {
                 "codename": "view_worldborder"
+            }
+        ]
+    },
+    {
+        "group": {
+            "name": "Facility Viewing Group"
+        },
+        "permissions": [
+            {
+                "codename": "view_communityhealthunit"
+            },
+            {
+                "codename": "view_communityhealthunitcontact"
+            },
+            {
+                "codename": "view_communityhealthworkercontact"
+            },
+            {
+                "codename": "view_constituency"
+            },
+            {
+                "codename": "view_contact"
+            },
+            {
+                "codename": "view_contacttype"
+            },
+            {
+                "codename": "view_county"
+            },
+            {
+                "codename": "view_physicaladdress"
+            },
+            {
+                "codename": "view_town"
+            },
+            {
+                "codename": "view_usercontact"
+            },
+            {
+                "codename": "view_usercounty"
+            },
+            {
+                "codename": "view_ward"
+            },
+            {
+                "codename": "view_facility"
+            },
+            {
+                "codename": "view_facilitycontact"
+            },
+            {
+                "codename": "view_facilityofficer"
+            },
+            {
+                "codename": "view_facilityservice"
+            },
+            {
+                "codename": "view_facilityservicerating"
+            },
+            {
+                "codename": "view_facilitystatus"
+            },
+            {
+                "codename": "view_facilitytype"
+            },
+            {
+                "codename": "view_facilityunit"
+            },
+            {
+                "codename": "view_facilityunitregulation"
+            },
+            {
+                "codename": "view_jobtitle"
+            },
+            {
+                "codename": "view_officer"
+            },
+            {
+                "codename": "view_officercontact"
+            },
+            {
+                "codename": "view_option"
+            },
+            {
+                "codename": "view_owner"
+            },
+            {
+                "codename": "view_ownertype"
+            },
+            {
+                "codename": "view_regulatingbody"
+            },
+            {
+                "codename": "view_regulatingbodycontact"
+            },
+            {
+                "codename": "view_regulationstatus"
+            },
+            {
+                "codename": "view_regulatorybodyuser"
+            },
+            {
+                "codename": "view_service"
+            },
+            {
+                "codename": "view_servicecategory"
+            },
+            {
+                "codename": "view_constituencyboundary"
+            },
+            {
+                "codename": "view_countyboundary"
+            },
+            {
+                "codename": "view_facilitycoordinates"
+            },
+            {
+                "codename": "view_geocodemethod"
+            },
+            {
+                "codename": "view_geocodesource"
+            },
+            {
+                "codename": "view_wardboundary"
+            },
+            {
+                "codename": "view_worldborder"
+            },
+            {
+                "codename": "view_mfloauthapplication"
             }
         ]
     }

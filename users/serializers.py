@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -12,7 +12,12 @@ from common.serializers import (
     PartialResponseMixin
 )
 from facilities.serializers import RegulatoryBodyUserSerializer
-from .models import MflUser, MFLOAuthApplication, check_password_strength
+from .models import (
+    MflUser,
+    MFLOAuthApplication,
+    check_password_strength,
+    CustomGroup,
+    ProxyGroup)
 
 
 def _lookup_permissions(validated_data):
@@ -33,7 +38,7 @@ def _lookup_groups(validated_data):
     try:
         user_supplied_groups = validated_data.get('groups', [])
         return [
-            Group.objects.get(**user_supplied_group)
+            ProxyGroup.objects.get(**user_supplied_group)
             for user_supplied_group in user_supplied_groups
         ]
     except Exception as ex:  # Will reraise a more API friendly exception
@@ -88,22 +93,50 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
     # to work, the UniqueValidator on this name had to be silenced
     name = serializers.CharField(validators=[])
     permissions = PermissionSerializer(many=True, required=False)
+    is_regulator = serializers.ReadOnlyField()
+    is_national = serializers.ReadOnlyField()
+    is_administrator = serializers.ReadOnlyField()
     is_county_level = serializers.ReadOnlyField()
+    is_sub_county_level = serializers.ReadOnlyField()
 
     @transaction.atomic
     def create(self, validated_data):
+        regulator = self.initial_data.pop('is_regulator', False)
+        national = self.initial_data.pop('is_national', False)
+        admin = self.initial_data.pop('is_administrator', False)
+        county_level = self.initial_data.pop('is_county_level', False)
+        sub_county_level = self.initial_data.pop('is_sub_county_level', False)
         permissions = _lookup_permissions(
             self.context['request'].DATA
         )
         validated_data.pop('permissions', None)
 
-        new_group = Group(**validated_data)
+        new_group = ProxyGroup(**validated_data)
         new_group.save()
         new_group.permissions.add(*permissions)
+        custom_group_data = {
+            "regulator": regulator,
+            "national": national,
+            "administrator": admin,
+            'county_level': county_level,
+            'sub_county_level': sub_county_level,
+            "group": new_group
+        }
+        CustomGroup.objects.create(**custom_group_data)
         return new_group
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        regulator = self.initial_data.pop(
+            'is_regulator', instance.is_regulator)
+        national = self.initial_data.pop(
+            'is_national', instance.is_national)
+        admin = self.initial_data.pop(
+            'is_administrator', instance.is_administrator)
+        county_level = self.initial_data.pop(
+            'is_county_level', instance.is_county_level)
+        sub_county_level = self.initial_data.pop(
+            'is_sub_county_level', instance.is_sub_county_level)
         permissions = _lookup_permissions(
             self.context['request'].DATA
         )
@@ -115,6 +148,22 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         instance.permissions.clear()
         instance.permissions.add(*permissions)
+        custom_group_data = {
+            "regulator": regulator,
+            "national": national,
+            "administrator": admin,
+            "county_level": county_level,
+            "sub_county_level": sub_county_level,
+            "group": instance
+        }
+        try:
+            cg = CustomGroup.objects.get(group=instance)
+            for key, value in custom_group_data.iteritems():
+                setattr(cg, key, value)
+            cg.save()
+        except CustomGroup.DoesNotExist:
+            CustomGroup.objects.create(**custom_group_data)
+
         return instance
 
     def get_fields(self):
@@ -124,7 +173,7 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
         return self.strip_fields(request, origi_fields)
 
     class Meta(object):
-        model = Group
+        model = ProxyGroup
 
 
 class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):

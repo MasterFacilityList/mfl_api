@@ -40,6 +40,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'reversion.middleware.RevisionMiddleware'
 )
 
 EMAIL_HOST = env('EMAIL_HOST', default='localhost')
@@ -291,6 +292,8 @@ SEARCH = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
+        "users.CustomGroup",
+        "users.ProxyGroup"
 
     ],
     "STOP_WORDS": [
