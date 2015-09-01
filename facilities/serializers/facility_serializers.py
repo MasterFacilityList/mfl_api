@@ -295,13 +295,9 @@ class RegulatingBodySerializer(
         # reinitialize them each time this function is called
         self.inlining_errors = []
         for contact in contacts:
-            try:
-                contact['contact']
-            except KeyError:
+            if 'contact' not in contact:
                 self.inlining_errors.append("The contact is missing")
-            try:
-                contact['contact_type']
-            except KeyError:
+            if 'contact_type' not in contact:
                 self.inlining_errors.append("The contact type is missing")
             try:
                 ContactType.objects.get(id=contact['contact_type'])
