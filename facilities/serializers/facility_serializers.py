@@ -286,6 +286,83 @@ class RegulatingBodySerializer(
     regulatory_body_type_name = serializers.ReadOnlyField(
         source='regulatory_body_type.name'
     )
+    reg_contacts = RegulatingBodyContactSerializer(
+        required=False, many=True)
+    inlining_errors = []
+
+    def _validate_contacts(self, contacts):
+        # the serializer class seems to be caching the errors
+        # reinitialize them each time this function is called
+        self.inlining_errors = []
+        for contact in contacts:
+            if 'contact' not in contact:
+                self.inlining_errors.append("The contact is missing")
+            if 'contact_type' not in contact:
+                self.inlining_errors.append("The contact type is missing")
+            try:
+                ContactType.objects.get(id=contact['contact_type'])
+            except (KeyError, ValueError, ContactType.DoesNotExist):
+                self.inlining_errors.append(
+                    "The contact type provided does not exist")
+
+    def create_contact(self, contact_data):
+        try:
+            return Contact.objects.get(contact=contact_data["contact"])
+        except Contact.DoesNotExist:
+            contact = ContactSerializer(
+                data=contact_data, context=self.context)
+            return contact.save() if contact.is_valid() else \
+                self.inlining_errors.append(json.dumps(contact.errors))
+
+    def create_reg_body_contacts(self, instance, contact_data, validated_data):
+            contact = self.create_contact(contact_data)
+            reg_contact_data = {
+                "contact": contact,
+                "regulating_body": instance
+            }
+            audit_data = {
+                "created_by_id": self.context['request'].user.id,
+                "updated_by_id": self.context['request'].user.id,
+                "created": (
+                    validated_data['created'] if
+                    validated_data.get('created') else timezone.now()),
+                "updated": (
+                    validated_data['updated'] if
+                    validated_data.get('updated') else timezone.now())
+            }
+            reg_complete_contact_data = reg_contact_data
+            reg_complete_contact_data.update(audit_data)
+
+            try:
+                RegulatingBodyContact.objects.get(**reg_contact_data)
+            except RegulatingBodyContact.DoesNotExist:
+                RegulatingBodyContact.objects.create(
+                    **reg_complete_contact_data)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        contacts = self.initial_data.pop('contacts')
+        self._validate_contacts(contacts)
+        if self.inlining_errors:
+            raise ValidationError({
+                "contacts": self.inlining_errors
+            })
+        instance = super(RegulatingBodySerializer, self).create(validated_data)
+        for contact in contacts:
+            self.create_reg_body_contacts(instance, contact, validated_data)
+        return instance
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        contacts = self.initial_data.pop('contacts')
+        self._validate_contacts(contacts)
+        if self.inlining_errors:
+            raise ValidationError({
+                "contacts": self.inlining_errors
+            })
+        for contact in contacts:
+            self.create_reg_body_contacts(instance, contact, validated_data)
+        return instance
 
     class Meta(object):
         model = RegulatingBody
