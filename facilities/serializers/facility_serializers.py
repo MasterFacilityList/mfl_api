@@ -286,8 +286,7 @@ class RegulatingBodySerializer(
     regulatory_body_type_name = serializers.ReadOnlyField(
         source='regulatory_body_type.name'
     )
-    reg_contacts = RegulatingBodyContactSerializer(
-        required=False, many=True)
+    contacts = serializers.ReadOnlyField()
     inlining_errors = []
 
     def _validate_contacts(self, contacts):
