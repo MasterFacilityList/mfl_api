@@ -970,19 +970,19 @@ class Facility(SequenceMixin, AbstractBase):
                 updates.pop('updated_by_id')
             except:
                 pass
-            # if updates:
-            try:
-                facility_update = FacilityUpdates.objects.filter(
-                    facility=self, cancelled=False, approved=False)[0]
-                facility_update.facility_updates = updates
-                facility_update.is_new = False
-                facility_update.save()
-            except IndexError:
-                FacilityUpdates.objects.create(
-                    facility_updates=updates, facility=self,
-                    created_by=self.updated_by, updated_by=self.updated_by
-                ) if new_details_serialized != old_details_serialized \
-                    else None
+            if updates:
+                try:
+                    facility_update = FacilityUpdates.objects.filter(
+                        facility=self, cancelled=False, approved=False)[0]
+                    facility_update.facility_updates = updates
+                    facility_update.is_new = False
+                    facility_update.save()
+                except IndexError:
+                    FacilityUpdates.objects.create(
+                        facility_updates=updates, facility=self,
+                        created_by=self.updated_by, updated_by=self.updated_by
+                    ) if new_details_serialized != old_details_serialized \
+                        else None
 
     def __str__(self):
         return self.name

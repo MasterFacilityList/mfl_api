@@ -460,26 +460,24 @@ class FacilityDetailView(
         request.data['updated_by_id'] = request.user.id
         instance = self.get_object()
         self.validation_errors = {}
-        if instance.approved:
-            services = request.data.pop('services', [])
-            contacts = request.data.pop('contacts', [])
-            units = request.data.pop('units', [])
-            officer_in_charge = request.data.pop(
-                'officer_in_charge', None)
 
+        services = request.data.pop('services', [])
+        contacts = request.data.pop('contacts', [])
+        units = request.data.pop('units', [])
+        officer_in_charge = request.data.get(
+            'officer_in_charge', None)
+        self. _validate_payload(services, contacts, units)
+
+        if any(self.validation_errors):
+            return Response(
+                data=self.validation_errors,
+                status=status.HTTP_400_BAD_REQUEST)
+        if instance.approved:
             try:
                 update = FacilityUpdates.objects.filter(
                     facility=instance, cancelled=False, approved=False)[0]
             except IndexError:
                 update = FacilityUpdates.objects.create(facility=instance)
-
-            self. _validate_payload(services, contacts, units)
-
-            if any(self.validation_errors):
-                return Response(
-                    data=self.validation_errors,
-                    status=status.HTTP_400_BAD_REQUEST)
-
             services = self.populate_service_name(services)
             self.buffer_services(update, services)
 
@@ -497,7 +495,11 @@ class FacilityDetailView(
                 update.officer_in_charge = json.dumps(officer_in_charge)
             update.is_new = False
             update.save()
-
+        else:
+            request.data['services'] = services
+            request.data['contacts'] = contacts
+            request.data['units'] = units
+            request.data['officer_in_charge'] = officer_in_charge
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)

@@ -143,7 +143,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                     "This is the Pharmacy belonging to the hospital"),
                 "regulating_body": regulating_body.id
             }
-        ],
+        ]
         facility_units_with_error = [
             {
                 "name": "The Facilities Pharmacy",

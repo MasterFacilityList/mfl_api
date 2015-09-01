@@ -26,7 +26,7 @@ def _is_valid_uuid(value):
     try:
         uuid.UUID(value)
         return True
-    except ValueError:
+    except (ValueError, TypeError):
         return False
 
 
@@ -34,12 +34,12 @@ def _validate_services(services):
     errors = []
     for service in services:
         if not _is_valid_uuid(service.get('service', None)):
-            return errors.append("Service has a badly formed uuid")
+            errors.append("Service has a badly formed uuid")
         if 'service' not in service:
             errors.append("Key service was not found")
         try:
-            Service.objects.get(id=service.get('service'))
-        except Service.DoesNotExist:
+            Service.objects.get(id=service['service'])
+        except (ValueError, TypeError, KeyError, Service.DoesNotExist):
             errors.append("service with id {} not found".format(
                 service.get('service')))
 
@@ -50,7 +50,7 @@ def _validate_units(units):
     errors = []
     for unit in units:
         if not _is_valid_uuid(unit.get('regulating_body', None)):
-            return errors.append("Regulating body has a badly formed uuid")
+            errors.append("Regulating body has a badly formed uuid")
         try:
             RegulatingBody.objects.get(id=unit.get('regulating_body'))
         except RegulatingBody.DoesNotExist:
@@ -68,13 +68,13 @@ def _validate_contacts(contacts):
     errors = []
     for contact in contacts:
         if not _is_valid_uuid(contact.get('contact_type', None)):
-            return errors.append("Contact has a badly formed uuid")
+            errors.append("Contact has a badly formed uuid")
         try:
             ContactType.objects.get(id=contact.get('contact_type'))
         except ContactType.DoesNotExist:
             errors.append("Contact type with the id {} was not found".format(
                 contact))
-        except KeyError:
+        except (KeyError, ValueError, TypeError):
             errors.append("Key contact type is missing")
         if contact.get('contact') is None:
             errors.append("The contact field is missing")
@@ -99,47 +99,37 @@ def inject_audit_fields(dict_a, validated_data):
 
 def create_contact(contact_data, validated_data):
         try:
-            Contact.objects.get(contact=contact_data["contact"])
+            return Contact.objects.get(contact=contact_data["contact"])
         except Contact.DoesNotExist:
             contact_data = inject_audit_fields(contact_data, validated_data)
             contact = ContactSerializer(data=contact_data)
             return contact.save() if contact.is_valid() else \
                 inlining_errors.append(json.dumps(contact.errors))
-        except KeyError:
-            inlining_errors.append(
-                {"contact": ["Contact was not supplied"]})
 
 
 def create_facility_contacts(instance, contact_data, validated_data):
         contact = create_contact(contact_data, validated_data)
-        if contact:
-            facility_contact_data = {
-                "contact": contact.id,
-                "facility": instance.id
-            }
-            facility_contact_data_with_audit = inject_audit_fields(
-                facility_contact_data, validated_data)
-            try:
-                FacilityContact.objects.get(**facility_contact_data)
-            except FacilityContact.DoesNotExist:
-                fac_contact = FacilityContactSerializer(
-                    data=facility_contact_data_with_audit)
-                if fac_contact.is_valid():
-                    fac_contact.save()
-                else:
-                    inlining_errors.append(fac_contact.errors)
-                # FacilityContact.objects.create(
-                #     **facility_contact_data_with_audit)
+        facility_contact_data = {
+            "contact": contact.id,
+            "facility": instance.id
+        }
+        facility_contact_data_with_audit = inject_audit_fields(
+            facility_contact_data, validated_data)
+        try:
+            FacilityContact.objects.get(**facility_contact_data)
+        except FacilityContact.DoesNotExist:
+            fac_contact = FacilityContactSerializer(
+                data=facility_contact_data_with_audit)
+            fac_contact.save() if fac_contact.is_valid() else \
+                inlining_errors.append(fac_contact.errors)
 
 
 def create_facility_units(instance, unit_data, validated_data):
         unit_data['facility'] = instance.id
         unit_data = inject_audit_fields(unit_data, validated_data)
         unit = FacilityUnitSerializer(data=unit_data)
-        if unit.is_valid():
-            return unit.save()
-        else:
-            inlining_errors.append((json.dumps(unit.errors)))
+        return unit.save() if unit.is_valid() else inlining_errors.append((
+            json.dumps(unit.errors)))
 
 
 def create_facility_services(instance, service_data, validated_data):
