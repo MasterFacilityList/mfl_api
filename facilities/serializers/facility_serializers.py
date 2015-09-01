@@ -320,29 +320,28 @@ class RegulatingBodySerializer(
 
     def create_reg_body_contacts(self, instance, contact_data, validated_data):
             contact = self.create_contact(contact_data)
-            if contact:
-                reg_contact_data = {
-                    "contact": contact,
-                    "regulating_body": instance
-                }
-                audit_data = {
-                    "created_by_id": self.context['request'].user.id,
-                    "updated_by_id": self.context['request'].user.id,
-                    "created": (
-                        validated_data['created'] if
-                        validated_data.get('created') else timezone.now()),
-                    "updated": (
-                        validated_data['updated'] if
-                        validated_data.get('updated') else timezone.now())
-                }
-                reg_complete_contact_data = reg_contact_data
-                reg_complete_contact_data.update(audit_data)
+            reg_contact_data = {
+                "contact": contact,
+                "regulating_body": instance
+            }
+            audit_data = {
+                "created_by_id": self.context['request'].user.id,
+                "updated_by_id": self.context['request'].user.id,
+                "created": (
+                    validated_data['created'] if
+                    validated_data.get('created') else timezone.now()),
+                "updated": (
+                    validated_data['updated'] if
+                    validated_data.get('updated') else timezone.now())
+            }
+            reg_complete_contact_data = reg_contact_data
+            reg_complete_contact_data.update(audit_data)
 
-                try:
-                    RegulatingBodyContact.objects.get(**reg_contact_data)
-                except RegulatingBodyContact.DoesNotExist:
-                    RegulatingBodyContact.objects.create(
-                        **reg_complete_contact_data)
+            try:
+                RegulatingBodyContact.objects.get(**reg_contact_data)
+            except RegulatingBodyContact.DoesNotExist:
+                RegulatingBodyContact.objects.create(
+                    **reg_complete_contact_data)
 
     @transaction.atomic
     def create(self, validated_data):

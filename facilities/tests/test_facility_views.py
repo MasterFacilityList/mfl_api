@@ -1654,7 +1654,7 @@ class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
         self.assertEquals(1, RegulatingBody.objects.count())
         self.assertEquals(1, Contact.objects.count())
 
-    def test_upate_contact_type_invalid(self):
+    def test_upate_contact_invalid(self):
         url = reverse("api:facilities:regulating_bodies_list")
         reg_body = mommy.make(RegulatingBody)
         url = url + "{}/".format(reg_body.id)
