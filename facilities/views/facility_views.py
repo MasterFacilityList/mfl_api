@@ -459,14 +459,8 @@ class FacilityDetailView(
         del user_id
         request.data['updated_by_id'] = request.user.id
         instance = self.get_object()
-        if not instance.approved:
-            serializer = self.get_serializer(
-                instance, data=request.data, partial=partial)
-            serializer.is_valid(raise_exception=True)
-            self.perform_update(serializer)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        else:
+        self.validation_errors = {}
+        if instance.approved:
             services = request.data.pop('services', [])
             contacts = request.data.pop('contacts', [])
             units = request.data.pop('units', [])
@@ -480,6 +474,7 @@ class FacilityDetailView(
                 update = FacilityUpdates.objects.create(facility=instance)
 
             self. _validate_payload(services, contacts, units)
+
             if any(self.validation_errors):
                 return Response(
                     data=self.validation_errors,
@@ -503,7 +498,11 @@ class FacilityDetailView(
             update.is_new = False
             update.save()
 
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FacilityContactListView(generics.ListCreateAPIView):

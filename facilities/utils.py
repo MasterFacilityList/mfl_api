@@ -22,9 +22,9 @@ from facilities.serializers import (
 inlining_errors = []
 
 
-def _is_valid_uuid(field):
+def _is_valid_uuid(value):
     try:
-        uuid.UUID(field)
+        uuid.UUID(value)
         return True
     except ValueError:
         return False
@@ -35,13 +35,13 @@ def _validate_services(services):
     for service in services:
         if not _is_valid_uuid(service.get('service', None)):
             return errors.append("Service has a badly formed uuid")
+        if 'service' not in service:
+            errors.append("Key service was not found")
         try:
             Service.objects.get(id=service.get('service'))
         except Service.DoesNotExist:
             errors.append("service with id {} not found".format(
                 service.get('service')))
-        except KeyError:
-            errors.append("Key service was not found")
 
     return errors
 
