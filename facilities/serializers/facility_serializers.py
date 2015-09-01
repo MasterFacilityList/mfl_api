@@ -291,34 +291,32 @@ class RegulatingBodySerializer(
     inlining_errors = []
 
     def _validate_contacts(self, contacts):
+        # the serializer class seems to be caching the errors
+        # reinitialize them each time this function is called
+        self.inlining_errors = []
         for contact in contacts:
             try:
-                contact.get('contact')
-                pass
+                contact['contact']
             except KeyError:
                 self.inlining_errors.append("The contact is missing")
             try:
-                contact.get('contact_type')
-                pass
+                contact['contact_type']
             except KeyError:
                 self.inlining_errors.append("The contact type is missing")
             try:
-                ContactType.objects.get(id=contact.get('contact_type'))
+                ContactType.objects.get(id=contact['contact_type'])
             except (KeyError, ValueError, ContactType.DoesNotExist):
                 self.inlining_errors.append(
                     "The contact type provided does not exist")
 
     def create_contact(self, contact_data):
         try:
-            Contact.objects.get(contact=contact_data["contact"])
+            return Contact.objects.get(contact=contact_data["contact"])
         except Contact.DoesNotExist:
             contact = ContactSerializer(
                 data=contact_data, context=self.context)
             return contact.save() if contact.is_valid() else \
                 self.inlining_errors.append(json.dumps(contact.errors))
-        except KeyError:
-            self.inlining_errors.append(
-                {"contact": ["Contact was not supplied"]})
 
     def create_reg_body_contacts(self, instance, contact_data, validated_data):
             contact = self.create_contact(contact_data)
@@ -355,6 +353,18 @@ class RegulatingBodySerializer(
                 "contacts": self.inlining_errors
             })
         instance = super(RegulatingBodySerializer, self).create(validated_data)
+        for contact in contacts:
+            self.create_reg_body_contacts(instance, contact, validated_data)
+        return instance
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        contacts = self.initial_data.pop('contacts')
+        self._validate_contacts(contacts)
+        if self.inlining_errors:
+            raise ValidationError({
+                "contacts": self.inlining_errors
+            })
         for contact in contacts:
             self.create_reg_body_contacts(instance, contact, validated_data)
         return instance
