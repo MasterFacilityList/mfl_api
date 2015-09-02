@@ -7,7 +7,8 @@ from facilities.models import (
     Facility, FacilityUpdates, FacilityApproval,
     Service, FacilityService, FacilityContact,
     RegulatingBody, FacilityUnit, JobTitle,
-    OfficerContact, Officer, FacilityOfficer)
+    OfficerContact, Officer, FacilityOfficer,
+    Option)
 
 from model_mommy import mommy
 
@@ -232,10 +233,16 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
         response = self.client.patch(url, data)
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, FacilityUpdates.objects.count())
+        option = mommy.make(Option)
+        service_3 = mommy.make(Service)
 
         services_2 = [
             {
                 "service": str(service_1.id)
+            },
+            {
+                "service": str(service_3.id),
+                "option": str(option.id)
             }
         ]
         data_2 = {
@@ -582,7 +589,6 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
             ]
         }
         data = {
-            "name": "The name has been Editted",
             "units": units,
             "services": services,
             "contacts": contacts,
@@ -592,7 +598,6 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, FacilityUpdates.objects.count())
         update = FacilityUpdates.objects.all()[0]
-        self.assertIsNotNone(update.facility_updates)
         self.assertIsNotNone(update.services)
         self.assertIsNotNone(update.contacts)
         self.assertIsNotNone(update.units)
