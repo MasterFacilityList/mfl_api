@@ -406,7 +406,7 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
         # approve the facility updates
         approval_url = reverse(
             "api:facilities:facility_updates_detail",
-            args=('pk', str(update.id)))
+            kwargs={'pk': str(update.id)})
         approve_payload = {
             "approved": True
         }
@@ -465,7 +465,7 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
         # approve the facility updates
         approval_url = reverse(
             "api:facilities:facility_updates_detail",
-            args=('pk', str(update.id)))
+            kwargs={'pk': str(update.id)})
         rejection_payload = {
             "cancelled": True
         }
