@@ -1051,13 +1051,12 @@ class FacilityUpdates(AbstractBase):
         self.facility.save(allow_save=True)
 
     def update_facility(self):
-        if self.facility_updates:
-            data = json.loads(self.facility_updates)
-            for field_changed in data:
-                field_name = field_changed.get("field_name")
-                value = field_changed.get("actual_value")
-                setattr(self.facility, field_name, value)
-            self.facility.save(allow_save=True)
+        data = json.loads(self.facility_updates)
+        for field_changed in data:
+            field_name = field_changed.get("field_name")
+            value = field_changed.get("actual_value")
+            setattr(self.facility, field_name, value)
+        self.facility.save(allow_save=True)
 
     def update_facility_services(self):
         from facilities.utils import create_facility_services

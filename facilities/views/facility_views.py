@@ -109,7 +109,8 @@ class QuerysetFilterMixin(object):
         else:
             self.queryset = self.queryset
 
-        if self.request.user.has_perm("facilities.view_unpublished_facilities") \
+        if self.request.user.has_perm(
+            "facilities.view_unpublished_facilities") \
             is False and 'is_published' in [
                 field.name for field in
                 self.queryset.model._meta.get_fields()]:
