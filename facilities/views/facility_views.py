@@ -60,13 +60,14 @@ from ..filters import (
 
 )
 
-
 from ..utils import (
     _validate_services,
     _validate_units,
-    _validate_contacts
-
+    _validate_contacts,
+    _officer_data_is_valid
 )
+
+from common.models import County
 
 
 def default(obj):
@@ -89,7 +90,10 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
+        # return self.queryset
         # nairobi = County.objects.get(code=47)
+
+        # return self.queryset
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and \
                     self.request.user.county \
@@ -107,14 +111,13 @@ class QuerysetFilterMixin(object):
             elif self.request.user.constituency and hasattr(
                     self.queryset.model, 'ward'):
                 self.queryset = self.queryset.filter(
-                    ward__constituency__county=self.request.user.county)
+                    ward__constituency=self.request.user.constituency)
             else:
                 self.queryset = self.queryset
         else:
             self.queryset = self.queryset
 
-        if self.request.user.has_perm(
-            "facilities.view_unpublished_facilities") \
+        if self.request.user.has_perm("facilities.view_unpublished_facilities") \
             is False and 'is_published' in [
                 field.name for field in
                 self.queryset.model._meta.get_fields()]:
@@ -296,31 +299,31 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     """
     Lists and creates facilities
 
-    name -- The name of the facility
-    code -- A list of comma separated facility codes (one or more)
-    description -- The description of the facility
-    facility_type -- A list of comma separated facility type's pk
-    operation_status -- A list of comma separated operation statuses pks
-    ward -- A list of comma separated ward pks (one or more)
-    ward_code -- A list of comma separated ward codes
-    county_code -- A list of comma separated county codes
-    constituency_code -- A list of comma separated constituency codes
-    county -- A list of comma separated county pks
-    constituency -- A list of comma separated constituency pks
-    owner -- A list of comma separated owner pks
-    number_of_beds -- A list of comma separated integers
-    number_of_cots -- A list of comma separated integers
-    open_whole_day -- Boolean True/False
-    is_classified -- Boolean True/False
-    is_published -- Boolean True/False
-    is_regulated -- Boolean True/False
-    service_category -- A service category's pk
-    Created --  Date the record was Created
-    Updated -- Date the record was Updated
-    Created_by -- User who created the record
-    Updated_by -- User who updated the record
-    active  -- Boolean is the record active
-    deleted -- Boolean is the record deleted
+    name -- The name of the facility<br>
+    code -- A list of comma separated facility codes (one or more)<br>
+    description -- The description of the facility<br>
+    facility_type -- A list of comma separated facility type's pk<br>
+    operation_status -- A list of comma separated operation statuses pks<br>
+    ward -- A list of comma separated ward pks (one or more)<br>
+    ward_code -- A list of comma separated ward codes<br>
+    county_code -- A list of comma separated county codes<br>
+    constituency_code -- A list of comma separated constituency codes<br>
+    county -- A list of comma separated county pks<br>
+    constituency -- A list of comma separated constituency pks<br>
+    owner -- A list of comma separated owner pks<br>
+    number_of_beds -- A list of comma separated integers<br>
+    number_of_cots -- A list of comma separated integers<br>
+    open_whole_day -- Boolean True/False<br>
+    is_classified -- Boolean True/False<br>
+    is_published -- Boolean True/False<br>
+    is_regulated -- Boolean True/False<br>
+    service_category -- A service category's pk<br>
+    Created --  Date the record was Created<br>
+    Updated -- Date the record was Updated<br>
+    Created_by -- User who created the record<br>
+    Updated_by -- User who updated the record<br>
+    active  -- Boolean is the record active<br>
+    deleted -- Boolean is the record deleted<br>
     """
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
@@ -344,9 +347,7 @@ class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
     )
 
 
-class FacilityDetailView(
-        QuerysetFilterMixin,
-        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+class FacilityDetailView(QuerysetFilterMixin, generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieves a particular facility
     """
@@ -436,7 +437,7 @@ class FacilityDetailView(
             id=officer_in_charge['title']).name
         return officer_in_charge
 
-    def _validate_payload(self, services, contacts, units):
+    def _validate_payload(self, services, contacts, units, officer_in_charge):
         """
         Validates the updated attributes before  buffering them
         """
@@ -452,6 +453,11 @@ class FacilityDetailView(
         unit_errors = _validate_units(units)
         if unit_errors:
             self.validation_errors.update({"units": unit_errors})
+        officer_errors = _officer_data_is_valid(officer_in_charge)
+
+        if officer_errors and officer_in_charge != {} and officer_errors is not True:
+            self.validation_errors.update(
+                {"officer_in_charge": officer_errors})
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -464,9 +470,12 @@ class FacilityDetailView(
         services = request.data.pop('services', [])
         contacts = request.data.pop('contacts', [])
         units = request.data.pop('units', [])
-        officer_in_charge = request.data.get(
-            'officer_in_charge', None)
-        self. _validate_payload(services, contacts, units)
+        officer_in_charge = request.data.pop(
+            'officer_in_charge', {})
+        if officer_in_charge:
+            officer_in_charge['facility_id'] = str(instance.id)
+
+        self. _validate_payload(services, contacts, units, officer_in_charge)
 
         if any(self.validation_errors):
             return Response(
@@ -487,7 +496,7 @@ class FacilityDetailView(
             units = self.populate_regulatory_body_names(units)
             self.buffer_units(update, units)
 
-            if officer_in_charge:
+            if officer_in_charge != {}:
                 officer_in_charge = self.populate_officer_incharge_contacts(
                     officer_in_charge)
                 officer_in_charge = self.populate_officer_incharge_job_title(
@@ -499,7 +508,9 @@ class FacilityDetailView(
             request.data['services'] = services
             request.data['contacts'] = contacts
             request.data['units'] = units
-            request.data['officer_in_charge'] = officer_in_charge
+            if officer_in_charge != {}:
+                request.data['officer_in_charge'] = officer_in_charge
+
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)

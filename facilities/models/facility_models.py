@@ -1093,6 +1093,12 @@ class FacilityUpdates(AbstractBase):
         for unit in units_to_add:
             create_facility_units(self.facility, unit, validated_data)
 
+    def update_officer_in_charge(self):
+        from facilities.utils import _create_officer
+        officer_data = json.loads(self.officer_in_charge)
+        user = self.created_by
+        _create_officer(officer_data, user)
+
     def validate_either_of_approve_or_cancel(self):
         error = "You can only approve or cancel and not both"
         if self.approved and self.cancelled:
@@ -1123,6 +1129,7 @@ class FacilityUpdates(AbstractBase):
             self.update_facility_units() if self.units else None
             self.update_facility_contacts() if self.contacts else None
             self.update_facility_services() if self.services else None
+            self.update_officer_in_charge() if self.officer_in_charge else None
             self.facility.has_edits = False
             self.facility.save(allow_save=True)
         super(FacilityUpdates, self).save(*args, **kwargs)
