@@ -482,11 +482,32 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
                 "regulating_body": str(regulating_body.id)
             }
         ]
+
+        job_title = mommy.make(JobTitle)
+        contact_type = mommy.make(ContactType)
+
+        officer = {
+            "name": "Brenda Makena",
+            "id_no": "545454545",
+            "reg_no": "DEN/90/2000",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
         data = {
             "name": "The name has been Editted",
             "units": units,
             "services": services,
-            "contacts": contacts
+            "contacts": contacts,
+            "officer_in_charge": officer
         }
         response = self.client.patch(url, data)
         self.assertEquals(200, response.status_code)
@@ -541,11 +562,31 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
                 "regulating_body": str(regulating_body.id)
             }
         ]
+        job_title = mommy.make(JobTitle)
+        contact_type = mommy.make(ContactType)
+
+        officer = {
+            "name": "Brenda Makena",
+            "id_no": "545454545",
+            "reg_no": "DEN/90/2000",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
         data = {
             "name": "The name has been Editted",
             "units": units,
             "services": services,
-            "contacts": contacts
+            "contacts": contacts,
+            "officer_in_charge": officer
         }
         response = self.client.patch(url, data)
         self.assertEquals(200, response.status_code)

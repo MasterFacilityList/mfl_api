@@ -56,7 +56,7 @@ def _validate_units(units):
         if not _is_valid_uuid(unit.get('regulating_body', None)):
             errors.append("Regulating body has a badly formed uuid")
         try:
-            RegulatingBody.objects.get(id=unit.get('regulating_body'))
+            RegulatingBody.objects.get(id=unit['regulating_body'])
         except RegulatingBody.DoesNotExist:
             errors.append(
                 "The regulating_body with the id {} was not "

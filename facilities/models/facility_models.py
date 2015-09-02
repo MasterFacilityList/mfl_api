@@ -1106,7 +1106,8 @@ class FacilityUpdates(AbstractBase):
 
     def validate_only_one_update_at_a_time(self):
         updates = self.__class__.objects.filter(
-            facility=self.facility, approved=False, cancelled=False).count()
+            facility=self.facility, approved=False,
+            cancelled=False, is_new=False).count()
         if self.approved or self.cancelled:
             # No need to validate again as this is
             # an approval or rejection after the record was created first
@@ -1491,11 +1492,11 @@ class FacilityService(AbstractBase):
             )
         return "{}: {}".format(self.facility, self.service)
 
-    def validate_unique_service_or_service_option_with_for_facility(self):
+    def validate_unique_service_or_service_with_option_for_facility(self):
 
         if len(self.__class__.objects.filter(
                 service=self.service, facility=self.facility,
-                deleted=False)) == 1 and self.deleted:
+                deleted=False)) == 1 and not self.deleted:
             error = {
                 "service": [
                     ("The service {} has already been added to the "
@@ -1504,7 +1505,7 @@ class FacilityService(AbstractBase):
             raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
-        self.validate_unique_service_or_service_option_with_for_facility()
+        self.validate_unique_service_or_service_with_option_for_facility()
 
 
 @reversion.register(follow=['facility_service', ])

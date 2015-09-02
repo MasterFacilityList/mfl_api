@@ -373,9 +373,6 @@ class FacilityDetailSerializer(FacilitySerializer):
                     data=contact_data, context=self.context)
                 return contact.save() if contact.is_valid() else \
                     self.inlining_errors.append(json.dumps(contact.errors))
-            except KeyError:
-                self.inlining_errors.append(
-                    {"contact": ["Contact was not supplied"]})
 
     def create_facility_contacts(self, instance, contact_data, validated_data):
             contact = self.create_contact(contact_data)

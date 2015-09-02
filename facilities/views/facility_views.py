@@ -1,5 +1,4 @@
 import json
-import uuid
 
 from django.contrib.auth.models import AnonymousUser
 
@@ -66,13 +65,6 @@ from ..utils import (
     _validate_contacts,
     _officer_data_is_valid
 )
-
-from common.models import County
-
-
-def default(obj):
-    if isinstance(obj, uuid.UUID):
-        return str(obj)
 
 
 class QuerysetFilterMixin(object):
@@ -347,7 +339,9 @@ class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
     )
 
 
-class FacilityDetailView(QuerysetFilterMixin, generics.RetrieveUpdateDestroyAPIView):
+class FacilityDetailView(
+        QuerysetFilterMixin, AuditableDetailViewMixin,
+        generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieves a particular facility
     """
@@ -364,7 +358,7 @@ class FacilityDetailView(QuerysetFilterMixin, generics.RetrieveUpdateDestroyAPIV
             proposed_contacts = json.loads(update.contacts)
             update.contacts = json.dumps(proposed_contacts + contacts)
         else:
-            update.contacts = json.dumps(contacts, default=default)
+            update.contacts = json.dumps(contacts)
 
     def buffer_services(self, update, services):
         """
@@ -375,7 +369,7 @@ class FacilityDetailView(QuerysetFilterMixin, generics.RetrieveUpdateDestroyAPIV
             proposed_services = json.loads(update.services)
             update.services = json.dumps(proposed_services + services)
         else:
-            update.services = json.dumps(services, default=default)
+            update.services = json.dumps(services)
 
     def buffer_units(self, update, units):
         """
@@ -386,7 +380,7 @@ class FacilityDetailView(QuerysetFilterMixin, generics.RetrieveUpdateDestroyAPIV
             proposed_units = json.loads(update.units)
             update.units = json.dumps(proposed_units + units)
         else:
-            update.units = json.dumps(units, default=default)
+            update.units = json.dumps(units)
 
     def populate_service_name(self, services):
         """
@@ -455,7 +449,8 @@ class FacilityDetailView(QuerysetFilterMixin, generics.RetrieveUpdateDestroyAPIV
             self.validation_errors.update({"units": unit_errors})
         officer_errors = _officer_data_is_valid(officer_in_charge)
 
-        if officer_errors and officer_in_charge != {} and officer_errors is not True:
+        if officer_errors and officer_in_charge != {} and officer_errors is \
+                not True:
             self.validation_errors.update(
                 {"officer_in_charge": officer_errors})
 
