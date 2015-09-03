@@ -714,6 +714,10 @@ class TestFacility(BaseTestCase):
             facility.latest_approval_or_rejection
         )
 
+    def test_facility_is_regulated_false(self):
+        facility = mommy.make(Facility)
+        self.assertFalse(facility.is_regulated)
+
 
 class TestFacilityContact(BaseTestCase):
 
