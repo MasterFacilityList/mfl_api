@@ -299,6 +299,7 @@ class RegulatingBody(AbstractBase):
             {
                 "id": con.id,
                 "contact": con.contact.contact,
+                "contact_id": con.contact.id,
                 "contact_type": con.contact.contact_type.id
             }
             for con in RegulatingBodyContact.objects.filter(
