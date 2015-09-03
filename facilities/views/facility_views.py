@@ -82,10 +82,7 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-        # return self.queryset
-        # nairobi = County.objects.get(code=47)
 
-        # return self.queryset
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and \
                     self.request.user.county \
