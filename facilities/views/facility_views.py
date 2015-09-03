@@ -67,6 +67,9 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
+        custom_queryset = kwargs.pop('custom_queryset', None)
+        if hasattr(custom_queryset, 'count'):
+            self.queryset = custom_queryset
 
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and \
@@ -126,6 +129,14 @@ class QuerysetFilterMixin(object):
             self.queryset = self.queryset.filter(closed=False)
 
         return self.queryset
+
+    def filter_queryset(self, queryset):
+        """
+        Overriden in order to constrain search result to what a user should
+        see.
+        """
+        queryset = super(QuerysetFilterMixin, self).filter_queryset(queryset)
+        return self.get_queryset(custom_queryset=queryset)
 
 
 class FacilityLevelChangeReasonListView(generics.ListCreateAPIView):

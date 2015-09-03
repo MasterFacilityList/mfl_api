@@ -30,16 +30,7 @@ class SearchFilter(django_filters.filters.Filter):
                 else hits
         except AttributeError:
             hits = hits
-        hits_ids_list = []
-        hits_and_scores = []
-
-        for hit in hits:
-            obj_id = hit.get('_id')
-            instance = qs.model.objects.get(id=obj_id)
-            score = hit.get('_score')
-            instance.search = score
-            hits_ids_list.append(str(obj_id))
-            hits_and_scores.append({'id': obj_id, 'score': score})
+        hits_ids_list = [str(hit.get('_id')) for hit in hits]
 
         pk_list = hits_ids_list
         table_name = "{}_{}.id".format(

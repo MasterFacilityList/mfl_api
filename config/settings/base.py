@@ -293,7 +293,8 @@ SEARCH = {
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
         "users.CustomGroup",
-        "users.ProxyGroup"
+        "users.ProxyGroup",
+        "facilities.FacilityUpdates"
 
     ],
     "STOP_WORDS": [
