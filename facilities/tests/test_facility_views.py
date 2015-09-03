@@ -1589,9 +1589,11 @@ class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
 
     def test_save_errors(self):
         url = reverse("api:facilities:regulating_bodies_list")
+        reg_status = mommy.make(RegulationStatus)
         data = {
             "name": "this is a reg body",
             'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
             "contacts": [
                 {
                     "contact": "jina@mail.com"
@@ -1605,9 +1607,11 @@ class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
 
     def test_save_contact_missing(self):
         url = reverse("api:facilities:regulating_bodies_list")
+        reg_status = mommy.make(RegulationStatus)
         data = {
             "name": "this is a reg body",
             'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
             "contacts": [
                 {
                 }
@@ -1623,9 +1627,11 @@ class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
         contact_type = mommy.make(ContactType, name="EAMIL")
         contact_type_id = contact_type.id
         contact_type.delete()
+        reg_status = mommy.make(RegulationStatus)
         data = {
             "name": "this is a reg body",
             'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
             "contacts": [
                 {
                     "contact": "jina@mail.com",
