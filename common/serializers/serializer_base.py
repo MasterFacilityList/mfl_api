@@ -56,7 +56,6 @@ class AbstractFieldsMixin(PartialResponseMixin):
 
         if not validated_data.get('updated_by', None):
             validated_data['updated_by'] = self.context['request'].user
-        # validated_data['updated_by'] = self.context['request'].user
 
         return self.Meta.model.objects.create(**validated_data)
 
