@@ -376,6 +376,7 @@ class TestRegulatingBodyModel(BaseTestCase):
             RegulatingBodyContact, regulating_body=regulating_body,
             contact=contact)
         self.assertEquals(contact, regulating_body.postal_address.contact)
+        self.assertIsInstance(regulating_body.contacts, list)
 
 
 class TestFacility(BaseTestCase):

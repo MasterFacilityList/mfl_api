@@ -254,7 +254,7 @@ class RegulatingBodyContact(AbstractBase):
         return "{}: ({})".format(self.regulating_body, self.contact)
 
 
-@reversion.register(follow=['contacts', 'regulatory_body_type', 'default_status'])  # noqa
+@reversion.register(follow=['regulatory_body_type', 'default_status'])  # noqa
 @encoding.python_2_unicode_compatible
 class RegulatingBody(AbstractBase):
 
@@ -275,8 +275,6 @@ class RegulatingBody(AbstractBase):
         max_length=50, null=True, blank=True,
         help_text="A shortform of the name of the regulating body e.g Nursing"
         "Council of Kenya could be abbreviated as NCK.")
-    contacts = models.ManyToManyField(
-        Contact, through='RegulatingBodyContact')
     regulation_verb = models.CharField(
         max_length=100)
     regulatory_body_type = models.ForeignKey(
@@ -294,6 +292,19 @@ class RegulatingBody(AbstractBase):
             regulating_body=self,
             contact__contact_type__name='POSTAL')
         return contacts[0]
+
+    @property
+    def contacts(self):
+        return [
+            {
+                "id": con.id,
+                "contact": con.contact.contact,
+                "contact_id": con.contact.id,
+                "contact_type": con.contact.contact_type.id
+            }
+            for con in RegulatingBodyContact.objects.filter(
+                regulating_body=self)
+        ]
 
     def __str__(self):
         return self.name
