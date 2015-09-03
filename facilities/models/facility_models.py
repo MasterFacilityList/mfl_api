@@ -737,10 +737,6 @@ class Facility(SequenceMixin, AbstractBase):
         return self.operation_status.name
 
     @property
-    def regulatory_status_name(self):
-        return self.current_regulatory_status
-
-    @property
     def facility_type_name(self):
         return self.facility_type.name
 

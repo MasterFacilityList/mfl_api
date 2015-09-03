@@ -449,7 +449,9 @@ class FacilityUnitSerializer(
 class FacilitySerializer(
         AbstractFieldsMixin, CreateFacilityOfficerMixin,
         serializers.ModelSerializer):
-    regulatory_status_name = serializers.CharField(read_only=True)
+    regulatory_status_name = serializers.CharField(
+        read_only=True,
+        source='current_regulatory_status')
     facility_type_name = serializers.CharField(read_only=True)
     owner_name = serializers.CharField(read_only=True)
     owner_type_name = serializers.CharField(read_only=True)

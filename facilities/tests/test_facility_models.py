@@ -481,7 +481,7 @@ class TestFacility(BaseTestCase):
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility, created_by=user)
         self.assertEquals(
-            facility.regulatory_status_name,
+            facility.current_regulatory_status,
             facility_reg_status.regulation_status.name)
 
     def test_owner_type_name(self):
