@@ -68,8 +68,9 @@ class QuerysetFilterMixin(object):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
         custom_queryset = kwargs.pop('custom_queryset', None)
-        if custom_queryset:
+        if hasattr(custom_queryset, 'count'):
             self.queryset = custom_queryset
+
         if not isinstance(self.request.user, AnonymousUser):
             if not self.request.user.is_national and \
                     self.request.user.county \
@@ -134,10 +135,7 @@ class QuerysetFilterMixin(object):
         Overriden in order to constrain search result to what a user should
         see.
         """
-
-        for backend in list(self.filter_backends):
-            queryset = backend().filter_queryset(
-                self.request, queryset, self)
+        queryset = super(QuerysetFilterMixin, self).filter_queryset(queryset)
         return self.get_queryset(custom_queryset=queryset)
 
 
