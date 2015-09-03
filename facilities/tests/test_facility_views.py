@@ -1570,9 +1570,11 @@ class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
 
     def test_save(self):
         url = reverse("api:facilities:regulating_bodies_list")
+        reg_status = mommy.make(RegulationStatus)
         data = {
             "name": "this is a reg body",
             'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
             "contacts": [
                 {
                     "contact": "jina@mail.com",

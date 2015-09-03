@@ -282,7 +282,7 @@ class RegulatingBody(AbstractBase):
         help_text='Show the kind of institutions that the body regulates e.g'
         'private facilities')
     default_status = models.ForeignKey(
-        "RegulationStatus", null=True, blank=True,
+        "RegulationStatus",
         help_text="The default status for the facilities regulated by "
         "the particular regulator")
 
@@ -610,7 +610,7 @@ class Facility(SequenceMixin, AbstractBase):
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
-    regulatory_body = models.ForeignKey(RegulatingBody, null=True, blank=True)
+    regulatory_body = models.ForeignKey(RegulatingBody)
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
@@ -712,14 +712,14 @@ class Facility(SequenceMixin, AbstractBase):
         try:
             # returns in reverse chronological order so just pick the first one
             return self.regulatory_details.filter(
-                regulation_status__is_default=False)[0]
+                facility=self)[0].regulation_status.name
         except IndexError:
-            return RegulationStatus.objects.get(is_default=True)
+            return self.regulatory_body.default_status.name
 
     @property
     def is_regulated(self):
-        default_reg_status = RegulationStatus.objects.get(is_default=True)
-        if self.current_regulatory_status != default_reg_status:
+        if (self.current_regulatory_status !=
+                self.regulatory_body.default_status.name):
             return True
         else:
             return False
@@ -738,10 +738,7 @@ class Facility(SequenceMixin, AbstractBase):
 
     @property
     def regulatory_status_name(self):
-        if hasattr(self.current_regulatory_status, 'regulation_status'):
-            return self.current_regulatory_status.regulation_status.name
-        else:
-            return self.current_regulatory_status.name
+        return self.current_regulatory_status
 
     @property
     def facility_type_name(self):
