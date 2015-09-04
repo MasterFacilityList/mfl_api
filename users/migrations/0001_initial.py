@@ -50,8 +50,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('regulator', models.BooleanField(default=False, help_text=b'Are the regulators in this group?')),
-                ('national', models.BooleanField(default=False, help_text=b'Will the users in this group see all facilities in thecountry?')),
-                ('administrator', models.BooleanField(default=False, help_text=b'Will the users in this group administrator user rights?')),
+                ('national', models.BooleanField(default=False, help_text=b'Will the users in this group see all facilities in the country?')),
+                ('administrator', models.BooleanField(default=False, help_text=b'Will the users in this group administor user rights?')),
+                ('county_level', models.BooleanField(default=False, help_text=b'Will the user be creating sub county users?')),
+                ('sub_county_level', models.BooleanField(default=False, help_text=b'Will the user be creating users below the sub county level users?')),
             ],
         ),
         migrations.CreateModel(

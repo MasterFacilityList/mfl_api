@@ -529,6 +529,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text=b'The name of the regulating body', unique=True, max_length=100)),
                 ('abbreviation', models.CharField(help_text=b'A shortform of the name of the regulating body e.g NursingCouncil of Kenya could be abbreviated as NCK.', max_length=50, null=True, blank=True)),
                 ('regulation_verb', models.CharField(max_length=100)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -548,7 +549,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('contact', models.ForeignKey(to='common.Contact')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('regulating_body', models.ForeignKey(to='facilities.RegulatingBody')),
+                ('regulating_body', models.ForeignKey(related_name='reg_contacts', to='facilities.RegulatingBody')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -567,7 +568,7 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'A short unique name representing a state/stage of regulation e.g. PENDING_OPENING ', unique=True, max_length=100)),
-                ('description', models.TextField(help_text=b"A short description of the regulation state or state e.gPENDING_LINCENSING could be descriped as 'waiting for the license tobegin operating' ", null=True, blank=True)),
+                ('description', models.TextField(help_text=b"A short description of the regulation state or state e.gPENDING_LICENSING could be descriped as 'waiting for the license tobegin operating' ", null=True, blank=True)),
                 ('is_initial_state', models.BooleanField(default=False, help_text=b'Indicates whether it is the very first statein the regulation workflow.')),
                 ('is_final_state', models.BooleanField(default=False, help_text=b'Indicates whether it is the last state in the regulation work-flow')),
                 ('is_default', models.BooleanField(default=False, help_text=b'The default regulation status for facilties')),
@@ -671,18 +672,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='regulatingbody',
-            name='contacts',
-            field=models.ManyToManyField(to='common.Contact', through='facilities.RegulatingBodyContact'),
-        ),
-        migrations.AddField(
-            model_name='regulatingbody',
-            name='created_by',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='regulatingbody',
             name='default_status',
-            field=models.ForeignKey(blank=True, to='facilities.RegulationStatus', help_text=b'The default status for the facilities regulated by the particular regulator', null=True),
+            field=models.ForeignKey(help_text=b'The default status for the facilities regulated by the particular regulator', to='facilities.RegulationStatus'),
         ),
         migrations.AddField(
             model_name='regulatingbody',
@@ -872,7 +863,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='facility',
             name='regulatory_body',
-            field=models.ForeignKey(blank=True, to='facilities.RegulatingBody', null=True),
+            field=models.ForeignKey(to='facilities.RegulatingBody'),
         ),
         migrations.AddField(
             model_name='facility',
