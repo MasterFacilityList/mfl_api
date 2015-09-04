@@ -65,7 +65,7 @@ class UserList(generics.ListCreateAPIView):
             area_users = county_users + sub_county_users
             return MflUser.objects.filter(
                 id__in=area_users)
-        elif user.is_national:
+        elif user.is_national and not user.is_superuser:
             # Should see the county users and the national users
             # Also should not see the system user
             county_users = [
@@ -79,6 +79,17 @@ class UserList(generics.ListCreateAPIView):
             all_users = county_users + national_users
             return MflUser.objects.filter(
                 id__in=all_users)
+        elif user.constituency:
+            sub_county_users = [
+                const_user.user.id for const_user in
+                UserConstituency.objects.filter(
+                    constituency__county=user.county).distinct()
+            ]
+            return MflUser.objects.filter(
+                id__in=sub_county_users)
+        elif user.is_superuser:
+            return MflUser.objects.all()
+
         else:
             # The user is not allowed to see the users
             return MflUser.objects.none()
