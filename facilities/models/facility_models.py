@@ -718,11 +718,10 @@ class Facility(SequenceMixin, AbstractBase):
 
     @property
     def is_regulated(self):
-        if (self.current_regulatory_status !=
-                self.regulatory_body.default_status.name):
-            return True
-        else:
-            return False
+        return (
+            self.current_regulatory_status !=
+            self.regulatory_body.default_status.name
+        )
 
     @property
     def county(self):
