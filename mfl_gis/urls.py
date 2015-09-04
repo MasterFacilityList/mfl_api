@@ -31,25 +31,17 @@ coordinates_cache_seconds = (60 * 60 * 24)
 urlpatterns = patterns(
     '',
     url(r'^geo_code_sources/$',
-        gzip_page(
-            cache_page(cache_seconds)
-            (GeoCodeSourceListView.as_view())),
+        GeoCodeSourceListView.as_view(),
         name='geo_code_sources_list'),
     url(r'^geo_code_sources/(?P<pk>[^/]+)/$',
-        gzip_page(
-            cache_page(cache_seconds)
-            (GeoCodeSourceDetailView.as_view())),
+        GeoCodeSourceDetailView.as_view(),
         name='geo_code_source_detail'),
 
     url(r'^geo_code_methods/$',
-        gzip_page(
-            cache_page(cache_seconds)
-            (GeoCodeMethodListView.as_view())),
+        GeoCodeMethodListView.as_view(),
         name='geo_code_methods_list'),
     url(r'^geo_code_methods/(?P<pk>[^/]+)/$',
-        gzip_page(
-            cache_page(cache_seconds)
-            (GeoCodeMethodDetailView.as_view())),
+        GeoCodeMethodDetailView.as_view(),
         name='geo_code_method_detail'),
 
     url(r'^facility_coordinates/$',

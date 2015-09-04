@@ -234,6 +234,16 @@ class TestFacilityService(BaseTestCase):
                 FacilityService, facility=facility,
                 option=option, service=service)
 
+    def test_delete_service(self):
+        service = mommy.make(Service, name="TB Culture")
+        facility = mommy.make(Facility)
+        option = mommy.make(Option)
+
+        # test validation with option
+        fs = mommy.make(
+            FacilityService, facility=facility, option=option, service=service)
+        fs.delete()
+
 
 class TestServiceModel(BaseTestCase):
 
@@ -359,8 +369,10 @@ class TestFacilityTypeModel(BaseTestCase):
 class TestRegulatingBodyModel(BaseTestCase):
 
     def test_save(self):
+        reg_status = mommy.make(RegulationStatus)
         data = {
             "name": "Director of Medical Services",
+            'default_status': reg_status,
             "abbreviation": "DMS",
             "regulation_verb": "Gazette"
         }
@@ -376,6 +388,7 @@ class TestRegulatingBodyModel(BaseTestCase):
             RegulatingBodyContact, regulating_body=regulating_body,
             contact=contact)
         self.assertEquals(contact, regulating_body.postal_address.contact)
+        self.assertIsInstance(regulating_body.contacts, list)
 
 
 class TestFacility(BaseTestCase):
@@ -399,7 +412,8 @@ class TestFacility(BaseTestCase):
             "operation_status": operation_status,
             "ward": ward,
             "owner": owner,
-            "town": town
+            "town": town,
+            "regulatory_body": regulating_body
         }
         user = mommy.make(get_user_model())
         regulator = mommy.make(RegulatingBody)
@@ -417,7 +431,7 @@ class TestFacility(BaseTestCase):
 
         self.assertIsNotNone(facility.code)
         self.assertEquals(
-            facility_reg_status,
+            facility_reg_status.regulation_status.name,
             facility.current_regulatory_status)
 
     def test_working_of_facility_code_sequence(self):
@@ -477,14 +491,8 @@ class TestFacility(BaseTestCase):
         facility_reg_status = mommy.make(
             FacilityRegulationStatus, facility=facility, created_by=user)
         self.assertEquals(
-            facility.regulatory_status_name,
+            facility.current_regulatory_status,
             facility_reg_status.regulation_status.name)
-
-    def test_default_regulation_status(self):
-        facility = mommy.make(Facility)
-        self.assertEquals(
-            self.default_regulation_status.name,
-            facility.regulatory_status_name)
 
     def test_owner_type_name(self):
         owner_type = mommy.make(OwnerType, name='GAVA')
@@ -513,13 +521,6 @@ class TestFacility(BaseTestCase):
             created_by=user)
         self.assertTrue(facility.is_regulated)
 
-    def test_is_regulated_is_false(self):
-        user = mommy.make(get_user_model())
-        regulator = mommy.make(RegulatingBody)
-        mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
-        facility = mommy.make(Facility)
-        self.assertFalse(facility.is_regulated)
-
     def test_publishing(self):
         with self.assertRaises(ValidationError):
             mommy.make(Facility, is_published=True)
@@ -543,8 +544,7 @@ class TestFacility(BaseTestCase):
         facility.name = 'The name has been changed'
         facility.save()
         with self.assertRaises(ValidationError):
-            facility.name = 'The name has been changed again'
-            facility.save()
+            mommy.make(FacilityUpdates, facility=facility, is_new=True)
 
     def test_null_coordinates(self):
         facility = mommy.make(Facility)
@@ -722,6 +722,10 @@ class TestFacility(BaseTestCase):
         self.assertIsNone(
             facility.latest_approval_or_rejection
         )
+
+    def test_facility_is_regulated_false(self):
+        facility = mommy.make(Facility)
+        self.assertFalse(facility.is_regulated)
 
 
 class TestFacilityContact(BaseTestCase):
@@ -998,7 +1002,7 @@ class TestFacilityUpdates(BaseTestCase):
             FacilityUpdates,
             facility_updates=json.dumps(update))
         self.assertIsInstance(
-            facility_update.facility_updated_json(), list)
+            facility_update.facility_updated_json(), dict)
 
     def test_update_facility_has_edits(self):
         facility = mommy.make(Facility)

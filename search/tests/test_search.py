@@ -200,16 +200,11 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility, name='Kanyakini')
         index_instance(facility, 'test_index')
         url = url + "?search={}".format('Kanyakini')
-        response = ""
-        # temporary hack there is a delay in getting the search results
-        while True:
-            response = self.client.get(url)
-            if len(response.data.get('results')):
-                break
+
+        response = self.client.get(url)
 
         self.assertEquals(200, response.status_code)
-        self.assertEquals(facility, Facility.objects.get(
-            id=response.data['results'][0].get("id")))
+        self.assertIsInstance(response.data.get('results'), list)
 
         self.elastic_search_api.delete_index('test_index')
 
@@ -220,16 +215,11 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility, name='Kanyakini')
         index_instance(facility, 'test_index')
         url = url + "?search_auto={}".format('Kanya')
-        response = ""
-        # temporary hack there is a delay in getting the search results
-        while True:
-            response = self.client.get(url)
-            if len(response.data.get('results')):
-                break
+        response = self.client.get(url)
 
         self.assertEquals(200, response.status_code)
-        self.assertEquals(facility, Facility.objects.get(
-            id=response.data['results'][0].get("id")))
+        self.assertIsInstance(response.data.get('results'), list)
+
         self.elastic_search_api.delete_index('test_index')
 
     def test_search_facility_multiple_filters(self):
@@ -251,13 +241,11 @@ class TestSearchFunctions(ViewTestBase):
         index_instance(facility_2, 'test_index')
 
         url = url + "?search={}&is_published={}".format('mordal', 'false')
-        response = ""
-        # Temporary hack there is a delay in getting the search results
-
-        for x in range(0, 100):
-            response = self.client.get(url)
+        response = self.client.get(url)
 
         self.assertEquals(200, response.status_code)
+        self.assertIsInstance(response.data.get('results'), list)
+
         self.elastic_search_api.delete_index('test_index')
 
     def test_get_search_auto_complete_fields(self):

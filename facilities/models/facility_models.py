@@ -254,7 +254,7 @@ class RegulatingBodyContact(AbstractBase):
         return "{}: ({})".format(self.regulating_body, self.contact)
 
 
-@reversion.register(follow=['contacts', 'regulatory_body_type', 'default_status'])  # noqa
+@reversion.register(follow=['regulatory_body_type', 'default_status'])  # noqa
 @encoding.python_2_unicode_compatible
 class RegulatingBody(AbstractBase):
 
@@ -275,8 +275,6 @@ class RegulatingBody(AbstractBase):
         max_length=50, null=True, blank=True,
         help_text="A shortform of the name of the regulating body e.g Nursing"
         "Council of Kenya could be abbreviated as NCK.")
-    contacts = models.ManyToManyField(
-        Contact, through='RegulatingBodyContact')
     regulation_verb = models.CharField(
         max_length=100)
     regulatory_body_type = models.ForeignKey(
@@ -284,7 +282,7 @@ class RegulatingBody(AbstractBase):
         help_text='Show the kind of institutions that the body regulates e.g'
         'private facilities')
     default_status = models.ForeignKey(
-        "RegulationStatus", null=True, blank=True,
+        "RegulationStatus",
         help_text="The default status for the facilities regulated by "
         "the particular regulator")
 
@@ -294,6 +292,19 @@ class RegulatingBody(AbstractBase):
             regulating_body=self,
             contact__contact_type__name='POSTAL')
         return contacts[0]
+
+    @property
+    def contacts(self):
+        return [
+            {
+                "id": con.id,
+                "contact": con.contact.contact,
+                "contact_id": con.contact.id,
+                "contact_type": con.contact.contact_type.id
+            }
+            for con in RegulatingBodyContact.objects.filter(
+                regulating_body=self)
+        ]
 
     def __str__(self):
         return self.name
@@ -599,7 +610,7 @@ class Facility(SequenceMixin, AbstractBase):
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
-    regulatory_body = models.ForeignKey(RegulatingBody, null=True, blank=True)
+    regulatory_body = models.ForeignKey(RegulatingBody)
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
         help_text='The keph level of the facility')
@@ -701,17 +712,16 @@ class Facility(SequenceMixin, AbstractBase):
         try:
             # returns in reverse chronological order so just pick the first one
             return self.regulatory_details.filter(
-                regulation_status__is_default=False)[0]
+                facility=self)[0].regulation_status.name
         except IndexError:
-            return RegulationStatus.objects.get(is_default=True)
+            return self.regulatory_body.default_status.name
 
     @property
     def is_regulated(self):
-        default_reg_status = RegulationStatus.objects.get(is_default=True)
-        if self.current_regulatory_status != default_reg_status:
-            return True
-        else:
-            return False
+        return (
+            self.current_regulatory_status !=
+            self.regulatory_body.default_status.name
+        )
 
     @property
     def county(self):
@@ -724,13 +734,6 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def operation_status_name(self):
         return self.operation_status.name
-
-    @property
-    def regulatory_status_name(self):
-        if hasattr(self.current_regulatory_status, 'regulation_status'):
-            return self.current_regulatory_status.regulation_status.name
-        else:
-            return self.current_regulatory_status.name
 
     @property
     def facility_type_name(self):
@@ -972,10 +975,18 @@ class Facility(SequenceMixin, AbstractBase):
             except:
                 pass
             if updates:
-                FacilityUpdates.objects.create(
-                    facility_updates=updates, facility=self,
-                    created_by=self.updated_by, updated_by=self.updated_by
-                ) if new_details_serialized != old_details_serialized else None
+                try:
+                    facility_update = FacilityUpdates.objects.filter(
+                        facility=self, cancelled=False, approved=False)[0]
+                    facility_update.facility_updates = updates
+                    facility_update.is_new = False
+                    facility_update.save()
+                except IndexError:
+                    FacilityUpdates.objects.create(
+                        facility_updates=updates, facility=self,
+                        created_by=self.updated_by, updated_by=self.updated_by
+                    ) if new_details_serialized != old_details_serialized \
+                        else None
 
     def __str__(self):
         return self.name
@@ -1007,10 +1018,27 @@ class FacilityUpdates(AbstractBase):
     facility = models.ForeignKey(Facility, related_name='updates')
     approved = models.BooleanField(default=False)
     cancelled = models.BooleanField(default=False)
-    facility_updates = models.TextField()
+    facility_updates = models.TextField(null=True, blank=True)
+    contacts = models.TextField(null=True, blank=True)
+    services = models.TextField(null=True, blank=True)
+    officer_in_charge = models.TextField(null=True, blank=True)
+    units = models.TextField(null=True, blank=True)
+    is_new = models.BooleanField(default=False)
 
     def facility_updated_json(self):
-        return json.loads(self.facility_updates)
+        updates = {}
+        if self.facility_updates:
+            updates['basic'] = json.loads(self.facility_updates)
+        if self.services:
+            updates['services'] = json.loads(self.services)
+        if self.contacts:
+            updates['contacts'] = json.loads(self.contacts)
+        if self.units:
+            updates['units'] = json.loads(self.units)
+        if self.officer_in_charge:
+            updates['officer_in_charge'] = json.loads(self.officer_in_charge)
+
+        return updates
 
     def update_facility_has_edits(self):
         if not self.approved and not self.cancelled:
@@ -1018,11 +1046,12 @@ class FacilityUpdates(AbstractBase):
         else:
             self.facility.has_edits = False
         old_facility = Facility.objects.get(id=self.facility.id)
-        data = json.loads(self.facility_updates)
-        for field_changed in data:
-            field_name = field_changed.get("field_name")
-            old_value = getattr(old_facility, field_name)
-            setattr(self.facility, field_name, old_value)
+        if self.facility_updates:
+            data = json.loads(self.facility_updates)
+            for field_changed in data:
+                field_name = field_changed.get("field_name")
+                old_value = getattr(old_facility, field_name)
+                setattr(self.facility, field_name, old_value)
         self.facility.save(allow_save=True)
 
     def update_facility(self):
@@ -1033,6 +1062,46 @@ class FacilityUpdates(AbstractBase):
             setattr(self.facility, field_name, value)
         self.facility.save(allow_save=True)
 
+    def update_facility_services(self):
+        from facilities.utils import create_facility_services
+        services_to_add = json.loads(self.services)
+        validated_data = {}
+        validated_data['created'] = self.updated
+        validated_data['updated'] = self.updated
+        validated_data['created_by'] = self.created_by.id
+        validated_data['updated_by'] = self.updated_by.id
+        for service in services_to_add:
+            create_facility_services(self.facility, service, validated_data)
+
+    def update_facility_contacts(self):
+        from facilities.utils import create_facility_contacts
+        contacts_to_add = json.loads(self.contacts)
+        validated_data = {}
+        validated_data['created'] = self.updated
+        validated_data['updated'] = self.updated
+        validated_data['created_by'] = self.created_by.id
+        validated_data['updated_by'] = self.updated_by.id
+
+        for contact in contacts_to_add:
+            create_facility_contacts(self.facility, contact, validated_data)
+
+    def update_facility_units(self):
+        from facilities.utils import create_facility_units
+        units_to_add = json.loads(self.units)
+        validated_data = {}
+        validated_data['created'] = self.updated
+        validated_data['updated'] = self.updated
+        validated_data['created_by'] = self.created_by.id
+        validated_data['updated_by'] = self.updated_by.id
+        for unit in units_to_add:
+            create_facility_units(self.facility, unit, validated_data)
+
+    def update_officer_in_charge(self):
+        from facilities.utils import _create_officer
+        officer_data = json.loads(self.officer_in_charge)
+        user = self.created_by
+        _create_officer(officer_data, user)
+
     def validate_either_of_approve_or_cancel(self):
         error = "You can only approve or cancel and not both"
         if self.approved and self.cancelled:
@@ -1040,13 +1109,14 @@ class FacilityUpdates(AbstractBase):
 
     def validate_only_one_update_at_a_time(self):
         updates = self.__class__.objects.filter(
-            facility=self.facility, approved=False, cancelled=False).count()
+            facility=self.facility, approved=False,
+            cancelled=False, is_new=False).count()
         if self.approved or self.cancelled:
             # No need to validate again as this is
             # an approval or rejection after the record was created first
             pass
         else:
-            if updates >= 1:
+            if updates >= 1 and self.is_new:
                 error = ("The pending facility update has to be either"
                          "approved or cancelled before another one is made")
                 raise ValidationError(error)
@@ -1060,6 +1130,12 @@ class FacilityUpdates(AbstractBase):
     def save(self, *args, **kwargs):
         if self.approved and not self.cancelled:
             self.update_facility()
+            self.update_facility_units() if self.units else None
+            self.update_facility_contacts() if self.contacts else None
+            self.update_facility_services() if self.services else None
+            self.update_officer_in_charge() if self.officer_in_charge else None
+            self.facility.has_edits = False
+            self.facility.save(allow_save=True)
         super(FacilityUpdates, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -1419,11 +1495,11 @@ class FacilityService(AbstractBase):
             )
         return "{}: {}".format(self.facility, self.service)
 
-    def validate_unique_service_or_service_option_with_for_facility(self):
+    def validate_unique_service_or_service_with_option_for_facility(self):
 
         if len(self.__class__.objects.filter(
                 service=self.service, facility=self.facility,
-                deleted=False)) == 1:
+                deleted=False)) == 1 and not self.deleted:
             error = {
                 "service": [
                     ("The service {} has already been added to the "
@@ -1432,7 +1508,7 @@ class FacilityService(AbstractBase):
             raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
-        self.validate_unique_service_or_service_option_with_for_facility()
+        self.validate_unique_service_or_service_with_option_for_facility()
 
 
 @reversion.register(follow=['facility_service', ])

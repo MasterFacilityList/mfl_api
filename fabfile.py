@@ -17,9 +17,9 @@ def manage(command, args=''):
 
 def reset_migrations(*args, **kwargs):
     """Neccessary for circle ci to be able to run tests"""
-    del_facility_migrations = ""\
-        "cd facilities/migrations && ls | grep -v" \
-        "set_facility_code_sequence_min_value.py | xargs rm"
+    del_facility_migrations = "cd facilities/migrations && ls | grep -v"\
+                              "set_facility_code_sequence_min_value.py" \
+                              "| xargs rm"
 
     del_common_migrations = """
         cd common/migrations && ls | grep -v "admin_unit_codes.py" | xargs rm
