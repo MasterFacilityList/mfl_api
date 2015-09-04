@@ -234,6 +234,16 @@ class TestFacilityService(BaseTestCase):
                 FacilityService, facility=facility,
                 option=option, service=service)
 
+    def test_delete_service(self):
+        service = mommy.make(Service, name="TB Culture")
+        facility = mommy.make(Facility)
+        option = mommy.make(Option)
+
+        # test validation with option
+        fs = mommy.make(
+            FacilityService, facility=facility, option=option, service=service)
+        fs.delete()
+
 
 class TestServiceModel(BaseTestCase):
 
@@ -534,8 +544,7 @@ class TestFacility(BaseTestCase):
         facility.name = 'The name has been changed'
         facility.save()
         with self.assertRaises(ValidationError):
-            facility.name = 'The name has been changed again'
-            facility.save()
+            mommy.make(FacilityUpdates, facility=facility, is_new=True)
 
     def test_null_coordinates(self):
         facility = mommy.make(Facility)
@@ -993,7 +1002,7 @@ class TestFacilityUpdates(BaseTestCase):
             FacilityUpdates,
             facility_updates=json.dumps(update))
         self.assertIsInstance(
-            facility_update.facility_updated_json(), list)
+            facility_update.facility_updated_json(), dict)
 
     def test_update_facility_has_edits(self):
         facility = mommy.make(Facility)

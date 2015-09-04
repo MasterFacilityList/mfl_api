@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import AnonymousUser
 
 from rest_framework import generics
@@ -6,6 +8,7 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
+from common.models import ContactType
 
 
 from ..models import (
@@ -18,7 +21,12 @@ from ..models import (
     FacilityUnitRegulation,
     KephLevel,
     OptionGroup,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    FacilityUpdates,
+    Service,
+    Option,
+    RegulatingBody,
+    JobTitle
 )
 
 from ..serializers import (
@@ -49,6 +57,13 @@ from ..filters import (
     OptionGroupFilter,
     FacilityLevelChangeReasonFilter
 
+)
+
+from ..utils import (
+    _validate_services,
+    _validate_units,
+    _validate_contacts,
+    _officer_data_is_valid
 )
 
 
@@ -285,31 +300,31 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     """
     Lists and creates facilities
 
-    name -- The name of the facility
-    code -- A list of comma separated facility codes (one or more)
-    description -- The description of the facility
-    facility_type -- A list of comma separated facility type's pk
-    operation_status -- A list of comma separated operation statuses pks
-    ward -- A list of comma separated ward pks (one or more)
-    ward_code -- A list of comma separated ward codes
-    county_code -- A list of comma separated county codes
-    constituency_code -- A list of comma separated constituency codes
-    county -- A list of comma separated county pks
-    constituency -- A list of comma separated constituency pks
-    owner -- A list of comma separated owner pks
-    number_of_beds -- A list of comma separated integers
-    number_of_cots -- A list of comma separated integers
-    open_whole_day -- Boolean True/False
-    is_classified -- Boolean True/False
-    is_published -- Boolean True/False
-    is_regulated -- Boolean True/False
-    service_category -- A service category's pk
-    Created --  Date the record was Created
-    Updated -- Date the record was Updated
-    Created_by -- User who created the record
-    Updated_by -- User who updated the record
-    active  -- Boolean is the record active
-    deleted -- Boolean is the record deleted
+    name -- The name of the facility<br>
+    code -- A list of comma separated facility codes (one or more)<br>
+    description -- The description of the facility<br>
+    facility_type -- A list of comma separated facility type's pk<br>
+    operation_status -- A list of comma separated operation statuses pks<br>
+    ward -- A list of comma separated ward pks (one or more)<br>
+    ward_code -- A list of comma separated ward codes<br>
+    county_code -- A list of comma separated county codes<br>
+    constituency_code -- A list of comma separated constituency codes<br>
+    county -- A list of comma separated county pks<br>
+    constituency -- A list of comma separated constituency pks<br>
+    owner -- A list of comma separated owner pks<br>
+    number_of_beds -- A list of comma separated integers<br>
+    number_of_cots -- A list of comma separated integers<br>
+    open_whole_day -- Boolean True/False<br>
+    is_classified -- Boolean True/False<br>
+    is_published -- Boolean True/False<br>
+    is_regulated -- Boolean True/False<br>
+    service_category -- A service category's pk<br>
+    Created --  Date the record was Created<br>
+    Updated -- Date the record was Updated<br>
+    Created_by -- User who created the record<br>
+    Updated_by -- User who updated the record<br>
+    active  -- Boolean is the record active<br>
+    deleted -- Boolean is the record deleted<br>
     """
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
@@ -334,13 +349,119 @@ class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
 
 
 class FacilityDetailView(
-        QuerysetFilterMixin,
-        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+        QuerysetFilterMixin, AuditableDetailViewMixin,
+        generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieves a particular facility
     """
     queryset = Facility.objects.all()
     serializer_class = FacilityDetailSerializer
+    validation_errors = {}
+
+    def buffer_contacts(self, update, contacts):
+        """
+        Prepares the new facility contacts to be saved in the facility
+        updates model
+        """
+        if update.contacts and update.contacts != 'null':
+            proposed_contacts = json.loads(update.contacts)
+            update.contacts = json.dumps(proposed_contacts + contacts)
+        else:
+            update.contacts = json.dumps(contacts)
+
+    def buffer_services(self, update, services):
+        """
+        Prepares the new facility services to be saved in the facility
+        updates model
+        """
+        if update.services and update.services != 'null':
+            proposed_services = json.loads(update.services)
+            update.services = json.dumps(proposed_services + services)
+        else:
+            update.services = json.dumps(services)
+
+    def buffer_units(self, update, units):
+        """
+        Prepares the new facility units(departments) to be saved in the
+        facility updates model
+        """
+        if update.units and update.units != 'null':
+            proposed_units = json.loads(update.units)
+            update.units = json.dumps(proposed_units + units)
+        else:
+            update.units = json.dumps(units)
+
+    def populate_service_name(self, services):
+        """
+        Resolves and updates the service names and option display_name
+        """
+        for service in services:
+            id = service.get('service')
+            obj = Service.objects.get(id=id)
+            service['name'] = obj.name
+            option = service.get('option', None)
+            if option:
+                service['display_name'] = Option.objects.get(
+                    id=option).display_text
+        return services
+
+    def populate_contact_type_names(self, contacts):
+        """
+        Resolves and populates the contact type names
+        """
+        for contact in contacts:
+            contact['contact_type_name'] = ContactType.objects.get(
+                id=contact.get('contact_type')).name
+        return contacts
+
+    def populate_regulatory_body_names(self, units):
+        """
+        Resolves and populates the regulatory body names
+        """
+        for unit in units:
+            unit['regulating_body_name'] = RegulatingBody.objects.get(
+                id=unit['regulating_body']).name
+        return units
+
+    def populate_officer_incharge_contacts(self, officer_in_charge):
+        """
+        Resolves the contact_type_name for the officer_in_charge contacts
+        """
+        for contact in officer_in_charge['contacts']:
+            contact['contact_type_name'] = ContactType.objects.get(
+                id=contact.get('type')).name
+        return officer_in_charge
+
+    def populate_officer_incharge_job_title(self, officer_in_charge):
+        """
+        Resolves the job title name for the officer in-charge
+        """
+        officer_in_charge['job_title_name'] = JobTitle.objects.get(
+            id=officer_in_charge['title']).name
+        return officer_in_charge
+
+    def _validate_payload(self, services, contacts, units, officer_in_charge):
+        """
+        Validates the updated attributes before  buffering them
+        """
+        service_errors = _validate_services(services)
+
+        if service_errors:
+            self.validation_errors.update({"services": service_errors})
+
+        contact_errors = _validate_contacts(contacts)
+        if contact_errors:
+            self.validation_errors.update({"contacts": contact_errors})
+
+        unit_errors = _validate_units(units)
+        if unit_errors:
+            self.validation_errors.update({"units": unit_errors})
+        officer_errors = _officer_data_is_valid(officer_in_charge)
+
+        if officer_errors and officer_in_charge != {} and officer_errors is \
+                not True:
+            self.validation_errors.update(
+                {"officer_in_charge": officer_errors})
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -348,6 +469,52 @@ class FacilityDetailView(
         del user_id
         request.data['updated_by_id'] = request.user.id
         instance = self.get_object()
+        self.validation_errors = {}
+
+        services = request.data.pop('services', [])
+        contacts = request.data.pop('contacts', [])
+        units = request.data.pop('units', [])
+        officer_in_charge = request.data.pop(
+            'officer_in_charge', {})
+        if officer_in_charge:
+            officer_in_charge['facility_id'] = str(instance.id)
+
+        self. _validate_payload(services, contacts, units, officer_in_charge)
+
+        if any(self.validation_errors):
+            return Response(
+                data=self.validation_errors,
+                status=status.HTTP_400_BAD_REQUEST)
+        if instance.approved:
+            try:
+                update = FacilityUpdates.objects.filter(
+                    facility=instance, cancelled=False, approved=False)[0]
+            except IndexError:
+                update = FacilityUpdates.objects.create(facility=instance)
+            services = self.populate_service_name(services)
+            self.buffer_services(update, services)
+
+            contacts = self.populate_contact_type_names(contacts)
+            self.buffer_contacts(update, contacts)
+
+            units = self.populate_regulatory_body_names(units)
+            self.buffer_units(update, units)
+
+            if officer_in_charge != {}:
+                officer_in_charge = self.populate_officer_incharge_contacts(
+                    officer_in_charge)
+                officer_in_charge = self.populate_officer_incharge_job_title(
+                    officer_in_charge)
+                update.officer_in_charge = json.dumps(officer_in_charge)
+            update.is_new = False
+            update.save()
+        else:
+            request.data['services'] = services
+            request.data['contacts'] = contacts
+            request.data['units'] = units
+            if officer_in_charge != {}:
+                request.data['officer_in_charge'] = officer_in_charge
+
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)

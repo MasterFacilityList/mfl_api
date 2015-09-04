@@ -143,7 +143,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
                     "This is the Pharmacy belonging to the hospital"),
                 "regulating_body": regulating_body.id
             }
-        ],
+        ]
         facility_units_with_error = [
             {
                 "name": "The Facilities Pharmacy",
@@ -407,7 +407,7 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         ]
         facility_services_with_error = [
             {
-                "service": "19811899",
+                "service": "4db387fe-27da-46a9-8761-644889713acd",
             }
 
         ]
@@ -429,5 +429,6 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         self.assertEquals(400, response.status_code)
         response = self.client.patch(url, data_with_errors_3)
         self.assertEquals(400, response.status_code)
+
         response = self.client.patch(url, data_with_errors_4)
         self.assertEquals(400, response.status_code)
