@@ -276,11 +276,13 @@ class UserConstituency(AbstractBase):
     def validate_constituency_county_in_creator_county(self):
         try:
             if self.constituency.county != self.created_by.constituency.county:
-                error = "Users created must be in the administrators county"
+                error = ("Users created must be in the administrators "
+                         "county or sub county")
                 raise ValidationError(error)
         except AttributeError:
             if self.constituency.county != self.created_by.county:
-                error = "Users created must be in the administrators county"
+                error = ("Users created must be in the administrators "
+                         "county or sub county")
                 raise ValidationError(error)
 
     def clean(self, *args, **kwargs):

@@ -1,12 +1,6 @@
 machine:
   environment:
     DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
-    SECRET_KEY: pleasechangetoanewlygeneratedsecretkey
-    DATABASE_USER: ubuntu
-    DATABASE_PASSWORD: ""
-    DATABASE_NAME: circle_test
-    FRONTEND_URL: http://localhost:8062
-    REALTIME_INDEX: true
     COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
   services:
     - elasticsearch
@@ -15,6 +9,8 @@ machine:
 dependencies:
   override:
     - pip install tox
+  post:
+    - cp .env-example .env
 
 
 test:
