@@ -6,7 +6,7 @@ machine:
     REALTIME_INDEX: true
     SECRET_KEY: pleasechangetoanewlygeneratedsecretkey
     DEBUG: false
-    services:
+  services:
     - elasticsearch
 
 
