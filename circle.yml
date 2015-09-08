@@ -2,7 +2,14 @@ machine:
   environment:
     DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
     COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
-  services:
+    FRONTEND_URL: 'http://localhost:8062'
+    REALTIME_INDEX: true
+    EMAIL_HOST:''
+    EMAIL_HOST_USER: ''
+    EMAIL_HOST_PASSWORD:''
+    SECRET_KEY: pleasechangetoanewlygeneratedsecretkey
+    DEBUG: off
+    services:
     - elasticsearch
 
 
