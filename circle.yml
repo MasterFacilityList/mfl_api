@@ -1,11 +1,5 @@
 machine:
-  environment:
-    DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
-    COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
-    FRONTEND_URL: http://localhost:8062
-    REALTIME_INDEX: true
-    SECRET_KEY: pleasechangetoanewlygeneratedsecretkey
-    DEBUG: false
+
   services:
     - elasticsearch
 
@@ -21,6 +15,13 @@ test:
     - case $CIRCLE_NODE_INDEX in 0) tox -vre py27;; 1) tox -vre docs ;; esac:
         parallel: true
         timeout: 300
+        environment:
+          DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
+          COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
+          FRONTEND_URL: http://localhost:8062
+          REALTIME_INDEX: true
+          SECRET_KEY: pleasechangetoanewlygeneratedsecretkey
+          DEBUG: false
 
 
 general:
