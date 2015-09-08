@@ -106,6 +106,7 @@ def load_demo_data_from_scratch(*args, **kwargs):
     manage('bootstrap', data_files_6)
     manage('bootstrap', data_files_7)
     manage('bootstrap', data_files_8)
+    manage('approve_facilities')
     manage("createinitialrevisions")
 
 
