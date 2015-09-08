@@ -6,16 +6,29 @@ to take place in the save method are not effected.
 This command is a work around for ensuring those side effects are
 performed on the facilities.
 """
+import logging
+from multiprocessing import Pool
 from django.core.management import BaseCommand
+from django.core.exceptions import ValidationError
 
 from facilities.models import Facility
+
+logger = logging.getLogger(__name__)
+
+
+def update_facility(facility):
+    facility.approved = True
+    facility.is_published = True
+    facility.regulated = True
+    try:
+        facility.save(allow_save=True)
+    except ValidationError:
+        error = "Unable to update facility {}".format(facility.code)
+        logger.debug(error, exc_info=True)
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        for facility in Facility.objects.all():
-            facility.approved = True
-            facility.is_published = True
-            facility.regulated = True
-            facility.save(allow_save=True)
+        p = Pool(5)
+        p.map(update_facility, Facility.objects.all())

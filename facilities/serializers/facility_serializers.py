@@ -220,7 +220,7 @@ class RegulatingBodySerializer(
 
     @transaction.atomic
     def create(self, validated_data):
-        contacts = self.initial_data.pop('contacts')
+        contacts = self.initial_data.pop('contacts', [])
         self._validate_contacts(contacts)
         if self.inlining_errors:
             raise ValidationError({
@@ -233,7 +233,7 @@ class RegulatingBodySerializer(
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        contacts = self.initial_data.pop('contacts')
+        contacts = self.initial_data.pop('contacts', [])
         self._validate_contacts(contacts)
         if self.inlining_errors:
             raise ValidationError({
@@ -410,7 +410,6 @@ class FacilitySerializer(
 
 
 class FacilityDetailSerializer(FacilitySerializer):
-    regulatory_status_name = serializers.CharField(read_only=True)
     facility_services = serializers.ReadOnlyField(
         source="get_facility_services")
     facility_contacts = serializers.ReadOnlyField(
