@@ -274,9 +274,14 @@ class UserConstituency(AbstractBase):
     constituency = models.ForeignKey(Constituency)
 
     def validate_constituency_county_in_creator_county(self):
-        if self.constituency.county != self.created_by.county:
-            error = "Users created must be in the administrators county"
-            raise ValidationError(error)
+        try:
+            if self.constituency.county != self.created_by.constituency.county:
+                error = "Users created must be in the administrators county"
+                raise ValidationError(error)
+        except AttributeError:
+            if self.constituency.county != self.created_by.county:
+                error = "Users created must be in the administrators county"
+                raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
         self.validate_constituency_county_in_creator_county()

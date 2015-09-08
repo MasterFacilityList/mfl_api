@@ -2,12 +2,13 @@ import json
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
-from common.tests.test_views import LoginMixin
 
 from rest_framework.test import APITestCase
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
+from common.models import County, Constituency, UserCounty, UserConstituency
+from common.tests.test_views import LoginMixin
 from ..models import MflUser, CustomGroup
 from ..serializers import _lookup_groups
 
@@ -353,3 +354,31 @@ class TestUserFiltering(APITestCase):
         self.client.force_authenticate(user)
         response = self.client.get(self.url)
         self.assertEquals([], response.data.get("results"))
+
+    def test_superuser_sees_all_users(self):
+        user = mommy.make(MflUser, is_superuser=True)
+        self.client.force_authenticate(user)
+        mommy.make(MflUser)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(3, response.data.get("count"))
+        self.assertEquals(3, len(response.data.get('results')))
+
+    def test_subcounty_users_sees_users_in_own_sub_county(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        user = mommy.make(MflUser)
+        user_2 = mommy.make(MflUser)
+        mommy.make(UserCounty, county=county, user=user)
+        mommy.make(
+            UserConstituency, constituency=constituency,
+            user=user_2, created_by=user, updated_by=user)
+        user_3 = mommy.make(MflUser)
+        mommy.make(
+            UserConstituency, constituency=constituency,
+            user=user_3, created_by=user_2, updated_by=user_2)
+        self.client.force_authenticate(user_2)
+        response = self.client.get(self.url)
+        self.assertEquals(2, response.data.get('count'))
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, len(response.data.get('results')))

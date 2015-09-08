@@ -83,7 +83,7 @@ class UserList(generics.ListCreateAPIView):
             sub_county_users = [
                 const_user.user.id for const_user in
                 UserConstituency.objects.filter(
-                    constituency__county=user.county).distinct()
+                    constituency=user.constituency).distinct()
             ]
             return MflUser.objects.filter(
                 id__in=sub_county_users)
