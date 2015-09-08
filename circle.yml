@@ -2,7 +2,7 @@ machine:
   environment:
     DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
     COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
-    FRONTEND_URL: 'http://localhost:8062'
+    FRONTEND_URL: http://localhost:8062
     REALTIME_INDEX: true
     SECRET_KEY: pleasechangetoanewlygeneratedsecretkey
     DEBUG: off
@@ -13,6 +13,7 @@ machine:
 dependencies:
   override:
     - pip install tox
+
 
 test:
   override:
