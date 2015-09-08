@@ -5,7 +5,7 @@ machine:
     FRONTEND_URL: http://localhost:8062
     REALTIME_INDEX: true
     SECRET_KEY: pleasechangetoanewlygeneratedsecretkey
-    DEBUG: off
+    DEBUG: false
     services:
     - elasticsearch
 
