@@ -6,7 +6,7 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from common.models import Contact
+from common.models import Contact, ContactType
 
 from common.serializers import (
     AbstractFieldsMixin,
