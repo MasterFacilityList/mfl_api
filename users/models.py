@@ -124,6 +124,12 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     is_national = models.BooleanField(default=False)
     search = models.CharField(max_length=255, null=True, blank=True)
     deleted = models.BooleanField(default=False)
+    created_by = models.ForeignKey(
+        'self', null=True, blank=True, related_name='+')
+    updated_by = models.ForeignKey(
+        'self', null=True, blank=True, related_name='+')
+    updated = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(default=timezone.now)
 
     password_history = ArrayField(
         models.TextField(null=True, blank=True),

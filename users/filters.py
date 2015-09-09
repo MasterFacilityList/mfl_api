@@ -25,36 +25,38 @@ class GroupFilter(django_filters.FilterSet):
 
     def get_county_level(self, value):
         if value in TRUTH_NESS:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
                 county_level=True)]
         else:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
                 county_level=False)]
         return Group.objects.filter(id__in=cgs)
 
     def get_national_level(self, value):
         if value in TRUTH_NESS:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(
-                national_level=True)]
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
+                national=True)]
         else:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(
-                national_level=False)]
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
+                national=False)]
         return Group.objects.filter(id__in=cgs)
 
     def get_sub_county_level(self, value):
         if value in TRUTH_NESS:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
                 sub_county_level=True)]
         else:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
                 sub_county_level=False)]
         return Group.objects.filter(id__in=cgs)
 
     def get_regulator(self, value):
         if value in TRUTH_NESS:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(regulator=True)]
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
+                regulator=True)]
         else:
-            cgs = [cg.id for cg in CustomGroup.objects.filter(regulator=False)]
+            cgs = [cg.group.id for cg in CustomGroup.objects.filter(
+                regulator=False)]
         return Group.objects.filter(id__in=cgs)
 
     name = django_filters.MethodFilter(action=get_by_name)

@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils import timezone
 from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
@@ -203,6 +204,17 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
+        if not validated_data.get('created', None):
+            validated_data['created'] = timezone.now()
+
+        validated_data['updated'] = timezone.now()
+
+        if validated_data.get('created_by', None) is None:
+            validated_data['created_by'] = self.context['request'].user
+
+        if not validated_data.get('updated_by', None):
+            validated_data['updated_by'] = self.context['request'].user
+
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 

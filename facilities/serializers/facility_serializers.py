@@ -421,6 +421,7 @@ class FacilityDetailSerializer(FacilitySerializer):
     facility_units = FacilityUnitSerializer(many=True, required=False)
     officer_in_charge = serializers.ReadOnlyField()
     town_name = serializers.ReadOnlyField(source='town.name')
+    keph_level_name = serializers.ReadOnlyField(source='keph_level.name')
 
     class Meta(object):
         model = Facility

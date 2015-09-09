@@ -16,6 +16,7 @@ from ..serializers import _lookup_groups
 class TestLogin(APITestCase):
 
     def setUp(self):
+        mommy.make(Group, name='Facility Viewing Group')
         self.user = MflUser.objects.create_user(
             email='user@test.com', first_name='test name',
             password='password1233', employee_number='7784448445'
@@ -286,6 +287,7 @@ class TestDeleting(LoginMixin, APITestCase):
 
 class TestUserFiltering(APITestCase):
     def setUp(self):
+        mommy.make(Group, name='Facility Viewing Group')
         self.url = reverse("api:users:mfl_users_list")
         super(TestUserFiltering, self).setUp()
 
@@ -320,7 +322,7 @@ class TestUserFiltering(APITestCase):
         self.client.force_authenticate(user)
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(4, len(response.data.get("results")))
+        self.assertEquals(3, len(response.data.get("results")))
 
     def test_national_user_sees_all_users(self):
         from common.models import UserCounty, County
@@ -345,7 +347,7 @@ class TestUserFiltering(APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
 
-        self.assertEquals(4, len(response.data.get("results")))
+        self.assertEquals(3, len(response.data.get("results")))
 
     def test_users_with_no_priviledges_see_no_user(self):
         user = mommy.make(MflUser)
@@ -361,10 +363,10 @@ class TestUserFiltering(APITestCase):
         mommy.make(MflUser)
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(3, response.data.get("count"))
-        self.assertEquals(3, len(response.data.get('results')))
+        self.assertEquals(2, response.data.get("count"))
+        self.assertEquals(2, len(response.data.get('results')))
 
-    def test_subcounty_users_sees_users_in_own_sub_county(self):
+    def test_subcounty_users_does_not_see_users_in_own_sub_county(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
         user = mommy.make(MflUser)
@@ -379,6 +381,81 @@ class TestUserFiltering(APITestCase):
             user=user_3, created_by=user_2, updated_by=user_2)
         self.client.force_authenticate(user_2)
         response = self.client.get(self.url)
-        self.assertEquals(2, response.data.get('count'))
+        self.assertEquals(0, response.data.get('count'))
         self.assertEquals(200, response.status_code)
-        self.assertEquals(2, len(response.data.get('results')))
+        self.assertEquals(0, len(response.data.get('results')))
+
+
+class TestGroupFilters(LoginMixin, APITestCase):
+    def setUp(self):
+        self.groups_list_url = reverse("api:users:groups_list")
+        super(TestGroupFilters, self).setUp()
+
+    def test_county_level_true(self):
+        group = mommy.make(Group)
+        mommy.make(Group)
+        mommy.make(CustomGroup, group=group, county_level=True)
+        url = self.groups_list_url + "?is_county_level=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+
+    def test_county_level_false(self):
+        mommy.make(Group)
+        mommy.make(Group)
+        url = self.groups_list_url + "?is_county_level=false"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(0, response.data.get('count'))
+
+    def test_sub_county_level_true(self):
+        group = mommy.make(Group)
+        mommy.make(Group)
+        mommy.make(CustomGroup, group=group, sub_county_level=True)
+        url = self.groups_list_url + "?is_sub_county_level=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+
+    def test_sub_county_level_false(self):
+        mommy.make(Group)
+        mommy.make(Group)
+        url = self.groups_list_url + "?is_sub_county_level=false"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(0, response.data.get('count'))
+
+    def test_regulator_true(self):
+        group = mommy.make(Group)
+        mommy.make(Group)
+        mommy.make(CustomGroup, group=group, regulator=True)
+        url = self.groups_list_url + "?is_regulator=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+
+    def test_regulator_false(self):
+        group = mommy.make(Group)
+        mommy.make(Group)
+        mommy.make(CustomGroup, group=group)
+        url = self.groups_list_url + "?is_regulator=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(0, response.data.get('count'))
+
+    def test_national_level_true(self):
+        group = mommy.make(Group)
+        mommy.make(Group)
+        mommy.make(CustomGroup, group=group, national=True)
+        url = self.groups_list_url + "?is_national=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(3, response.data.get('count'))
+
+    def test_national_level_false(self):
+        mommy.make(Group)
+        mommy.make(Group)
+        url = self.groups_list_url + "?is_national=false"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(3, response.data.get('count'))
