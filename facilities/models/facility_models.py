@@ -663,7 +663,7 @@ class Facility(SequenceMixin, AbstractBase):
     # hard code the operational status name in order to avoid more crud
     @property
     def service_catalogue_active(self):
-        if self.operation_status.name == "OPERATIONAL":
+        if self.operation_status.name.lower() == "operational":
             return True
         else:
             return False
