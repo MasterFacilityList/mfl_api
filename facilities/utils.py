@@ -170,6 +170,9 @@ class CreateFacilityOfficerMixin(object):
         if data.get('title', None) is None:
             errs["title"] = ["Job title is required"]
 
+        if data.get('reg_no', None) is None:
+            errs["Registration Number"] = ["Registration Number is required"]
+
         return errs
 
     def _validate_facility(self, data):
@@ -240,22 +243,30 @@ class CreateFacilityOfficerMixin(object):
             "name": data['name'],
             "job_title": job_title,
         }
-        officer_dict = self._inject_creating_user(officer_dict)
-
         id_no = data.get('id_no', None)
         reg_no = data.get('reg_no', None)
         officer_dict['id_number'] = id_no if id_no else None
         officer_dict['registration_number'] = reg_no if reg_no else None
+        officer_dict = self._inject_creating_user(officer_dict)
 
-        officer = Officer.objects.create(**officer_dict)
-        facility_officer_dict = {
-            "facility": facility,
-            "officer": officer
-        }
-        facility_officer_dict = self._inject_creating_user(
-            facility_officer_dict)
-        facility_officer = FacilityOfficer.objects.create(
-            **facility_officer_dict)
+        try:
+            officer = Officer.objects.get(registration_number=reg_no)
+            officer.job_title = job_title
+            officer.name = data['name']
+            officer.save()
+            facility_officer = FacilityOfficer.objects.get(
+                facility=facility, officer=officer)
+        except Officer.DoesNotExist:
+
+            officer = Officer.objects.create(**officer_dict)
+            facility_officer_dict = {
+                "facility": facility,
+                "officer": officer
+            }
+            facility_officer_dict = self._inject_creating_user(
+                facility_officer_dict)
+            facility_officer = FacilityOfficer.objects.create(
+                **facility_officer_dict)
 
         # link the officer to the contacts
         created_contacts = self._create_contacts(data)
@@ -264,8 +275,12 @@ class CreateFacilityOfficerMixin(object):
                 "officer": officer,
                 "contact": contact
             }
-            contact_dict = self._inject_creating_user(contact_dict)
-            OfficerContact.objects.create(**contact_dict)
+            try:
+                OfficerContact.objects.get(**contact_dict)
+            except OfficerContact.DoesNotExist:
+                contact_dict = self._inject_creating_user(contact_dict)
+
+                OfficerContact.objects.create(**contact_dict)
         return facility_officer
 
     def create_officer(self, data):

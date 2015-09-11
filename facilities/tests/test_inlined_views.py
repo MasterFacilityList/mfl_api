@@ -25,7 +25,9 @@ from ..models import (
     FacilityService,
     FacilityContact,
     FacilityUnit,
-    FacilityOfficer
+    FacilityOfficer,
+    Officer,
+    OfficerContact
 )
 
 
@@ -457,3 +459,66 @@ class TestFacilityContacts(LoginMixin, APITestCase):
         url = url + "{}/".format(facility.id)
         response = self.client.patch(url, data)
         self.assertEquals(400, response.status_code)
+
+
+class TestFacilityOfficerCreationAndUpdating(LoginMixin, APITestCase):
+    def test_save_and_update_facility_officer(self):
+        facility = mommy.make(Facility)
+        job_title = mommy.make(JobTitle)
+        contact_type_1 = mommy.make(ContactType)
+        contact_type_2 = mommy.make(ContactType)
+        officer_in_charge = {
+            "name": "Kishina Kibibi",
+            "reg_no": "P15/2010",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type_1.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type_2.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
+        data = {
+            "officer_in_charge": officer_in_charge
+        }
+        url = reverse("api:facilities:facilities_list")
+        url = url + '{}/'.format(facility.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, Officer.objects.count())
+        self.assertEquals(1, FacilityOfficer.objects.count())
+        self.assertEquals(2, OfficerContact.objects.count())
+
+        officer_in_charge_updated = {
+            "name": "Kishina Kibibi Updatedi",
+            "reg_no": "P15/2010",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type_1.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type_2.id),
+                    "contact": "0823583941"
+                },
+                {
+                    "type": str(contact_type_2.id),
+                    "contact": "020-13957857"
+                }
+            ]
+        }
+        data = {
+            "officer_in_charge": officer_in_charge_updated
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, Officer.objects.count())
+        self.assertEquals(1, FacilityOfficer.objects.count())
+        self.assertEquals(3, OfficerContact.objects.count())
+        officer = Officer.objects.all()[0]
+        self.assertEquals(officer_in_charge_updated.get('name'), officer.name)
