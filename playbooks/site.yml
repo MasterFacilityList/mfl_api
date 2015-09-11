@@ -5,6 +5,7 @@
   vars:
     mfl_public_web_version: "0.0.1a6"
     mfl_admin_web_version: "0.0.1a7"
+    mfl_last_update: "2015-09-10T04:17:54.400Z"
   roles:
     - common
     - {
@@ -19,6 +20,7 @@
         download_url: "https://github.com/MasterFacilityList/mfl_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
         tags: "public-frontend",
         username: public@mfltest.slade360.co.ke,
+        last_update: "{{mfl_last_update}}",
         password: public,
       }
     - {
@@ -31,6 +33,7 @@
         frontend_tag: "{{mfl_admin_web_version}}",
         frontend_archive_file_name: "mfl_admin_web__{{frontend_tag}}.tar.gz",
         download_url: "https://github.com/MasterFacilityList/mfl_admin_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
+        last_update: "{{mfl_last_update}}",
         tags: "admin-frontend"
       }
     - { role: postgresql }
