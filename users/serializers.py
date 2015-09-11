@@ -253,7 +253,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password_history', )
+        exclude = ('password_history', 'user_permissions', )
         extra_kwargs = {'password': {'write_only': True}}
 
 
