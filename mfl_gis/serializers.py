@@ -29,8 +29,10 @@ class BufferCooridinatesMixin(object):
             updated_data['facility'] = facility
             try:
                 updated_data['coordinates'] = tuple(validated_data.get('coordinates').get('coordinates'))
+                coordinates = validated_data.get('coordinates')
             except AttributeError:
                 updated_data['coordinates'] = tuple(json.loads(validated_data.get('coordinates')).get('coordinates'))
+                coordinates = json.loads(validated_data.get('coordinates'))
 
         except DrfValidationError:
             raise DrfValidationError(
@@ -45,21 +47,26 @@ class BufferCooridinatesMixin(object):
         except IndexError:
             facility_update = FacilityUpdates.objects.create(
                 facility=facility)
+        method = validated_data.get('')
         serialized_data = {}
+        method = validated_data.get('method', None)
+        source = validated_data.get('source', None)
+        coordinates = validated_data.get('coordinates', None)
 
-        humanized_data = {
-            "method_human": validated_data.get('method').name,
-            "source_human": validated_data.get('source').name,
-            "longitude": json.loads(validated_data.get(
-                'coordinates')).get('coordinates')[0],
-            "latitude": json.loads(validated_data.get(
-                'coordinates')).get('coordinates')[1],
-        }
-        machine_data = {
-            "method_id": str(validated_data.get('method').id),
-            "source_id": str(validated_data.get('source').id),
-            "coordinates": validated_data.get('coordinates')
-        }
+        humanized_data = {}
+        machine_data = {}
+
+        if method:
+            humanized_data['method_human'] = method.name
+            machine_data['method_id'] = str(validated_data.get('method').id)
+        if source:
+            humanized_data['source_human'] = source.name
+            machine_data['source_id'] = str(validated_data.get('source').id),
+        if coordinates:
+            humanized_data["longitude"] = coordinates.get('coordinates')[0]
+            humanized_data["latitude"] = coordinates.get('coordinates')[1]
+            machine_data["coordinates"] = coordinates
+
         serialized_data.update(humanized_data)
         serialized_data.update(machine_data)
         facility_update.geo_codes = json.dumps(serialized_data)
