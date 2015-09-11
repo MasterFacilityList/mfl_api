@@ -43,7 +43,8 @@ from ..models import (
     FacilityUpdates,
     KephLevel,
     OptionGroup,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    FacilityDepartment
 )
 
 from ..utils import CreateFacilityOfficerMixin
@@ -545,6 +546,7 @@ class FacilityServiceRatingSerializer(
 
 class FacilityUnitRegulationSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = FacilityUnitRegulation
 
@@ -567,3 +569,10 @@ class OptionGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
     class Meta:
         model = OptionGroup
+
+
+class FacilityDepartmentSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = FacilityDepartment

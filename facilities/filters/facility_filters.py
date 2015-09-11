@@ -33,7 +33,8 @@ from ..models import (
     FacilityUpdates,
     KephLevel,
     OptionGroup,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    FacilityDepartment
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -382,3 +383,9 @@ class FacilityUnitRegulationFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityUnitRegulation
+
+
+class FacilityDepartmentFilter(CommonFieldsFilterset):
+
+    class Meta(object):
+        model = FacilityDepartment
