@@ -1,267 +1,281 @@
-<p>Medical Officer of Health</p>
-<p>{{facility.ward.county}}</p>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
+<style type="text/css">
+.col-xs-12 {
+    width: 100% !important;
+}
+.col-xs-6 {
+    width: 50% !important;
+}
+.fs-18{
+    font-size: 18px;
+}
+.fs-16{
+    font-size: 16px;
+}
+.fs-14{
+    font-size: 14px;
+}
+.fw-600{
+    font-weight: 600;
+}
+.fw-500{
+    font-weight: 500
+}
+.font-latolight{
+    font-family: 'Lato Light', sans-serif;
+}
+.font-lato{
+    font-family: 'Lato', sans-serif;
+}
+.row{
+    margin-left: -15px;
+    margin-right:-15px;
+}
+.bg-blue {
+    background-color: #F1F1F4;
+}
+.content-card {
+  margin-bottom: @line-height-computed;
+  padding: 5px 10px 8px 10px;
+  background-color: @card-container-bg;
+  border: 1px solid transparent;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  border-radius: @content-card-border-radius;
+}
+.text-muted{
+    color: #666666;
+}
+.text-white{
+    color: #FFFFFF;
+}
+.text-balck{
+    color: #000000;
+}
+</style>
+<body class="font-latolight">
+<div class="row bg-blue">
+    <h3 class="font-latolight" style="padding-top: 10px; padding-left: 10px; margin-bottom: 0px;">Medical Officer of Health</h3>
+<div class="col-xs-12 content-card" style="margin-bottom: 0px;">
+    <p style="margin-bottom: 5px;">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">{{facility.ward.county}}</span></span>
+        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Date:</span> {% now "d F Y" %}</span>
+    </p>
+    <p style="margin-top: 5px;">
+        <span class="fw-500"><span class="text-black fw-600">TO: </span>Kenya MPDB - Institution</span>
+    </p>
+    <p>
+        <span class="text-black fw-600">RE:</span> <span class="fw-500">Registration of <span class="text-black fw-600">{{facility.code}} | {{facility.name}}</span></span>
+    </p>
+</div>
+<div class="col-xs-12 content-card">
+    <p style="font-size: 15px; margin-top: -10px;"> The County Health Management Team of {{facility.ward.county.name}} has inspected the {{facility.facility_type.name}} whose details are below :</p>
+</div>
+<div style="width: 95%; background-color: #FFF; margin-left: 13px; margin-top: -8px;">
+    <p>
+        <span><span class="text-black fw-600">Name:</span> {{facility.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Code:</span> {{facility.code}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Type:</span> {{facility.facility_type.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Owner:</span> {{facility.owner.name}}</span>
+    </p>
+    <p style="margin-top: -10px; width: 100%">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">County:</span> {{facility.ward.county.name}}</span>
+        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Constituency:</span> {{facility.ward.constituency.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Ward:</span> {{facility.ward.name}}</span>
+    </p>
+</div>
+<div class="col-xs-12 content-card">
+    <p style="margin-top: -8px;">
+        We request that you register this facility. The facility details are given on the next page and the inspection report is attached.
+    </p>
+</div>
+<div class="col-xs-12 content-card">
+    <p style="margin-top: -5px;">Signed</p>
+    <br />
+    <br />
+    <div style="width: 50%;">
+        <hr style="border: 1px solid #000;">
+    </div>
+    <p>Medical Officer of Health</p>
+    <p>{{ facility.ward.county.name }}</p>
 
-<p> Date: {% now "d F Y" %}</p>
+    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br>
+</div>
+<div class="col-xs-12 content-card" style="width: 100%;">
+    <h4 style="font-size: 18px;">
+        Basic Details
+    </h4>
+    <div style="background-color: #FFF; padding: 2px">
+    <p>
+        <span><span class="text-black fw-600">Name:</span> {{facility.name}}</span>
+    </p>
+    <p style="margin-top: -10px; margin-bottom: 5px;">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Code:</span> {{facility.code}}</span>
+        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Abbreviation:</span> {{facility.abbreviation}}</span>
+    </p>
+    <p>
+        <span><span class="text-black fw-600">Type:</span> {{facility.facility_type.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Owner Category:</span> {{facility.owner.owner_type.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Owner:</span> {{facility.owner.name}}</span>
+    </p>
+    <p style="margin-top: -10px; width: 100%;">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">No. of Beds:</span> {{facility.number_of_beds}}</span>
+        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">No. of Cots:</span> {{facility.number_of_cots}}</span>
+    </p>
+    <p style="margin-top: -10px; width: 100%;">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open on Public Holidays:</span> {{facility.open_public_holidays | yesno}}</span>
+        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open on Weekends:</span> {{facility.open_weekends | yesno}}</span>
+    </p>
+    <p style="margin-top: -10px; width: 100%;">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open 24 hours:</span> {{facility.open_whole_day | yesno}}</span>
+        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open Late Night:</span> {{facility.open_late_night | yesno}}</span>
+    </p>
+    <p style="margin-top: -10px; width: 100%">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">County:</span> {{facility.ward.county.name}}</span>
+        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Constituency:</span> {{facility.ward.constituency.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Ward:</span> {{facility.ward.name}}</span>
+    </p>
+    </div>
+</div>
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -15px;">
+    <h4 style="font-size: 18px;">
+        Location
+    </h4>
+    <div style="background-color: #FFF; padding: 2px">
+        <p>
+            <span><span class="text-black fw-600">Source:</span> {{facility_coordinates.source.name}}</span>
+        </p>
+        <p style="margin-top: -10px;">
+            <span><span class="text-black fw-600">Method:</span> {{facility_coordinates.method.name}}</span>
+        </p>
+        <p style="margin-top: -10px; width: 100%">
+            <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Longitude:</span> {{longitude}}</span>
+            <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Latitude:</span> {{latitude}}</span>
+        </p>
+        <p style="margin-top: -10px;">
+            <span><span class="text-black fw-600">Directions:</span> {{facility.location_desc}}</span>
+        </p>
+    </div>
+</div>
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -15px;">
+    <h4 style="font-size: 18px;">
+        Facility Contacts
+    </h4>
+    <div style="background-color: #FFF; padding: 2px">
+    {% if contacts %}
+    {% for contact in contacts%}
+        <div style="width: 300px; margin-top: 5px;">
+            <span><span class="text-black fw-600">{{contact.contact.contact_type.name}}:</span> {{contact.contact.contact}}</span>
+        </div>
+    {%endfor%}
+    {% else %}
+        <p>No Facility Contacts Available</p>
+    {% endif %}
+    </div>
+</div>
 
-<p> TO: Kenya MPDB - Institution</p>
-
-<p> RE: Registration of {{facility.name}} - {{facility.code}}</p>
-
-<p> The County Health Management Team of {{facility.ward.county.name}} has inspected the {{facility.facility_type.name}} whose details are below.</p>
-
-<table>
-    <tbody>
-        <tr>
-            <td><strong>Name</strong></td>
-            <td>{{facility.name}} - {{facility.code}}</td>
-        </tr>
-        <tr>
-            <td><strong>Type</strong></td>
-            <td>{{facility.facility_type.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Owner</strong></td>
-            <td>{{facility.owner.name}}</td>
-        <tr>
-            <td><strong>County</strong></td>
-            <td>{{facility.ward.county.name}}</td>
-        <tr>
-            <td><strong>Constituency</strong></td>
-            <td>{{facility.ward.constituency.name}}</td>
-        <tr>
-            <td><strong>Ward</strong></td>
-            <td>{{facility.ward.name}}</td>
-    </tbody>
-</table>
-
-
-<p> We request that you register this facility.</p>
-
-<p> The facility details are given on the next page and the inspection report is attached.</p>
-
-<p>Signed</p>
-<br />
-<p>Medical Officer of Health</p>
-<p>{{ facility.ward.county.name }}</p>
-
-<br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br>
-
-<fieldset>
-<legend><h3>Basic Details</h3></legend>
-<table>
-    <tbody>
-        <tr>
-            <td><strong>Name</strong></td>
-            <td>{{facility.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Code</strong></td>
-            <td>{{facility.code}}</td>
-        </tr>
-        <tr>
-            <td><strong>Abbreviation</strong></td>
-            <td>{{facility.abbreviation}}</td>
-        </tr>
-        <tr>
-            <td><strong>County</strong></td>
-            <td>{{facility.ward.constituency.county.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Constituency</strong></td>
-            <td>{{facility.ward.constituency.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Ward</strong></td>
-            <td>{{facility.ward.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Open on public holidays</strong></td>
-            <td>{{facility.open_public_holidays | yesno}}</td>
-        </tr>
-        <tr>
-            <td><strong>Open on weekends</strong></td>
-            <td>{{facility.open_weekends | yesno}}</td>
-        </tr>
-        <tr>
-            <td><strong>Open 24 hours a day</strong></td>
-            <td>{{facility.open_whole_day | yesno}}</td>
-        </tr>
-        <tr>
-            <td><strong>Facility Owner</strong></td>
-            <td>{{facility.owner.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Owner Category</strong></td>
-            <td>{{facility.owner.owner_type.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Facility Type</strong></td>
-            <td>{{facility.facility_type.name}}</td>
-        </tr>
-        <tr>
-            <td><strong>Number of cots</strong></td>
-            <td>{{facility.number_of_cots}}</td>
-        </tr>
-        <tr>
-            <td><strong>Number of beds</strong></td>
-            <td>{{facility.number_of_beds}}</td>
-        </tr>
-    </tbody>
-</table>
-</fieldset>
-
-<fieldset>
-<legend><h3>Location</h3></legend>
-<p><strong> Directions: </strong> {{facility.physical_address.location_desc }}</p>
-<h3>GPS Coordinates:</h3>
-<p><strong>Longitude: </strong>{{longitude}}</p>
-<p><strong>Latitude: </strong>{{latitude}} </p>
-<p><strong>Source: </strong>{{facility_coordinates.source.name}} </p>
-<p><strong>Method: </strong>{{facility_coordinates.method.name}} </p>
-</fieldset>
-
-<fieldset>
-<h3>Services</h3>
-{% if services %}
-<table>
-<thead>
-    <th>
-        Name
-    </th>
-    <th>
-        Category
-    </th>
-      <th>
-        MFL Service Code
-    </th>
-</thead>
-{% for service in services %}
-<tr>
-    <td>
-    {{service.service_name}}
-    </td>
-    <td>
-    {{service.selected_option.service.category.name}}
-    </td>
-    <td>
-    {{service.selected_option.service.code}}
-    </td>
-<tr>
-{% endfor %}
-</table>
-{% else %}
-<p>Not Available</p>
-{% endif %}
-</fieldset>
-
-<fieldset>
-<h3>Officer Incharge</h3>
-{% if officers %}
-<table>
-<thead>
-    <th>
-        Name
-    </th>
-      <th>
-        Title
-    </th>
-      <th>
-        Id Number
-    </th>
-     <th>
-        Registration Number
-    </th>
-</thead>
-{% for officer in officers %}
-<tr>
-    <td>
-    {{officer.officer.name}}
-    </td>
-    <td>
-    {{officer.officer.job_title.name}}
-    </td>
-    <td>
-    {{officer.officer.id_number}}
-    </td>
-    <td>
-    {{officer.officer.registration_number}}
-    </td>
-</tr>
-{% endfor %}
-</table>
-{% else %}
-<p>Not Available</p>
-{% endif %}
-</fieldset>
-
-<fieldset>
-<h3>Contacts</h3>
-{% if contacts %}
-<table>
-<thead>
-    <th>
-        Contact Type
-    </th>
-      <th>
-        Contact
-    </th>
-</thead>
-{% for contact in contacts%}
-<tr>
-    <td>
-    {{contact.contact.contact_type.name}}
-    </td>
-    <td>
-    {{contact.contact.contact}}
-    </td>
-</tr>
-{%endfor%}
-</table>
-{% else %}
-<p>Not Available</p>
-{% endif %}
-</fieldset>
-
-
-<fieldset>
-<h3>Community Health Units </h3>
-{% if chus %}
-<table>
-    <thead>
-        <th>
-            Code
-        </th>
-          <th>
-            Name
-        </th>
-          <th>
-            Operation Status
-        </th>
-         <th>
-            House Holds Monitored
-        </th>
-    </thead>
-    <tbody>
-        {% for chu in chus %}
-        <tr>
-            <td>
-            {{chu.code}}
-            </td>
-            <td>
-            {{chu.name}}
-            </td>
-            <td>
-            {{chu.status.name}}
-            </td>
-            <td>
-            {{chu.households_monitored}}
-            </td>
-        </tr>
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -15px;">
+    <h4 style="font-size: 18px;">
+        Officer Incharge
+    </h4>
+    <div style="background-color: #FFF; padding: 2px">
+        <p>
+            <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.officer_in_charge.name}}</span>
+            <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Registration No. :</span> {{facility.officer_in_charge.reg_no}}</span>
+        </p>
+        <p style="margin-top : -5px;">
+            <span><span class="text-black fw-600">Title:</span> {{facility.officer_in_charge.title_name}}</span>
+        </p>
+    </div>
+</div>
+<div class="col-xs-12 content-card" style="width: 100%; margin-bottom: 20px; margin-top: 20px;">
+    <h4 style="font-size: 18px;">
+        Facility Services
+    </h4>
+    {% if services %}
+    <div class="col-xs-12" style="padding: 2px; margin-bottom: 10px;">
+        <p>
+            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-600">Name</span></span>
+            <span style="float: right; width: 250px; margin-bottom: 5px;"><span class="text-black fw-600">Service Option</span></span>
+        </p>
+        {% for service in services %}
+        <p>
+            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-500">{{service.service.name}}</span></span>
+            <span style="float: right; width: 250px; margin-bottom: 5px;"><span class="text-black fw-500">
+                {% if service.option.value%}
+                {{service.option.value}}
+                {% else %}
+                Yes
+                {%endif%}
+            </span></span>
+        </p>
         {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>Not Available</p>
-{% endif %}
-</fieldset>
+    </div>
+    {% else %}
+    <p>Not Available</p>
+    {% endif %}
+</div>
+
+<div class="col-xs-12 content-card" style="margin-top: 30px;">
+    <h3>Community Health Units </h3>
+    {% if chus %}
+    <table>
+        <thead>
+            <th>
+                Code
+            </th>
+              <th>
+                Name
+            </th>
+              <th>
+                Operation Status
+            </th>
+             <th>
+                House Holds Monitored
+            </th>
+        </thead>
+        <tbody>
+            {% for chu in chus %}
+            <tr>
+                <td>
+                {{chu.code}}
+                </td>
+                <td>
+                {{chu.name}}
+                </td>
+                <td>
+                {{chu.status.name}}
+                </td>
+                <td>
+                {{chu.households_monitored}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Not Available</p>
+    {% endif %}
+</div>
+</div>
+</body>
+</html>
