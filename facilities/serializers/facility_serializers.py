@@ -538,7 +538,9 @@ class FacilityServiceRatingSerializer(
     facility_name = serializers.ReadOnlyField(
         source='facility_service.facility.name'
     )
-    service_name = serializers.ReadOnlyField(source='facility_service.name')
+    service_name = serializers.ReadOnlyField(
+        source='facility_service.service.name'
+    )
 
     class Meta(object):
         model = FacilityServiceRating
