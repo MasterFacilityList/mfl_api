@@ -171,7 +171,7 @@ class CreateFacilityOfficerMixin(object):
             errs["title"] = ["Job title is required"]
 
         if data.get('reg_no', None) is None:
-            errs["Registration Number"] = ["Registration Number is required"]
+            errs["registration_number"] = ["Registration Number is required"]
 
         return errs
 
