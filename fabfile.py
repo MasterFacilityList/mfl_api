@@ -17,15 +17,13 @@ def manage(command, args=''):
 
 def reset_migrations(*args, **kwargs):
     """Neccessary for circle ci to be able to run tests"""
+
     del_facility_migrations = ""\
         "cd facilities/migrations && ls | grep -v" \
-        "set_facility_code_sequence_min_value.py | xargs rm"
+        "set_facility_code_sequence_min_value.py | xargs rm" \
+        "cd common/migrations && ls | grep -v admin_unit_codes.py | xargs rm"
 
-    del_common_migrations = """
-        cd common/migrations && ls | grep -v "admin_unit_codes.py" | xargs rm
-    """
-    local(del_facility_migrations)  #
-    local(del_common_migrations)
+    local(del_facility_migrations)
     local('rm -r chul/migrations')
     local('rm -r mfl_gis/migrations')
     local('rm -r users/migrations')

@@ -62,7 +62,7 @@
                 "last_name": "Juma",
                 "username": "mombasa",
                 "password": "pbkdf2_sha256$20000$U1qabgVbVROz$rNtGFuCDo+zQtBEOvPDUKt2a68gbtfjEq/3eL0U1U1Q=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10005
@@ -73,7 +73,7 @@
                 "last_name": "Pendo",
                 "username": "kilifi",
                 "password": "pbkdf2_sha256$20000$5Zt3GyK26NO8$V/6+WaVeafyizKpbLTZ1ktKLdpkMdemc8y5fDjaCR/M=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10006
@@ -84,7 +84,7 @@
                 "last_name": "Kamau",
                 "username": "nairobi",
                 "password": "pbkdf2_sha256$20000$OrQvyLLslgKk$MkWLhxsGH3B1yyLPsQbxi7mMKO9G2GIrv+8GPOq0ibI=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10007
@@ -95,7 +95,7 @@
                 "last_name": "Tanui",
                 "username": "narok",
                 "password": "pbkdf2_sha256$20000$UawPdDwPlsVp$GwsSfA2IC5P8z1TptrTvw1eObrOO4qUCc1CHksiDF1g=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10008
@@ -106,7 +106,7 @@
                 "last_name": "Juma",
                 "username": "tanariver",
                 "password": "pbkdf2_sha256$20000$ArgfPVUfUomd$me6mDSc1XTTPLuFtGTE6mtgJuwjTVZsCso4D982Ymro=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10009
@@ -117,7 +117,7 @@
                 "last_name": "Maina",
                 "username": "starehe",
                 "password": "pbkdf2_sha256$20000$vM5dQvxNhl5X$L0GMMJKMxR6TbdzACj3nR09VC5bdaot7I1ioXPh2wUM=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10011
@@ -128,7 +128,7 @@
                 "last_name": "Waruinge",
                 "username": "mathare",
                 "password": "pbkdf2_sha256$20000$oJmTBacwdFqL$kl5OsX5GY9EpBz6KY2Cn09uhxpiilu9RG+QuSow+jF0=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10012
@@ -139,7 +139,7 @@
                 "last_name": "Muli",
                 "username": "kamukunji",
                 "password": "pbkdf2_sha256$20000$CC7MHde2GQpT$MERrHNQHe2Du9U5opY2xaFWLq/amh5/YADyFZr7r02g=",
-                "is_staff": false,
+                "is_staff": true,
                 "is_national": false,
                 "is_superuser": false,
                 "employee_number": 10013
