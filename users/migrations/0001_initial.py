@@ -37,8 +37,11 @@ class Migration(migrations.Migration):
                 ('is_national', models.BooleanField(default=False)),
                 ('search', models.CharField(max_length=255, null=True, blank=True)),
                 ('deleted', models.BooleanField(default=False)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
                 ('password_history', django.contrib.postgres.fields.ArrayField(size=None, null=True, base_field=models.TextField(null=True, blank=True), blank=True)),
                 ('employee_number', models.CharField(unique=True, max_length=20)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'ordering': ('-date_joined',),
@@ -96,6 +99,11 @@ class Migration(migrations.Migration):
             model_name='mfluser',
             name='groups',
             field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups'),
+        ),
+        migrations.AddField(
+            model_name='mfluser',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True),
         ),
         migrations.AddField(
             model_name='mfluser',

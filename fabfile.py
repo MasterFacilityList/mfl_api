@@ -94,6 +94,8 @@ def load_demo_data_from_scratch(*args, **kwargs):
     data_files_6 = os.path.join(BASE_DIR, 'data/data/geocodes/*.json')
     data_files_7 = os.path.join(BASE_DIR, 'data/data/approvals/*.json')
     data_files_8 = os.path.join(BASE_DIR, 'data/data/last/*.json')
+    data_files_10 = os.path.join(
+        BASE_DIR, 'data/data/facility_services/*.json')
 
     manage('bootstrap', data_files_1)
     manage('bootstrap', data_files_2)
@@ -106,6 +108,8 @@ def load_demo_data_from_scratch(*args, **kwargs):
     manage('bootstrap', data_files_6)
     manage('bootstrap', data_files_7)
     manage('bootstrap', data_files_8)
+    manage('approve_facilities')
+    manage('bootstrap', data_files_10)
     manage("createinitialrevisions")
 
 
