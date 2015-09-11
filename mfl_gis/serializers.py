@@ -1,4 +1,9 @@
+import json
+
+from django.db import transaction
+
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError as DrfValidationError
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from common.serializers import AbstractFieldsMixin
 from .models import (
@@ -10,6 +15,8 @@ from .models import (
     ConstituencyBoundary,
     WardBoundary
 )
+
+from facilities.models import FacilityUpdates
 
 
 class GeoCodeSourceSerializer(
@@ -74,6 +81,62 @@ class FacilityCoordinateSimpleSerializer(
 
     class Meta(object):
         model = FacilityCoordinates
+
+    def buffer_coordinates(self, facility, validated_data):
+        try:
+            FacilityCoordinates(**validated_data).clean()
+        except DrfValidationError:
+            raise DrfValidationError(
+                {"coordinates": [
+                    "The coordinates are not valid. Please Ensure they are in"
+                    " {}".format(facility.ward.name)]})
+        facility_update = {}
+        try:
+            facility_update = FacilityUpdates.objects.filter(
+                facility=facility,
+                cancelled=False, approved=False)[0]
+        except IndexError:
+            facility_update = FacilityUpdates.objects.create(
+                facility=facility)
+        serialized_data = {}
+
+        humanized_data = {
+            "method_human": validated_data.get('method').name,
+            "source_human": validated_data.get('source').name,
+            "longitude": json.loads(validated_data.get(
+                'coordinates')).get('coordinates')[0],
+            "latitude": json.loads(validated_data.get(
+                'coordinates')).get('coordinates')[1],
+        }
+        machine_data = {
+            "method_id": str(validated_data.get('method').id),
+            "source_id": str(validated_data.get('source').id),
+            "coordinates": validated_data.get('coordinates')
+        }
+        serialized_data.update(humanized_data)
+        serialized_data.update(machine_data)
+        facility_update.geo_codes = json.dumps(serialized_data)
+        facility_update.save()
+
+    @transaction.atomic
+    def create(self, validated_data):
+        facility = validated_data.get('facility')
+        if facility.get('facility').approved:
+            self.buffer_coordinates(facility, validated_data)
+            return
+        else:
+            return super(FacilityCoordinateSimpleSerializer, self).update(
+                facility, validated_data)
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        facility = instance.facility
+        if facility.approved:
+            self.buffer_coordinates(facility, validated_data)
+            return instance
+        else:
+            return super(FacilityCoordinateSimpleSerializer, self).update(
+                instance, validated_data)
 
 
 class AbstractBoundarySerializer(

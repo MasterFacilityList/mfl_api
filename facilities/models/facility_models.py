@@ -1023,6 +1023,7 @@ class FacilityUpdates(AbstractBase):
     services = models.TextField(null=True, blank=True)
     officer_in_charge = models.TextField(null=True, blank=True)
     units = models.TextField(null=True, blank=True)
+    geo_codes = models.TextField(null=True, blank=True)
     is_new = models.BooleanField(default=False)
 
     def facility_updated_json(self):
@@ -1037,6 +1038,8 @@ class FacilityUpdates(AbstractBase):
             updates['units'] = json.loads(self.units)
         if self.officer_in_charge:
             updates['officer_in_charge'] = json.loads(self.officer_in_charge)
+        if self.geo_codes:
+            updates['geo_codes'] = json.loads(self.geo_codes)
 
         return updates
 
@@ -1055,12 +1058,13 @@ class FacilityUpdates(AbstractBase):
         self.facility.save(allow_save=True)
 
     def update_facility(self):
-        data = json.loads(self.facility_updates)
-        for field_changed in data:
-            field_name = field_changed.get("field_name")
-            value = field_changed.get("actual_value")
-            setattr(self.facility, field_name, value)
-        self.facility.save(allow_save=True)
+        if self.facility_updates:
+            data = json.loads(self.facility_updates)
+            for field_changed in data:
+                field_name = field_changed.get("field_name")
+                value = field_changed.get("actual_value")
+                setattr(self.facility, field_name, value)
+            self.facility.save(allow_save=True)
 
     def update_facility_services(self):
         from facilities.utils import create_facility_services
@@ -1102,6 +1106,27 @@ class FacilityUpdates(AbstractBase):
         user = self.created_by
         _create_officer(officer_data, user)
 
+    def update_geo_codes(self):
+        from mfl_gis.models import FacilityCoordinates
+        if self.geo_codes and json.loads(self.geo_codes):
+            data = {
+                "facility_id": str(self.facility.id),
+                "method_id": json.loads(self.geo_codes).get('method_id'),
+                "source_id": json.loads(self.geo_codes).get('source_id'),
+                "coordinates": json.loads(
+                    self.geo_codes).get('coordinates'),
+                "created_by_id": self.created_by.id,
+                "updated_by_id": self.updated_by.id,
+                "created": self.updated
+            }
+            if self.facility.facility_coordinates_through.id:
+                coords = self.facility.facility_coordinates_through
+                for key, value in data.iteritems():
+                    setattr(coords, key, value)
+                coords.save()
+            else:
+                FacilityCoordinates.objects.create(**data)
+
     def validate_either_of_approve_or_cancel(self):
         error = "You can only approve or cancel and not both"
         if self.approved and self.cancelled:
@@ -1134,6 +1159,7 @@ class FacilityUpdates(AbstractBase):
             self.update_facility_contacts() if self.contacts else None
             self.update_facility_services() if self.services else None
             self.update_officer_in_charge() if self.officer_in_charge else None
+            self.update_geo_codes() if self.update_geo_codes else None
             self.facility.has_edits = False
             self.facility.save(allow_save=True)
         super(FacilityUpdates, self).save(*args, **kwargs)
