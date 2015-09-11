@@ -427,7 +427,7 @@ class FacilityDetailSerializer(FacilitySerializer):
         model = Facility
         exclude = ('attributes', )
 
-    inlining_errors = []
+    inlining_errors = {}
 
     def inject_audit_fields(self, dict_a, validated_data):
         audit_data = {
@@ -444,16 +444,19 @@ class FacilityDetailSerializer(FacilitySerializer):
         return dict_a
 
     def create_contact(self, contact_data):
-            try:
-                Contact.objects.get(contact=contact_data["contact"])
-            except Contact.DoesNotExist:
-                contact = ContactSerializer(
-                    data=contact_data, context=self.context)
-                return contact.save() if contact.is_valid() else \
-                    self.inlining_errors.append(json.dumps(contact.errors))
+        try:
+            return Contact.objects.get(contact=contact_data["contact"])
+        except Contact.DoesNotExist:
+            contact = ContactSerializer(
+                data=contact_data, context=self.context)
+            if contact.is_valid():
+                return contact.save()
+            else:
+                self.inlining_errors.update(contact.errors)
 
     def create_facility_contacts(self, instance, contact_data, validated_data):
-            contact = self.create_contact(contact_data)
+        contact = self.create_contact(contact_data)
+        if contact:
             facility_contact_data = {
                 "contact": contact,
                 "facility": instance
@@ -466,28 +469,29 @@ class FacilityDetailSerializer(FacilitySerializer):
                 FacilityContact.objects.create(**facility_contact_data)
 
     def create_facility_units(self, instance, unit_data, validated_data):
-            unit_data['facility'] = instance.id
-            unit_data = self.inject_audit_fields(unit_data, validated_data)
-            unit = FacilityUnitSerializer(data=unit_data, context=self.context)
-            if unit.is_valid():
-                return unit.save()
-            else:
-                self.inlining_errors.append((json.dumps(unit.errors)))
+        unit_data['facility'] = instance.id
+        unit_data = self.inject_audit_fields(unit_data, validated_data)
+        unit = FacilityUnitSerializer(data=unit_data, context=self.context)
+        if unit.is_valid():
+            return unit.save()
+        else:
+            self.inlining_errors.update(unit.errors)
 
     def create_facility_services(self, instance, service_data, validated_data):
-            service_data['facility'] = instance.id
-            service_data = self.inject_audit_fields(
-                service_data, validated_data)
-            f_service = FacilityServiceSerializer(
-                data=service_data, context=self.context)
-            f_service.save() if f_service.is_valid() else \
-                self.inlining_errors.append(json.dumps(f_service.errors))
+        service_data['facility'] = instance.id
+        service_data = self.inject_audit_fields(
+            service_data, validated_data)
+        f_service = FacilityServiceSerializer(
+            data=service_data, context=self.context)
+        f_service.save() if f_service.is_valid() else \
+            self.inlining_errors.update(f_service.errors)
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        contacts = self.initial_data.pop('contacts', None)
-        units = self.initial_data.pop('units', None)
-        services = self.initial_data.pop('services', None)
+        self.inlining_errors = {}
+        contacts = self.initial_data.pop('contacts', [])
+        units = self.initial_data.pop('units', [])
+        services = self.initial_data.pop('services', [])
         officer_in_charge = self.initial_data.pop('officer_in_charge', None)
 
         facility = super(FacilityDetailSerializer, self).update(
@@ -503,9 +507,13 @@ class FacilityDetailSerializer(FacilitySerializer):
         def create_facility_child_entity(entity_creator_callable, entity_data):
             actual_function = getattr(self, entity_creator_callable)
             actual_function(facility, entity_data, validated_data)
+
         if contacts:
-            [create_facility_child_entity(
-                "create_facility_contacts", contact) for contact in contacts]
+            [
+                create_facility_child_entity(
+                    "create_facility_contacts", contact)
+                for contact in contacts
+            ]
 
         if units:
             [create_facility_child_entity(

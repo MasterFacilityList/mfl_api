@@ -432,3 +432,28 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
         response = self.client.patch(url, data_with_errors_4)
         self.assertEquals(400, response.status_code)
+
+
+class TestFacilityContacts(LoginMixin, APITestCase):
+    def test_saving_inlined_contacts(self):
+        facility = mommy.make(Facility)
+        contact_type = mommy.make(ContactType)
+        contact_type_2 = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact_type": str(contact_type.id),
+                "contact": "20358"
+            },
+            {
+                "contact_type": str(contact_type_2.id),
+                "contact": "long contact" * 400
+            }
+        ]
+        data = {
+            "contacts": contacts
+        }
+        url = reverse(
+            "api:facilities:facilities_list")
+        url = url + "{}/".format(facility.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
