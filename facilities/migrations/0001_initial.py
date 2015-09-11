@@ -14,7 +14,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '__first__'),
+        ('common', 'admin_unit_codes'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

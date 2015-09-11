@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils import timezone
 from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
@@ -197,8 +198,19 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     user_constituencies = UserConstituencySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
 
+    def _upadate_validated_data_with_audit_fields(
+            self, validated_data, is_creation=False):
+        if is_creation:
+            validated_data['created_by'] = self.context['request'].user
+            validated_data['created'] = timezone.now()
+        validated_data['updated_by'] = self.context['request'].user
+        validated_data['updated'] = timezone.now()
+        return validated_data
+
     @transaction.atomic
     def create(self, validated_data):
+        validated_data = self._upadate_validated_data_with_audit_fields(
+            validated_data, is_creation=True)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
@@ -210,6 +222,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        validated_data = self._upadate_validated_data_with_audit_fields(
+            validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
