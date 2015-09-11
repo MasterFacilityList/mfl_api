@@ -226,7 +226,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        validated_data = self._upadate_valiedated_data_with_audit_fields(
+        validated_data = self._upadate_validated_data_with_audit_fields(
             validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
