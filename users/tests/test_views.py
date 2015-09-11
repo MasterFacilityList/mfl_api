@@ -385,6 +385,28 @@ class TestUserFiltering(APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(0, len(response.data.get('results')))
 
+    def test_sub_county_user_sees_the_facility_incharges_created(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        user = mommy.make(MflUser)
+        user_2 = mommy.make(MflUser)
+        mommy.make(UserCounty, county=county, user=user)
+        mommy.make(
+            UserConstituency, constituency=constituency,
+            user=user_2, created_by=user, updated_by=user)
+        user_3 = mommy.make(MflUser, created_by=user_2)
+        user_4 = mommy.make(MflUser, created_by=user_2)
+        group = Group.objects.get(name="Facility Viewing Group")
+        user_4.groups.add(group)
+        mommy.make(
+            UserConstituency, constituency=constituency,
+            user=user_3, created_by=user_2, updated_by=user_2)
+        self.client.force_authenticate(user_2)
+        response = self.client.get(self.url)
+        self.assertEquals(2, response.data.get('count'))
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, len(response.data.get('results')))
+
 
 class TestGroupFilters(LoginMixin, APITestCase):
     def setUp(self):
@@ -438,24 +460,25 @@ class TestGroupFilters(LoginMixin, APITestCase):
         group = mommy.make(Group)
         mommy.make(Group)
         mommy.make(CustomGroup, group=group)
-        url = self.groups_list_url + "?is_regulator=true"
+        url = self.groups_list_url + "?is_regulator=false"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(0, response.data.get('count'))
+        self.assertEquals(1, response.data.get('count'))
 
     def test_national_level_true(self):
         group = mommy.make(Group)
         mommy.make(Group)
         mommy.make(CustomGroup, group=group, national=True)
-        url = self.groups_list_url + "?is_national=true"
+        url = self.groups_list_url + "?is_national_level=true"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(3, response.data.get('count'))
+        self.assertEquals(1, response.data.get('count'))
 
     def test_national_level_false(self):
+        group = mommy.make(Group)
         mommy.make(Group)
-        mommy.make(Group)
-        url = self.groups_list_url + "?is_national=false"
+        mommy.make(CustomGroup, group=group)
+        url = self.groups_list_url + "?is_national_level=false"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(3, response.data.get('count'))
+        self.assertEquals(1, response.data.get('count'))

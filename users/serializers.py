@@ -202,19 +202,17 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     user_constituencies = UserConstituencySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
 
+    def _upadate_valiedated_data_with_audit_fields(self, validated_data):
+        validated_data['created'] = timezone.now()
+        validated_data['updated'] = timezone.now()
+        validated_data['created_by'] = self.context['request'].user
+        validated_data['updated_by'] = self.context['request'].user
+        return validated_data
+
     @transaction.atomic
     def create(self, validated_data):
-        if not validated_data.get('created', None):
-            validated_data['created'] = timezone.now()
-
-        validated_data['updated'] = timezone.now()
-
-        if validated_data.get('created_by', None) is None:
-            validated_data['created_by'] = self.context['request'].user
-
-        if not validated_data.get('updated_by', None):
-            validated_data['updated_by'] = self.context['request'].user
-
+        validated_data = self._upadate_valiedated_data_with_audit_fields(
+            validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
@@ -226,6 +224,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        validated_data = self._upadate_valiedated_data_with_audit_fields(
+            validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
