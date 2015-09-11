@@ -10,7 +10,7 @@ from model_mommy import mommy
 from common.models import County, Constituency, UserCounty, UserConstituency
 from common.tests.test_views import LoginMixin
 from ..models import MflUser, CustomGroup
-from ..serializers import _lookup_groups
+from ..serializers import _lookup_groups, GroupSerializer
 
 
 class TestLogin(APITestCase):
@@ -482,3 +482,15 @@ class TestGroupFilters(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, response.data.get('count'))
+
+    def test_filter_group_by_name(self):
+        group = mommy.make(Group, name='group ya ajabu')
+        mommy.make(Group, name='jina tu')
+        url = self.groups_list_url + "?name=ajabu"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        expected_data = [
+            GroupSerializer(group).data
+        ]
+        self.assertEquals(response.data.get('results'), expected_data)
