@@ -86,7 +86,7 @@ class UserList(generics.ListCreateAPIView):
             for user in all_users:
                 if group in user.groups.all():
                     users_to_see.append(user.id)
-                if len(user.groups.all()) == 0:
+                if not user.groups.all():
                     users_to_see.append(user.id)
 
             return MflUser.objects.filter(
