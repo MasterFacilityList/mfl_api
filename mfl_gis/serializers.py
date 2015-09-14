@@ -2,7 +2,7 @@ import json
 
 from django.db import transaction
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError as DrfValidationError
+from rest_framework.exceptions import ValidationError
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from common.serializers import AbstractFieldsMixin
 from facilities.models import Facility
@@ -147,14 +147,7 @@ class FacilityCoordinateSimpleSerializer(
     def update(self, instance, validated_data):
         facility = instance.facility
         if facility.approved:
-            try:
-                FacilityCoordinates(**validated_data).clean()
-            except DrfValidationError:
-                raise DrfValidationError(
-                    {"coordinates": [
-                        "The geocodes are not valid. Please Ensure they are"
-                        " in {}".format(facility.ward.name)]})
-
+            FacilityCoordinates(**validated_data).clean()
             self.buffer_coordinates(facility, validated_data)
             return instance
         else:
