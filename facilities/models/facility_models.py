@@ -9,6 +9,8 @@ from django.core import validators
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import encoding
+from django.contrib.gis.geos import Point
+
 
 from common.models import (
     AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town
@@ -1108,9 +1110,7 @@ class FacilityUpdates(AbstractBase):
 
     def update_geo_codes(self):
         from mfl_gis.models import FacilityCoordinates
-        from django.contrib.gis.geos import Point
         if self.geo_codes and json.loads(self.geo_codes):
-            data = {}
             data = {
                 "facility_id": str(self.facility.id),
                 "method_id": json.loads(self.geo_codes).get('method_id', None),

@@ -1,6 +1,8 @@
+from __future__ import unicode_literals
 import json
 
 from django.db import transaction
+from django.utils import six
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from common.serializers import AbstractFieldsMixin
@@ -25,7 +27,7 @@ class BufferCooridinatesMixin(object):
             facility, 'id') else facility
 
         coordinates = []
-        if isinstance(validated_data.get('coordinates'), unicode):
+        if isinstance(validated_data.get('coordinates'), six.string_types):
             coordinates = json.loads(validated_data.get('coordinates'))
 
         if isinstance(validated_data.get('coordinates'), dict):
@@ -46,30 +48,28 @@ class BufferCooridinatesMixin(object):
         humanized_data = {}
         machine_data = {}
 
-        if method:
-            try:
-                humanized_data['method_human'] = method.name
-                machine_data['method_id'] = str(
-                    validated_data.get('method').id)
-            except AttributeError:
-                method = GeoCodeMethod.objects.get(id=method)
-                humanized_data['method_human'] = method.name
-                machine_data['method_id'] = str(method.id)
-        if source:
-            try:
-                humanized_data['source_human'] = source.name
-                machine_data['source_id'] = str(
-                    validated_data.get('source').id)
-            except AttributeError:
-                source = GeoCodeSource.objects.get(id=source)
-                humanized_data['source_human'] = source.name
-                machine_data['source_id'] = str(source.id)
+        try:
+            humanized_data['method_human'] = method.name
+            machine_data['method_id'] = str(
+                validated_data.get('method').id)
+        except AttributeError:
+            method = GeoCodeMethod.objects.get(id=method)
+            humanized_data['method_human'] = method.name
+            machine_data['method_id'] = str(method.id)
 
-        if coordinates:
-            long_lat = coordinates.get('coordinates')
-            humanized_data["longitude"] = long_lat[0]
-            humanized_data["latitude"] = long_lat[1]
-            machine_data["coordinates"] = coordinates
+        try:
+            humanized_data['source_human'] = source.name
+            machine_data['source_id'] = str(
+                validated_data.get('source').id)
+        except AttributeError:
+            source = GeoCodeSource.objects.get(id=source)
+            humanized_data['source_human'] = source.name
+            machine_data['source_id'] = str(source.id)
+
+        long_lat = coordinates.get('coordinates')
+        humanized_data["longitude"] = long_lat[0]
+        humanized_data["latitude"] = long_lat[1]
+        machine_data["coordinates"] = coordinates
 
         serialized_data.update(humanized_data)
         serialized_data.update(machine_data)
