@@ -509,6 +509,9 @@ class FacilityDetailView(
                     officer_in_charge)
                 update.officer_in_charge = json.dumps(officer_in_charge)
             update.is_new = False
+            update.created_by = request.user
+            update.updated_by = request.user
+            update.save()
 
         else:
             request.data['services'] = services
@@ -516,9 +519,6 @@ class FacilityDetailView(
             request.data['units'] = units
             if officer_in_charge != {}:
                 request.data['officer_in_charge'] = officer_in_charge
-        update.created_by = request.user
-        update.updated_by = request.user
-        update.save()
 
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)
