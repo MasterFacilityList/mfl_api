@@ -490,7 +490,9 @@ class FacilityDetailView(
                 update = FacilityUpdates.objects.filter(
                     facility=instance, cancelled=False, approved=False)[0]
             except IndexError:
-                update = FacilityUpdates.objects.create(facility=instance)
+                update = FacilityUpdates.objects.create(
+                    facility=instance, created_by=request.user,
+                    updated_by=request.user)
             services = self.populate_service_name(services)
             self.buffer_services(update, services)
 
@@ -507,13 +509,16 @@ class FacilityDetailView(
                     officer_in_charge)
                 update.officer_in_charge = json.dumps(officer_in_charge)
             update.is_new = False
-            update.save()
+
         else:
             request.data['services'] = services
             request.data['contacts'] = contacts
             request.data['units'] = units
             if officer_in_charge != {}:
                 request.data['officer_in_charge'] = officer_in_charge
+        update.created_by = request.user
+        update.updated_by = request.user
+        update.save()
 
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)

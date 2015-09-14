@@ -1108,23 +1108,30 @@ class FacilityUpdates(AbstractBase):
 
     def update_geo_codes(self):
         from mfl_gis.models import FacilityCoordinates
+        from django.contrib.gis.geos import Point
         if self.geo_codes and json.loads(self.geo_codes):
+            data = {}
             data = {
                 "facility_id": str(self.facility.id),
-                "method_id": json.loads(self.geo_codes).get('method_id'),
-                "source_id": json.loads(self.geo_codes).get('source_id'),
+                "method_id": json.loads(self.geo_codes).get('method_id', None),
+                "source_id": json.loads(self.geo_codes).get('source_id', None),
                 "coordinates": json.loads(
-                    self.geo_codes).get('coordinates'),
+                    self.geo_codes).get('coordinates', None),
                 "created_by_id": self.created_by.id,
                 "updated_by_id": self.updated_by.id,
                 "created": self.updated
             }
-            if self.facility.facility_coordinates_through.id:
+            if data['coordinates']:
+                data['coordinates'] = Point(
+                    data['coordinates'].get('coordinates'))
+            try:
+                self.facility.facility_coordinates_through.id
                 coords = self.facility.facility_coordinates_through
                 for key, value in data.iteritems():
-                    setattr(coords, key, value)
+                    if value:
+                        setattr(coords, key, value)
                 coords.save()
-            else:
+            except:
                 FacilityCoordinates.objects.create(**data)
 
     def validate_either_of_approve_or_cancel(self):

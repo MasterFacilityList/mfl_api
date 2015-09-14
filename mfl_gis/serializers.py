@@ -1,7 +1,6 @@
 import json
 
 from django.db import transaction
-from django.contrib.gis.geos.point import Point
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError as DrfValidationError
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
@@ -22,23 +21,17 @@ from facilities.models import FacilityUpdates
 
 class BufferCooridinatesMixin(object):
     def buffer_coordinates(self, facility, validated_data):
-        try:
 
-            facility = Facility.objects.get(id=facility.id) if hasattr(facility, 'id') else facility
-            updated_data = validated_data
-            updated_data['facility'] = facility
-            try:
-                updated_data['coordinates'] = tuple(validated_data.get('coordinates').get('coordinates'))
-                coordinates = validated_data.get('coordinates')
-            except AttributeError:
-                updated_data['coordinates'] = tuple(json.loads(validated_data.get('coordinates')).get('coordinates'))
-                coordinates = json.loads(validated_data.get('coordinates'))
+        facility = Facility.objects.get(id=facility.id) if hasattr(
+            facility, 'id') else facility
 
-        except DrfValidationError:
-            raise DrfValidationError(
-                {"coordinates": [
-                    "The coordinates are not valid. Please Ensure they are in"
-                    " {}".format(facility.ward.name)]})
+        coordinates = []
+        if isinstance(validated_data.get('coordinates'), unicode):
+            coordinates = json.loads(validated_data.get('coordinates'))
+
+        if isinstance(validated_data.get('coordinates'), dict):
+            coordinates = validated_data.get('coordinates')
+
         facility_update = {}
         try:
             facility_update = FacilityUpdates.objects.filter(
@@ -47,30 +40,43 @@ class BufferCooridinatesMixin(object):
         except IndexError:
             facility_update = FacilityUpdates.objects.create(
                 facility=facility)
-        method = validated_data.get('')
         serialized_data = {}
         method = validated_data.get('method', None)
         source = validated_data.get('source', None)
-        coordinates = validated_data.get('coordinates', None)
 
         humanized_data = {}
         machine_data = {}
 
         if method:
-            humanized_data['method_human'] = method.name
-            machine_data['method_id'] = str(validated_data.get('method').id)
+            try:
+                humanized_data['method_human'] = method.name
+                machine_data['method_id'] = str(
+                    validated_data.get('method').id)
+            except AttributeError:
+                method = GeoCodeMethod.objects.get(id=method)
+                humanized_data['method_human'] = method.name
+                machine_data['method_id'] = str(method.id)
         if source:
-            humanized_data['source_human'] = source.name
-            machine_data['source_id'] = str(validated_data.get('source').id),
+            try:
+                humanized_data['source_human'] = source.name
+                machine_data['source_id'] = str(
+                    validated_data.get('source').id)
+            except AttributeError:
+                source = GeoCodeSource.objects.get(id=source)
+                humanized_data['source_human'] = source.name
+                machine_data['source_id'] = str(source.id)
+
         if coordinates:
-            humanized_data["longitude"] = coordinates.get('coordinates')[0]
-            humanized_data["latitude"] = coordinates.get('coordinates')[1]
+            long_lat = coordinates.get('coordinates')
+            humanized_data["longitude"] = long_lat[0]
+            humanized_data["latitude"] = long_lat[1]
             machine_data["coordinates"] = coordinates
 
         serialized_data.update(humanized_data)
         serialized_data.update(machine_data)
         facility_update.geo_codes = json.dumps(serialized_data)
         facility_update.save()
+        return facility_update
 
 
 class GeoCodeSourceSerializer(
@@ -141,6 +147,14 @@ class FacilityCoordinateSimpleSerializer(
     def update(self, instance, validated_data):
         facility = instance.facility
         if facility.approved:
+            try:
+                FacilityCoordinates(**validated_data).clean()
+            except DrfValidationError:
+                raise DrfValidationError(
+                    {"coordinates": [
+                        "The geocodes are not valid. Please Ensure they are"
+                        " in {}".format(facility.ward.name)]})
+
             self.buffer_coordinates(facility, validated_data)
             return instance
         else:

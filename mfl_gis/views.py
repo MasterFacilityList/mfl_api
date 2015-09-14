@@ -189,6 +189,8 @@ class FacilityCoordinatesCreationAndListing(
     pagination_class = GISPageNumberPagination
 
     def create(self, request, *args, **kwargs):
+        request.data['created_by'] = request.user.id
+        request.data['updated_by'] = request.user.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         facility_id = request.data.get('facility')
