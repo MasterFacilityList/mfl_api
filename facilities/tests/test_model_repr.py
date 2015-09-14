@@ -242,4 +242,4 @@ class TestModelRepr(ModelReprMixin, TestCase):
         )
 
     def test_facility_department(self):
-        self.check_repr(models.FacilityDepartment("testing"), "testing")
+        self.check_repr(models.FacilityDepartment(name="testing"), "testing")
