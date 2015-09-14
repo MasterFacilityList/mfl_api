@@ -723,6 +723,15 @@
                 "codename": "view_county"
             },
             {
+                "codename": "add_town"
+            },
+            {
+                "codename": "change_town"
+            },
+            {
+                "codename": "delete_town"
+            },
+            {
                 "codename": "view_town"
             },
             {
@@ -793,6 +802,18 @@
             },
             {
                 "codename": "view_jobtitle"
+            },
+            {
+                "codename": "add_kephlevel"
+            },
+            {
+                "codename": "change_kephlevel"
+            },
+            {
+                "codename": "delete_kephlevel"
+            },
+            {
+                "codename": "view_kephlevel"
             },
             {
                 "codename": "add_option"
@@ -1892,7 +1913,7 @@
     },
     {
         "group": {
-            "name": "Facility Viewing Group"
+            "name": "Facility Officer Group"
         },
         "permissions": [
             {

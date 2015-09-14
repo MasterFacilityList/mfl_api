@@ -78,7 +78,7 @@ The following is an example:
 
 .. code-block:: text
 
-    azure_test_server             ansible_ssh_host=mfl.azure.slade360.co.ke     ansible_ssh_port=22     ansible_ssh_user=azureuser     ansible_ssh_private_key_file=/home/ngurenyaga/.ssh/id_rsa
+    azure_test_server             ansible_ssh_host=mfl.slade360.co.ke     ansible_ssh_port=22     ansible_ssh_user=azureuser     ansible_ssh_private_key_file=/home/ngurenyaga/.ssh/id_rsa
 
 The template breaks down roughly to this:
 

@@ -240,3 +240,6 @@ class TestModelRepr(ModelReprMixin, TestCase):
             mommy.make(models.FacilityOfficer, facility=f, officer=o),
             "jjj: qqq"
         )
+
+    def test_facility_department(self):
+        self.check_repr(models.FacilityDepartment(name="testing"), "testing")

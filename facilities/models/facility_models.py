@@ -663,7 +663,7 @@ class Facility(SequenceMixin, AbstractBase):
     # hard code the operational status name in order to avoid more crud
     @property
     def service_catalogue_active(self):
-        if self.operation_status.name == "OPERATIONAL":
+        if self.operation_status.name.lower() == "operational":
             return True
         else:
             return False
@@ -1580,3 +1580,17 @@ class FacilityOfficer(AbstractBase):
 
     def __str__(self):
         return "{}: {}".format(self.facility, self.officer)
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class FacilityDepartment(AbstractBase):
+
+    """
+    Represents departments within a facility
+    """
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name

@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils import timezone
 from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
@@ -179,30 +180,37 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     """This should allow everything about users to be managed"""
-    user_counties = UserCountySerializer(many=True, required=False)
 
+    user_counties = UserCountySerializer(many=True, required=False)
     short_name = serializers.ReadOnlyField(source='get_short_name')
     full_name = serializers.ReadOnlyField(source='get_full_name')
     all_permissions = serializers.ReadOnlyField(source='permissions')
-
     requires_password_change = serializers.ReadOnlyField()
-
-    user_permissions = PermissionSerializer(many=True, required=False)
     groups = GroupSerializer(many=True, required=False)
     regulator = serializers.ReadOnlyField(source='regulator.id')
     regulator_name = serializers.ReadOnlyField(source='regulator.name')
     county = serializers.ReadOnlyField(source='county.id')
     county_name = serializers.ReadOnlyField(source='county.name')
     constituency = serializers.ReadOnlyField(source='constituency.id')
-    constituency_name = serializers.ReadOnlyField(
-        source='constituency.name')
+    constituency_name = serializers.ReadOnlyField(source='constituency.name')
     user_contacts = UserContactSerializer(many=True, required=False)
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
 
+    def _upadate_validated_data_with_audit_fields(
+            self, validated_data, is_creation=False):
+        if is_creation:
+            validated_data['created_by'] = self.context['request'].user
+            validated_data['created'] = timezone.now()
+        validated_data['updated_by'] = self.context['request'].user
+        validated_data['updated'] = timezone.now()
+        return validated_data
+
     @transaction.atomic
     def create(self, validated_data):
+        validated_data = self._upadate_validated_data_with_audit_fields(
+            validated_data, is_creation=True)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
@@ -214,6 +222,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        validated_data = self._upadate_validated_data_with_audit_fields(
+            validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
@@ -243,7 +253,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password_history', )
+        exclude = ('password_history', 'user_permissions', )
         extra_kwargs = {'password': {'write_only': True}}
 
 

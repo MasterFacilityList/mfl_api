@@ -4,6 +4,7 @@ import uuid
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.contrib.auth.models import Group
 from rest_framework.test import APITestCase
 from model_mommy import mommy
 
@@ -50,6 +51,7 @@ class LoginMixin(object):
         )
         self.client.login(email='tester@ehealth.or.ke', password=password)
         self.maxDiff = None
+        mommy.make(Group, name='Facility Viewing Group')
         super(LoginMixin, self).setUp()
 
 

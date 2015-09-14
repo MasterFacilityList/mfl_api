@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, Group
 
 from common.utilities import CustomRetrieveUpdateDestroyView
 
@@ -64,7 +64,7 @@ class UserList(generics.ListCreateAPIView):
             ]
             area_users = county_users + sub_county_users
             return MflUser.objects.filter(
-                id__in=area_users)
+                id__in=area_users).exclude(id=self.request.user.id)
         elif user.is_national and not user.is_superuser:
             # Should see the county users and the national users
             # Also should not see the system user
@@ -78,17 +78,22 @@ class UserList(generics.ListCreateAPIView):
             ]
             all_users = county_users + national_users
             return MflUser.objects.filter(
-                id__in=all_users)
+                id__in=all_users).exclude(id=self.request.user.id)
         elif user.constituency:
-            sub_county_users = [
-                const_user.user.id for const_user in
-                UserConstituency.objects.filter(
-                    constituency__county=user.county).distinct()
-            ]
+            all_users = MflUser.objects.all()
+            users_to_see = []
+            group = Group.objects.get(name='Facility Viewing Group')
+            for user in all_users:
+                if group in user.groups.all():
+                    users_to_see.append(user.id)
+                if not user.groups.all():
+                    users_to_see.append(user.id)
+
             return MflUser.objects.filter(
-                id__in=sub_county_users)
+                id__in=users_to_see, created_by_id=self.request.user.id
+            ).exclude(id=self.request.user.id)
         elif user.is_superuser:
-            return MflUser.objects.all()
+            return MflUser.objects.all().exclude(id=self.request.user.id)
 
         else:
             # The user is not allowed to see the users

@@ -65,7 +65,9 @@ from ..views import (
     KephLevelDetailView,
     FacilityLevelChangeReasonDetailView,
     FacilityLevelChangeReasonListView,
-    PostOptionGroupWithOptionsView
+    PostOptionGroupWithOptionsView,
+    FacilityDepartmentDetailView,
+    FacilityDepartmentListView
 )
 
 
@@ -278,4 +280,14 @@ urlpatterns = patterns(
         name='option_groups_list'),
     url(r'^option_groups/(?P<pk>[^/]+)/$', OptionGroupDetailView.as_view(),
         name='option_group_detail'),
+
+
+    url(
+        r'^facility_depts/$',
+        FacilityDepartmentListView.as_view(), name='facility_depts_list'
+    ),
+    url(
+        r'^facility_depts/(?P<pk>[^/]+)/$',
+        FacilityDepartmentDetailView.as_view(), name='facility_depts_detail'
+    ),
 )

@@ -322,6 +322,25 @@ class TestUserConstituencyModel(BaseTestCase):
         # test user constituencies
         self.assertEquals(const, user.constituency)
 
+    def test_user_created_is_in_the_creators_sub_county(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        constituency_2 = mommy.make(Constituency)
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        user_3 = mommy.make(get_user_model())
+        mommy.make(UserCounty, county=county, user=user)
+        mommy.make(
+            UserConstituency, constituency=constituency,
+            user=user_2, created_by=user, updated_by=user)
+
+        # the user being created and the creating user are not in
+        # the same constituency
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                UserConstituency, constituency=constituency_2,
+                user=user_3, created_by=user_2, updated_by=user_2)
+
 
 class TestSubCounty(TestCase):
 

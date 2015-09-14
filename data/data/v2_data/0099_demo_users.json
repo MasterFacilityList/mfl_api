@@ -13,11 +13,11 @@
                 "employee_number": 30000
             },
             {
-               "email": "facility_viewing@mfltest.slade360.co.ke",
+               "email": "facility_officer@mfltest.slade360.co.ke",
                "first_name": "Martin",
                "last_name": "Kibichu",
                "username": "Kibichu",
-               "password": "pbkdf2_sha256$20000$BsmsUdw3kUSm$xbw5SahtteWTZZ1k6vioZQHMOTUMm/juh8yHYvNG6X4=",
+               "password": "pbkdf2_sha256$20000$javXdfXRyNRf$j6B5ts4KylvtgukPmrC2v01FYuZuAQDw2Tpr7EO3lEA=",
                "is_national": true,
                "employee_number": 50000
             },
