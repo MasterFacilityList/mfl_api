@@ -10,6 +10,9 @@
 .col-xs-6 {
     width: 50% !important;
 }
+.fs-20{
+    font-size: 20px;
+}
 .fs-18{
     font-size: 18px;
 }
@@ -18,6 +21,9 @@
 }
 .fs-14{
     font-size: 14px;
+}
+.fs-13{
+    font-size: 13px;
 }
 .fw-600{
     font-weight: 600;
@@ -31,6 +37,9 @@
 .font-lato{
     font-family: 'Lato', sans-serif;
 }
+.font-arial{
+    font-family: "Arial", Sans-serif;
+}
 .row{
     margin-left: -15px;
     margin-right:-15px;
@@ -39,13 +48,10 @@
     background-color: #F1F1F4;
 }
 .content-card {
-  margin-bottom: @line-height-computed;
   padding: 5px 10px 8px 10px;
-  background-color: @card-container-bg;
   border: 1px solid transparent;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  border-radius: @content-card-border-radius;
 }
 .text-muted{
     color: #666666;
@@ -56,10 +62,14 @@
 .text-balck{
     color: #000000;
 }
+.word-wrap {
+    width: 300px;
+    word-wrap: break-word;
+}
 </style>
-<body class="font-latolight">
+<body class="font-latolight" style="font-size: 14px;">
 <div class="row bg-blue">
-    <h3 class="font-latolight" style="padding-top: 10px; padding-left: 10px; margin-bottom: 0px;">Medical Officer of Health</h3>
+    <h3 class="font-arial fs-20" style="padding-top: 10px; padding-left: 10px; margin-bottom: 0px;">Medical Officer of Health</h3>
 <div class="col-xs-12 content-card" style="margin-bottom: 0px;">
     <p style="margin-bottom: 5px;">
         <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">{{facility.ward.county}}</span></span>
@@ -73,9 +83,9 @@
     </p>
 </div>
 <div class="col-xs-12 content-card">
-    <p style="font-size: 15px; margin-top: -10px;"> The County Health Management Team of {{facility.ward.county.name}} has inspected the {{facility.facility_type.name}} whose details are below :</p>
+    <p style="margin-top: -10px;"> The County Health Management Team of {{facility.ward.county.name}} has inspected the {{facility.facility_type.name}} whose details are below :</p>
 </div>
-<div style="width: 95%; background-color: #FFF; margin-left: 13px; margin-top: -8px;">
+<div style="width: 95%; margin-left: 13px; margin-top: -15px;">
     <p>
         <span><span class="text-black fw-600">Name:</span> {{facility.name}}</span>
     </p>
@@ -88,9 +98,11 @@
     <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Owner:</span> {{facility.owner.name}}</span>
     </p>
-    <p style="margin-top: -10px; width: 100%">
-        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">County:</span> {{facility.ward.county.name}}</span>
-        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Constituency:</span> {{facility.ward.constituency.name}}</span>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">County:</span> {{facility.ward.county.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Constituency:</span> {{facility.ward.constituency.name}}</span>
     </p>
     <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Ward:</span> {{facility.ward.name}}</span>
@@ -102,7 +114,8 @@
     </p>
 </div>
 <div class="col-xs-12 content-card">
-    <p style="margin-top: -5px;">Signed</p>
+    <p style="margin-top: 15px;">Signed</p>
+    <br />
     <br />
     <br />
     <div style="width: 50%;">
@@ -111,28 +124,29 @@
     <p>Medical Officer of Health</p>
     <p>{{ facility.ward.county.name }}</p>
 
-    <br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
 </div>
-<div class="col-xs-12 content-card" style="width: 100%;">
-    <h4 style="font-size: 18px;">
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: 15px;">
+    <h4 class="font-arial fs-20">
         Basic Details
     </h4>
-    <div style="background-color: #FFF; padding: 2px">
-    <p>
-        <span><span class="text-black fw-600">Name:</span> {{facility.name}}</span>
-    </p>
-    <p style="margin-top: -10px; margin-bottom: 5px;">
-        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Code:</span> {{facility.code}}</span>
+    <div style="padding: 2px; margin-top: -10px;">
+
+    <p style="margin-top: 0px; margin-bottom: 5px;">
+        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.name}}</span>
         <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Abbreviation:</span> {{facility.abbreviation}}</span>
     </p>
-    <p>
+    <p class="word-wrap">
+        <span><span class="text-black fw-600">Code:</span> {{facility.code}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
         <span><span class="text-black fw-600">Type:</span> {{facility.facility_type.name}}</span>
     </p>
-    <p style="margin-top: -10px;">
+    <p class="word-wrap" style="margin-top: -10px;">
         <span><span class="text-black fw-600">Owner Category:</span> {{facility.owner.owner_type.name}}</span>
     </p>
-    <p style="margin-top: -10px;">
+    <p class="word-wrap" style="margin-top: -10px;">
         <span><span class="text-black fw-600">Owner:</span> {{facility.owner.name}}</span>
     </p>
     <p style="margin-top: -10px; width: 100%;">
@@ -151,20 +165,20 @@
         <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">County:</span> {{facility.ward.county.name}}</span>
         <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Constituency:</span> {{facility.ward.constituency.name}}</span>
     </p>
-    <p style="margin-top: -10px;">
+    <p class="word-wrap" style="margin-top: -10px;">
         <span><span class="text-black fw-600">Ward:</span> {{facility.ward.name}}</span>
     </p>
     </div>
 </div>
-<div class="col-xs-12 content-card" style="width: 100%; margin-top: -15px;">
-    <h4 style="font-size: 18px;">
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -30px;">
+    <h4 class="font-arial fs-20">
         Location
     </h4>
-    <div style="background-color: #FFF; padding: 2px">
-        <p>
+    <div style="padding: 2px; margin-top: -15px;">
+        <p class="word-wrap">
             <span><span class="text-black fw-600">Source:</span> {{facility_coordinates.source.name}}</span>
         </p>
-        <p style="margin-top: -10px;">
+        <p class="word-wrap" style="margin-top: -10px;">
             <span><span class="text-black fw-600">Method:</span> {{facility_coordinates.method.name}}</span>
         </p>
         <p style="margin-top: -10px; width: 100%">
@@ -176,15 +190,15 @@
         </p>
     </div>
 </div>
-<div class="col-xs-12 content-card" style="width: 100%; margin-top: -15px;">
-    <h4 style="font-size: 18px;">
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -30px;">
+    <h4 class="font-arial fs-20">
         Facility Contacts
     </h4>
-    <div style="background-color: #FFF; padding: 2px">
+    <div style="padding: 2px; margin-top: -15px;">
     {% if contacts %}
     {% for contact in contacts%}
-        <div style="width: 300px; margin-top: 5px;">
-            <span><span class="text-black fw-600">{{contact.contact.contact_type.name}}:</span> {{contact.contact.contact}}</span>
+        <div style="width: 305px; margin-top: 5px; display: inline-block; word-wrap: break-word;">
+            <span><span class="text-black fw-600 fs-13">{{contact.contact.contact_type.name}}:</span> {{contact.contact.contact}}</span>
         </div>
     {%endfor%}
     {% else %}
@@ -193,26 +207,26 @@
     </div>
 </div>
 
-<div class="col-xs-12 content-card" style="width: 100%; margin-top: -15px;">
-    <h4 style="font-size: 18px;">
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -33px;">
+    <h4 class="font-arial fs-20">
         Officer Incharge
     </h4>
-    <div style="background-color: #FFF; padding: 2px">
+    <div style="padding: 2px; margin-top: -17px;">
         <p>
             <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.officer_in_charge.name}}</span>
             <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Registration No. :</span> {{facility.officer_in_charge.reg_no}}</span>
         </p>
-        <p style="margin-top : -5px;">
+        <p class="word-wrap" style="margin-top : -5px;">
             <span><span class="text-black fw-600">Title:</span> {{facility.officer_in_charge.title_name}}</span>
         </p>
     </div>
 </div>
-<div class="col-xs-12 content-card" style="width: 100%; margin-bottom: 20px; margin-top: 20px;">
-    <h4 style="font-size: 18px;">
+<div class="col-xs-12 content-card" style="width: 100%; margin-bottom: 5px; margin-top: -33px;">
+    <h4 class="font-arial fs-20">
         Facility Services
     </h4>
     {% if services %}
-    <div class="col-xs-12" style="padding: 2px; margin-bottom: 10px;">
+    <div class="col-xs-12 content-card" style="padding: 2px; margin-bottom: -10px; margin-top: -10px;">
         <p>
             <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-600">Name</span></span>
             <span style="float: right; width: 250px; margin-bottom: 5px;"><span class="text-black fw-600">Service Option</span></span>
@@ -235,8 +249,8 @@
     {% endif %}
 </div>
 
-<div class="col-xs-12 content-card" style="margin-top: 30px;">
-    <h3>Community Health Units </h3>
+<div class="col-xs-12 content-card" style="margin-top: -20px;">
+    <h3 class="font-arial fs-20">Community Health Units </h3>
     {% if chus %}
     <table>
         <thead>
