@@ -1,6 +1,12 @@
+from __future__ import unicode_literals
+import json
+
+from django.db import transaction
+from django.utils import six
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from common.serializers import AbstractFieldsMixin
+from facilities.models import Facility
 from .models import (
     GeoCodeSource,
     GeoCodeMethod,
@@ -10,6 +16,66 @@ from .models import (
     ConstituencyBoundary,
     WardBoundary
 )
+
+from facilities.models import FacilityUpdates
+
+
+class BufferCooridinatesMixin(object):
+    def buffer_coordinates(self, facility, validated_data):
+
+        facility = Facility.objects.get(id=facility.id) if hasattr(
+            facility, 'id') else facility
+
+        coordinates = []
+        if isinstance(validated_data.get('coordinates'), six.string_types):
+            coordinates = json.loads(validated_data.get('coordinates'))
+
+        if isinstance(validated_data.get('coordinates'), dict):
+            coordinates = validated_data.get('coordinates')
+
+        facility_update = {}
+        try:
+            facility_update = FacilityUpdates.objects.filter(
+                facility=facility,
+                cancelled=False, approved=False)[0]
+        except IndexError:
+            facility_update = FacilityUpdates.objects.create(
+                facility=facility)
+        serialized_data = {}
+        method = validated_data.get('method', None)
+        source = validated_data.get('source', None)
+
+        humanized_data = {}
+        machine_data = {}
+
+        try:
+            humanized_data['method_human'] = method.name
+            machine_data['method_id'] = str(
+                validated_data.get('method').id)
+        except AttributeError:
+            method = GeoCodeMethod.objects.get(id=method)
+            humanized_data['method_human'] = method.name
+            machine_data['method_id'] = str(method.id)
+
+        try:
+            humanized_data['source_human'] = source.name
+            machine_data['source_id'] = str(
+                validated_data.get('source').id)
+        except AttributeError:
+            source = GeoCodeSource.objects.get(id=source)
+            humanized_data['source_human'] = source.name
+            machine_data['source_id'] = str(source.id)
+
+        long_lat = coordinates.get('coordinates')
+        humanized_data["longitude"] = long_lat[0]
+        humanized_data["latitude"] = long_lat[1]
+        machine_data["coordinates"] = coordinates
+
+        serialized_data.update(humanized_data)
+        serialized_data.update(machine_data)
+        facility_update.geo_codes = json.dumps(serialized_data)
+        facility_update.save()
+        return facility_update
 
 
 class GeoCodeSourceSerializer(
@@ -68,12 +134,24 @@ class FacilityCoordinatesDetailSerializer(
 
 
 class FacilityCoordinateSimpleSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
+        AbstractFieldsMixin, BufferCooridinatesMixin,
+        serializers.ModelSerializer):
     source_name = serializers.ReadOnlyField(source="source.name")
     method_name = serializers.ReadOnlyField(source="method.name")
 
     class Meta(object):
         model = FacilityCoordinates
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        facility = instance.facility
+        if facility.approved:
+            FacilityCoordinates(**validated_data).clean()
+            self.buffer_coordinates(facility, validated_data)
+            return instance
+        else:
+            return super(FacilityCoordinateSimpleSerializer, self).update(
+                instance, validated_data)
 
 
 class AbstractBoundarySerializer(
