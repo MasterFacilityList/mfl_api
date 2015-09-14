@@ -1913,7 +1913,7 @@
     },
     {
         "group": {
-            "name": "Facility Viewing Group"
+            "name": "Facility Officer Group"
         },
         "permissions": [
             {
