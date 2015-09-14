@@ -21,7 +21,7 @@ server {
     add_header X-XSS-Protection "1; mode=block";
 
     {% if ssl_on %}
-    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;";
     ssl_certificate {{ssl_cert_file}};
     ssl_certificate_key {{ssl_key_file}};
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
