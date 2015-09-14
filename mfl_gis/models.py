@@ -146,10 +146,11 @@ class FacilityCoordinates(GISAbstractBase):
                 area=self.facility.ward.constituency)
             if not boundary.mpoly.contains(self.coordinates):
                 raise ValidationError(
-                    '{} not contained in boundary of {}'.format(
+                    {"coordinates": ['{} not contained in boundary of {}'.format(
                         self.coordinates,
                         self.facility.ward.constituency
                     )
+                    ]}
                 )
         except ConstituencyBoundary.DoesNotExist:
             raise ValidationError(
@@ -164,10 +165,11 @@ class FacilityCoordinates(GISAbstractBase):
                 area=self.facility.ward.constituency.county)
             if not boundary.mpoly.contains(self.coordinates):
                 raise ValidationError(
-                    '{} not contained in boundary of {}'.format(
-                        self.coordinates,
+                    {"coordinates": ['({}, {}) not contained in boundary of {}'.format(
+                        self.coordinates.x, self.coordinates.y,
                         self.facility.ward.constituency.county
                     )
+                    ]}
                 )
         except CountyBoundary.DoesNotExist:
             raise ValidationError(
@@ -181,9 +183,9 @@ class FacilityCoordinates(GISAbstractBase):
             boundary = WardBoundary.objects.get(area=self.facility.ward)
             if not boundary.mpoly.contains(self.coordinates):
                 raise ValidationError(
-                    '{} not contained in boundary of {}'.format(
+                    {"coordinates": ['{} not contained in boundary of {}'.format(
                         self.coordinates, self.facility.ward
-                    )
+                    )]}
                 )
         except WardBoundary.DoesNotExist:
             LOGGER.error(
