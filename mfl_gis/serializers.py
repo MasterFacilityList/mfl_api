@@ -147,7 +147,8 @@ class FacilityCoordinateSimpleSerializer(
     def update(self, instance, validated_data):
         facility = instance.facility
         if facility.approved:
-            FacilityCoordinates(**validated_data).clean()
+            if 'coordinates' in validated_data.keys():
+                FacilityCoordinates(**validated_data).clean()
             self.buffer_coordinates(facility, validated_data)
             return instance
         else:

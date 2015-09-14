@@ -1121,15 +1121,14 @@ class FacilityUpdates(AbstractBase):
                 "updated_by_id": self.updated_by.id,
                 "created": self.updated
             }
-            if data['coordinates']:
-                data['coordinates'] = Point(
-                    data['coordinates'].get('coordinates'))
+
+            data['coordinates'] = Point(
+                data['coordinates'].get('coordinates'))
             try:
                 self.facility.facility_coordinates_through.id
                 coords = self.facility.facility_coordinates_through
                 for key, value in data.iteritems():
-                    if value:
-                        setattr(coords, key, value)
+                    setattr(coords, key, value) if value else None
                 coords.save()
             except:
                 FacilityCoordinates.objects.create(**data)
