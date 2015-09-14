@@ -180,23 +180,19 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     """This should allow everything about users to be managed"""
-    user_counties = UserCountySerializer(many=True, required=False)
 
+    user_counties = UserCountySerializer(many=True, required=False)
     short_name = serializers.ReadOnlyField(source='get_short_name')
     full_name = serializers.ReadOnlyField(source='get_full_name')
     all_permissions = serializers.ReadOnlyField(source='permissions')
-
     requires_password_change = serializers.ReadOnlyField()
-
-    user_permissions = PermissionSerializer(many=True, required=False)
     groups = GroupSerializer(many=True, required=False)
     regulator = serializers.ReadOnlyField(source='regulator.id')
     regulator_name = serializers.ReadOnlyField(source='regulator.name')
     county = serializers.ReadOnlyField(source='county.id')
     county_name = serializers.ReadOnlyField(source='county.name')
     constituency = serializers.ReadOnlyField(source='constituency.id')
-    constituency_name = serializers.ReadOnlyField(
-        source='constituency.name')
+    constituency_name = serializers.ReadOnlyField(source='constituency.name')
     user_contacts = UserContactSerializer(many=True, required=False)
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
@@ -257,7 +253,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password_history', )
+        exclude = ('password_history', 'user_permissions', )
         extra_kwargs = {'password': {'write_only': True}}
 
 

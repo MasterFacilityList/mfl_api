@@ -8,7 +8,8 @@ from ..models import (
     Officer,
     JobTitle,
     RegulatingBodyContact,
-    RegulatingBody
+    RegulatingBody,
+    FacilityDepartment
 )
 
 from ..serializers import (
@@ -17,8 +18,8 @@ from ..serializers import (
     OfficerSerializer,
     RegulatingBodyContactSerializer,
     JobTitleSerializer,
-    RegulatingBodySerializer
-
+    RegulatingBodySerializer,
+    FacilityDepartmentSerializer
 )
 
 from ..filters import (
@@ -27,12 +28,13 @@ from ..filters import (
     OfficerFilter,
     JobTitleFilter,
     RegulatingBodyContactFilter,
-    RegulatingBodyFilter
-
+    RegulatingBodyFilter,
+    FacilityDepartmentFilter
 )
 
 
 class FacilityStatusListView(generics.ListCreateAPIView):
+
     """
     Lists and creates facility operation statuses
 
@@ -51,6 +53,7 @@ class FacilityStatusListView(generics.ListCreateAPIView):
 
 class FacilityStatusDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular operation status
     """
@@ -59,6 +62,7 @@ class FacilityStatusDetailView(
 
 
 class JobTitleListView(generics.ListCreateAPIView):
+
     """
     Lists and creates job titles
 
@@ -77,6 +81,7 @@ class JobTitleListView(generics.ListCreateAPIView):
 
 class JobTitleDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular job title
     """
@@ -85,6 +90,7 @@ class JobTitleDetailView(
 
 
 class OfficerListView(generics.ListCreateAPIView):
+
     """
     Lists and creates officers
 
@@ -106,6 +112,7 @@ class OfficerListView(generics.ListCreateAPIView):
 
 class OfficerDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular officer
     """
@@ -114,6 +121,7 @@ class OfficerDetailView(
 
 
 class RegulatingBodyListView(generics.ListCreateAPIView):
+
     """
     Lists and creates regulatory bodies
 
@@ -134,6 +142,7 @@ class RegulatingBodyListView(generics.ListCreateAPIView):
 
 class RegulatingBodyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular regulatory body details
     """
@@ -142,6 +151,7 @@ class RegulatingBodyDetailView(
 
 
 class OwnerTypeListView(generics.ListCreateAPIView):
+
     """
     Lists and creates a owners
 
@@ -162,6 +172,7 @@ class OwnerTypeListView(generics.ListCreateAPIView):
 
 class OwnerTypeDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular owner type
     """
@@ -170,6 +181,7 @@ class OwnerTypeDetailView(
 
 
 class RegulatingBodyContactListView(generics.ListCreateAPIView):
+
     """
     Lists and creates regulatory contact details
 
@@ -189,8 +201,35 @@ class RegulatingBodyContactListView(generics.ListCreateAPIView):
 
 
 class RegulatingBodyContactDetailView(CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular regulatory body contact.
     """
     queryset = RegulatingBodyContact.objects.all()
     serializer_class = RegulatingBodyContactSerializer
+
+
+class FacilityDepartmentListView(generics.ListCreateAPIView):
+
+    """
+    Lists and creates facility departments
+
+    created ---  Date the record was created
+    updated -- Date the record was updated
+    created_by -- User who created the record
+    updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = FacilityDepartment.objects.all()
+    serializer_class = FacilityDepartmentSerializer
+    filter_class = FacilityDepartmentFilter
+
+
+class FacilityDepartmentDetailView(CustomRetrieveUpdateDestroyView):
+
+    """
+    Retrieves, updates and removes facility departments
+    """
+    queryset = FacilityDepartment.objects.all()
+    serializer_class = FacilityDepartmentSerializer

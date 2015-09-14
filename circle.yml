@@ -16,7 +16,7 @@ dependencies:
 test:
   override:
     - python setup.py check
-    - case $CIRCLE_NODE_INDEX in 0) tox -vre py27;; 1) tox -vre docs ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) tox -v;; 1) bash test_e2e.sh ;; esac:
         parallel: true
         timeout: 300
 
