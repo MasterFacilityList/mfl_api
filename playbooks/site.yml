@@ -25,7 +25,7 @@
         username: public@mfltest.slade360.co.ke,
         last_update: "{{mfl_last_update}}",
         password: public,
-        ssl_on: {{has_ssl}},
+        ssl_on: "{{has_ssl}}",
         ssl_cert_file: "{{cert_file}}",
         ssl_key_file: "{{key_file}}"
       }
@@ -41,7 +41,7 @@
         download_url: "https://github.com/MasterFacilityList/mfl_admin_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
         last_update: "{{mfl_last_update}}",
         tags: "admin-frontend",
-        ssl_on: {{has_ssl}},
+        ssl_on: "{{has_ssl}}",
         ssl_cert_file: "{{cert_file}}",
         ssl_key_file: "{{key_file}}"
       }
@@ -68,7 +68,7 @@
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
         client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
 
-        ssl_on: {{has_ssl}},
+        ssl_on: "{{has_ssl}}",
         ssl_cert_file: "{{cert_file}}",
         ssl_key_file: "{{key_file}}"
       }
