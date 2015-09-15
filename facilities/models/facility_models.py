@@ -1593,7 +1593,7 @@ class FacilityOfficer(AbstractBase):
         return "{}: {}".format(self.facility, self.officer)
 
 
-@reversion.register(follow='regulatory_body')
+@reversion.register(follow=['regulatory_body'])
 @encoding.python_2_unicode_compatible
 class FacilityDepartment(AbstractBase):
 

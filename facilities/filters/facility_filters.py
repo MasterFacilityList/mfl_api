@@ -105,7 +105,7 @@ class FacilityUpgradeFilter(CommonFieldsFilterset):
 class FacilityOperationStateFilter(CommonFieldsFilterset):
     operation_status = django_filters.AllValuesFilter(lookup_type='exact')
     facility = django_filters.AllValuesFilter(lookup_type='exact')
-    reason = django_filters.CharFilter(lookup_type='icontains')
+    reason = django_filters.CharFilter(lookup_type='exact')
 
     class Meta(object):
         model = FacilityOperationState
@@ -194,8 +194,8 @@ class JobTitleFilter(CommonFieldsFilterset):
 
 
 class OfficerContactFilter(CommonFieldsFilterset):
-    officer = django_filters.AllValuesFilter(lookup_type='icontains')
-    contact = django_filters.AllValuesFilter(lookup_type='icontains')
+    officer = django_filters.AllValuesFilter(lookup_type='exact')
+    contact = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta(object):
         model = OfficerContact
