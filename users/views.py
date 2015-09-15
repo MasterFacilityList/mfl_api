@@ -51,6 +51,9 @@ class UserList(generics.ListCreateAPIView):
     def get_queryset(self, *args, **kwargs):
         from common.models import UserCounty, UserConstituency
         user = self.request.user
+        custom_queryset = kwargs.pop('custom_queryset', None)
+        if hasattr(custom_queryset, 'count'):
+            self.queryset = custom_queryset
         if user.county and not user.is_national:
             county_users = [
                 const_user.user.id for const_user in
@@ -63,7 +66,7 @@ class UserList(generics.ListCreateAPIView):
                     constituency__county=user.county).distinct()
             ]
             area_users = county_users + sub_county_users
-            return MflUser.objects.filter(
+            return self.queryset.filter(
                 id__in=area_users).exclude(id=self.request.user.id)
         elif user.is_national and not user.is_superuser:
             # Should see the county users and the national users
@@ -76,9 +79,15 @@ class UserList(generics.ListCreateAPIView):
                 nat_user.id for nat_user in MflUser.objects.filter(
                     is_national=True)
             ]
-            all_users = county_users + national_users
-            return MflUser.objects.filter(
-                id__in=all_users).exclude(id=self.request.user.id)
+            group_less_users = [
+                g_user.id
+                for g_user in MflUser.objects.all()
+                if not g_user.groups.all()
+            ]
+            all_users = county_users + national_users + group_less_users
+
+            return self.queryset.filter(
+                id__in=all_users).exclude(id=self.request.user.id).distinct()
         elif user.constituency:
             all_users = MflUser.objects.all()
             users_to_see = []
@@ -89,15 +98,23 @@ class UserList(generics.ListCreateAPIView):
                 if not user.groups.all():
                     users_to_see.append(user.id)
 
-            return MflUser.objects.filter(
+            return self.queryset.filter(
                 id__in=users_to_see, created_by_id=self.request.user.id
             ).exclude(id=self.request.user.id)
         elif user.is_superuser:
-            return MflUser.objects.all().exclude(id=self.request.user.id)
+            return self.queryset.all().exclude(id=self.request.user.id)
 
         else:
             # The user is not allowed to see the users
             return MflUser.objects.none()
+
+    def filter_queryset(self, queryset):
+        """
+        Overridden in order to constrain search results to what a user should
+        see.
+        """
+        queryset = super(UserList, self).filter_queryset(queryset)
+        return self.get_queryset(custom_queryset=queryset)
 
 
 class UserDetailView(CustomRetrieveUpdateDestroyView):

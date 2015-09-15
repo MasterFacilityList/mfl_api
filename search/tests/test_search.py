@@ -6,11 +6,13 @@ from django.test.utils import override_settings
 from django.core.urlresolvers import reverse
 from django.core.management import call_command
 from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 
 from model_mommy import mommy
 
 from facilities.models import Facility, FacilityApproval
 from facilities.serializers import FacilitySerializer
+from common.models import County, Constituency, UserConstituency, UserCounty
 from common.tests import ViewTestBase
 from mfl_gis.models import FacilityCoordinates
 
@@ -166,6 +168,7 @@ class TestElasticSearchAPI(TestCase):
 class TestSearchFunctions(ViewTestBase):
     def setUp(self):
         self.elastic_search_api = ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
         super(TestSearchFunctions, self).setUp()
 
     def test_serialize_model(self):
@@ -257,6 +260,27 @@ class TestSearchFunctions(ViewTestBase):
         search_fields = self.elastic_search_api.get_search_fields('no_model')
         self.assertIsNone(search_fields)
 
+    def test_user_search(self):
+        user = mommy.make(get_user_model(), is_national=True)
+        self.client.force_authenticate(user)
+        county_user = mommy.make(get_user_model())
+        sub_county_user = mommy.make(
+            get_user_model(), first_name='kijana', last_name='mzee')
+        index_instance(sub_county_user, 'test_index')
+        url = reverse("api:users:mfl_users_list")
+        url = url + "?search=kijana"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        # the national users are not allowed to see the sub county level users
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, county=county, user=county_user)
+        mommy.make(
+            UserConstituency, user=sub_county_user, constituency=const,
+            created_by=county_user, updated_by=county_user)
+        filtered_response = self.client.get(url)
+        self.assertEquals(200, filtered_response.status_code)
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFunctions, self).tearDown()
@@ -322,7 +346,7 @@ class TestSearchFilter(ViewTestBase):
     def test_create_index(self):
         call_command('setup_index')
         api = ElasticAPI()
-        api.get_index('mfl_index')
+        api.get_index('test_index')
         # handle cases where the index already exists
 
     def test_build_index(self):
@@ -337,9 +361,9 @@ class TestSearchFilter(ViewTestBase):
         # We leave it without any assertions for coverage's sake.
         api = ElasticAPI()
         call_command('setup_index')
-        api.get_index('mfl_index')
+        api.get_index('test_index')
         call_command('remove_index')
-        api.get_index('mfl_index')
+        api.get_index('test_index')
 
     def test_non_indexable_model(self):
         obj = mommy.make_recipe(
