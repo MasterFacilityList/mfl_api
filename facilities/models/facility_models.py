@@ -1593,7 +1593,7 @@ class FacilityOfficer(AbstractBase):
         return "{}: {}".format(self.facility, self.officer)
 
 
-@reversion.register
+@reversion.register(follow='regulatory_body')
 @encoding.python_2_unicode_compatible
 class FacilityDepartment(AbstractBase):
 
@@ -1602,6 +1602,7 @@ class FacilityDepartment(AbstractBase):
     """
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
+    regulatory_body = models.ForeignKey(RegulatingBody)
 
     def __str__(self):
         return self.name

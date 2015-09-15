@@ -585,5 +585,9 @@ class OptionGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 class FacilityDepartmentSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
+    regulatory_body_name = serializers.ReadOnlyField(
+        source='regulatory_body.name'
+    )
+
     class Meta:
         model = FacilityDepartment

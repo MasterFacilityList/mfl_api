@@ -46,6 +46,7 @@
         ssl_key_file: "{{key_file}}"
       }
     - { role: postgresql }
+    - nginx
     - {
         role: api,
         server_name: mfl.slade360.co.ke,
