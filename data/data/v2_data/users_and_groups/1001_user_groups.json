@@ -1,15 +1,4 @@
 [
-
-    {
-        "mfluser": {
-            "email": "facility_officer@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Facility Officer Group"
-            }
-        ]
-    },
     {
         "mfluser": {
             "email": "ncck@mfltest.slade360.co.ke"
@@ -147,6 +136,16 @@
         "groups": [
             {
                 "name": "Superusers"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "facility_officer@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Facility Officer Group"
             }
         ]
     },

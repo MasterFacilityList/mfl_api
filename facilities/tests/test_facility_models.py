@@ -72,6 +72,15 @@ class TestKephLevel(BaseTestCase):
         mommy.make(KephLevel)
         self.assertEquals(1, KephLevel.objects.count())
 
+    def test_filtering_facility_keph_levels(self):
+        mommy.make(KephLevel, is_facility_level=False)
+        self.assertEquals(0, KephLevel.objects.count())
+        self.assertEquals(1, KephLevel.everything.count())
+
+        mommy.make(KephLevel)
+        self.assertEquals(1, KephLevel.objects.count())
+        self.assertEquals(2, KephLevel.everything.count())
+
 
 class TestFacilityOperationState(BaseTestCase):
 
