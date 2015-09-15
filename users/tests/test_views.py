@@ -347,7 +347,7 @@ class TestUserFiltering(APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
 
-        self.assertEquals(3, len(response.data.get("results")))
+        self.assertEquals(4, len(response.data.get("results")))
 
     def test_users_with_no_priviledges_see_no_user(self):
         user = mommy.make(MflUser)

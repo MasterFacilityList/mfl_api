@@ -147,7 +147,7 @@ class QuerysetFilterMixin(object):
 
     def filter_queryset(self, queryset):
         """
-        Overriden in order to constrain search result to what a user should
+        Overridden in order to constrain search results to what a user should
         see.
         """
         queryset = super(QuerysetFilterMixin, self).filter_queryset(queryset)
