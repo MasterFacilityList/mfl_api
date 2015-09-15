@@ -57,7 +57,17 @@ class AbstractFieldsMixin(PartialResponseMixin):
         if not validated_data.get('updated_by', None):
             validated_data['updated_by'] = self.context['request'].user
 
-        return self.Meta.model.objects.create(**validated_data)
+        return super(AbstractFieldsMixin, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+
+        validated_data['updated'] = timezone.now()
+
+        if not validated_data.get('updated_by', None):
+            validated_data['updated_by'] = self.context['request'].user
+
+        return super(AbstractFieldsMixin, self).update(
+            instance, validated_data)
 
     def get_fields(self):
         """Overridden to take advantage of partial response"""
