@@ -131,6 +131,7 @@ REST_FRAMEWORK = {
         'rating': '1/day'
     },
     'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
         'users.permissions.MFLModelPermissions',
     ),
     'DEFAULT_FILTER_BACKENDS': (
@@ -276,8 +277,9 @@ GIS_BORDERS_CACHE_SECONDS = (60 * 60 * 24 * 366)
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
+    'oauth2_provider.backends.OAuth2Backend',
     'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 LOGIN_REDIRECT_URL = '/api/'
 
