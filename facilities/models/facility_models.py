@@ -20,6 +20,13 @@ from common.fields import SequenceField
 LOGGER = logging.getLogger(__name__)
 
 
+class FacilityKephManager(models.Manager):
+    def get_queryset(self):
+        return super(
+            FacilityKephManager, self).get_queryset().filter(
+            is_facility_level=True)
+
+
 @reversion.register
 @encoding.python_2_unicode_compatible
 class KephLevel(AbstractBase):
@@ -35,6 +42,11 @@ class KephLevel(AbstractBase):
     description = models.TextField(
         null=True, blank=True,
         help_text='A short description of the KEPH level')
+    is_facility_level = models.BooleanField(
+        default=True, help_text='Is the KEPH level applicable to facilties')
+
+    objects = FacilityKephManager()
+    everything = models.Manager()
 
     def __str__(self):
         return self.name
