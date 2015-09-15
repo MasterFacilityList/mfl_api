@@ -723,6 +723,18 @@
                 "codename": "view_county"
             },
             {
+                "codename": "add_subcounty"
+            },
+            {
+                "codename": "change_subcounty"
+            },
+            {
+                "codename": "delete_subcounty"
+            },
+            {
+                "codename": "view_subcounty"
+            },
+            {
                 "codename": "add_town"
             },
             {
@@ -780,6 +792,9 @@
                 "codename": "view_ward"
             },
             {
+                "codename": "change_facility"
+            },
+            {
                 "codename": "publish_facilities"
             },
             {
@@ -792,6 +807,9 @@
                 "codename": "view_closed_facilities"
             },
             {
+                "codename": "view_facility"
+            },
+            {
                 "codename": "view_rejected_facilities"
             },
             {
@@ -799,6 +817,18 @@
             },
             {
                 "codename": "view_unpublished_facilities"
+            },
+            {
+                "codename": "add_facilityapproval"
+            },
+            {
+                "codename": "change_facilityapproval"
+            },
+            {
+                "codename": "delete_facilityapproval"
+            },
+            {
+                "codename": "view_facilityapproval"
             },
             {
                 "codename": "add_jobtitle"
