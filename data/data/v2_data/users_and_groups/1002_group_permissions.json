@@ -780,10 +780,19 @@
                 "codename": "view_ward"
             },
             {
+                "codename": "publish_facilities"
+            },
+            {
                 "codename": "view_all_facility_fields"
             },
             {
                 "codename": "view_classified_facilities"
+            },
+            {
+                "codename": "view_closed_facilities"
+            },
+            {
+                "codename": "view_rejected_facilities"
             },
             {
                 "codename": "view_unapproved_facilities"
