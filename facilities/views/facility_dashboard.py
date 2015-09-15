@@ -10,7 +10,7 @@ from ..models import (
     Owner,
     FacilityStatus,
     FacilityType,
-    Facility,
+    Facility
 )
 
 
@@ -164,6 +164,9 @@ class DashBoard(APIView):
         return self.filter_queryset().filter(
             created__gte=three_months_ago).count()
 
+    def get_facility_with_pending_updates(self):
+        return self.filter_queryset().filter(has_edits=True).count()
+
     def filter_queryset(self):
         user = self.request.user
         if user.county and not user.is_national:
@@ -187,7 +190,8 @@ class DashBoard(APIView):
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
             "owner_types": self.get_facility_owner_types_summary(),
-            "recently_created": self.get_recently_created_facilities()
+            "recently_created": self.get_recently_created_facilities(),
+            "pending_updates": self.get_facility_with_pending_updates()
         }
         fields = self.request.query_params.get("fields", None)
         if fields:

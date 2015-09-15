@@ -787,6 +787,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "pending_updates": 0,
             "recently_created": 1,
             "county_summary": [
                 {
@@ -850,6 +851,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "pending_updates": 0,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [],
@@ -912,6 +914,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "pending_updates": 0,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [
