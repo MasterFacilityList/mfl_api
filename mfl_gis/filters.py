@@ -58,8 +58,8 @@ class WorldBorderFilter(CommonFieldsFilterset):
 class CountyBoundaryFilter(CommonFieldsFilterset):
     id = ListCharFilter(lookup_type='icontains')
     name = ListCharFilter(lookup_type='icontains')
-    code = ListCharFilter(lookup_type='icontains')
-    area = ListCharFilter(lookup_type='icontains')
+    code = ListCharFilter(lookup_type='exact')
+    area = ListCharFilter(lookup_type='exact')
 
     class Meta(object):
         model = CountyBoundary
@@ -68,8 +68,8 @@ class CountyBoundaryFilter(CommonFieldsFilterset):
 class ConstituencyBoundaryFilter(CommonFieldsFilterset):
     id = ListCharFilter(lookup_type='icontains')
     name = ListCharFilter(lookup_type='icontains')
-    code = ListCharFilter(lookup_type='icontains')
-    area = ListCharFilter(lookup_type='icontains')
+    code = ListCharFilter(lookup_type='exact')
+    area = ListCharFilter(lookup_type='exact')
 
     class Meta(object):
         model = ConstituencyBoundary
@@ -78,8 +78,8 @@ class ConstituencyBoundaryFilter(CommonFieldsFilterset):
 class WardBoundaryFilter(CommonFieldsFilterset):
     id = ListCharFilter(lookup_type='icontains')
     name = ListCharFilter(lookup_type='icontains')
-    code = ListCharFilter(lookup_type='icontains')
-    area = ListCharFilter(lookup_type='icontains')
+    code = ListCharFilter(lookup_type='exact')
+    area = ListCharFilter(lookup_type='exact')
 
     class Meta(object):
         model = WardBoundary

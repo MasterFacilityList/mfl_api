@@ -54,3 +54,11 @@ server {
     ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-RC4-SHA:ECDHE-RSA-AES128-SHA:AES128-SHA:RC4-SHA;
     {% endif %}
 }
+
+{% if ssl_on %}
+server {
+    listen 80;
+    server_name {{server_name}};
+    rewrite ^ https://$server_name$request_uri? redirect;
+}
+{% endif %}

@@ -1,7 +1,5 @@
 import json
 
-from django.contrib.auth.models import AnonymousUser
-
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.views import Response, APIView
@@ -86,26 +84,23 @@ class QuerysetFilterMixin(object):
         if hasattr(custom_queryset, 'count'):
             self.queryset = custom_queryset
 
-        if not isinstance(self.request.user, AnonymousUser):
-            if not self.request.user.is_national and \
-                    self.request.user.county \
-                    and hasattr(self.queryset.model, 'ward'):
-                self.queryset = self.queryset.filter(
-                    ward__constituency__county=self.request.user.county)
+        if not self.request.user.is_national and \
+                self.request.user.county \
+                and hasattr(self.queryset.model, 'ward'):
+            self.queryset = self.queryset.filter(
+                ward__constituency__county=self.request.user.county)
 
-            elif self.request.user.regulator and hasattr(
-                    self.queryset.model, 'regulatory_body'):
-                self.queryset = self.queryset.filter(
-                    regulatory_body=self.request.user.regulator)
-            elif self.request.user.is_national and not \
-                    self.request.user.county:
-                self.queryset = self.queryset
-            elif self.request.user.constituency and hasattr(
-                    self.queryset.model, 'ward'):
-                self.queryset = self.queryset.filter(
-                    ward__constituency=self.request.user.constituency)
-            else:
-                self.queryset = self.queryset
+        elif self.request.user.regulator and hasattr(
+                self.queryset.model, 'regulatory_body'):
+            self.queryset = self.queryset.filter(
+                regulatory_body=self.request.user.regulator)
+        elif self.request.user.is_national and not \
+                self.request.user.county:
+            self.queryset = self.queryset
+        elif self.request.user.constituency and hasattr(
+                self.queryset.model, 'ward'):
+            self.queryset = self.queryset.filter(
+                ward__constituency=self.request.user.constituency)
         else:
             self.queryset = self.queryset
 
