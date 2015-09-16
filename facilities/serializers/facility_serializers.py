@@ -458,7 +458,6 @@ class FacilityDetailSerializer(FacilitySerializer):
     def create_facility_contacts(self, instance, contact_data, validated_data):
         contact = self.create_contact(contact_data)
         if contact:
-            print contact
             facility_contact_data_unadit = {
                 "contact": contact,
                 "facility": instance
