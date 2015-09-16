@@ -8,7 +8,7 @@ from facilities.models import (
     Service, FacilityService, FacilityContact,
     RegulatingBody, FacilityUnit, JobTitle,
     OfficerContact, Officer, FacilityOfficer,
-    Option)
+    Option, FacilityDepartment)
 
 from model_mommy import mommy
 
@@ -180,13 +180,10 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
     def test_update_facility_units_facility_not_approved(self):
         facility = mommy.make(Facility)
         url = self.url + "{}/".format(facility.id)
-        regulating_body = mommy.make(RegulatingBody)
+        department = mommy.make(FacilityDepartment)
         facility_units = [
             {
-                "name": "The Facilities Pharmacy",
-                "description": (
-                    "This is the Pharmacy belonging to the hospital"),
-                "regulating_body": regulating_body.id
+                "unit": str(department.id)
             }
         ]
         data = {
@@ -200,13 +197,10 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
         facility = mommy.make(Facility)
         url = self.url + "{}/".format(facility.id)
         mommy.make(FacilityApproval, facility=facility)
-        regulating_body = mommy.make(RegulatingBody)
+        department = mommy.make(FacilityDepartment)
         facility_units = [
             {
-                "name": "The Facilities Pharmacy",
-                "description": (
-                    "This is the Pharmacy belonging to the hospital"),
-                "regulating_body": regulating_body.id
+                "unit": str(department.id)
             }
         ]
         data = {
@@ -288,14 +282,10 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
     def test_add_more_facility_units_on_updates(self):
         facility = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility)
-        regulating_body = mommy.make(RegulatingBody)
+        department = mommy.make(FacilityDepartment)
         units = [
             {
-
-                "name": "The Facilities Pharmacy",
-                "description": (
-                    "This is the Pharmacy belonging to the hospital"),
-                "regulating_body": regulating_body.id
+                "unit": str(department.id)
 
             }
         ]
@@ -307,13 +297,10 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, FacilityUpdates.objects.count())
 
-        regulating_body_2 = mommy.make(RegulatingBody)
+        department = mommy.make(FacilityDepartment)
         units = [
             {
-                "name": "The is another ",
-                "description": (
-                    "This is the Pharmacy belonging to the hospital"),
-                "regulating_body": regulating_body_2.id
+                "unit": str(department.id)
             }
         ]
         data_2 = {
@@ -481,12 +468,10 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
                 "contact": "Some contact"
             }
         ]
-        regulating_body = mommy.make(RegulatingBody)
+        department = mommy.make(FacilityDepartment)
         units = [
             {
-                "name": "some unit name",
-                "description": "The description of the unit",
-                "regulating_body": str(regulating_body.id)
+                "unit": str(department.id)
             }
         ]
 
@@ -561,12 +546,11 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
                 "contact": "Some contact"
             }
         ]
-        regulating_body = mommy.make(RegulatingBody)
+
+        department = mommy.make(FacilityDepartment)
         units = [
             {
-                "name": "some unit name",
-                "description": "The description of the unit",
-                "regulating_body": str(regulating_body.id)
+                "unit": str(department.id)
             }
         ]
         job_title = mommy.make(JobTitle)

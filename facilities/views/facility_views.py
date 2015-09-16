@@ -23,8 +23,8 @@ from ..models import (
     FacilityUpdates,
     Service,
     Option,
-    RegulatingBody,
-    JobTitle
+    JobTitle,
+    FacilityDepartment
 )
 
 from ..serializers import (
@@ -409,13 +409,13 @@ class FacilityDetailView(
                 id=contact.get('contact_type')).name
         return contacts
 
-    def populate_regulatory_body_names(self, units):
+    def populate_department_names(self, units):
         """
         Resolves and populates the regulatory body names
         """
         for unit in units:
-            unit['regulating_body_name'] = RegulatingBody.objects.get(
-                id=unit['regulating_body']).name
+            unit['department_name'] = FacilityDepartment.objects.get(
+                id=unit['unit']).name
         return units
 
     def populate_officer_incharge_contacts(self, officer_in_charge):
@@ -494,7 +494,7 @@ class FacilityDetailView(
             contacts = self.populate_contact_type_names(contacts)
             self.buffer_contacts(update, contacts)
 
-            units = self.populate_regulatory_body_names(units)
+            units = self.populate_department_names(units)
             self.buffer_units(update, units)
 
             if officer_in_charge != {}:

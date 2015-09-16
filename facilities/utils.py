@@ -19,7 +19,8 @@ from facilities.models import (
     FacilityOfficer,
     JobTitle,
     Officer,
-    OfficerContact
+    OfficerContact,
+    FacilityUnit
 )
 
 
@@ -124,11 +125,15 @@ def create_facility_contacts(instance, contact_data, validated_data):
 
 def create_facility_units(instance, unit_data, validated_data):
     from facilities.serializers import FacilityUnitSerializer
+    unit_data.pop('department_name', None)
     unit_data['facility'] = instance.id
     unit_data = inject_audit_fields(unit_data, validated_data)
-    unit = FacilityUnitSerializer(data=unit_data)
-    return unit.save() if unit.is_valid() else inlining_errors.append((
-        json.dumps(unit.errors)))
+    try:
+        FacilityUnit.objects.get(**unit_data)
+    except FacilityUnit.DoesNotExist:
+        unit = FacilityUnitSerializer(data=unit_data)
+        return unit.save() if unit.is_valid() else inlining_errors.append((
+            json.dumps(unit.errors)))
 
 
 def create_facility_services(instance, service_data, validated_data):

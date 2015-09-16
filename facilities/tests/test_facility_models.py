@@ -46,7 +46,8 @@ from ..models import (
     FacilityUpgrade,
     KephLevel,
     OptionGroup,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    FacilityDepartment
 )
 
 
@@ -819,15 +820,15 @@ class TestFacilityUnitModel(BaseTestCase):
 
     def test_string_representation(self):
         facility = mommy.make(Facility, name='AKUH')
+        department = mommy.make(FacilityDepartment, name='some')
         data = {
             "facility": facility,
-            "name": "Pharmacy",
-            "description": "This is the AKUH Pharmacy section."
+            "unit": department
         }
         data = self.inject_audit_fields(data)
         facility_unit = FacilityUnit.objects.create(**data)
         self.assertEquals(1, FacilityUnit.objects.count())
-        self.assertEquals(str(facility_unit), 'AKUH: Pharmacy')
+        self.assertEquals(str(facility_unit), 'AKUH: some')
 
     def test_regulation_status(self):
         facility_unit = mommy.make(FacilityUnit)
@@ -837,11 +838,12 @@ class TestFacilityUnitModel(BaseTestCase):
             facility_unit=facility_unit, regulation_status=reg_status)
         self.assertEquals(reg_status, obj.regulation_status)
 
-    def test_unique_unit_name_in_a_facility(self):
+    def test_unique_facility_unit(self):
         facility = mommy.make(Facility)
-        mommy.make(FacilityUnit, name='honcho', facility=facility)
+        department = mommy.make(FacilityDepartment)
+        mommy.make(FacilityUnit, unit=department, facility=facility)
         with self.assertRaises(ValidationError):
-            mommy.make(FacilityUnit, name='honcho', facility=facility)
+            mommy.make(FacilityUnit, unit=department, facility=facility)
 
 
 class TestRegulationStatusModel(BaseTestCase):
