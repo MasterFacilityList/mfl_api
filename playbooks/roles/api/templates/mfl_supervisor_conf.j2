@@ -6,6 +6,6 @@ user=nobody
 autostart=true
 autorestart=true
 redirect_stderr=true
-environment=DEBUG="{{django_debug}}",FRONTEND_URL="{{frontend_url}}",EMAIL_HOST="{{email_host}}",EMAIL_HOST_USER="{{email_host_user}}",EMAIL_HOST_PASSWORD="{{email_host_password}}",REALTIME_INDEX="{{realtime_index}}"
+environment=DEBUG="{{django_debug}}",FRONTEND_URL="{{frontend_url}}",EMAIL_HOST="{{email_host}}",EMAIL_HOST_USER="{{email_host_user}}",EMAIL_HOST_PASSWORD="{{email_host_password}}",REALTIME_INDEX="{{realtime_index}}",HTTPS_ENABLED="{{ssl_on}}"
 
 {% endfor %}

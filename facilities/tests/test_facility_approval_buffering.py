@@ -22,6 +22,7 @@ from common.models import Contact, ContactType
     }
 })
 class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse("api:facilities:facilities_list")
         super(NOTTestFacilityUdpatesBuffering, self).setUp()
@@ -446,6 +447,7 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
 
 
 class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
+
     def setUp(self):
         self.facilities_url = reverse("api:facilities:facilities_list")
         super(TestFacilityUpdatesApproval, self).setUp()
