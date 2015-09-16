@@ -25,6 +25,7 @@ from ..models import (
     FacilityService,
     FacilityContact,
     FacilityUnit,
+    FacilityDepartment,
     FacilityOfficer,
     Officer,
     OfficerContact
@@ -138,20 +139,18 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
         ]
         regulating_body = mommy.make(RegulatingBody)
+        department = mommy.make(
+            FacilityDepartment,
+            regulatory_body=regulating_body, name='The lab')
         facility_units = [
             {
-                "name": "The Facilities Pharmacy",
-                "description": (
-                    "This is the Pharmacy belonging to the hospital"),
-                "regulating_body": regulating_body.id
+                "unit": str(department.id)
             }
         ]
         facility_units_with_error = [
             {
                 "name": "The Facilities Pharmacy",
-                "description": (
-                    "This is the Pharmacy belonging to the hospital"),
-                "regulating_body": 11561857195
+
             }
         ]
         data = {
@@ -302,12 +301,13 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
         ]
         regulating_body = mommy.make(RegulatingBody)
+        department = mommy.make(
+            FacilityDepartment,
+            regulatory_body=regulating_body, name='Kapharmacy')
         facility_units = [
             {
-                "name": "The Facilities Pharmacy",
-                "description": (
-                    "This is the Pharmacy belonging to the hospital"),
-                "regulating_body": regulating_body.id
+                "unit": str(department.id)
+
             }
         ]
         officer_in_charge = {
@@ -434,6 +434,24 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
 
         response = self.client.patch(url, data_with_errors_4)
         self.assertEquals(400, response.status_code)
+
+    def test_update_facility_units(self):
+        facility = mommy.make(Facility)
+        department = mommy.make(FacilityDepartment)
+        units = [
+            {
+                "unit": str(department.id)
+            }
+        ]
+        url = reverse("api:facilities:facilities_list")
+        url = url + "{}/".format(facility.id)
+        data = {
+            "units": units
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        response_2 = self.client.patch(url, data)
+        self.assertEquals(400, response_2.status_code)
 
 
 class TestFacilityContacts(LoginMixin, APITestCase):

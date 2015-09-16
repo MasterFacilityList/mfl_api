@@ -161,21 +161,25 @@ class TestModelRepr(ModelReprMixin, TestCase):
 
     def test_facility_unit_regulation(self):
         f = mommy.make(models.Facility, name="fe")
-        fu = mommy.make(models.FacilityUnit, name="qw", facility=f)
+        department = mommy.make(models.FacilityDepartment, name='jina')
+        fu = mommy.make(models.FacilityUnit, unit=department, facility=f)
         rs = mommy.make(models.RegulationStatus, name="ok")
         self.check_repr(
             mommy.make(
                 models.FacilityUnitRegulation, facility_unit=fu,
                 regulation_status=rs
             ),
-            "fe: qw: ok"
+            "fe: jina: ok"
         )
 
     def test_facility_unit(self):
         f = mommy.make(models.Facility, name='io')
+        department = mommy.make(models.FacilityDepartment, name='some')
         self.check_repr(
-            mommy.make(models.FacilityUnit, name="yah", facility=f),
-            "io: yah"
+            mommy.make(
+                models.FacilityUnit,
+                unit=department, facility=f),
+            "io: some"
         )
 
     def test_service_category(self):
