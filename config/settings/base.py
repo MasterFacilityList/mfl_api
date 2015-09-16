@@ -14,7 +14,7 @@ env = environ.Env(
     HTTPS_ENABLED=(bool, False),
     SECRET_KEY=(str, 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'),
     EMAIL_HOST=(str, 'localhost'),
-    EMAIL_HOST_USER=(int, 487),
+    EMAIL_HOST_USER=(str, 487),
     EMAIL_HOST_PASSWORD=(str, 'notarealpassword')
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
