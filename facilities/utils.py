@@ -14,7 +14,7 @@ from common.serializers import ContactSerializer
 from facilities.models import (
     FacilityContact,
     Service,
-    RegulatingBody,
+    FacilityDepartment,
     Facility,
     FacilityOfficer,
     JobTitle,
@@ -53,17 +53,10 @@ def _validate_services(services):
 def _validate_units(units):
     errors = []
     for unit in units:
-        if not _is_valid_uuid(unit.get('regulating_body', None)):
-            errors.append("Regulating body has a badly formed uuid")
         try:
-            RegulatingBody.objects.get(id=unit['regulating_body'])
-        except RegulatingBody.DoesNotExist:
-            errors.append(
-                "The regulating_body with the id {} was not "
-                "found".format(unit.get("regulating_body")))
-        except KeyError:
-            errors.append(
-                "Key regulating_body is missing")
+            FacilityDepartment.objects.get(id=unit.get('unit'))
+        except FacilityDepartment.DoesNotExist:
+            errors.append("The facility department provided does not exist")
 
     return errors
 

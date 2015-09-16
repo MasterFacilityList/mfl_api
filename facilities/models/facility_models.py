@@ -1334,7 +1334,7 @@ class FacilityUnitRegulation(AbstractBase):
         return "{}: {}".format(self.facility_unit, self.regulation_status)
 
 
-@reversion.register(follow=['facility', 'regulating_body'])
+@reversion.register(follow=['facility', 'unit'])
 @encoding.python_2_unicode_compatible
 class FacilityUnit(AbstractBase):
 
@@ -1349,11 +1349,9 @@ class FacilityUnit(AbstractBase):
     """
     facility = models.ForeignKey(
         Facility, on_delete=models.PROTECT, related_name='facility_units')
-    name = models.CharField(max_length=100)
-    description = models.TextField(
-        help_text='A short summary of the facility unit.')
-    regulating_body = models.ForeignKey(
-        RegulatingBody, null=True, blank=True)
+    unit = models.ForeignKey(
+        'FacilityDepartment', related_name='unit_facilities',
+        on_delete=models.PROTECT)
 
     @property
     def regulation_status(self):
@@ -1362,10 +1360,10 @@ class FacilityUnit(AbstractBase):
         return reg_statuses[0].regulation_status if reg_statuses else None
 
     def __str__(self):
-        return "{}: {}".format(self.facility.name, self.name)
+        return "{}: {}".format(self.facility.name, self.unit.name)
 
     class Meta(AbstractBase.Meta):
-        unique_together = ('facility', 'name', )
+        unique_together = ('facility', 'unit', )
 
 
 @reversion.register(follow=['keph_level', ])
