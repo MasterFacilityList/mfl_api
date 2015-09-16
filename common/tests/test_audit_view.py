@@ -138,7 +138,7 @@ class TestAuditableViewMixin(APITestCase):
         response = self.client.get(url + '?include_audit=true')
         self.assertEquals(200, response.status_code)
         self.assertEqual(len(response.data["revisions"]), 1)
-        self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
+        self.assertEqual(len(response.data["revisions"][0]["updates"]), 2)
 
         diff = response.data["revisions"][0]["updates"][0]
 
@@ -171,7 +171,7 @@ class TestAuditableViewMixin(APITestCase):
         response = self.client.get(url + '?include_audit=true')
         self.assertEquals(200, response.status_code)
         self.assertEqual(len(response.data["revisions"]), 1)
-        self.assertEqual(len(response.data["revisions"][0]["updates"]), 3)
+        self.assertEqual(len(response.data["revisions"][0]["updates"]), 4)
 
         diff = response.data["revisions"][0]["updates"]
 
