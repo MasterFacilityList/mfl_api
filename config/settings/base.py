@@ -10,13 +10,17 @@ env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
     DEBUG=(bool, True),
     FRONTEND_URL=(str, "http://localhost:8062"),
-    REALTIME_INDEX=(bool, False)
+    REALTIME_INDEX=(bool, False),
+    HTTPS_ENABLED=(bool, False),
+    SECRET_KEY=(str, 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'),
+    EMAIL_HOST=(str, 'localhost'),
+    EMAIL_HOST_USER=(str, 487),
+    EMAIL_HOST_PASSWORD=(str, 'notarealpassword')
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
-SECRET_KEY = env(
-    'SECRET_KEY', default='p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8')
+SECRET_KEY = env('SECRET_KEY')
 ENV_DB = env.db()
 DATABASES = {
     'default': {
@@ -43,9 +47,9 @@ MIDDLEWARE_CLASSES = (
     'reversion.middleware.RevisionMiddleware'
 )
 
-EMAIL_HOST = env('EMAIL_HOST', default='localhost')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER', default=487)
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='notarealpassword')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
@@ -286,7 +290,7 @@ LOGIN_REDIRECT_URL = '/api/'
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": env('REALTIME_INDEX', False),
+    "REALTIME_INDEX": env('REALTIME_INDEX'),
     "SEARCH_RESULT_SIZE": 50,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
@@ -455,3 +459,17 @@ EXCEL_EXCEPT_FIELDS = [
 
 FRONTEND_URL = env("FRONTEND_URL")
 PASSWORD_RESET_URL = "%s/#/reset_pwd_confirm/{uid}/{token}" % FRONTEND_URL
+
+if env('HTTPS_ENABLED'):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_PROXY_PROTOCOL', 'https')
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+
+
+CSRF_COOKIE_AGE = None
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_AGE = (7 * 24 * 60 * 60)
+SECURE_BROWSER_XSS_FILTER = True
