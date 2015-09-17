@@ -91,7 +91,9 @@ class TestUserViews(LoginMixin, APITestCase):
     def test_create_user_is_staff(self):
         create_url = reverse('api:users:mfl_users_list')
         group = Group.objects.create(name="Test Group")
-        mommy.make(CustomGroup, group=group, regulator=True)
+        mommy.make(
+            CustomGroup,
+            group=group, regulator=True, administrator=True)
         post_data = {
             "groups": [{"id": group.id, "name": "Test Group"}],
             "email": "hakunaruhusa@mfltest.slade360.co.ke",
@@ -134,7 +136,8 @@ class TestUserViews(LoginMixin, APITestCase):
             employee_number='9448855555', password='pass_long12424'
         )
         group = Group.objects.create(name="Test Group")
-        CustomGroup.objects.create(group=group, regulator=True)
+        CustomGroup.objects.create(
+            group=group, regulator=True, administrator=True)
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
         patch_data = {
@@ -159,7 +162,8 @@ class TestUserViews(LoginMixin, APITestCase):
             employee_number='9448855555', password='pass_long12424'
         )
         group = Group.objects.create(name="Test Group")
-        CustomGroup.objects.create(group=group, administrator=True)
+        CustomGroup.objects.create(
+            group=group, county_level=True, administrator=True)
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
         patch_data = {
@@ -184,7 +188,8 @@ class TestUserViews(LoginMixin, APITestCase):
             employee_number='9448855555', password='pass_long12424'
         )
         group = Group.objects.create(name="Test Group")
-        CustomGroup.objects.create(group=group, county_level=True)
+        CustomGroup.objects.create(
+            group=group, county_level=True, administrator=True)
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
         patch_data = {
@@ -208,7 +213,8 @@ class TestUserViews(LoginMixin, APITestCase):
             employee_number='9448855555', password='pass_long12424'
         )
         group = Group.objects.create(name="Test Group")
-        CustomGroup.objects.create(group=group, national=True)
+        CustomGroup.objects.create(
+            group=group, national=True, administrator=True)
         update_url = reverse(
             'api:users:mfl_user_detail', kwargs={'pk': user.id})
         patch_data = {

@@ -209,9 +209,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     def _assign_is_staff(self, user_groups):
         for group in user_groups:
-            if (
-                group.is_administrator or group.is_regulator or
-                    group.is_county_level, group.is_national):
+            if group.is_administrator:
                 return True
         return False
 
