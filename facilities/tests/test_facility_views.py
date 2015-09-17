@@ -753,7 +753,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertTemplateUsed(response, 'correction_template.txt')
+        self.assertTemplateUsed(response, 'correction_template.html')
 
 
 class TestDashBoardView(LoginMixin, APITestCase):
