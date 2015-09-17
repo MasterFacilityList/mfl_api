@@ -68,7 +68,7 @@
 }
 </style>
 <body class="font-latolight" style="font-size: 14px;">
-<div class="row bg-blue">
+<div class="row">
     <h3 class="font-arial fs-20" style="padding-top: 10px; padding-left: 10px; margin-bottom: 0px;">Medical Officer of Health</h3>
 <div class="col-xs-12 content-card" style="margin-bottom: 0px;">
     <p style="margin-bottom: 5px;">
@@ -131,39 +131,48 @@
     <h4 class="font-arial fs-20">
         Basic Details
     </h4>
-    <div style="padding: 2px; margin-top: -10px;">
-
-    <p style="margin-top: 0px; margin-bottom: 5px;">
-        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.name}}</span>
-        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Abbreviation:</span> {{facility.abbreviation}}</span>
+    <div style="padding: 2px; margin-top: -15px;">
+    <p style="margin-top: -5px;">
+        <span><span class="text-black fw-600">Name:</span> {{facility.name}}</span>
     </p>
-    <p class="word-wrap">
+    <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Code:</span> {{facility.code}}</span>
     </p>
-    <p class="word-wrap" style="margin-top: -10px;">
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Abbreviation:</span> {{facility.abbreviation}}</span>
+    </p>
+    <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Type:</span> {{facility.facility_type.name}}</span>
     </p>
-    <p class="word-wrap" style="margin-top: -10px;">
+    <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Owner Category:</span> {{facility.owner.owner_type.name}}</span>
     </p>
-    <p class="word-wrap" style="margin-top: -10px;">
+    <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Owner:</span> {{facility.owner.name}}</span>
     </p>
-    <p style="margin-top: -10px; width: 100%;">
-        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">No. of Beds:</span> {{facility.number_of_beds}}</span>
-        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">No. of Cots:</span> {{facility.number_of_cots}}</span>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">No. of Beds:</span> {{facility.number_of_beds}}</span>
     </p>
-    <p style="margin-top: -10px; width: 100%;">
-        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open on Public Holidays:</span> {{facility.open_public_holidays | yesno}}</span>
-        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open on Weekends:</span> {{facility.open_weekends | yesno}}</span>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">No. of Cotss:</span> {{facility.number_of_cots}}</span>
     </p>
-    <p style="margin-top: -10px; width: 100%;">
-        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open 24 hours:</span> {{facility.open_whole_day | yesno}}</span>
-        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Open Late Night:</span> {{facility.open_late_night | yesno}}</span>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Open on Public Holidays: </span> {{facility.open_public_holidays | yesno}}</span>
     </p>
-    <p style="margin-top: -10px; width: 100%">
-        <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">County:</span> {{facility.ward.county.name}}</span>
-        <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Constituency:</span> {{facility.ward.constituency.name}}</span>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Open on Weekends: </span> {{facility.open_weekends | yesno}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Open 24 hours: </span> {{facility.open_whole_day | yesno}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Open Late Night: </span> {{facility.open_late_night | yesno}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">County:</span> {{facility.ward.county.name}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Constituency:</span> {{facility.ward.constituency.name}}</span>
     </p>
     <p class="word-wrap" style="margin-top: -10px;">
         <span><span class="text-black fw-600">Ward:</span> {{facility.ward.name}}</span>
@@ -174,16 +183,18 @@
     <h4 class="font-arial fs-20">
         Location
     </h4>
-    <div style="padding: 2px; margin-top: -15px;">
-        <p class="word-wrap">
+    <div style="padding: 2px; margin-top: -35px;">
+        <p>
             <span><span class="text-black fw-600">Source:</span> {{facility_coordinates.source.name}}</span>
         </p>
-        <p class="word-wrap" style="margin-top: -10px;">
+        <p style="margin-top: -10px;">
             <span><span class="text-black fw-600">Method:</span> {{facility_coordinates.method.name}}</span>
         </p>
-        <p style="margin-top: -10px; width: 100%">
-            <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Longitude:</span> {{longitude}}</span>
-            <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Latitude:</span> {{latitude}}</span>
+        <p style="margin-top: -10px;">
+            <span><span class="text-black fw-600">Longitude:</span> {{longitude}}</span>
+        </p>
+        <p style="margin-top: -10px;">
+            <span><span class="text-black fw-600">Latitude:</span> {{latitude}}</span>
         </p>
         <p style="margin-top: -10px;">
             <span><span class="text-black fw-600">Directions:</span> {{facility.location_desc}}</span>
@@ -194,10 +205,10 @@
     <h4 class="font-arial fs-20">
         Facility Contacts
     </h4>
-    <div style="padding: 2px; margin-top: -15px;">
+    <div style="padding: 2px; margin-top: -25px;">
     {% if contacts %}
     {% for contact in contacts%}
-        <div style="width: 305px; margin-top: 5px; display: inline-block; word-wrap: break-word;">
+        <div style="margin-top: 5px; word-wrap: break-word;">
             <span><span class="text-black fw-600 fs-13">{{contact.contact.contact_type.name}}:</span> {{contact.contact.contact}}</span>
         </div>
     {%endfor%}
@@ -207,52 +218,28 @@
     </div>
 </div>
 
-<div class="col-xs-12 content-card" style="width: 100%; margin-top: -33px;">
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -20px;">
     <h4 class="font-arial fs-20">
         Officer Incharge
     </h4>
-    <div style="padding: 2px; margin-top: -17px;">
+    <div style="padding: 2px; margin-top: -35px;">
         <p>
-            <span style="float: left; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.officer_in_charge.name}}</span>
-            <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Registration No. :</span> {{facility.officer_in_charge.reg_no}}</span>
+            <span style="margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.officer_in_charge.name}}</span>
         </p>
-        <p class="word-wrap" style="margin-top : -5px;">
+        <p style="margin-top : -10px;">
+            <span style="margin-bottom: 5px;"><span class="text-black fw-600">Registration No. :</span> {{facility.officer_in_charge.reg_no}}</span>
+        </p>
+        <p style="margin-top : -10px;">
             <span><span class="text-black fw-600">Title:</span> {{facility.officer_in_charge.title_name}}</span>
         </p>
     </div>
 </div>
-<div class="col-xs-12 content-card" style="width: 100%; margin-bottom: 5px; margin-top: -33px;">
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -20px;">
     <h4 class="font-arial fs-20">
-        Facility Services
+        Community Health Units
     </h4>
-    {% if services %}
-    <div class="col-xs-12 content-card" style="padding: 2px; margin-bottom: -10px; margin-top: -10px;">
-        <p>
-            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-600">Name</span></span>
-            <span style="float: right; width: 250px; margin-bottom: 5px;"><span class="text-black fw-600">Service Option</span></span>
-        </p>
-        {% for service in services %}
-        <p>
-            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-500">{{service.service.name}}</span></span>
-            <span style="float: right; width: 250px; margin-bottom: 5px;"><span class="text-black fw-500">
-                {% if service.option.value%}
-                {{service.option.value}}
-                {% else %}
-                Yes
-                {%endif%}
-            </span></span>
-        </p>
-        {% endfor %}
-    </div>
-    {% else %}
-    <p>Not Available</p>
-    {% endif %}
-</div>
-
-<div class="col-xs-12 content-card" style="margin-top: -20px;">
-    <h3 class="font-arial fs-20">Community Health Units </h3>
     {% if chus %}
-    <table>
+    <table style="margin-top: -25px;">
         <thead>
             <th>
                 Code
@@ -287,7 +274,34 @@
         </tbody>
     </table>
     {% else %}
-    <p>Not Available</p>
+    <p style="margin-top: -25px;">Not Available</p>
+    {% endif %}
+</div>
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: -25px; margin-bottom: 20px;">
+    <h4 class="font-arial fs-20">
+        Facility Services
+    </h4>
+    {% if services %}
+    <div class="col-xs-12 content-card" style="padding: 2px; margin-bottom: 20px; margin-top: -35px;">
+        <p>
+            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-600">Name</span></span>
+            <span style="float: right; width: 250px; margin-bottom: 5px;"><span class="text-black fw-600">Service Option</span></span>
+        </p>
+        {% for service in services %}
+        <p>
+            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-500">{{service.service.name}}</span></span>
+            <span style="float: right; width: 250px; margin-bottom: 5px; padding-left: 10px;"><span class="text-black fw-500">
+                {% if service.option.value%}
+                {{service.option.value}}
+                {% else %}
+                Yes
+                {%endif%}
+            </span></span>
+        </p>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="padding: 2px; margin-top: -35px;">Not Available</p>
     {% endif %}
 </div>
 </div>
