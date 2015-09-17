@@ -511,16 +511,11 @@ class FacilityDetailSerializer(FacilitySerializer):
             actual_function(facility, entity_data, validated_data)
 
         if contacts:
-            assert len(contacts) == 1
-            print contacts
-            # [
-            #     create_facility_child_entity(
-            #         "create_facility_contacts", contact)
-            #     for contact in contacts
-            # ]
-            for contact in contacts:
+            [
                 create_facility_child_entity(
-                    'create_facility_contacts', contact)
+                    "create_facility_contacts", contact)
+                for contact in contacts
+            ]
 
         if units:
             [create_facility_child_entity(
