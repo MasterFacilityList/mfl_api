@@ -543,6 +543,9 @@ class FacilityContact(AbstractBase):
     def __str__(self):
         return "{}: ({})".format(self.facility, self.contact)
 
+    class Meta(AbstractBase.Meta):
+        unique_together = ('facility', 'contact')
+
 
 @reversion.register(follow=[
     'facility_type', 'operation_status', 'ward', 'owner', 'contacts',
