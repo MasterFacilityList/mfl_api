@@ -1,6 +1,7 @@
 from rest_framework import generics
+from rest_framework.views import Response, status
 
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, Group
 
 from common.utilities import CustomRetrieveUpdateDestroyView
 
@@ -40,6 +41,20 @@ class GroupListView(generics.ListCreateAPIView):
 class GroupDetailView(CustomRetrieveUpdateDestroyView):
     queryset = ProxyGroup.objects.all()
     serializer_class = GroupSerializer
+
+    def delete(self, *args, **kwargs):
+        pk = kwargs.pop('pk', None)
+        group = Group.objects.get(id=pk)
+
+        try:
+            CustomGroup.objects.get(group=group).delete()
+        except CustomGroup.DoesNotExist:
+            pass
+        users = MflUser.objects.all()
+        for user in users:
+            user.groups.remove(group)
+        group.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserList(generics.ListCreateAPIView):

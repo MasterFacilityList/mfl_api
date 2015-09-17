@@ -265,6 +265,29 @@ class TestGroupViews(LoginMixin, APITestCase):
         response = self.client.post(self.url, data)
         self.assertEqual(400, response.status_code)
 
+    def test_delete_group_with_custom_group(self):
+        group = mommy.make(Group)
+        mommy.make(CustomGroup, group=group)
+        user = mommy.make(MflUser)
+        user.groups.add(group)
+        self.assertEquals(1, user.groups.all().count())
+        url = reverse("api:users:groups_list")
+        url = url + "{}/".format(group.id)
+
+        self.client.delete(url)
+        # the login mixin somes with one preconfigured group
+        self.assertEquals(1, Group.objects.count())
+        self.assertEquals(0, user.groups.all().count())
+
+    def test_delete_group_without_custom_group(self):
+        group = mommy.make(Group)
+        url = reverse("api:users:groups_list")
+        url = url + "{}/".format(group.id)
+
+        self.client.delete(url)
+        # the login mixin somes with one preconfigured group
+        self.assertEquals(1, Group.objects.count())
+
 
 class TestDeleting(LoginMixin, APITestCase):
     def setUp(self):
