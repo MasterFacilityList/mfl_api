@@ -3,8 +3,8 @@
   name: Install MFL API and front-ends
   sudo: True
   vars:
-    mfl_public_web_version: "0.0.1a12"
-    mfl_admin_web_version: "0.0.1a19"
+    mfl_public_web_version: "0.0.1a13"
+    mfl_admin_web_version: "0.0.1a21"
     mfl_last_update: "2015-09-10T04:17:54.400Z"
     has_ssl: true
     cert_file: ""
@@ -46,7 +46,8 @@
         ssl_key_file: "{{key_file}}"
       }
     - { role: postgresql }
-    - { role: nginx }
+    - { role: nginx, install_from: 'apt' }
+    - { role: ufw }
     - {
         role: api,
         server_name: mfl.slade360.co.ke,

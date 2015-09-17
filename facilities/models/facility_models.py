@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core import validators
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.utils import encoding
+from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
 
 
@@ -543,6 +543,9 @@ class FacilityContact(AbstractBase):
     def __str__(self):
         return "{}: ({})".format(self.facility, self.contact)
 
+    class Meta(AbstractBase.Meta):
+        unique_together = ('facility', 'contact')
+
 
 @reversion.register(follow=[
     'facility_type', 'operation_status', 'ward', 'owner', 'contacts',
@@ -869,8 +872,21 @@ class Facility(SequenceMixin, AbstractBase):
         except:
             return None
 
+    def validate_closing_date_supplied_on_close(self):
+        if self.closed and not self.closed_date:
+            self.closed_date = timezone.now()
+        elif self.closed and self.closed_date:
+            now = timezone.now()
+            if self.closed_date > now:
+                raise ValidationError({
+                    "closed_date": [
+                        "The date of closing cannot be in the future"
+                    ]
+                })
+
     def clean(self, *args, **kwargs):
         self.validate_publish(*args, **kwargs)
+        self.validate_closing_date_supplied_on_close()
         super(Facility, self).clean()
 
     def _get_field_human_attribute(self, field_obj):
@@ -901,7 +917,8 @@ class Facility(SequenceMixin, AbstractBase):
         fields = [field.name for field in self._meta.fields]
         forbidden_fields = [
             'operation_status', 'regulatory_status', 'facility_type',
-            'operation_status_id', 'regulatory_status_id', 'facility_type_id']
+            'operation_status_id', 'regulatory_status_id', 'facility_type_id',
+            'keph_level', 'keph_level_id']
         data = []
         for field in fields:
             if (getattr(self, field) != getattr(origi_model, field) and

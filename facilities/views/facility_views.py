@@ -468,6 +468,7 @@ class FacilityDetailView(
 
         services = request.data.pop('services', [])
         contacts = request.data.pop('contacts', [])
+
         units = request.data.pop('units', [])
         officer_in_charge = request.data.pop(
             'officer_in_charge', {})

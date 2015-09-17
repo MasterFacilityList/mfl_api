@@ -1,5 +1,6 @@
 from __future__ import division
 import json
+from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -736,6 +737,32 @@ class TestFacility(BaseTestCase):
     def test_facility_is_regulated_false(self):
         facility = mommy.make(Facility)
         self.assertFalse(facility.is_regulated)
+
+    def test_close_facility_closed_date_not_supplied(self):
+
+        """
+        Test that a facility closing date is supplied during
+        closing a facility if it is not supplied
+        """
+        facility = mommy.make(Facility)
+        facility.closed = True
+        facility.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.closed)
+        self.assertIsNotNone(facility_refetched.closed_date)
+
+    def test_close_facility_invalid_closing_date(self):
+
+        """
+        Test that facility's closing date cannot be in the future
+        """
+        facility = mommy.make(Facility)
+        now = timezone.now()
+        tomorrow = now + timedelta(days=1)
+        facility.closed = True
+        facility.closed_date = tomorrow
+        with self.assertRaises(ValidationError):
+            facility.save()
 
 
 class TestFacilityContact(BaseTestCase):
