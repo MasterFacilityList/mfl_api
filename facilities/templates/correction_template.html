@@ -10,6 +10,9 @@
 .col-xs-6 {
     width: 50% !important;
 }
+.fs-22{
+    font-size: 22px;
+}
 .fs-20{
     font-size: 20px;
 }
@@ -24,6 +27,9 @@
 }
 .fs-13{
     font-size: 13px;
+}
+.fw-700{
+    font-weight: 700;
 }
 .fw-600{
     font-weight: 600;
@@ -66,60 +72,680 @@
     width: 300px;
     word-wrap: break-word;
 }
+.text label {
+    font-weight: 700;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.text span {
+    display: inline-block;
+    vertical-align: middle;
+}
+span {
+    font-size: 14px;
+}
 </style>
 <body class="font-latolight" style="font-size: 14px;">
-    <div class="row">
-    <h4>Below are the detials of {{facility.name}}  Facility</h4>
-    <hr>
-
-    <p><strong>Name</strong>: {{facility.name}}</p>
+    <h4 class="font-arial fs-22">
+        Below are the details of Owaga Facility Facility
+    </h4>
+    <h5 class="font-arial fs-20 fw-700" style="margin-bottom: 0px;">
+        Basic Details
+    </h5>
     <p>
-        <div style="width: 100%; display: inline-block;">
-            <div style="width: 100px; align: left;">
-                <strong>Name: </strong>
-            </div>
-            <div style="width: 400px; align: right;">
-                <hr style="border: 1px solid #000;">
-            </div>
-        </div>
+        <label class="text">
+            <strong>Unique Name:</strong>
+        </label>
+        <span class="text">
+            {{facility.name}}
+        </span>
     </p>
-    <p>________________________________________________</p>
-    <p><strong>Abbraviation</strong>: {{facility.abbreviation}} </p>
-
-    <p>________________________________________________</p>
-    <p><strong>Location Directions</strong>: {{facility.location_desc}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Number of beds </strong>: {{facility.number_of_beds}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Number of cots</strong>: {{facility.number_of_cots}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Open the whole day?</strong>: {{facility.open_whole_day}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Open the whole week?</strong>: {{facility.open_whole_week}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Facility type </strong>: {{facility.facility_type.name}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Operation status</strong>: {{facility.operation_status.name}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>County</strong>: {{facility.ward.constituency.county}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Constituency</strong>: {{facility.ward.constituency}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>Ward</strong>: {{facility.ward.name}}</p>
-
-    <p>________________________________________________</p>
-    <p><strong>owner</strong>: {{facility.owner.name}}</p>
-
-    <p>________________________________________________</p>
+    <p>
+        <label class="text">
+            <strong>Updated Unique Name:</strong>
+        </label>
+        <span class="text">
+            ___________________________________________________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Official Name:</strong>
+        </label>
+        <span class="text">
+            {{facility.abbreviation}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Official Name:</strong>
+        </label>
+        <span class="text">
+            ___________________________________________________________
+        </span>
+    </p>
+    <!-- Start of type -->
+    <p>
+        <label class="text">
+            <strong>Facility Type:</strong>
+        </label>
+        <span class="text">
+            {{facility.facility_type.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Facility Type:</strong>
+        </label>
+        <span class="text">
+            ___________________________________________________________
+        </span>
+    </p>
+    <!-- Start of owner category -->
+    <p>
+        <label class="text">
+            <strong>Owner Category:</strong>
+        </label>
+        <span class="text">
+            {{facility.owner.owner_type.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Owner Category:</strong>
+        </label>
+        <span class="text">
+            ___________________________________________________________
+        </span>
+    </p>
+    <!-- Start of owner -->
+    <p>
+        <label class="text">
+            <strong>Facility Owner:</strong>
+        </label>
+        <span class="text">
+            {{facility.owner.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Facility Owner:</strong>
+        </label>
+        <span class="text">
+            ___________________________________________________________
+        </span>
+    </p>
+    <!-- Start of beds -->
+    <p>
+        <label class="text">
+            <strong>No. of Beds:</strong>
+        </label>
+        <span class="text">
+            {{facility.number_of_beds}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated No. of Beds:</strong>
+        </label>
+        <span class="text">
+            ___________________________________________________________
+        </span>
+    </p>
+    <!-- Start of cots -->
+    <p>
+        <label class="text">
+            <strong>No. of Cots:</strong>
+        </label>
+        <span class="text">
+            {{facility.number_of_cots}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated No. of Cots:</strong>
+        </label>
+        <span class="text">
+            ___________________________________________________________
+        </span>
+    </p>
+    <!-- Start of open on holidays -->
+    <p>
+        <label class="text">
+            <strong>Open on Public Holidays:</strong>
+        </label>
+        <span class="text">
+            {{facility.open_public_holidays | yesno}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Open on Public Holidays:</strong>
+        </label>
+        <span class="text">
+            _________________________
+        </span>
+    </p>
+    <!-- Start of open on weekends -->
+    <p>
+        <label class="text">
+            <strong>Open on Weekends:</strong>
+        </label>
+        <span class="text">
+            {{facility.open_weekends | yesno}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Open on Weekends:</strong>
+        </label>
+        <span class="text">
+            _________________________
+        </span>
+    </p>
+    <!-- Start of open 24 hours -->
+    <p>
+        <label class="text">
+            <strong>Open 24 Hours:</strong>
+        </label>
+        <span class="text">
+            {{facility.open_whole_day | yesno}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Open 24 Hours:</strong>
+        </label>
+        <span class="text">
+            _________________________
+        </span>
+    </p>
+    <!-- Start of open late night -->
+    <p>
+        <label class="text">
+            <strong>Open Late Night:</strong>
+        </label>
+        <span class="text">
+            {{facility.open_late_night | yesno}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Open Late Night:</strong>
+        </label>
+        <span class="text">
+            _________________________
+        </span>
+    </p>
+    <br><br><br><br><br><br>
+    <h5 class="font-arial fs-20 fw-700" style="margin-bottom: 0px;">
+        Location Details
+    </h5>
+    <!-- Start of county -->
+    <p>
+        <label class="text">
+            <strong>County Name:</strong>
+        </label>
+        <span class="text">
+            {{facility.ward.county.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated County Name:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <!-- Start of constituency -->
+    <p>
+        <label class="text">
+            <strong>Constituency Name:</strong>
+        </label>
+        <span class="text">
+            {{facility.ward.constituency.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Constituency Name:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <!-- Start of ward -->
+    <p>
+        <label class="text">
+            <strong>Ward Name:</strong>
+        </label>
+        <span class="text">
+            {{facility.ward.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Ward Name:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Location Description:</strong>
+        </label>
+        <span class="text">
+            {{facility.location_desc}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Location Description:</strong>
+        </label>
+        <span class="text">
+            _____________________________________________________________________
+        </span>
+    </p>
+    <br><br>
+    <h5 class="font-arial fs-20 fw-700" style="margin-bottom: 0px;">
+        Geolocation Details
+    </h5>
+    <!-- Start of source -->
+    <p>
+        <label class="text">
+            <strong>Geocode Source:</strong>
+        </label>
+        <span class="text">
+            {{facility_coordinates.source.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Geocode Method:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <!-- Start of source -->
+    <p>
+        <label class="text">
+            <strong>Geocode Method:</strong>
+        </label>
+        <span class="text">
+            {{facility_coordinates.method.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Geocode Method:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <!-- Start of source -->
+    <p>
+        <label class="text">
+            <strong>Facility Longitude:</strong>
+        </label>
+        <span class="text">
+            {{longitude}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Facility Longitude:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <!-- Start of source -->
+    <p>
+        <label class="text">
+            <strong>Facility Latitude:</strong>
+        </label>
+        <span class="text">
+            {{latitude}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Facility Latitude:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <br><br>
+    <h5 class="font-arial fs-20 fw-700" style="margin-bottom: 0px;">
+        Officer Incharge
+    </h5>
+    <!-- Start of officer name -->
+    <p>
+        <label class="text">
+            <strong>Officer's Name:</strong>
+        </label>
+        <span class="text">
+            {{facility.officer_in_charge.name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Officer's Name:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <!-- Start of officer registration number -->
+    <p>
+        <label class="text">
+            <strong>Officer's Registration No.:</strong>
+        </label>
+        <span class="text">
+            {{facility.officer_in_charge.reg_no}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Officer's Registration No.:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <!-- Start of officer title -->
+    <p>
+        <label class="text">
+            <strong>Officer's Title:</strong>
+        </label>
+        <span class="text">
+            {{facility.officer_in_charge.title_name}}
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            <strong>Updated Officer's Title:</strong>
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <h5 class="font-arial fs-20">
+        Facility Contacts
+    </h5>
+    <div style="padding: 2px; margin-top: -25px;">
+    {% if contacts %}
+    {% for contact in contacts%}
+        <div style="margin-top: 5px; word-wrap: break-word;">
+            <span><span class="text-black fw-600 fs-13">{{contact.contact.contact_type.name}}:</span> {{contact.contact.contact}}</span>
+        </div>
+        <!-- Start of officer title -->
+        <p>
+            <label class="text">
+                <strong>{{contact.contact.contact_type.name}}:</strong>
+            </label>
+            <span class="text">
+                {{contact.contact.contact}}
+            </span>
+        </p>
+        <p>
+            <label class="text">
+                <strong>{{contact.contact.contact_type.name}}:</strong>
+            </label>
+            <span class="text">
+                ____________________________________________
+            </span>
+        </p>
+    {%endfor%}
+    {% else %}
+        <p>No Facility Contacts Available</p>
+    {% endif %}
+    <p>
+        <label class="text">
+            ____________________ :
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________ :
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________ :
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________ :
+        </label>
+        <span class="text">
+            ____________________________________________
+        </span>
+    </p>
     </div>
+    <br><br>
+    <h5 class="font-arial fs-20">
+        Facility Services
+    </h5>
+    {% if services %}
+    <div class="col-xs-12 content-card" style="padding: 2px; margin-bottom: 20px; margin-top: -35px;">
+        <p>
+            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-600">Name</span></span>
+            <span style="float: right; width: 250px; margin-bottom: 5px;"><span class="text-black fw-600">Service Option</span></span>
+        </p>
+        {% for service in services %}
+        <p>
+            <span style="float: left; width: 350px; margin-bottom: 5px;"><span class="text-black fw-500">{{service.service.name}}</span></span>
+            <span style="float: right; width: 250px; margin-bottom: 5px; padding-left: 10px;"><span class="text-black fw-500">
+                {% if service.option.value%}
+                {{service.option.value}}
+                {% else %}
+                Yes
+                {%endif%}
+            </span></span>
+        </p>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="padding: 2px; margin-top: -35px;">Not Available</p>
+    {% endif %}
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <p>
+        <label class="text">
+            ____________________________________________ :
+        </label>
+        <span class="text">
+            _______________________
+        </span>
+    </p>
+    <br><br><br>
+    <h4 class="font-arial fs-20">
+        Community Health Units
+    </h4>
+    {% if chus %}
+    <table style="margin-top: -25px;">
+        <thead>
+            <th>
+                Code
+            </th>
+              <th>
+                Name
+            </th>
+              <th>
+                Operation Status
+            </th>
+             <th>
+                House Holds Monitored
+            </th>
+        </thead>
+        <tbody>
+            {% for chu in chus %}
+            <tr>
+                <td>
+                {{chu.code}}
+                </td>
+                <td>
+                {{chu.name}}
+                </td>
+                <td>
+                {{chu.status.name}}
+                </td>
+                <td>
+                {{chu.households_monitored}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="margin-top: -25px;">Not Available</p>
+    {% endif %}
+    <table>
+        <thead>
+            <th>
+                Name
+            </th>
+              <th>
+                Operation Status
+            </th>
+             <th>
+                House Holds Monitored
+            </th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr>
+            <tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr>
+            <tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr>
+            <tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr>
+            <tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr><tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr><tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr><tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr><tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr><tr>
+                <td>______________________________</td>
+                <td>______________________________</td>
+                <td>______________________________</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

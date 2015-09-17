@@ -211,14 +211,30 @@ class FacilityCorrectionTemplate(DownloadPDFMixin, APIView):
     def get(self, request, facility_id, *args, **kwargs):
         facility = Facility.objects.get(pk=facility_id)
         template = loader.get_template('correction_template.html')
-        request_date = timezone.now().isoformat()
+        report_date = timezone.now().isoformat()
+        services = FacilityService.objects.filter(facility=facility)
+        contacts = FacilityContact.objects.filter(facility=facility)
+        officers = FacilityOfficer.objects.filter(facility=facility)
+        chus = CommunityHealthUnit.objects.filter(facility=facility)
+        try:
+            facility_coordinates = facility.facility_coordinates_through
+        except:
+            facility_coordinates = None
         context = Context({
-            "request_date": request_date,
-            "facility": facility
+            "report_date": report_date,
+            "facility": facility,
+            "services": services,
+            "contacts": contacts,
+            "officers": officers,
+            "chus": chus,
+            "longitude": facility_coordinates.simplify_coordinates.get(
+                'coordinates')[0] if facility_coordinates else None,
+            "latitude": facility_coordinates.simplify_coordinates.get(
+                'coordinates')[1] if facility_coordinates else None,
+            "facility_coordinates": facility_coordinates
         })
-        doc = template.render(context)
-        file_name = '{} correctiontemplate'.format(facility.name.lower())
-        return self.download_file(doc, file_name)
+        file_name = '{} correction_template'.format(facility.name.lower())
+        return self.download_file(template.render(context), file_name)
 
 
 class FacilityUpgradeListView(generics.ListCreateAPIView):
