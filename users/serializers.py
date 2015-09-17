@@ -207,6 +207,12 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         validated_data['updated'] = timezone.now()
         return validated_data
 
+    def _assign_is_staff(self, user_groups):
+        for group in user_groups:
+            if group.is_administrator:
+                return True
+        return False
+
     @transaction.atomic
     def create(self, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
@@ -215,6 +221,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         validated_data.pop('groups', None)
 
         new_user = MflUser.objects.create_user(**validated_data)
+        if self._assign_is_staff(groups):
+            new_user.is_staff = True
         new_user.save()
         new_user.groups.add(*groups)
 
@@ -238,8 +246,10 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         if pwd is not None:
             instance.set_password(pwd)
 
-        instance.save()
+        if self._assign_is_staff(groups):
 
+            instance.is_staff = True
+        instance.save()
         instance.groups.clear()
         instance.groups.add(*groups)
 
