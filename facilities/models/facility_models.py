@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core import validators
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.utils import encoding
+from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
 
 
@@ -869,8 +869,21 @@ class Facility(SequenceMixin, AbstractBase):
         except:
             return None
 
+    def validate_closing_date_supplied_on_close(self):
+        if self.closed and not self.closed_date:
+            self.closed_date = timezone.now()
+        elif self.closed and self.closed_date:
+            now = timezone.now()
+            if self.closed_date > now:
+                raise ValidationError({
+                    "closed_date": [
+                        "The date of closing cannot be in the future"
+                    ]
+                })
+
     def clean(self, *args, **kwargs):
         self.validate_publish(*args, **kwargs)
+        self.validate_closing_date_supplied_on_close()
         super(Facility, self).clean()
 
     def _get_field_human_attribute(self, field_obj):
