@@ -116,8 +116,8 @@ def create_facility_contacts(instance, contact_data, validated_data):
         facility_contact_data, validated_data)
     try:
         FacilityContact.objects.get(
-            contact=facility_contact_data.get('contact'),
-            facility=facility_contact_data.get('facility')
+            contact_id=facility_contact_data.get('contact'),
+            facility_id=facility_contact_data.get('facility')
         )
     except FacilityContact.DoesNotExist:
         fac_contact = FacilityContactSerializer(
