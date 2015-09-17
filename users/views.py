@@ -1,10 +1,10 @@
 from rest_framework import generics
 
-from django.contrib.auth.models import Permission, Group
+from django.contrib.auth.models import Permission
 
 from common.utilities import CustomRetrieveUpdateDestroyView
 
-from .models import MflUser, MFLOAuthApplication, ProxyGroup
+from .models import MflUser, MFLOAuthApplication, CustomGroup, ProxyGroup
 
 from .serializers import (
     MflUserSerializer,
@@ -91,9 +91,11 @@ class UserList(generics.ListCreateAPIView):
         elif user.constituency:
             all_users = MflUser.objects.all()
             users_to_see = []
-            group = Group.objects.get(name='Facility Viewing Group')
+            sub_county_level_groups = [
+                c_group.group for c_group in
+                CustomGroup.objects.filter(sub_county_level=True)]
             for user in all_users:
-                if group in user.groups.all():
+                if set(user.groups.all()).issubset(sub_county_level_groups):
                     users_to_see.append(user.id)
                 if not user.groups.all():
                     users_to_see.append(user.id)
