@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
+<style type="text/css">
+.col-xs-12 {
+    width: 100% !important;
+}
+.col-xs-6 {
+    width: 50% !important;
+}
+.fs-20{
+    font-size: 20px;
+}
+.fs-18{
+    font-size: 18px;
+}
+.fs-16{
+    font-size: 16px;
+}
+.fs-14{
+    font-size: 14px;
+}
+.fs-13{
+    font-size: 13px;
+}
+.fw-600{
+    font-weight: 600;
+}
+.fw-500{
+    font-weight: 500
+}
+.font-latolight{
+    font-family: 'Lato Light', sans-serif;
+}
+.font-lato{
+    font-family: 'Lato', sans-serif;
+}
+.font-arial{
+    font-family: "Arial", Sans-serif;
+}
+.row{
+    margin-left: -15px;
+    margin-right:-15px;
+}
+.bg-blue {
+    background-color: #F1F1F4;
+}
+.content-card {
+  padding: 5px 10px 8px 10px;
+  border: 1px solid transparent;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+.text-muted{
+    color: #666666;
+}
+.text-white{
+    color: #FFFFFF;
+}
+.text-balck{
+    color: #000000;
+}
+.word-wrap {
+    width: 300px;
+    word-wrap: break-word;
+}
+</style>
+<body class="font-latolight" style="font-size: 14px;">
+    <div class="row">
+    <h4>Below are the detials of {{facility.name}}  Facility</h4>
+    <hr>
+
+    <p><strong>Name</strong>: {{facility.name}}</p>
+    <p>
+        <div style="width: 100%; display: inline-block;">
+            <div style="width: 100px; align: left;">
+                <strong>Name: </strong>
+            </div>
+            <div style="width: 400px; align: right;">
+                <hr style="border: 1px solid #000;">
+            </div>
+        </div>
+    </p>
+    <p>________________________________________________</p>
+    <p><strong>Abbraviation</strong>: {{facility.abbreviation}} </p>
+
+    <p>________________________________________________</p>
+    <p><strong>Location Directions</strong>: {{facility.location_desc}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Number of beds </strong>: {{facility.number_of_beds}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Number of cots</strong>: {{facility.number_of_cots}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Open the whole day?</strong>: {{facility.open_whole_day}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Open the whole week?</strong>: {{facility.open_whole_week}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Facility type </strong>: {{facility.facility_type.name}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Operation status</strong>: {{facility.operation_status.name}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>County</strong>: {{facility.ward.constituency.county}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Constituency</strong>: {{facility.ward.constituency}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>Ward</strong>: {{facility.ward.name}}</p>
+
+    <p>________________________________________________</p>
+    <p><strong>owner</strong>: {{facility.owner.name}}</p>
+
+    <p>________________________________________________</p>
+    </div>
+</body>
+</html>

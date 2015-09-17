@@ -210,7 +210,7 @@ class FacilityCorrectionTemplate(DownloadPDFMixin, APIView):
     @never_cache
     def get(self, request, facility_id, *args, **kwargs):
         facility = Facility.objects.get(pk=facility_id)
-        template = loader.get_template('correction_template.txt')
+        template = loader.get_template('correction_template.html')
         request_date = timezone.now().isoformat()
         context = Context({
             "request_date": request_date,
