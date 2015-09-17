@@ -1,10 +1,11 @@
 from rest_framework import generics
+from rest_framework.views import Response, status
 
 from django.contrib.auth.models import Permission, Group
 
 from common.utilities import CustomRetrieveUpdateDestroyView
 
-from .models import MflUser, MFLOAuthApplication, ProxyGroup
+from .models import MflUser, MFLOAuthApplication, CustomGroup, ProxyGroup
 
 from .serializers import (
     MflUserSerializer,
@@ -40,6 +41,20 @@ class GroupListView(generics.ListCreateAPIView):
 class GroupDetailView(CustomRetrieveUpdateDestroyView):
     queryset = ProxyGroup.objects.all()
     serializer_class = GroupSerializer
+
+    def delete(self, *args, **kwargs):
+        pk = kwargs.pop('pk', None)
+        group = Group.objects.get(id=pk)
+
+        try:
+            CustomGroup.objects.get(group=group).delete()
+        except CustomGroup.DoesNotExist:
+            pass
+        users = MflUser.objects.all()
+        for user in users:
+            user.groups.remove(group)
+        group.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserList(generics.ListCreateAPIView):
@@ -91,12 +106,15 @@ class UserList(generics.ListCreateAPIView):
         elif user.constituency:
             all_users = MflUser.objects.all()
             users_to_see = []
-            group = Group.objects.get(name='Facility Viewing Group')
+            sub_county_level_groups = [
+                c_group.group for c_group in
+                CustomGroup.objects.filter(sub_county_level=True)]
             for user in all_users:
-                if group in user.groups.all():
-                    users_to_see.append(user.id)
-                if not user.groups.all():
-                    users_to_see.append(user.id)
+                users_to_see.append(user.id) if set(
+                    user.groups.all()).issubset(
+                    sub_county_level_groups) else None
+
+                users_to_see.append(user.id) if not user.groups.all() else None
 
             return self.queryset.filter(
                 id__in=users_to_see, created_by_id=self.request.user.id
