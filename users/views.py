@@ -95,10 +95,11 @@ class UserList(generics.ListCreateAPIView):
                 c_group.group for c_group in
                 CustomGroup.objects.filter(sub_county_level=True)]
             for user in all_users:
-                if set(user.groups.all()).issubset(sub_county_level_groups):
-                    users_to_see.append(user.id)
-                if not user.groups.all():
-                    users_to_see.append(user.id)
+                users_to_see.append(user.id) if set(
+                    user.groups.all()).issubset(
+                    sub_county_level_groups) else None
+
+                users_to_see.append(user.id) if not user.groups.all() else None
 
             return self.queryset.filter(
                 id__in=users_to_see, created_by_id=self.request.user.id
