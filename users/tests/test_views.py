@@ -398,6 +398,8 @@ class TestUserFiltering(APITestCase):
         user_4 = mommy.make(MflUser, created_by=user_2)
         group = Group.objects.get(name="Facility Viewing Group")
         CustomGroup.objects.create(group=group, sub_county_level=True)
+        group_2 = Group.objects.create(name="Some other group")
+        CustomGroup.objects.create(group=group_2, county_level=True)
         user_4.groups.add(group)
         mommy.make(
             UserConstituency, constituency=constituency,
