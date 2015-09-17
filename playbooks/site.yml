@@ -63,6 +63,7 @@
         recreate_search_index: false,
 
         # the settings below are for warming up the cache
+        warm_cache: false,
         server_url: "https://mfl.slade360.co.ke",
         username: public@mfltest.slade360.co.ke,
         password: public,
