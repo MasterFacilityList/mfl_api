@@ -1,5 +1,6 @@
 from __future__ import division
 import json
+from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -46,7 +47,8 @@ from ..models import (
     FacilityUpgrade,
     KephLevel,
     OptionGroup,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    FacilityDepartment
 )
 
 
@@ -736,6 +738,32 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility)
         self.assertFalse(facility.is_regulated)
 
+    def test_close_facility_closed_date_not_supplied(self):
+
+        """
+        Test that a facility closing date is supplied during
+        closing a facility if it is not supplied
+        """
+        facility = mommy.make(Facility)
+        facility.closed = True
+        facility.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.closed)
+        self.assertIsNotNone(facility_refetched.closed_date)
+
+    def test_close_facility_invalid_closing_date(self):
+
+        """
+        Test that facility's closing date cannot be in the future
+        """
+        facility = mommy.make(Facility)
+        now = timezone.now()
+        tomorrow = now + timedelta(days=1)
+        facility.closed = True
+        facility.closed_date = tomorrow
+        with self.assertRaises(ValidationError):
+            facility.save()
+
 
 class TestFacilityContact(BaseTestCase):
 
@@ -819,15 +847,15 @@ class TestFacilityUnitModel(BaseTestCase):
 
     def test_string_representation(self):
         facility = mommy.make(Facility, name='AKUH')
+        department = mommy.make(FacilityDepartment, name='some')
         data = {
             "facility": facility,
-            "name": "Pharmacy",
-            "description": "This is the AKUH Pharmacy section."
+            "unit": department
         }
         data = self.inject_audit_fields(data)
         facility_unit = FacilityUnit.objects.create(**data)
         self.assertEquals(1, FacilityUnit.objects.count())
-        self.assertEquals(str(facility_unit), 'AKUH: Pharmacy')
+        self.assertEquals(str(facility_unit), 'AKUH: some')
 
     def test_regulation_status(self):
         facility_unit = mommy.make(FacilityUnit)
@@ -837,11 +865,12 @@ class TestFacilityUnitModel(BaseTestCase):
             facility_unit=facility_unit, regulation_status=reg_status)
         self.assertEquals(reg_status, obj.regulation_status)
 
-    def test_unique_unit_name_in_a_facility(self):
+    def test_unique_facility_unit(self):
         facility = mommy.make(Facility)
-        mommy.make(FacilityUnit, name='honcho', facility=facility)
+        department = mommy.make(FacilityDepartment)
+        mommy.make(FacilityUnit, unit=department, facility=facility)
         with self.assertRaises(ValidationError):
-            mommy.make(FacilityUnit, name='honcho', facility=facility)
+            mommy.make(FacilityUnit, unit=department, facility=facility)
 
 
 class TestRegulationStatusModel(BaseTestCase):

@@ -88,6 +88,27 @@ class TestUserViews(LoginMixin, APITestCase):
         self.assertEqual(201, response.status_code)
         self.assertEqual("Ruhusa", response.data["last_name"])
 
+    def test_create_user_is_staff(self):
+        create_url = reverse('api:users:mfl_users_list')
+        group = Group.objects.create(name="Test Group")
+        mommy.make(
+            CustomGroup,
+            group=group, regulator=True, administrator=True)
+        post_data = {
+            "groups": [{"id": group.id, "name": "Test Group"}],
+            "email": "hakunaruhusa@mfltest.slade360.co.ke",
+            "first_name": "Hakuna",
+            "last_name": "Ruhusa",
+            "other_names": "",
+            "employee_number": "1224467890",
+            "password": "rubbishpass12424"
+        }
+        response = self.client.post(create_url, post_data)
+        self.assertEqual(201, response.status_code)
+        self.assertEqual("Ruhusa", response.data["last_name"])
+        user = MflUser.objects.get(email="hakunaruhusa@mfltest.slade360.co.ke")
+        self.assertTrue(user.is_staff)
+
     def test_update_user(self):
         user = MflUser.objects.create(
             email='user@test.com', first_name='pass',
@@ -108,6 +129,109 @@ class TestUserViews(LoginMixin, APITestCase):
             json.loads(json.dumps(response.data['groups']))[0]['name'],
             group.name
         )
+
+    def test_user_is_staff_for_regulator(self):
+        user = MflUser.objects.create(
+            email='user@test.com', first_name='pass',
+            employee_number='9448855555', password='pass_long12424'
+        )
+        group = Group.objects.create(name="Test Group")
+        CustomGroup.objects.create(
+            group=group, regulator=True, administrator=True)
+        update_url = reverse(
+            'api:users:mfl_user_detail', kwargs={'pk': user.id})
+        patch_data = {
+            "other_names": "Majina Mengine",
+            "groups": [
+                {"id": group.id, "name": "Test Group"}
+            ]
+        }
+        response = self.client.patch(update_url, patch_data)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            json.loads(json.dumps(response.data['groups']))[0]['name'],
+            group.name
+        )
+
+        user_refetched = MflUser.objects.get(email='user@test.com')
+        self.assertTrue(user_refetched.is_staff)
+
+    def test_user_is_staff_for_chrio(self):
+        user = MflUser.objects.create(
+            email='user@test.com', first_name='pass',
+            employee_number='9448855555', password='pass_long12424'
+        )
+        group = Group.objects.create(name="Test Group")
+        CustomGroup.objects.create(
+            group=group, county_level=True, administrator=True)
+        update_url = reverse(
+            'api:users:mfl_user_detail', kwargs={'pk': user.id})
+        patch_data = {
+            "other_names": "Majina Mengine",
+            "groups": [
+                {"id": group.id, "name": "Test Group"}
+            ]
+        }
+        response = self.client.patch(update_url, patch_data)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            json.loads(json.dumps(response.data['groups']))[0]['name'],
+            group.name
+        )
+
+        user_refetched = MflUser.objects.get(email='user@test.com')
+        self.assertTrue(user_refetched.is_staff)
+
+    def test_user_is_staff_for_schrio(self):
+        user = MflUser.objects.create(
+            email='user@test.com', first_name='pass',
+            employee_number='9448855555', password='pass_long12424'
+        )
+        group = Group.objects.create(name="Test Group")
+        CustomGroup.objects.create(
+            group=group, county_level=True, administrator=True)
+        update_url = reverse(
+            'api:users:mfl_user_detail', kwargs={'pk': user.id})
+        patch_data = {
+            "other_names": "Majina Mengine",
+            "groups": [
+                {"id": group.id, "name": "Test Group"}
+            ]
+        }
+        response = self.client.patch(update_url, patch_data)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            json.loads(json.dumps(response.data['groups']))[0]['name'],
+            group.name
+        )
+        user_refetched = MflUser.objects.get(email='user@test.com')
+        self.assertTrue(user_refetched.is_staff)
+
+    def test_user_is_staff_for_national_admins(self):
+        user = MflUser.objects.create(
+            email='user@test.com', first_name='pass',
+            employee_number='9448855555', password='pass_long12424'
+        )
+        group = Group.objects.create(name="Test Group")
+        CustomGroup.objects.create(
+            group=group, national=True, administrator=True)
+        update_url = reverse(
+            'api:users:mfl_user_detail', kwargs={'pk': user.id})
+        patch_data = {
+            "other_names": "Majina Mengine",
+            "groups": [
+                {"id": group.id, "name": "Test Group"}
+            ]
+        }
+        response = self.client.patch(update_url, patch_data)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            json.loads(json.dumps(response.data['groups']))[0]['name'],
+            group.name
+        )
+
+        user_refetched = MflUser.objects.get(email='user@test.com')
+        self.assertTrue(user_refetched.is_staff)
 
     def test_update_user_pwd(self):
         user = MflUser.objects.create(
@@ -265,6 +389,29 @@ class TestGroupViews(LoginMixin, APITestCase):
         response = self.client.post(self.url, data)
         self.assertEqual(400, response.status_code)
 
+    def test_delete_group_with_custom_group(self):
+        group = mommy.make(Group)
+        mommy.make(CustomGroup, group=group)
+        user = mommy.make(MflUser)
+        user.groups.add(group)
+        self.assertEquals(1, user.groups.all().count())
+        url = reverse("api:users:groups_list")
+        url = url + "{}/".format(group.id)
+
+        self.client.delete(url)
+        # the login mixin somes with one preconfigured group
+        self.assertEquals(1, Group.objects.count())
+        self.assertEquals(0, user.groups.all().count())
+
+    def test_delete_group_without_custom_group(self):
+        group = mommy.make(Group)
+        url = reverse("api:users:groups_list")
+        url = url + "{}/".format(group.id)
+
+        self.client.delete(url)
+        # the login mixin somes with one preconfigured group
+        self.assertEquals(1, Group.objects.count())
+
 
 class TestDeleting(LoginMixin, APITestCase):
     def setUp(self):
@@ -397,6 +544,9 @@ class TestUserFiltering(APITestCase):
         user_3 = mommy.make(MflUser, created_by=user_2)
         user_4 = mommy.make(MflUser, created_by=user_2)
         group = Group.objects.get(name="Facility Viewing Group")
+        CustomGroup.objects.create(group=group, sub_county_level=True)
+        group_2 = Group.objects.create(name="Some other group")
+        CustomGroup.objects.create(group=group_2, county_level=True)
         user_4.groups.add(group)
         mommy.make(
             UserConstituency, constituency=constituency,

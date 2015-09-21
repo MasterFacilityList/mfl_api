@@ -38,7 +38,7 @@
   pip: chdir=/opt/mfl_api requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
 
 - name: run fab setup_db
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup_db executable=/bin/bash"
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && DEBUG=false fab setup_db executable=/bin/bash"
   when: setup_new_db
 
 - name: run the Django migrations and collectstatic

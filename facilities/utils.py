@@ -14,12 +14,13 @@ from common.serializers import ContactSerializer
 from facilities.models import (
     FacilityContact,
     Service,
-    RegulatingBody,
+    FacilityDepartment,
     Facility,
     FacilityOfficer,
     JobTitle,
     Officer,
-    OfficerContact
+    OfficerContact,
+    FacilityUnit
 )
 
 
@@ -53,17 +54,10 @@ def _validate_services(services):
 def _validate_units(units):
     errors = []
     for unit in units:
-        if not _is_valid_uuid(unit.get('regulating_body', None)):
-            errors.append("Regulating body has a badly formed uuid")
         try:
-            RegulatingBody.objects.get(id=unit['regulating_body'])
-        except RegulatingBody.DoesNotExist:
-            errors.append(
-                "The regulating_body with the id {} was not "
-                "found".format(unit.get("regulating_body")))
-        except KeyError:
-            errors.append(
-                "Key regulating_body is missing")
+            FacilityDepartment.objects.get(id=unit.get('unit'))
+        except FacilityDepartment.DoesNotExist:
+            errors.append("The facility department provided does not exist")
 
     return errors
 
@@ -121,7 +115,10 @@ def create_facility_contacts(instance, contact_data, validated_data):
     facility_contact_data_with_audit = inject_audit_fields(
         facility_contact_data, validated_data)
     try:
-        FacilityContact.objects.get(**facility_contact_data)
+        FacilityContact.objects.get(
+            contact_id=facility_contact_data.get('contact'),
+            facility_id=facility_contact_data.get('facility')
+        )
     except FacilityContact.DoesNotExist:
         fac_contact = FacilityContactSerializer(
             data=facility_contact_data_with_audit)
@@ -131,11 +128,15 @@ def create_facility_contacts(instance, contact_data, validated_data):
 
 def create_facility_units(instance, unit_data, validated_data):
     from facilities.serializers import FacilityUnitSerializer
+    unit_data.pop('department_name', None)
     unit_data['facility'] = instance.id
     unit_data = inject_audit_fields(unit_data, validated_data)
-    unit = FacilityUnitSerializer(data=unit_data)
-    return unit.save() if unit.is_valid() else inlining_errors.append((
-        json.dumps(unit.errors)))
+    try:
+        FacilityUnit.objects.get(**unit_data)
+    except FacilityUnit.DoesNotExist:
+        unit = FacilityUnitSerializer(data=unit_data)
+        return unit.save() if unit.is_valid() else inlining_errors.append((
+            json.dumps(unit.errors)))
 
 
 def create_facility_services(instance, service_data, validated_data):
