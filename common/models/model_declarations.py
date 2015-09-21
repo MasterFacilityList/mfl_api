@@ -342,6 +342,7 @@ class PhysicalAddress(AbstractBase):
 class DocumentUpload(AbstractBase):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
+    public = models.BooleanField(default=False)
     fyl = models.FileField()
 
     def __str__(self):
