@@ -60,8 +60,13 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     status = models.ForeignKey(Status)
     households_monitored = models.PositiveIntegerField(default=0)
     date_established = models.DateTimeField(default=timezone.now)
+    date_operational = models.DateTimeField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
     approval_comment = models.TextField(null=True, blank=True)
+    approval_date = models.DateTimeField(null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    is_closed = models.BooleanField(default=False)
+    closing_comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -101,6 +106,7 @@ class CommunityHealthWorker(AbstractBase):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     id_number = models.PositiveIntegerField(unique=True, null=True, blank=True)
+    is_incharge = models.BooleanField(default=False)
     health_unit = models.ForeignKey(
         CommunityHealthUnit,
         help_text='The health unit the worker is incharge of',

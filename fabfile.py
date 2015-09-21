@@ -83,7 +83,7 @@ def load_demo_data(*args, **kwargs):
 
 def load_demo_data_from_scratch(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
-
+    manage("createinitialrevisions")
     data_files_1 = os.path.join(BASE_DIR, 'data/data/setup/*.json')
     data_files_2 = os.path.join(BASE_DIR, 'data/data/admin_units/*.json')
     data_files_3 = os.path.join(BASE_DIR, 'data/data/v2_data/*.json')
@@ -92,6 +92,7 @@ def load_demo_data_from_scratch(*args, **kwargs):
     data_files_6 = os.path.join(BASE_DIR, 'data/data/geocodes/*.json')
     data_files_7 = os.path.join(BASE_DIR, 'data/data/approvals/*.json')
     data_files_8 = os.path.join(BASE_DIR, 'data/data/last/*.json')
+    data_files_11 = os.path.join(BASE_DIR, 'data/data/mcul/*.json')
     data_files_10 = os.path.join(
         BASE_DIR, 'data/data/facility_services/*.json')
 
@@ -109,7 +110,7 @@ def load_demo_data_from_scratch(*args, **kwargs):
     manage('bootstrap', data_files_8)
     manage('approve_facilities')
     manage('bootstrap', data_files_10)
-    manage("createinitialrevisions")
+    manage('bootstrap', data_files_11)
 
 
 def load_gis_data(*args, **kwargs):

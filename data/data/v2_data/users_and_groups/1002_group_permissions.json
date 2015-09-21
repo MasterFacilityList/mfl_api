@@ -5,30 +5,6 @@
         },
         "permissions": [
             {
-                "codename": "add_approvalstatus"
-            },
-            {
-                "codename": "view_approver"
-            },
-            {
-                "codename": "add_communityhealthunitapproval"
-            },
-            {
-                "codename": "change_communityhealthunitapproval"
-            },
-            {
-                "codename": "delete_communityhealthunitapproval"
-            },
-            {
-                "codename": "add_communityhealthworkerapproval"
-            },
-            {
-                "codename": "change_communityhealthworkerapproval"
-            },
-            {
-                "codename": "delete_communityhealthworkerapproval"
-            },
-            {
                 "codename": "view_constituency"
             },
             {
@@ -665,18 +641,7 @@
             {
                 "codename": "delete_group"
             },
-            {
-                "codename": "add_approver"
-            },
-            {
-                "codename": "change_approver"
-            },
-            {
-                "codename": "delete_approver"
-            },
-            {
-                "codename": "view_approver"
-            },
+
             {
                 "codename": "add_status"
             },
@@ -1095,27 +1060,7 @@
             {
                 "codename": "delete_token"
             },
-            {
-                "codename": "add_approvalstatus"
-            },
-            {
-                "codename": "change_approvalstatus"
-            },
-            {
-                "codename": "delete_approvalstatus"
-            },
-            {
-                "codename": "add_approver"
-            },
-            {
-                "codename": "change_approver"
-            },
-            {
-                "codename": "delete_approver"
-            },
-            {
-                "codename": "view_approver"
-            },
+
             {
                 "codename": "add_communityhealthunit"
             },
@@ -1128,15 +1073,7 @@
             {
                 "codename": "view_communityhealthunit"
             },
-            {
-                "codename": "add_communityhealthunitapproval"
-            },
-            {
-                "codename": "change_communityhealthunitapproval"
-            },
-            {
-                "codename": "delete_communityhealthunitapproval"
-            },
+
             {
                 "codename": "add_communityhealthunitcontact"
             },
@@ -1158,15 +1095,7 @@
             {
                 "codename": "delete_communityhealthworker"
             },
-            {
-                "codename": "add_communityhealthworkerapproval"
-            },
-            {
-                "codename": "change_communityhealthworkerapproval"
-            },
-            {
-                "codename": "delete_communityhealthworkerapproval"
-            },
+
             {
                 "codename": "add_communityhealthworkercontact"
             },
@@ -1350,18 +1279,7 @@
             {
                 "codename": "view_unpublished_facilities"
             },
-            {
-                "codename": "add_facilityapproval"
-            },
-            {
-                "codename": "change_facilityapproval"
-            },
-            {
-                "codename": "delete_facilityapproval"
-            },
-            {
-                "codename": "view_facilityapproval"
-            },
+
             {
                 "codename": "add_facilitycontact"
             },
