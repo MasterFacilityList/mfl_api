@@ -11,16 +11,6 @@ class TestModelRepr(ModelReprMixin, TestCase):
         x = "hey ya"
         self.check_repr(models.Status.objects.create(name=x), x)
 
-    def test_approver(self):
-        x = "yo"
-        self.check_repr(
-            models.Approver.objects.create(name=x, abbreviation=x), x
-        )
-
-    def test_approval_status(self):
-        x = "hihi"
-        self.check_repr(models.ApprovalStatus.objects.create(name=x), x)
-
     def test_chu(self):
         x = "si-hech-yu"
         instance = mommy.make(models.CommunityHealthUnit, name=x, )
@@ -35,15 +25,6 @@ class TestModelRepr(ModelReprMixin, TestCase):
             health_unit=chu, contact=contact
         )
         self.check_repr(chu_contact, "c-h-u: (twirra: @m)")
-
-    def test_chu_approval(self):
-        ap_s = models.ApprovalStatus.objects.create(name="hehe")
-        chu = mommy.make(models.CommunityHealthUnit, name="name")
-        instance = mommy.make(
-            models.CommunityHealthUnitApproval, approval_status=ap_s,
-            health_unit=chu
-        )
-        self.check_repr(instance, "name: hehe")
 
     def test_chw(self):
         instance = mommy.make(
@@ -62,14 +43,3 @@ class TestModelRepr(ModelReprMixin, TestCase):
             health_worker=chw, contact=contact
         )
         self.check_repr(chw_contact, "fname (123): (twirra: @m)")
-
-    def test_chw_approval(self):
-        ap_s = models.ApprovalStatus.objects.create(name="hehe")
-        chw = mommy.make(
-            models.CommunityHealthWorker, first_name="fname", id_number="123",
-        )
-        instance = mommy.make(
-            models.CommunityHealthWorkerApproval, approval_status=ap_s,
-            health_worker=chw
-        )
-        self.check_repr(instance, "fname (123): hehe")
