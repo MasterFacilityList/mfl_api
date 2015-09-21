@@ -25,40 +25,40 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.url = reverse("api:chul:community_health_units_list")
         super(TestCommunityHealthUnitView, self).setUp()
 
-    # def test_post_chu(self):
-    #     facility = mommy.make(Facility)
-    #     status = mommy.make(Status)
-    #     data = {
-    #         "facility": facility.id,
-    #         "name": "test community",
-    #         "status": status.id,
-    #         "households_monitored": 100,
-    #     }
-    #     response = self.client.post(self.url, data)
-    #     self.assertEquals(201, response.status_code)
-    #     self.assertEquals(1, CommunityHealthUnit.objects.count())
+    def test_post_chu(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        data = {
+            "facility": facility.id,
+            "name": "test community",
+            "status": status.id,
+            "households_monitored": 100,
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, CommunityHealthUnit.objects.count())
 
-    # def test_post_chu_inlined_chew(self):
-    #     facility = mommy.make(Facility)
-    #     status = mommy.make(Status)
-    #     data = {
-    #         "facility": facility.id,
-    #         "name": "test community",
-    #         "status": status.id,
-    #         "households_monitored": 100,
-    #         "health_unit_workers": [
-    #             {
-    #                 "first_name": "Muuguzi",
-    #                 "last_name": "Mnoma",
-    #                 "id_number": "3477757",
-    #                 "is_incharge": True
-    #             }
-    #         ]
-    #     }
-    #     response = self.client.post(self.url, data)
+    def test_post_chu_inlined_chew(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        data = {
+            "facility": facility.id,
+            "name": "test community",
+            "status": status.id,
+            "households_monitored": 100,
+            "health_unit_workers": [
+                {
+                    "first_name": "Muuguzi",
+                    "last_name": "Mnoma",
+                    "id_number": "3477757",
+                    "is_incharge": True
+                }
+            ]
+        }
+        response = self.client.post(self.url, data)
 
-    #     self.assertEquals(201, response.status_code)
-    #     self.assertEquals(1, CommunityHealthUnit.objects.count())
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, CommunityHealthUnit.objects.count())
 
     def test_post_chu_inlined_chew_invalid_data(self):
         facility = mommy.make(Facility)
