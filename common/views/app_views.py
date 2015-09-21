@@ -14,7 +14,8 @@ from ..models import (
     UserContact,
     Town,
     UserConstituency,
-    SubCounty
+    SubCounty,
+    DocumentUpload,
 )
 from facilities.models import(
     FacilityStatus,
@@ -43,7 +44,8 @@ from ..serializers import (
     TownSerializer,
     FilteringSummariesSerializer,
     UserConstituencySerializer,
-    SubCountySerializer
+    SubCountySerializer,
+    DocumentUploadSerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -63,6 +65,7 @@ from ..utilities import CustomRetrieveUpdateDestroyView
 
 
 class FilterAdminUnitsMixin(object):
+
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
         if (user.county and hasattr(
@@ -82,6 +85,7 @@ class FilterAdminUnitsMixin(object):
 
 
 class SubCountyListView(generics.ListCreateAPIView):
+
     """
     Lists and creates sub counties
 
@@ -103,6 +107,7 @@ class SubCountyListView(generics.ListCreateAPIView):
 
 class SubCountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular contact
     """
@@ -111,6 +116,7 @@ class SubCountyDetailView(
 
 
 class ContactView(generics.ListCreateAPIView):
+
     """
     Lists and creates contacts
 
@@ -130,6 +136,7 @@ class ContactView(generics.ListCreateAPIView):
 
 class ContactDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular contact
     """
@@ -138,6 +145,7 @@ class ContactDetailView(
 
 
 class PhysicalAddressView(generics.ListCreateAPIView):
+
     """
     Lists and creaates physical addresses
 
@@ -156,6 +164,7 @@ class PhysicalAddressView(generics.ListCreateAPIView):
 
 class PhysicalAddressDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular physical address
     """
@@ -164,6 +173,7 @@ class PhysicalAddressDetailView(
 
 
 class CountyView(generics.ListCreateAPIView):
+
     """
     Lists and creates counties
 
@@ -182,6 +192,7 @@ class CountyView(generics.ListCreateAPIView):
 
 class CountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular county including the county boundary
     and its facility coordinates
@@ -192,6 +203,7 @@ class CountyDetailView(
 
 class CountySlimDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves the primary details of a county
     """
@@ -200,6 +212,7 @@ class CountySlimDetailView(
 
 
 class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
+
     """
     Lists and creates wards
 
@@ -219,6 +232,7 @@ class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
 
 class WardDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular ward details including ward boundaries
     and facility coordinates
@@ -229,6 +243,7 @@ class WardDetailView(
 
 class WardSlimDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves a patricular ward primary details
     """
@@ -237,6 +252,7 @@ class WardSlimDetailView(
 
 
 class ConstituencyView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
+
     """
     Lists and creates constituencies
 
@@ -255,6 +271,7 @@ class ConstituencyView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
 
 class ConstituencyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a  patricular constituency
     """
@@ -269,6 +286,7 @@ class ConstituencySlimDetailView(
 
 
 class ContactTypeListView(generics.ListCreateAPIView):
+
     """
     Lists and creates contact types
 
@@ -286,6 +304,7 @@ class ContactTypeListView(generics.ListCreateAPIView):
 
 class ContactTypeDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular contact type
     """
@@ -294,6 +313,7 @@ class ContactTypeDetailView(
 
 
 class UserCountyView(generics.ListCreateAPIView):
+
     """
     Lists and creates links between users and counties
 
@@ -314,6 +334,7 @@ class UserCountyView(generics.ListCreateAPIView):
 
 class UserCountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular link between a user and a county
     """
@@ -322,6 +343,7 @@ class UserCountyDetailView(
 
 
 class UserContactListView(generics.ListCreateAPIView):
+
     """
     Lists and creates user contacts
 
@@ -339,6 +361,7 @@ class UserContactListView(generics.ListCreateAPIView):
 
 class UserContactDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular user contact
     """
@@ -347,6 +370,7 @@ class UserContactDetailView(
 
 
 class TownListView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
+
     """
     Lists and creates towns
 
@@ -364,6 +388,7 @@ class TownListView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
 
 class TownDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a patricular town detail
     """
@@ -416,3 +441,14 @@ class UserConstituencyDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserConstituencySerializer
     queryset = UserConstituency.objects.all()
+
+
+class DocumentUploadDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = DocumentUploadSerializer
+    queryset = DocumentUpload.objects.all()
+
+
+class DocumentUploadListView(generics.ListCreateAPIView):
+    serializer_class = DocumentUploadSerializer
+    queryset = DocumentUpload.objects.all()
