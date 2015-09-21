@@ -13,7 +13,7 @@ from facilities.models import Facility
 class Status(AbstractBase):
 
     """
-    Indicates the of operation of a community health unit.
+    Indicates the operation status of a community health unit.
     e.g  fully-functional, semi-functional, functional
     """
     name = models.CharField(max_length=50)
@@ -24,41 +24,6 @@ class Status(AbstractBase):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'statuses'
-
-
-@reversion.register
-@encoding.python_2_unicode_compatible
-class Approver(AbstractBase):
-
-    """
-    These are the bodies or the people that approve a community health unit.
-    """
-    name = models.CharField(
-        max_length=150, help_text='name of the approver', unique=True)
-    description = models.TextField(null=True, blank=True)
-    abbreviation = models.CharField(
-        max_length=50, help_text='A short name for the approver.')
-
-    def __str__(self):
-        return self.name
-
-
-@reversion.register
-@encoding.python_2_unicode_compatible
-class ApprovalStatus(AbstractBase):
-
-    """
-    Status of a community health unit indicating whether it has been
-    approved or not.
-    """
-    name = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta(AbstractBase.Meta):
-        verbose_name_plural = 'approval_statuses'
 
 
 @reversion.register(follow=['health_unit', 'contact'])
@@ -94,9 +59,9 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
     households_monitored = models.PositiveIntegerField(default=0)
-    date_established = models.CharField(max_length=100, null=True, blank=True)
-    contacts = models.ManyToManyField(
-        Contact, through=CommunityHealthUnitContact)
+    date_established = models.DateTimeField(default=timezone.now)
+    is_approved = models.BooleanField(default=False)
+    approval_comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -105,35 +70,6 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         if not self.code:
             self.code = self.generate_next_code_sequence()
         super(CommunityHealthUnit, self).save(*args, **kwargs)
-
-
-class EntityApprovalAbstractBase(AbstractBase):
-
-    """
-    Links an entity to its approver.
-    """
-    approver = models.ForeignKey(Approver)
-    approval_status = models.ForeignKey(ApprovalStatus)
-    comment = models.TextField()
-    approval_date = models.DateField(default=timezone.now)
-
-    class Meta(AbstractBase.Meta):
-        abstract = True
-
-
-@reversion.register(follow=['approver', 'approval_status', 'health_unit', ])
-@encoding.python_2_unicode_compatible
-class CommunityHealthUnitApproval(EntityApprovalAbstractBase):
-
-    """
-    Links a community health unit to its approver.
-    """
-    health_unit = models.ForeignKey(
-        CommunityHealthUnit,
-        related_name='health_unit_approvals')
-
-    def __str__(self):
-        return "{}: {}".format(self.health_unit, self.approval_status)
 
 
 @reversion.register(follow=['health_worker', 'contact'])
@@ -169,8 +105,6 @@ class CommunityHealthWorker(AbstractBase):
         CommunityHealthUnit,
         help_text='The health unit the worker is incharge of',
         related_name='health_unit_workers')
-    contacts = models.ManyToManyField(
-        Contact, through=CommunityHealthWorkerContact)
 
     def __str__(self):
         return "{} ({})".format(self.first_name, self.id_number)
@@ -181,17 +115,3 @@ class CommunityHealthWorker(AbstractBase):
     @property
     def name(self):
         return "{} {}".format(self.first_name, self.last_name).strip()
-
-
-@reversion.register(follow=['approver', 'approval_status', 'health_worker', ])
-@encoding.python_2_unicode_compatible
-class CommunityHealthWorkerApproval(EntityApprovalAbstractBase):
-
-    """
-    Shows when a health worker was approved and by who.
-    """
-    health_worker = models.ForeignKey(
-        CommunityHealthWorker, related_name='health_worker_approvals')
-
-    def __str__(self):
-        return "{}: {}".format(self.health_worker, self.approval_status)

@@ -5,34 +5,10 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact,
-    Approver,
-    CommunityHealthUnitApproval,
-    CommunityHealthWorkerApproval,
-    ApprovalStatus
+    CommunityHealthUnitContact
 )
 
 from common.filters.filter_shared import CommonFieldsFilterset
-
-
-class ApproverFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = Approver
-
-
-class CommunityHealthUnitApprovalFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = CommunityHealthUnitApproval
-
-
-class CommunityHealthWorkerApprovalFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = CommunityHealthWorkerApproval
-
-
-class ApprovalStatusFilter(CommonFieldsFilterset):
-    class Meta(object):
-        model = ApprovalStatus
 
 
 class StatusFilter(CommonFieldsFilterset):

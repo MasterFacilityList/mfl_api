@@ -10,15 +10,7 @@ from .views import(
     StatusListView,
     StatusDetailView,
     CommunityHealthUnitContactListView,
-    CommunityHealthUnitContactDetailView,
-    ApproverListView,
-    ApproverDetailView,
-    CommunityHealthUnitApprovalListView,
-    CommunityHealthUnitApprovalDetailView,
-    CommunityHealthWorkerApprovalListView,
-    CommunityHealthWorkerApprovalDetailView,
-    ApprovalStatusListView,
-    ApprovalStatusDetailView
+    CommunityHealthUnitContactDetailView
 )
 
 
@@ -35,31 +27,6 @@ urlpatterns = patterns(
     url(r'^unit_contacts/(?P<pk>[^/]+)/$',
         CommunityHealthUnitContactDetailView.as_view(),
         name="community_health_unit_contact_detail"),
-
-    url(r'^approvers/$', ApproverListView.as_view(),
-        name='approvers_list'),
-    url(r'^approvers/(?P<pk>[^/]+)/$',
-        ApproverDetailView.as_view(),
-        name="approver_detail"),
-
-    url(r'^unit_approvals/$', CommunityHealthUnitApprovalListView.as_view(),
-        name='community_health_unit_approvals_list'),
-    url(r'^unit_approvals/(?P<pk>[^/]+)/$',
-        CommunityHealthUnitApprovalDetailView.as_view(),
-        name="community_health_unit_approval_detail"),
-
-    url(r'^worker_approvals/$',
-        CommunityHealthWorkerApprovalListView.as_view(),
-        name='community_health_worker_approvals_list'),
-    url(r'^worker_approvals/(?P<pk>[^/]+)/$',
-        CommunityHealthWorkerApprovalDetailView.as_view(),
-        name="community_health_worker_approval_detail"),
-
-    url(r'^approval_statuses/$', ApprovalStatusListView.as_view(),
-        name='approval_statuses_list'),
-    url(r'^approval_statuses/(?P<pk>[^/]+)/$',
-        ApprovalStatusDetailView.as_view(),
-        name="approval_status_detail"),
 
     url(r'^workers/$', CommunityHealthWorkerListView.as_view(),
         name='community_health_workers_list'),

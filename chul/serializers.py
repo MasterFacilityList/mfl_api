@@ -7,35 +7,8 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact,
-    Approver,
-    CommunityHealthUnitApproval,
-    CommunityHealthWorkerApproval,
-    ApprovalStatus
+    CommunityHealthUnitContact
 )
-
-
-class ApproverSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = Approver
-
-
-class ApprovalStatusSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = ApprovalStatus
-
-
-class CommunityHealthUnitApprovalSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = CommunityHealthUnitApproval
-
-
-class CommunityHealthWorkerApprovalSerializer(
-        AbstractFieldsMixin, serializers.ModelSerializer):
-    class Meta(object):
-        model = CommunityHealthWorkerApproval
 
 
 class CommunityHealthWorkerSerializer(

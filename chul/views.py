@@ -5,11 +5,7 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact,
-    Approver,
-    CommunityHealthUnitApproval,
-    CommunityHealthWorkerApproval,
-    ApprovalStatus
+    CommunityHealthUnitContact
 )
 
 from .serializers import (
@@ -17,11 +13,7 @@ from .serializers import (
     CommunityHealthWorkerSerializer,
     CommunityHealthWorkerContactSerializer,
     StatusSerializer,
-    CommunityHealthUnitContactSerializer,
-    ApproverSerializer,
-    CommunityHealthUnitApprovalSerializer,
-    CommunityHealthWorkerApprovalSerializer,
-    ApprovalStatusSerializer
+    CommunityHealthUnitContactSerializer
 )
 
 from .filters import (
@@ -29,11 +21,7 @@ from .filters import (
     CommunityHealthWorkerFilter,
     CommunityHealthWorkerContactFilter,
     StatusFilter,
-    CommunityHealthUnitContactFilter,
-    ApproverFilter,
-    CommunityHealthUnitApprovalFilter,
-    CommunityHealthWorkerApprovalFilter,
-    ApprovalStatusFilter
+    CommunityHealthUnitContactFilter
 )
 
 
@@ -90,114 +78,6 @@ class CommunityHealthUnitContactDetailView(
     """
     queryset = CommunityHealthUnitContact.objects.all()
     serializer_class = CommunityHealthUnitContactSerializer
-
-
-class ApproverListView(generics.ListCreateAPIView):
-    """
-    Lists and creates entities who can approver community health units and
-    community workers
-
-    Created ---  Date the record was Created
-    Updated -- Date the record was Updated
-    Created_by -- User who created the record
-    Updated_by -- User who updated the record
-    active  -- Boolean is the record active
-    deleted -- Boolean is the record deleted
-    """
-    queryset = Approver.objects.all()
-    serializer_class = ApproverSerializer
-    filter_class = ApproverFilter
-    ordering_fields = ('name', 'abbreviation',)
-
-
-class ApproverDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    """
-    Retrieves a particular approver
-    """
-    queryset = Approver.objects.all()
-    serializer_class = ApproverSerializer
-
-
-class CommunityHealthUnitApprovalListView(generics.ListCreateAPIView):
-    """
-    Lists and creates Community Health Unit Approvals
-
-    Created ---  Date the record was Created
-    Updated -- Date the record was Updated
-    Created_by -- User who created the record
-    Updated_by -- User who updated the record
-    active  -- Boolean is the record active
-    deleted -- Boolean is the record deleted
-    """
-    queryset = CommunityHealthUnitApproval.objects.all()
-    serializer_class = CommunityHealthUnitApprovalSerializer
-    filter_class = CommunityHealthUnitApprovalFilter
-    ordering_fields = ('health_unit', 'approver', 'approval_status')
-
-
-class CommunityHealthUnitApprovalDetailView(
-        AuditableDetailViewMixin,
-        generics.RetrieveUpdateDestroyAPIView):
-    """
-    Retrieves a particular community health unit approval
-    """
-    queryset = CommunityHealthUnitApproval.objects.all()
-    serializer_class = CommunityHealthUnitApprovalSerializer
-
-
-class CommunityHealthWorkerApprovalListView(generics.ListCreateAPIView):
-    """
-    Lists and creates Community Health Unit Workers Approvals
-
-    Created ---  Date the record was Created
-    Updated -- Date the record was Updated
-    Created_by -- User who created the record
-    Updated_by -- User who updated the record
-    active  -- Boolean is the record active
-    deleted -- Boolean is the record deleted
-    """
-    queryset = CommunityHealthWorkerApproval.objects.all()
-    serializer_class = CommunityHealthWorkerApprovalSerializer
-    filter_class = CommunityHealthWorkerApprovalFilter
-    ordering_fields = ('health_worker', 'approver', 'approval_status')
-
-
-class CommunityHealthWorkerApprovalDetailView(
-        AuditableDetailViewMixin,
-        generics.RetrieveUpdateDestroyAPIView):
-    """
-    Retrieve a particular community health worker approval
-    """
-    queryset = CommunityHealthWorkerApproval.objects.all()
-    serializer_class = CommunityHealthWorkerApprovalSerializer
-
-
-class ApprovalStatusListView(generics.ListCreateAPIView):
-    """
-    Lists and creates approval statuses
-
-
-    Created ---  Date the status was Created
-    Updated -- Date the status was Updated
-    Created_by -- User who created the status
-    Updated_by -- User who updated the status
-    active  -- Boolean is the record active
-    deleted -- Boolean is the record deleted
-    """
-    queryset = ApprovalStatus.objects.all()
-    serializer_class = ApprovalStatusSerializer
-    filter_class = ApprovalStatusFilter
-    ordering_fields = ('name', 'description',)
-
-
-class ApprovalStatusDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    """
-    Retrieves a particular approval status
-    """
-    queryset = ApprovalStatus.objects.all()
-    serializer_class = ApprovalStatusSerializer
 
 
 class CommunityHealthUnitListView(generics.ListCreateAPIView):
