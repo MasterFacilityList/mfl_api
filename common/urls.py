@@ -26,7 +26,9 @@ from .views import (
     UserConstituencyDetailView,
     UserConstituencyListView,
     SubCountyDetailView,
-    SubCountyListView
+    SubCountyListView,
+    DocumentUploadListView,
+    DocumentUploadDetailView
 )
 
 
@@ -109,4 +111,8 @@ urlpatterns = patterns(
 
     url(r'^filtering_summaries/$',
         FilteringSummariesView.as_view(), name="filtering_summaries"),
+
+    url(r'^documents/$', DocumentUploadListView.as_view(), name='documents'),
+    url(r'^documents/(?P<pk>[a-z0-9\-]+)/$',
+        DocumentUploadDetailView.as_view(), name='document_detail'),
 )

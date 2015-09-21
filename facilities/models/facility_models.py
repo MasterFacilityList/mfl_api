@@ -21,6 +21,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class FacilityKephManager(models.Manager):
+
     def get_queryset(self):
         return super(
             FacilityKephManager, self).get_queryset().filter(

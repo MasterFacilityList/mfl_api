@@ -93,3 +93,7 @@ class TestModelRepr(ModelReprMixin, TestCase):
         self.check_repr(
             models.PhysicalAddress.objects.create(location_desc=x), x
         )
+
+    def test_document_upload(self):
+        x = "implementation guide"
+        self.check_repr(models.DocumentUpload(name=x,), x)
