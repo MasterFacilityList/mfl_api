@@ -58,7 +58,8 @@ from ..filters import (
     UserContactFilter,
     TownFilter,
     UserConstituencyFilter,
-    SubCountyFilter
+    SubCountyFilter,
+    DocumentUploadFilter
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
@@ -452,3 +453,5 @@ class DocumentUploadDetailView(
 class DocumentUploadListView(generics.ListCreateAPIView):
     serializer_class = DocumentUploadSerializer
     queryset = DocumentUpload.objects.all()
+    filter_class = DocumentUploadFilter
+    ordering_fields = ('name', )
