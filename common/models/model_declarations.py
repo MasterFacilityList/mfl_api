@@ -335,3 +335,14 @@ class PhysicalAddress(AbstractBase):
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'physical addresses'
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class DocumentUpload(AbstractBase):
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+    fyl = models.FileField()
+
+    def __str__(self):
+        return self.name

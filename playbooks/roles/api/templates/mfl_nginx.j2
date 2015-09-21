@@ -6,7 +6,7 @@ upstream app_server {
 
 server {
     listen {% if ssl_on %}443 ssl{% else %}80{% endif %} default;
-    client_max_body_size 4G;
+    client_max_body_size 100MB;
     server_name {{server_name}};
 
     keepalive_timeout 5;

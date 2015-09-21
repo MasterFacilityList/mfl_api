@@ -11,8 +11,8 @@ from ..models import (
     UserContact,
     Town,
     UserConstituency,
-    SubCounty
-
+    SubCounty,
+    DocumentUpload
 )
 from .filter_shared import (
     CommonFieldsFilterset,
@@ -22,6 +22,7 @@ from .filter_shared import (
 
 
 class SubCountyFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = SubCounty
 
@@ -113,3 +114,10 @@ class TownFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = Town
+
+
+class DocumentUploadFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta(object):
+        model = DocumentUpload

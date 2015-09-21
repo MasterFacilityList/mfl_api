@@ -50,7 +50,7 @@
     - restart supervisor
 
 - name: run fab load_demo_data
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab load_demo_data executable=/bin/bash"
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab load_demo_data_from_scratch executable=/bin/bash"
   when: load_demo_data
 
 - name: run fab recreate_search_index
