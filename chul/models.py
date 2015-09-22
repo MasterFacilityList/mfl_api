@@ -40,7 +40,7 @@ class CommunityHealthUnitContact(AbstractBase):
         return "{}: ({})".format(self.health_unit, self.contact)
 
 
-@reversion.register(follow=['facility', 'status', 'contacts'])
+@reversion.register(follow=['facility', 'status'])
 @encoding.python_2_unicode_compatible
 class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
@@ -93,7 +93,7 @@ class CommunityHealthWorkerContact(AbstractBase):
         return "{}: ({})".format(self.health_worker, self.contact)
 
 
-@reversion.register(follow=['health_unit', 'contacts'])
+@reversion.register(follow=['health_unit'])
 @encoding.python_2_unicode_compatible
 class CommunityHealthWorker(AbstractBase):
 
