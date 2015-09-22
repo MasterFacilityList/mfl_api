@@ -442,18 +442,6 @@ class CommunityHealthUnitReport(APIView):
             "results": self.get_county_reports()[0]
         }
 
-        if county:
-            report_data = self.get_constituency_reports(county=county)
-            data = {
-                "total": report_data[1],
-                "results": report_data[0]
-            }
-        if constituency:
-            report_data = self.get_ward_reports(constituency=constituency)
-            data = {
-                "total": report_data[1],
-                "results": report_data[0]
-            }
         if report_type == 'constituency' and county:
             report_data = self.get_constituency_reports(county=county)
             data = {
@@ -481,13 +469,6 @@ class CommunityHealthUnitReport(APIView):
                 "results": report_data[0]
             }
 
-        if last_quarter:
-            report_data = self.get_date_established_report()
-            data = {
-                "total": report_data[1],
-                "results": report_data[0]
-            }
-
         if last_quarter and county and not constituency:
             report_data = self.get_date_established_report(county=county)
             data = {
@@ -501,7 +482,18 @@ class CommunityHealthUnitReport(APIView):
                 "total": report_data[1],
                 "results": report_data[0]
             }
+
+        if last_quarter and not county and not constituency:
+            report_data = self.get_date_established_report()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
         if report_type == 'status':
             report_data = self.get_status_report()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
 
         return Response(data)

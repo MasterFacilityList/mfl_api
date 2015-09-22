@@ -132,3 +132,29 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
 
         }
         self.assertEquals(data, response.data)
+
+    def test_status_report(self):
+            facility = mommy.make(Facility)
+            facility_2 = mommy.make(Facility)
+            chu_1 = mommy.make(CommunityHealthUnit, facility=facility)
+            chu_2 = mommy.make(CommunityHealthUnit, facility=facility_2)
+            url = reverse("api:reporting:chul_reports")
+            url = url + "?status=true"
+            response = self.client.get(url)
+            self.assertEquals(200, response.status_code)
+            self.assertEquals(2, response.data.get('total'))
+            data = {
+                "total": 2,
+                "results": [
+                    {
+                        "status_name": chu_2.status.name,
+                        "number_of_units": 1
+                    },
+                    {
+                        "status_name": chu_1.status.name,
+                        "number_of_units": 1
+                    }
+                ]
+
+            }
+            self.assertEquals(data, response.data)
