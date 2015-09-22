@@ -489,7 +489,13 @@ class CommunityHealthUnitReport(APIView):
                 "total": report_data[1],
                 "results": report_data[0]
             }
-        if report_type == 'status':
+        if report_type == 'status' and not county:
+            report_data = self.get_status_report(county=county)
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+        if report_type == 'status' and county:
             report_data = self.get_status_report()
             data = {
                 "total": report_data[1],
