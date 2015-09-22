@@ -401,6 +401,7 @@ class CommunityHealthUnitReport(APIView):
         now = timezone.now()
         three_months_ago = now - timedelta(days=90)
         queryset = self.queryset.filter(created__gte=three_months_ago)
+
         if county:
             return self.get_constituency_reports(
                 county=county, queryset=queryset)
@@ -446,12 +447,27 @@ class CommunityHealthUnitReport(APIView):
                 "total": report_data[1],
                 "results": report_data[0]
             }
-        if report_type == 'constituency':
+        if report_type == 'constituency' and county:
+            report_data = self.get_constituency_reports(county=county)
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+
+        if report_type == 'constituency' and not county:
             report_data = self.get_constituency_reports()
             data = {
                 "total": report_data[1],
                 "results": report_data[0]
             }
+
+        if report_type == 'ward':
+            report_data = self.get_ward_reports()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+
         if last_quarter:
             report_data = self.get_date_established_report()
             data = {
