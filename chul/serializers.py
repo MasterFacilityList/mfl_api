@@ -33,6 +33,14 @@ class CommunityHealthWorkerPostSerializer(
 class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     status_name = serializers.ReadOnlyField(source="status.name")
+    health_unit_workers = CommunityHealthWorkerPostSerializer(
+        many=True, required=False)
+    facility_name = serializers.ReadOnlyField(source='facility.name')
+    facility_ward = serializers.ReadOnlyField(source='facility.ward.name')
+    facility_subcounty = serializers.ReadOnlyField(
+        source='facility.ward.constituency.name')
+    facility_county = serializers.ReadOnlyField(
+        source='facility.ward.constituency.county.name')
     inlined_errors = {}
 
     class Meta(object):
