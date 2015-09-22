@@ -6,11 +6,19 @@ from model_mommy import mommy
 
 from common.models import County
 from common.renderers.excel_renderer import (
-    _write_excel_file, sanitize_field_names, _build_name_from_list)
+    _write_excel_file, sanitize_field_names, _build_name_from_list
+)
 from .test_views import LoginMixin
 
 
 class TestExcelRenderer(LoginMixin, APITestCase):
+
+    def test_not_list(self):
+        c = mommy.make(County)
+        url = reverse('api:common:county_detail', kwargs={"pk": c.id})
+        url += "?format=excel"
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 406)
 
     def test_get_excel_from_end_point(self):
         url = reverse('api:common:counties_list')
@@ -119,6 +127,13 @@ class TestExcelRenderer(LoginMixin, APITestCase):
 
 
 class TestCsvRenderer(LoginMixin, APITestCase):
+
+    def test_not_list(self):
+        c = mommy.make(County)
+        url = reverse('api:common:county_detail', kwargs={"pk": str(c.pk)})
+        url += "?format=excel"
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 406)
 
     def test_get_csv_from_end_point(self):
         url = reverse('api:common:counties_list')
