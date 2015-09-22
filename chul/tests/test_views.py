@@ -60,6 +60,30 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
 
+    def test_patch_chu_inlined_chew(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chew = mommy.make(CommunityHealthWorker, health_unit=chu)
+        data = {
+            "households_monitored": 100,
+            "health_unit_workers": [
+                {
+                    "id": str(chew.id),
+                    "first_name": "Muuguzi tabibu",
+                    "last_name": "Mnoma",
+                    "id_number": "3477757",
+                    "is_incharge": True
+                }
+            ]
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, CommunityHealthUnit.objects.count())
+        self.assertEquals(
+            CommunityHealthWorker.objects.all()[0].first_name,
+            "Muuguzi tabibu")
+
     def test_post_chu_inlined_chew_invalid_data(self):
         facility = mommy.make(Facility)
         status = mommy.make(Status)
