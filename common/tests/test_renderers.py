@@ -11,6 +11,7 @@ from .test_views import LoginMixin
 
 
 class TestExcelRenderer(LoginMixin, APITestCase):
+
     def test_get_excel_from_end_point(self):
         url = reverse('api:common:counties_list')
         excel_url = url + "?format=excel"
@@ -33,65 +34,55 @@ class TestExcelRenderer(LoginMixin, APITestCase):
         mommy.make(County)
         url = reverse('api:common:counties_list')
         response = self.client.get(url)
-        _write_excel_file(response.data)
+        _write_excel_file(response.data['results'])
 
     def test_nested_list_in_excel_renderer(self):
-        data = {
-            "results": [
-                {
-                    "key_a": "data",
-                    "key_b": "data",
-                    "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
-                },
-                {
-                    "key_a": "data",
-                    "key_b": "data",
-                    "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
-                },
-                {
-                    "key_a": "data",
-                    "key_b": [
-                        {
-                            "key_a": "data",
-                            "key_b": "data"
-                        }
-                    ],
-                    "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
-                }
-            ]
-        }
-
+        data = [
+            {
+                "key_a": "data",
+                "key_b": "data",
+                "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
+            },
+            {
+                "key_a": "data",
+                "key_b": "data",
+                "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
+            },
+            {
+                "key_a": "data",
+                "key_b": [
+                    {
+                        "key_a": "data",
+                        "key_b": "data"
+                    }
+                ],
+                "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
+            }
+        ]
         _write_excel_file(data)
 
     def test_nested_empty_list_in_excel_renderer(self):
-            data = {
-                "results": [
-                    {
-                        "key_a": "data",
-                        "key_b": "data"
-                    },
-                    {
-                        "key_a": "data",
-                        "key_b": "data"
-                    },
-                    {
-                        "key_a": "data",
-                        "key_b": []
-                    }
-                ]
+        data = [
+            {
+                "key_a": "data",
+                "key_b": "data"
+            },
+            {
+                "key_a": "data",
+                "key_b": "data"
+            },
+            {
+                "key_a": "data",
+                "key_b": []
             }
-
-            _write_excel_file(data)
+        ]
+        _write_excel_file(data)
 
     def test_empty_list(self):
-        data = {
-            "results": []
-        }
-
+        data = []
         _write_excel_file(data)
 
     def test_sanitize_field_names(self):
-
         sample_list = ['regulatory_status_name']
         key_map = sanitize_field_names(sample_list)
         self.assertEquals([
@@ -128,6 +119,7 @@ class TestExcelRenderer(LoginMixin, APITestCase):
 
 
 class TestCsvRenderer(LoginMixin, APITestCase):
+
     def test_get_csv_from_end_point(self):
         url = reverse('api:common:counties_list')
         excel_url = url + "?format=csv"
