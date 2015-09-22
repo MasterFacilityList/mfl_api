@@ -5,10 +5,19 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact
+    CommunityHealthUnitContact,
+    CHUService
 )
 
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class CHUServiceFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+    description = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta(object):
+        model = CHUService
 
 
 class StatusFilter(CommonFieldsFilterset):
