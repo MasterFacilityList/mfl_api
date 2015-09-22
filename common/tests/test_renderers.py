@@ -131,7 +131,7 @@ class TestCsvRenderer(LoginMixin, APITestCase):
     def test_not_list(self):
         c = mommy.make(County)
         url = reverse('api:common:county_detail', kwargs={"pk": str(c.pk)})
-        url += "?format=excel"
+        url += "?format=csv"
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 406)
 
