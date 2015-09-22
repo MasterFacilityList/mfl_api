@@ -1,6 +1,7 @@
 import reversion
 
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils import timezone, encoding
 
 from common.models import AbstractBase, Contact, SequenceMixin
@@ -70,6 +71,22 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
     def __str__(self):
         return self.name
+
+    def validate_facility_is_not_closed(self):
+        if self.facility.closed:
+            raise ValidationError(
+                {
+                    "facility":
+                    [
+                        "A Community Unit cannot be atatched to a closed "
+                        "facility"
+                    ]
+                }
+            )
+
+    def clean(self):
+        super(CommunityHealthUnit, self).clean()
+        self.validate_facility_is_not_closed()
 
     def save(self, *args, **kwargs):
         if not self.code:

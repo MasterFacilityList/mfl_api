@@ -1,7 +1,9 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 
 from model_mommy import mommy
 
+from facilities.models import Facility
 from ..models import (
     CommunityHealthUnit,
     CommunityHealthWorker,
@@ -20,6 +22,11 @@ class TestCommunityHealthUnit(TestCase):
     def test_save_with_code(self):
         mommy.make(CommunityHealthUnit, code='7800')
         self.assertEquals(1, CommunityHealthUnit.objects.count())
+
+    def test_facility_is_no_closed(self):
+        facility = mommy.make(Facility, closed=True)
+        with self.assertRaises(ValidationError):
+            mommy.make(CommunityHealthUnit, facility=facility)
 
 
 class TestCommunityHealthWorkerModel(TestCase):
