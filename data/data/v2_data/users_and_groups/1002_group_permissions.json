@@ -5,6 +5,9 @@
         },
         "permissions": [
             {
+                "codename": "view_rejected_chus"
+            },
+            {
                 "codename": "view_constituency"
             },
             {
@@ -182,6 +185,9 @@
             "name": "Sub County Health Records Information Officer"
         },
         "permissions": [
+            {
+                "codename": "view_rejected_chus"
+            },
             {
                 "codename": "view_constituency"
             },
@@ -641,7 +647,9 @@
             {
                 "codename": "delete_group"
             },
-
+            {
+                "codename": "view_rejected_chus"
+            },
             {
                 "codename": "add_status"
             },
@@ -1060,7 +1068,6 @@
             {
                 "codename": "delete_token"
             },
-
             {
                 "codename": "add_communityhealthunit"
             },
@@ -1073,7 +1080,6 @@
             {
                 "codename": "view_communityhealthunit"
             },
-
             {
                 "codename": "add_communityhealthunitcontact"
             },
@@ -1095,7 +1101,6 @@
             {
                 "codename": "delete_communityhealthworker"
             },
-
             {
                 "codename": "add_communityhealthworkercontact"
             },
@@ -1279,7 +1284,6 @@
             {
                 "codename": "view_unpublished_facilities"
             },
-
             {
                 "codename": "add_facilitycontact"
             },
@@ -1997,5 +2001,11 @@
                 "codename": "view_mfloauthapplication"
             }
         ]
+    },
+    {
+        "group": {
+            "name": "Community Officer Group"
+        },
+        "permissions": []
     }
 ]

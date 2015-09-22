@@ -1,13 +1,16 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 
 from model_mommy import mommy
 
+from facilities.models import Facility
 from ..models import (
     CommunityHealthUnit,
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact
+    CommunityHealthUnitContact,
+    CHUService
 )
 
 
@@ -20,6 +23,25 @@ class TestCommunityHealthUnit(TestCase):
     def test_save_with_code(self):
         mommy.make(CommunityHealthUnit, code='7800')
         self.assertEquals(1, CommunityHealthUnit.objects.count())
+
+    def test_facility_is_not_closed(self):
+        facility = mommy.make(Facility, closed=True)
+        with self.assertRaises(ValidationError):
+            mommy.make(CommunityHealthUnit, facility=facility)
+
+    def test_chu_approval_or_rejecttion_and_not_both(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(CommunityHealthUnit, is_approved=True, is_rejected=True)
+        # test rejecting an approvec chu
+        chu = mommy.make(CommunityHealthUnit, is_approved=True)
+        chu.is_rejected = True
+        chu.is_approved = False
+        chu.save()
+
+        chu_2 = mommy.make(CommunityHealthUnit, is_rejected=True)
+        chu_2.is_approved = True
+        chu_2.is_rejected = False
+        chu_2.save()
 
 
 class TestCommunityHealthWorkerModel(TestCase):
@@ -42,7 +64,7 @@ class TestModels(TestCase):
         models = [
             CommunityHealthUnit, CommunityHealthWorker,
             CommunityHealthWorkerContact, Status,
-            CommunityHealthUnitContact
+            CommunityHealthUnitContact, CHUService
         ]
 
         for model_cls in models:
