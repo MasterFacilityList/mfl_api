@@ -15,6 +15,7 @@ from facilities.serializers import FacilitySerializer
 from common.models import County, Constituency, UserConstituency, UserCounty
 from common.tests import ViewTestBase
 from mfl_gis.models import FacilityCoordinates
+from chul.models import CommunityHealthUnit
 
 from search.filters import SearchFilter
 from search.search_utils import (
@@ -280,6 +281,18 @@ class TestSearchFunctions(ViewTestBase):
             created_by=county_user, updated_by=county_user)
         filtered_response = self.client.get(url)
         self.assertEquals(200, filtered_response.status_code)
+
+    def test_chu_search(self):
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        chu_url = reverse("api:chul:community_health_units_list")
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, name='Jericho')
+        mommy.make(CommunityHealthUnit, facility=facility_2)
+        index_instance(chu)
+        chu_search_url = chu_url + "?search=Jericho"
+        response = self.client.get(chu_search_url)
+        self.assertEquals(200, response.status_code)
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')

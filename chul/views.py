@@ -25,6 +25,43 @@ from .filters import (
 )
 
 
+class FilterCommunityUnitsMixin(object):
+    def get_queryset(self, *args, **kwargs):
+        custom_queryset = kwargs.pop('custom_queryset', None)
+        if hasattr(custom_queryset, 'count'):
+            self.queryset = custom_queryset
+
+        if not self.request.user.has_perm(
+                "facilities.view_unpublished_facilities"):
+            self.queryset = self.queryset.filter(facility__is_published=True)
+
+        if not self.request.user.has_perm(
+                "chul.view_rejected_chus"):
+            self.queryset = self.queryset.filter(is_approved=True)
+
+        if self.request.user.is_national:
+            self.queryset = self.queryset
+
+        if self.request.user.county:
+            self.queryset = self.queryset.filter(
+                facility__ward__constituency__county=self.request.user.county)
+
+        if self.request.user.constituency:
+            self.queryset = self.queryset.filter(
+                facility__ward__constituency=self.request.user.constituency)
+
+        return self.queryset
+
+    def filter_queryset(self, queryset):
+        """
+        Overridden in order to constrain search results to what a user should
+        see.
+        """
+        queryset = super(FilterCommunityUnitsMixin, self).filter_queryset(
+            queryset)
+        return self.get_queryset(custom_queryset=queryset)
+
+
 class StatusListView(generics.ListCreateAPIView):
     """
     Lists and creates statuses
@@ -80,7 +117,8 @@ class CommunityHealthUnitContactDetailView(
     serializer_class = CommunityHealthUnitContactSerializer
 
 
-class CommunityHealthUnitListView(generics.ListCreateAPIView):
+class CommunityHealthUnitListView(
+        FilterCommunityUnitsMixin, generics.ListCreateAPIView):
     """
     Lists and creates community health units
 

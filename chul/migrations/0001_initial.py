@@ -13,7 +13,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', 'admin_unit_codes'),
+        ('common', '0003_remove_documentupload_public'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('facilities', '0009_auto_20150917_0848'),
     ]
@@ -39,6 +39,8 @@ class Migration(migrations.Migration):
                 ('location', models.CharField(max_length=255, null=True, blank=True)),
                 ('is_closed', models.BooleanField(default=False)),
                 ('closing_comment', models.TextField(null=True, blank=True)),
+                ('is_rejected', models.BooleanField(default=False)),
+                ('rejection_reason', models.TextField(null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(help_text=b'The facility on which the health unit is tied to.', to='facilities.Facility')),
             ],
@@ -46,6 +48,7 @@ class Migration(migrations.Migration):
                 'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
+                'permissions': (('view_rejected_chus', 'Can see the rejected community health units'),),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
@@ -81,6 +84,7 @@ class Migration(migrations.Migration):
                 ('first_name', models.CharField(max_length=50)),
                 ('last_name', models.CharField(max_length=50, null=True, blank=True)),
                 ('id_number', models.PositiveIntegerField(unique=True, null=True, blank=True)),
+                ('is_incharge', models.BooleanField(default=False)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('health_unit', models.ForeignKey(related_name='health_unit_workers', to='chul.CommunityHealthUnit', help_text=b'The health unit the worker is incharge of')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
