@@ -411,8 +411,15 @@ class CommunityHealthUnitReport(APIView):
         else:
             return self.get_county_reports(queryset=queryset)
 
-    def get_status_report(self):
+    def get_status_report(self, constituency=None, county=None):
         data = []
+        if county:
+            self.queryset = self.queryset.filter(
+                facility__ward__constituency__county=county)
+        if constituency:
+            self.queryset = self.queryset.filter(
+                facility__ward__constituency=constituency)
+
         for status in Status.objects.all():
             chu_count = self.queryset.filter(
                 status=status).count()
@@ -461,8 +468,14 @@ class CommunityHealthUnitReport(APIView):
                 "results": report_data[0]
             }
 
-        if report_type == 'ward':
+        if report_type == 'ward' and not constituency:
             report_data = self.get_ward_reports()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+        if report_type == 'ward' and constituency:
+            report_data = self.get_ward_reports(constituency=constituency)
             data = {
                 "total": report_data[1],
                 "results": report_data[0]
@@ -488,5 +501,7 @@ class CommunityHealthUnitReport(APIView):
                 "total": report_data[1],
                 "results": report_data[0]
             }
+        if report_type == 'status':
+            report_data = self.get_status_report()
 
         return Response(data)
