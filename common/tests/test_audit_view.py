@@ -4,11 +4,14 @@ import reversion
 
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
+from django.db import transaction
 from django.test import override_settings
+from model_mommy import mommy
 from rest_framework.test import APITestCase
 
 from common.views import AuditableDetailViewMixin
 from facilities.models import RegulationStatus
+from common.models import DocumentUpload
 
 
 @override_settings(CACHES={
@@ -191,3 +194,23 @@ class TestAuditableViewMixin(APITestCase):
         o = RegulationStatus.objects.get(id=self.status_id)
         v = reversion.get_for_object(o)[0]
         self.assertEqual(advm._resolve_field('not-existent', v), None)
+
+    def test_file_field(self):
+        m = mommy.make(DocumentUpload)
+        url = reverse("api:common:document_detail", kwargs={"pk": str(m.pk)})
+        u = mommy.make(get_user_model())
+        with reversion.create_revision(), transaction.atomic():
+            new = mommy.prepare(DocumentUpload)
+            m.fyl = new.fyl
+            m.save()
+            reversion.set_user(u)
+
+        with reversion.create_revision(), transaction.atomic():
+            new = mommy.prepare(DocumentUpload)
+            m.fyl = new.fyl
+            m.save()
+            reversion.set_user(u)
+
+        response = self.client.get(url+"?include_audit=true")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data['revisions']), 1)

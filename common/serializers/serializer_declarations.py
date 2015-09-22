@@ -190,4 +190,6 @@ class DocumentUploadSerializer(
 
     class Meta(object):
         model = DocumentUpload
-        read_only_fields = ('created', 'created_by', 'updated', 'updated_by')
+        read_only_fields = (
+            'created', 'created_by', 'updated', 'updated_by', 'deleted',
+        )
