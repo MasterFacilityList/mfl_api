@@ -159,3 +159,11 @@ class CommunityHealthWorker(AbstractBase):
     @property
     def name(self):
         return "{} {}".format(self.first_name, self.last_name).strip()
+
+
+class CHUService(AbstractBase):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name

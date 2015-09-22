@@ -5,7 +5,8 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact
+    CommunityHealthUnitContact,
+    CHUService
 )
 
 from .serializers import (
@@ -13,7 +14,8 @@ from .serializers import (
     CommunityHealthWorkerSerializer,
     CommunityHealthWorkerContactSerializer,
     StatusSerializer,
-    CommunityHealthUnitContactSerializer
+    CommunityHealthUnitContactSerializer,
+    CHUServiceSerializer
 )
 
 from .filters import (
@@ -21,7 +23,8 @@ from .filters import (
     CommunityHealthWorkerFilter,
     CommunityHealthWorkerContactFilter,
     StatusFilter,
-    CommunityHealthUnitContactFilter
+    CommunityHealthUnitContactFilter,
+    CHUServiceFilter
 )
 
 
@@ -60,6 +63,34 @@ class FilterCommunityUnitsMixin(object):
         queryset = super(FilterCommunityUnitsMixin, self).filter_queryset(
             queryset)
         return self.get_queryset(custom_queryset=queryset)
+
+
+class CHUServiceListView(generics.ListCreateAPIView):
+    """
+    Lists and creates statuses
+
+    Created ---  Date the status was Created
+    Updated -- Date the status was Updated
+    Created_by -- User who created the status
+    Updated_by -- User who updated the status
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    name  --  Name of the service
+    description -- The description of the service
+    """
+    queryset = CHUService.objects.all()
+    serializer_class = CHUServiceSerializer
+    filter_class = CHUServiceFilter
+    ordering_fields = ('name', 'description', )
+
+
+class CHUServiceDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular status
+    """
+    queryset = CHUService.objects.all()
+    serializer_class = CHUServiceSerializer
 
 
 class StatusListView(generics.ListCreateAPIView):

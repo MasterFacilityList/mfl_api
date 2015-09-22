@@ -8,8 +8,14 @@ from .models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact
+    CommunityHealthUnitContact,
+    CHUService
 )
+
+
+class CHUServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = CHUService
 
 
 class CommunityHealthWorkerSerializer(

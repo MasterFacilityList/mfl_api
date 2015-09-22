@@ -9,7 +9,8 @@ from ..models import (
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
     Status,
-    CommunityHealthUnitContact
+    CommunityHealthUnitContact,
+    CHUService
 )
 
 
@@ -63,7 +64,7 @@ class TestModels(TestCase):
         models = [
             CommunityHealthUnit, CommunityHealthWorker,
             CommunityHealthWorkerContact, Status,
-            CommunityHealthUnitContact
+            CommunityHealthUnitContact, CHUService
         ]
 
         for model_cls in models:

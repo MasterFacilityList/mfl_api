@@ -8,17 +8,57 @@ from facilities.models import Facility, FacilityApproval
 from users.models import MflUser
 from common.models import (
     County, Constituency, UserCounty, UserConstituency, Ward)
+
 from ..models import (
     Status,
     CommunityHealthUnit,
     CommunityHealthWorker,
-    CommunityHealthWorkerContact
+    CommunityHealthWorkerContact,
+    CHUService
 )
 from ..serializers import (
     CommunityHealthUnitSerializer,
     CommunityHealthWorkerSerializer,
     CommunityHealthWorkerContactSerializer
 )
+
+
+class TestCHUService(ViewTestBase):
+    def setUp(self):
+        self.url = reverse("api:chul:chu_services_list")
+        super(TestCHUService, self).setUp()
+
+    def test_post(self):
+        data = {
+            "name": "Kajina tu ka service",
+            "description": "Explain kidogo service inaentail nini"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, CHUService.objects.count())
+
+    def test_get_list(self):
+        mommy.make(CHUService, _quantity=5)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+
+    def test_get_single(self):
+        service = mommy.make(CHUService)
+        url = self.url + "{}/".format(service.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+
+    def test_patch(self):
+        service = mommy.make(CHUService)
+        url = self.url + "{}/".format(service.id)
+        data = {
+            "name": "Jina mpya"
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        service_refetched = CHUService.objects.get(id=service.id)
+        self.assertEquals(service_refetched.name, data.get('name'))
 
 
 class TestCommunityHealthUnitView(ViewTestBase):

@@ -10,12 +10,20 @@ from .views import(
     StatusListView,
     StatusDetailView,
     CommunityHealthUnitContactListView,
-    CommunityHealthUnitContactDetailView
+    CommunityHealthUnitContactDetailView,
+    CHUServiceListView,
+    CHUServiceDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^services/$', CHUServiceListView.as_view(),
+        name='chu_services_list'),
+    url(r'^services/(?P<pk>[^/]+)/$',
+        CHUServiceDetailView.as_view(),
+        name="chu_service_detail"),
+
     url(r'^statuses/$', StatusListView.as_view(),
         name='statuses_list'),
     url(r'^statuses/(?P<pk>[^/]+)/$',
