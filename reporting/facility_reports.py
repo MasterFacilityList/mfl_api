@@ -415,14 +415,15 @@ class CommunityHealthUnitReport(APIView):
         data = []
         if county:
             self.queryset = self.queryset.filter(
-                facility__ward__constituency__county=county)
+                facility__ward__constituency__county_id=county)
         if constituency:
             self.queryset = self.queryset.filter(
-                facility__ward__constituency=constituency)
-
+                facility__ward__constituency_id=constituency)
+        total_chus = 0
         for status in Status.objects.all():
             chu_count = self.queryset.filter(
                 status=status).count()
+            total_chus += chu_count
             data.append(
                 {
                     "status_name": status.name,
@@ -432,11 +433,11 @@ class CommunityHealthUnitReport(APIView):
         return data, self.queryset.count()
 
     def get(self, *args, **kwargs):
-
         county = self.request.query_params.get('county', None)
         constituency = self.request.query_params.get('constituency', None)
         report_type = self.request.query_params.get('report_type', None)
         last_quarter = self.request.query_params.get('last_quarter', None)
+
         data = {
             "total": self.get_county_reports()[1],
             "results": self.get_county_reports()[0]
@@ -444,6 +445,7 @@ class CommunityHealthUnitReport(APIView):
 
         if report_type == 'constituency' and county:
             report_data = self.get_constituency_reports(county=county)
+
             data = {
                 "total": report_data[1],
                 "results": report_data[0]
@@ -489,14 +491,22 @@ class CommunityHealthUnitReport(APIView):
                 "total": report_data[1],
                 "results": report_data[0]
             }
-        if report_type == 'status' and not county:
+        if report_type == 'status' and not county and not constituency:
+            report_data = self.get_status_report()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+        if report_type == 'status' and county and not constituency:
+
             report_data = self.get_status_report(county=county)
             data = {
                 "total": report_data[1],
                 "results": report_data[0]
             }
-        if report_type == 'status' and county:
-            report_data = self.get_status_report()
+        if report_type == 'status' and not county and constituency:
+
+            report_data = self.get_status_report(constituency=constituency)
             data = {
                 "total": report_data[1],
                 "results": report_data[0]
