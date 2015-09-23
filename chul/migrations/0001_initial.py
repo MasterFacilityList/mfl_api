@@ -20,6 +20,26 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='CHUService',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
+                ('name', models.CharField(max_length=255)),
+                ('description', models.TextField(null=True, blank=True)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='CommunityHealthUnit',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
@@ -48,7 +68,7 @@ class Migration(migrations.Migration):
                 'ordering': ('-updated', '-created'),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
-                'permissions': (('view_rejected_chus', 'Can see the rejected community health units'),),
+                'permissions': (('view_rejected_chus', 'Can see the rejected community health units'), ('can_approve_chu', 'Can approve or reject a Community Health Unit')),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),

@@ -112,6 +112,11 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
                 "view_rejected_chus",
                 "Can see the rejected community health units"
             ),
+            (
+                "can_approve_chu",
+                "Can approve or reject a Community Health Unit"
+            ),
+
         )
 
 
