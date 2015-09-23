@@ -1,6 +1,7 @@
 import reversion
 
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils import timezone, encoding
 
 from common.models import AbstractBase, Contact, SequenceMixin
@@ -67,14 +68,56 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     location = models.CharField(max_length=255, null=True, blank=True)
     is_closed = models.BooleanField(default=False)
     closing_comment = models.TextField(null=True, blank=True)
+    is_rejected = models.BooleanField(default=False)
+    rejection_reason = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def validate_facility_is_not_closed(self):
+        if self.facility.closed:
+            raise ValidationError(
+                {
+                    "facility":
+                    [
+                        "A Community Unit cannot be attached to a closed "
+                        "facility"
+                    ]
+                }
+            )
+
+    def validate_either_approved_or_rejected_and_not_both(self):
+        error = {
+            "approve/reject": [
+                "A Community Unit cannot be approved and"
+                " rejected at the same time "]
+        }
+        values = [self.is_approved, self.is_rejected]
+        if values.count(True) > 1:
+            raise ValidationError(error)
+
+    def clean(self):
+        super(CommunityHealthUnit, self).clean()
+        self.validate_facility_is_not_closed()
+        self.validate_either_approved_or_rejected_and_not_both()
 
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()
         super(CommunityHealthUnit, self).save(*args, **kwargs)
+
+    class Meta(AbstractBase.Meta):
+        permissions = (
+            (
+                "view_rejected_chus",
+                "Can see the rejected community health units"
+            ),
+            (
+                "can_approve_chu",
+                "Can approve or reject a Community Health Unit"
+            ),
+
+        )
 
 
 @reversion.register(follow=['health_worker', 'contact'])
@@ -121,3 +164,11 @@ class CommunityHealthWorker(AbstractBase):
     @property
     def name(self):
         return "{} {}".format(self.first_name, self.last_name).strip()
+
+
+class CHUService(AbstractBase):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name

@@ -2,11 +2,10 @@ import xlsxwriter
 import string
 import cStringIO
 import uuid
-import json
 
 from django.conf import settings
 
-from rest_framework import renderers, status
+from rest_framework import renderers
 
 from .shared import DownloadMixin
 
@@ -65,7 +64,6 @@ def sanitize_field_names(sample_keys):
 
 
 def _write_excel_file(data):  # noqa
-    result = data.get('results')
     mem_file = cStringIO.StringIO()
     workbook = xlsxwriter.Workbook(mem_file)
     format = workbook.add_format(
@@ -140,7 +138,7 @@ def _write_excel_file(data):  # noqa
             # the count is zero thus do not write the excel file
             pass
 
-    _add_data_to_worksheet(result)
+    _add_data_to_worksheet(data)
     workbook.close()
     mem_file_contents = mem_file.getvalue()
     mem_file.close()
@@ -157,13 +155,8 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
 
     def render(self, data, media_type, renderer_context):
         self.update_download_headers(renderer_context)
-        result_key = data.get('results', None)
-        if isinstance(result_key, (list, )):
-            return _write_excel_file(data)
+        is_list = self.check_list_output(data, renderer_context)
+        if is_list is not True:
+            return is_list
 
-        # For now we will just support list endpoints.
-        renderer_context['response'].status_code = \
-            status.HTTP_406_NOT_ACCEPTABLE
-        return json.dumps({
-            "detail": "Excel format are only used in list endpoints"
-        })
+        return _write_excel_file(data['results'])

@@ -1,7 +1,5 @@
-from rest_framework import generics
-from rest_framework import views
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import response
+from rest_framework import generics, views, response, parsers
+from rest_framework_xml.parsers import XMLParser
 
 from ..models import (
     Contact,
@@ -403,7 +401,6 @@ class FilteringSummariesView(views.APIView):
         Retrieves filtering summaries
     """
     serializer_cls = FilteringSummariesSerializer
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         fields = request.query_params.get('fields', None)
@@ -448,6 +445,7 @@ class DocumentUploadDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DocumentUploadSerializer
     queryset = DocumentUpload.objects.all()
+    parser_classes = (parsers.JSONParser, parsers.MultiPartParser, XMLParser, )
 
 
 class DocumentUploadListView(generics.ListCreateAPIView):
@@ -455,3 +453,4 @@ class DocumentUploadListView(generics.ListCreateAPIView):
     queryset = DocumentUpload.objects.all()
     filter_class = DocumentUploadFilter
     ordering_fields = ('name', )
+    parser_classes = (parsers.JSONParser, parsers.MultiPartParser, XMLParser, )

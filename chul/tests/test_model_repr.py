@@ -11,6 +11,10 @@ class TestModelRepr(ModelReprMixin, TestCase):
         x = "hey ya"
         self.check_repr(models.Status.objects.create(name=x), x)
 
+    def test_chuservice(self):
+        x = 'jina'
+        self.check_repr(mommy.make(models.CHUService, name=x), x)
+
     def test_chu(self):
         x = "si-hech-yu"
         instance = mommy.make(models.CommunityHealthUnit, name=x, )

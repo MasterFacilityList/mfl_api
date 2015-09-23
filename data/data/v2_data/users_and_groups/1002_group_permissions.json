@@ -5,6 +5,12 @@
         },
         "permissions": [
             {
+                "codename": "can_approve_chu"
+            },
+            {
+                "codename": "view_rejected_chus"
+            },
+            {
                 "codename": "view_constituency"
             },
             {
@@ -182,6 +188,81 @@
             "name": "Sub County Health Records Information Officer"
         },
         "permissions": [
+            {
+                "codename": "add_chuservice"
+            },
+            {
+                "codename": "change_chuservice"
+            },
+            {
+                "codename": "delete_chuservice"
+            },
+            {
+                "codename": "view_chuservice"
+            },
+            {
+                "codename": "add_communityhealthunit"
+            },
+            {
+                "codename": "change_communityhealthunit"
+            },
+            {
+                "codename": "delete_communityhealthunit"
+            },
+            {
+                "codename": "view_communityhealthunit"
+            },
+            {
+                "codename": "view_rejected_chus"
+            },
+            {
+                "codename": "add_communityhealthunitcontact"
+            },
+            {
+                "codename": "change_communityhealthunitcontact"
+            },
+            {
+                "codename": "delete_communityhealthunitcontact"
+            },
+            {
+                "codename": "view_communityhealthunitcontact"
+            },
+            {
+                "codename": "add_communityhealthworker"
+            },
+            {
+                "codename": "change_communityhealthworker"
+            },
+            {
+                "codename": "delete_communityhealthworker"
+            },
+            {
+                "codename": "view_communityhealthworker"
+            },
+            {
+                "codename": "add_communityhealthworkercontact"
+            },
+            {
+                "codename": "change_communityhealthworkercontact"
+            },
+            {
+                "codename": "delete_communityhealthworkercontact"
+            },
+            {
+                "codename": "view_communityhealthworkercontact"
+            },
+            {
+                "codename": "add_status"
+            },
+            {
+                "codename": "change_status"
+            },
+            {
+                "codename": "delete_status"
+            },
+            {
+                "codename": "view_status"
+            },
             {
                 "codename": "view_constituency"
             },
@@ -641,7 +722,9 @@
             {
                 "codename": "delete_group"
             },
-
+            {
+                "codename": "view_rejected_chus"
+            },
             {
                 "codename": "add_status"
             },
@@ -1060,7 +1143,6 @@
             {
                 "codename": "delete_token"
             },
-
             {
                 "codename": "add_communityhealthunit"
             },
@@ -1073,7 +1155,6 @@
             {
                 "codename": "view_communityhealthunit"
             },
-
             {
                 "codename": "add_communityhealthunitcontact"
             },
@@ -1095,7 +1176,6 @@
             {
                 "codename": "delete_communityhealthworker"
             },
-
             {
                 "codename": "add_communityhealthworkercontact"
             },
@@ -1279,7 +1359,6 @@
             {
                 "codename": "view_unpublished_facilities"
             },
-
             {
                 "codename": "add_facilitycontact"
             },
@@ -1997,5 +2076,11 @@
                 "codename": "view_mfloauthapplication"
             }
         ]
+    },
+    {
+        "group": {
+            "name": "Community Officer Group"
+        },
+        "permissions": []
     }
 ]

@@ -2,8 +2,8 @@ import logging
 import reversion
 
 from django.core.exceptions import FieldDoesNotExist
+from django.db.models.fields.files import FileField, FieldFile
 from django.shortcuts import redirect
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.mixins import RetrieveModelMixin
@@ -35,6 +35,9 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
                         f.field_dict['id'] == fallback):
                     # What happens to M2M fields?
                     return f.object_repr
+
+        if isinstance(model_field, (FileField, FieldFile, )):
+            return version.field_dict[field].name
 
         return fallback
 
