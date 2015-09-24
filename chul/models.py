@@ -1,3 +1,4 @@
+import json
 import reversion
 
 from django.db import models
@@ -118,10 +119,41 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         self.validate_facility_is_not_closed()
         self.validate_either_approved_or_rejected_and_not_both()
 
+    def _dump_updates(self):
+        updates = {}
+        old_obj = self.__class__.objects.get(id=self.id)
+        fields = [obj.name for obj in self.__class__._meta.fields]
+        del fields[fields.index('id')]
+        del fields[fields.index('created')]
+        del fields[fields.index('updated')]
+        del fields[fields.index('created_by')]
+        del fields[fields.index('updated_by')]
+        for field in fields:
+            if getattr(old_obj, field) != getattr(self, field):
+                updates[field] = getattr(self, field)
+        return json.dumps(updates) if any(updates) else None
+
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()
-        super(CommunityHealthUnit, self).save(*args, **kwargs)
+        if not self.is_approved and not self.is_rejected:
+            super(CommunityHealthUnit, self).save(*args, **kwargs)
+        allow_save = kwargs.pop('allow_save', None)
+        if allow_save:
+            super(CommunityHealthUnit, self).save(*args, **kwargs)
+        updates = self._dump_updates()
+        if updates:
+            try:
+                pending_update = ChuUpdateBuffer.objects.get(
+                    is_approved=False, is_rejected=False)
+                pending_update.basic = updates
+                pending_update.save()
+            except ChuUpdateBuffer.DoesNotExist:
+                pending_update = ChuUpdateBuffer.objects.create(
+                    health_unit=self, created_by=self.created_by,
+                    updated_by=self.updated_by)
+                pending_update.basic = updates
+                pending_update.save()
 
     @property
     def average_rating(self):
@@ -224,24 +256,47 @@ class ChuUpdateBuffer(AbstractBase):
     workers = models.TextField(null=True, blank=True)
     contacts = models.TextField(null=True, blank=True)
     basic = models.TextField(null=True, blank=True)
+    is_cancelled = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
 
     def validate_atleast_one_attribute_updated(self):
-        pass
+        if not self.workers and not self.contacts and not self.basic:
+            raise ValidationError({"__all__": ["Nothing was editted"]})
 
     def update_basic_details(self):
-        pass
+        basic_details = json.loads(self.basic)
+        for key, value in basic_details.iteritems():
+            setattr(self.health_unit, key, value)
+        self.health_unit.save(allow_save=True)
 
     def update_workers(self):
-        pass
+        chews = json.loads(self.workers)
+        for chew in chews:
+            chew['health_unit'] = self.health_unit
+            chew['created_by_id'] = self.created_by_id
+            chew['updated_by_id'] = self.updated_by_id
+            CommunityHealthWorker.objects.create(**chew)
 
     def update_contacts(self):
-        pass
+        contacts = json.loads(self.contacts)
+        for contact in contacts:
+            contact['updated_by_id'] = self.updated_by_id
+            contact['created_by_id'] = self.created_by_id
+            contact['contact_type_id'] = contact['contact_type']
+            contact_obj = Contact.objects.create(**contact)
+            CommunityHealthUnitContact.objects.create(
+                contact=contact_obj, health_unit=self.health_unit,
+                created_by_id=self.created_by_id,
+                updated_by_id=self.updated_by_id)
 
     def updates(self):
-        pass
-
-    def save(self):
-        pass
+        updates = {}
+        if self.basic:
+            updates['basic'] = json.loads(self.basic)
+        if self.contacts:
+            updates['contacts'] = json.loads(self.contacts)
+        if self.workers:
+            updates['workers'] = json.loads(self.workers)
 
     def clean(self, *args, **kwargs):
-        pass
+        self.validate_atleast_one_attribute_updated()
