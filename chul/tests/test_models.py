@@ -1,3 +1,4 @@
+from __future__ import division
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
@@ -10,7 +11,8 @@ from ..models import (
     CommunityHealthWorkerContact,
     Status,
     CommunityHealthUnitContact,
-    CHUService
+    CHUService,
+    CHURating
 )
 
 
@@ -29,7 +31,7 @@ class TestCommunityHealthUnit(TestCase):
         with self.assertRaises(ValidationError):
             mommy.make(CommunityHealthUnit, facility=facility)
 
-    def test_chu_approval_or_rejecttion_and_not_both(self):
+    def test_chu_approval_or_rejection_and_not_both(self):
         with self.assertRaises(ValidationError):
             mommy.make(CommunityHealthUnit, is_approved=True, is_rejected=True)
         # test rejecting an approvec chu
@@ -42,6 +44,16 @@ class TestCommunityHealthUnit(TestCase):
         chu_2.is_approved = True
         chu_2.is_rejected = False
         chu_2.save()
+
+    def test_average_rating(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chu2 = mommy.make(CommunityHealthUnit)
+        ratings = [4, 3, 2, 4, 5, 1]
+        for i in ratings:
+            mommy.make(CHURating, chu=chu2, rating=i)
+
+        self.assertEqual(chu.average_rating, 0)
+        self.assertEqual(chu2.average_rating, sum(ratings, 0)/len(ratings))
 
 
 class TestCommunityHealthWorkerModel(TestCase):

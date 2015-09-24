@@ -10,11 +10,13 @@ from .models import (
     CommunityHealthWorkerContact,
     Status,
     CommunityHealthUnitContact,
-    CHUService
+    CHUService,
+    CHURating,
 )
 
 
 class CHUServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+
     class Meta(object):
         model = CHUService
 
@@ -160,3 +162,9 @@ class CommunityHealthUnitContactSerializer(
 
     class Meta(object):
         model = CommunityHealthUnitContact
+
+
+class CHURatingSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta(object):
+        model = CHURating
