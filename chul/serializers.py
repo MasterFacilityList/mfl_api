@@ -87,17 +87,19 @@ class CommunityHealthUnitSerializer(
             contact = self.create_contact(contact_data)
             if contact:
                 health_unit_contact_data_unadit = {
-                    "contact": contact,
-                    "health_unit": instance
+                    "contact": contact.id,
+                    "health_unit": instance.id
                 }
-                chu_contact_data = self.inject_audit_fields(
-                    health_unit_contact_data_unadit, validated_data)
+
                 try:
                     CommunityHealthUnitContact.objects.get(
-                        **health_unit_contact_data_unadit)
+                        contact_id=contact.id, health_unit_id=instance.id)
                 except CommunityHealthUnitContact.DoesNotExist:
-                    CommunityHealthUnitContact.objects.create(
-                        **chu_contact_data)
+                    chu_contact = CommunityHealthUnitContactSerializer(
+                        data=health_unit_contact_data_unadit,
+                        context=self.context)
+                    if chu_contact.is_valid():
+                        chu_contact.save()
 
     def create(self, validated_data):
         chews = self.initial_data.pop('health_unit_workers', [])

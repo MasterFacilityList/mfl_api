@@ -7,14 +7,16 @@ from common.tests import ViewTestBase
 from facilities.models import Facility, FacilityApproval
 from users.models import MflUser
 from common.models import (
-    County, Constituency, UserCounty, UserConstituency, Ward)
+    County, Constituency, UserCounty, UserConstituency, Ward,
+    Contact, ContactType)
 
 from ..models import (
     Status,
     CommunityHealthUnit,
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
-    CHUService
+    CHUService,
+    CommunityHealthUnitContact
 )
 from ..serializers import (
     CommunityHealthUnitSerializer,
@@ -80,14 +82,22 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
 
-    def test_post_chu_inlined_chew(self):
+    def test_post_chu_inlined_chew_and_contacts(self):
         facility = mommy.make(Facility)
         status = mommy.make(Status)
+        contact_type = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "0756477578",
+                "contact_type": str(contact_type.id)
+            }
+        ]
         data = {
             "facility": facility.id,
             "name": "test community",
             "status": status.id,
             "households_monitored": 100,
+            "contacts": contacts,
             "health_unit_workers": [
                 {
                     "first_name": "Muuguzi",
@@ -101,6 +111,8 @@ class TestCommunityHealthUnitView(ViewTestBase):
 
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
+        self.assertEquals(1, Contact.objects.count())
+        self.assertEquals(1, CommunityHealthUnitContact.objects.count())
 
     def test_patch_chu_inlined_chew(self):
         chu = mommy.make(CommunityHealthUnit)
