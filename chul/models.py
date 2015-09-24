@@ -109,8 +109,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
     @property
     def average_rating(self):
-        return self.chu_ratings.all().aggregate(
-            models.Avg('rating')).get('rating_avg', 0)
+        return self.chu_ratings.aggregate(r=models.Avg('rating'))['r'] or 0
 
     class Meta(AbstractBase.Meta):
         permissions = (

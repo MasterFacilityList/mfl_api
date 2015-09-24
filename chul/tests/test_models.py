@@ -1,3 +1,4 @@
+from __future__ import division
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
@@ -30,7 +31,7 @@ class TestCommunityHealthUnit(TestCase):
         with self.assertRaises(ValidationError):
             mommy.make(CommunityHealthUnit, facility=facility)
 
-    def test_chu_approval_or_rejecttion_and_not_both(self):
+    def test_chu_approval_or_rejection_and_not_both(self):
         with self.assertRaises(ValidationError):
             mommy.make(CommunityHealthUnit, is_approved=True, is_rejected=True)
         # test rejecting an approvec chu
