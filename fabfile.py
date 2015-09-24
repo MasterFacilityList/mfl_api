@@ -157,7 +157,6 @@ def setup_db(*args, **kwargs):
          "CREATEROLE LOGIN PASSWORD '{1}'".format(db_user, db_pass), no_sudo)
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
-    manage('migrate')
 
 
 def migrate(*args, **kwargs):
