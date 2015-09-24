@@ -106,6 +106,8 @@ class CommunityHealthUnitSerializer(
         self._validate_chew(chews, self.context)
 
         if not self.inlined_errors:
+            validated_data.pop('health_unit_workers', None)
+
             chu = super(CommunityHealthUnitSerializer, self).create(
                 validated_data)
             self.save_chew(chu, chews, self.context)
@@ -117,6 +119,8 @@ class CommunityHealthUnitSerializer(
     def update(self, instance, validated_data):
         chews = self.initial_data.pop('health_unit_workers', [])
         contacts = self.initial_data.pop('contacts', [])
+
+        validated_data.pop('health_unit_workers', None)
         super(CommunityHealthUnitSerializer, self).update(
             instance, validated_data)
         self.save_chew(instance, chews, self.context)
