@@ -61,8 +61,8 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
     households_monitored = models.PositiveIntegerField(default=0)
-    date_established = models.DateTimeField(default=timezone.now)
-    date_operational = models.DateTimeField(null=True, blank=True)
+    date_established = models.DateField(default=timezone.now)
+    date_operational = models.DateField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
     approval_comment = models.TextField(null=True, blank=True)
     approval_date = models.DateTimeField(null=True, blank=True)
@@ -96,6 +96,22 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         values = [self.is_approved, self.is_rejected]
         if values.count(True) > 1:
             raise ValidationError(error)
+
+    @property
+    def contacts(self):
+
+        return [
+            {
+                "id": con.id,
+                "contact_id": con.contact.id,
+                "contact": con.contact.contact,
+                "contact_type": con.contact.contact_type.id,
+                "contact_type_name": con.contact.contact_type.name
+
+            }
+            for con in CommunityHealthUnitContact.objects.filter(
+                health_unit=self)
+        ]
 
     def clean(self):
         super(CommunityHealthUnit, self).clean()
