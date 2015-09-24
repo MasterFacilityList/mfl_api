@@ -155,6 +155,53 @@ class TestCommunityHealthUnitView(ViewTestBase):
         response = self.client.post(self.url, data)
         self.assertEquals(400, response.status_code)
 
+    def test_post_inlined_invalid_contacts(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        contact_type = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "07246578256",
+                "contact_type": str(contact_type.id)
+            }
+        ]
+        contact_type.delete()
+        data = {
+            "facility": facility.id,
+            "name": "test community",
+            "status": status.id,
+            "households_monitored": 100,
+            "contacts": contacts
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, Contact.objects.count())
+        self.assertEquals(0, CommunityHealthUnitContact.objects.count())
+
+    def test_update_chu_inlined_invalid_contacts(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, status=status)
+        contact_type = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "07246578256",
+                "contact_type": str(contact_type.id)
+            }
+        ]
+        contact_type.delete()
+        data = {
+            "name": "test community",
+            "households_monitored": 100,
+            "contacts": contacts
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, Contact.objects.count())
+        self.assertEquals(0, CommunityHealthUnitContact.objects.count())
+
     def test_list_community_health_units(self):
         group = mommy.make(Group)
         published_facilities_perm = Permission.objects.get(
