@@ -214,3 +214,34 @@ class CHURating(AbstractBase):
 
     def __str__(self):
         return "{} - {}".format(self.chu, self.rating)
+
+
+class ChuUpdateBuffer(AbstractBase):
+    """
+    Buffers a community units updates until they are approved by the CHRIO
+    """
+    health_unit = models.ForeignKey(CommunityHealthUnit)
+    workers = models.TextField(null=True, blank=True)
+    contacts = models.TextField(null=True, blank=True)
+    basic = models.TextField(null=True, blank=True)
+
+    def validate_atleast_one_attribute_updated(self):
+        pass
+
+    def update_basic_details(self):
+        pass
+
+    def update_workers(self):
+        pass
+
+    def update_contacts(self):
+        pass
+
+    def updates(self):
+        pass
+
+    def save(self):
+        pass
+
+    def clean(self, *args, **kwargs):
+        pass
