@@ -46,10 +46,13 @@ class TestCommunityHealthUnit(TestCase):
 
     def test_average_rating(self):
         chu = mommy.make(CommunityHealthUnit)
+        chu2 = mommy.make(CommunityHealthUnit)
         ratings = [4, 3, 2, 4, 5, 1]
         for i in ratings:
-            mommy.make(CHURating, chu=chu, rating=i)
-        self.assertEqual(chu.average_rating, sum(ratings, 0)/len(ratings))
+            mommy.make(CHURating, chu=chu2, rating=i)
+
+        self.assertEqual(chu.average_rating, 0)
+        self.assertEqual(chu2.average_rating, sum(ratings, 0)/len(ratings))
 
 
 class TestCommunityHealthWorkerModel(TestCase):

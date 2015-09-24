@@ -107,6 +107,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
             self.code = self.generate_next_code_sequence()
         super(CommunityHealthUnit, self).save(*args, **kwargs)
 
+    @property
     def average_rating(self):
         return self.chu_ratings.all().aggregate(
             models.Avg('rating')).get('rating_avg', 0)
