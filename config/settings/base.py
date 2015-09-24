@@ -15,7 +15,11 @@ env = environ.Env(
     SECRET_KEY=(str, 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'),
     EMAIL_HOST=(str, 'localhost'),
     EMAIL_HOST_USER=(str, 487),
-    EMAIL_HOST_PASSWORD=(str, 'notarealpassword')
+    EMAIL_HOST_PASSWORD=(str, 'notarealpassword'),
+    AWS_ACCESS_KEY_ID=(str, ''),
+    AWS_SECRET_ACCESS_KEY=(str, ''),
+    AWS_STORAGE_BUCKET_NAME=(str, ''),
+    STORAGE_BACKEND=(str, '')
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -78,13 +82,14 @@ INSTALLED_APPS = (
     'reversion',
     'gunicorn',
     'debug_toolbar',
+    'storages',
     'facilities',
     'data_bootstrap',
     'chul',
     'data',
     'mfl_gis',
     'search',
-    'reporting'
+    'reporting',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
@@ -98,6 +103,8 @@ LOCAL_APPS = [
     'mfl_gis',
     'data_bootstrap',
     'data',
+    'reporting',
+    'search',
 ]
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
@@ -118,8 +125,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'  # This is INTENTIONAL
 USE_TZ = True
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
@@ -473,3 +478,13 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_DOMAIN = None
 SESSION_COOKIE_AGE = (7 * 24 * 60 * 60)
 SECURE_BROWSER_XSS_FILTER = True
+
+if env('STORAGE_BACKEND'):
+    # storage settings (uses amazon S3 for now)
+    DEFAULT_FILE_STORAGE = env('STORAGE_BACKEND')
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
