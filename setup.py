@@ -28,6 +28,7 @@ version = config.__version__
 
 
 class Tox(TestCommand):
+
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []
@@ -114,5 +115,7 @@ setup(
         "recommonmark>=0.1.1,<0.2.0",
         "WeasyPrint>=0.23,<0.24.0",
         "django-redis>=4.0.0,<4.1.0",
+        "django-storages==1.1.8",
+        "boto==2.38.0"
     ],
 )
