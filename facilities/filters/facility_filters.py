@@ -46,31 +46,37 @@ from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class OptionGroupFilter(CommonFieldsFilterset):
+
     class Meta:
         model = OptionGroup
 
 
 class FacilityLevelChangeReasonFilter(CommonFieldsFilterset):
+
     class Meta:
         model = FacilityLevelChangeReason
 
 
 class KephLevelFilter(CommonFieldsFilterset):
+
     class Meta:
         model = KephLevel
 
 
 class FacilityUpdatesFilter(CommonFieldsFilterset):
+
     class Meta:
         model = FacilityUpdates
 
 
 class RegulatoryBodyUserFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = RegulatoryBodyUser
 
 
 class FacilityOfficerFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = FacilityOfficer
 
@@ -86,6 +92,7 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = RegulatingBodyContact
 
@@ -261,6 +268,7 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 
 class FacilityFilter(CommonFieldsFilterset):
+
     def service_filter(self, value):
         categories = value.split(',')
         facility_ids = []

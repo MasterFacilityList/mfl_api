@@ -12,7 +12,9 @@ from .views import(
     CommunityHealthUnitContactListView,
     CommunityHealthUnitContactDetailView,
     CHUServiceListView,
-    CHUServiceDetailView
+    CHUServiceDetailView,
+    CHURatingDetailView,
+    CHURatingListView
 )
 
 
@@ -55,4 +57,8 @@ urlpatterns = patterns(
     url(r'^units/(?P<pk>[^/]+)/$',
         CommunityHealthUnitDetailView.as_view(),
         name='community_health_unit_detail'),
+
+    url(r'^chu_ratings/$', CHURatingListView.as_view(), name='chu_ratings'),
+    url(r'^chu_ratings/(?P<pk>[a-z0-9\-]{32,32})/$',
+        CHURatingDetailView.as_view(), name='chu_rating_detail')
 )
