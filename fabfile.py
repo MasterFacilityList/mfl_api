@@ -160,6 +160,13 @@ def setup_db(*args, **kwargs):
     manage('migrate')
 
 
+def migrate(*args, **kwargs):
+    """
+    Updates the migrations which do not require a database setup
+    """
+    manage('migrate')
+
+
 def clear_cache():
     local('redis-cli flushall')
 
