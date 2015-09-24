@@ -72,5 +72,10 @@
 
         ssl_on: "{{has_ssl}}",
         ssl_cert_file: "{{cert_file}}",
-        ssl_key_file: "{{key_file}}"
+        ssl_key_file: "{{key_file}}",
+
+        storage_bucket: "{{storage_bucket}}",
+        storage_account: "{{storage_account}}",
+        storage_key: "{{storage_key}}"
+        storage_backend: "storages.backends.s3.S3Storage"
       }
