@@ -125,8 +125,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'  # This is INTENTIONAL
 USE_TZ = True
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
@@ -487,3 +485,6 @@ if env('STORAGE_BACKEND'):
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
