@@ -7,14 +7,16 @@ from common.tests import ViewTestBase
 from facilities.models import Facility, FacilityApproval
 from users.models import MflUser
 from common.models import (
-    County, Constituency, UserCounty, UserConstituency, Ward)
+    County, Constituency, UserCounty, UserConstituency, Ward,
+    Contact, ContactType)
 
 from ..models import (
     Status,
     CommunityHealthUnit,
     CommunityHealthWorker,
     CommunityHealthWorkerContact,
-    CHUService
+    CHUService,
+    CommunityHealthUnitContact
 )
 from ..serializers import (
     CommunityHealthUnitSerializer,
@@ -80,14 +82,22 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
 
-    def test_post_chu_inlined_chew(self):
+    def test_post_chu_inlined_chew_and_contacts(self):
         facility = mommy.make(Facility)
         status = mommy.make(Status)
+        contact_type = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "0756477578",
+                "contact_type": str(contact_type.id)
+            }
+        ]
         data = {
             "facility": facility.id,
             "name": "test community",
             "status": status.id,
             "households_monitored": 100,
+            "contacts": contacts,
             "health_unit_workers": [
                 {
                     "first_name": "Muuguzi",
@@ -101,6 +111,34 @@ class TestCommunityHealthUnitView(ViewTestBase):
 
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
+        self.assertEquals(1, Contact.objects.count())
+        self.assertEquals(1, CommunityHealthUnitContact.objects.count())
+
+    def test_patch_with_already_added_contacts(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        contact_type = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "07246578256",
+                "contact_type": str(contact_type.id)
+            }
+        ]
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, status=status)
+        con = mommy.make(
+            Contact, contact="07246578256", contact_type=contact_type)
+        mommy.make(CommunityHealthUnitContact, contact=con, health_unit=chu)
+        data = {
+            "name": "test community",
+            "status": status.id,
+            "households_monitored": 100,
+            "contacts": contacts
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+
+        self.assertEquals(400, response.status_code)
 
     def test_patch_chu_inlined_chew(self):
         chu = mommy.make(CommunityHealthUnit)
@@ -142,6 +180,53 @@ class TestCommunityHealthUnitView(ViewTestBase):
         }
         response = self.client.post(self.url, data)
         self.assertEquals(400, response.status_code)
+
+    def test_post_inlined_invalid_contacts(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        contact_type = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "07246578256",
+                "contact_type": str(contact_type.id)
+            }
+        ]
+        contact_type.delete()
+        data = {
+            "facility": facility.id,
+            "name": "test community",
+            "status": status.id,
+            "households_monitored": 100,
+            "contacts": contacts
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, Contact.objects.count())
+        self.assertEquals(0, CommunityHealthUnitContact.objects.count())
+
+    def test_update_chu_inlined_invalid_contacts(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, status=status)
+        contact_type = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "07246578256",
+                "contact_type": str(contact_type.id)
+            }
+        ]
+        contact_type.delete()
+        data = {
+            "name": "test community",
+            "households_monitored": 100,
+            "contacts": contacts
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, Contact.objects.count())
+        self.assertEquals(0, CommunityHealthUnitContact.objects.count())
 
     def test_list_community_health_units(self):
         group = mommy.make(Group)
