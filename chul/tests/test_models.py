@@ -10,7 +10,8 @@ from ..models import (
     CommunityHealthWorkerContact,
     Status,
     CommunityHealthUnitContact,
-    CHUService
+    CHUService,
+    CHURating
 )
 
 
@@ -42,6 +43,13 @@ class TestCommunityHealthUnit(TestCase):
         chu_2.is_approved = True
         chu_2.is_rejected = False
         chu_2.save()
+
+    def test_average_rating(self):
+        chu = mommy.make(CommunityHealthUnit)
+        ratings = [4, 3, 2, 4, 5, 1]
+        for i in ratings:
+            mommy.make(CHURating, chu=chu, rating=i)
+        self.assertEqual(chu.average_rating, sum(ratings, 0)/len(ratings))
 
 
 class TestCommunityHealthWorkerModel(TestCase):

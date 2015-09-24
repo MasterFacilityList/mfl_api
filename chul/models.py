@@ -2,6 +2,7 @@ import reversion
 
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.core import validators
 from django.utils import timezone, encoding
 
 from common.models import AbstractBase, Contact, SequenceMixin
@@ -106,6 +107,10 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
             self.code = self.generate_next_code_sequence()
         super(CommunityHealthUnit, self).save(*args, **kwargs)
 
+    def average_rating(self):
+        return self.chu_ratings.all().aggregate(
+            models.Avg('rating')).get('rating_avg', 0)
+
     class Meta(AbstractBase.Meta):
         permissions = (
             (
@@ -166,9 +171,30 @@ class CommunityHealthWorker(AbstractBase):
         return "{} {}".format(self.first_name, self.last_name).strip()
 
 
+@reversion.register
+@encoding.python_2_unicode_compatible
 class CHUService(AbstractBase):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class CHURating(AbstractBase):
+
+    """Rating of a CHU"""
+
+    chu = models.ForeignKey(CommunityHealthUnit, related_name='chu_ratings')
+    rating = models.PositiveIntegerField(
+        validators=[
+            validators.MaxValueValidator(5),
+            validators.MinValueValidator(0)
+        ]
+    )
+    comment = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return "{} - {}".format(self.chu, self.rating)

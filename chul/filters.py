@@ -6,7 +6,8 @@ from .models import (
     CommunityHealthWorkerContact,
     Status,
     CommunityHealthUnitContact,
-    CHUService
+    CHUService,
+    CHURating
 )
 
 from common.filters.filter_shared import CommonFieldsFilterset
@@ -65,8 +66,16 @@ class CommunityHealthWorkerFilter(CommonFieldsFilterset):
 
 
 class CommunityHealthWorkerContactFilter(CommonFieldsFilterset):
-    health_worker = django_filters.AllValuesFilter(lookup_type='icontains')
+    health_worker = django_filters.AllValuesFilter(lookup_type='exact')
     contact = django_filters.AllValuesFilter(lookup_type='icontains')
 
     class Meta(object):
         model = CommunityHealthWorkerContact
+
+
+class CHURatingFilter(CommonFieldsFilterset):
+    chu = django_filters.AllValuesFilter(lookup_type='exact')
+    rating = django_filters.NumberFilter(lookup_type='exact')
+
+    class Meta(object):
+        model = CHURating

@@ -6,7 +6,8 @@ from .models import (
     CommunityHealthWorkerContact,
     Status,
     CommunityHealthUnitContact,
-    CHUService
+    CHUService,
+    CHURating
 )
 
 from .serializers import (
@@ -15,7 +16,8 @@ from .serializers import (
     CommunityHealthWorkerContactSerializer,
     StatusSerializer,
     CommunityHealthUnitContactSerializer,
-    CHUServiceSerializer
+    CHUServiceSerializer,
+    CHURatingSerializer
 )
 
 from .filters import (
@@ -24,11 +26,13 @@ from .filters import (
     CommunityHealthWorkerContactFilter,
     StatusFilter,
     CommunityHealthUnitContactFilter,
-    CHUServiceFilter
+    CHUServiceFilter,
+    CHURatingFilter
 )
 
 
 class FilterCommunityUnitsMixin(object):
+
     def get_queryset(self, *args, **kwargs):
         custom_queryset = kwargs.pop('custom_queryset', None)
         if hasattr(custom_queryset, 'count'):
@@ -66,6 +70,7 @@ class FilterCommunityUnitsMixin(object):
 
 
 class CHUServiceListView(generics.ListCreateAPIView):
+
     """
     Lists and creates statuses
 
@@ -86,6 +91,7 @@ class CHUServiceListView(generics.ListCreateAPIView):
 
 class CHUServiceDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves a particular status
     """
@@ -94,6 +100,7 @@ class CHUServiceDetailView(
 
 
 class StatusListView(generics.ListCreateAPIView):
+
     """
     Lists and creates statuses
 
@@ -112,6 +119,7 @@ class StatusListView(generics.ListCreateAPIView):
 
 class StatusDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves a particular status
     """
@@ -120,6 +128,7 @@ class StatusDetailView(
 
 
 class CommunityHealthUnitContactListView(generics.ListCreateAPIView):
+
     """
     Lists and creates community unit contacts
 
@@ -141,6 +150,7 @@ class CommunityHealthUnitContactListView(generics.ListCreateAPIView):
 class CommunityHealthUnitContactDetailView(
         AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves a particular community health unit contact
     """
@@ -150,6 +160,7 @@ class CommunityHealthUnitContactDetailView(
 
 class CommunityHealthUnitListView(
         FilterCommunityUnitsMixin, generics.ListCreateAPIView):
+
     """
     Lists and creates community health units
 
@@ -168,6 +179,7 @@ class CommunityHealthUnitListView(
 
 class CommunityHealthUnitDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves a particular community health  unit
     """
@@ -176,6 +188,7 @@ class CommunityHealthUnitDetailView(
 
 
 class CommunityHealthWorkerListView(generics.ListCreateAPIView):
+
     """
     Lists and creates community health workers
 
@@ -195,6 +208,7 @@ class CommunityHealthWorkerListView(generics.ListCreateAPIView):
 
 class CommunityHealthWorkerDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves a particular health worker
     """
@@ -203,6 +217,7 @@ class CommunityHealthWorkerDetailView(
 
 
 class CommunityHealthWorkerContactListView(generics.ListCreateAPIView):
+
     """
     Lists and creates community health worker contacts
 
@@ -224,6 +239,7 @@ class CommunityHealthWorkerContactListView(generics.ListCreateAPIView):
 class CommunityHealthWorkerContactDetailView(
         AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
+
     """
     Retrieves a paritular community health_worker contact
 
@@ -232,3 +248,30 @@ class CommunityHealthWorkerContactDetailView(
     """
     queryset = CommunityHealthWorkerContact.objects.all()
     serializer_class = CommunityHealthWorkerContactSerializer
+
+
+class CHURatingListView(AuditableDetailViewMixin, generics.ListCreateAPIView):
+
+    """Lists and creates community health unit ratings
+
+    chu -- A community health unit
+    rating -- The rating given
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = CHURating.objects.all()
+    serializer_class = CHURatingSerializer
+    filter_class = CHURatingFilter
+    ordering_fields = ('chu', )
+
+
+class CHURatingDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+
+    """Retrieves, updates and deletes a community health unit's rating"""
+    queryset = CHURating.objects.all()
+    serializer_class = CHURatingSerializer
