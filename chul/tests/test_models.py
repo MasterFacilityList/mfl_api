@@ -53,7 +53,13 @@ class TestCommunityHealthUnit(TestCase):
             mommy.make(CHURating, chu=chu2, rating=i)
 
         self.assertEqual(chu.average_rating, 0)
-        self.assertEqual(chu2.average_rating, sum(ratings, 0)/len(ratings))
+        self.assertEqual(chu2.average_rating, sum(ratings, 0) / len(ratings))
+
+    def test_contacts(self):
+        chu = mommy.make(CommunityHealthUnit)
+        mommy.make(
+            CommunityHealthUnitContact, health_unit=chu)
+        self.assertIsInstance(chu.contacts, list)
 
 
 class TestCommunityHealthWorkerModel(TestCase):

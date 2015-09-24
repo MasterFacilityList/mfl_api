@@ -97,6 +97,22 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         if values.count(True) > 1:
             raise ValidationError(error)
 
+    @property
+    def contacts(self):
+
+        return [
+            {
+                "id": con.id,
+                "contact_id": con.contact.id,
+                "contact": con.contact.contact,
+                "contact_type": con.contact.contact_type.id,
+                "contact_type_name": con.contact.contact_type.name
+
+            }
+            for con in CommunityHealthUnitContact.objects.filter(
+                health_unit=self)
+        ]
+
     def clean(self):
         super(CommunityHealthUnit, self).clean()
         self.validate_facility_is_not_closed()
