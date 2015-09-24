@@ -58,10 +58,8 @@ class CommunityHealthUnitSerializer(
         for chew in chews:
             chew_data = CommunityHealthWorkerPostSerializer(
                 data=chew, context=context)
-            if chew_data.is_valid():
-                pass
-            else:
-                self.inlined_errors.update(chew_data.errors)
+            self.inlined_errors.update(
+                chew_data.errors) if not chew_data.is_valid() else None
 
     def save_chew(self, instance, chews, context):
         for chew in chews:
@@ -75,23 +73,22 @@ class CommunityHealthUnitSerializer(
             contact = ContactSerializer(
                 data=contact, context=self.context)
             if contact.is_valid():
-                return contact.save()
+                continue
             else:
                 self.inlined_errors.update(contact.errors)
 
     def create_contact(self, contact_data):
 
         try:
-            return Contact.objects.get(contact=contact_data["contact"])
+            return Contact.objects.get(**contact_data)
         except Contact.DoesNotExist:
             contact = ContactSerializer(
                 data=contact_data, context=self.context)
             if contact.is_valid():
                 return contact.save()
-            else:
-                self.inlined_errors.update(contact.errors)
 
     def create_chu_contacts(self, instance, contacts, validated_data):
+
         for contact_data in contacts:
             contact = self.create_contact(contact_data)
             if contact:
@@ -110,10 +107,12 @@ class CommunityHealthUnitSerializer(
                     chu_contact.save() if chu_contact.is_valid() else None
 
     def create(self, validated_data):
+        self.inlined_errors = {}
         chews = self.initial_data.pop('health_unit_workers', [])
         contacts = self.initial_data.pop('contacts', [])
 
         self._validate_chew(chews, self.context)
+
         self._validate_contacts(contacts)
 
         if not self.inlined_errors:
@@ -128,6 +127,7 @@ class CommunityHealthUnitSerializer(
             raise ValidationError(self.inlined_errors)
 
     def update(self, instance, validated_data):
+        self.inlined_errors = {}
         chews = self.initial_data.pop('health_unit_workers', [])
         contacts = self.initial_data.pop('contacts', [])
 
