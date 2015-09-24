@@ -47,3 +47,7 @@ class TestModelRepr(ModelReprMixin, TestCase):
             health_worker=chw, contact=contact
         )
         self.check_repr(chw_contact, "fname (123): (twirra: @m)")
+
+    def test_chu_rating(self):
+        chu = mommy.make(models.CommunityHealthUnit, name='di chu')
+        self.check_repr(models.CHURating(chu=chu, rating=4), 'di chu - 4')
