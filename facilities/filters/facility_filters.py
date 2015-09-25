@@ -47,6 +47,9 @@ from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class RegulatorSyncFilter(CommonFieldsFilterset):
+    mfl_code = ListCharFilter(lookup_type='exact')
+    county = ListCharFilter(lookup_type='exact')
+
     class Meta:
         model = RegulatorSync
 

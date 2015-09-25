@@ -1706,20 +1706,23 @@ class TestRegulatorSyncView(LoginMixin, APITestCase):
         self.assertEquals(1, RegulatorSync.objects.count())
 
     def test_list(self):
-        mommy.make(RegulatorSync, _quantity=5)
+        county = mommy.make(County)
+        mommy.make(RegulatorSync, county=county.code)
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(5, response.data.get('count'))
+        self.assertEquals(1, response.data.get('count'))
 
     def test_get_single(self):
-        sync = mommy.make(RegulatorSync)
+        county = mommy.make(County)
+        sync = mommy.make(RegulatorSync, county=county.code)
         url = self.url + str(sync) + "/"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
 
     def test_delete(self):
-        sync = mommy.make(RegulatorSync)
-        self.assertEquals(1, RegulatorSync.objects.count)
+        county = mommy.make(County)
+        sync = mommy.make(RegulatorSync, county=county.code)
+        self.assertEquals(1, RegulatorSync.objects.count())
         url = self.url + str(sync) + "/"
         response = self.client.delete(url)
         self.assertEquals(204, response.status_code)

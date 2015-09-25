@@ -56,7 +56,7 @@ from ..models import (
 class TestRegultorSync(BaseTestCase):
     def test_save(self):
         county = mommy.make(County, code=1999)
-        mommy.make(RegulatorSync, county=county)
+        mommy.make(RegulatorSync, county=county.code)
         self.assertEquals(1, RegulatorSync.objects.count())
 
     def test_county_exists(self):
@@ -70,7 +70,9 @@ class TestRegultorSync(BaseTestCase):
 
     def test_unicode(self):
         county = mommy.make(County, code=1999)
-        sync = mommy.make(RegulatorSync, name="Clinic ya Musa", county=county)
+        sync = mommy.make(
+            RegulatorSync,
+            name="Clinic ya Musa", county=county.code)
         self.assertEquals("Clinic ya Musa", sync.__str__())
 
 
