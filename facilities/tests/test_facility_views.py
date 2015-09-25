@@ -1718,12 +1718,3 @@ class TestRegulatorSyncView(LoginMixin, APITestCase):
         url = self.url + str(sync) + "/"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-
-    def test_delete(self):
-        county = mommy.make(County)
-        sync = mommy.make(RegulatorSync, county=county.code)
-        self.assertEquals(1, RegulatorSync.objects.count())
-        url = self.url + str(sync) + "/"
-        response = self.client.delete(url)
-        self.assertEquals(204, response.status_code)
-        self.assertEquals(0, RegulatorSync.objects.count)
