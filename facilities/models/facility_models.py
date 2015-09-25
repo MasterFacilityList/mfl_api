@@ -1625,6 +1625,7 @@ class FacilityDepartment(AbstractBase):
         return self.name
 
 
+@reversion.register
 @encoding.python_2_unicode_compatible
 class RegulatorSync(AbstractBase):
     """
@@ -1651,12 +1652,12 @@ class RegulatorSync(AbstractBase):
 
     @property
     def county_name(self):
-        county = County.objects.get(code=int(self.county))
+        county = County.objects.get(code=self.county)
         return county.name
 
     def validate_county_exits(self):
         try:
-            county = County.objects.get(code=int(self.county))
+            county = County.objects.get(code=self.county)
             return county.name
         except (County.DoesNotExist, ValueError):
             raise ValidationError(
