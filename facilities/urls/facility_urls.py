@@ -80,7 +80,7 @@ urlpatterns = patterns(
         name='regulator_syncs_list'),
 
     url(r'^regulator_sync/(?P<pk>[^/]+)/$',
-        RegualorSyncListView.as_view(),
+        RegualorSyncDetailView.as_view(),
         name='regulator_sync_detail'),
 
     url(r'^option_group_with_options/$',
