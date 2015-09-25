@@ -68,7 +68,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
             'mfl_gis.tests.facility_coordinates_recipe')
         self.assertEquals(1, FacilityCoordinates.objects.count())
         self.assertEquals(
-            facility_gps.id, facility_gps.facility.coordinates)
+            facility_gps, facility_gps.facility.coordinates)
 
     def test_simplify_coordinates(self):
         facility_gps = mommy.make_recipe(
