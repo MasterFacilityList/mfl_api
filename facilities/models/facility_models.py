@@ -1637,8 +1637,7 @@ class RegulatorSync(AbstractBase):
     registration_number = models.CharField(
         max_length=100,
         help_text='The registration number given by the regulator')
-    county = models.CharField(
-        max_length=100, help_text='The code of the county')
+    county = models.PositiveIntegerField(help_text='The code of the county')
     facility_type = models.ForeignKey(
         FacilityType,
         help_text='The type of the facility e.g Medical Clinic')
@@ -1647,27 +1646,27 @@ class RegulatorSync(AbstractBase):
         help_text='The owner of the facility')
     mfl_code = models.CharField(
         max_length=100,
+        null=True, blank=True,
         help_text='The MFL code assigned in MFL')
 
     @property
     def county_name(self):
-        county = County.objects.get(code=self.code)
+        county = County.objects.get(code=int(self.county))
         return county.name
 
     def validate_county_exits(self):
         try:
-            county = County.objects.get(code=self.code)
+            county = County.objects.get(code=int(self.county))
             return county.name
-        except County.DoesNotExist:
+        except (County.DoesNotExist, ValueError):
             raise ValidationError(
                 {
                     "county": ["County with provided code does not exist"]
                 }
             )
 
-        def clean(self):
-            super(RegulatorSync, self).clean()
-            self.validate_county_exits()
+    def clean(self):
+        self.validate_county_exits()
 
     def __str__(self):
         return self.name

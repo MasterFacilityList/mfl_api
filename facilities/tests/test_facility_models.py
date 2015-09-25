@@ -48,8 +48,30 @@ from ..models import (
     KephLevel,
     OptionGroup,
     FacilityLevelChangeReason,
-    FacilityDepartment
+    FacilityDepartment,
+    RegulatorSync
 )
+
+
+class TestRegultorSync(BaseTestCase):
+    def test_save(self):
+        county = mommy.make(County, code=1999)
+        mommy.make(RegulatorSync, county=county)
+        self.assertEquals(1, RegulatorSync.objects.count())
+
+    def test_county_exists(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(RegulatorSync, county="1889759")
+
+    def test_county_name(self):
+        county = mommy.make(County, code=1999)
+        sync = mommy.make(RegulatorSync, county="1999")
+        self.assertEquals(county.name, sync.county_name)
+
+    def test_unicode(self):
+        county = mommy.make(County, code=1999)
+        sync = mommy.make(RegulatorSync, name="Clinic ya Musa", county=county)
+        self.assertEquals("Clinic ya Musa", sync.__str__())
 
 
 class TestOptionGroup(BaseTestCase):
