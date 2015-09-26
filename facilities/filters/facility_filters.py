@@ -34,7 +34,8 @@ from ..models import (
     KephLevel,
     OptionGroup,
     FacilityLevelChangeReason,
-    FacilityDepartment
+    FacilityDepartment,
+    RegulatorSync
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -43,6 +44,14 @@ from common.filters.filter_shared import (
 )
 
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
+
+
+class RegulatorSyncFilter(CommonFieldsFilterset):
+    mfl_code = ListCharFilter(lookup_type='exact')
+    county = ListCharFilter(lookup_type='exact')
+
+    class Meta:
+        model = RegulatorSync
 
 
 class OptionGroupFilter(CommonFieldsFilterset):

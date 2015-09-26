@@ -67,12 +67,22 @@ from ..views import (
     FacilityLevelChangeReasonListView,
     PostOptionGroupWithOptionsView,
     FacilityDepartmentDetailView,
-    FacilityDepartmentListView
+    FacilityDepartmentListView,
+    RegualorSyncListView,
+    RegualorSyncDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^regulator_sync/$',
+        RegualorSyncListView.as_view(),
+        name='regulator_syncs_list'),
+
+    url(r'^regulator_sync/(?P<pk>[^/]+)/$',
+        RegualorSyncDetailView.as_view(),
+        name='regulator_sync_detail'),
+
     url(r'^option_group_with_options/$',
         PostOptionGroupWithOptionsView.as_view(),
         name='post_option_group_with_options'),
