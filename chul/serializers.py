@@ -105,8 +105,8 @@ class CommunityHealthUnitSerializer(
                 is_new=True)
         basic_updates = self.get_basic_updates(chu_instance, validated_data)
 
-        if basic_updates and not update.basic:
-            update.basic = basic_updates
+        update.basic = basic_updates if basic_updates \
+            and not update.basic else update.basic
 
         if chews:
             for chew in chews:
@@ -184,20 +184,20 @@ class CommunityHealthUnitSerializer(
 
         for contact_data in contacts:
             contact = self.create_contact(contact_data)
-            if contact:
-                health_unit_contact_data_unadit = {
-                    "contact": contact.id,
-                    "health_unit": instance.id
-                }
+            # if contact:
+            health_unit_contact_data_unadit = {
+                "contact": contact.id,
+                "health_unit": instance.id
+            }
 
-                try:
-                    CommunityHealthUnitContact.objects.get(
-                        contact_id=contact.id, health_unit_id=instance.id)
-                except CommunityHealthUnitContact.DoesNotExist:
-                    chu_contact = CommunityHealthUnitContactSerializer(
-                        data=health_unit_contact_data_unadit,
-                        context=self.context)
-                    chu_contact.save() if chu_contact.is_valid() else None
+            try:
+                CommunityHealthUnitContact.objects.get(
+                    contact_id=contact.id, health_unit_id=instance.id)
+            except CommunityHealthUnitContact.DoesNotExist:
+                chu_contact = CommunityHealthUnitContactSerializer(
+                    data=health_unit_contact_data_unadit,
+                    context=self.context)
+                chu_contact.save() if chu_contact.is_valid() else None
 
     def create(self, validated_data):
         self.inlined_errors = {}

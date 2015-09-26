@@ -331,8 +331,7 @@ class ChuUpdateBuffer(AbstractBase):
     @property
     def updates(self):
         updates = {}
-        if self.basic:
-            updates['basic'] = json.loads(self.basic)
+        updates['basic'] = json.loads(self.basic)
         if self.contacts:
             updates['contacts'] = json.loads(self.contacts)
         if self.workers:
