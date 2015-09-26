@@ -13,7 +13,8 @@ from django.contrib.gis.geos import Point
 
 
 from common.models import (
-    AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town
+    AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town,
+    County
 )
 from common.fields import SequenceField
 
@@ -1619,6 +1620,54 @@ class FacilityDepartment(AbstractBase):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     regulatory_body = models.ForeignKey(RegulatingBody)
+
+    def __str__(self):
+        return self.name
+
+
+@reversion.register(follow=['facility_type', 'owner'])
+@encoding.python_2_unicode_compatible
+class RegulatorSync(AbstractBase):
+    """
+    Stage facilities that are  created initially in the Regulator system RHRIS
+    before they are created in the MFL
+    """
+    name = models.CharField(
+        max_length=100,
+        help_text='The name of the facility')
+    registration_number = models.CharField(
+        max_length=100,
+        help_text='The registration number given by the regulator')
+    county = models.PositiveIntegerField(help_text='The code of the county')
+    facility_type = models.ForeignKey(
+        FacilityType,
+        help_text='The type of the facility e.g Medical Clinic')
+    owner = models.ForeignKey(
+        Owner,
+        help_text='The owner of the facility')
+    mfl_code = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text='The MFL code assigned in MFL')
+
+    @property
+    def county_name(self):
+        county = County.objects.get(code=self.county)
+        return county.name
+
+    def validate_county_exits(self):
+        try:
+            county = County.objects.get(code=self.county)
+            return county.name
+        except (County.DoesNotExist, ValueError):
+            raise ValidationError(
+                {
+                    "county": ["County with provided code does not exist"]
+                }
+            )
+
+    def clean(self):
+        self.validate_county_exits()
 
     def __str__(self):
         return self.name
