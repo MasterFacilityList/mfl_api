@@ -12,8 +12,25 @@ from ..models import (
     Status,
     CommunityHealthUnitContact,
     CHUService,
-    CHURating
+    CHURating,
+    ChuUpdateBuffer
 )
+
+
+class TestChuUpdateBuffer(TestCase):
+    def test_save(self):
+        mommy.make(ChuUpdateBuffer)
+        self.assertEquals(1, ChuUpdateBuffer.objects.count())
+
+    def test_str(self):
+        chu_update = mommy.make(ChuUpdateBuffer)
+        self.assertEquals(1, ChuUpdateBuffer.objects.count())
+        self.assertEquals(chu_update.__str__(), chu_update.facility.name)
+
+    def test_atleast_one_thing_editted(self):
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                ChuUpdateBuffer, basic=None, workers=None, contacts=None)
 
 
 class TestCommunityHealthUnit(TestCase):
@@ -60,6 +77,21 @@ class TestCommunityHealthUnit(TestCase):
         mommy.make(
             CommunityHealthUnitContact, health_unit=chu)
         self.assertIsInstance(chu.contacts, list)
+
+    def test_latest_update(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chu.is_approved = True
+        chu.save()
+        update = mommy.make(ChuUpdateBuffer, health_unit=chu)
+        self.assertEquals(chu.latest_update, update)
+
+    def test_pending_upates(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chu.is_approved = True
+        chu.save()
+        update = mommy.make(ChuUpdateBuffer, health_unit=chu)
+        self.assertEquals(chu.latest_update, update)
+        self.assertIsInstance(chu.pending_updates, dict)
 
 
 class TestCommunityHealthWorkerModel(TestCase):
