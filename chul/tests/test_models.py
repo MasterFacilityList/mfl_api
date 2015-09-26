@@ -109,6 +109,43 @@ class TestCommunityHealthUnit(TestCase):
         self.assertEquals(chu.latest_update, update)
         self.assertIsInstance(chu.pending_updates, dict)
 
+    def test_has_edits_true(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chu.is_approved = True
+        chu.save()
+        mommy.make(
+            ChuUpdateBuffer,
+            health_unit=chu,
+            basic='{"name": "some new name"}')
+        chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
+        self.assertTrue(chu_refetched.has_edits)
+
+    def test_has_edits_false_afater_approval(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chu.is_approved = True
+        chu.save()
+        update = mommy.make(
+            ChuUpdateBuffer,
+            health_unit=chu,
+            basic='{"name": "some new name"}')
+        update.is_approved = True
+        update.save()
+        chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
+        self.assertFalse(chu_refetched.has_edits)
+
+    def test_has_edits_false_afater_rejection(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chu.is_approved = True
+        chu.save()
+        update = mommy.make(
+            ChuUpdateBuffer,
+            health_unit=chu,
+            basic='{"name": "some new name"}')
+        update.is_rejected = True
+        update.save()
+        chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
+        self.assertFalse(chu_refetched.has_edits)
+
 
 class TestCommunityHealthWorkerModel(TestCase):
 
