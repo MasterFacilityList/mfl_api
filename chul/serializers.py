@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from common.serializers import AbstractFieldsMixin, ContactSerializer
-from common.models import Contact
+from common.models import Contact, ContactType
 
 from .models import (
     CommunityHealthUnit,
@@ -71,28 +71,61 @@ class CommunityHealthUnitSerializer(
 
     def save_chew(self, instance, chews, context):
         for chew in chews:
-            chew['health_unit'] = instance.id
-            chew_data = CommunityHealthWorkerSerializer(
-                data=chew, context=context)
-            chew_data.save() if chew_data.is_valid() else None
+
+            chew_id = chew.pop('id', None)
+            if chew_id:
+                chew_obj = CommunityHealthWorker.objects.get(id=chew_id)
+                chew_obj.first_name = chew['first_name']
+                chew_obj.last_name = chew['last_name']
+                chew_obj.id_number = chew['id_number']
+                chew_obj.is_incharge = chew['is_incharge']
+                chew_obj.save()
+            else:
+                chew['health_unit'] = instance.id
+                chew_data = CommunityHealthWorkerSerializer(
+                    data=chew, context=context)
+                chew_data.save() if chew_data.is_valid() else None
 
     def _validate_contacts(self, contacts):
         for contact in contacts:
-            contact = ContactSerializer(
-                data=contact, context=self.context)
-            if contact.is_valid():
+            if 'contact' not in contact or 'contact_type' not in contact:
+                self.inlined_errors.update(
+                    {
+                        "contact": [
+                            "Contact type of contact field is missing from"
+                            " the payload"]
+                    }
+                )
                 continue
-            else:
-                self.inlined_errors.update(contact.errors)
+            try:
+                ContactType.objects.get(id=contact['contact_type'])
+            except ContactType.DoesNotExist:
+                self.inlined_errors.update(
+                    {
+                        "contact": ["The provided contact_type does not exist"]
+                    }
+                )
 
     def create_contact(self, contact_data):
-
         try:
-            return Contact.objects.get(**contact_data)
+            if 'id' in contact_data:
+                contact = Contact.objects.get(
+                    id=contact_data['id']
+                )
+                contact.contact = contact_data['contact']
+                contact.contact_type_id = contact_data['contact_type']
+                contact.save()
+                return contact
+            else:
+                contact = Contact.objects.get(
+                    contact=contact_data['contact']
+                )
+                return contact
         except Contact.DoesNotExist:
             contact = ContactSerializer(
                 data=contact_data, context=self.context)
-            return contact.save() if contact.is_valid() else None
+            return contact.save() if contact.is_valid() else \
+                self.inlined_errors.update(contact.errors)
 
     def create_chu_contacts(self, instance, contacts, validated_data):
 

@@ -44,10 +44,21 @@ from ..models import (
     KephLevel,
     OptionGroup,
     FacilityLevelChangeReason,
-    FacilityDepartment
+    FacilityDepartment,
+    RegulatorSync
 )
 
 from ..utils import CreateFacilityOfficerMixin
+
+
+class RegulatorSyncSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    county_name = serializers.ReadOnlyField()
+    owner_name = serializers.ReadOnlyField(source='owner.name')
+    facility_type_name = serializers.ReadOnlyField(source='facility_type.name')
+
+    class Meta:
+        model = RegulatorSync
 
 
 class FacilityLevelChangeReasonSerializer(

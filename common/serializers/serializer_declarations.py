@@ -152,6 +152,8 @@ class UserCountySerializer(
         source='user.get_full_name')
     county_name = serializers.ReadOnlyField(
         source='county.name')
+    county_code = serializers.ReadOnlyField(
+        source='county.code')
     user_email = serializers.ReadOnlyField(
         source='user.email')
 
