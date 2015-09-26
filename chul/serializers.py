@@ -84,7 +84,14 @@ class CommunityHealthUnitSerializer(
     def _validate_contacts(self, contacts):
         for contact in contacts:
             if 'contact' not in contact or 'contact_type' not in contact:
-                self.inlined_errors.update(contact.errors)
+                self.inlined_errors.update(
+                    {
+                        "contact": [
+                            "Contact type of contact field is missing from"
+                            " the payload"]
+                    }
+                )
+                continue
             try:
                 ContactType.objects.get(id=contact['contact_type'])
             except ContactType.DoesNotExist:

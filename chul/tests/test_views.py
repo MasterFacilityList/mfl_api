@@ -118,18 +118,21 @@ class TestCommunityHealthUnitView(ViewTestBase):
         facility = mommy.make(Facility)
         status = mommy.make(Status)
         contact_type = mommy.make(ContactType)
-        contacts = [
-            {
-                "contact": "07246578256",
-                "contact_type": str(contact_type.id)
-            }
-        ]
         chu = mommy.make(
             CommunityHealthUnit, facility=facility, status=status)
         con = mommy.make(
             Contact, contact="07246578256", contact_type=contact_type)
         mommy.make(CommunityHealthUnitContact, contact=con, health_unit=chu)
+        contacts = [
+            {
+                "contact": "07246578256",
+                "contact_type": str(contact_type.id),
+                "id": str(con.id),
+            }
+        ]
+
         data = {
+
             "name": "test community",
             "status": status.id,
             "households_monitored": 100,
@@ -141,6 +144,51 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, Contact.objects.count())
         self.assertEquals(1, CommunityHealthUnitContact.objects.count())
+
+    def test_patch_with_already_added_contacts_no_id(self):
+        facility = mommy.make(Facility)
+        status = mommy.make(Status)
+        contact_type = mommy.make(ContactType)
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, status=status)
+        con = mommy.make(
+            Contact, contact="07246578256", contact_type=contact_type)
+        mommy.make(CommunityHealthUnitContact, contact=con, health_unit=chu)
+        contacts = [
+            {
+                "contact": "07246578256",
+                "contact_type": str(contact_type.id)
+            }
+        ]
+
+        data = {
+
+            "name": "test community",
+            "status": status.id,
+            "households_monitored": 100,
+            "contacts": contacts
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, Contact.objects.count())
+        self.assertEquals(1, CommunityHealthUnitContact.objects.count())
+
+    def test_patch_chu_erroneous_contacts(self):
+        chu = mommy.make(CommunityHealthUnit)
+        contacts = [
+            {
+                "not_contact": "23857289",
+                "not_contact_type": "q935728572389"
+            }
+        ]
+        data = {
+            "contacts": contacts
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
 
     def test_patch_chu_inlined_chew(self):
         chu = mommy.make(CommunityHealthUnit)
