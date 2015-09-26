@@ -54,11 +54,12 @@ class CommunityHealthUnitSerializer(
     geo_features = serializers.ReadOnlyField(
         source='facility.coordinates.json_features')
     boundaries = serializers.ReadOnlyField(source='facility.boundaries')
+    avg_rating = serializers.ReadOnlyField(source='average_rating')
     inlined_errors = {}
 
     class Meta(object):
         model = CommunityHealthUnit
-        read_only_fields = ('code',)
+        read_only_fields = ('code', )
 
     def _validate_chew(self, chews, context):
         for chew in chews:
