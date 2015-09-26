@@ -378,7 +378,7 @@ class TestCHUpdatesApproval(LoginMixin, APITestCase):
         contact_type = mommy.make(ContactType)
         contact_type_2 = mommy.make(ContactType)
         contact_1 = mommy.make(
-            Contact, contact="385235725", contact_type=contact_type)
+            Contact, contact="3852357254", contact_type=contact_type)
         contact_2 = mommy.make(
             Contact, contact="385235725", contact_type=contact_type_2)
         chu_contact_1 = mommy.make(
@@ -388,7 +388,7 @@ class TestCHUpdatesApproval(LoginMixin, APITestCase):
         contacts = [
             {
                 "contact_type": str(contact_type.id),
-                "contact": "385235725",
+                "contact": "3852357254",
                 "contact_type_name": contact_type.name,
                 "contact_id": str(contact_1.id),
                 "id": str(chu_contact_1.id)

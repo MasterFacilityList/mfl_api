@@ -19,13 +19,13 @@ from ..models import (
 
 class TestChuUpdateBuffer(TestCase):
     def test_save(self):
-        mommy.make(ChuUpdateBuffer)
+        mommy.make(ChuUpdateBuffer, basic="{'name': 'new name'}")
         self.assertEquals(1, ChuUpdateBuffer.objects.count())
 
     def test_str(self):
-        chu_update = mommy.make(ChuUpdateBuffer)
+        chu_update = mommy.make(ChuUpdateBuffer, basic="{'name': 'new name'}")
         self.assertEquals(1, ChuUpdateBuffer.objects.count())
-        self.assertEquals(chu_update.__str__(), chu_update.facility.name)
+        self.assertEquals(chu_update.__str__(), chu_update.health_unit.name)
 
     def test_atleast_one_thing_editted(self):
         with self.assertRaises(ValidationError):
@@ -82,14 +82,20 @@ class TestCommunityHealthUnit(TestCase):
         chu = mommy.make(CommunityHealthUnit)
         chu.is_approved = True
         chu.save()
-        update = mommy.make(ChuUpdateBuffer, health_unit=chu)
+        update = mommy.make(
+            ChuUpdateBuffer,
+            health_unit=chu,
+            basic='{"name": "some new name"}')
         self.assertEquals(chu.latest_update, update)
 
     def test_pending_upates(self):
         chu = mommy.make(CommunityHealthUnit)
         chu.is_approved = True
         chu.save()
-        update = mommy.make(ChuUpdateBuffer, health_unit=chu)
+        update = mommy.make(
+            ChuUpdateBuffer,
+            health_unit=chu,
+            basic='{"name": "some new name"}')
         self.assertEquals(chu.latest_update, update)
         self.assertIsInstance(chu.pending_updates, dict)
 

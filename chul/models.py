@@ -126,6 +126,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         self.validate_facility_is_not_closed()
         self.validate_either_approved_or_rejected_and_not_both()
 
+    @property
     def pending_updates(self):
         try:
             chu = ChuUpdateBuffer.objects.get(
@@ -137,6 +138,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         except ChuUpdateBuffer.DoesNotExist:
             return {}
 
+    @property
     def latest_update(self):
         try:
             chu = ChuUpdateBuffer.objects.get(
@@ -313,7 +315,9 @@ class ChuUpdateBuffer(AbstractBase):
             try:
                 contact_obj = Contact.objects.create(**contact)
             except ValidationError:
-                contact_obj = Contact.objects.get(contact=contact['contact'])
+                contact_obj = Contact.objects.get(
+                    contact=contact['contact'],
+                    contact_type_id=contact['contact_type_id'])
             try:
                 CommunityHealthUnitContact.objects.filter(
                     contact=contact_obj)[0]
