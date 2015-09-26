@@ -7,7 +7,8 @@ from .models import (
     Status,
     CommunityHealthUnitContact,
     CHUService,
-    CHURating
+    CHURating,
+    ChuUpdateBuffer
 )
 
 from .serializers import (
@@ -17,7 +18,8 @@ from .serializers import (
     StatusSerializer,
     CommunityHealthUnitContactSerializer,
     CHUServiceSerializer,
-    CHURatingSerializer
+    CHURatingSerializer,
+    ChuUpdateBufferSerializer
 )
 
 from .filters import (
@@ -27,7 +29,8 @@ from .filters import (
     StatusFilter,
     CommunityHealthUnitContactFilter,
     CHUServiceFilter,
-    CHURatingFilter
+    CHURatingFilter,
+    ChuUpdateBufferFilter
 )
 
 
@@ -280,3 +283,17 @@ class CHURatingDetailView(
     """Retrieves, updates and deletes a community health unit's rating"""
     queryset = CHURating.objects.all()
     serializer_class = CHURatingSerializer
+
+
+class ChuUpdateBufferListView(
+        AuditableDetailViewMixin, generics.ListCreateAPIView):
+    queryset = ChuUpdateBuffer.objects.all()
+    serializer_class = ChuUpdateBufferSerializer
+    filter_class = ChuUpdateBufferFilter
+    ordering_fields = ('health_unit', )
+
+
+class ChuUpdateBufferDetailView(
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = ChuUpdateBuffer.objects.all()
+    serializer_class = ChuUpdateBufferSerializer

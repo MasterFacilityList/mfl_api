@@ -42,6 +42,9 @@ class CommunityHealthUnitContact(AbstractBase):
     def __str__(self):
         return "{}: ({})".format(self.health_unit, self.contact)
 
+    class Meta:
+        unique_together = ('health_unit', 'contact', )
+
 
 @reversion.register(follow=['facility', 'status'])
 @encoding.python_2_unicode_compatible
@@ -151,7 +154,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()
-            super(CommunityHealthUnit, self).save(*args, **kwargs)
+        super(CommunityHealthUnit, self).save(*args, **kwargs)
 
     @property
     def average_rating(self):
@@ -265,9 +268,18 @@ class ChuUpdateBuffer(AbstractBase):
 
     def update_basic_details(self):
         basic_details = json.loads(self.basic)
+        if 'status' in basic_details:
+            basic_details['status_id'] = basic_details.get(
+                'status').get('status_id')
+            basic_details.pop('status')
+        if 'facility' in basic_details:
+            basic_details['facility_id'] = basic_details.get(
+                'facility').get('facility_id')
+            basic_details.pop('facility')
+
         for key, value in basic_details.iteritems():
             setattr(self.health_unit, key, value)
-        self.health_unit.save(allow_save=True)
+        self.health_unit.save()
 
     def update_workers(self):
         chews = json.loads(self.workers)
@@ -275,7 +287,22 @@ class ChuUpdateBuffer(AbstractBase):
             chew['health_unit'] = self.health_unit
             chew['created_by_id'] = self.created_by_id
             chew['updated_by_id'] = self.updated_by_id
-            CommunityHealthWorker.objects.create(**chew)
+            chew.pop('created_by', None)
+            chew.pop('updated_by', None)
+            if 'id' in chew:
+                chew_obj = CommunityHealthWorker.objects.get(
+                    id=chew['id'])
+                chew_obj.first_name = chew['first_name']
+                chew_obj.last_name = chew['last_name']
+                chew_obj.id_number = chew['id_number']
+                chew_obj.is_incharge = chew['is_incharge']
+                chew_obj.save()
+            else:
+                try:
+                    CommunityHealthWorker.objects.get(
+                        id_number=chew['id_number'])
+                except CommunityHealthWorker.DoesNotExist:
+                    CommunityHealthWorker.objects.create(**chew)
 
     def update_contacts(self):
         contacts = json.loads(self.contacts)
@@ -283,11 +310,21 @@ class ChuUpdateBuffer(AbstractBase):
             contact['updated_by_id'] = self.updated_by_id
             contact['created_by_id'] = self.created_by_id
             contact['contact_type_id'] = contact['contact_type']
-            contact_obj = Contact.objects.create(**contact)
-            CommunityHealthUnitContact.objects.create(
-                contact=contact_obj, health_unit=self.health_unit,
-                created_by_id=self.created_by_id,
-                updated_by_id=self.updated_by_id)
+            contact.pop('contact_type', None)
+            contact.pop('contact_id', None)
+            contact.pop('contact_type_name', None)
+            try:
+                contact_obj = Contact.objects.create(**contact)
+            except ValidationError:
+                contact_obj = Contact.objects.get(contact=contact['contact'])
+            try:
+                CommunityHealthUnitContact.objects.filter(contact=contact_obj)[0]
+            except IndexError:
+                CommunityHealthUnitContact.objects.create(
+                    contact=contact_obj,
+                    health_unit=self.health_unit,
+                    created_by_id=self.created_by_id,
+                    updated_by_id=self.updated_by_id)
 
     @property
     def updates(self):
@@ -298,12 +335,22 @@ class ChuUpdateBuffer(AbstractBase):
             updates['contacts'] = json.loads(self.contacts)
         if self.workers:
             updates['workers'] = json.loads(self.workers)
+        updates['updated_by'] = self.updated_by.get_full_name
         return updates
 
     def clean(self, *args, **kwargs):
         if not self.is_approved or not self.is_rejected:
             self.health_unit.has_edits = True
-            self.health_unit.save(allow_save=True)
+            self.health_unit.save()
+        if self.is_approved and self.contacts:
+            self.update_contacts()
+
+        if self.is_approved and self.workers:
+            self.update_workers()
+
+        if self.is_approved and self.basic:
+            self.update_basic_details()
+
         self.validate_atleast_one_attribute_updated()
 
     def __str__(self):

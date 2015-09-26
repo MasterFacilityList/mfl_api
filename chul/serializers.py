@@ -5,7 +5,6 @@ from rest_framework.exceptions import ValidationError
 
 from common.serializers import AbstractFieldsMixin, ContactSerializer
 from common.models import Contact, ContactType
-from facilities.models import Facility
 
 from .models import (
     CommunityHealthUnit,
@@ -17,6 +16,12 @@ from .models import (
     CHURating,
     ChuUpdateBuffer
 )
+
+
+class ChuUpdateBufferSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ChuUpdateBuffer
 
 
 class CHUServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
@@ -80,10 +85,13 @@ class CommunityHealthUnitSerializer(
         for key, value in updates.iteritems():
             if hasattr(value, 'isoformat'):
                 updates[key] = validated_data[key].isoformat()
+        updates.pop('health_unit_workers', None)
+        updates.pop('contacts', None)
         return json.dumps(updates)
 
     def buffer_updates(
             self, validated_data, chu_instance, chews=None, contacts=None, ):
+
         try:
             update = ChuUpdateBuffer.objects.get(
                 health_unit=chu_instance,
@@ -91,26 +99,34 @@ class CommunityHealthUnitSerializer(
         except ChuUpdateBuffer.DoesNotExist:
             update = ChuUpdateBuffer.objects.create(
                 health_unit=chu_instance,
-                created_by_id=1,
-                updated_by_id=1,
+                created_by_id=self.context['request'].user.id,
+                updated_by_id=self.context['request'].user.id,
                 is_new=True)
+        basic_updates = self.get_basic_updates(chu_instance, validated_data)
+
+        if basic_updates and not update.basic:
+            update.basic = basic_updates
+
         if chews:
+            for chew in chews:
+                chew.pop('created', None)
+                chew.pop('updated', None)
+                chew.pop('updated_by', None)
+                chew.pop('created_by', None)
+
             chews = json.dumps(chews)
             update.workers = chews
         if contacts:
             contacts = json.dumps(contacts)
             update.contacts = contacts
-        basic_updates = self.get_basic_updates(chu_instance, validated_data)
-        if basic_updates:
-            update.basic = basic_updates
         update.save()
 
     def _validate_chew(self, chews, context):
         for chew in chews:
-            chew_data = CommunityHealthWorkerPostSerializer(
-                data=chew, context=context)
-            self.inlined_errors.update(
-                chew_data.errors) if not chew_data.is_valid() else None
+            pass
+            # if 'first_name' or 'last_name' not in chew:
+            #     error = 'first_name and last name are required'
+            #     self.inlined_errors.update({"names": [error]})
 
     def save_chew(self, instance, chews, context):
         for chew in chews:
