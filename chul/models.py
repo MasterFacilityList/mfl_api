@@ -72,6 +72,10 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     closing_comment = models.TextField(null=True, blank=True)
     is_rejected = models.BooleanField(default=False)
     rejection_reason = models.TextField(null=True, blank=True)
+    has_edits = models.BooleanField(
+        default=False,
+        help_text='Indicates that a community health unit has updates that are"\
+        " pending approval')
 
     def __str__(self):
         return self.name
@@ -119,9 +123,20 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         self.validate_facility_is_not_closed()
         self.validate_either_approved_or_rejected_and_not_both()
 
-    def _dump_updates(self):
+    def pending_updates(self):
+        try:
+            chu = ChuUpdateBuffer.objects.get(
+                is_approved=False,
+                is_rejected=False,
+                health_unit=self
+            )
+            return chu.updates
+        except ChuUpdateBuffer.DoesNotExist:
+            return {}
+
+    def _dump_updates(self, old_obj):
         updates = {}
-        old_obj = self.__class__.objects.get(id=self.id)
+
         fields = [obj.name for obj in self.__class__._meta.fields]
         del fields[fields.index('id')]
         del fields[fields.index('created')]
@@ -136,24 +151,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()
-        if not self.is_approved and not self.is_rejected:
             super(CommunityHealthUnit, self).save(*args, **kwargs)
-        allow_save = kwargs.pop('allow_save', None)
-        if allow_save:
-            super(CommunityHealthUnit, self).save(*args, **kwargs)
-        updates = self._dump_updates()
-        if updates:
-            try:
-                pending_update = ChuUpdateBuffer.objects.get(
-                    is_approved=False, is_rejected=False)
-                pending_update.basic = updates
-                pending_update.save()
-            except ChuUpdateBuffer.DoesNotExist:
-                pending_update = ChuUpdateBuffer.objects.create(
-                    health_unit=self, created_by=self.created_by,
-                    updated_by=self.updated_by)
-                pending_update.basic = updates
-                pending_update.save()
 
     @property
     def average_rating(self):
@@ -256,11 +254,13 @@ class ChuUpdateBuffer(AbstractBase):
     workers = models.TextField(null=True, blank=True)
     contacts = models.TextField(null=True, blank=True)
     basic = models.TextField(null=True, blank=True)
-    is_cancelled = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
+    is_new = models.BooleanField(default=False)
 
     def validate_atleast_one_attribute_updated(self):
-        if not self.workers and not self.contacts and not self.basic:
+        if not self.workers and not self.contacts and not \
+                self.basic and not self.is_new:
             raise ValidationError({"__all__": ["Nothing was editted"]})
 
     def update_basic_details(self):
@@ -289,6 +289,7 @@ class ChuUpdateBuffer(AbstractBase):
                 created_by_id=self.created_by_id,
                 updated_by_id=self.updated_by_id)
 
+    @property
     def updates(self):
         updates = {}
         if self.basic:
@@ -297,6 +298,13 @@ class ChuUpdateBuffer(AbstractBase):
             updates['contacts'] = json.loads(self.contacts)
         if self.workers:
             updates['workers'] = json.loads(self.workers)
+        return updates
 
     def clean(self, *args, **kwargs):
+        if not self.is_approved or not self.is_rejected:
+            self.health_unit.has_edits = True
+            self.health_unit.save(allow_save=True)
         self.validate_atleast_one_attribute_updated()
+
+    def __str__(self):
+        return self.health_unit.name

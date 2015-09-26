@@ -64,8 +64,13 @@ class FilterCommunityUnitsMixin(object):
         Overridden in order to constrain search results to what a user should
         see.
         """
-        queryset = super(FilterCommunityUnitsMixin, self).filter_queryset(
-            queryset)
+        if 'search' in self.request.query_params:
+            search_term = self.request.query_params.get('search')
+            if search_term.isdigit():
+                queryset = self.queryset.filter(code=search_term)
+            else:
+                queryset = super(
+                    FilterCommunityUnitsMixin, self).filter_queryset(queryset)
         return self.get_queryset(custom_queryset=queryset)
 
 
