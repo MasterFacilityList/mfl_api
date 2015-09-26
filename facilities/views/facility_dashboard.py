@@ -15,6 +15,7 @@ from ..models import (
 
 
 class DashBoard(APIView):
+
     def get_queryset(self, *args, **kwargs):
         return Facility.objects.all()
 
