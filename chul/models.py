@@ -137,20 +137,6 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         except ChuUpdateBuffer.DoesNotExist:
             return {}
 
-    def _dump_updates(self, old_obj):
-        updates = {}
-
-        fields = [obj.name for obj in self.__class__._meta.fields]
-        del fields[fields.index('id')]
-        del fields[fields.index('created')]
-        del fields[fields.index('updated')]
-        del fields[fields.index('created_by')]
-        del fields[fields.index('updated_by')]
-        for field in fields:
-            if getattr(old_obj, field) != getattr(self, field):
-                updates[field] = getattr(self, field)
-        return json.dumps(updates) if any(updates) else None
-
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()
@@ -318,7 +304,8 @@ class ChuUpdateBuffer(AbstractBase):
             except ValidationError:
                 contact_obj = Contact.objects.get(contact=contact['contact'])
             try:
-                CommunityHealthUnitContact.objects.filter(contact=contact_obj)[0]
+                CommunityHealthUnitContact.objects.filter(
+                    contact=contact_obj)[0]
             except IndexError:
                 CommunityHealthUnitContact.objects.create(
                     contact=contact_obj,

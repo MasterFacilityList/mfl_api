@@ -121,12 +121,11 @@ class CommunityHealthUnitSerializer(
             update.contacts = contacts
         update.save()
 
-    def _validate_chew(self, chews, context):
-        for chew in chews:
-            pass
-            # if 'first_name' or 'last_name' not in chew:
-            #     error = 'first_name and last name are required'
-            #     self.inlined_errors.update({"names": [error]})
+    # def _validate_chew(self, chews, context):
+    #     for chew in chews:
+    #         if 'first_name' or 'last_name' not in chew:
+    #             error = 'first_name and last name are required'
+    #             self.inlined_errors.update({"names": [error]})
 
     def save_chew(self, instance, chews, context):
         for chew in chews:
@@ -210,7 +209,7 @@ class CommunityHealthUnitSerializer(
         chews = self.initial_data.pop('health_unit_workers', [])
         contacts = self.initial_data.pop('contacts', [])
 
-        self._validate_chew(chews, self.context)
+        # self._validate_chew(chews, self.context)
 
         self._validate_contacts(contacts)
 
@@ -241,7 +240,7 @@ class CommunityHealthUnitSerializer(
         self.inlined_errors = {}
 
         validated_data.pop('health_unit_workers', None)
-        self._validate_chew(chews, self.context)
+        # self._validate_chew(chews, self.context)
         self._validate_contacts(contacts)
         if not self.inlined_errors:
             super(CommunityHealthUnitSerializer, self).update(
