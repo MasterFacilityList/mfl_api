@@ -65,11 +65,13 @@ class CommunityHealthUnitSerializer(
     boundaries = serializers.ReadOnlyField(source='facility.boundaries')
     pending_updates = serializers.ReadOnlyField()
     latest_update = serializers.ReadOnlyField(source='latest_update.id')
+    avg_rating = serializers.ReadOnlyField(source='average_rating')
+    number_of_ratings = serializers.ReadOnlyField(source='rating_count')
     inlined_errors = {}
 
     class Meta(object):
         model = CommunityHealthUnit
-        read_only_fields = ('code',)
+        read_only_fields = ('code', )
 
     def get_basic_updates(self, chu_instance, validated_data):
         updates = validated_data
