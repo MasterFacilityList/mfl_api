@@ -344,17 +344,27 @@ class ChuUpdateBuffer(AbstractBase):
         return updates
 
     def clean(self, *args, **kwargs):
-        if not self.is_approved or not self.is_rejected:
+        if not self.is_approved and not self.is_rejected:
             self.health_unit.has_edits = True
             self.health_unit.save()
         if self.is_approved and self.contacts:
             self.update_contacts()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
 
         if self.is_approved and self.workers:
             self.update_workers()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
 
         if self.is_approved and self.basic:
             self.update_basic_details()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
+
+        if self.is_rejected:
+            self.health_unit.has_edits = False
+            self.health_unit.save()
 
         self.validate_atleast_one_attribute_updated()
 
