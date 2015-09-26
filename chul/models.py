@@ -77,8 +77,8 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     rejection_reason = models.TextField(null=True, blank=True)
     has_edits = models.BooleanField(
         default=False,
-        help_text='Indicates that a community health unit has updates that are"\
-        " pending approval')
+        help_text='Indicates that a community health unit has updates that are'
+                  ' pending approval')
 
     def __str__(self):
         return self.name

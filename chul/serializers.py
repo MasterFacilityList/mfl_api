@@ -231,7 +231,7 @@ class CommunityHealthUnitSerializer(
         self.inlined_errors = {}
 
         validated_data.pop('health_unit_workers', None)
-        # self._validate_chew(chews, self.context)
+
         self._validate_contacts(contacts)
         if not self.inlined_errors:
             super(CommunityHealthUnitSerializer, self).update(
