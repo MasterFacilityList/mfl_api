@@ -1625,7 +1625,7 @@ class FacilityDepartment(AbstractBase):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['facility_type', 'owner'])
 @encoding.python_2_unicode_compatible
 class RegulatorSync(AbstractBase):
     """
