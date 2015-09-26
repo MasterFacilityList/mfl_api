@@ -51,6 +51,9 @@ class CommunityHealthUnitSerializer(
     facility_county = serializers.ReadOnlyField(
         source='facility.ward.constituency.county.name')
     contacts = serializers.ReadOnlyField()
+    geo_features = serializers.ReadOnlyField(
+        source='facility.coordinates.json_features')
+    boundaries = serializers.ReadOnlyField(source='facility.boundaries')
     inlined_errors = {}
 
     class Meta(object):

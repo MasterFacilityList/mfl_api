@@ -427,7 +427,7 @@ class FacilityDetailSerializer(FacilitySerializer):
         source="get_facility_services")
     facility_contacts = serializers.ReadOnlyField(
         read_only=True, source="get_facility_contacts")
-    coordinates = serializers.ReadOnlyField()
+    coordinates = serializers.ReadOnlyField(source='coordinates.id')
     latest_approval = serializers.ReadOnlyField(source='latest_approval.id')
     boundaries = serializers.ReadOnlyField()
     service_catalogue_active = serializers.ReadOnlyField()

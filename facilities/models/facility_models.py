@@ -870,7 +870,7 @@ class Facility(SequenceMixin, AbstractBase):
     @property
     def coordinates(self):
         try:
-            return self.facility_coordinates_through.id
+            return self.facility_coordinates_through
         except:
             return None
 
