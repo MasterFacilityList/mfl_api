@@ -43,7 +43,6 @@
 
 - name: run fab migrate
   shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && DEBUG=false fab migrate executable=/bin/bash"
-  when: migrate_only
 
 - name: run the Django migrations and collectstatic
   django_manage: "command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
