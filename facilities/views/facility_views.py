@@ -24,7 +24,8 @@ from ..models import (
     Service,
     Option,
     JobTitle,
-    FacilityDepartment
+    FacilityDepartment,
+    RegulatorSync
 )
 
 from ..serializers import (
@@ -40,7 +41,8 @@ from ..serializers import (
     KephLevelSerializer,
     OptionGroupSerializer,
     CreateFacilityOfficerMixin,
-    FacilityLevelChangeReasonSerializer
+    FacilityLevelChangeReasonSerializer,
+    RegulatorSyncSerializer
 )
 
 from ..filters import (
@@ -53,7 +55,8 @@ from ..filters import (
     FacilityUnitRegulationFilter,
     KephLevelFilter,
     OptionGroupFilter,
-    FacilityLevelChangeReasonFilter
+    FacilityLevelChangeReasonFilter,
+    RegulatorSyncFilter
 
 )
 
@@ -625,3 +628,17 @@ class OptionGroupDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     queryset = OptionGroup.objects.all()
     serializer_class = OptionGroupSerializer
+
+
+class RegualorSyncListView(generics.ListCreateAPIView):
+    queryset = RegulatorSync.objects.all()
+    serializer_class = RegulatorSyncSerializer
+    filter_class = RegulatorSyncFilter
+    ordering_fields = (
+        'name', 'registration_number', 'county',
+        'owner', 'mfl_code')
+
+
+class RegualorSyncDetailView(generics.ListCreateAPIView):
+    queryset = RegulatorSync.objects.all()
+    serializer_class = RegulatorSyncSerializer
