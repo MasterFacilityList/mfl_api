@@ -294,6 +294,18 @@ class TestSearchFunctions(ViewTestBase):
         response = self.client.get(chu_search_url)
         self.assertEquals(200, response.status_code)
 
+    def test_chu_search_using_code(self):
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        chu_url = reverse("api:chul:community_health_units_list")
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, name='Jericho')
+        mommy.make(CommunityHealthUnit, facility=facility_2)
+        index_instance(chu)
+        chu_search_url = chu_url + "?search={}".format(chu.code)
+        response = self.client.get(chu_search_url)
+        self.assertEquals(200, response.status_code)
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFunctions, self).tearDown()

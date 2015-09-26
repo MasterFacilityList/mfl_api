@@ -226,10 +226,6 @@ class CommunityHealthUnitSerializer(
             self.buffer_updates(validated_data, instance, chews, contacts)
             return instance
 
-        if chu.is_rejected and not instance.is_approved:
-            self.buffer_updates(validated_data, instance, chews, contacts)
-            return instance
-
         self.inlined_errors = {}
 
         validated_data.pop('health_unit_workers', None)
