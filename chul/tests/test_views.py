@@ -138,7 +138,9 @@ class TestCommunityHealthUnitView(ViewTestBase):
         url = self.url + "{}/".format(chu.id)
         response = self.client.patch(url, data)
 
-        self.assertEquals(400, response.status_code)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, Contact.objects.count())
+        self.assertEquals(1, CommunityHealthUnitContact.objects.count())
 
     def test_patch_chu_inlined_chew(self):
         chu = mommy.make(CommunityHealthUnit)
