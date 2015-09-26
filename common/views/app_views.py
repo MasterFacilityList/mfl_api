@@ -24,6 +24,7 @@ from facilities.models import(
     Service,
     KephLevel
 )
+from chul import models as chu_models
 from ..serializers import (
     ContactSerializer,
     CountySerializer,
@@ -410,10 +411,12 @@ class FilteringSummariesView(views.APIView):
             'constituency': (Constituency, ('id', 'name', 'county')),
             'ward': (Ward, ('id', 'name', 'constituency')),
             'operation_status': (FacilityStatus, ('id', 'name')),
+            'chu_status': (chu_models.Status, ('id', 'name', )),
             'service_category': (ServiceCategory, ('id', 'name')),
             'owner_type': (OwnerType, ('id', 'name')),
             'owner': (Owner, ('id', 'name', 'owner_type')),
             'service': (Service, ('id', 'name', 'category')),
+            'chu_service': (chu_models.Service, ('id', 'name')),
             'keph_level': (KephLevel, ('id', 'name'))
         }
         if fields:
