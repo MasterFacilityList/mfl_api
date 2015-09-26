@@ -76,6 +76,6 @@
 
         storage_bucket: "{{storage_bucket}}",
         storage_account: "{{storage_account}}",
-        storage_key: "{{storage_key}}"
+        storage_key: "{{storage_key}}",
         storage_backend: "storages.backends.s3boto.S3BotoStorage"
       }
