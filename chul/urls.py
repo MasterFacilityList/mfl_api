@@ -24,11 +24,11 @@ urlpatterns = patterns(
     '',
 
     url(r'^updates/$', ChuUpdateBufferListView.as_view(),
-        name='chuupdatebufers_list'),
+        name='chu_updatebufers_list'),
 
     url(r'^updates/(?P<pk>[^/]+)/$',
         ChuUpdateBufferDetailView.as_view(),
-        name="chuupdatebuffer_detail"),
+        name="chu_updatebuffer_detail"),
 
     url(r'^services/$', CHUServiceListView.as_view(),
         name='chu_services_list'),

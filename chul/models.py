@@ -137,6 +137,17 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         except ChuUpdateBuffer.DoesNotExist:
             return {}
 
+    def lastest_update(self):
+        try:
+            chu = ChuUpdateBuffer.objects.get(
+                is_approved=False,
+                is_rejected=False,
+                health_unit=self
+            )
+            return chu
+        except ChuUpdateBuffer.DoesNotExist:
+            return None
+
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = self.generate_next_code_sequence()

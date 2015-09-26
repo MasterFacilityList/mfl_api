@@ -64,6 +64,7 @@ class CommunityHealthUnitSerializer(
         source='facility.coordinates.json_features')
     boundaries = serializers.ReadOnlyField(source='facility.boundaries')
     pending_updates = serializers.ReadOnlyField()
+    lastest_update = serializers.ReadOnlyField(source='lastest_update.id')
     inlined_errors = {}
 
     class Meta(object):
