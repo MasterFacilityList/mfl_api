@@ -55,6 +55,7 @@ class CommunityHealthUnitSerializer(
         source='facility.coordinates.json_features')
     boundaries = serializers.ReadOnlyField(source='facility.boundaries')
     avg_rating = serializers.ReadOnlyField(source='average_rating')
+    number_of_ratings = serializers.ReadOnlyField(source='rating_count')
     inlined_errors = {}
 
     class Meta(object):
