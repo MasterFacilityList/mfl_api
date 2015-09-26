@@ -1,3 +1,4 @@
+import json
 import reversion
 
 from django.db import models
@@ -41,6 +42,9 @@ class CommunityHealthUnitContact(AbstractBase):
     def __str__(self):
         return "{}: ({})".format(self.health_unit, self.contact)
 
+    class Meta:
+        unique_together = ('health_unit', 'contact', )
+
 
 @reversion.register(follow=['facility', 'status'])
 @encoding.python_2_unicode_compatible
@@ -71,6 +75,10 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     closing_comment = models.TextField(null=True, blank=True)
     is_rejected = models.BooleanField(default=False)
     rejection_reason = models.TextField(null=True, blank=True)
+    has_edits = models.BooleanField(
+        default=False,
+        help_text='Indicates that a community health unit has updates that are'
+                  ' pending approval')
 
     def __str__(self):
         return self.name
@@ -117,6 +125,30 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         super(CommunityHealthUnit, self).clean()
         self.validate_facility_is_not_closed()
         self.validate_either_approved_or_rejected_and_not_both()
+
+    @property
+    def pending_updates(self):
+        try:
+            chu = ChuUpdateBuffer.objects.get(
+                is_approved=False,
+                is_rejected=False,
+                health_unit=self
+            )
+            return chu.updates
+        except ChuUpdateBuffer.DoesNotExist:
+            return {}
+
+    @property
+    def latest_update(self):
+        try:
+            chu = ChuUpdateBuffer.objects.get(
+                is_approved=False,
+                is_rejected=False,
+                health_unit=self
+            )
+            return chu
+        except ChuUpdateBuffer.DoesNotExist:
+            return None
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -218,3 +250,123 @@ class CHURating(AbstractBase):
 
     def __str__(self):
         return "{} - {}".format(self.chu, self.rating)
+
+
+class ChuUpdateBuffer(AbstractBase):
+    """
+    Buffers a community units updates until they are approved by the CHRIO
+    """
+    health_unit = models.ForeignKey(CommunityHealthUnit)
+    workers = models.TextField(null=True, blank=True)
+    contacts = models.TextField(null=True, blank=True)
+    basic = models.TextField(null=True, blank=True)
+    is_approved = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
+    is_new = models.BooleanField(default=False)
+
+    def validate_atleast_one_attribute_updated(self):
+        if not self.workers and not self.contacts and not \
+                self.basic and not self.is_new:
+            raise ValidationError({"__all__": ["Nothing was editted"]})
+
+    def update_basic_details(self):
+        basic_details = json.loads(self.basic)
+        if 'status' in basic_details:
+            basic_details['status_id'] = basic_details.get(
+                'status').get('status_id')
+            basic_details.pop('status')
+        if 'facility' in basic_details:
+            basic_details['facility_id'] = basic_details.get(
+                'facility').get('facility_id')
+            basic_details.pop('facility')
+
+        for key, value in basic_details.iteritems():
+            setattr(self.health_unit, key, value)
+        self.health_unit.save()
+
+    def update_workers(self):
+        chews = json.loads(self.workers)
+        for chew in chews:
+            chew['health_unit'] = self.health_unit
+            chew['created_by_id'] = self.created_by_id
+            chew['updated_by_id'] = self.updated_by_id
+            chew.pop('created_by', None)
+            chew.pop('updated_by', None)
+            if 'id' in chew:
+                chew_obj = CommunityHealthWorker.objects.get(
+                    id=chew['id'])
+                chew_obj.first_name = chew['first_name']
+                chew_obj.last_name = chew['last_name']
+                chew_obj.id_number = chew['id_number']
+                chew_obj.is_incharge = chew['is_incharge']
+                chew_obj.save()
+            else:
+                try:
+                    CommunityHealthWorker.objects.get(
+                        id_number=chew['id_number'])
+                except CommunityHealthWorker.DoesNotExist:
+                    CommunityHealthWorker.objects.create(**chew)
+
+    def update_contacts(self):
+        contacts = json.loads(self.contacts)
+        for contact in contacts:
+            contact['updated_by_id'] = self.updated_by_id
+            contact['created_by_id'] = self.created_by_id
+            contact['contact_type_id'] = contact['contact_type']
+            contact.pop('contact_type', None)
+            contact.pop('contact_id', None)
+            contact.pop('contact_type_name', None)
+            try:
+                contact_obj = Contact.objects.create(**contact)
+            except ValidationError:
+                contact_obj = Contact.objects.get(
+                    contact=contact['contact'],
+                    contact_type_id=contact['contact_type_id'])
+            try:
+                CommunityHealthUnitContact.objects.filter(
+                    contact=contact_obj)[0]
+            except IndexError:
+                CommunityHealthUnitContact.objects.create(
+                    contact=contact_obj,
+                    health_unit=self.health_unit,
+                    created_by_id=self.created_by_id,
+                    updated_by_id=self.updated_by_id)
+
+    @property
+    def updates(self):
+        updates = {}
+        updates['basic'] = json.loads(self.basic)
+        if self.contacts:
+            updates['contacts'] = json.loads(self.contacts)
+        if self.workers:
+            updates['workers'] = json.loads(self.workers)
+        updates['updated_by'] = self.updated_by.get_full_name
+        return updates
+
+    def clean(self, *args, **kwargs):
+        if not self.is_approved and not self.is_rejected:
+            self.health_unit.has_edits = True
+            self.health_unit.save()
+        if self.is_approved and self.contacts:
+            self.update_contacts()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
+
+        if self.is_approved and self.workers:
+            self.update_workers()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
+
+        if self.is_approved and self.basic:
+            self.update_basic_details()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
+
+        if self.is_rejected:
+            self.health_unit.has_edits = False
+            self.health_unit.save()
+
+        self.validate_atleast_one_attribute_updated()
+
+    def __str__(self):
+        return self.health_unit.name

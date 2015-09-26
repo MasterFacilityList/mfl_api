@@ -14,12 +14,22 @@ from .views import(
     CHUServiceListView,
     CHUServiceDetailView,
     CHURatingDetailView,
-    CHURatingListView
+    CHURatingListView,
+    ChuUpdateBufferListView,
+    ChuUpdateBufferDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+
+    url(r'^updates/$', ChuUpdateBufferListView.as_view(),
+        name='chu_updatebufers_list'),
+
+    url(r'^updates/(?P<pk>[^/]+)/$',
+        ChuUpdateBufferDetailView.as_view(),
+        name="chu_updatebuffer_detail"),
+
     url(r'^services/$', CHUServiceListView.as_view(),
         name='chu_services_list'),
     url(r'^services/(?P<pk>[^/]+)/$',

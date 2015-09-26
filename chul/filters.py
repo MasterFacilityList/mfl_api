@@ -7,10 +7,16 @@ from .models import (
     Status,
     CommunityHealthUnitContact,
     CHUService,
-    CHURating
+    CHURating,
+    ChuUpdateBuffer
 )
 
 from common.filters.filter_shared import CommonFieldsFilterset
+
+
+class ChuUpdateBufferFilter(CommonFieldsFilterset):
+    class Meta:
+        model = ChuUpdateBuffer
 
 
 class CHUServiceFilter(CommonFieldsFilterset):
