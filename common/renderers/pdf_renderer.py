@@ -19,6 +19,7 @@ class PDFRenderer(DownloadMixin, renderers.BaseRenderer):
 
         context = Context({
             "data": data,
+            "title": self.fname.split('.')[0],
 
         })
 

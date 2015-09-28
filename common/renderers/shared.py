@@ -9,6 +9,7 @@ Objects that are shared among the renderers
 
 class DownloadMixin(object):
     extension = None
+    fname = None
 
     def check_list_output(self, data, renderer_context):
         if isinstance(data.get('results', None), (list, )):
@@ -22,10 +23,10 @@ class DownloadMixin(object):
 
     def update_download_headers(self, renderer_context):
         view = renderer_context.get('view')
-        fname = view.get_view_name() or 'download'
+        self.fname = view.get_view_name() or 'download'
 
-        fname = "{}.{}".format(fname, self.extension)
+        self.fname = "{}.{}".format(self.fname, self.extension)
         view.response._headers['content-disposition'] = (
             'Content-Disposition',
-            'attachment; filename="{}"'.format(fname)
+            'attachment; filename="{}"'.format(self.fname)
         )

@@ -1,7 +1,10 @@
+<html>
+<body>
 
-
+<!-- Start list endpoint data-->
 {% if data.results %}
-<h1>{{title}}</h1>
+<h2>{{title}}</h2>
+<hr>
     {% for value in data.results %}
 
     <hr>
@@ -11,20 +14,30 @@
         {% endfor %}
     {% endfor %}
 {% else %}
-<h1>{{title}}</h1>
+
+<!-- End list endpoint data-->
+
+<!-- Start detail endpoint data-->
+<h2>{{title}}</h2>
+
+<hr>
 
     {% for x, y in data.items %}
-        {% if not data.items %}
+        {% if not y.0.items %}
             <p><strong>{{x}}: </strong>{{y}}</p>
+
         {%  else %}
+                    <h4>{{x}}</h4>
 
                     {% for k in y %}
 
-                    <hr>
+                        <table>
                         {% for q, p in k.items %}
-                            <p><strong>{{q}}: </strong>{{p}}</p>
-
+                        <tr>
+                            <td><strong>{{q}}: </strong>{{p}}</td>
+                        </tr>
                         {% endfor %}
+                    </table>
                     {% endfor %}
         {% endif %}
 
@@ -32,3 +45,7 @@
         {% endfor %}
 
 {%  endif %}
+
+<!-- End detail endpoint data-->
+</body>
+</html>
