@@ -1,7 +1,3 @@
-[group:mfl_api]
-programs={% for p in app_ports %}mfl_api__{{p}},{%endfor%}
-
-
 {% for p in app_ports %}
 [program:mfl_api__{{p}}]
 command=/opt/mfl_api_virtualenv/bin/gunicorn -w 3 --timeout=300 --graceful-timeout=300 config.wsgi:application --bind=127.0.0.1:{{p}} --access-logfile - --error-logfile - --log-level info
