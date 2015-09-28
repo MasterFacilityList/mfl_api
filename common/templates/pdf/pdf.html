@@ -14,7 +14,9 @@
 <h1>{{title}}</h1>
 
     {% for x, y in data.items %}
+        {% if not data.items %}
             <p><strong>{{x}}: </strong>{{y}}</p>
+        {%  else %}
 
                     {% for k in y %}
 
@@ -24,6 +26,7 @@
 
                         {% endfor %}
                     {% endfor %}
+        {% endif %}
 
 
         {% endfor %}
