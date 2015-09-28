@@ -142,3 +142,14 @@ class TestCsvRenderer(LoginMixin, APITestCase):
         mommy.make(County)
         response = self.client.get(excel_url)
         self.assertEquals(200, response.status_code)
+
+
+class TestPDFRender(LoginMixin, APITestCase):
+
+    def test_get_pdf_from_end_point(self):
+        url = reverse('api:common:counties_list')
+        pdf_url = url + "?format=pdf"
+        mommy.make(County)
+        mommy.make(County)
+        response = self.client.get(pdf_url)
+        self.assertEquals(200, response.status_code)

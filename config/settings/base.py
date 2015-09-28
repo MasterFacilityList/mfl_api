@@ -157,6 +157,7 @@ REST_FRAMEWORK = {
         'rest_framework_xml.renderers.XMLRenderer',
         'common.renderers.CSVRenderer',
         'common.renderers.ExcelRenderer',
+        'common.renderers.PDFRenderer'
     ),
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'common.paginator.MflPaginationSerializer',

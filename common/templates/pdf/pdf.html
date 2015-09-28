@@ -1,0 +1,31 @@
+
+
+{% if data.results %}
+<h1>{{title}}</h1>
+    {% for value in data.results %}
+
+    <hr>
+        {% for x, y in value.items %}
+            <p><strong>{{x}}: </strong>{{y}}</p>
+
+        {% endfor %}
+    {% endfor %}
+{% else %}
+<h1>{{title}}</h1>
+
+    {% for x, y in data.items %}
+            <p><strong>{{x}}: </strong>{{y}}</p>
+
+                    {% for k in y %}
+
+                    <hr>
+                        {% for q, p in k.items %}
+                            <p><strong>{{q}}: </strong>{{p}}</p>
+
+                        {% endfor %}
+                    {% endfor %}
+
+
+        {% endfor %}
+
+{%  endif %}
