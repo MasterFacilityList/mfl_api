@@ -416,7 +416,6 @@ class FilteringSummariesView(views.APIView):
             'owner_type': (OwnerType, ('id', 'name')),
             'owner': (Owner, ('id', 'name', 'owner_type')),
             'service': (Service, ('id', 'name', 'category')),
-            'chu_service': (chu_models.CHUService, ('id', 'name')),
             'keph_level': (KephLevel, ('id', 'name'))
         }
         if fields:
