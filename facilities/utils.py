@@ -42,6 +42,7 @@ def _validate_services(services):
             errors.append("Service has a badly formed uuid")
         if 'service' not in service:
             errors.append("Key service was not found")
+        return errors
         try:
             Service.objects.get(id=service['service'])
         except (ValueError, TypeError, KeyError, Service.DoesNotExist):
@@ -54,6 +55,9 @@ def _validate_services(services):
 def _validate_units(units):
     errors = []
     for unit in units:
+        if not _is_valid_uuid(unit.get('unit', None)):
+            errors.append("Please provide a proper facility department")
+        return errors
         try:
             FacilityDepartment.objects.get(id=unit.get('unit'))
         except FacilityDepartment.DoesNotExist:
