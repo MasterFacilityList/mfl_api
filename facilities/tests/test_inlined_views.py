@@ -468,6 +468,21 @@ class TestInlinedFacilityCreation(LoginMixin, APITestCase):
         response = self.client.patch(url, data)
         self.assertEquals(400, response.status_code)
 
+    def test_update_facility_unit_does_not_exist(self):
+        facility = mommy.make(Facility)
+        units = [
+            {
+                "unit": "8e502606-1db3-47c2-94c2-8aea5dd6649e"
+            }
+        ]
+        url = reverse("api:facilities:facilities_list")
+        url = url + "{}/".format(facility.id)
+        data = {
+            "units": units
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
+
 
 class TestFacilityContacts(LoginMixin, APITestCase):
     def test_saving_inlined_contacts(self):
