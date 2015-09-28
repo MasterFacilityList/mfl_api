@@ -74,6 +74,10 @@ class FilterCommunityUnitsMixin(object):
             else:
                 queryset = super(
                     FilterCommunityUnitsMixin, self).filter_queryset(queryset)
+        else:
+            queryset = super(
+                FilterCommunityUnitsMixin, self).filter_queryset(queryset)
+
         return self.get_queryset(custom_queryset=queryset)
 
 
