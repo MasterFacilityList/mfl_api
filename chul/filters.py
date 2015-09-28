@@ -63,7 +63,7 @@ class CommunityHealthUnitFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     ward = django_filters.CharFilter(name='facility__ward')
     constituency = django_filters.CharFilter(
-        name='facility_ward__constituency')
+        name='facility__ward__constituency')
     county = django_filters.CharFilter(
         name='facility__ward__constituency__county')
 
