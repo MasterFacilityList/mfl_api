@@ -44,6 +44,14 @@ class CommunityHealthUnitContact(AbstractBase):
 
     class Meta:
         unique_together = ('health_unit', 'contact', )
+        # a hack since the view_communityhealthunitcontact
+        # is disppearing into thin air
+        permissions = (
+            (
+                "view_communityhealthunitcontact",
+                "Can view communty health_unit contact"
+            ),
+        )
 
 
 @reversion.register(follow=['facility', 'status'])
