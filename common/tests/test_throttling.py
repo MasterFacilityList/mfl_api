@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 from model_mommy import mommy
 
 from facilities.models import FacilityService, Service
-from chul.models import CommunityHealthUnit, CHURating
+from chul.models import CommunityHealthUnit
 from ..models import County
 from ..serializers import CountySerializer
 from .test_views import LoginMixin, default
