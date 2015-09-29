@@ -26,6 +26,7 @@ from ..serializers import (
 
 
 class TestCHUService(ViewTestBase):
+
     def setUp(self):
         self.url = reverse("api:chul:chu_services_list")
         super(TestCHUService, self).setUp()
@@ -349,6 +350,15 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(3, response.data.get('count'))
 
+    def test_pdf_details(self):
+        health_unit = mommy.make(CommunityHealthUnit)
+        url = reverse(
+            "api:chul:chu_detail_report", kwargs={"pk": health_unit.pk}
+        )
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, "chu_details.html")
+
 
 class TestCommunityHealthWorkerView(ViewTestBase):
 
@@ -443,6 +453,7 @@ class TestCommunityHealthWokerContactView(ViewTestBase):
 
 
 class TestCommunityUnitsFiltering(ViewTestBase):
+
     def setUp(self):
         self.url = reverse("api:chul:community_health_units_list")
         self.test_group = mommy.make(Group)

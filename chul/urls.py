@@ -1,74 +1,61 @@
 from django.conf.urls import url, patterns
 
-from .views import(
-    CommunityHealthUnitListView,
-    CommunityHealthUnitDetailView,
-    CommunityHealthWorkerListView,
-    CommunityHealthWorkerDetailView,
-    CommunityHealthWorkerContactListView,
-    CommunityHealthWorkerContactDetailView,
-    StatusListView,
-    StatusDetailView,
-    CommunityHealthUnitContactListView,
-    CommunityHealthUnitContactDetailView,
-    CHUServiceListView,
-    CHUServiceDetailView,
-    CHURatingDetailView,
-    CHURatingListView,
-    ChuUpdateBufferListView,
-    ChuUpdateBufferDetailView
-)
+from . import views
 
 
 urlpatterns = patterns(
     '',
 
-    url(r'^updates/$', ChuUpdateBufferListView.as_view(),
+    url(r'^updates/$', views.ChuUpdateBufferListView.as_view(),
         name='chu_updatebufers_list'),
 
     url(r'^updates/(?P<pk>[^/]+)/$',
-        ChuUpdateBufferDetailView.as_view(),
+        views.ChuUpdateBufferDetailView.as_view(),
         name="chu_updatebuffer_detail"),
 
-    url(r'^services/$', CHUServiceListView.as_view(),
+    url(r'^services/$', views.CHUServiceListView.as_view(),
         name='chu_services_list'),
     url(r'^services/(?P<pk>[^/]+)/$',
-        CHUServiceDetailView.as_view(),
-        name="chu_service_detail"),
+        views.CHUServiceDetailView.as_view(), name="chu_service_detail"),
 
-    url(r'^statuses/$', StatusListView.as_view(),
-        name='statuses_list'),
+    url(r'^statuses/$', views.StatusListView.as_view(), name='statuses_list'),
     url(r'^statuses/(?P<pk>[^/]+)/$',
-        StatusDetailView.as_view(),
-        name="status_detail"),
+        views.StatusDetailView.as_view(), name="status_detail"),
 
-    url(r'^unit_contacts/$', CommunityHealthUnitContactListView.as_view(),
+    url(r'^unit_contacts/$',
+        views.CommunityHealthUnitContactListView.as_view(),
         name='community_health_unit_contacts_list'),
     url(r'^unit_contacts/(?P<pk>[^/]+)/$',
-        CommunityHealthUnitContactDetailView.as_view(),
+        views.CommunityHealthUnitContactDetailView.as_view(),
         name="community_health_unit_contact_detail"),
 
-    url(r'^workers/$', CommunityHealthWorkerListView.as_view(),
+    url(r'^workers/$', views.CommunityHealthWorkerListView.as_view(),
         name='community_health_workers_list'),
     url(r'^workers/(?P<pk>[^/]+)/$',
-        CommunityHealthWorkerDetailView.as_view(),
+        views.CommunityHealthWorkerDetailView.as_view(),
         name="community_health_worker_detail"),
 
-
-    url(r'^workers_contacts/$', CommunityHealthWorkerContactListView.as_view(),
+    url(r'^workers_contacts/$',
+        views.CommunityHealthWorkerContactListView.as_view(),
         name='community_health_worker_contacts_list'),
     url(r'^workers_contacts/(?P<pk>[^/]+)/$',
-        CommunityHealthWorkerContactDetailView.as_view(),
+        views.CommunityHealthWorkerContactDetailView.as_view(),
         name="community_health_worker_contact_detail"),
 
 
-    url(r'^units/$', CommunityHealthUnitListView.as_view(),
+    url(r'^units/$',
+        views.CommunityHealthUnitListView.as_view(),
         name='community_health_units_list'),
     url(r'^units/(?P<pk>[^/]+)/$',
-        CommunityHealthUnitDetailView.as_view(),
+        views.CommunityHealthUnitDetailView.as_view(),
         name='community_health_unit_detail'),
 
-    url(r'^chu_ratings/$', CHURatingListView.as_view(), name='chu_ratings'),
+    url(r'^chu_ratings/$',
+        views.CHURatingListView.as_view(), name='chu_ratings'),
     url(r'^chu_ratings/(?P<pk>[a-z0-9\-]{32,32})/$',
-        CHURatingDetailView.as_view(), name='chu_rating_detail')
+        views.CHURatingDetailView.as_view(), name='chu_rating_detail'),
+
+    url(r'^units_detail_report/(?P<pk>[^/]+)/$',
+        views.CHUDetailReport.as_view(), name='chu_detail_report'),
+
 )
