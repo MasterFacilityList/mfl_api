@@ -728,7 +728,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         facility = mommy.make(Facility, ward=ward)
         url = reverse(
             'api:facilities:facility_inspection_report',
-            kwargs={'facility_id': facility.id})
+            kwargs={'pk': facility.id})
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
@@ -739,7 +739,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         facility = mommy.make(Facility, ward=ward)
         url = reverse(
             'api:facilities:facility_cover_report',
-            kwargs={'facility_id': facility.id})
+            kwargs={'pk': facility.id})
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
@@ -750,7 +750,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         facility = mommy.make(Facility, ward=ward)
         url = reverse(
             'api:facilities:facility_correction_template',
-            kwargs={'facility_id': facility.id})
+            kwargs={'pk': facility.id})
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
