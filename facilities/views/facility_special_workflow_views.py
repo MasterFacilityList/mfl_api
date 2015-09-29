@@ -3,7 +3,6 @@ from django.template import loader, Context
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
 
-from rest_framework.views import APIView
 from rest_framework import generics
 
 from common.views import AuditableDetailViewMixin, DownloadPDFMixin
