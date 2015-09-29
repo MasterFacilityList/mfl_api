@@ -187,17 +187,17 @@ class FacilityCoverTemplate(FacilityPDFDownloadView):
     filename_padding = 'cover report'
 
 
-class FacilityInspectionReport(FacilityCoverTemplate):
+class FacilityInspectionReport(FacilityPDFDownloadView):
     report_tpl = 'inspection_report.txt'
     filename_padding = 'inspection report'
 
 
-class FacilityDetailTemplate(FacilityCoverTemplate):
+class FacilityDetailTemplate(FacilityPDFDownloadView):
     report_tpl = 'facility_details.html'
     filename_padding = 'facility details'
 
 
-class FacilityCorrectionTemplate(FacilityCoverTemplate):
+class FacilityCorrectionTemplate(FacilityPDFDownloadView):
     report_tpl = 'correction_template.html'
     filename_padding = 'correction template'
 
