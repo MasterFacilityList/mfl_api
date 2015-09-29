@@ -146,7 +146,7 @@ class FacilityPDFDownloadView(DownloadPDFMixin, generics.RetrieveAPIView):
     queryset = Facility.objects.all()
 
     @never_cache
-    def get(self, request, facility_id, *args, **kwargs):
+    def get(self, *args, **kwargs):
         facility = self.get_object()
         template = loader.get_template(self.report_tpl)
         report_date = timezone.now().isoformat()
