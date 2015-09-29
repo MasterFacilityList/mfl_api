@@ -143,12 +143,12 @@ class RegulationStatusDetailView(
     serializer_class = RegulationStatusSerializer
 
 
-class FacilityPDFDownloadView(DownloadPDFMixin, APIView):
+class FacilityPDFDownloadView(DownloadPDFMixin, generics.RetrieveAPIView):
     queryset = Facility.objects.all()
 
     @never_cache
     def get(self, request, facility_id, *args, **kwargs):
-        facility = Facility.objects.get(pk=facility_id)
+        facility = self.get_object()
         template = loader.get_template(self.report_tpl)
         report_date = timezone.now().isoformat()
         services = FacilityService.objects.filter(facility=facility)

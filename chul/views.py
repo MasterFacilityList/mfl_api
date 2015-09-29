@@ -1,5 +1,8 @@
+from django.template import loader, Context
+from django.utils import timezone
+from django.views.decorators.cache import never_cache
 from rest_framework import generics
-from common.views import AuditableDetailViewMixin
+from common.views import AuditableDetailViewMixin, DownloadPDFMixin
 from .models import (
     CommunityHealthUnit,
     CommunityHealthWorker,
@@ -297,3 +300,19 @@ class ChuUpdateBufferDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = ChuUpdateBuffer.objects.all()
     serializer_class = ChuUpdateBufferSerializer
+
+
+class CHUDetailReport(DownloadPDFMixin, generics.RetrieveAPIView):
+    queryset = CommunityHealthUnit.objects.all()
+    serializer_class = CommunityHealthUnitSerializer
+
+    @never_cache
+    def get(self, request, chu_id, *args, **kwargs):
+        report_date = timezone.now().isoformat()
+        chu = self.get_object()
+        context = Context({
+            "chu": self.get_serializer(instance=chu).data,
+            "report_date": report_date
+        })
+        template = loader.get_template("chu_details.html")
+        return self.download_file(template.render(context), chu.name)
