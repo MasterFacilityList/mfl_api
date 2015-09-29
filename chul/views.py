@@ -307,7 +307,7 @@ class CHUDetailReport(DownloadPDFMixin, generics.RetrieveAPIView):
     serializer_class = CommunityHealthUnitSerializer
 
     @never_cache
-    def get(self, request, chu_id, *args, **kwargs):
+    def get(self, *args, **kwargs):
         report_date = timezone.now().isoformat()
         chu = self.get_object()
         context = Context({

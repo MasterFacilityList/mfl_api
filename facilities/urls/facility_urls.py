@@ -75,19 +75,19 @@ urlpatterns = patterns(
 
     url(r'^dashboard/$', views.DashBoard.as_view(), name='dashboard'),
 
-    url(r'^facility_correction_template/(?P<facility_id>[^/]+)/$',
+    url(r'^facility_correction_template/(?P<pk>[^/]+)/$',
         views.FacilityCorrectionTemplate.as_view(),
         name='facility_correction_template'),
 
-    url(r'^facility_inspection_report/(?P<facility_id>[^/]+)/$',
+    url(r'^facility_inspection_report/(?P<pk>[^/]+)/$',
         views.FacilityInspectionReport.as_view(),
         name='facility_inspection_report'),
 
-    url(r'^facility_cover_report/(?P<facility_id>[^/]+)/$',
+    url(r'^facility_cover_report/(?P<pk>[^/]+)/$',
         views.FacilityCoverTemplate.as_view(),
         name='facility_cover_report'),
 
-    url(r'^facility_detail_report/(?P<facility_id>[^/]+)/$',
+    url(r'^facility_detail_report/(?P<pk>[^/]+)/$',
         views.FacilityDetailTemplate.as_view(),
         name='facility_detail_report'),
 
