@@ -252,7 +252,7 @@ class FacilityType(AbstractBase):
         return self.name
 
     class Meta(AbstractBase.Meta):
-        unique_together = ('name', 'sub_division', )
+        unique_together = ('name', )
 
 
 @reversion.register(follow=['regulating_body', 'contact'])
