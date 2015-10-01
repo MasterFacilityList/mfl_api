@@ -333,6 +333,23 @@ class TestCommunityHealthUnitView(ViewTestBase):
         self.assertEquals(200, response.status_code)
         self._assert_response_data_equality(expected_data, response.data)
 
+    def test_filter_chus_pending_approval(self):
+        self.user.is_superuser = True
+        self.user.save()
+        mommy.make(CommunityHealthUnit, is_approved=True)
+        mommy.make(CommunityHealthUnit, has_edits=True)
+        mommy.make(CommunityHealthUnit, is_rejected=True)
+        mommy.make(CommunityHealthUnit)
+        url = self.url + "{}".format("?pending_approval=true")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, response.data.get('count'))
+
+        url = self.url + "{}".format("?pending_approval=false")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(3, response.data.get('count'))
+
     def test_pdf_details(self):
         health_unit = mommy.make(CommunityHealthUnit)
         url = reverse(

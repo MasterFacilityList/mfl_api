@@ -1,4 +1,7 @@
 import django_filters
+from django.db.models import Q
+from distutils.util import strtobool
+
 
 from .models import (
     CommunityHealthUnit,
@@ -12,6 +15,7 @@ from .models import (
 )
 
 from common.filters.filter_shared import CommonFieldsFilterset
+from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class ChuUpdateBufferFilter(CommonFieldsFilterset):
@@ -44,13 +48,36 @@ class CommunityHealthUnitContactFilter(CommonFieldsFilterset):
 
 
 class CommunityHealthUnitFilter(CommonFieldsFilterset):
+
+    def chu_pending_approval(self, value):
+        if value in TRUTH_NESS:
+            return CommunityHealthUnit.objects.filter(
+                Q(is_approved=False),
+                Q(is_rejected=False) | Q(has_edits=True)
+            )
+        else:
+            return CommunityHealthUnit.objects.filter(
+                Q(is_approved=False),
+                Q(is_rejected=False) | Q(has_edits=False)
+            )
     name = django_filters.CharFilter(lookup_type='icontains')
-    facility = django_filters.AllValuesFilter(lookup_type='exact')
-    ward = django_filters.CharFilter(name='community__ward')
+    ward = django_filters.CharFilter(name='facility__ward')
     constituency = django_filters.CharFilter(
-        name='community_ward__constituency')
+        name='facility__ward__constituency')
     county = django_filters.CharFilter(
-        name='community__ward__constituency__county')
+        name='facility__ward__constituency__county')
+
+    is_approved = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES, coerce=strtobool
+    )
+    is_rejected = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES, coerce=strtobool
+    )
+    has_edits = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES, coerce=strtobool
+    )
+    pending_approval = django_filters.MethodFilter(
+        action=chu_pending_approval)
 
     class Meta(object):
         model = CommunityHealthUnit

@@ -485,6 +485,7 @@ class FacilityDetailSerializer(FacilitySerializer):
         unit_data['facility'] = instance.id
         unit_data = self.inject_audit_fields(unit_data, validated_data)
         unit = FacilityUnitSerializer(data=unit_data, context=self.context)
+
         if unit.is_valid():
             return unit.save()
         else:
@@ -501,9 +502,11 @@ class FacilityDetailSerializer(FacilitySerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+
         self.inlining_errors = {}
         contacts = self.initial_data.pop('contacts', [])
         units = self.initial_data.pop('units', [])
+
         services = self.initial_data.pop('services', [])
         officer_in_charge = self.initial_data.pop('officer_in_charge', None)
 

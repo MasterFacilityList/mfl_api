@@ -66,6 +66,7 @@ INSTALLED_APPS = (
     'common',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -157,6 +158,7 @@ REST_FRAMEWORK = {
         'rest_framework_xml.renderers.XMLRenderer',
         'common.renderers.CSVRenderer',
         'common.renderers.ExcelRenderer',
+        'common.renderers.PDFRenderer'
     ),
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'common.paginator.MflPaginationSerializer',
