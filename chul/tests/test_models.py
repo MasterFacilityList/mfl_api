@@ -146,6 +146,11 @@ class TestCommunityHealthUnit(TestCase):
         chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
         self.assertFalse(chu_refetched.has_edits)
 
+    def test_chu_workers(self):
+        chu = mommy.make(CommunityHealthUnit)
+        mommy.make(CommunityHealthWorker, health_unit=chu)
+        self.assertIsInstance(chu.workers, list)
+
 
 class TestCommunityHealthWorkerModel(TestCase):
 

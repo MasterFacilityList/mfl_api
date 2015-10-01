@@ -52,8 +52,7 @@ class CommunityHealthWorkerPostSerializer(
 class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     status_name = serializers.ReadOnlyField(source="status.name")
-    health_unit_workers = CommunityHealthWorkerPostSerializer(
-        many=True, required=False)
+    health_unit_workers = serializers.ReadOnlyField(source='workers')
     facility_name = serializers.ReadOnlyField(source='facility.name')
     facility_ward = serializers.ReadOnlyField(source='facility.ward.name')
     facility_subcounty = serializers.ReadOnlyField(

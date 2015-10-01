@@ -91,6 +91,12 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     def __str__(self):
         return self.name
 
+    @property
+    def workers(self):
+        from .serializers import CommunityHealthWorkerPostSerializer
+        return CommunityHealthWorkerPostSerializer(
+            self.health_unit_workers, many=True).data
+
     def validate_facility_is_not_closed(self):
         if self.facility.closed:
             raise ValidationError(
