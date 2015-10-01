@@ -1,7 +1,0 @@
-[
-    {   "unique_fields": ["name"],
-        "model": "chul.Status",
-        "records": [{"name": "Fully-functional"}, {"name": "semi-functional"}, {"name": "non-opertional"}, {"name": "invalid"}]
-
-    }
-]
