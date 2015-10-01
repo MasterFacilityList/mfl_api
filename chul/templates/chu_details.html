@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
+<style type="text/css">
+.col-xs-12 {
+    width: 100% !important;
+}
+.col-xs-6 {
+    width: 50% !important;
+}
+.fs-20{
+    font-size: 20px;
+}
+.fs-18{
+    font-size: 18px;
+}
+.fs-16{
+    font-size: 16px;
+}
+.fs-14{
+    font-size: 14px;
+}
+.fs-13{
+    font-size: 13px;
+}
+.fw-600{
+    font-weight: 600;
+}
+.fw-500{
+    font-weight: 500
+}
+.font-latolight{
+    font-family: 'Lato Light', sans-serif;
+}
+.font-lato{
+    font-family: 'Lato', sans-serif;
+}
+.font-arial{
+    font-family: "Arial", Sans-serif;
+}
+.row{
+    margin-left: -15px;
+    margin-right:-15px;
+}
+.bg-blue {
+    background-color: #F1F1F4;
+}
+.content-card {
+  padding: 5px 10px 8px 10px;
+  border: 1px solid transparent;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+.text-muted{
+    color: #666666;
+}
+.text-white{
+    color: #FFFFFF;
+}
+.text-balck{
+    color: #000000;
+}
+.word-wrap {
+    width: 300px;
+    word-wrap: break-word;
+}
+</style>
+<body class="font-latolight" style="font-size: 14px;">
+<div class="row">
+<h3 class="font-arial fs-20" style="padding-top: 10px; padding-left: 10px; margin-bottom: 0px;">
+Community Health Unit Details
+</h3>
+<div class="col-xs-12 content-card" style="width: 100%; margin-top: 15px;">
+    <div style="padding: 2px; margin-top: -15px;">
+    <p style="margin-top: -5px;">
+        <span><span class="text-black fw-600">Name:</span> {{chu.name}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Code:</span> {{chu.code}}</span>
+    </p>
+    <p style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Facility :</span> {{chu.facility_name}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">County:</span> {{chu.facility_county}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Constituency:</span> {{chu.facility_constituency}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Ward:</span> {{chu.facility_ward}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Location:</span> {{chu.location}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Date established:</span> {{chu.date_established}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Date operational:</span> {{chu.date_operational}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Households monitored:</span> {{chu.households_monitored}}</span>
+    </p>
+    <p class="word-wrap" style="margin-top: -10px;">
+        <span><span class="text-black fw-600">Status:</span> {{chu.status_name}}</span>
+    </p>
+    </div>
+</div>
+</div>
+</body>
+</html>

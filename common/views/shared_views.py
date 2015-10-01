@@ -3,6 +3,8 @@ import reversion
 
 from django.core.exceptions import FieldDoesNotExist
 from django.db.models.fields.files import FileField, FieldFile
+from django.http import HttpResponse
+from weasyprint import HTML
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -148,3 +150,14 @@ class APIRoot(APIView):
 
 def root_redirect_view(request):
     return redirect('api:root_listing', permanent=True)
+
+
+class DownloadPDFMixin(object):
+
+    def download_file(self, html, file_name):
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(
+            file_name
+        )
+        HTML(string=html).write_pdf(response)
+        return response
