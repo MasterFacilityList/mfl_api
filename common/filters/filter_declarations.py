@@ -9,9 +9,31 @@ from ..models import (
     UserCounty,
     PhysicalAddress,
     UserContact,
-    Town
+    Town,
+    UserConstituency,
+    SubCounty,
+    DocumentUpload
 )
-from .filter_shared import CommonFieldsFilterset
+from .filter_shared import (
+    CommonFieldsFilterset,
+    ListCharFilter,
+    ListIntegerFilter
+)
+
+
+class SubCountyFilter(CommonFieldsFilterset):
+
+    class Meta(object):
+        model = SubCounty
+
+
+class UserConstituencyFilter(CommonFieldsFilterset):
+    county = django_filters.CharFilter(
+        lookup_type='exact', name='constituency__county')
+    constituency = ListCharFilter(lookup_type='exact')
+
+    class Meta(object):
+        model = UserConstituency
 
 
 class ContactTypeFilter(CommonFieldsFilterset):
@@ -30,7 +52,7 @@ class ContactFilter(CommonFieldsFilterset):
 
 
 class PhysicalAddressFilter(CommonFieldsFilterset):
-    town = django_filters.AllValuesFilter(lookup_type='exact')
+    town = django_filters.CharFilter(lookup_type='exact')
     postal_code = django_filters.CharFilter(lookup_type='icontains')
     address = django_filters.CharFilter(lookup_type='icontains')
     nearest_landmark = django_filters.CharFilter(lookup_type='icontains')
@@ -41,24 +63,31 @@ class PhysicalAddressFilter(CommonFieldsFilterset):
 
 
 class CountyFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListIntegerFilter(lookup_type='exact')
+    county_id = ListCharFilter(name='id', lookup_type='icontains')
 
     class Meta(object):
         model = County
 
 
 class ConstituencyFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListIntegerFilter(lookup_type='exact')
+    county = ListCharFilter(lookup_type='exact')
+    constituency_id = ListCharFilter(name='id', lookup_type='exact')
 
     class Meta(object):
         model = Constituency
 
 
 class WardFilter(CommonFieldsFilterset):
-    name = django_filters.CharFilter(lookup_type='icontains')
-    code = django_filters.NumberFilter(lookup_type='exact')
+    ward_id = ListCharFilter(name='id', lookup_type='exact')
+    name = ListCharFilter(lookup_type='icontains')
+    code = ListIntegerFilter(lookup_type='exact')
+    constituency = ListCharFilter(lookup_type='icontains')
+    county = ListCharFilter(
+        lookup_type='exact', name='constituency__county')
 
     class Meta(object):
         model = Ward
@@ -85,3 +114,10 @@ class TownFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = Town
+
+
+class DocumentUploadFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta(object):
+        model = DocumentUpload

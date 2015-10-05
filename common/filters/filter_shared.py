@@ -3,11 +3,10 @@ import django_filters
 from django import forms
 from django.utils.encoding import force_str
 from django.utils.dateparse import parse_datetime
-from django.conf import settings
 
 from rest_framework import ISO_8601
 
-from common.utilities.search_utils import ElasticAPI
+from search.filters import SearchFilter, AutoCompleteSearchFilter
 
 
 class IsoDateTimeField(forms.DateTimeField):
@@ -32,40 +31,51 @@ class IsoDateTimeFilter(django_filters.DateTimeFilter):
     field_class = IsoDateTimeField
 
 
-class SearchFilter(django_filters.filters.Filter):
+class ListFilterMixin(object):
     """
-    Given a query searches elastic search index and returns a queryset of hits.
+    Enable filtering by comma separated values.
+
+    eg ?number=1,2,3&name=a,b
+
+    Apply this mixin to a type of django_filters.Filter that
+    filters character strings. To filter a different type,
+    override the customize method in the filter that this
+    mixin is mixed into.
+
+    For an example, look at ListCharFilter, ListIntegerFilter below.
     """
+
+    def sanitize(self, value_list):
+        """
+        remove empty items
+        """
+        return [v for v in value_list if v != u'']
+
+    def customize(self, value):
+        return value
 
     def filter(self, qs, value):
-        super(SearchFilter, self).filter(qs, value)
-        api = ElasticAPI()
+        multiple_vals = value.split(u",")
+        multiple_vals = self.sanitize(multiple_vals)
+        multiple_vals = map(self.customize, multiple_vals)
+        actual_filter = django_filters.fields.Lookup(multiple_vals, 'in')
+        return super(ListFilterMixin, self).filter(qs, actual_filter)
 
-        document_type = qs.model.__name__.lower()
-        index_name = settings.SEARCH.get('INDEX_NAME')
-        result = api.search_document(index_name, document_type, value)
 
-        hits = []
-        try:
-            hits = result.json().get('hits').get('hits') if result.json() \
-                else hits
-        except AttributeError:
-            hits = hits
-        hits_ids_list = []
+class ListCharFilter(ListFilterMixin, django_filters.CharFilter):
+    """
+    Enable filtering of comma separated strings.
+    """
+    pass
 
-        for hit in hits:
-            obj_id = hit.get('_id')
-            hits_ids_list.append(obj_id)
 
-        hits_qs = qs.model.objects.filter(id__in=hits_ids_list)
+class ListIntegerFilter(ListCharFilter):
+    """
+    Enable filtering of comma separated integers.
+    """
 
-        # the filter function expects a queryset and not a list
-        # hence the need to convert the list back to queryset
-        combined_results = list(set(hits_qs).intersection(qs))
-        combined_results_ids = [obj.id for obj in combined_results]
-        final_queryset = qs.model.objects.filter(id__in=combined_results_ids)
-
-        return final_queryset
+    def customize(self, value):
+        return int(value)
 
 
 class CommonFieldsFilterset(django_filters.FilterSet):
@@ -105,3 +115,6 @@ class CommonFieldsFilterset(django_filters.FilterSet):
     is_active = django_filters.BooleanFilter(
         name='active', lookup_type='exact')
     search = SearchFilter(name='search')
+    q = SearchFilter(name='search')
+    search_auto = AutoCompleteSearchFilter(name='search')
+    q_auto = AutoCompleteSearchFilter(name='search')

@@ -5,17 +5,21 @@ machine:
   services:
     - elasticsearch
 
-checkout:
+
+dependencies:
+  override:
+    - pip install tox
   post:
     - cp .env-example .env
 
-dependencies:
-  post:
-    - pip install fabric
 
 test:
   override:
-    - fab test
+    - python setup.py check
+    - case $CIRCLE_NODE_INDEX in 0) tox -v;; 1) bash test_e2e.sh ;; esac:
+        parallel: true
+        timeout: 300
+
 
 general:
   artifacts:

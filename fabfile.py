@@ -1,18 +1,38 @@
 #! /usr/bin/env python
 import json
+import os
 
-from os.path import dirname, abspath, join
 from config.settings import base
 from fabric.api import local
 from fabric.context_managers import lcd
 
 
-BASE_DIR = dirname(abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def manage(command, args=''):
     """Dev only - a convenience"""
     local('{}/manage.py {} {}'.format(BASE_DIR, command, args))
+
+
+def reset_migrations(*args, **kwargs):
+    """Neccessary for circle ci to be able to run tests"""
+
+    del_facility_migrations = ""\
+        "cd facilities/migrations && ls | grep -v" \
+        "set_facility_code_sequence_min_value.py | xargs rm" \
+        "cd common/migrations && ls | grep -v admin_unit_codes.py | xargs rm"
+
+    local(del_facility_migrations)
+    local('rm -r chul/migrations')
+    local('rm -r mfl_gis/migrations')
+    local('rm -r users/migrations')
+
+    manage('makemigrations users')
+    manage('makemigrations facilities')
+    manage('makemigrations common')
+    manage('makemigrations chul')
+    manage('makemigrations mfl_gis')
 
 
 def test():
@@ -30,7 +50,7 @@ def deploy():
 
 def server_deploy():
     """Production - run the deployment Ansible playbook"""
-    with lcd(join(BASE_DIR, 'playbooks')):
+    with lcd(os.path.join(BASE_DIR, 'playbooks')):
         local(
             "ansible-playbook site.yml -v --extra-vars '{}'".format(
                 json.dumps({
@@ -42,26 +62,6 @@ def server_deploy():
                 })
             )
         )
-
-
-def reset_migrations():
-    """Development only - remove and recreate all migration"""
-    for app_name in base.LOCAL_APPS:
-        local('rm -f {}/migrations/ -r'.format(app_name))
-
-    for app_name in base.LOCAL_APPS:
-        manage('makemigrations {}'.format(app_name))
-
-    local('git add . --all')
-
-
-def graph_models():
-    """Dev only - visualize the current model relationships"""
-    manage(
-        'graph_models common facilities chul mfl_gis -d '
-        '-x=created,updated,created_by,updated_by -E -X=AbstractBase '
-        '-o  mfl_models_graph.png')
-    local('eog mfl_models_graph.png')
 
 
 def psql(query, no_sudo=False, is_file=False):
@@ -77,10 +77,40 @@ def psql(query, no_sudo=False, is_file=False):
 
 
 def load_demo_data(*args, **kwargs):
-    """Loads demo data for testing purpose. Do not use this in production"""
-    data_files = join(BASE_DIR, 'data/data/*')
+    """Loads data through fixture"""
+    manage("loaddata", "mfl_fixture.json")
 
-    manage('bootstrap', data_files)
+
+def load_demo_data_from_scratch(*args, **kwargs):
+    """Loads demo data for testing purpose. Do not use this in production"""
+    manage("createinitialrevisions")
+    data_files_1 = os.path.join(BASE_DIR, 'data/data/setup/*.json')
+    data_files_2 = os.path.join(BASE_DIR, 'data/data/admin_units/*.json')
+    data_files_3 = os.path.join(BASE_DIR, 'data/data/v2_data/*.json')
+    data_files_4 = os.path.join(BASE_DIR, 'data/data/demo/*.json')
+    data_files_5 = os.path.join(BASE_DIR, 'data/data/facilities/*.json')
+    data_files_6 = os.path.join(BASE_DIR, 'data/data/geocodes/*.json')
+    data_files_7 = os.path.join(BASE_DIR, 'data/data/approvals/*.json')
+    data_files_8 = os.path.join(BASE_DIR, 'data/data/last/*.json')
+    data_files_11 = os.path.join(BASE_DIR, 'data/data/mcul/*.json')
+    data_files_10 = os.path.join(
+        BASE_DIR, 'data/data/facility_services/*.json')
+
+    manage('bootstrap', data_files_1)
+    manage('bootstrap', data_files_2)
+    manage('bootstrap', data_files_3)
+    manage('bootstrap', data_files_4)
+    manage('bootstrap', data_files_5)
+    manage('load_groups')
+    manage('sample_users')
+    # Needs to occur after base setup data has been loaded
+    load_gis_data()
+    manage('bootstrap', data_files_6)
+    manage('bootstrap', data_files_7)
+    manage('bootstrap', data_files_8)
+    manage('approve_facilities')
+    manage('bootstrap', data_files_10)
+    manage('bootstrap', data_files_11)
 
 
 def load_gis_data(*args, **kwargs):
@@ -96,15 +126,25 @@ def create_search_index(*args, **kwargs):
     manage('setup_index')
 
 
-def create_entire_index(*args, **kwargs):
+def remove_search_index(*args, **kwargs):
+    """
+    Deletes the search index in elastic search
+    """
+    manage('remove_index')
+
+
+def build_search_index(*args, **kwargs):
     """Creates the entire search index"""
     manage('build_index')
 
 
-def setup(*args, **kwargs):
-    """Dev only - clear and recreate the entire database"""
-    # needs to come first to as to index data as it is being loaded
+def recreate_search_index(*args, **kwargs):
+    remove_search_index()
     create_search_index()
+    build_search_index()
+
+
+def setup_db(*args, **kwargs):
     no_sudo = True if 'no-sudo' in args else False
     kwargs['sql'] if 'sql' in kwargs else None
     db_name = base.DATABASES.get('default').get('NAME')
@@ -117,11 +157,77 @@ def setup(*args, **kwargs):
          "CREATEROLE LOGIN PASSWORD '{1}'".format(db_user, db_pass), no_sudo)
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
+
+
+def migrate(*args, **kwargs):
+    """
+    Updates the migrations which do not require a database setup
+    """
     manage('migrate')
 
-    if base.DEBUG:
-        load_demo_data()
-        create_entire_index()
 
-    # Needs to occur after base setup data has been loaded
-    load_gis_data()
+def clear_cache():
+    local('redis-cli flushall')
+
+
+def warmup_cache(
+        server_location, username, password, client_id, client_secret):
+    """Warm up the cache"""
+    import requests
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+
+    def _get_url(stub):
+        return "{}{}".format(server_location, stub)
+
+    def login():
+        data = {
+            'username': username,
+            'password': password,
+            'grant_type': 'password',
+            'client_id': client_id,
+            'client_secret': client_secret
+        }
+        headers = {
+            'Accept': 'application/json'
+        }
+        resp = requests.request(
+            "POST", url=_get_url("/o/token/"), data=data,
+            headers=headers
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            return "{} {}".format(data['token_type'], data['access_token'])
+        else:
+            raise ValueError(resp.content)
+
+    def prod_api(token):
+        non_gzipped_headers = {
+            'Authorization': token,
+            'Accept': 'application/json, */*'
+        }
+        gzipped_headers = {
+            'Authorization': token,
+            'Accept': 'application/json, */*',
+            'Accept-Encoding': 'gzip'
+        }
+        urls = [
+            "/api/gis/coordinates/",
+            "/api/gis/county_boundaries/",
+            "/api/gis/ward_boundaries/",
+            "/api/gis/constituency_boundaries/",
+            "/api/common/filtering_summaries/"
+            "/api/facilities/facilities/",
+            "/api/facilities/facilities_list/",
+            "/api/facilities/facilities_list/?format=excel"
+        ]
+        for i in urls:
+            # warmup non-gzip encoded content
+            requests.request(
+                "GET", url=_get_url(i), headers=non_gzipped_headers
+            )
+
+            # warmup gzip encoded content
+            requests.request("GET", url=_get_url(i), headers=gzipped_headers)
+
+    prod_api(login())

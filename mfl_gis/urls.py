@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.conf.urls import url, patterns
 from django.views.decorators.cache import cache_page
+from django.views.decorators.gzip import gzip_page
 from .views import (
     GeoCodeSourceListView,
     GeoCodeSourceDetailView,
@@ -14,58 +16,104 @@ from .views import (
     WorldBorderDetailView,
     CountyBoundaryDetailView,
     ConstituencyBoundaryDetailView,
-    WardBoundaryDetailView
+    WardBoundaryDetailView,
+    FacilityCoordinatesCreationAndListing,
+    FacilityCoordinatesCreationAndDetail,
+    ConstituencyBoundView,
+    CountyBoundView,
 )
+
+
+cache_seconds = settings.GIS_BORDERS_CACHE_SECONDS
+coordinates_cache_seconds = (60 * 60 * 24)
 
 
 urlpatterns = patterns(
     '',
     url(r'^geo_code_sources/$',
-        cache_page(60 * 60)(GeoCodeSourceListView.as_view()),
+        GeoCodeSourceListView.as_view(),
         name='geo_code_sources_list'),
     url(r'^geo_code_sources/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60)(GeoCodeSourceDetailView.as_view()),
+        GeoCodeSourceDetailView.as_view(),
         name='geo_code_source_detail'),
 
     url(r'^geo_code_methods/$',
-        cache_page(60 * 60)(GeoCodeMethodListView.as_view()),
+        GeoCodeMethodListView.as_view(),
         name='geo_code_methods_list'),
     url(r'^geo_code_methods/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60)(GeoCodeMethodDetailView.as_view()),
+        GeoCodeMethodDetailView.as_view(),
         name='geo_code_method_detail'),
 
+    url(r'^facility_coordinates/(?P<pk>[^/]+)/$',
+        FacilityCoordinatesCreationAndDetail.as_view(),
+        name='facility_coordinates_simple_detail'),
+
+    url(r'^facility_coordinates/$',
+        FacilityCoordinatesCreationAndListing.as_view(),
+        name='facility_coordinates_simple_list'),
     url(r'^coordinates/$',
-        cache_page(60 * 60)(FacilityCoordinatesListView.as_view()),
+        gzip_page(
+            cache_page(coordinates_cache_seconds)
+            (FacilityCoordinatesListView.as_view())),
         name='facility_coordinates_list'),
     url(r'^coordinates/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60)(FacilityCoordinatesDetailView.as_view()),
+        gzip_page(
+            cache_page(coordinates_cache_seconds)
+            (FacilityCoordinatesDetailView.as_view())),
         name='facility_coordinates_detail'),
 
     url(r'^country_borders/$',
-        cache_page(60 * 60)(WorldBorderListView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (WorldBorderListView.as_view())),
         name='world_borders_list'),
     url(r'^country_borders/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60)(WorldBorderDetailView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (WorldBorderDetailView.as_view())),
         name='world_border_detail'),
 
     url(r'^county_boundaries/$',
-        cache_page(60 * 60)(CountyBoundaryListView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (CountyBoundaryListView.as_view())),
         name='county_boundaries_list'),
     url(r'^county_boundaries/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60)(CountyBoundaryDetailView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (CountyBoundaryDetailView.as_view())),
         name='county_boundary_detail'),
+    url(r'^county_bound/(?P<pk>[^/]+)/$',
+        gzip_page(
+            cache_page(cache_seconds)
+            (CountyBoundView.as_view())),
+        name='county_bound'),
 
     url(r'^constituency_boundaries/$',
-        cache_page(60 * 60)(ConstituencyBoundaryListView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (ConstituencyBoundaryListView.as_view())),
         name='constituency_boundaries_list'),
     url(r'^constituency_boundaries/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60)(ConstituencyBoundaryDetailView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (ConstituencyBoundaryDetailView.as_view())),
         name='constituency_boundary_detail'),
 
+    url(r'^constituency_bound/(?P<pk>[^/]+)/$',
+        gzip_page(
+            cache_page(cache_seconds)
+            (ConstituencyBoundView.as_view())),
+        name='constituency_bound'),
+
     url(r'^ward_boundaries/$',
-        cache_page(60 * 60)(WardBoundaryListView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (WardBoundaryListView.as_view())),
         name='ward_boundaries_list'),
     url(r'^ward_boundaries/(?P<pk>[^/]+)/$',
-        cache_page(60 * 60)(WardBoundaryDetailView.as_view()),
+        gzip_page(
+            cache_page(cache_seconds)
+            (WardBoundaryDetailView.as_view())),
         name='ward_boundary_detail'),
 )

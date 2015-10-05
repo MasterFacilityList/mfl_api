@@ -1,0 +1,4 @@
+---
+server_name: "_"
+django_debug: True
+app_ports: [8000]

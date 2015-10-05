@@ -3,8 +3,10 @@ import reversion
 import json
 
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.utils import encoding
+
+from rest_framework.exceptions import ValidationError
 
 from ..fields import SequenceField
 from .base import AbstractBase, SequenceMixin
@@ -13,7 +15,9 @@ LOGGER = logging.getLogger(__file__)
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class ContactType(AbstractBase):
+
     """
     Captures the different types of contacts that we have in the real world.
 
@@ -21,18 +25,20 @@ class ContactType(AbstractBase):
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="A short name, preferrably 6 characters long, representing a"
-        "certain type of contact e.g EMAIL")
+        help_text="A short name, preferrably 6 characters long, "
+        "representing a certain type of contact e.g EMAIL")
     description = models.TextField(
         null=True, blank=True,
         help_text='A brief description of the contact type.')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['contact_type'])
+@encoding.python_2_unicode_compatible
 class Contact(AbstractBase):
+
     """
     Holds ways in which entities can communicate.
 
@@ -50,56 +56,15 @@ class Contact(AbstractBase):
         " or phone number",
         on_delete=models.PROTECT)
 
-    def __unicode__(self):
-        return "{}::{}".format(self.contact_type.name, self.contact)
-
-
-class Town(AbstractBase):
-    name = models.CharField(
-        max_length=100, unique=True, null=True, blank=True,
-        help_text="Name of the town")
-
-    def __unicode__(self):
-        return self.name
-
-
-@reversion.register
-class PhysicalAddress(AbstractBase):
-    """
-    The physical properties of a facility.
-
-    These are physical properties of the facility and included is the
-    plot number and nearest landmark. This information in conjunction with
-    GPS codes is useful in locating the facility.
-    """
-    town = models.ForeignKey(
-        Town, null=True, blank=True,
-        help_text="The town where the entity is located e.g Nakuru")
-    postal_code = models.CharField(
-        null=True, blank=True,
-        max_length=100,
-        help_text="The 5 digit number for the post office address. e.g 00900")
-    address = models.TextField(
-        null=True, blank=True,
-        help_text="This is the actual post office number of the entity"
-        "e.g 6790")
-    nearest_landmark = models.TextField(
-        null=True, blank=True,
-        help_text="well-known physical features /structure that can be used to"
-        " simplify directions to a given place. e.g town market or village ")
-    plot_number = models.CharField(
-        max_length=100, null=True, blank=True,
-        help_text="This is the same number found on the title deeds of the"
-        "piece of land on which this facility is located")
-
-    def __unicode__(self):
-        return "{}: {}".format(self.postal_code, self.address)
+    def __str__(self):
+        return "{}: {}".format(self.contact_type.name, self.contact)
 
     class Meta(AbstractBase.Meta):
-        verbose_name_plural = 'physical addresses'
+        unique_together = ('contact', 'contact_type')
 
 
 class AdministrativeUnitBase(SequenceMixin, AbstractBase):
+
     """Base class for County, Constituency and Ward"""
     name = models.CharField(
         max_length=100,
@@ -107,9 +72,6 @@ class AdministrativeUnitBase(SequenceMixin, AbstractBase):
     code = SequenceField(
         unique=True,
         help_text="A unique_code 4 digit number representing the region.")
-
-    def __unicode__(self):
-        return self.name
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -126,15 +88,19 @@ def _lookup_facility_coordinates(area_boundary):
     facility_coordinates = FacilityCoordinates.objects.filter(
         coordinates__contained=area_boundary.mpoly
     ) if area_boundary and area_boundary.mpoly else []
-    return {
-        facility_coordinate.facility.name:
-        json.loads(facility_coordinate.coordinates.geojson)
+    return [
+        {
+            "name": facility_coordinate.facility.name,
+            "geometry": json.loads(facility_coordinate.coordinates.geojson)
+        }
         for facility_coordinate in facility_coordinates
-    }
+    ]
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class County(AdministrativeUnitBase):
+
     """
     This is the largest administrative/political division in Kenya.
 
@@ -152,12 +118,23 @@ class County(AdministrativeUnitBase):
             LOGGER.info('No boundaries found for {}'.format(self))
             return _lookup_facility_coordinates(None)
 
+    @property
+    def county_bound(self):
+        from mfl_gis.models import CountyBoundary
+        unit = CountyBoundary.objects.filter(area=self)
+        return unit[0].bound if len(unit) else {}
+
+    def __str__(self):
+        return self.name
+
     class Meta(AdministrativeUnitBase.Meta):
         verbose_name_plural = 'counties'
 
 
-@reversion.register
+@reversion.register(follow=['county'])
+@encoding.python_2_unicode_compatible
 class Constituency(AdministrativeUnitBase):
+
     """
     Counties in Kenya are divided into constituencies.
 
@@ -173,22 +150,24 @@ class Constituency(AdministrativeUnitBase):
         help_text="Name of the county where the constituency is located",
         on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.name
+
     @property
-    def facility_coordinates(self):
-        """Look up the facilities that are in this unit's boundaries"""
-        try:
-            return _lookup_facility_coordinates(self.constituencyboundary)
-        except:  # Handling RelatedObjectDoesNotExist is a little funky
-            LOGGER.info('No boundaries found for {}'.format(self))
-            return _lookup_facility_coordinates(None)
+    def constituency_bound(self):
+        from mfl_gis.models import ConstituencyBoundary
+        unit = ConstituencyBoundary.objects.filter(area=self)
+        return unit[0].bound if len(unit) else {}
 
     class Meta(AdministrativeUnitBase.Meta):
         verbose_name_plural = 'constituencies'
         unique_together = ('name', 'county')
 
 
-@reversion.register
+@reversion.register(follow=['constituency'])
+@encoding.python_2_unicode_compatible
 class Ward(AdministrativeUnitBase):
+
     """
     The Kenyan counties are sub divided into wards.
 
@@ -204,6 +183,9 @@ class Ward(AdministrativeUnitBase):
         help_text="The constituency where the ward is located.",
         on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.name
+
     @property
     def county(self):
         return self.constituency.county
@@ -218,8 +200,25 @@ class Ward(AdministrativeUnitBase):
             return _lookup_facility_coordinates(None)
 
 
-@reversion.register
+@reversion.register(follow=['county'])
+@encoding.python_2_unicode_compatible
+class SubCounty(AdministrativeUnitBase):
+
+    """
+    A county cab be sub divided into sub counties.
+
+    The sub-counties do not necessarily map to constituencies
+    """
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.name
+
+
+@reversion.register(follow=['user', 'county'])
+@encoding.python_2_unicode_compatible
 class UserCounty(AbstractBase):
+
     """
     Will store a record of the counties that a user has been incharge of.
 
@@ -230,8 +229,8 @@ class UserCounty(AbstractBase):
         on_delete=models.PROTECT)
     county = models.ForeignKey(County, on_delete=models.PROTECT)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.user.email, self.county.name)
+    def __str__(self):
+        return "{}: {}".format(self.user, self.county)
 
     def validate_only_one_county_active(self):
         """
@@ -251,8 +250,10 @@ class UserCounty(AbstractBase):
         verbose_name_plural = 'user_counties'
 
 
-@reversion.register
+@reversion.register(follow=['user', 'contact'])
+@encoding.python_2_unicode_compatible
 class UserContact(AbstractBase):
+
     """
     Stores a user's contacts.
     """
@@ -261,5 +262,87 @@ class UserContact(AbstractBase):
         related_name='user_contacts', on_delete=models.PROTECT)
     contact = models.ForeignKey(Contact)
 
-    def __unicode__(self):
-        return "{}: {}".format(self.user.get_full_name, self.contact.contact)
+    def __str__(self):
+        return "{}: ({})".format(self.user, self.contact)
+
+
+@reversion.register(follow=['user', 'constituency'])
+@encoding.python_2_unicode_compatible
+class UserConstituency(AbstractBase):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='user_constituencies')
+    constituency = models.ForeignKey(Constituency)
+
+    def validate_constituency_county_in_creator_county(self):
+        error = ("Users created must be in the administrators "
+                 "county or sub county")
+        if self.created_by.constituency:
+            if self.constituency.county != self.created_by.constituency.county:
+                raise ValidationError(error)
+        elif self.constituency.county != self.created_by.county:
+            raise ValidationError(error)
+
+    def clean(self, *args, **kwargs):
+        self.validate_constituency_county_in_creator_county()
+
+    def __str__(self):
+        return "{}: {}".format(self.user, self.constituency)
+
+    class Meta:
+        verbose_name_plural = 'user constituencies'
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class Town(AbstractBase):
+    name = models.CharField(
+        max_length=255, unique=True, null=True, blank=True,
+        help_text="Name of the town")
+
+    def __str__(self):
+        return self.name
+
+
+@reversion.register(follow=['town', ])
+@encoding.python_2_unicode_compatible
+class PhysicalAddress(AbstractBase):
+
+    """
+    The physical properties of a facility.
+
+    These are physical properties of the facility and included is the
+    plot number and nearest landmark. This information in conjunction with
+    GPS codes is useful in locating the facility.
+    """
+    town = models.ForeignKey(
+        Town, null=True, blank=True,
+        help_text="The town where the entity is located e.g Nakuru")
+    nearest_landmark = models.TextField(
+        null=True, blank=True,
+        help_text="well-known physical features /structure that can be used to"
+        " simplify directions to a given place. e.g town market or village ")
+    plot_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="This is the same number found on the title deeds of the"
+        "piece of land on which this facility is located")
+    location_desc = models.TextField(
+        null=True, blank=True,
+        help_text="This field allows a more detailed description of "
+        "the location")
+
+    def __str__(self):
+        return self.location_desc
+
+    class Meta(AbstractBase.Meta):
+        verbose_name_plural = 'physical addresses'
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class DocumentUpload(AbstractBase):
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+    fyl = models.FileField()
+
+    def __str__(self):
+        return self.name

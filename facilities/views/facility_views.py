@@ -1,86 +1,70 @@
-from django.template import loader, Context
-from django.http import HttpResponse
-
-from django.utils import timezone
+import json
 
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.views import Response, APIView
+
 from common.views import AuditableDetailViewMixin
+from common.utilities import CustomRetrieveUpdateDestroyView
+from common.models import ContactType
+
 
 from ..models import (
-    OwnerType,
-    Owner,
-    JobTitle,
-    Officer,
-    OfficerContact,
-    FacilityStatus,
-    FacilityType,
-    RegulatingBody,
-    RegulationStatus,
     Facility,
-    FacilityRegulationStatus,
-    FacilityContact,
     FacilityUnit,
-    ServiceCategory,
-    Option,
+    OfficerContact,
+    Owner,
+    FacilityContact,
+    FacilityOfficer,
+    FacilityUnitRegulation,
+    KephLevel,
+    OptionGroup,
+    FacilityLevelChangeReason,
+    FacilityUpdates,
     Service,
-    FacilityService,
-    ServiceOption,
-    ServiceRating,
-    FacilityApproval,
-    FacilityOperationState,
-    FacilityUpgrade,
-    RegulatingBodyContact
+    Option,
+    JobTitle,
+    FacilityDepartment,
+    RegulatorSync
 )
 
 from ..serializers import (
-    OwnerSerializer,
     FacilitySerializer,
-    FacilityContactSerializer,
-    FacilityStatusSerializer,
-    FacilityTypeSerializer,
-    JobTitleSerializer,
-    OfficerSerializer,
-    RegulatingBodySerializer,
-    OwnerTypeSerializer,
-    OfficerContactSerializer,
-    FacilityRegulationStatusSerializer,
     FacilityUnitSerializer,
-    ServiceCategorySerializer,
-    OptionSerializer,
-    ServiceSerializer,
-    FacilityServiceSerializer,
-    ServiceOptionSerializer,
-    ServiceRatingSerializer,
-    FacilityApprovalSerializer,
-    FacilityOperationStateSerializer,
-    FacilityUpgradeSerializer,
-    RegulatingBodyContactSerializer,
-    RegulationStatusSerializer
+    OfficerContactSerializer,
+    OwnerSerializer,
+    FacilityListSerializer,
+    FacilityDetailSerializer,
+    FacilityContactSerializer,
+    FacilityOfficerSerializer,
+    FacilityUnitRegulationSerializer,
+    KephLevelSerializer,
+    OptionGroupSerializer,
+    CreateFacilityOfficerMixin,
+    FacilityLevelChangeReasonSerializer,
+    RegulatorSyncSerializer
 )
+
 from ..filters import (
     FacilityFilter,
-    FacilityStatusFilter,
-    OwnerFilter,
-    JobTitleFilter,
     FacilityUnitFilter,
-    OfficerFilter,
-    RegulatingBodyFilter,
-    OwnerTypeFilter,
     OfficerContactFilter,
+    OwnerFilter,
     FacilityContactFilter,
-    FacilityTypeFilter,
-    FacilityRegulationStatusFilter,
-    RegulationStatusFilter,
-    ServiceCategoryFilter,
-    OptionFilter,
-    ServiceFilter,
-    FacilityServiceFilter,
-    ServiceOptionFilter,
-    ServiceRatingFilter,
-    FacilityApprovalFilter,
-    FacilityOperationStateFilter,
-    FacilityUpgradeFilter,
-    RegulatingBodyContactFilter
+    FacilityOfficerFilter,
+    FacilityUnitRegulationFilter,
+    KephLevelFilter,
+    OptionGroupFilter,
+    FacilityLevelChangeReasonFilter,
+    RegulatorSyncFilter
+
+)
+
+from ..utils import (
+    _validate_services,
+    _validate_units,
+    _validate_contacts,
+    _officer_data_is_valid
 )
 
 
@@ -99,141 +83,143 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-        if not self.request.user.is_national and self.request.user.county \
+        custom_queryset = kwargs.pop('custom_queryset', None)
+        if hasattr(custom_queryset, 'count'):
+            self.queryset = custom_queryset
+
+        if not self.request.user.is_national and \
+                self.request.user.county \
                 and hasattr(self.queryset.model, 'ward'):
-            return self.queryset.filter(
+            self.queryset = self.queryset.filter(
                 ward__constituency__county=self.request.user.county)
+
+        elif self.request.user.regulator and hasattr(
+                self.queryset.model, 'regulatory_body'):
+            self.queryset = self.queryset.filter(
+                regulatory_body=self.request.user.regulator)
+        elif self.request.user.is_national and not \
+                self.request.user.county:
+            self.queryset = self.queryset
+        elif self.request.user.constituency and hasattr(
+                self.queryset.model, 'ward'):
+            self.queryset = self.queryset.filter(
+                ward__constituency=self.request.user.constituency)
+        else:
+            self.queryset = self.queryset
+
+        if self.request.user.has_perm(
+            "facilities.view_unpublished_facilities") \
+            is False and 'is_published' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+
+            self.queryset = self.queryset.filter(is_published=True)
+
+        if self.request.user.has_perm(
+            "facilities.view_unapproved_facilities") \
+            is False and 'approved' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+            self.queryset = self.queryset.filter(approved=True)
+
+        if self.request.user.has_perm(
+                "facilities.view_classified_facilities") \
+            is False and 'is_classified' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+            self.queryset = self.queryset.filter(is_classified=False)
+
+        if self.request.user.has_perm("facilities.view_rejected_facilities") \
+            is False and ('rejected' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]):
+            self.queryset = self.queryset.filter(rejected=False)
+
+        if self.request.user.has_perm(
+            "facilities.view_closed_facilities") is False and \
+            'closed' in [field.name for field in
+                         self.queryset.model._meta.get_fields()]:
+            self.queryset = self.queryset.filter(closed=False)
 
         return self.queryset
 
-
-class RegulatingBodyContactListView(generics.ListCreateAPIView):
-    queryset = RegulatingBodyContact.objects.all()
-    serializer_class = RegulatingBodyContactSerializer
-    filter_class = RegulatingBodyContactFilter
-    ordering_fields = ('regulating_body', 'contact', )
-
-
-class RegulatingBodyContactDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = RegulatingBodyContact.objects.all()
-    serializer_class = RegulatingBodyContactSerializer
+    def filter_queryset(self, queryset):
+        """
+        Overridden in order to constrain search results to what a user should
+        see.
+        """
+        queryset = super(QuerysetFilterMixin, self).filter_queryset(queryset)
+        return self.get_queryset(custom_queryset=queryset)
 
 
-class FacilityUpgradeListView(generics.ListCreateAPIView):
-    queryset = FacilityUpgrade.objects.all()
-    serializer_class = FacilityUpgradeSerializer
-    filter_class = FacilityUpgradeFilter
-    ordering_fields = ('facility', 'facility_type', 'reason', )
+class FacilityLevelChangeReasonListView(generics.ListCreateAPIView):
+    """
+    Lists and creates the  generic upgrade and down grade reasons
+    reason --   A reason for  upgrade or downgrade
+    description -- Description the reason
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = FacilityLevelChangeReason.objects.all()
+    filter_class = FacilityLevelChangeReasonFilter
+    serializer_class = FacilityLevelChangeReasonSerializer
+    ordering_fields = ('reason', 'description', 'is_upgrade_reason')
 
 
-class FacilityUpgradeDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityUpgrade.objects.all()
-    serializer_class = FacilityUpgradeSerializer
+class FacilityLevelChangeReasonDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a single facility level change reason
+    """
+    queryset = FacilityLevelChangeReason.objects.all()
+    serializer_class = FacilityLevelChangeReasonSerializer
 
 
-class FacilityOperationStateListView(generics.ListCreateAPIView):
-    queryset = FacilityOperationState.objects.all()
-    serializer_class = FacilityOperationStateSerializer
-    filter_class = FacilityOperationStateFilter
-    ordering_fields = ('facility', 'operation_status', 'reason')
+class KephLevelListView(generics.ListCreateAPIView):
+    """
+    Lists and creates the  Kenya Essential Package for health (KEPH)
+    name -- Name of a level 1
+    description -- Description the KEPH
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = KephLevel.objects.all()
+    filter_class = KephLevelFilter
+    serializer_class = KephLevelSerializer
+    ordering_fields = ('name', 'value', 'description')
 
 
-class FacilityOperationStateDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityOperationState.objects.all()
-    serializer_class = FacilityOperationStateSerializer
-
-
-class FacilityApprovalListView(generics.ListCreateAPIView):
-    queryset = FacilityApproval.objects.all()
-    serializer_class = FacilityApprovalSerializer
-    filter_class = FacilityApprovalFilter
-    ordering_fields = ('facility', 'comment', )
-
-
-class FacilityApprovalDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityApproval.objects.all()
-    serializer_class = FacilityApprovalSerializer
-
-
-class ServiceRatingListView(generics.ListCreateAPIView):
-    queryset = ServiceRating.objects.all()
-    serializer_class = ServiceRatingSerializer
-    filter_class = ServiceRatingFilter
-    ordering_fields = ('facility_service')
-
-
-class ServiceRatingDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = ServiceRating.objects.all()
-    serializer_class = ServiceRatingSerializer
-
-
-class ServiceCategoryListView(generics.ListCreateAPIView):
-    queryset = ServiceCategory.objects.all()
-    serializer_class = ServiceCategorySerializer
-    filter_class = ServiceCategoryFilter
-    ordering_fields = ('name', 'description', )
-
-
-class ServiceCategoryDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = ServiceCategory.objects.all()
-    serializer_class = ServiceCategorySerializer
-
-
-class OptionListView(generics.ListCreateAPIView):
-    queryset = Option.objects.all()
-    serializer_class = OptionSerializer
-    filter_class = OptionFilter
-    ordering_fields = ('option_type', 'display_text', 'value', )
-
-
-class OptionDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = Option.objects.all()
-    serializer_class = OptionSerializer
-
-
-class ServiceListView(generics.ListCreateAPIView):
-    queryset = Service.objects.all()
-    serializer_class = ServiceSerializer
-    filter_class = ServiceFilter
-    ordering_fields = ('name', 'category', 'code',)
-
-
-class ServiceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = Service.objects.all()
-    serializer_class = ServiceSerializer
-
-
-class FacilityServiceListView(generics.ListCreateAPIView):
-    queryset = FacilityService.objects.all()
-    serializer_class = FacilityServiceSerializer
-    filter_class = FacilityServiceFilter
-    ordering_fields = ('facility', 'service')
-
-
-class FacilityServiceDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityService.objects.all()
-    serializer_class = FacilityServiceSerializer
-
-
-class ServiceOptionListView(generics.ListCreateAPIView):
-    queryset = ServiceOption.objects.all()
-    serializer_class = ServiceOptionSerializer
-    filter_class = ServiceOptionFilter
-    ordering_fields = ('service', 'option',)
-
-
-class ServiceOptionDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = ServiceOption.objects.all()
-    serializer_class = ServiceOptionSerializer
+class KephLevelDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a single KEPH level
+    """
+    queryset = KephLevel.objects.all()
+    serializer_class = KephLevelSerializer
 
 
 class FacilityUnitsListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility units
+
+    facility -- A facility's pk
+    name -- Name of a facility unit
+    description -- Description of a facility unit
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityUnit.objects.all()
     serializer_class = FacilityUnitSerializer
     ordering_fields = ('name', 'facility', 'regulating_body',)
@@ -241,77 +227,27 @@ class FacilityUnitsListView(generics.ListCreateAPIView):
 
 
 class FacilityUnitDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a particular facility unit's detail
+    """
     queryset = FacilityUnit.objects.all()
     serializer_class = FacilityUnitSerializer
 
 
-class FacilityStatusListView(generics.ListCreateAPIView):
-    queryset = FacilityStatus.objects.all()
-    serializer_class = FacilityStatusSerializer
-    ordering_fields = ('name',)
-    filter_class = FacilityStatusFilter
-
-
-class FacilityStatusDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityStatus.objects.all()
-    serializer_class = FacilityStatusSerializer
-
-
-class JobTitleListView(generics.ListCreateAPIView):
-    queryset = JobTitle.objects.all()
-    serializer_class = JobTitleSerializer
-    ordering_fields = ('name',)
-    filter_class = JobTitleFilter
-
-
-class JobTitleDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = JobTitle.objects.all()
-    serializer_class = JobTitleSerializer
-
-
-class OfficerListView(generics.ListCreateAPIView):
-    queryset = Officer.objects.all()
-    serializer_class = OfficerSerializer
-    ordering_fields = ('name', 'job_title', 'registration_number',)
-    filter_class = OfficerFilter
-
-
-class OfficerDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = Officer.objects.all()
-    serializer_class = OfficerSerializer
-
-
-class RegulatingBodyListView(generics.ListCreateAPIView):
-    queryset = RegulatingBody.objects.all()
-    serializer_class = RegulatingBodySerializer
-    ordering_fields = ('name', 'abbreviation',)
-    filter_class = RegulatingBodyFilter
-
-
-class RegulatingBodyDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = RegulatingBody.objects.all()
-    serializer_class = RegulatingBodySerializer
-
-
-class OwnerTypeListView(generics.ListCreateAPIView):
-    queryset = OwnerType.objects.all()
-    serializer_class = OwnerTypeSerializer
-    ordering_fields = ('name', )
-    filter_class = OwnerTypeFilter
-
-
-class OwnerTypeDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = OwnerType.objects.all()
-    serializer_class = OwnerTypeSerializer
-
-
 class OfficerContactListView(generics.ListCreateAPIView):
+    """
+    Lists and creates officer contacts
+
+    officer -- An officer's pk
+    contact --  A contacts pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = OfficerContact.objects.all()
     serializer_class = OfficerContactSerializer
     ordering_fields = ('officer', 'contact',)
@@ -319,12 +255,30 @@ class OfficerContactListView(generics.ListCreateAPIView):
 
 
 class OfficerContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a particular officer contact detail
+    """
     queryset = OfficerContact.objects.all()
     serializer_class = OfficerContactSerializer
 
 
 class OwnerListView(generics.ListCreateAPIView):
+    """
+    List and creates a list of owners
+
+    name -- The name of an owner
+    description -- The description of an owner
+    abbreviation -- The abbreviation of an owner
+    code --  The code of an owner
+    owner_type -- An owner-type's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
     filter_class = OwnerFilter
@@ -332,29 +286,259 @@ class OwnerListView(generics.ListCreateAPIView):
 
 
 class OwnerDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a particular owner's details
+    """
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
 
 
 class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
+    """
+    Lists and creates facilities
+
+    name -- The name of the facility<br>
+    code -- A list of comma separated facility codes (one or more)<br>
+    description -- The description of the facility<br>
+    facility_type -- A list of comma separated facility type's pk<br>
+    operation_status -- A list of comma separated operation statuses pks<br>
+    ward -- A list of comma separated ward pks (one or more)<br>
+    ward_code -- A list of comma separated ward codes<br>
+    county_code -- A list of comma separated county codes<br>
+    constituency_code -- A list of comma separated constituency codes<br>
+    county -- A list of comma separated county pks<br>
+    constituency -- A list of comma separated constituency pks<br>
+    owner -- A list of comma separated owner pks<br>
+    number_of_beds -- A list of comma separated integers<br>
+    number_of_cots -- A list of comma separated integers<br>
+    open_whole_day -- Boolean True/False<br>
+    is_classified -- Boolean True/False<br>
+    is_published -- Boolean True/False<br>
+    is_regulated -- Boolean True/False<br>
+    service_category -- A service category's pk<br>
+    Created --  Date the record was Created<br>
+    Updated -- Date the record was Updated<br>
+    Created_by -- User who created the record<br>
+    Updated_by -- User who updated the record<br>
+    active  -- Boolean is the record active<br>
+    deleted -- Boolean is the record deleted<br>
+    """
     queryset = Facility.objects.all()
     serializer_class = FacilitySerializer
     filter_class = FacilityFilter
     ordering_fields = (
-        'name', 'code', 'number_of_beds', 'number_of_cots', 'operation_status',
-        'ward', 'owner',
+        'name', 'code', 'number_of_beds', 'number_of_cots',
+        'operation_status', 'ward', 'owner',
+    )
+
+
+class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
+    """
+    Returns a slimmed payload of the facility.
+    """
+    queryset = Facility.objects.all()
+    serializer_class = FacilityListSerializer
+    filter_class = FacilityFilter
+    ordering_fields = (
+        'code', 'name', 'county', 'constituency', 'facility_type_name',
+        'owner_type_name', 'is_published'
     )
 
 
 class FacilityDetailView(
         QuerysetFilterMixin, AuditableDetailViewMixin,
         generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a particular facility
+    """
     queryset = Facility.objects.all()
-    serializer_class = FacilitySerializer
+    serializer_class = FacilityDetailSerializer
+    validation_errors = {}
+
+    def buffer_contacts(self, update, contacts):
+        """
+        Prepares the new facility contacts to be saved in the facility
+        updates model
+        """
+        if update.contacts and update.contacts != 'null':
+            proposed_contacts = json.loads(update.contacts)
+            update.contacts = json.dumps(proposed_contacts + contacts)
+        else:
+            update.contacts = json.dumps(contacts)
+
+    def buffer_services(self, update, services):
+        """
+        Prepares the new facility services to be saved in the facility
+        updates model
+        """
+        if update.services and update.services != 'null':
+            proposed_services = json.loads(update.services)
+            update.services = json.dumps(proposed_services + services)
+        else:
+            update.services = json.dumps(services)
+
+    def buffer_units(self, update, units):
+        """
+        Prepares the new facility units(departments) to be saved in the
+        facility updates model
+        """
+        if update.units and update.units != 'null':
+            proposed_units = json.loads(update.units)
+            update.units = json.dumps(proposed_units + units)
+        else:
+            update.units = json.dumps(units)
+
+    def populate_service_name(self, services):
+        """
+        Resolves and updates the service names and option display_name
+        """
+        for service in services:
+            id = service.get('service')
+            obj = Service.objects.get(id=id)
+            service['name'] = obj.name
+            option = service.get('option', None)
+            if option:
+                service['display_name'] = Option.objects.get(
+                    id=option).display_text
+        return services
+
+    def populate_contact_type_names(self, contacts):
+        """
+        Resolves and populates the contact type names
+        """
+        for contact in contacts:
+            contact['contact_type_name'] = ContactType.objects.get(
+                id=contact.get('contact_type')).name
+        return contacts
+
+    def populate_department_names(self, units):
+        """
+        Resolves and populates the regulatory body names
+        """
+        for unit in units:
+            unit['department_name'] = FacilityDepartment.objects.get(
+                id=unit['unit']).name
+        return units
+
+    def populate_officer_incharge_contacts(self, officer_in_charge):
+        """
+        Resolves the contact_type_name for the officer_in_charge contacts
+        """
+        for contact in officer_in_charge['contacts']:
+            contact['contact_type_name'] = ContactType.objects.get(
+                id=contact.get('type')).name
+        return officer_in_charge
+
+    def populate_officer_incharge_job_title(self, officer_in_charge):
+        """
+        Resolves the job title name for the officer in-charge
+        """
+        officer_in_charge['job_title_name'] = JobTitle.objects.get(
+            id=officer_in_charge['title']).name
+        return officer_in_charge
+
+    def _validate_payload(self, services, contacts, units, officer_in_charge):
+        """
+        Validates the updated attributes before  buffering them
+        """
+        service_errors = _validate_services(services)
+
+        if service_errors:
+            self.validation_errors.update({"services": service_errors})
+
+        contact_errors = _validate_contacts(contacts)
+        if contact_errors:
+            self.validation_errors.update({"contacts": contact_errors})
+
+        unit_errors = _validate_units(units)
+        if unit_errors:
+            self.validation_errors.update({"units": unit_errors})
+        officer_errors = _officer_data_is_valid(officer_in_charge)
+
+        if officer_errors and officer_in_charge != {} and officer_errors is \
+                not True:
+            self.validation_errors.update(
+                {"officer_in_charge": officer_errors})
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        user_id = request.user
+        del user_id
+        request.data['updated_by_id'] = request.user.id
+        instance = self.get_object()
+        self.validation_errors = {}
+
+        services = request.data.pop('services', [])
+        contacts = request.data.pop('contacts', [])
+
+        units = request.data.pop('units', [])
+        officer_in_charge = request.data.pop(
+            'officer_in_charge', {})
+        if officer_in_charge:
+            officer_in_charge['facility_id'] = str(instance.id)
+
+        self. _validate_payload(services, contacts, units, officer_in_charge)
+
+        if any(self.validation_errors):
+            return Response(
+                data=self.validation_errors,
+                status=status.HTTP_400_BAD_REQUEST)
+        if instance.approved:
+            try:
+                update = FacilityUpdates.objects.filter(
+                    facility=instance, cancelled=False, approved=False)[0]
+            except IndexError:
+                update = FacilityUpdates.objects.create(
+                    facility=instance, created_by=request.user,
+                    updated_by=request.user)
+            services = self.populate_service_name(services)
+            self.buffer_services(update, services)
+
+            contacts = self.populate_contact_type_names(contacts)
+            self.buffer_contacts(update, contacts)
+
+            units = self.populate_department_names(units)
+            self.buffer_units(update, units)
+
+            if officer_in_charge != {}:
+                officer_in_charge = self.populate_officer_incharge_contacts(
+                    officer_in_charge)
+                officer_in_charge = self.populate_officer_incharge_job_title(
+                    officer_in_charge)
+                update.officer_in_charge = json.dumps(officer_in_charge)
+            update.is_new = False
+            update.created_by = request.user
+            update.updated_by = request.user
+            update.save()
+
+        else:
+            request.data['services'] = services
+            request.data['contacts'] = contacts
+            request.data['units'] = units
+            if officer_in_charge != {}:
+                request.data['officer_in_charge'] = officer_in_charge
+
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FacilityContactListView(generics.ListCreateAPIView):
+    """
+    Lists and creates facility contacts
+
+    facility -- A facility's pk
+    contact -- A contact's pk
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
     queryset = FacilityContact.objects.all()
     serializer_class = FacilityContactSerializer
     filter_class = FacilityContactFilter
@@ -362,92 +546,99 @@ class FacilityContactListView(generics.ListCreateAPIView):
 
 
 class FacilityContactDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    """
+    Retrieves a particular facility contact
+    """
     queryset = FacilityContact.objects.all()
     serializer_class = FacilityContactSerializer
 
 
-class FacilityRegulationStatusListView(generics.ListCreateAPIView):
-    queryset = FacilityRegulationStatus.objects.all()
-    serializer_class = FacilityRegulationStatusSerializer
-    filter_class = FacilityRegulationStatusFilter
+class FacilityOfficerListView(generics.ListCreateAPIView):
+    serializer_class = FacilityOfficerSerializer
+    queryset = FacilityOfficer.objects.all()
+    filter_class = FacilityOfficerFilter
     ordering_fields = (
-        'facility', 'regulating_body', 'regulation_status',)
+        'name', 'id_number', 'registration_number',
+        'facility_name')
 
 
-class FacilityRegulationStatusDetailView(
-        AuditableDetailViewMixin,
-        generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityRegulationStatus.objects.all()
-    serializer_class = FacilityRegulationStatusSerializer
+class FacilityOfficerDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    serializer_class = FacilityOfficerSerializer
+    queryset = FacilityOfficer.objects.all()
 
 
-class FacilityTypeListView(generics.ListCreateAPIView):
-    queryset = FacilityType.objects.all()
-    serializer_class = FacilityTypeSerializer
-    filter_class = FacilityTypeFilter
+class FacilityUnitRegulationListView(generics.ListCreateAPIView):
+    queryset = FacilityUnitRegulation.objects.all()
+    serializer_class = FacilityUnitRegulationSerializer
+    filter_class = FacilityUnitRegulationFilter
+    ordering_fields = ('facility_unit', 'regulation_status')
+
+
+class FacilityUnitRegulationDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    queryset = FacilityUnitRegulation.objects.all()
+    serializer_class = FacilityUnitRegulationSerializer
+
+
+class CustomFacilityOfficerView(CreateFacilityOfficerMixin, APIView):
+    """
+    A custom view for creating facility officers.
+    Make it less painful to create facility officers via the frontend.
+    """
+
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        self.user = self.request.user
+        created_officer = self.create_officer(data)
+
+        if created_officer.get("created") is not True:
+
+            return Response(
+                {"detail": created_officer.get("detail")},
+                status=status.HTTP_400_BAD_REQUEST)
+        else:
+
+            return Response(
+                created_officer.get("detail"), status=status.HTTP_201_CREATED)
+
+    def get(self, *args, **kwargs):
+        facility = Facility.objects.get(id=kwargs['facility_id'])
+        facility_officers = FacilityOfficer.objects.filter(facility=facility)
+        serialized_officers = FacilityOfficerSerializer(
+            facility_officers, many=True).data
+        return Response(serialized_officers)
+
+    def delete(self, *args, **kwargs):
+        officer = FacilityOfficer.objects.get(id=kwargs['pk'])
+        officer.deleted = True
+        officer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class OptionGroupListView(generics.ListCreateAPIView):
+    queryset = OptionGroup.objects.all()
+    serializer_class = OptionGroupSerializer
+    filter_class = OptionGroupFilter
     ordering_fields = ('name', )
 
 
-class FacilityTypeDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = FacilityType.objects.all()
-    serializer_class = FacilityTypeSerializer
+class OptionGroupDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+    queryset = OptionGroup.objects.all()
+    serializer_class = OptionGroupSerializer
 
 
-class RegulationStatusListView(
-        AuditableDetailViewMixin, generics.ListCreateAPIView):
-    queryset = RegulationStatus.objects.all()
-    serializer_class = RegulationStatusSerializer
-    filter_class = RegulationStatusFilter
-    ordering_fields = ('name', )
+class RegualorSyncListView(generics.ListCreateAPIView):
+    queryset = RegulatorSync.objects.all()
+    serializer_class = RegulatorSyncSerializer
+    filter_class = RegulatorSyncFilter
+    ordering_fields = (
+        'name', 'registration_number', 'county',
+        'owner', 'mfl_code')
 
 
-class RegulationStatusDetailView(
-        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
-    queryset = RegulationStatus.objects.all()
-    serializer_class = RegulationStatusSerializer
-
-
-def get_inspection_report(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('inspection_report.txt')
-    report_date = timezone.now().isoformat()
-    regulating_bodies = FacilityRegulationStatus.objects.filter(
-        facility=facility)
-    regulating_body = regulating_bodies[0] if regulating_bodies else None
-
-    context = Context(
-        {
-            "report_date": report_date,
-            "facility": facility,
-            "regulating_body": regulating_body
-        }
-    )
-    return HttpResponse(template.render(context))
-
-
-def get_cover_report(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('cover_report.txt')
-    report_date = timezone.now().isoformat()
-    context = Context(
-        {
-            "report_date": report_date,
-            "facility": facility
-        }
-    )
-    return HttpResponse(template.render(context))
-
-
-def get_correction_template(request, facility_id):
-    facility = Facility.objects.get(pk=facility_id)
-    template = loader.get_template('correction_template.txt')
-    request_date = timezone.now().isoformat()
-    context = Context(
-        {
-            "request_date": request_date,
-            "facility": facility
-        }
-    )
-    return HttpResponse(template.render(context))
+class RegualorSyncDetailView(generics.ListCreateAPIView):
+    queryset = RegulatorSync.objects.all()
+    serializer_class = RegulatorSyncSerializer

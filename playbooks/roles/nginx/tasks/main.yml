@@ -1,0 +1,11 @@
+---
+
+- include: apt.yml
+  when: install_from == 'apt'
+
+- include: source.yml
+  when: install_from == 'source'
+
+- name: remove the default nginx site
+  sudo: yes
+  command: rm /etc/nginx/sites-enabled/default removes=/etc/nginx/sites-enabled/default

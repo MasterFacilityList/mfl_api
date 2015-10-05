@@ -1,11 +1,13 @@
 upstream app_server {
-    server 127.0.0.1:8000 fail_timeout=0;
+    {% for p in app_ports %}
+    server 127.0.0.1:{{p}};
+    {% endfor %}
 }
 
 server {
-    listen 80 default;
-    client_max_body_size 4G;
-    server_name _;
+    listen {% if ssl_on %}443 ssl{% else %}80{% endif %} default;
+    client_max_body_size 100M;
+    server_name {{server_name}};
 
     keepalive_timeout 5;
 
@@ -23,14 +25,17 @@ server {
         alias /opt/mfl_api/static;
     }
 
+    {% if not storage_backend %}
     location /media {
         alias /opt/mfl_api/media;
     }
+    {% endif %}
 
     location / {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
         proxy_redirect off;
 
         if (!-f $request_filename) {
@@ -39,8 +44,24 @@ server {
         }
     }
 
-    error_page 500 502 503 504 /500.html;
-    location = /500.html {
-        root /path/to/app/current/public;
-    }
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+
+    {% if ssl_on %}
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;";
+    ssl_certificate {{ssl_cert_file}};
+    ssl_certificate_key {{ssl_key_file}};
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-RC4-SHA:ECDHE-RSA-AES128-SHA:AES128-SHA:RC4-SHA;
+    {% endif %}
 }
+
+{% if ssl_on %}
+server {
+    listen 80;
+    server_name {{server_name}};
+    rewrite ^ https://$server_name$request_uri? redirect;
+}
+{% endif %}

@@ -1,2 +1,1 @@
-__author__ = 'daniel'
-from search_utils import *  # NOQA
+from .views import *  # noqa

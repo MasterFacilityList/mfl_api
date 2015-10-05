@@ -1,0 +1,18 @@
+---
+frontend_name: "mfl_frontend"
+install_dir: "/opt/{{frontend_name}}"
+download_dir: "{{install_dir}}/downloads"
+extraction_dir: "{{install_dir}}/frontend"
+frontend_tag: ""
+download_url: ""
+server_url: "http://localhost:8061/"
+frontend_archive_file_name: ""
+frontend_archive_file : "{{download_dir}}/{{frontend_archive_file_name}}"
+ssl_on: false
+token_url: "o/token/"
+revoke_url: "o/revoke_token/"
+server_name: localhost
+username: ""
+password: ""
+client_id: ""
+client_secret: ""

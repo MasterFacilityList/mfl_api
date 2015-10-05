@@ -1,0 +1,10 @@
+---
+- name: disable ufw
+  ufw: state=disabled
+  sudo: yes
+  tags: ufw
+
+- name: enable ufw
+  ufw: state=enabled
+  sudo: yes
+  tags: ufw

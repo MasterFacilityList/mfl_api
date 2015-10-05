@@ -18,9 +18,9 @@ Master Facility List API
      :target: https://requires.io/github/MasterFacilityList/mfl_api/requirements/?branch=develop
      :alt: Requirements Status
 
-.. image:: https://landscape.io/github/MasterFacilityList/mfl_api/develop/landscape.svg?style=flat
-   :target: https://landscape.io/github/MasterFacilityList/mfl_api/develop
-   :alt: Code Health
+.. image:: https://www.quantifiedcode.com/api/v1/project/5512ed77922647478a419056baf3431c/badge.svg
+  :target: https://www.quantifiedcode.com/app/project/5512ed77922647478a419056baf3431c
+  :alt: Code issues
 
 
 This is the API server for the second generation Kenyan Ministry of Health Master Facility List ( MFL ).

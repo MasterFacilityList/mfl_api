@@ -3,7 +3,10 @@ import logging
 import json
 
 from django.contrib.gis.db import models as gis_models
-from django.core.exceptions import ValidationError
+from django.contrib.gis.db.models import Union
+from django.contrib.gis.geos import MultiPolygon
+from django.utils import timezone, encoding
+from rest_framework.exceptions import ValidationError
 from common.models import AbstractBase, County, Constituency, Ward
 from facilities.models import Facility
 
@@ -11,7 +14,19 @@ from facilities.models import Facility
 LOGGER = logging.getLogger(__name__)
 
 
+class CustomGeoManager(gis_models.GeoManager):
+
+    """
+    Ensure that deleted items are not returned in a gis queryset  by default
+    """
+
+    def get_queryset(self):
+        return super(
+            CustomGeoManager, self).get_queryset().filter(deleted=False)
+
+
 class GISAbstractBase(AbstractBase, gis_models.Model):
+
     """
     We've intentionally duplicated the `AbstractBase` in the `common` app
     because we wanted to confine the impact of GIS ( Geographic ) stuff
@@ -23,7 +38,7 @@ class GISAbstractBase(AbstractBase, gis_models.Model):
     We've kept the fields that are in the `common` `AbstractBase` because
     we want to have the same kind of base behavior.
     """
-    objects = gis_models.GeoManager()
+    objects = CustomGeoManager()
     everything = gis_models.GeoManager()
 
     class Meta(AbstractBase.Meta):
@@ -31,7 +46,9 @@ class GISAbstractBase(AbstractBase, gis_models.Model):
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class GeoCodeSource(GISAbstractBase):
+
     """
     Where the geo-code came from.
 
@@ -52,12 +69,14 @@ class GeoCodeSource(GISAbstractBase):
         max_length=10, null=True, blank=True,
         help_text="An acronym of the collecting or e.g SAM")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class GeoCodeMethod(GISAbstractBase):
+
     """
     Method used to capture the geo-code.
 
@@ -76,21 +95,24 @@ class GeoCodeMethod(GISAbstractBase):
         help_text="A short description of the method",
         null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
-@reversion.register
+@reversion.register(follow=['facility', 'source', 'method', ])
+@encoding.python_2_unicode_compatible
 class FacilityCoordinates(GISAbstractBase):
+
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
 
-    It it three dimensional.
+    It is three dimensional.
     The three-dimensional readings from a GPS device are latitude, longitude,
     and attitude. The date/time the reading is done is also important, as
     is the source and method of the reading.
     """
-    facility = gis_models.OneToOneField(Facility)
+    facility = gis_models.OneToOneField(
+        Facility, related_name='facility_coordinates_through', unique=True)
     coordinates = gis_models.PointField()
     source = gis_models.ForeignKey(
         GeoCodeSource,
@@ -99,7 +121,7 @@ class FacilityCoordinates(GISAbstractBase):
         GeoCodeMethod,
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
-    collection_date = gis_models.DateTimeField(auto_now_add=True)
+    collection_date = gis_models.DateTimeField(default=timezone.now)
 
     def validate_longitude_and_latitude_within_kenya(self):
         try:
@@ -124,10 +146,14 @@ class FacilityCoordinates(GISAbstractBase):
                 area=self.facility.ward.constituency)
             if not boundary.mpoly.contains(self.coordinates):
                 raise ValidationError(
-                    '{} not contained in boundary of {}'.format(
-                        self.coordinates,
-                        self.facility.ward.constituency
-                    )
+                    {
+                        "coordinates": [
+                            '{} not contained in boundary of {}'.format(
+                                self.coordinates,
+                                self.facility.ward.constituency)
+                        ]
+                    }
+
                 )
         except ConstituencyBoundary.DoesNotExist:
             raise ValidationError(
@@ -142,10 +168,13 @@ class FacilityCoordinates(GISAbstractBase):
                 area=self.facility.ward.constituency.county)
             if not boundary.mpoly.contains(self.coordinates):
                 raise ValidationError(
-                    '{} not contained in boundary of {}'.format(
-                        self.coordinates,
-                        self.facility.ward.constituency.county
-                    )
+                    {
+                        "coordinates": [
+                            '({}, {}) not contained in boundary of {}'.format(
+                                self.coordinates.x, self.coordinates.y,
+                                self.facility.ward.constituency.county)
+                        ]
+                    }
                 )
         except CountyBoundary.DoesNotExist:
             raise ValidationError(
@@ -159,15 +188,38 @@ class FacilityCoordinates(GISAbstractBase):
             boundary = WardBoundary.objects.get(area=self.facility.ward)
             if not boundary.mpoly.contains(self.coordinates):
                 raise ValidationError(
-                    '{} not contained in boundary of {}'.format(
-                        self.coordinates, self.facility.ward
-                    )
+                    {
+                        "coordinates": [
+                            '{} not contained in boundary of {}'.format(
+                                self.coordinates, self.facility.ward)
+                        ]
+                    }
                 )
         except WardBoundary.DoesNotExist:
             LOGGER.error(
                 'Ward {} does not have boundary info'.format(
                     self.facility.ward)
             )
+
+    @property
+    def simplify_coordinates(self):
+        return {
+            "coordinates": [
+                float('%.2f' % round(self.coordinates[0], 2)),
+                float('%.2f' % round(self.coordinates[1], 2))
+            ]
+        }
+
+    @property
+    def json_features(self):
+        return {
+            "geometry": self.simplify_coordinates,
+            "properties": {
+                "ward": self.facility.ward.id,
+                "constituency": self.facility.ward.constituency.id,
+                "county": self.facility.ward.county.id
+            }
+        }
 
     def clean(self):
         self.validate_longitude_and_latitude_within_kenya()
@@ -176,8 +228,8 @@ class FacilityCoordinates(GISAbstractBase):
         self.validate_longitude_and_latitude_within_ward()
         super(FacilityCoordinates, self).clean()
 
-    def __unicode__(self):
-        return self.facility.name
+    def __str__(self):
+        return "{}:{}:{}".format(self.facility, self.source, self.method)
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'facility coordinates'
@@ -185,11 +237,14 @@ class FacilityCoordinates(GISAbstractBase):
 
 
 class AdministrativeUnitBoundary(GISAbstractBase):
+
     """Base class for the models that implement administrative boundaries
 
     All common operations and fields are here.
     We retain the default SRID ( 4326 - WGS84 ).
     """
+    # These two fields should mirror the contents of the relevant admin
+    # area model
     name = gis_models.CharField(max_length=100)
     code = gis_models.CharField(max_length=10, unique=True)
 
@@ -200,18 +255,96 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     mpoly = gis_models.MultiPolygonField(null=True, blank=True)
 
     @property
+    def bound(self):
+        return json.loads(self.mpoly.envelope.geojson) if self.mpoly else None
+
+    @property
     def center(self):
         return json.loads(self.mpoly.centroid.geojson) if self.mpoly else None
 
-    def __unicode__(self):
-        return self.name
+    @property
+    def surface_area(self):
+        return self.mpoly.area if self.mpoly else 0
+
+    @property
+    def facility_count(self):
+        return FacilityCoordinates.objects.filter(
+            coordinates__contained=self.mpoly
+        ).count() if self and self.mpoly else 0
+
+    @property
+    def density(self):
+        """This is a synthetic value
+
+        The units matter less than the relative density compared to other
+        administrative units
+        """
+        return self.facility_count / (self.surface_area * 10000) \
+            if self.surface_area else 0
+
+    @property
+    def facility_coordinates(self):
+        from common.models.model_declarations import \
+            _lookup_facility_coordinates
+        return _lookup_facility_coordinates(self)
+
+    @property
+    def geometry(self):
+        """Reduce the precision of the geometries sent in list views
+
+        This produces a MASSIVE saving in rendering time
+        """
+        if not self.mpoly:
+            return self.mpoly
+
+        def _simplify(tolerance, geometry):
+            if isinstance(geometry, MultiPolygon):
+                polygon = None
+                for child_polygon in geometry:
+                    if polygon:
+                        polygon.extend(child_polygon)
+                    else:
+                        polygon = child_polygon
+            else:
+                polygon = geometry
+
+            return json.loads(
+                polygon.simplify(
+                    tolerance=(1.0 / 10 ** precision)
+                ).geojson
+            )
+
+        # 3 decimal places for the web map ( about 10 meter accuracy )
+        precision = 3
+        tolerance = (1.0 / 10 ** precision)
+        geojson_dict = _simplify(
+            tolerance=tolerance, geometry=self.mpoly.cascaded_union
+        )
+        original_coordinates = geojson_dict['coordinates']
+        assert original_coordinates
+        new_coordinates = [
+            [
+                [
+                    round(coordinate_pair[0], precision),
+                    round(coordinate_pair[1], precision)
+                ]
+                for coordinate_pair in original_coordinates[0]
+                if coordinate_pair and
+                isinstance(coordinate_pair[0], float) and
+                isinstance(coordinate_pair[1], float)
+            ]
+        ]
+        geojson_dict['coordinates'] = new_coordinates
+        return geojson_dict
 
     class Meta(GISAbstractBase.Meta):
         abstract = True
 
 
 @reversion.register
+@encoding.python_2_unicode_compatible
 class WorldBorder(AdministrativeUnitBoundary):
+
     """World boundaries
 
     Source: http://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
@@ -220,31 +353,79 @@ class WorldBorder(AdministrativeUnitBoundary):
     latitude = gis_models.FloatField()
 
     @property
-    def facility_coordinates(self):
-        from common.models.model_declarations import \
-            _lookup_facility_coordinates
-        return _lookup_facility_coordinates(self)
+    def geometry(self):
+        """The world border data is unreliable, hence this; works for Kenya"""
+        return json.loads(
+            CountyBoundary.objects.aggregate(
+                Union('mpoly')
+            )['mpoly__union'].geojson
+        ) if self.mpoly else {}
+
+    def __str__(self):
+        return self.name
 
 
-@reversion.register
+@reversion.register(follow=['area'])
+@encoding.python_2_unicode_compatible
 class CountyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(County)
+
+    @property
+    def constituency_ids(self):
+        return Constituency.objects.filter(
+            county=self.area).values_list('id', flat=True)
+
+    @property
+    def constituency_boundary_ids(self):
+        constituency_boundary_ids = ConstituencyBoundary.objects.filter(
+            area__id__in=self.constituency_ids
+        ).values_list('id', flat=True)
+        return constituency_boundary_ids
+
+    def __str__(self):
+        return self.name
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'county boundaries'
 
 
-@reversion.register
+@reversion.register(follow=['area'])
+@encoding.python_2_unicode_compatible
 class ConstituencyBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Constituency)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def ward_ids(self):
+        return Ward.objects.filter(
+            constituency=self.area).values_list('id', flat=True)
+
+    @property
+    def ward_boundary_ids(self):
+        ward_boundary_ids = WardBoundary.objects.filter(
+            area__id__in=self.ward_ids
+        ).values_list('id', flat=True)
+        return ward_boundary_ids
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'constituency boundaries'
 
 
-@reversion.register
+@reversion.register(follow=['area'])
+@encoding.python_2_unicode_compatible
 class WardBoundary(AdministrativeUnitBoundary):
     area = gis_models.OneToOneField(Ward)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def facility_ids(self):
+        return FacilityCoordinates.objects.filter(
+            coordinates__contained=self.mpoly
+        ).values_list('id', flat=True) if self and self.mpoly else []
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'

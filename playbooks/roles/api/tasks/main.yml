@@ -14,6 +14,18 @@
   notify:
     - restart supervisor
 
+- name: copy the supervisor configuration to its destination
+  sudo: yes
+  template: src=../templates/mfl_supervisor_conf.j2 dest=/etc/supervisor/conf.d/mfl_api.conf
+  notify:
+    - restart supervisor
+
+- name: copy the nginx configuration to its destination
+  sudo: yes
+  template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
+  notify:
+    - restart nginx
+
 - name: update versions of common dependencies via pip before we make our venv
   pip: 'name={{item}} state=latest'
   with_items:
@@ -25,11 +37,12 @@
 - name: now install the dependencies that we need
   pip: chdir=/opt/mfl_api requirements=/opt/mfl_api/requirements.txt virtualenv=/opt/mfl_api_virtualenv
 
-- name: clean cached .pyc files
-  django_manage: "command=clean_pyc app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
+- name: run fab setup_db
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && DEBUG=false fab setup_db executable=/bin/bash"
+  when: setup_new_db
 
-- name: run fab setup
-  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab setup >> /tmp/fab_setup.log executable=/bin/bash"
+- name: run fab migrate
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && DEBUG=false fab migrate executable=/bin/bash"
 
 - name: run the Django migrations and collectstatic
   django_manage: "command={{item}} app_path=/opt/mfl_api virtualenv=/opt/mfl_api_virtualenv/"
@@ -39,18 +52,19 @@
   notify:
     - restart supervisor
 
-- name: copy the supervisor configuration to its destination
-  sudo: yes
-  template: src=../templates/mfl_supervisor_conf.j2 dest=/etc/supervisor/conf.d/mfl_api.conf
-  notify:
-    - restart supervisor
+- name: run fab load_demo_data
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab load_demo_data_from_scratch executable=/bin/bash"
+  when: load_demo_data
 
-- name: remove the default nginx site
-  sudo: yes
-  command: rm /etc/nginx/sites-enabled/default removes=/etc/nginx/sites-enabled/default
+- name: run fab recreate_search_index
+  shell: "source /opt/mfl_api_virtualenv/bin/activate && cd /opt/mfl_api && fab recreate_search_index executable=/bin/bash"
+  when: recreate_search_index
 
-- name: copy the nginx configuration to its destination
-  sudo: yes
-  template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
-  notify:
-    - restart nginx
+- name: clear and warm api cache
+  shell: >
+    source /opt/mfl_api_virtualenv/bin/activate &&
+    cd /opt/mfl_api &&
+    fab clear_cache &&
+    fab warmup_cache:server_location="{{server_url}}",username="{{username}}",password="{{password}}",client_id="{{client_id}}",client_secret="{{client_secret}}" executable=/bin/bash
+  when: warm_cache
+  tags: warm_cache

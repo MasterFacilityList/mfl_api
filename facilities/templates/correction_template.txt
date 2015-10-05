@@ -1,3 +1,0 @@
-Updating of a facility details
-The facility details as they are currenty:
-{{facility}}

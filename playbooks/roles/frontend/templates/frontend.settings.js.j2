@@ -1,0 +1,23 @@
+(function (window) {
+    "use strict";
+
+    var setts = {
+        "SERVER_URL": "{{server_url}}",
+        "CREDZ": {
+            "username": "{{username}}",
+            "password": "{{password}}",
+            "client_id": "{{client_id}}",
+            "client_secret": "{{client_secret}}",
+            "token_url": "{{token_url}}",
+            "revoke_url": "{{revoke_url}}"
+        },
+        "TIMEOUT": {"kickout": 90, "warning": 30},
+        "last_update": "{{last_update}}"
+    };
+
+    setts.CREDZ.token_url = setts.SERVER_URL + "{{token_url}}";
+    setts.CREDZ.revoke_url = setts.SERVER_URL + "{{revoke_url}}";
+
+    window.MFL_SETTINGS = setts;
+
+})(window);

@@ -1,11 +1,13 @@
 import json
 import logging
+import os
 
 from collections import defaultdict
 from django.apps import apps
 from django.db import transaction
 from django.db.utils import ProgrammingError
 from django.contrib.gis.geos import Point
+from django.core.exceptions import ObjectDoesNotExist
 
 from common.fields import SequenceField
 
@@ -19,7 +21,8 @@ def _retrieve_existing_model_instance(model_cls, field_data):
     assert isinstance(field_data, dict)
     try:
         instance = model_cls.objects.get(**field_data)
-    except ProgrammingError:
+    except (ProgrammingError, ObjectDoesNotExist):
+
         keys = field_data.keys()
         for key in keys:
             value = field_data[key]
@@ -131,6 +134,7 @@ def _process_model_spec(model_spec):
     """For each model spec, instantiate but do not save ( bulk save later )"""
     model = model_spec['model']
     unique_fields = model_spec['unique_fields']
+
     records = model_spec['records']
 
     assert isinstance(model, str) or isinstance(model, unicode)
@@ -164,18 +168,22 @@ def _process_model_spec(model_spec):
 def process_json_file(filename):
     """The entry point - loops through data files and loads each in"""
     assert isinstance(filename, str)
-    LOGGER.info('Processing {}'.format(filename))
+    if os.path.isdir(filename):
+        LOGGER.info("Filename points to a directory")
+        return
+    else:
+        LOGGER.info('Processing {}'.format(filename))
 
-    with open(filename) as f:
-        model_specs = json.load(f)
-        assert isinstance(model_specs, list)
-        assert len(model_specs) > 0
+        with open(filename) as f:
+            model_specs = json.load(f)
+            assert isinstance(model_specs, list)
+            assert len(model_specs) > 0
 
-        for model_spec in model_specs:
-            try:
-                _process_model_spec(model_spec)
-            except Exception as ex:  # Broad catch to allow debug messages
-                import traceback
-                traceback.print_exc()
-                LOGGER.error(
-                    '{} when processing {:.1000}'.format(ex, model_spec))
+            for model_spec in model_specs:
+                try:
+                    _process_model_spec(model_spec)
+                except Exception as ex:  # Broad catch to allow debug messages
+                    import traceback
+                    traceback.print_exc()
+                    LOGGER.error(
+                        '{} when processing {:.1000}'.format(ex, model_spec))

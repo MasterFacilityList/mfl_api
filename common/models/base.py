@@ -1,14 +1,13 @@
 import logging
 import uuid
 import pytz
-import reversion
 
 from django.db import models
-from django.db import transaction
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.conf import settings
+
+from rest_framework.exceptions import ValidationError
 
 from ..utilities.sequence_helper import SequenceGenerator
 
@@ -45,12 +44,14 @@ def get_utc_localized_datetime(datetime_instance):
 
 
 class CustomDefaultManager(models.Manager):
+
     def get_queryset(self):
         return super(
             CustomDefaultManager, self).get_queryset().filter(deleted=False)
 
 
 class AbstractBase(models.Model):
+
     """
     Provides auditing attributes to a model.
 
@@ -74,7 +75,8 @@ class AbstractBase(models.Model):
 
     # place holder to enable implementation of a search filter.
     # Will be replaced in future
-    search = models.CharField(max_length=255, null=True, blank=True)
+    search = models.CharField(
+        max_length=255, null=True, blank=True, editable=False)
 
     objects = CustomDefaultManager()
     everything = models.Manager()
@@ -106,27 +108,29 @@ class AbstractBase(models.Model):
         self.full_clean(exclude=None)
         self.preserve_created_and_created_by()
         self.validate_updated_date_greater_than_created()
-
-        # In order for auditability to work, all descendants of AbstractBase
-        # must @reversion.register
-        with transaction.atomic(), reversion.create_revision():
-            super(AbstractBase, self).save(*args, **kwargs)
+        super(AbstractBase, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         # Mark the field model deleted
         self.deleted = True
         self.save()
 
+    def __str__(self):
+        raise NotImplementedError(
+            "child models need to define their representation"
+        )
+
     def __unicode__(self):
-        """Default if child models do not define their string representation"""
-        return '{} {}'.format(self._meta.verbose_name, self.pk)
+        return self.__str__()
 
     class Meta(object):
         ordering = ('-updated', '-created',)
         abstract = True
+        default_permissions = ('add', 'change', 'delete', 'view', )
 
 
 class SequenceMixin(object):
+
     """
     Intended to be mixed into models with a `code` `SequenceField`
     """

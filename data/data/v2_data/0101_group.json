@@ -1,0 +1,37 @@
+[
+    {
+        "model": "auth.Group",
+        "unique_fields": ["name"],
+        "records": [
+            {
+                "name": "County Health Records Information Officer"
+
+            },
+            {
+                "name": "Sub County Health Records Information Officer"
+            },
+            {
+                "name": "Regulators"
+            },
+
+            {
+                "name": "Public Users"
+            },
+            {
+                "name": "National Administrators"
+            },
+            {
+                "name": "Superusers"
+            },
+            {
+                "name": "Reporting Group"
+            },
+            {
+              "name": "Facility Officer Group"
+            },
+            {
+              "name": "Community Officer Group"
+            }
+        ]
+    }
+]
