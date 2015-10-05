@@ -6,9 +6,10 @@ Master Facility List API
 .. image:: https://badge.fury.io/py/mfl.svg
     :target: http://badge.fury.io/py/mfl
 
-.. image:: https://readthedocs.org/projects/mfl-api/badge/?version=latest
-    :target: https://readthedocs.org/projects/mfl-api/?badge=latest
+.. image:: https://readthedocs.org/projects/mfl-api-docs/badge/?version=latest
+    :target: http://mfl-api-docs.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status
+
 
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/MasterFacilityList/mfl_api
