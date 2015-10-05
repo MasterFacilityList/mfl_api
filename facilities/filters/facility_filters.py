@@ -94,7 +94,8 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(
         name='facility_service__facility',
         lookup_type='exact')
-    service = django_filters.AllValuesFilter(lookup_type='exact')
+    service = django_filters.AllValuesFilter(
+        name="facility_service__service", lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating

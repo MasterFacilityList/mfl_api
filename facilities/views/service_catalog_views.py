@@ -28,7 +28,8 @@ from ..filters import (
     ServiceCategoryFilter,
     OptionFilter,
     ServiceFilter,
-    FacilityServiceFilter
+    FacilityServiceFilter,
+    FacilityServiceRatingFilter
 )
 
 
@@ -146,6 +147,7 @@ class FacilityServiceRatingListView(generics.ListCreateAPIView):
     throttle_scope = 'rating'
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
+    filter_class = FacilityServiceRatingFilter
     ordering_fields = ('rating', )
 
 
