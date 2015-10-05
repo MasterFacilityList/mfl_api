@@ -371,6 +371,93 @@ class TestCHUpdatesApproval(LoginMixin, APITestCase):
         self.assertEquals(2, CommunityHealthWorker.objects.filter(
             health_unit=chu_refetched).count())
 
+    def test_approve_chew_updates_with_ids_no_id_no_and_is_incharge(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chew_1 = mommy.make(CommunityHealthWorker, health_unit=chu)
+        chew_2 = mommy.make(CommunityHealthWorker, health_unit=chu)
+        chu.is_approved = True
+        chu.save()
+        chews = [
+            {
+                "first_name": "Chew wa kwanza",
+                "last_name": "Jina ya pili",
+                "id": str(chew_1.id),
+            },
+            {
+                "first_name": "Chew wa pili",
+                "last_name": "Jina ya pili ya chew wa pili",
+                "id": str(chew_2.id)
+            }
+        ]
+        data = {
+            'health_unit_workers': chews
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
+        self.assertEquals(2, CommunityHealthWorker.objects.count())
+        self.assertEquals(1, ChuUpdateBuffer.objects.count())
+        update = ChuUpdateBuffer.objects.all()[0]
+        self.assertIsNotNone(update.health_unit)
+        self.assertEquals(update.basic, '{}')
+        self.assertIsNone(update.contacts)
+        self.assertIsNotNone(update.workers)
+
+        approve_update_url = self.approve_url + "{}/".format(update.id)
+        approve_data = {
+            "is_approved": True
+
+        }
+        response = self.client.patch(approve_update_url, approve_data)
+        self.assertEquals(200, response.status_code)
+        chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
+        self.assertEquals(2, CommunityHealthWorker.objects.count())
+        self.assertEquals(2, CommunityHealthWorker.objects.filter(
+            health_unit=chu_refetched).count())
+
+    def test_approve_chew_updates_without_ids(self):
+        chu = mommy.make(CommunityHealthUnit)
+        chu.is_approved = True
+        chu.save()
+        chews = [
+            {
+                "first_name": "Chew wa kwanza",
+                "last_name": "Jina ya pili",
+                'is_incharge': True,
+            },
+            {
+                "first_name": "Chew wa pili",
+                "last_name": "Jina ya pili ya chew wa pili",
+                'is_incharge': False,
+            }
+        ]
+        data = {
+            'health_unit_workers': chews
+        }
+        url = self.url + "{}/".format(chu.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
+        self.assertEquals(1, ChuUpdateBuffer.objects.count())
+        update = ChuUpdateBuffer.objects.all()[0]
+        self.assertIsNotNone(update.health_unit)
+        self.assertEquals(update.basic, '{}')
+        self.assertIsNone(update.contacts)
+        self.assertIsNotNone(update.workers)
+
+        approve_update_url = self.approve_url + "{}/".format(update.id)
+        approve_data = {
+            "is_approved": True
+
+        }
+        response = self.client.patch(approve_update_url, approve_data)
+        self.assertEquals(200, response.status_code)
+        chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
+        self.assertEquals(2, CommunityHealthWorker.objects.count())
+        self.assertEquals(2, CommunityHealthWorker.objects.filter(
+            health_unit=chu_refetched).count())
+
     def test_contacts_with_ids(self):
         chu = mommy.make(CommunityHealthUnit)
         chu.is_approved = True
