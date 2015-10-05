@@ -561,6 +561,9 @@ class FacilityServiceRatingSerializer(
     facility_name = serializers.ReadOnlyField(
         source='facility_service.facility.name'
     )
+    facility_id = serializers.ReadOnlyField(
+        source='facility_service.facility.id'
+    )
     service_name = serializers.ReadOnlyField(
         source='facility_service.service.name'
     )
