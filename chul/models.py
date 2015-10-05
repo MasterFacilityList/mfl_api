@@ -45,11 +45,11 @@ class CommunityHealthUnitContact(AbstractBase):
     class Meta:
         unique_together = ('health_unit', 'contact', )
         # a hack since the view_communityhealthunitcontact
-        # is disppearing into thin air
+        # is disappearing into thin air
         permissions = (
             (
                 "view_communityhealthunitcontact",
-                "Can view communty health_unit contact"
+                "Can view community health_unit contact"
             ),
         )
 
@@ -90,6 +90,12 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
     def __str__(self):
         return self.name
+
+    @property
+    def workers(self):
+        from .serializers import CommunityHealthWorkerPostSerializer
+        return CommunityHealthWorkerPostSerializer(
+            self.health_unit_workers, many=True).data
 
     def validate_facility_is_not_closed(self):
         if self.facility.closed:
@@ -190,7 +196,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 class CommunityHealthWorkerContact(AbstractBase):
 
     """
-    The contacts of the healh worker.
+    The contacts of the health worker.
 
     They may be as many as the health worker has.
     """
@@ -206,7 +212,7 @@ class CommunityHealthWorkerContact(AbstractBase):
 class CommunityHealthWorker(AbstractBase):
 
     """
-    A person who is incharge of a certain community health area.
+    A person who is in-charge of a certain community health area.
 
     The status of the worker that is whether still active or not will be
     shown by the active field inherited from abstract base.
@@ -217,7 +223,7 @@ class CommunityHealthWorker(AbstractBase):
     is_incharge = models.BooleanField(default=False)
     health_unit = models.ForeignKey(
         CommunityHealthUnit,
-        help_text='The health unit the worker is incharge of',
+        help_text='The health unit the worker is in-charge of',
         related_name='health_unit_workers')
 
     def __str__(self):
@@ -234,6 +240,17 @@ class CommunityHealthWorker(AbstractBase):
 @reversion.register
 @encoding.python_2_unicode_compatible
 class CHUService(AbstractBase):
+
+    """
+    The services offered by the Community Health Units
+
+    Examples:
+        1. First Aid Administration
+        2. De-worming e.t.c.
+
+    All the community health units offer these services. Hence, there is
+    no need to link a COmmunity Health Unit to a CHUService instance
+    """
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
 
@@ -275,7 +292,7 @@ class ChuUpdateBuffer(AbstractBase):
     def validate_atleast_one_attribute_updated(self):
         if not self.workers and not self.contacts and not \
                 self.basic and not self.is_new:
-            raise ValidationError({"__all__": ["Nothing was editted"]})
+            raise ValidationError({"__all__": ["Nothing was edited"]})
 
     def update_basic_details(self):
         basic_details = json.loads(self.basic)
@@ -305,13 +322,20 @@ class ChuUpdateBuffer(AbstractBase):
                     id=chew['id'])
                 chew_obj.first_name = chew['first_name']
                 chew_obj.last_name = chew['last_name']
-                chew_obj.id_number = chew['id_number']
-                chew_obj.is_incharge = chew['is_incharge']
+                if 'id_number' in chew:
+                    chew_obj.id_number = chew['id_number']
+                if 'is_incharge' in chew:
+                    chew_obj.is_incharge = chew['is_incharge']
                 chew_obj.save()
             else:
                 try:
-                    CommunityHealthWorker.objects.get(
-                        id_number=chew['id_number'])
+
+                    id_number = chew.get('id_number', None)
+                    if id_number:
+                        CommunityHealthWorker.objects.get(
+                            id_number=chew['id_number'])
+                    else:
+                        CommunityHealthWorker.objects.create(**chew)
                 except CommunityHealthWorker.DoesNotExist:
                     CommunityHealthWorker.objects.create(**chew)
 

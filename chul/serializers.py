@@ -52,8 +52,7 @@ class CommunityHealthWorkerPostSerializer(
 class CommunityHealthUnitSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     status_name = serializers.ReadOnlyField(source="status.name")
-    health_unit_workers = CommunityHealthWorkerPostSerializer(
-        many=True, required=False)
+    health_unit_workers = serializers.ReadOnlyField(source='workers')
     facility_name = serializers.ReadOnlyField(source='facility.name')
     facility_ward = serializers.ReadOnlyField(source='facility.ward.name')
     facility_subcounty = serializers.ReadOnlyField(
@@ -121,9 +120,27 @@ class CommunityHealthUnitSerializer(
             chews = json.dumps(chews)
             update.workers = chews
         if contacts:
+            for contact in contacts:
+                contact_type = ContactType.objects.get(
+                    id=contact['contact_type'])
+                contact['contact_type_name'] = contact_type.name
+
             contacts = json.dumps(contacts)
+
             update.contacts = contacts
         update.save()
+
+    def _ensure_all_chew_required_provided(self, chew):
+        if 'first_name' and 'last_name' not in chew:
+            self.inlined_errors.update({
+                "Community Health Worker": [
+                    "Ensure the CHEW first name and last name are provided"
+                ]
+            })
+
+    def _validate_chew(self, chews):
+        for chew in chews:
+            self._ensure_all_chew_required_provided(chew)
 
     def save_chew(self, instance, chews, context):
         for chew in chews:
@@ -155,7 +172,7 @@ class CommunityHealthUnitSerializer(
                 continue
             try:
                 ContactType.objects.get(id=contact['contact_type'])
-            except ContactType.DoesNotExist:
+            except (ContactType.DoesNotExist, ValueError):
                 self.inlined_errors.update(
                     {
                         "contact": ["The provided contact_type does not exist"]
@@ -208,6 +225,7 @@ class CommunityHealthUnitSerializer(
         contacts = self.initial_data.pop('contacts', [])
 
         self._validate_contacts(contacts)
+        self._validate_chew(chews)
 
         if not self.inlined_errors:
             validated_data.pop('health_unit_workers', None)
@@ -221,20 +239,18 @@ class CommunityHealthUnitSerializer(
             raise ValidationError(self.inlined_errors)
 
     def update(self, instance, validated_data):
+        self.inlined_errors = {}
         chews = self.initial_data.pop('health_unit_workers', [])
         contacts = self.initial_data.pop('contacts', [])
         chu = CommunityHealthUnit.objects.get(id=instance.id)
-
-        if chu.is_approved and not instance.is_rejected:
-            self.buffer_updates(validated_data, instance, chews, contacts)
-            return instance
-
-        self.inlined_errors = {}
-
-        validated_data.pop('health_unit_workers', None)
-
         self._validate_contacts(contacts)
+        self._validate_chew(chews)
+
         if not self.inlined_errors:
+            if chu.is_approved and not instance.is_rejected:
+                self.buffer_updates(validated_data, instance, chews, contacts)
+                return instance
+
             super(CommunityHealthUnitSerializer, self).update(
                 instance, validated_data)
             self.save_chew(instance, chews, self.context)
@@ -267,6 +283,7 @@ class CommunityHealthUnitContactSerializer(
 class CHURatingSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
     facility_name = serializers.ReadOnlyField(source='chu__facility__name')
+    facility_id = serializers.ReadOnlyField(source='chu__facility__id')
     chu_name = serializers.ReadOnlyField(source='chu__name')
 
     class Meta(object):
