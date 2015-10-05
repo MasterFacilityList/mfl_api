@@ -51,7 +51,7 @@ class TestCommunityHealthUnit(TestCase):
     def test_chu_approval_or_rejection_and_not_both(self):
         with self.assertRaises(ValidationError):
             mommy.make(CommunityHealthUnit, is_approved=True, is_rejected=True)
-        # test rejecting an approvec chu
+        # test rejecting an approve chu
         chu = mommy.make(CommunityHealthUnit, is_approved=True)
         chu.is_rejected = True
         chu.is_approved = False
@@ -133,7 +133,7 @@ class TestCommunityHealthUnit(TestCase):
         chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
         self.assertFalse(chu_refetched.has_edits)
 
-    def test_has_edits_false_afater_rejection(self):
+    def test_has_edits_false_after_rejection(self):
         chu = mommy.make(CommunityHealthUnit)
         chu.is_approved = True
         chu.save()
