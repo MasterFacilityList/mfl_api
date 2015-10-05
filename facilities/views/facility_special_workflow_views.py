@@ -146,7 +146,7 @@ class FacilityPDFDownloadView(DownloadPDFMixin, generics.RetrieveAPIView):
     queryset = Facility.objects.all()
 
     @never_cache
-    def get(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         facility = self.get_object()
         template = loader.get_template(self.report_tpl)
         report_date = timezone.now().isoformat()
@@ -158,28 +158,38 @@ class FacilityPDFDownloadView(DownloadPDFMixin, generics.RetrieveAPIView):
             facility=facility)
         regulating_body = regulating_bodies[0] if regulating_bodies else None
 
-        try:
-            facility_coordinates = facility.facility_coordinates_through
-        except:
-            facility_coordinates = None
-        context = Context({
+        ctx_data = {
             "report_date": report_date,
             "facility": facility,
             "services": services,
             "contacts": contacts,
             "officers": officers,
             "chus": chus,
-            "regulating_body": regulating_body,
-            "longitude": facility_coordinates.simplify_coordinates.get(
-                'coordinates')[0] if facility_coordinates else None,
-            "latitude": facility_coordinates.simplify_coordinates.get(
-                'coordinates')[1] if facility_coordinates else None,
-            "facility_coordinates": facility_coordinates
-        })
+            "regulating_body": regulating_body
+        }
+
+        if request.user.has_perm('facilities.view_facility_coordinates'):
+            try:
+                facility_coordinates = facility.facility_coordinates_through
+            except:
+                facility_coordinates = None
+
+            ctx_data["longitude"] = (
+                facility_coordinates.simplify_coordinates.get('coordinates')[0]
+                if facility_coordinates else None
+            )
+            ctx_data["latitude"] = (
+                facility_coordinates.simplify_coordinates.get('coordinates')[1]
+                if facility_coordinates else None
+                )
+            ctx_data["facility_coordinates"] = facility_coordinates
+
         file_name = '{} ({})'.format(
             facility.name.lower(), self.filename_padding
         )
-        return self.download_file(template.render(context), file_name)
+        return self.download_file(
+            template.render(Context(ctx_data)), file_name
+        )
 
 
 class FacilityCoverTemplate(FacilityPDFDownloadView):
