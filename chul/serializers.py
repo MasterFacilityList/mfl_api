@@ -267,6 +267,7 @@ class CommunityHealthUnitContactSerializer(
 class CHURatingSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
     facility_name = serializers.ReadOnlyField(source='chu__facility__name')
+    facility_id = serializers.ReadOnlyField(source='chu__facility__id')
     chu_name = serializers.ReadOnlyField(source='chu__name')
 
     class Meta(object):
