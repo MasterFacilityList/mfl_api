@@ -62,6 +62,7 @@ from django.contrib.auth.models import Group, Permission
 
 
 class TestGroupAndPermissions(object):
+
     def setUp(self):
         super(TestGroupAndPermissions, self).setUp()
         self.view_unpublished_perm = Permission.objects.get(
@@ -755,6 +756,38 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, 'correction_template.html')
+
+    def test_facility_detail_with_permission(self):
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_detail_report',
+            kwargs={'pk': facility.id}
+        )
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'facility_details.html')
+
+    def test_facility_detail_without_permission(self):
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_detail_report',
+            kwargs={'pk': facility.id}
+        )
+        get_user_model().objects.create_user(
+            email='noperms@domain.com',
+            password='password1',
+            first_name='fname',
+            employee_number='enum'
+        )
+        client = self.client.__class__()
+        self.assertTrue(
+            client.login(email='noperms@domain.com', password='password1')
+        )
+        response = client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'facility_details.html')
 
 
 class TestDashBoardView(LoginMixin, APITestCase):
