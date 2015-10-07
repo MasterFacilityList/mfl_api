@@ -11,6 +11,7 @@ function run_backend(){
         mkdir "$LOG_FOLDER"
     fi
 
+    pip install --quiet -r requirements.txt
     cp .env-example .env
     wget "$DUMP_URL" -O mfl_dump.tar.gz --quiet
     tar xzf mfl_dump.tar.gz
