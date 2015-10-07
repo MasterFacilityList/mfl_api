@@ -26,18 +26,20 @@ function run_backend(){
 }
 
 function run_e2e(){
-    cd $BUILD_DIR
-    curl --retry 5 --retry-delay 2 -Lv http://localhost:8061 -o /dev/null
+    local old_pwd="$OLDPWD"
+    cd $HOME
+    git clone --depth=1 --branch=master --quiet https://github.com/masterfacilitylist/mfl_admin_web
+    cd mfl_admin_web
+    npm install
+    export PATH="$(npm bin):$PATH"
+    grunt default
     nohup grunt connect:prod &
     npm run update-webdriver
+    curl --retry 5 --retry-delay 2 -Lv http://localhost:8061 -o /dev/null
     grunt test:e2e
-
     killall --wait grunt
-
-    cd $OLDPWD
+    cd $old_pwd
 }
 
-
 run_backend
-sleep 30s
 run_e2e
