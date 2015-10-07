@@ -39,4 +39,5 @@ function run_e2e(){
 
 
 run_backend
+sleep 30s
 run_e2e
