@@ -21,7 +21,7 @@ function run_backend(){
     psql mfl mfl -f mfl_dump.sql --quiet -o /dev/null
     python manage.py migrate -v0
     gunicorn -w 3 --timeout=300 --graceful-timeout=300 config.wsgi:application --bind=127.0.0.1:8061 --access-logfile "$acc_log" --error-logfile "$err_log" --log-level info --daemon
-    deactivate
+
     cd $OLDPWD
 }
 
