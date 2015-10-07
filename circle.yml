@@ -19,8 +19,11 @@ test:
     - case $CIRCLE_NODE_INDEX in 0) tox -v;; 1) bash test_e2e.sh ;; esac:
         parallel: true
         timeout: 300
+        environment:
+          LOG_FOLDER: "$HOME/$CIRCLE_PROJECT_REPONAME/_logs_"
 
 
 general:
   artifacts:
     - "htmlcov"
+    - "_logs_"
