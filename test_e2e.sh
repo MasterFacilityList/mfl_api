@@ -30,11 +30,11 @@ function run_e2e(){
     cd $HOME
     git clone --depth=1 --branch=master --quiet https://github.com/masterfacilitylist/mfl_admin_web
     cd mfl_admin_web
-    npm install
+    npm install >&/dev/null
     export PATH="$(npm bin):$PATH"
-    grunt default
+    grunt default >&/dev/null
     nohup grunt connect:prod &
-    npm run update-webdriver
+    npm run update-webdriver >&/dev/null
     curl --retry 5 --retry-delay 2 -Lv http://localhost:8061 -o /dev/null
     grunt test:e2e
     killall --wait grunt
