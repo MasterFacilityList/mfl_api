@@ -5,7 +5,7 @@ from facilities.models import JobTitle
 
 
 class AdminOfficeContact(Contact):
-    admin_office = models.ForeignKey('AdminOffice')
+    admin_office = models.ForeignKey('AdminOffice', related_name='contacts')
 
 
 class AdminOffice(AbstractBase):
