@@ -197,6 +197,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
+    user_groups = serializers.ReadOnlyField()
 
     def _upadate_validated_data_with_audit_fields(
             self, validated_data, is_creation=False):

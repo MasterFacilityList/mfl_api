@@ -165,8 +165,13 @@ class TestLastLog(TestCase):
 
 
 class TestCustomAndProxyGroup(TestCase):
+    def setUp(self):
+        self.user = mommy.make(MflUser)
+        super(TestCustomAndProxyGroup, self).setUp()
+
     def test_group_boolean_fields_true(self):
         group = mommy.make(Group)
+        self.user.groups.add(group)
         mommy.make(
             CustomGroup,
             group=group,
@@ -181,6 +186,11 @@ class TestCustomAndProxyGroup(TestCase):
         self.assertTrue(proxy_group.is_national)
         self.assertTrue(proxy_group.is_county_level)
         self.assertTrue(proxy_group.is_sub_county_level)
+        self.assertTrue(self.user.user_groups.get('is_administrator'))
+        self.assertTrue(self.user.user_groups.get('is_regulator'))
+        self.assertTrue(self.user.user_groups.get('is_county_level'))
+        self.assertTrue(self.user.user_groups.get('is_sub_county_level'))
+        self.assertTrue(self.user.user_groups.get('is_national'))
 
     def test_group_boolean_fields_false(self):
         group = mommy.make(Group)

@@ -179,6 +179,30 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         return self.get_all_permissions()
 
     @property
+    def user_groups(self):
+        user_groups = self.groups.all()
+        proxy_groups = ProxyGroup.objects.filter(
+            id__in=[group.id for group in user_groups]
+        )
+
+        reg, admin, county, sub_county, national = (False,) * 5
+
+        for proxy in proxy_groups:
+            reg = True if proxy.is_regulator else reg
+            admin = True if proxy.is_administrator else admin
+            county = True if proxy.is_county_level else county
+            sub_county = True if proxy.is_sub_county_level else sub_county
+            national = True if proxy.is_national else national
+
+        return {
+            "is_regulator": reg,
+            "is_administrator": admin,
+            "is_county_level": county,
+            "is_national": national,
+            "is_sub_county_level": sub_county
+        }
+
+    @property
     def county(self):
         from common.models import UserCounty
         user_counties = UserCounty.objects.filter(
