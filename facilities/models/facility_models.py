@@ -37,7 +37,7 @@ class KephLevel(AbstractBase):
     Hold the classification of facilities according to
     Kenya Essential Package for health (KEPH)
 
-    Currenlty there are level 1 to level 6
+    Currently there are level 1 to level 6
     """
     name = models.CharField(
         max_length=30, help_text="The name of the KEPH e.g Level 1")
@@ -45,7 +45,7 @@ class KephLevel(AbstractBase):
         null=True, blank=True,
         help_text='A short description of the KEPH level')
     is_facility_level = models.BooleanField(
-        default=True, help_text='Is the KEPH level applicable to facilties')
+        default=True, help_text='Is the KEPH level applicable to facilities')
 
     objects = FacilityKephManager()
     everything = models.Manager()
@@ -87,7 +87,7 @@ class Owner(AbstractBase, SequenceMixin):
 
     For the master facility list, ownership especially for the faith-based
     facilities is broadened to also include the body that coordinates
-    service delivery and health programmes. Therefore, the Christian Health
+    service delivery and health programs. Therefore, the Christian Health
     Association of Kenya (CHAK), Kenya Episcopal Conference (KEC), or
     Supreme Council of Kenya Muslim (SUPKEM) will be termed as owners though
     in fact the facilities under them are owned by the individual churches,
@@ -101,7 +101,7 @@ class Owner(AbstractBase, SequenceMixin):
     code = SequenceField(
         unique=True,
         help_text="A unique number to identify the owner."
-        "Could be up to 7 characteres long.", editable=False)
+        "Could be up to 7 characters long.", editable=False)
     abbreviation = models.CharField(
         max_length=30, null=True, blank=True,
         help_text="Short form of the name of the owner e.g Ministry of health"
@@ -125,7 +125,7 @@ class Owner(AbstractBase, SequenceMixin):
 class JobTitle(AbstractBase):
 
     """
-    This is the job title names of the officers incharge of facilities.
+    This is the job title names of the officers in-charge of facilities.
 
     For example, Nursing Officer In-Charge, Medical Superintendent, and
     Hospital Director. This should not be confused with the professional
@@ -150,9 +150,9 @@ class JobTitle(AbstractBase):
 class OfficerContact(AbstractBase):
 
     """
-    The contact details of the officer incharge.
+    The contact details of the officer in-charge.
 
-    The officer incharge may have as many mobile numbers as possible.
+    The officer in-charge may have as many mobile numbers as possible.
     Also the number of email addresses is not limited.
     """
     officer = models.ForeignKey(
@@ -160,7 +160,7 @@ class OfficerContact(AbstractBase):
         help_text="The is the officer in charge", on_delete=models.PROTECT)
     contact = models.ForeignKey(
         Contact,
-        help_text="The contact of the officer incharge may it be email, "
+        help_text="The contact of the officer in-charge may it be email, "
         " mobile number etc", on_delete=models.PROTECT)
 
     def __str__(self):
@@ -186,7 +186,7 @@ class Officer(AbstractBase):
         help_text='The  National Identity number of the officer')
     registration_number = models.CharField(
         max_length=100, null=True, blank=True,
-        help_text="This is the licence number of the officer. e.g for a nurse"
+        help_text="This is the license number of the officer. e.g for a nurse"
         " use the NCK registration number.")
     job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
 
@@ -242,7 +242,7 @@ class FacilityType(AbstractBase):
     sub_division = models.CharField(
         max_length=100, null=True, blank=True,
         help_text="This is a further division of the facility type e.g "
-        "Hospitals can be further divided into District hispitals and"
+        "Hospitals can be further divided into District hospitals and"
         " Provincial Hospitals.")
     preceding = models.ForeignKey(
         'self', null=True, blank=True, related_name='preceding_type',
@@ -281,7 +281,7 @@ class RegulatingBody(AbstractBase):
     owner and the Regulator. For example, MOH-owned facilities are
     gazetted by the Director of Medical Services (DMS)  and the facilities
     owned by private practice nurses are licensed by the NCK.
-    In some cases this may not hold e.g a KMPDB and not NCK will licence a
+    In some cases this may not hold e.g a KMPDB and not NCK will license a
     nursing home owned by a nurse
     """
     name = models.CharField(
@@ -372,7 +372,7 @@ class RegulationStatus(AbstractBase):
         3. License Suspended:
             A facility whose license has been temporarily stopped for
             reasons including self-request, sickness, and disciplinary action.
-        4. License Cancelled:
+        4. License Canceled:
             A facility whose license has been permanently stopped by the
             national body.
         5. Pending Registration:
@@ -395,7 +395,7 @@ class RegulationStatus(AbstractBase):
         is_initial_state:
             This is the state that shows whether the state is the
             first state
-            Is should be only one for the entire api
+            Is should be only one for the entire API
         is_final_state:
             This is last state of the of the workflow state.
             Just like the is_initial_state is should be the only one in the
@@ -405,7 +405,7 @@ class RegulationStatus(AbstractBase):
             If does not then leave it blank.
             A status can have only one previous state.
         next_status:
-            If the status has a suceedding status, it should be added here,
+            If the status has a succeeding status, it should be added here,
             If does not not leave it blank
             Again just the 'previous' field,  a status can have only one
             'next' field.
@@ -417,14 +417,14 @@ class RegulationStatus(AbstractBase):
     description = models.TextField(
         null=True, blank=True,
         help_text="A short description of the regulation state or state e.g"
-        "PENDING_LICENSING could be descriped as 'waiting for the license to"
+        "PENDING_LICENSING could be described as 'waiting for the license to"
         "begin operating' ")
     previous_status = models.ForeignKey(
         'self', related_name='previous_state', null=True, blank=True,
         help_text='The regulation_status preceding this regulation status.')
     next_status = models.ForeignKey(
         'self', related_name='next_state', null=True, blank=True,
-        help_text='The regulation_status suceedding this regulation status.')
+        help_text='The regulation_status succeeding this regulation status.')
     is_initial_state = models.BooleanField(
         default=False,
         help_text='Indicates whether it is the very first state'
@@ -435,7 +435,7 @@ class RegulationStatus(AbstractBase):
         ' in the regulation work-flow')
     is_default = models.BooleanField(
         default=False,
-        help_text='The default regulation status for facilties')
+        help_text='The default regulation status for facilities')
 
     @property
     def previous_state_name(self):
@@ -560,7 +560,7 @@ class Facility(SequenceMixin, AbstractBase):
     A health institution in Kenya.
 
     The health institution considered as facilities include:
-    Health Centres, Dispensaries, Hospitals etc.
+    Health Centers, Dispensaries, Hospitals etc.
     """
     name = models.CharField(
         max_length=100,
@@ -1216,7 +1216,7 @@ class FacilityUpdates(AbstractBase):
 class FacilityOperationState(AbstractBase):
 
     """
-    logs chages to the operation_status of a facility.
+    logs changes to the operation_status of a facility.
     """
     operation_status = models.ForeignKey(
         FacilityStatus,
@@ -1265,7 +1265,7 @@ class FacilityUpgrade(AbstractBase):
     is_cancelled = models.BooleanField(
         default=False,
         help_text='Indicates whether a facility upgrade or downgrade has been'
-        'cancelled or not')
+        'canceled or not')
     is_upgrade = models.BooleanField(default=True)
     current_keph_level_name = models.CharField(
         max_length=100, null=True, blank=True)
@@ -1361,7 +1361,7 @@ class FacilityUnit(AbstractBase):
     Autonomous units within a facility that are regulated differently from the
     facility.
 
-    For example AKUH  is a facility and licenced by KMPDB.
+    For example AKUH  is a facility and licensed by KMPDB.
     In AKUH there are other units such as its pharmacy which is licensed by
     PPB.
     The pharmacy will in this case be treated as a facility unit.
@@ -1390,7 +1390,7 @@ class FacilityUnit(AbstractBase):
 class ServiceCategory(AbstractBase):
 
     """
-    Categorisation of health services. e.g Immunisation, Antenatal,
+    Categorization of health services. e.g Immunization, Antenatal,
     Family Planning etc.
     """
     name = models.CharField(
@@ -1402,7 +1402,7 @@ class ServiceCategory(AbstractBase):
         help_text='A short form of the category e.g ANC for antenatal')
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
-        help_text="The keph level at which certain services should be offered")
+        help_text="The KEPH level at which certain services should be offered")
 
     def __str__(self):
         return self.name
@@ -1421,7 +1421,7 @@ class OptionGroup(AbstractBase):
 
     """
     Groups similar a options available to a service.
-    E.g  options 1 to 6 could fall after keph level group
+    E.g  options 1 to 6 could fall after KEPH level group
     """
     name = models.CharField(max_length=100, unique=True)
 
@@ -1519,10 +1519,10 @@ class FacilityService(AbstractBase):
     option = models.ForeignKey(Option, null=True, blank=True)
     is_confirmed = models.BooleanField(
         default=False,
-        help_text='Indiates whether a service has been approved by the CHRIO')
+        help_text='Indicates whether a service has been approved by the CHRIO')
     is_cancelled = models.BooleanField(
         default=False,
-        help_text='Indicates whether a service has been cancelled by the '
+        help_text='Indicates whether a service has been canceled by the '
         'CHRIO')
     # For services that do not have options, the service will be linked
     # directly to the

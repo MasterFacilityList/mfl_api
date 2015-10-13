@@ -6,13 +6,12 @@ from model_mommy import mommy
 
 from facilities.models import JobTitle
 from common.models import County
-from common.tests import LogginMixin
-
+from common.tests.test_views import LoginMixin
 
 from ..models import AdminOffice, AdminOfficeContact
 
 
-class TestAdminOfficeView(LogginMixin, APITestCase):
+class TestAdminOfficeView(LoginMixin, APITestCase):
     def setUp(self):
         self.url = reverse("api:admin_offices:admin_offices_list")
         super(TestAdminOfficeView, self).setUp()
@@ -59,7 +58,7 @@ class TestAdminOfficeView(LogginMixin, APITestCase):
         self.assertEquals(1, AdminOffice.objects.count())
 
 
-class TestAdminOfficeContact(LogginMixin, APITestCase):
+class TestAdminOfficeContact(LoginMixin, APITestCase):
     def setUp(self):
         self.url = reverse("api:admin_offices:admin_office_contacts_list")
         super(TestAdminOfficeContact, self).setUp()

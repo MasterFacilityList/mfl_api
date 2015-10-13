@@ -1,5 +1,5 @@
 """
-Module containing useful function for validating a faility's inlined and
+Module containing useful functions for validating a facility's in-lined and
 many to many attributes before they are saved
 """
 
@@ -131,6 +131,7 @@ def create_facility_contacts(instance, contact_data, validated_data):
 def create_facility_units(instance, unit_data, validated_data):
     from facilities.serializers import FacilityUnitSerializer
     unit_data.pop('department_name', None)
+    unit_data.pop('regulating_body_name', None)
     unit_data['facility'] = instance.id
     unit_data = inject_audit_fields(unit_data, validated_data)
     try:
@@ -180,7 +181,7 @@ class CreateFacilityOfficerMixin(object):
 
     def _validate_facility(self, data):
         """
-        Comfirm that the provided facility exists
+        Confirm that the provided facility exists
         """
         try:
             Facility.objects.get(id=data.get('facility_id', None))
