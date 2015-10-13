@@ -8,7 +8,7 @@ from facilities.models import (
     Service, FacilityService, FacilityContact,
     RegulatingBody, FacilityUnit, JobTitle,
     OfficerContact, Officer, FacilityOfficer,
-    Option, FacilityDepartment)
+    Option, FacilityDepartment, FacilityUpgrade, KephLevel)
 
 from model_mommy import mommy
 
@@ -605,3 +605,46 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
         self.assertEquals(0, FacilityService.objects.count())
         self.assertEquals(0, FacilityContact.objects.count())
         self.assertEquals(0, FacilityUnit.objects.count())
+
+
+class TestFacilityUpgradeConfirmationAndRejection(LoginMixin, APITestCase):
+    def test_upgrade_confirmation(self):
+        facility = mommy.make(Facility)
+        keph = mommy.make(KephLevel)
+        mommy.make(FacilityApproval, facility=facility)
+        upgrade = mommy.make(
+            FacilityUpgrade, facility=facility, keph_level=keph)
+        pending_update = FacilityUpdates.objects.all()[0]
+        pending_update.approved = True
+        pending_update.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertEquals(upgrade.keph_level, facility_refetched.keph_level)
+        self.assertEquals(
+            upgrade.facility_type, facility_refetched.facility_type)
+
+    def test_upgrade_confirmation_no_keph_level(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        upgrade = mommy.make(
+            FacilityUpgrade, facility=facility)
+        pending_update = FacilityUpdates.objects.all()[0]
+        pending_update.approved = True
+        pending_update.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertEquals(
+            upgrade.facility_type, facility_refetched.facility_type)
+
+    def test_upgrade_rejection(self):
+        facility = mommy.make(Facility)
+        keph = mommy.make(KephLevel)
+        mommy.make(FacilityApproval, facility=facility)
+        upgrade = mommy.make(
+            FacilityUpgrade,
+            facility=facility, keph_level=keph)
+        pending_update = FacilityUpdates.objects.all()[0]
+        pending_update.cancelled = True
+        pending_update.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertNotEquals(upgrade.keph_level, facility_refetched.keph_level)
+        self.assertNotEquals(
+            upgrade.facility_type, facility_refetched.facility_type)

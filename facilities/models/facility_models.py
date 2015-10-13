@@ -943,9 +943,9 @@ class Facility(SequenceMixin, AbstractBase):
 
     def save(self, *args, **kwargs):  # NOQA
         """
-        Overide the save method in order to capture updates to a facility.
+        Override the save method in order to capture updates to a facility.
         This creates a record of the updates in the FacilityUpdates model.
-        The updates will appear on the facilty once the updates have been
+        The updates will appear on the facility once the updates have been
         approved.
         """
         from facilities.serializers import FacilityDetailSerializer
@@ -1074,7 +1074,43 @@ class FacilityUpdates(AbstractBase):
         if self.geo_codes:
             updates['geo_codes'] = json.loads(self.geo_codes)
 
+        try:
+            upgrade = FacilityUpgrade.objects.get(
+                facility=self.facility, is_cancelled=False, is_confirmed=False)
+
+            updates['upgrades'] = {
+                "keph": upgrade.keph_level,
+                "facility_type": upgrade.facility_type,
+                "reason": upgrade.reason.reason
+            }
+        except FacilityUpgrade.DoesNotExist:
+            pass
+
         return updates
+
+    def approve_upgrades(self):
+        try:
+            upgrade = FacilityUpgrade.objects.get(
+                facility=self.facility, is_cancelled=False, is_confirmed=False)
+
+            upgrade.is_confirmed = True
+            upgrade.save()
+            self.facility.keph_level = upgrade.keph_level if \
+                upgrade.keph_level else self.facility.keph_level
+            self.facility.facility_type = upgrade.facility_type
+            self.facility.save(allow_save=True)
+        except FacilityUpgrade.DoesNotExist:
+            pass
+
+    def reject_upgrades(self):
+        try:
+            upgrade = FacilityUpgrade.objects.get(
+                facility=self.facility, is_cancelled=False, is_confirmed=False)
+
+            upgrade.is_cancelled = True
+            upgrade.save()
+        except FacilityUpgrade.DoesNotExist:
+            pass
 
     def update_facility_has_edits(self):
         if not self.approved and not self.cancelled:
@@ -1180,7 +1216,7 @@ class FacilityUpdates(AbstractBase):
         else:
             if updates >= 1 and self.is_new:
                 error = ("The pending facility update has to be either"
-                         "approved or cancelled before another one is made")
+                         "approved or canceled before another one is made")
                 raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
@@ -1197,8 +1233,11 @@ class FacilityUpdates(AbstractBase):
             self.update_facility_services() if self.services else None
             self.update_officer_in_charge() if self.officer_in_charge else None
             self.update_geo_codes() if self.update_geo_codes else None
+            self.approve_upgrades()
             self.facility.has_edits = False
             self.facility.save(allow_save=True)
+        if self.cancelled:
+            self.reject_upgrades()
         super(FacilityUpdates, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -1294,6 +1333,20 @@ class FacilityUpgrade(AbstractBase):
         super(FacilityUpgrade, self).clean()
         self.validate_only_one_type_change_at_a_time()
         self.populate_current_keph_level_and_facility_type()
+
+    def save(self, *args, **kwargs):
+        if not self.is_cancelled and not self.is_confirmed:
+            self.facility.has_edits = True
+            self.facility.save(allow_save=True)
+        try:
+            FacilityUpdates.objects.get(
+                facility=self.facility, approved=False, cancelled=False)
+        except FacilityUpdates.DoesNotExist:
+            FacilityUpdates.objects.create(
+                is_new=True, facility=self.facility,
+                created_by=self.updated_by, updated_by=self.updated_by)
+
+        super(FacilityUpgrade, self).save(*args, **kwargs)
 
     def __str__(self):
         return "{}: {} ({})".format(
