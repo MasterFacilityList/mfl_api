@@ -135,6 +135,22 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
                 health_unit=self)
         ]
 
+    @property
+    def json_features(self):
+        return {
+            "geometry": {
+                "coordinates": [
+                    self.facility.facility_coordinates_through.coordinates[0],
+                    self.facility.facility_coordinates_through.coordinates[1]
+                ]
+            },
+            "properties": {
+                "ward": self.facility.ward.id,
+                "constituency": self.facility.ward.constituency.id,
+                "county": self.facility.ward.county.id
+            }
+        }
+
     def clean(self):
         super(CommunityHealthUnit, self).clean()
         self.validate_facility_is_not_closed()

@@ -60,8 +60,7 @@ class CommunityHealthUnitSerializer(
     facility_county = serializers.ReadOnlyField(
         source='facility.ward.constituency.county.name')
     contacts = serializers.ReadOnlyField()
-    geo_features = serializers.ReadOnlyField(
-        source='facility.coordinates.json_features')
+    geo_features = serializers.ReadOnlyField(source='json_features')
     boundaries = serializers.ReadOnlyField(source='facility.boundaries')
     pending_updates = serializers.ReadOnlyField()
     latest_update = serializers.ReadOnlyField(source='latest_update.id')
