@@ -1079,8 +1079,8 @@ class FacilityUpdates(AbstractBase):
                 facility=self.facility, is_cancelled=False, is_confirmed=False)
 
             updates['upgrades'] = {
-                "keph": upgrade.keph_level,
-                "facility_type": upgrade.facility_type,
+                "keph": upgrade.keph_level.name,
+                "facility_type": upgrade.facility_type.name,
                 "reason": upgrade.reason.reason
             }
         except FacilityUpgrade.DoesNotExist:

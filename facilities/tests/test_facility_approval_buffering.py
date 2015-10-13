@@ -608,6 +608,23 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
 
 
 class TestFacilityUpgradeConfirmationAndRejection(LoginMixin, APITestCase):
+
+    def test_get_facility_upgrades(self):
+        facility = mommy.make(Facility)
+        keph = mommy.make(KephLevel)
+        mommy.make(FacilityApproval, facility=facility)
+        mommy.make(
+            FacilityUpgrade, facility=facility, keph_level=keph)
+        pending_update = FacilityUpdates.objects.all()[0]
+        update_url = reverse(
+            "api:facilities:facility_updates_detail",
+            kwargs={'pk': str(pending_update.id)})
+        response = self.client.get(update_url)
+        self.assertEquals(200, response.status_code)
+
+        self.assertIsNotNone(
+            response.data.get('facility_updated_json').get('upgrades'))
+
     def test_upgrade_confirmation(self):
         facility = mommy.make(Facility)
         keph = mommy.make(KephLevel)
