@@ -68,6 +68,13 @@ class ElasticAPI(object):
         search_fields = self.get_search_fields(document_type)
         fields = search_fields if self.get_search_fields(document_type) else \
             ["_all"]
+        query_dsl = None
+        try:
+            json.loads(query)
+            query_dsl = query
+        except:
+            pass
+
         data = {
             "from": 0,
             "size": SEARCH_RESULT_SIZE,
@@ -81,7 +88,11 @@ class ElasticAPI(object):
         }
 
         data = json.dumps(data)
-        result = requests.post(url, data)
+        if query_dsl:
+            print "Nimepitia hapa"
+            result = requests.post(url, query_dsl)
+        else:
+            result = requests.post(url, data)
 
         return result
 
