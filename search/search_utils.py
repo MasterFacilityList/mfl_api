@@ -89,7 +89,6 @@ class ElasticAPI(object):
 
         data = json.dumps(data)
         if query_dsl:
-            print "Nimepitia hapa"
             result = requests.post(url, query_dsl)
         else:
             result = requests.post(url, data)

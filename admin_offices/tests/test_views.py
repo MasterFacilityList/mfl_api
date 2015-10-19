@@ -39,8 +39,7 @@ class TestAdminOfficeView(LoginMixin, APITestCase):
 
         }
         response = self.client.post(self.url, data)
-        self.assertEquals(201, response.status_code)
-        self.assertEquals(1, AdminOffice.objects.count())
+        self.assertEquals(400, response.status_code)
 
     def test_patch(self):
         admin_office = mommy.make(AdminOffice)
@@ -51,11 +50,7 @@ class TestAdminOfficeView(LoginMixin, APITestCase):
             "county": str(county.id)
         }
         response = self.client.patch(admin_office_url, data)
-        self.assertEquals(200, response.status_code)
-        admin_office_refetched = AdminOffice.objects.get(
-            id=admin_office.id)
-        self.assertEquals(county_name, admin_office_refetched.county.name)
-        self.assertEquals(1, AdminOffice.objects.count())
+        self.assertEquals(400, response.status_code)
 
 
 class TestAdminOfficeContact(LoginMixin, APITestCase):
