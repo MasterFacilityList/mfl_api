@@ -9,12 +9,6 @@ class AdminOfficeContactSerializer(
     contact_type_name = serializers.ReadOnlyField(
         source='contact_type.name')
 
-    def validate_contact(self, value):
-        pass
-
-    def validate_contact_type(self, value):
-        pass
-
     class Meta:
         model = AdminOfficeContact
 
@@ -29,7 +23,6 @@ class AdminOfficeSerializer(
     def update_or_create_contacts(self, instance, contacts):
         for contact in contacts:
             contact['admin_office'] = instance
-            # contact_obj = AdminOfficeContactSerializer(data=contact)
             if 'id' in contact:
 
                 contact_obj = AdminOfficeContactSerializer(data=contact)
