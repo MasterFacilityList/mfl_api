@@ -639,6 +639,7 @@ class RegualorSyncListView(generics.ListCreateAPIView):
         'owner', 'mfl_code')
 
 
-class RegualorSyncDetailView(generics.ListCreateAPIView):
+class RegualorSyncDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     queryset = RegulatorSync.objects.all()
     serializer_class = RegulatorSyncSerializer

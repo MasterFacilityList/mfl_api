@@ -1748,6 +1748,6 @@ class TestRegulatorSyncView(LoginMixin, APITestCase):
     def test_get_single(self):
         county = mommy.make(County)
         sync = mommy.make(RegulatorSync, county=county.code)
-        url = self.url + str(sync) + "/"
+        url = self.url + str(sync.id) + "/"
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)

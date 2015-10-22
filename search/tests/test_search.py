@@ -212,6 +212,31 @@ class TestSearchFunctions(ViewTestBase):
 
         self.elastic_search_api.delete_index('test_index')
 
+    def test_search_facility_using_query_dsl(self):
+        url = reverse('api:facilities:facilities_list')
+        self.elastic_search_api = ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
+        facility = mommy.make(Facility, name='Kanyakini')
+        index_instance(facility, 'test_index')
+        query_dsl = {
+            "from": 0,
+            "size": 30,
+            "query": {
+                "query_string": {
+                    "default_field": "name",
+                    "query": "Kanyakini"
+                }
+            }
+        }
+        url = url + "?search={}".format(json.dumps(query_dsl))
+
+        response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+        self.assertIsInstance(response.data.get('results'), list)
+
+        self.elastic_search_api.delete_index('test_index')
+
     def test_seach_auto_complete(self):
         url = reverse('api:facilities:facilities_list')
         self.elastic_search_api = ElasticAPI()

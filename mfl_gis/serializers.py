@@ -47,24 +47,24 @@ class BufferCooridinatesMixin(object):
 
         humanized_data = {}
         machine_data = {}
-
-        try:
-            humanized_data['method_human'] = method.name
-            machine_data['method_id'] = str(
-                validated_data.get('method').id)
-        except AttributeError:
-            method = GeoCodeMethod.objects.get(id=method)
-            humanized_data['method_human'] = method.name
-            machine_data['method_id'] = str(method.id)
-
-        try:
-            humanized_data['source_human'] = source.name
-            machine_data['source_id'] = str(
-                validated_data.get('source').id)
-        except AttributeError:
-            source = GeoCodeSource.objects.get(id=source)
-            humanized_data['source_human'] = source.name
-            machine_data['source_id'] = str(source.id)
+        if 'method' in validated_data:
+            try:
+                humanized_data['method_human'] = method.name
+                machine_data['method_id'] = str(
+                    validated_data.get('method').id)
+            except AttributeError:
+                method = GeoCodeMethod.objects.get(id=method)
+                humanized_data['method_human'] = method.name
+                machine_data['method_id'] = str(method.id)
+        if 'source' in validated_data:
+            try:
+                humanized_data['source_human'] = source.name
+                machine_data['source_id'] = str(
+                    validated_data.get('source').id)
+            except AttributeError:
+                source = GeoCodeSource.objects.get(id=source)
+                humanized_data['source_human'] = source.name
+                machine_data['source_id'] = str(source.id)
 
         long_lat = coordinates.get('coordinates')
         humanized_data["longitude"] = long_lat[0]

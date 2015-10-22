@@ -54,7 +54,7 @@ INDEX_SETTINGS = {
                             "lowercase",
                             "stop",
                             "kstem",
-                            "ngram"
+                            "edgeNGram"
                         ],
                         "tokenizer": "standard"
                     },
@@ -64,9 +64,9 @@ INDEX_SETTINGS = {
                     }
                 },
                 "filter": {
-                    "ngram": {
+                    "edgeNGram": {
                         "min_gram": "2",
-                        "type": "ngram",
+                        "type": "edgeNGram",
                         "max_gram": "15"
                     }
                 }
