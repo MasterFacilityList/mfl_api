@@ -76,7 +76,7 @@
         <span style="float: right; width: 300px; margin-bottom: 5px;"><span class="text-black fw-600">Date:</span> {% now "d F Y" %}</span>
     </p>
     <p style="margin-top: 5px;">
-        <span class="fw-500"><span class="text-black fw-600">TO: </span>{{facility.regulatory_body.name | titlecase}}</span>
+        <span class="fw-500"><span class="text-black fw-600">TO: </span>{{facility.regulatory_body.name | title}}</span>
     </p>
     <p>
         <span class="text-black fw-600">RE:</span> <span class="fw-500">Registration of <span class="text-black fw-600">{{facility.code}} | {{facility.name}}</span></span>
