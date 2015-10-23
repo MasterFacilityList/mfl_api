@@ -339,7 +339,7 @@ SEARCH = {
             "models": [
                 {
                     "name": "facility",
-                    "fields": ["name", "ward_name"],
+                    "fields": ["name"],
                     "boost": ["name"],
                 },
                 {

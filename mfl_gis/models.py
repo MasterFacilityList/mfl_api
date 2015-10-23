@@ -14,6 +14,85 @@ from facilities.models import Facility
 LOGGER = logging.getLogger(__name__)
 
 
+class CoordinatesValidatorMixin(object):
+
+    def validate_longitude_and_latitude_within_kenya(self):
+        try:
+            boundary = WorldBorder.objects.get(code='KEN')
+            if not boundary.mpoly.contains(self.coordinates):
+                # This validation was relaxed ( temporarily? )
+                # The Kenyan boundaries that we have loaded have low fidelity
+                # at the edges, so that facilities that are, say, 100 meters
+                # from the border are reported as not in Kenya
+                # If higher fidelity map data is obtained, this validation
+                # can be brought back
+                LOGGER.error(
+                    '{0} is not within the Kenyan boundaries that we have'
+                    .format(self.coordinates)
+                )
+        except WorldBorder.DoesNotExist:
+            raise ValidationError('Setup error: Kenyan boundaries not loaded')
+
+    def validate_longitude_and_latitude_within_constituency(
+            self, constituency):
+        try:
+            boundary = ConstituencyBoundary.objects.get(
+                area=constituency)
+            if not boundary.mpoly.contains(self.coordinates):
+                raise ValidationError(
+                    {
+                        "coordinates": [
+                            '{0} not contained in boundary of {1}'.format(
+                                self.coordinates,
+                                constituency)
+                        ]
+                    }
+
+                )
+        except ConstituencyBoundary.DoesNotExist:
+            raise ValidationError(
+                'No boundary for {0}'.format(
+                    constituency
+                )
+            )
+
+    def validate_longitude_and_latitude_within_county(self, county):
+        try:
+            boundary = CountyBoundary.objects.get(
+                area=county)
+            if not boundary.mpoly.contains(self.coordinates):
+                raise ValidationError(
+                    {
+                        "coordinates": [
+                            '({0}, {1}) not contained in boundary of {2}'
+                            ''.format(
+                                self.coordinates.x, self.coordinates.y, county)
+                        ]
+                    }
+                )
+        except CountyBoundary.DoesNotExist:
+            raise ValidationError(
+                'No boundary for {0}'.format(county)
+            )
+
+    def validate_longitude_and_latitude_within_ward(self, ward):
+        try:
+            boundary = WardBoundary.objects.get(area=ward)
+            if not boundary.mpoly.contains(self.coordinates):
+                raise ValidationError(
+                    {
+                        "coordinates": [
+                            '{0} not contained in boundary of {1}'.format(
+                                self.coordinates, ward)
+                        ]
+                    }
+                )
+        except WardBoundary.DoesNotExist:
+            LOGGER.error(
+                'Ward {0} does not have boundary info'.format(ward)
+            )
+
+
 class CustomGeoManager(gis_models.GeoManager):
 
     """
@@ -101,7 +180,7 @@ class GeoCodeMethod(GISAbstractBase):
 
 @reversion.register(follow=['facility', 'source', 'method', ])
 @encoding.python_2_unicode_compatible
-class FacilityCoordinates(GISAbstractBase):
+class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
 
     """
     Location derived by the use of GPS satellites and GPS device or receivers.
@@ -122,84 +201,6 @@ class FacilityCoordinates(GISAbstractBase):
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
     collection_date = gis_models.DateTimeField(default=timezone.now)
-
-    def validate_longitude_and_latitude_within_kenya(self):
-        try:
-            boundary = WorldBorder.objects.get(code='KEN')
-            if not boundary.mpoly.contains(self.coordinates):
-                # This validation was relaxed ( temporarily? )
-                # The Kenyan boundaries that we have loaded have low fidelity
-                # at the edges, so that facilities that are, say, 100 meters
-                # from the border are reported as not in Kenya
-                # If higher fidelity map data is obtained, this validation
-                # can be brought back
-                LOGGER.error(
-                    '{} is not within the Kenyan boundaries that we have'
-                    .format(self.coordinates)
-                )
-        except WorldBorder.DoesNotExist:
-            raise ValidationError('Setup error: Kenyan boundaries not loaded')
-
-    def validate_longitude_and_latitude_within_constituency(self):
-        try:
-            boundary = ConstituencyBoundary.objects.get(
-                area=self.facility.ward.constituency)
-            if not boundary.mpoly.contains(self.coordinates):
-                raise ValidationError(
-                    {
-                        "coordinates": [
-                            '{} not contained in boundary of {}'.format(
-                                self.coordinates,
-                                self.facility.ward.constituency)
-                        ]
-                    }
-
-                )
-        except ConstituencyBoundary.DoesNotExist:
-            raise ValidationError(
-                'No boundary for {}'.format(
-                    self.facility.ward.constituency
-                )
-            )
-
-    def validate_longitude_and_latitude_within_county(self):
-        try:
-            boundary = CountyBoundary.objects.get(
-                area=self.facility.ward.constituency.county)
-            if not boundary.mpoly.contains(self.coordinates):
-                raise ValidationError(
-                    {
-                        "coordinates": [
-                            '({}, {}) not contained in boundary of {}'.format(
-                                self.coordinates.x, self.coordinates.y,
-                                self.facility.ward.constituency.county)
-                        ]
-                    }
-                )
-        except CountyBoundary.DoesNotExist:
-            raise ValidationError(
-                'No boundary for {}'.format(
-                    self.facility.ward.constituency.county
-                )
-            )
-
-    def validate_longitude_and_latitude_within_ward(self):
-        try:
-            boundary = WardBoundary.objects.get(area=self.facility.ward)
-            if not boundary.mpoly.contains(self.coordinates):
-                raise ValidationError(
-                    {
-                        "coordinates": [
-                            '{} not contained in boundary of {}'.format(
-                                self.coordinates, self.facility.ward)
-                        ]
-                    }
-                )
-        except WardBoundary.DoesNotExist:
-            LOGGER.error(
-                'Ward {} does not have boundary info'.format(
-                    self.facility.ward)
-            )
 
     @property
     def simplify_coordinates(self):
@@ -223,9 +224,12 @@ class FacilityCoordinates(GISAbstractBase):
 
     def clean(self):
         self.validate_longitude_and_latitude_within_kenya()
-        self.validate_longitude_and_latitude_within_county()
-        self.validate_longitude_and_latitude_within_constituency()
-        self.validate_longitude_and_latitude_within_ward()
+        self.validate_longitude_and_latitude_within_county(
+            self.facility.ward.constituency.county)
+        self.validate_longitude_and_latitude_within_constituency(
+            self.facility.ward.constituency)
+        self.validate_longitude_and_latitude_within_ward(
+            self.facility.ward)
         super(FacilityCoordinates, self).clean()
 
     def __str__(self):
