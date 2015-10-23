@@ -42,8 +42,6 @@ apipatterns = patterns(
     url(r'^chul/', include('chul.urls', namespace='chul')),
     url(r'^gis/', include('mfl_gis.urls', namespace='mfl_gis')),
     url(r'^reporting/', include('reporting.urls', namespace='reporting')),
-    url(r'^admin_offices/', include('admin_offices.urls',
-        namespace='admin_offices')),
     url(r'^rest-auth/', include(rest_auth_patterns, namespace='rest_auth')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls',
         namespace='rest_auth_registration'))
