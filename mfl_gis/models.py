@@ -27,7 +27,7 @@ class CoordinatesValidatorMixin(object):
                 # If higher fidelity map data is obtained, this validation
                 # can be brought back
                 LOGGER.error(
-                    '{} is not within the Kenyan boundaries that we have'
+                    '{0} is not within the Kenyan boundaries that we have'
                     .format(self.coordinates)
                 )
         except WorldBorder.DoesNotExist:
@@ -42,7 +42,7 @@ class CoordinatesValidatorMixin(object):
                 raise ValidationError(
                     {
                         "coordinates": [
-                            '{} not contained in boundary of {}'.format(
+                            '{0} not contained in boundary of {1}'.format(
                                 self.coordinates,
                                 constituency)
                         ]
@@ -51,7 +51,7 @@ class CoordinatesValidatorMixin(object):
                 )
         except ConstituencyBoundary.DoesNotExist:
             raise ValidationError(
-                'No boundary for {}'.format(
+                'No boundary for {0}'.format(
                     constituency
                 )
             )
@@ -64,14 +64,15 @@ class CoordinatesValidatorMixin(object):
                 raise ValidationError(
                     {
                         "coordinates": [
-                            '({}, {}) not contained in boundary of {}'.format(
+                            '({0}, {1}) not contained in boundary of {2}'
+                            ''.format(
                                 self.coordinates.x, self.coordinates.y, county)
                         ]
                     }
                 )
         except CountyBoundary.DoesNotExist:
             raise ValidationError(
-                'No boundary for {}'.format(county)
+                'No boundary for {0}'.format(county)
             )
 
     def validate_longitude_and_latitude_within_ward(self, ward):
@@ -81,14 +82,14 @@ class CoordinatesValidatorMixin(object):
                 raise ValidationError(
                     {
                         "coordinates": [
-                            '{} not contained in boundary of {}'.format(
+                            '{0} not contained in boundary of {1}'.format(
                                 self.coordinates, ward)
                         ]
                     }
                 )
         except WardBoundary.DoesNotExist:
             LOGGER.error(
-                'Ward {} does not have boundary info'.format(ward)
+                'Ward {0} does not have boundary info'.format(ward)
             )
 
 

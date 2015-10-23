@@ -33,7 +33,7 @@ class SearchFilter(django_filters.filters.Filter):
         hits_ids_list = [str(hit.get('_id')) for hit in hits]
 
         pk_list = hits_ids_list
-        table_name = "{}_{}.id".format(
+        table_name = "{0}_{1}.id".format(
             qs.model._meta.app_label, qs.model.__name__.lower())
         clauses = ' '.join(
             [

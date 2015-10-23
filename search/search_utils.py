@@ -69,11 +69,19 @@ class ElasticAPI(object):
         fields = search_fields if self.get_search_fields(document_type) else \
             ["_all"]
         query_dsl = None
+
+        # This allows one to search for something either using an exact value
+        # like code e.g 1000
+        # or query DSL e.g {
+        #    "query": query_string:{
+        #               'default_field':'field_name", quuery:'search term'}}
+        # or just a string e.g 'nairobi hospital'
+
         try:
             json.loads(query)
             query_dsl = query
-        except:
-            pass
+        except (ValueError, TypeError):
+            LOGGER.info("The user did not use query DSL")
 
         data = {
             "from": 0,
