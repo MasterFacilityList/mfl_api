@@ -256,7 +256,7 @@ class CustomGroup(models.Model):
         'country?')
     administrator = models.BooleanField(
         default=False,
-        help_text='Will the users in this group administor user rights?')
+        help_text='Will the users in this group administrator user rights?')
     county_level = models.BooleanField(
         default=False, help_text='Will the user be creating sub county users?')
     sub_county_level = models.BooleanField(

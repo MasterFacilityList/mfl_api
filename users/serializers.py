@@ -1,3 +1,5 @@
+import logging
+
 from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth.models import Permission
@@ -19,6 +21,9 @@ from .models import (
     check_password_strength,
     CustomGroup,
     ProxyGroup)
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _lookup_permissions(validated_data):
@@ -213,6 +218,62 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 return True
         return False
 
+    def _update_or_create_contacts(self, instance, contacts):
+        from common.models import UserContact, Contact
+        for contact in contacts:
+            if 'id' in contact:
+                try:
+                    contact_obj = Contact.objects.get(id=contact.get('id'))
+                    contact_obj.contact = contact.get('contact')
+                    contact_obj.contact_type_id = contact.get('contact_type')
+                    contact_obj.save()
+                except Contact.DoesNotExist:
+                    LOGGER.info('Contact with id provided does not exist')
+            else:
+                contact['updated_by'] = self.context.get(
+                    'request').user.id
+                contact['created_by'] = self.context.get(
+                    'request').user.id
+                contact['contact_type_id'] = contact.get('contact_type_id')
+                contact_obj = Contact.objects.create(**contact)
+                user_contact = {}
+                user_contact['updated_by'] = self.context.get(
+                    'request').user.id
+                user_contact['created_by'] = self.context.get(
+                    'request').user.id
+                user_contact['user_id'] = instance.id
+                user_contact['contact_id'] = contact_obj.id
+                UserContact.objects.create(**user_contact)
+
+    def _create_user_county(self, instance, counties):
+        from common.models import UserCounty
+        for county in counties:
+            if 'id' in county:
+                LOGGER.info("User is already linked to the county")
+            else:
+                county['updated_by_id'] = self.context.get(
+                    'request').user.id
+                county['created_by_id'] = self.context.get(
+                    'request').user.id
+                county['county_id'] = county.pop('county')
+                county['user_id'] = instance.id
+                UserCounty.objects.create(**county)
+
+    def _create_user_constituency(self, instance, constituencies):
+        from common.models import UserConstituency
+        for constituency in constituencies:
+            if 'id' in constituency:
+                LOGGER.info("User is already linked to the constituency")
+            else:
+                constituency['updated_by_id'] = self.context.get(
+                    'request').user.id
+                constituency['created_by_id'] = self.context.get(
+                    'request').user.id
+                constituency['constituency_id'] = constituency.pop(
+                    'constituency')
+                constituency['user_id'] = instance.id
+                UserConstituency.objects.create(**constituency)
+
     @transaction.atomic
     def create(self, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
@@ -224,7 +285,14 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         if self._assign_is_staff(groups):
             new_user.is_staff = True
         new_user.save()
+
         new_user.groups.add(*groups)
+        contacts = self.initial_data.pop('contacts', [])
+        counties = self.initial_data.pop('counties', [])
+        constituencies = self.initial_data.pop('constituencies', [])
+        self._create_user_constituency(new_user, constituencies)
+        self._create_user_county(new_user, counties)
+        self._update_or_create_contacts(new_user, contacts)
 
         return new_user
 
@@ -252,6 +320,13 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         instance.save()
         instance.groups.clear()
         instance.groups.add(*groups)
+
+        contacts = self.initial_data.pop('contacts', [])
+        counties = self.initial_data.pop('counties', [])
+        constituencies = self.initial_data.pop('constituencies', [])
+        self._create_user_constituency(instance, constituencies)
+        self._create_user_county(instance, counties)
+        self._update_or_create_contacts(instance, contacts)
 
         return instance
 

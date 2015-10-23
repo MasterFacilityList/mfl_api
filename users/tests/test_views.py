@@ -644,3 +644,55 @@ class TestGroupFilters(LoginMixin, APITestCase):
             GroupSerializer(group).data
         ]
         self.assertEquals(response.data.get('results'), expected_data)
+
+
+class TestInlinedUserDetails(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:users:mfl_users_list")
+        super(TestInlinedUserDetails, self).setUp()
+
+    def test_post_user_with_counties(self):
+        county = mommy.make(County)
+        post_data = {
+            "counties": [
+                {
+                    "county": str(county.id)
+                }
+            ],
+            "email": "testmail@domain.com",
+            "first_name": "Jina ya Kwanza",
+            "last_name": "Ya Pili",
+            "other_names": "Mengineyo",
+            "employee_number": "1241414",
+            "password": "#complexpwd456"
+        }
+        response = self.client.post(self.url, post_data)
+        self.assertEquals(201, response.status_code)
+        created_user = MflUser.objects.get(employee_number="1241414")
+        self.assertEquals(1, len(UserCounty.objects.filter(user=created_user)))
+
+    def test_post_user_with_constituencies(self):
+        user = mommy.make(MflUser)
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user, county=county)
+        constituency = mommy.make(Constituency, county=county)
+        post_data = {
+            "constituencies": [
+                {
+                    "constituency": str(constituency.id)
+                }
+            ],
+            "email": "testmail@domain.com",
+            "first_name": "Jina ya Kwanza",
+            "last_name": "Ya Pili",
+            "other_names": "Mengineyo",
+            "employee_number": "1241414",
+            "password": "#complexpwd456"
+        }
+        self.client.force_authenticate(user)
+        response = self.client.post(self.url, post_data)
+        self.assertEquals(201, response.status_code)
+        created_user = MflUser.objects.get(employee_number="1241414")
+        self.assertEquals(1, len(UserConstituency.objects.filter(
+            user=created_user)))
+        self.assertEquals(1, UserConstituency.objects.count())
