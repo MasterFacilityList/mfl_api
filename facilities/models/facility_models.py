@@ -351,9 +351,6 @@ class RegulatoryBodyUser(AbstractBase):
     def clean(self, *args, **kwargs):
         self.make_user_national_user()
 
-    class Meta(AbstractBase.Meta):
-        unique_together = ('regulatory_body', 'user', )
-
 
 @reversion.register(follow=['previous_status', 'next_status', ])
 @encoding.python_2_unicode_compatible

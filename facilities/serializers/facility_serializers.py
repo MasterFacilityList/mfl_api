@@ -80,6 +80,8 @@ class RegulatoryBodyUserSerializer(
     user_name = serializers.ReadOnlyField(source='user.get_full_name')
     regulatory_body_name = serializers.ReadOnlyField(
         source='regulatory_body.name')
+    user = serializers.CharField(validators=[], required=False)
+    regulatory_body = serializers.CharField(validators=[], required=False)
 
     class Meta:
         model = RegulatoryBodyUser

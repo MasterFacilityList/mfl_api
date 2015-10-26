@@ -26,7 +26,8 @@ class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class UserContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-
+    contact = serializers.CharField(validators=[], required=False)
+    user = serializers.CharField(validators=[], required=False)
     contact_text = serializers.ReadOnlyField(source='contact.contact')
     contact_type_text = serializers.ReadOnlyField(
         source='contact.contact_type.name'
@@ -156,6 +157,8 @@ class UserCountySerializer(
         source='county.code')
     user_email = serializers.ReadOnlyField(
         source='user.email')
+    user = serializers.CharField(validators=[], required=False)
+    county = serializers.CharField(validators=[], required=False)
 
     class Meta(object):
         model = UserCounty
@@ -182,6 +185,8 @@ class UserConstituencySerializer(
     constituency_name = serializers.ReadOnlyField(source='constituency.name')
     county_name = serializers.ReadOnlyField(source='constituency.county.name')
     county_id = serializers.ReadOnlyField(source='constituency.county.id')
+    user = serializers.CharField(validators=[], required=False)
+    constituency = serializers.CharField(validators=[], required=False)
 
     class Meta:
         model = UserConstituency

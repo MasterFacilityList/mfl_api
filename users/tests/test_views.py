@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
+from facilities.models import RegulatingBody, RegulatoryBodyUser
 from common.models import (
     County, Constituency, UserCounty, UserConstituency,
     ContactType, Contact, UserContact)
@@ -656,7 +657,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
     def test_post_user_with_counties(self):
         county = mommy.make(County)
         post_data = {
-            "counties": [
+            "user_counties": [
                 {
                     "county": str(county.id)
                 }
@@ -678,7 +679,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         county = mommy.make(County)
         mommy.make(UserCounty, user=user, county=county)
         data = {
-            "counties": [
+            "user_counties": [
                 {
                     "id": str(county.id)
                 }
@@ -695,7 +696,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         mommy.make(UserCounty, user=user, county=county)
         constituency = mommy.make(Constituency, county=county)
         post_data = {
-            "constituencies": [
+            "user_constituencies": [
                 {
                     "constituency": str(constituency.id)
                 }
@@ -725,7 +726,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
             UserConstituency, user=user_2,
             constituency=constituency, created_by=user, updated_by=user)
         post_data = {
-            "constituencies": [
+            "user_constituencies": [
                 {
                     "id": str(user_const_id.id),
                     "constituency": str(constituency.id)
@@ -756,7 +757,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         ]
 
         post_data = {
-            "contacts": contacts,
+            "user_contacts": contacts,
             "email": "testmail@domain.com",
             "first_name": "Jina ya Kwanza",
             "last_name": "Ya Pili",
@@ -793,7 +794,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         ]
 
         post_data = {
-            "contacts": contacts,
+            "user_contacts": contacts,
         }
         url = self.url + "{}/".format(user.id)
 
@@ -831,7 +832,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         ]
         user_contact_1.delete()
         data = {
-            "contacts": contacts,
+            "user_contacts": contacts,
         }
         url = self.url + "{0}/".format(user.id)
         response = self.client.patch(url, data)
@@ -839,3 +840,50 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         self.assertEquals(2, Contact.objects.count())
         self.assertEquals(1, len(UserContact.objects.filter(
             user=user)))
+
+    def test_post_user_with_inlined_user(self):
+        regulator = mommy.make(RegulatingBody)
+        regulatory_users = [
+            {
+                "regulatory_body": str(regulator.id)
+            }
+        ]
+        post_data = {
+            "regulatory_users": regulatory_users,
+            "email": "testmail@domain.com",
+            "first_name": "Jina ya Kwanza",
+            "last_name": "Ya Pili",
+            "other_names": "Mengineyo",
+            "employee_number": "1241414",
+            "password": "#complexpwd456"
+        }
+        response = self.client.post(self.url, post_data)
+
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(
+            1,
+            RegulatoryBodyUser.objects.filter(
+                user=MflUser.objects.get(id=response.data.get('id'))).count())
+
+    def test_update_user_with_inlined_regulator(self):
+        user = mommy.make(MflUser)
+        regulator = mommy.make(RegulatingBody)
+        reg_body_user = mommy.make(
+            RegulatoryBodyUser,
+            user=user, regulatory_body=regulator)
+        regulatory_users = [
+            {
+                "id": reg_body_user.id,
+                "regulatory_body": str(regulator.id)
+            }
+        ]
+        data = {
+            "regulatory_users": regulatory_users
+        }
+        url = self.url + "{}/".format(user.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(
+            1,
+            RegulatoryBodyUser.objects.filter(
+                user=user).count())

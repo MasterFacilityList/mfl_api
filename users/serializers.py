@@ -15,6 +15,7 @@ from common.serializers import (
     PartialResponseMixin
 )
 from facilities.serializers import RegulatoryBodyUserSerializer
+from facilities.models import RegulatoryBodyUser
 from .models import (
     MflUser,
     MFLOAuthApplication,
@@ -224,7 +225,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         Creates and updates user contacts in bulk
 
         Sample Payload:
-            "contacts": [
+            "user_contacts": [
                 {
                     "id": <UserContact instance> // optional and provided
                         only when updating a uuid string
@@ -268,7 +269,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         Allows batch linking of a user to counties
 
         Sample Payload:
-            "counties": [
+            "user_counties": [
                 {
                     "id": <UserCounty instance> // optional and provided
                         only when updating a uuid string
@@ -297,7 +298,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         Allow batch linking of users to constituencies
 
         Sample Payload:
-            "constituencies": [
+            "user_constituencies": [
                 {
                     "id": <UserConstituency instance> // optional and provided
                         only when updating a uuid string
@@ -322,12 +323,50 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 constituency['user_id'] = instance.id
                 UserConstituency.objects.create(**constituency)
 
+    def _create_regulator(self, instance, regulators):
+        """
+        Links a user to a regulatory body
+
+        Sample Payload:
+             "regulatory_users": [
+                {
+                    "id": <RegulatoryBodyUser instance>
+                        // optional and provided
+                        only when updating a uuid string
+                    "regulatory_body": "The regulatory body id of
+                        the regulatory body to be linked",// uuid string
+
+                }
+            ]
+
+        """
+        for regulator in regulators:
+            if 'id' in regulator:
+                LOGGER.info("The user is already linked to that regulator")
+            else:
+                regulator['updated_by_id'] = self.context.get(
+                    'request').user.id
+                regulator['created_by_id'] = self.context.get(
+                    'request').user.id
+                regulator['user'] = instance
+                regulator['regulatory_body_id'] = regulator.pop(
+                    'regulatory_body')
+                RegulatoryBodyUser.objects.create(**regulator)
+
     @transaction.atomic
     def create(self, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
             validated_data, is_creation=True)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
+        validated_data.pop('user_contacts', None)
+        contacts = self.initial_data.pop('user_contacts', [])
+        validated_data.pop('user_constituencies', None)
+        constituencies = self.initial_data.pop('user_constituencies', [])
+        validated_data.pop('user_counties', None)
+        counties = self.initial_data.pop('user_counties', [])
+        validated_data.pop('regulatory_users', None)
+        regulators = self.initial_data.pop('regulatory_users', [])
 
         new_user = MflUser.objects.create_user(**validated_data)
         if self._assign_is_staff(groups):
@@ -335,12 +374,10 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         new_user.save()
 
         new_user.groups.add(*groups)
-        contacts = self.initial_data.pop('contacts', [])
-        counties = self.initial_data.pop('counties', [])
-        constituencies = self.initial_data.pop('constituencies', [])
         self._create_user_constituency(new_user, constituencies)
         self._create_user_county(new_user, counties)
         self._update_or_create_contacts(new_user, contacts)
+        self._create_regulator(new_user, regulators)
 
         return new_user
 
@@ -350,6 +387,15 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
             validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
+
+        validated_data.pop('user_contacts', None)
+        contacts = self.initial_data.pop('user_contacts', [])
+        validated_data.pop('user_constituencies', None)
+        constituencies = self.initial_data.pop('user_constituencies', [])
+        validated_data.pop('user_counties', None)
+        counties = self.initial_data.pop('user_counties', [])
+        validated_data.pop('regulatory_users', None)
+        regulators = self.initial_data.pop('regulatory_users', [])
 
         pwd = validated_data.pop('password', None)
 
@@ -369,12 +415,10 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         instance.groups.clear()
         instance.groups.add(*groups)
 
-        contacts = self.initial_data.pop('contacts', [])
-        counties = self.initial_data.pop('counties', [])
-        constituencies = self.initial_data.pop('constituencies', [])
         self._create_user_constituency(instance, constituencies)
         self._create_user_county(instance, counties)
         self._update_or_create_contacts(instance, contacts)
+        self._create_regulator(instance, regulators)
 
         return instance
 
