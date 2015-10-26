@@ -2,7 +2,6 @@ from django.conf import settings
 
 import django_filters
 from search.search_utils import ElasticAPI
-from facilities.models import Facility
 
 
 class SearchFilter(django_filters.filters.Filter):
@@ -30,10 +29,11 @@ class SearchFilter(django_filters.filters.Filter):
                 else hits
         except AttributeError:
             hits = hits
+
         hits_ids_list = [str(hit.get('_id')) for hit in hits]
 
         pk_list = hits_ids_list
-        table_name = "{}_{}.id".format(
+        table_name = "{0}_{1}.id".format(
             qs.model._meta.app_label, qs.model.__name__.lower())
         clauses = ' '.join(
             [
@@ -46,11 +46,7 @@ class SearchFilter(django_filters.filters.Filter):
         queryset = qs.model.objects.filter(pk__in=pk_list).extra(
             select={'ordering': ordering}, order_by=('ordering',))
 
-        if str(value).isdigit():
-            facility = Facility.objects.filter(code=value)
-            return facility if facility.count() == 1 else queryset
-        else:
-            return queryset
+        return queryset
 
 
 class AutoCompleteSearchFilter(SearchFilter):
