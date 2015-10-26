@@ -349,14 +349,14 @@ class RegulatoryBodyUser(AbstractBase):
             raise ValidationError(
                 {
                     "user": [
-                        "The user {} is already linked to the selected "
-                        "regulator {}".format(
+                        "The user {0} is already linked to the selected "
+                        "regulator {1}".format(
                             self.user.get_full_name,
                             self.regulatory_body.name)]
                 }
             )
         else:
-            msg = "The user {0} was successfully linked to the regulator {0}"\
+            msg = "The user {0} was successfully linked to the regulator {1}"\
                 "".format(self.user.id, self.regulatory_body.id)
             LOGGER.info(msg)
 
