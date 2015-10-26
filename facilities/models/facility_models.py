@@ -341,6 +341,25 @@ class RegulatoryBodyUser(AbstractBase):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='regulatory_users')
 
+    def _ensure_a_user_is_linked_to_just_one_regulator(self):
+        reg_user_records = self.__class__.objects.filter(
+            regulatory_body=self.regulatory_body,
+            user=self.user, active=True).count()
+        if reg_user_records > 0:
+            raise ValidationError(
+                {
+                    "user": [
+                        "The user {} is already linked to the selected "
+                        "regulator {}".format(
+                            self.user.get_full_name,
+                            self.regulatory_body.name)]
+                }
+            )
+        else:
+            msg = "The user {0} was successfully linked to the regulator {0}"\
+                "".format(self.user.id, self.regulatory_body.id)
+            LOGGER.info(msg)
+
     def make_user_national_user(self):
         self.user.is_national = True
         self.user.save()
@@ -349,6 +368,7 @@ class RegulatoryBodyUser(AbstractBase):
         return "{}: {}".format(self.regulatory_body, self.user)
 
     def clean(self, *args, **kwargs):
+        self._ensure_a_user_is_linked_to_just_one_regulator()
         self.make_user_national_user()
 
 
