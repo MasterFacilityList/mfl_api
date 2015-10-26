@@ -219,33 +219,65 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         return False
 
     def _update_or_create_contacts(self, instance, contacts):
+        """
+        Creates and updates user contacts in bulk
+
+        Sample Payload:
+            "contacts": [
+                {
+                    "id": <UserContact instance> // optional and provided
+                        only when updating a uuid string
+                    "contact": "the contact e.g 07224645657",
+                    "contact_type": "the pk of the contact type" // uuid string
+                }
+            ]
+        """
+
         from common.models import UserContact, Contact
         for contact in contacts:
             if 'id' in contact:
                 try:
-                    contact_obj = Contact.objects.get(id=contact.get('id'))
-                    contact_obj.contact = contact.get('contact')
-                    contact_obj.contact_type_id = contact.get('contact_type')
-                    contact_obj.save()
-                except Contact.DoesNotExist:
+                    user_contact_obj = UserContact.objects.get(
+                        id=contact.get('id'))
+                    user_contact_obj.contact.contact = contact.get('contact')
+                    user_contact_obj.contact.contact_type_id = contact.get(
+                        'contact_type')
+                    user_contact_obj.contact.save()
+                except UserContact.DoesNotExist:
                     LOGGER.info('Contact with id provided does not exist')
             else:
-                contact['updated_by'] = self.context.get(
+                contact['updated_by_id'] = self.context.get(
                     'request').user.id
-                contact['created_by'] = self.context.get(
+                contact['created_by_id'] = self.context.get(
                     'request').user.id
-                contact['contact_type_id'] = contact.get('contact_type_id')
+                contact['contact_type_id'] = contact.pop('contact_type')
+
                 contact_obj = Contact.objects.create(**contact)
                 user_contact = {}
-                user_contact['updated_by'] = self.context.get(
+                user_contact['updated_by_id'] = self.context.get(
                     'request').user.id
-                user_contact['created_by'] = self.context.get(
+                user_contact['created_by_id'] = self.context.get(
                     'request').user.id
                 user_contact['user_id'] = instance.id
                 user_contact['contact_id'] = contact_obj.id
                 UserContact.objects.create(**user_contact)
 
     def _create_user_county(self, instance, counties):
+        """
+        Allows batch linking of a user to counties
+
+        Sample Payload:
+            "counties": [
+                {
+                    "id": <UserCounty instance> // optional and provided
+                        only when updating a uuid string
+                    "county": "The county id of
+                    the county to be linked",// uuid string
+
+                }
+            ]
+        """
+
         from common.models import UserCounty
         for county in counties:
             if 'id' in county:
@@ -260,6 +292,21 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 UserCounty.objects.create(**county)
 
     def _create_user_constituency(self, instance, constituencies):
+        """
+        Allow batch linking of users to constituencies
+
+        Sample Payload:
+            "constituencies": [
+                {
+                    "id": <UserConstituency instance> // optional and provided
+                        only when updating a uuid string
+                    "constituency": "The constituency id of
+                        the constituency to be linked",// uuid string
+
+                }
+            ]
+        """
+
         from common.models import UserConstituency
         for constituency in constituencies:
             if 'id' in constituency:

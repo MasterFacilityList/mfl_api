@@ -7,7 +7,9 @@ from rest_framework.test import APITestCase
 from rest_framework.exceptions import ValidationError
 from model_mommy import mommy
 
-from common.models import County, Constituency, UserCounty, UserConstituency
+from common.models import (
+    County, Constituency, UserCounty, UserConstituency,
+    ContactType, Contact, UserContact)
 from common.tests.test_views import LoginMixin
 from ..models import MflUser, CustomGroup
 from ..serializers import _lookup_groups, GroupSerializer
@@ -671,6 +673,22 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         created_user = MflUser.objects.get(employee_number="1241414")
         self.assertEquals(1, len(UserCounty.objects.filter(user=created_user)))
 
+    def test_update_user_counties(self):
+        user = mommy.make(MflUser)
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user, county=county)
+        data = {
+            "counties": [
+                {
+                    "id": str(county.id)
+                }
+            ]
+        }
+        url = self.url + "{0}/".format(user.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, UserCounty.objects.filter(user=user).count())
+
     def test_post_user_with_constituencies(self):
         user = mommy.make(MflUser)
         county = mommy.make(County)
@@ -696,3 +714,128 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         self.assertEquals(1, len(UserConstituency.objects.filter(
             user=created_user)))
         self.assertEquals(1, UserConstituency.objects.count())
+
+    def test_update_user_constituencies(self):
+        user = mommy.make(MflUser)
+        user_2 = mommy.make(MflUser)
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user, county=county)
+        constituency = mommy.make(Constituency, county=county)
+        user_const_id = mommy.make(
+            UserConstituency, user=user_2,
+            constituency=constituency, created_by=user, updated_by=user)
+        post_data = {
+            "constituencies": [
+                {
+                    "id": str(user_const_id.id),
+                    "constituency": str(constituency.id)
+                }
+            ]
+
+        }
+        self.client.force_authenticate(user)
+        url = self.url + "{0}/".format(user_2.id)
+        response = self.client.patch(url, post_data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, len(UserConstituency.objects.filter(
+            user=user_2)))
+        self.assertEquals(1, UserConstituency.objects.count())
+
+    def test_post_user_with_contacts(self):
+        contact_type = mommy.make(ContactType)
+        contact_type_2 = mommy.make(ContactType)
+        contacts = [
+            {
+                "contact": "075658699",
+                "contact_type": str(contact_type.id)
+            },
+            {
+                "contact": "testmail@domain.com",
+                "contact_type": str(contact_type_2.id)
+            }
+        ]
+
+        post_data = {
+            "contacts": contacts,
+            "email": "testmail@domain.com",
+            "first_name": "Jina ya Kwanza",
+            "last_name": "Ya Pili",
+            "other_names": "Mengineyo",
+            "employee_number": "1241414",
+            "password": "#complexpwd456"
+        }
+
+        response = self.client.post(self.url, post_data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(2, Contact.objects.count())
+        self.assertEquals(2, len(UserContact.objects.filter(
+            user=MflUser.objects.get(employee_number=1241414))))
+
+    def test_update_user_contacts(self):
+        user = mommy.make(MflUser)
+        contact_type = mommy.make(ContactType)
+        contact_type_2 = mommy.make(ContactType)
+        contact_1 = mommy.make(Contact, contact_type=contact_type)
+        contact_2 = mommy.make(Contact, contact_type=contact_type_2)
+        user_con_1 = mommy.make(UserContact, contact=contact_1, user=user)
+        user_con_2 = mommy.make(UserContact, contact=contact_2, user=user)
+        contacts = [
+            {
+                "id": str(user_con_1.id),
+                "contact": "075658699",
+                "contact_type": str(contact_type.id)
+            },
+            {
+                "id": str(user_con_2.id),
+                "contact": "testmail@domain.com",
+                "contact_type": str(contact_type_2.id)
+            }
+        ]
+
+        post_data = {
+            "contacts": contacts,
+        }
+        url = self.url + "{}/".format(user.id)
+
+        response = self.client.patch(url, post_data)
+
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, Contact.objects.count())
+        self.assertEquals(2, len(UserContact.objects.filter(
+            user=user)))
+        contact_1_refetched = Contact.objects.get(id=contact_1.id)
+        contact_2_refetched = Contact.objects.get(id=contact_2.id)
+        self.assertEquals(contact_1_refetched.contact, "075658699")
+        self.assertEquals(contact_2_refetched.contact, "testmail@domain.com")
+
+    def test_update_user_contacts_id_does_not_exist(self):
+        user = mommy.make(MflUser)
+        contact_type = mommy.make(ContactType)
+        contact_type_2 = mommy.make(ContactType)
+        contact_1 = mommy.make(Contact, contact_type=contact_type)
+        contact_2 = mommy.make(Contact, contact_type=contact_type_2)
+        user_contact_1 = mommy.make(UserContact, contact=contact_1, user=user)
+        user_contact_2 = mommy.make(UserContact, contact=contact_2, user=user)
+
+        contacts = [
+            {
+                "id": str(user_contact_1.id),
+                "contact": "075658699",
+                "contact_type": str(contact_type.id)
+            },
+            {
+                "id": str(user_contact_2.id),
+                "contact": "testmail@domain.com",
+                "contact_type": str(contact_type_2.id)
+            }
+        ]
+        user_contact_1.delete()
+        data = {
+            "contacts": contacts,
+        }
+        url = self.url + "{0}/".format(user.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, Contact.objects.count())
+        self.assertEquals(1, len(UserContact.objects.filter(
+            user=user)))
