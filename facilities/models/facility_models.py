@@ -1543,7 +1543,7 @@ class Service(SequenceMixin, AbstractBase):
     group = models.ForeignKey(
         OptionGroup,
         help_text="The option group containing service options")
-    has_options = models.BooleanField(default=True)
+    has_options = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.code:
