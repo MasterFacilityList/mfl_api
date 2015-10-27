@@ -195,6 +195,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         return self.chu_ratings.count()
 
     class Meta(AbstractBase.Meta):
+        unique_together = ('name', 'facility', )
         permissions = (
             (
                 "view_rejected_chus",
