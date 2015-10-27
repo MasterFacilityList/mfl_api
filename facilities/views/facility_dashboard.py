@@ -4,19 +4,20 @@ from django.utils import timezone
 
 from rest_framework.views import APIView, Response
 from common.models import County, Constituency, Ward
+from chul.models import CommunityHealthUnit
 
 from ..models import (
     OwnerType,
     Owner,
     FacilityStatus,
     FacilityType,
-    Facility,
+    Facility
 )
+from ..views import QuerysetFilterMixin
 
 
-class DashBoard(APIView):
-    def get_queryset(self, *args, **kwargs):
-        return Facility.objects.all()
+class DashBoard(QuerysetFilterMixin, APIView):
+    queryset = Facility.objects.all()
 
     def get_facility_county_summary(self):
         counties = County.objects.all()
@@ -164,18 +165,52 @@ class DashBoard(APIView):
         return self.filter_queryset().filter(
             created__gte=three_months_ago).count()
 
+    def get_recently_created_chus(self):
+        right_now = timezone.now()
+        last_week = self.request.query_params.get('last_week', None)
+        last_month = self.request.query_params.get('last_month', None)
+        last_three_months = self.request.query_params.get(
+            'last_three_months', None)
+        three_months_ago = right_now - timedelta(days=90)
+        if last_week:
+            weekly = right_now - timedelta(days=7)
+            return CommunityHealthUnit.objects.filter(
+                facility__in=self.get_queryset(),
+                created__gte=weekly).count()
+
+        if last_month:
+            monthly = right_now - timedelta(days=30)
+            return CommunityHealthUnit.objects.filter(
+                facility__in=self.get_queryset(),
+                created__gte=monthly).count()
+
+        if last_three_months:
+            return CommunityHealthUnit.objects.filter(
+                facility__in=self.get_queryset(),
+                date_established__gte=three_months_ago).count()
+
+        return CommunityHealthUnit.objects.filter(
+            facility__in=self.get_queryset(),
+            date_established__gte=three_months_ago).count()
+
     def filter_queryset(self):
-        user = self.request.user
-        if user.county and not user.is_national:
-            return self.get_queryset().filter(
-                ward__constituency__county=user.county)
-        elif user.constituency:
-            return self.get_queryset().filter(
-                ward__constituency__county=user.constituency.county)
-        elif user.is_national:
-            return self.get_queryset()
-        else:
-            return self.get_queryset()
+        return self.get_queryset()
+        # user = self.request.user
+        # if user.county and not user.is_national:
+        #     return self.get_queryset().filter(
+        #         ward__constituency__county=user.county)
+        # elif user.constituency:
+        #     return self.get_queryset().filter(
+        #         ward__constituency__county=user.constituency.county)
+        # elif user.is_national:
+        #     return self.get_queryset()
+        # else:
+        #     return self.get_queryset
+
+    def facilities_pending_approval_count(self):
+        updated_pending_approval = self.get_queryset().filter(has_edits=True)
+        newly_created = self.queryset.filter(approved=False, rejected=False)
+        return len(list(set(list(updated_pending_approval) + list(newly_created))))
 
     def get(self, *args, **kwargs):
         data = {
@@ -187,7 +222,9 @@ class DashBoard(APIView):
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
             "owner_types": self.get_facility_owner_types_summary(),
-            "recently_created": self.get_recently_created_facilities()
+            "recently_created": self.get_recently_created_facilities(),
+            "recently_created_chus": self.get_recently_created_chus(),
+            "facilities_pending_approval_count": self.facilities_pending_approval_count()
         }
         fields = self.request.query_params.get("fields", None)
         if fields:

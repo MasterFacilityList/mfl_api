@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from distutils.util import strtobool
 import django_filters
 
@@ -274,13 +276,11 @@ class FacilityFilter(CommonFieldsFilterset):
         return Facility.objects.filter(id__in=facility_ids)
 
     def filter_approved_facilities(self, value):
-        approved_facilities = [
-            approval.facility.id
-            for approval in FacilityApproval.objects.all()]
+
         if value in TRUTH_NESS:
-            return Facility.objects.filter(id__in=approved_facilities)
+            return self.filter(Q(approved=True) | Q(rejected=True))
         else:
-            return Facility.objects.exclude(id__in=approved_facilities)
+            return self.filter(Q(rejected=True) | Q(has_edits=True))
 
     id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
