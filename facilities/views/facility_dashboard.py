@@ -193,27 +193,21 @@ class DashBoard(QuerysetFilterMixin, APIView):
             facility__in=self.get_queryset(),
             date_established__gte=three_months_ago).count()
 
-    def get_facility_with_pending_updates(self):
-        return self.filter_queryset().filter(has_edits=True).count()
-
     def filter_queryset(self):
         return self.get_queryset()
-        # user = self.request.user
-        # if user.county and not user.is_national:
-        #     return self.get_queryset().filter(
-        #         ward__constituency__county=user.county)
-        # elif user.constituency:
-        #     return self.get_queryset().filter(
-        #         ward__constituency__county=user.constituency.county)
-        # elif user.is_national:
-        #     return self.get_queryset()
-        # else:
-        #     return self.get_queryset
 
     def facilities_pending_approval_count(self):
         updated_pending_approval = self.get_queryset().filter(has_edits=True)
         newly_created = self.queryset.filter(approved=False, rejected=False)
-        return len(list(set(list(updated_pending_approval) + list(newly_created))))
+        return len(
+            list(set(list(updated_pending_approval) + list(newly_created)))
+        )
+
+    def get_rejected_facilities_count(self):
+        return self.get_queryset().filter(rejected=True).count()
+
+    def get_closed_facilities_count(self):
+        return self.get_queryset().filter(closed=True).count()
 
     def get(self, *args, **kwargs):
         data = {
@@ -227,8 +221,10 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "owner_types": self.get_facility_owner_types_summary(),
             "recently_created": self.get_recently_created_facilities(),
             "recently_created_chus": self.get_recently_created_chus(),
-            "facilities_pending_approval_count": self.facilities_pending_approval_count(),
-            "pending_updates": self.get_facility_with_pending_updates()
+            "pending_updates": self.facilities_pending_approval_count(),
+            "rejected_facilities_count": self.get_rejected_facilities_count(),
+            "closed_facilities_count": self.closed_facilities_count()
+
         }
         fields = self.request.query_params.get("fields", None)
         if fields:

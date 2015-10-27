@@ -284,7 +284,7 @@ class FacilityFilter(CommonFieldsFilterset):
         facility_ids = []
         cat_len = len(categories)
 
-        for facility in Facility.objects.all():
+        for facility in self.filter():
             cats_seen = []
             for cat in categories:
                 service_count = FacilityService.objects.filter(
@@ -292,10 +292,10 @@ class FacilityFilter(CommonFieldsFilterset):
                     facility=facility).count()
                 if service_count > 0:
                     cats_seen.append(cat)
-            if len(cats_seen) == cat_len:
+            if len(cats_seen) <= cat_len:
                 facility_ids.append(facility.id)
 
-        return Facility.objects.filter(id__in=facility_ids)
+        return self.filter(id__in=facility_ids)
 
     def filter_approved_facilities(self, value):
 
