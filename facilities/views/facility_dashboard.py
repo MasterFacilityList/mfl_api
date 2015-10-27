@@ -223,7 +223,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "recently_created_chus": self.get_recently_created_chus(),
             "pending_updates": self.facilities_pending_approval_count(),
             "rejected_facilities_count": self.get_rejected_facilities_count(),
-            "closed_facilities_count": self.closed_facilities_count()
+            "closed_facilities_count": self.get_closed_facilities_count()
 
         }
         fields = self.request.query_params.get("fields", None)

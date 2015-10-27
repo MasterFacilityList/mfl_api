@@ -341,15 +341,9 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-
-            ]
+            "results": FacilitySerializer(
+                Facility.objects.filter(id__in=[facility.id, facility_2.id]),
+                many=True).data
         }
         self.assertEquals(
             load_dump(expected_data['results'], default=default),
@@ -418,7 +412,9 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "results": []
+            "results": FacilitySerializer(
+                Facility.objects.filter(id__in=[facility.id, facility_2.id]),
+                many=True).data
         }
         self.assertEquals(
             load_dump(expected_data['results'], default=default),
@@ -448,6 +444,9 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
 
     def test_get_approved_facilities(self):
         self.maxDiff = None
+        self.user.is_national = True
+        self.user.is_superuser = True
+        self.user.save()
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility)
