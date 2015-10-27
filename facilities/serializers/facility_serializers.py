@@ -113,6 +113,10 @@ class RegulatingBodyContactSerializer(
 
 class FacilityUpgradeSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    current_keph_level = serializers.ReadOnlyField(
+        source='facility.keph_level_name')
+    current_facility_type = serializers.ReadOnlyField(
+        source='facility.facility_type_name')
 
     class Meta(object):
         model = FacilityUpgrade
