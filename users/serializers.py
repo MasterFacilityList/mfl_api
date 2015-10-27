@@ -14,6 +14,9 @@ from common.serializers import (
     UserContactSerializer,
     PartialResponseMixin
 )
+
+from common.models import (
+    UserConstituency, UserContact, UserCounty, Contact)
 from facilities.serializers import RegulatoryBodyUserSerializer
 from facilities.models import RegulatoryBodyUser
 from .models import (
@@ -234,8 +237,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 }
             ]
         """
-
-        from common.models import UserContact, Contact
         for contact in contacts:
             if 'id' in contact:
                 try:
@@ -279,8 +280,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 }
             ]
         """
-
-        from common.models import UserCounty
         for county in counties:
             if 'id' in county:
                 LOGGER.info("User is already linked to the county")
@@ -308,8 +307,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 }
             ]
         """
-
-        from common.models import UserConstituency
         for constituency in constituencies:
             if 'id' in constituency:
                 LOGGER.info("User is already linked to the constituency")
