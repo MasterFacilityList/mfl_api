@@ -9,7 +9,7 @@ import common.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('facilities', '0011_auto_20150930_1744'),
+        ('facilities', '0011_auto_20151027_0946'),
     ]
 
     operations = [
