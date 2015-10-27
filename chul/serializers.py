@@ -149,7 +149,6 @@ class CommunityHealthUnitSerializer(
                 chew_obj = CommunityHealthWorker.objects.get(id=chew_id)
                 chew_obj.first_name = chew['first_name']
                 chew_obj.last_name = chew['last_name']
-                chew_obj.id_number = chew['id_number']
                 chew_obj.is_incharge = chew['is_incharge']
                 chew_obj.save()
             else:
