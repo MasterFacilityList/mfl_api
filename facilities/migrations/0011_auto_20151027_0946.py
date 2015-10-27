@@ -9,14 +9,13 @@ import common.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('facilities', '0011_auto_20150930_1744'),
+        ('facilities', '0010_regulatorsync'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.RemoveField(
             model_name='facility',
             name='facility_catchment_population',
-            field=models.IntegerField(help_text=b'The population size which the facility serves', null=True, blank=True),
         ),
         migrations.AlterField(
             model_name='facilityservice',
@@ -74,8 +73,17 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(related_name='next_state', blank=True, to='facilities.RegulationStatus', help_text=b'The regulation_status succeeding this regulation status.', null=True),
         ),
         migrations.AlterField(
+            model_name='service',
+            name='has_options',
+            field=models.BooleanField(default=False),
+        ),
+        migrations.AlterField(
             model_name='servicecategory',
             name='keph_level',
             field=models.ForeignKey(blank=True, to='facilities.KephLevel', help_text=b'The KEPH level at which certain services should be offered', null=True),
+        ),
+        migrations.AlterUniqueTogether(
+            name='facilitytype',
+            unique_together=set([('name',)]),
         ),
     ]
