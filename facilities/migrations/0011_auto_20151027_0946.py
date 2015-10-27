@@ -82,8 +82,4 @@ class Migration(migrations.Migration):
             name='keph_level',
             field=models.ForeignKey(blank=True, to='facilities.KephLevel', help_text=b'The KEPH level at which certain services should be offered', null=True),
         ),
-        migrations.AlterUniqueTogether(
-            name='facilitytype',
-            unique_together=set([('name',)]),
-        ),
     ]
