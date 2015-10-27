@@ -11,8 +11,8 @@ from ..models import (
     UserContact,
     Town,
     UserConstituency,
-    SubCounty
-
+    SubCounty,
+    DocumentUpload
 )
 from .filter_shared import (
     CommonFieldsFilterset,
@@ -22,6 +22,7 @@ from .filter_shared import (
 
 
 class SubCountyFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = SubCounty
 
@@ -73,15 +74,15 @@ class CountyFilter(CommonFieldsFilterset):
 class ConstituencyFilter(CommonFieldsFilterset):
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
-    county = ListCharFilter(lookup_type='icontains')
-    constituency_id = ListCharFilter(name='id', lookup_type='icontains')
+    county = ListCharFilter(lookup_type='exact')
+    constituency_id = ListCharFilter(name='id', lookup_type='exact')
 
     class Meta(object):
         model = Constituency
 
 
 class WardFilter(CommonFieldsFilterset):
-    ward_id = ListCharFilter(name='id', lookup_type='icontains')
+    ward_id = ListCharFilter(name='id', lookup_type='exact')
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
     constituency = ListCharFilter(lookup_type='icontains')
@@ -113,3 +114,10 @@ class TownFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = Town
+
+
+class DocumentUploadFilter(CommonFieldsFilterset):
+    name = django_filters.CharFilter(lookup_type='icontains')
+
+    class Meta(object):
+        model = DocumentUpload

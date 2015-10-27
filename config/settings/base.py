@@ -10,13 +10,21 @@ env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
     DEBUG=(bool, True),
     FRONTEND_URL=(str, "http://localhost:8062"),
-    REALTIME_INDEX=(bool, False)
+    REALTIME_INDEX=(bool, False),
+    HTTPS_ENABLED=(bool, False),
+    SECRET_KEY=(str, 'p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8'),
+    EMAIL_HOST=(str, 'localhost'),
+    EMAIL_HOST_USER=(str, 487),
+    EMAIL_HOST_PASSWORD=(str, 'notarealpassword'),
+    AWS_ACCESS_KEY_ID=(str, ''),
+    AWS_SECRET_ACCESS_KEY=(str, ''),
+    AWS_STORAGE_BUCKET_NAME=(str, ''),
+    STORAGE_BACKEND=(str, '')
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
-SECRET_KEY = env(
-    'SECRET_KEY', default='p!ci1&ni8u98vvd#%18yp)aqh+m_8o565g*@!8@1wb$j#pj4d8')
+SECRET_KEY = env('SECRET_KEY')
 ENV_DB = env.db()
 DATABASES = {
     'default': {
@@ -40,11 +48,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'reversion.middleware.RevisionMiddleware'
 )
 
-EMAIL_HOST = env('EMAIL_HOST', default='localhost')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER', default=487)
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='notarealpassword')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
@@ -57,6 +66,7 @@ INSTALLED_APPS = (
     'common',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -73,13 +83,14 @@ INSTALLED_APPS = (
     'reversion',
     'gunicorn',
     'debug_toolbar',
+    'storages',
     'facilities',
     'data_bootstrap',
     'chul',
     'data',
     'mfl_gis',
     'search',
-    'reporting'
+    'reporting',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
@@ -93,6 +104,8 @@ LOCAL_APPS = [
     'mfl_gis',
     'data_bootstrap',
     'data',
+    'reporting',
+    'search',
 ]
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
@@ -113,8 +126,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'  # This is INTENTIONAL
 USE_TZ = True
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
@@ -130,6 +141,7 @@ REST_FRAMEWORK = {
         'rating': '1/day'
     },
     'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
         'users.permissions.MFLModelPermissions',
     ),
     'DEFAULT_FILTER_BACKENDS': (
@@ -146,6 +158,7 @@ REST_FRAMEWORK = {
         'rest_framework_xml.renderers.XMLRenderer',
         'common.renderers.CSVRenderer',
         'common.renderers.ExcelRenderer',
+        'common.renderers.PDFRenderer'
     ),
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'common.paginator.MflPaginationSerializer',
@@ -275,15 +288,16 @@ GIS_BORDERS_CACHE_SECONDS = (60 * 60 * 24 * 366)
 # some of these settings take into account that the target audience
 # of this system is not super-savvy
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
+    'oauth2_provider.backends.OAuth2Backend',
     'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 LOGIN_REDIRECT_URL = '/api/'
 
 SEARCH = {
     "ELASTIC_URL": "http://localhost:9200/",
     "INDEX_NAME": "mfl_index",
-    "REALTIME_INDEX": env('REALTIME_INDEX', False),
+    "REALTIME_INDEX": env('REALTIME_INDEX'),
     "SEARCH_RESULT_SIZE": 50,
     "NON_INDEXABLE_MODELS": [
         "mfl_gis.FacilityCoordinates",
@@ -291,6 +305,9 @@ SEARCH = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
+        "users.CustomGroup",
+        "users.ProxyGroup",
+        "facilities.FacilityUpdates"
 
     ],
     "STOP_WORDS": [
@@ -322,7 +339,7 @@ SEARCH = {
             "models": [
                 {
                     "name": "facility",
-                    "fields": ["name", "ward_name"],
+                    "fields": ["name"],
                     "boost": ["name"],
                 },
                 {
@@ -449,3 +466,28 @@ EXCEL_EXCEPT_FIELDS = [
 
 FRONTEND_URL = env("FRONTEND_URL")
 PASSWORD_RESET_URL = "%s/#/reset_pwd_confirm/{uid}/{token}" % FRONTEND_URL
+
+if env('HTTPS_ENABLED'):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_PROXY_PROTOCOL', 'https')
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+
+
+CSRF_COOKIE_AGE = None
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_AGE = (7 * 24 * 60 * 60)
+SECURE_BROWSER_XSS_FILTER = True
+
+if env('STORAGE_BACKEND'):
+    # storage settings (uses amazon S3 for now)
+    DEFAULT_FILE_STORAGE = env('STORAGE_BACKEND')
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_QUERYSTRING_AUTH = False
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'

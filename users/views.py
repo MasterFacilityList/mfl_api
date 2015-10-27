@@ -1,10 +1,11 @@
 from rest_framework import generics
+from rest_framework.views import Response, status
 
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Permission, Group
 
 from common.utilities import CustomRetrieveUpdateDestroyView
 
-from .models import MflUser, MFLOAuthApplication
+from .models import MflUser, MFLOAuthApplication, CustomGroup, ProxyGroup
 
 from .serializers import (
     MflUserSerializer,
@@ -31,15 +32,29 @@ class PermissionsListView(generics.ListAPIView):
 
 
 class GroupListView(generics.ListCreateAPIView):
-    queryset = Group.objects.all()
+    queryset = ProxyGroup.objects.all()
     serializer_class = GroupSerializer
     filter_class = GroupFilter
     ordering_fields = ('name', )
 
 
 class GroupDetailView(CustomRetrieveUpdateDestroyView):
-    queryset = Group.objects.all()
+    queryset = ProxyGroup.objects.all()
     serializer_class = GroupSerializer
+
+    def delete(self, *args, **kwargs):
+        pk = kwargs.pop('pk', None)
+        group = Group.objects.get(id=pk)
+
+        try:
+            CustomGroup.objects.get(group=group).delete()
+        except CustomGroup.DoesNotExist:
+            pass
+        users = MflUser.objects.all()
+        for user in users:
+            user.groups.remove(group)
+        group.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserList(generics.ListCreateAPIView):
@@ -51,6 +66,9 @@ class UserList(generics.ListCreateAPIView):
     def get_queryset(self, *args, **kwargs):
         from common.models import UserCounty, UserConstituency
         user = self.request.user
+        custom_queryset = kwargs.pop('custom_queryset', None)
+        if hasattr(custom_queryset, 'count'):
+            self.queryset = custom_queryset
         if user.county and not user.is_national:
             county_users = [
                 const_user.user.id for const_user in
@@ -63,10 +81,58 @@ class UserList(generics.ListCreateAPIView):
                     constituency__county=user.county).distinct()
             ]
             area_users = county_users + sub_county_users
-            return MflUser.objects.filter(
-                id__in=area_users)
+            return self.queryset.filter(
+                id__in=area_users).exclude(id=self.request.user.id)
+        elif user.is_national and not user.is_superuser:
+            # Should see the county users and the national users
+            # Also should not see the system user
+            county_users = [
+                county_user.user.id for county_user in
+                UserCounty.objects.all().distinct()
+            ]
+            national_users = [
+                nat_user.id for nat_user in MflUser.objects.filter(
+                    is_national=True)
+            ]
+            group_less_users = [
+                g_user.id
+                for g_user in MflUser.objects.all()
+                if not g_user.groups.all()
+            ]
+            all_users = county_users + national_users + group_less_users
+
+            return self.queryset.filter(
+                id__in=all_users).exclude(id=self.request.user.id).distinct()
+        elif user.constituency:
+            all_users = MflUser.objects.all()
+            users_to_see = []
+            sub_county_level_groups = [
+                c_group.group for c_group in
+                CustomGroup.objects.filter(sub_county_level=True)]
+            for user in all_users:
+                users_to_see.append(user.id) if set(
+                    user.groups.all()).issubset(
+                    sub_county_level_groups) else None
+
+                users_to_see.append(user.id) if not user.groups.all() else None
+
+            return self.queryset.filter(
+                id__in=users_to_see, created_by_id=self.request.user.id
+            ).exclude(id=self.request.user.id)
+        elif user.is_superuser:
+            return self.queryset.all().exclude(id=self.request.user.id)
+
         else:
-            return self.queryset
+            # The user is not allowed to see the users
+            return MflUser.objects.none()
+
+    def filter_queryset(self, queryset):
+        """
+        Overridden in order to constrain search results to what a user should
+        see.
+        """
+        queryset = super(UserList, self).filter_queryset(queryset)
+        return self.get_queryset(custom_queryset=queryset)
 
 
 class UserDetailView(CustomRetrieveUpdateDestroyView):

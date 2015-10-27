@@ -1,18 +1,38 @@
 #! /usr/bin/env python
 import json
+import os
 
-from os.path import dirname, abspath, join
 from config.settings import base
 from fabric.api import local
 from fabric.context_managers import lcd
 
 
-BASE_DIR = dirname(abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def manage(command, args=''):
     """Dev only - a convenience"""
     local('{}/manage.py {} {}'.format(BASE_DIR, command, args))
+
+
+def reset_migrations(*args, **kwargs):
+    """Neccessary for circle ci to be able to run tests"""
+
+    del_facility_migrations = ""\
+        "cd facilities/migrations && ls | grep -v" \
+        "set_facility_code_sequence_min_value.py | xargs rm" \
+        "cd common/migrations && ls | grep -v admin_unit_codes.py | xargs rm"
+
+    local(del_facility_migrations)
+    local('rm -r chul/migrations')
+    local('rm -r mfl_gis/migrations')
+    local('rm -r users/migrations')
+
+    manage('makemigrations users')
+    manage('makemigrations facilities')
+    manage('makemigrations common')
+    manage('makemigrations chul')
+    manage('makemigrations mfl_gis')
 
 
 def test():
@@ -30,7 +50,7 @@ def deploy():
 
 def server_deploy():
     """Production - run the deployment Ansible playbook"""
-    with lcd(join(BASE_DIR, 'playbooks')):
+    with lcd(os.path.join(BASE_DIR, 'playbooks')):
         local(
             "ansible-playbook site.yml -v --extra-vars '{}'".format(
                 json.dumps({
@@ -63,15 +83,18 @@ def load_demo_data(*args, **kwargs):
 
 def load_demo_data_from_scratch(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
-
-    data_files_1 = join(BASE_DIR, 'data/data/setup/*.json')
-    data_files_2 = join(BASE_DIR, 'data/data/admin_units/*.json')
-    data_files_3 = join(BASE_DIR, 'data/data/v2_data/*.json')
-    data_files_4 = join(BASE_DIR, 'data/data/demo/*.json')
-    data_files_5 = join(BASE_DIR, 'data/data/facilities/*.json')
-    data_files_6 = join(BASE_DIR, 'data/data/geocodes/*.json')
-    data_files_7 = join(BASE_DIR, 'data/data/approvals/*.json')
-    data_files_8 = join(BASE_DIR, 'data/data/last/*.json')
+    manage("createinitialrevisions")
+    data_files_1 = os.path.join(BASE_DIR, 'data/data/setup/*.json')
+    data_files_2 = os.path.join(BASE_DIR, 'data/data/admin_units/*.json')
+    data_files_3 = os.path.join(BASE_DIR, 'data/data/v2_data/*.json')
+    data_files_4 = os.path.join(BASE_DIR, 'data/data/demo/*.json')
+    data_files_5 = os.path.join(BASE_DIR, 'data/data/facilities/*.json')
+    data_files_6 = os.path.join(BASE_DIR, 'data/data/geocodes/*.json')
+    data_files_7 = os.path.join(BASE_DIR, 'data/data/approvals/*.json')
+    data_files_8 = os.path.join(BASE_DIR, 'data/data/last/*.json')
+    data_files_11 = os.path.join(BASE_DIR, 'data/data/mcul/*.json')
+    data_files_10 = os.path.join(
+        BASE_DIR, 'data/data/facility_services/*.json')
 
     manage('bootstrap', data_files_1)
     manage('bootstrap', data_files_2)
@@ -79,13 +102,15 @@ def load_demo_data_from_scratch(*args, **kwargs):
     manage('bootstrap', data_files_4)
     manage('bootstrap', data_files_5)
     manage('load_groups')
-
+    manage('sample_users')
     # Needs to occur after base setup data has been loaded
     load_gis_data()
     manage('bootstrap', data_files_6)
     manage('bootstrap', data_files_7)
     manage('bootstrap', data_files_8)
-    manage("createinitialrevisions")
+    manage('approve_facilities')
+    manage('bootstrap', data_files_10)
+    manage('bootstrap', data_files_11)
 
 
 def load_gis_data(*args, **kwargs):
@@ -132,6 +157,12 @@ def setup_db(*args, **kwargs):
          "CREATEROLE LOGIN PASSWORD '{1}'".format(db_user, db_pass), no_sudo)
     psql('CREATE DATABASE {}'.format(db_name), no_sudo)
     psql('CREATE EXTENSION IF NOT EXISTS postgis')
+
+
+def migrate(*args, **kwargs):
+    """
+    Updates the migrations which do not require a database setup
+    """
     manage('migrate')
 
 

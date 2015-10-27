@@ -4,6 +4,7 @@ import uuid
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.contrib.auth.models import Group
 from rest_framework.test import APITestCase
 from model_mommy import mommy
 
@@ -50,10 +51,12 @@ class LoginMixin(object):
         )
         self.client.login(email='tester@ehealth.or.ke', password=password)
         self.maxDiff = None
+        mommy.make(Group, name='Facility Viewing Group')
         super(LoginMixin, self).setUp()
 
 
 class TestViewCounties(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestViewCounties, self).setUp()
         self.url = reverse('api:common:counties_list')
@@ -458,97 +461,6 @@ class TestUserContactView(LoginMixin, APITestCase):
             json.loads(json.dumps(response.data, default=default)))
 
 
-class TestAuditableViewMixin(LoginMixin, APITestCase):
-
-    def setUp(self):
-        super(TestAuditableViewMixin, self).setUp()
-
-    def test_response_with_no_audit(self):
-        county = mommy.make(County)
-        url = reverse(
-            'api:common:county_detail', kwargs={'pk': county.pk}
-        )
-
-        # First, fetch with no audit
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertNotIn("revisions", response.data)
-
-    def test_response_with_audit(self):
-        county = mommy.make(County)
-        url = reverse(
-            'api:common:county_detail', kwargs={'pk': county.pk}
-        ) + "?include_audit=t"
-
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertEqual(response.data["revisions"], [])
-
-    def test_response_with_audit_empty_change(self):
-        county = mommy.make(County)
-        url = reverse(
-            'api:common:county_detail', kwargs={'pk': county.pk}
-        ) + "?include_audit=t"
-        county.save()
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertEqual(response.data["revisions"], [])
-
-    def test_response_with_audit_single_change(self):
-        county_rev_1 = mommy.make(County)
-        url = reverse(
-            'api:common:county_detail', kwargs={'pk': county_rev_1.pk}
-        ) + '?include_audit=true'
-
-        old_val = county_rev_1.code
-        county_rev_1.code = 34
-        county_rev_1.save()
-
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertEqual(len(response.data["revisions"]), 1)
-        self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
-
-        diff = response.data["revisions"][0]["updates"][0]
-
-        self.assertEqual(diff["name"], "code")
-        self.assertEqual(diff["old"], old_val)
-        self.assertEqual(diff["new"], county_rev_1.code)
-
-    def test_response_with_audit_two_changes(self):
-        county_rev_1 = mommy.make(County, name="one", code=98)
-        url = reverse(
-            'api:common:county_detail',
-            kwargs={'pk': county_rev_1.pk}
-        ) + '?include_audit=true'
-
-        county_rev_1.name = 'Kaunti Yangu'
-        county_rev_1.code = 99
-        county_rev_1.save()
-
-        county_rev_1.name = 'yeahhh'
-        county_rev_1.save()
-
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
-        self.assertEqual(len(response.data["revisions"]), 2)
-        self.assertEqual(len(response.data["revisions"][0]["updates"]), 1)
-        self.assertEqual(len(response.data["revisions"][1]["updates"]), 2)
-
-        diff1 = response.data["revisions"][0]["updates"]
-        diff2 = response.data["revisions"][1]["updates"]
-
-        self.assertIn({
-            "name": "name",
-            "old": "one",
-            "new": "Kaunti Yangu"
-        }, diff2)
-        self.assertIn({"name": "code", "old": 98, "new": 99}, diff2)
-        self.assertIn(
-            {"name": "name", "old": "Kaunti Yangu", "new": "yeahhh"}, diff1
-        )
-
-
 class TestFilteringSummariesView(LoginMixin, APITestCase):
 
     def setUp(self):
@@ -694,6 +606,7 @@ class TestUserConstituenciesView(LoginMixin, APITestCase):
 
 
 class TestFilteringAdminUnits(APITestCase):
+
     def setUp(self):
         self.county = mommy.make(County)
         self.constituency = mommy.make(Constituency, county=self.county)
@@ -871,6 +784,7 @@ class TestFilteringAdminUnits(APITestCase):
 
 
 class TestSubCountyView(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse("api:common:sub_counties_list")
         super(TestSubCountyView, self).setUp()

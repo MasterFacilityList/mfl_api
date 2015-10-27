@@ -1,9 +1,13 @@
+import functools
+
 from datetime import timedelta
 
 from django.apps import apps
+from django.db.models import Sum
 from django.utils import timezone
 
 from rest_framework.views import APIView, Response
+from rest_framework.exceptions import NotFound
 
 from facilities.models import (
     Facility,
@@ -11,7 +15,8 @@ from facilities.models import (
     KephLevel,
     FacilityUpgrade)
 from common.constants import TRUTH_NESS, FALSE_NESS
-from common.models import County, Constituency
+from common.models import County, Constituency, Ward
+from chul.models import CommunityHealthUnit, Status
 
 from .report_config import REPORTS
 
@@ -82,9 +87,42 @@ class FilterReportMixin(object):
         if report_type == "facility_constituency_report":
             return self._get_facility_constituency_data()
 
+        if report_type == "beds_and_cots_by_county":
+            return self._get_beds_and_cots({
+                'ward__constituency__county__name': 'county_name',
+                'ward__constituency__county': 'county'
+            })
+
+        if report_type == "beds_and_cots_by_constituency":
+            county_id = self.request.query_params.get("county", None)
+            filters = (
+                {} if county_id is None
+                else {"ward__constituency__county": county_id}
+            )
+            return self._get_beds_and_cots(vals={
+                'ward__constituency__name': 'constituency_name',
+                'ward__constituency': 'constituency'
+            }, filters=filters)
+
+        if report_type == "beds_and_cots_by_ward":
+            constituency_id = self.request.query_params.get(
+                "constituency", None
+            )
+            filters = (
+                {} if constituency_id is None
+                else {"ward__constituency": constituency_id}
+            )
+            return self._get_beds_and_cots(
+                vals={'ward__name': 'ward_name', 'ward': "ward"},
+                filters=filters
+            )
+
         more_filters_params = self.request.query_params.get("filters", None)
 
-        report_config = REPORTS[report_type]
+        report_config = REPORTS.get(report_type, None)
+        if report_config is None:
+            raise NotFound(detail="Report not found.")
+
         group_by = report_config.get("group_by")
         app_label, model_name = report_config.get(
             "filter_fields").get("model").split('.')
@@ -110,19 +148,14 @@ class FilterReportMixin(object):
         return data, self.queryset.count()
 
     def _get_facility_type_data(self):
-        owner_cagegory = self.request.query_params.get("owner_category")
-        county = self.request.query_params.get("county")
+        owner_category = self.request.query_params.get("owner_category")
         facility_type = self.request.query_params.get("facility_type")
 
         data = []
 
         for county in County.objects.all():
-            county_data = {
-                "county": county.name,
-                "facilities": []
-            }
             for facility_type in FacilityType.objects.all():
-                if not owner_cagegory:
+                if not owner_category:
                     count = Facility.objects.filter(
                         facility_type=facility_type,
                         ward__constituency__county=county).count()
@@ -130,33 +163,28 @@ class FilterReportMixin(object):
                     count = Facility.objects.filter(
                         facility_type=facility_type,
                         ward__constituency__county=county,
-                        owner__owner_type=owner_cagegory).count()
+                        owner__owner_type=owner_category).count()
 
-                county_data["facilities"].append(
+                data.append(
                     {
+                        "county": county.name,
                         "facility_type": facility_type.name,
                         "number_of_facilities": count
                     }
                 )
-            data.append(county_data)
+
         totals = []
 
         return data, totals
 
     def _get_facility_keph_level_data(self):
-        owner_cagegory = self.request.query_params.get("owner_category")
-        county = self.request.query_params.get("county")
+        owner_category = self.request.query_params.get("owner_category")
 
         data = []
 
         for county in County.objects.all():
-            county_data = {
-                "county": county.name,
-                "facilities": []
-            }
             for level in KephLevel.objects.all():
-
-                if not owner_cagegory:
+                if not owner_category:
                     count = Facility.objects.filter(
                         keph_level=level,
                         ward__constituency__county=county).count()
@@ -164,50 +192,65 @@ class FilterReportMixin(object):
                     count = Facility.objects.filter(
                         level=level,
                         ward__constituency__county=county,
-                        owner__owner_type=owner_cagegory).count()
+                        owner__owner_type=owner_category).count()
 
-                county_data["facilities"].append(
-                    {
-                        "keph_level": level.name,
-                        "number_of_facilities": count
-                    }
-                )
-            data.append(county_data)
+                data.append({
+                    "county": county.name,
+                    "keph_level": level.name,
+                    "number_of_facilities": count
+                })
+
         totals = []
         return data, totals
 
     def _get_facility_constituency_data(self):
-        owner_cagegory = self.request.query_params.get("owner_category")
-        county = self.request.query_params.get("county")
+        owner_category = self.request.query_params.get("owner_category")
 
         data = []
 
         for county in County.objects.all():
-            county_data = {
-                "county": county.name,
-                "facilities": []
-            }
             for const in Constituency.objects.filter(county=county):
-                if not owner_cagegory:
+                if not owner_category:
                     count = Facility.objects.filter(
                         ward__constituency=const).count()
                 else:
                     count = Facility.objects.filter(
                         ward__constituency=const,
-                        owner__owner_type=owner_cagegory).count()
+                        owner__owner_type=owner_category).count()
 
-                county_data["facilities"].append(
-                    {
-                        "constituency": const.name,
-                        "number_of_facilities": count
-                    }
-                )
-            data.append(county_data)
+                data.append({
+                    "county": county.name,
+                    "constituency": const.name,
+                    "number_of_facilities": count
+                })
+
             totals = []
         return data, totals
 
+    def _get_beds_and_cots(self, vals={}, filters={}):
+        fields = vals.keys()
+        assert len(fields) == 2
+        items = Facility.objects.values(*fields).filter(**filters).annotate(
+            cots=Sum('number_of_cots'), beds=Sum('number_of_beds')
+        ).order_by()
+
+        total_cots, total_beds = functools.reduce(
+            lambda x, y: (x[0] + y['cots'], x[1] + y['beds']),
+            items, (0, 0)
+        )
+
+        return [
+            {
+                'cots': p['cots'],
+                'beds': p['beds'],
+                vals[fields[0]]: p[fields[0]],
+                vals[fields[1]]: p[fields[1]]
+            } for p in items
+        ], {"total_cots": total_cots, "total_beds": total_beds}
+
 
 class ReportView(FilterReportMixin, APIView):
+
     def get(self, *args, **kwargs):
         data, totals = self.get_report_data()
 
@@ -218,6 +261,7 @@ class ReportView(FilterReportMixin, APIView):
 
 
 class FacilityUpgradeDowngrade(APIView):
+
     def get(self, *args, **kwargs):
         county = self.request.query_params.get('county', None)
         upgrade = self.request.query_params.get('upgrade', None)
@@ -289,5 +333,196 @@ class FacilityUpgradeDowngrade(APIView):
 
             return Response(data={
                 "total_facilities_changed": len(facilities),
-                "facilities": records
+                "results": records
             })
+
+
+class CommunityHealthUnitReport(APIView):
+    queryset = CommunityHealthUnit.objects.all()
+
+    def get_county_reports(self, queryset=queryset):
+        data = []
+        counties = County.objects.all()
+        total_chus = 0
+        for county in counties:
+            chu_count = queryset.filter(
+                facility__ward__constituency__county=county).count()
+            total_chus += chu_count
+            data.append(
+                {
+                    "county_name": county.name,
+                    "county_id": county.id,
+                    "number_of_units": chu_count
+                }
+            )
+        return data, total_chus
+
+    def get_constituency_reports(self, county=None, queryset=queryset):
+        data = []
+        constituencies = Constituency.objects.all()
+
+        if county:
+            constituencies = constituencies.filter(county_id=county)
+        total_chus = 0
+        for const in constituencies:
+            chu_count = queryset.filter(
+                facility__ward__constituency=const).count()
+            total_chus += chu_count
+            data.append(
+                {
+                    "constituency_name": const.name,
+                    "constituency_id": const.id,
+                    "number_of_units": chu_count
+                }
+            )
+        return data, total_chus
+
+    def get_ward_reports(self, constituency=None, queryset=queryset):
+        data = []
+        wards = Ward.objects.all()
+        if constituency:
+            wards = wards.filter(constituency_id=constituency)
+        total_chus = 0
+        for ward in wards:
+            chu_count = queryset.filter(
+                facility__ward=ward).count()
+            total_chus += chu_count
+            data.append(
+                {
+                    "ward_name": ward.name,
+                    "ward_id": ward.id,
+                    "number_of_units": chu_count
+                }
+            )
+        return data, total_chus
+
+    def get_date_established_report(
+            self, county=None, constituency=None):
+        now = timezone.now()
+        three_months_ago = now - timedelta(days=90)
+        queryset = self.queryset.filter(created__gte=three_months_ago)
+
+        if county:
+            return self.get_constituency_reports(
+                county=county, queryset=queryset)
+        elif constituency:
+            return self.get_ward_reports(
+                constituency=constituency, queryset=queryset)
+        else:
+            return self.get_county_reports(queryset=queryset)
+
+    def get_status_report(self, constituency=None, county=None):
+        data = []
+        if county:
+            self.queryset = self.queryset.filter(
+                facility__ward__constituency__county_id=county)
+        if constituency:
+            self.queryset = self.queryset.filter(
+                facility__ward__constituency_id=constituency)
+        total_chus = 0
+        for status in Status.objects.all():
+            chu_count = self.queryset.filter(
+                status=status).count()
+            total_chus += chu_count
+            data.append(
+                {
+                    "status_name": status.name,
+                    "number_of_units": chu_count
+                }
+            )
+        return data, self.queryset.count()
+
+    def get(self, *args, **kwargs):
+        county = self.request.query_params.get('county', None)
+        constituency = self.request.query_params.get('constituency', None)
+        report_type = self.request.query_params.get('report_type', None)
+        last_quarter = self.request.query_params.get('last_quarter', None)
+
+        if report_type == 'constituency' and county:
+            report_data = self.get_constituency_reports(county=county)
+
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if report_type == 'constituency' and not county:
+            report_data = self.get_constituency_reports()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if report_type == 'ward' and not constituency:
+            report_data = self.get_ward_reports()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if report_type == 'ward' and constituency:
+            report_data = self.get_ward_reports(constituency=constituency)
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if last_quarter and county and not constituency:
+            report_data = self.get_date_established_report(county=county)
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if last_quarter and constituency:
+            report_data = self.get_date_established_report(
+                constituency=constituency)
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if last_quarter and not county and not constituency:
+            report_data = self.get_date_established_report()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if report_type == 'status' and not county and not constituency:
+            report_data = self.get_status_report()
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if report_type == 'status' and county and not constituency:
+            report_data = self.get_status_report(county=county)
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if report_type == 'status' and not county and constituency:
+
+            report_data = self.get_status_report(constituency=constituency)
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        data = {
+            "total": self.get_county_reports()[1],
+            "results": self.get_county_reports()[0]
+        }
+        return Response(data)

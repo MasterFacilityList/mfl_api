@@ -1,6 +1,9 @@
 from rest_framework import generics
 from rest_framework.views import Response
+from rest_framework import status
+
 from rest_framework.permissions import DjangoModelPermissions
+from facilities.models import Facility
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
 
@@ -37,7 +40,8 @@ from .serializers import (
     WardBoundaryDetailSerializer,
     FacilityCoordinateSimpleSerializer,
     CountyBoundSerializer,
-    ConstituencyBoundSerializer
+    ConstituencyBoundSerializer,
+    BufferCooridinatesMixin
 )
 from .pagination import GISPageNumberPagination
 from .generics import GISListCreateAPIView
@@ -158,7 +162,8 @@ class FacilityCoordinatesDetailView(
     serializer_class = FacilityCoordinatesDetailSerializer
 
 
-class FacilityCoordinatesCreationAndListing(GISListCreateAPIView):
+class FacilityCoordinatesCreationAndListing(
+        BufferCooridinatesMixin, GISListCreateAPIView):
     """
     Lists and creates facility coordinates
 
@@ -183,8 +188,24 @@ class FacilityCoordinatesCreationAndListing(GISListCreateAPIView):
         'facility', 'latitude', 'longitude', 'source', 'method',)
     pagination_class = GISPageNumberPagination
 
+    def create(self, request, *args, **kwargs):
+        request.data['created_by'] = request.user.id
+        request.data['updated_by'] = request.user.id
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        facility_id = request.data.get('facility')
+        facility = Facility.objects.get(id=facility_id)
+        if facility.approved:
+            self.buffer_coordinates(facility, request.data)
+        else:
+            self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-class FacilityCoordinatesCreationAndDetail(CustomRetrieveUpdateDestroyView):
+
+class FacilityCoordinatesCreationAndDetail(
+        BufferCooridinatesMixin, CustomRetrieveUpdateDestroyView):
     """
     Lists and creates facility coordinates
 

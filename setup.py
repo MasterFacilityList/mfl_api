@@ -28,6 +28,7 @@ version = config.__version__
 
 
 class Tox(TestCommand):
+
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []
@@ -93,7 +94,7 @@ setup(
         "pytest-django>=2.8,<2.9.0",
         "pytest-xdist>=1.11,<1.12.0",
         "six>=1.9,<1.10.0",
-        "django-reversion>=1.8.6,<1.9.0",
+        "django-reversion>=1.9.3",
         "shapely>=1.5.7,<1.6.0",
         "wheel>=0.24.0,<1.25.0",
         "pytz>=2015.2",
@@ -114,5 +115,7 @@ setup(
         "recommonmark>=0.1.1,<0.2.0",
         "WeasyPrint>=0.23,<0.24.0",
         "django-redis>=4.0.0,<4.1.0",
+        "django-storages==1.1.8",
+        "boto==2.38.0"
     ],
 )

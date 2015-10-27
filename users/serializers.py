@@ -1,5 +1,6 @@
 from django.db import transaction
-from django.contrib.auth.models import Group, Permission
+from django.utils import timezone
+from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -12,7 +13,12 @@ from common.serializers import (
     PartialResponseMixin
 )
 from facilities.serializers import RegulatoryBodyUserSerializer
-from .models import MflUser, MFLOAuthApplication, check_password_strength
+from .models import (
+    MflUser,
+    MFLOAuthApplication,
+    check_password_strength,
+    CustomGroup,
+    ProxyGroup)
 
 
 def _lookup_permissions(validated_data):
@@ -33,7 +39,7 @@ def _lookup_groups(validated_data):
     try:
         user_supplied_groups = validated_data.get('groups', [])
         return [
-            Group.objects.get(**user_supplied_group)
+            ProxyGroup.objects.get(**user_supplied_group)
             for user_supplied_group in user_supplied_groups
         ]
     except Exception as ex:  # Will reraise a more API friendly exception
@@ -88,22 +94,50 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
     # to work, the UniqueValidator on this name had to be silenced
     name = serializers.CharField(validators=[])
     permissions = PermissionSerializer(many=True, required=False)
+    is_regulator = serializers.ReadOnlyField()
+    is_national = serializers.ReadOnlyField()
+    is_administrator = serializers.ReadOnlyField()
     is_county_level = serializers.ReadOnlyField()
+    is_sub_county_level = serializers.ReadOnlyField()
 
     @transaction.atomic
     def create(self, validated_data):
+        regulator = self.initial_data.pop('is_regulator', False)
+        national = self.initial_data.pop('is_national', False)
+        admin = self.initial_data.pop('is_administrator', False)
+        county_level = self.initial_data.pop('is_county_level', False)
+        sub_county_level = self.initial_data.pop('is_sub_county_level', False)
         permissions = _lookup_permissions(
             self.context['request'].DATA
         )
         validated_data.pop('permissions', None)
 
-        new_group = Group(**validated_data)
+        new_group = ProxyGroup(**validated_data)
         new_group.save()
         new_group.permissions.add(*permissions)
+        custom_group_data = {
+            "regulator": regulator,
+            "national": national,
+            "administrator": admin,
+            'county_level': county_level,
+            'sub_county_level': sub_county_level,
+            "group": new_group
+        }
+        CustomGroup.objects.create(**custom_group_data)
         return new_group
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        regulator = self.initial_data.pop(
+            'is_regulator', instance.is_regulator)
+        national = self.initial_data.pop(
+            'is_national', instance.is_national)
+        admin = self.initial_data.pop(
+            'is_administrator', instance.is_administrator)
+        county_level = self.initial_data.pop(
+            'is_county_level', instance.is_county_level)
+        sub_county_level = self.initial_data.pop(
+            'is_sub_county_level', instance.is_sub_county_level)
         permissions = _lookup_permissions(
             self.context['request'].DATA
         )
@@ -115,6 +149,22 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         instance.permissions.clear()
         instance.permissions.add(*permissions)
+        custom_group_data = {
+            "regulator": regulator,
+            "national": national,
+            "administrator": admin,
+            "county_level": county_level,
+            "sub_county_level": sub_county_level,
+            "group": instance
+        }
+        try:
+            cg = CustomGroup.objects.get(group=instance)
+            for key, value in custom_group_data.iteritems():
+                setattr(cg, key, value)
+            cg.save()
+        except CustomGroup.DoesNotExist:
+            CustomGroup.objects.create(**custom_group_data)
+
         return instance
 
     def get_fields(self):
@@ -124,40 +174,56 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
         return self.strip_fields(request, origi_fields)
 
     class Meta(object):
-        model = Group
+        model = ProxyGroup
 
 
 class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     """This should allow everything about users to be managed"""
-    user_counties = UserCountySerializer(many=True, required=False)
 
+    user_counties = UserCountySerializer(many=True, required=False)
     short_name = serializers.ReadOnlyField(source='get_short_name')
     full_name = serializers.ReadOnlyField(source='get_full_name')
     all_permissions = serializers.ReadOnlyField(source='permissions')
-
     requires_password_change = serializers.ReadOnlyField()
-
-    user_permissions = PermissionSerializer(many=True, required=False)
     groups = GroupSerializer(many=True, required=False)
     regulator = serializers.ReadOnlyField(source='regulator.id')
     regulator_name = serializers.ReadOnlyField(source='regulator.name')
     county = serializers.ReadOnlyField(source='county.id')
     county_name = serializers.ReadOnlyField(source='county.name')
     constituency = serializers.ReadOnlyField(source='constituency.id')
-    constituency_name = serializers.ReadOnlyField(
-        source='constituency.name')
+    constituency_name = serializers.ReadOnlyField(source='constituency.name')
     user_contacts = UserContactSerializer(many=True, required=False)
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
+    user_groups = serializers.ReadOnlyField()
+
+    def _upadate_validated_data_with_audit_fields(
+            self, validated_data, is_creation=False):
+        if is_creation:
+            validated_data['created_by'] = self.context['request'].user
+            validated_data['created'] = timezone.now()
+        validated_data['updated_by'] = self.context['request'].user
+        validated_data['updated'] = timezone.now()
+        return validated_data
+
+    def _assign_is_staff(self, user_groups):
+        for group in user_groups:
+            if group.is_administrator:
+                return True
+        return False
 
     @transaction.atomic
     def create(self, validated_data):
+        validated_data = self._upadate_validated_data_with_audit_fields(
+            validated_data, is_creation=True)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
         new_user = MflUser.objects.create_user(**validated_data)
+        if self._assign_is_staff(groups):
+            new_user.is_staff = True
         new_user.save()
         new_user.groups.add(*groups)
 
@@ -165,6 +231,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        validated_data = self._upadate_validated_data_with_audit_fields(
+            validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
@@ -179,8 +247,10 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         if pwd is not None:
             instance.set_password(pwd)
 
-        instance.save()
+        if self._assign_is_staff(groups):
 
+            instance.is_staff = True
+        instance.save()
         instance.groups.clear()
         instance.groups.add(*groups)
 
@@ -194,7 +264,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password_history', )
+        exclude = ('password_history', 'user_permissions', )
         extra_kwargs = {'password': {'write_only': True}}
 
 

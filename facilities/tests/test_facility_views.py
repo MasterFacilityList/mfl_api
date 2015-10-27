@@ -54,13 +54,15 @@ from ..models import (
     FacilityApproval,
     FacilityUpdates,
     KephLevel,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    RegulatorSync
 )
 
 from django.contrib.auth.models import Group, Permission
 
 
 class TestGroupAndPermissions(object):
+
     def setUp(self):
         super(TestGroupAndPermissions, self).setUp()
         self.view_unpublished_perm = Permission.objects.get(
@@ -727,7 +729,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         facility = mommy.make(Facility, ward=ward)
         url = reverse(
             'api:facilities:facility_inspection_report',
-            kwargs={'facility_id': facility.id})
+            kwargs={'pk': facility.id})
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
@@ -738,7 +740,7 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         facility = mommy.make(Facility, ward=ward)
         url = reverse(
             'api:facilities:facility_cover_report',
-            kwargs={'facility_id': facility.id})
+            kwargs={'pk': facility.id})
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
@@ -749,11 +751,43 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         facility = mommy.make(Facility, ward=ward)
         url = reverse(
             'api:facilities:facility_correction_template',
-            kwargs={'facility_id': facility.id})
+            kwargs={'pk': facility.id})
 
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertTemplateUsed(response, 'correction_template.txt')
+        self.assertTemplateUsed(response, 'correction_template.html')
+
+    def test_facility_detail_with_permission(self):
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_detail_report',
+            kwargs={'pk': facility.id}
+        )
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'facility_details.html')
+
+    def test_facility_detail_without_permission(self):
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_detail_report',
+            kwargs={'pk': facility.id}
+        )
+        get_user_model().objects.create_user(
+            email='noperms@domain.com',
+            password='password1',
+            first_name='fname',
+            employee_number='enum'
+        )
+        client = self.client.__class__()
+        self.assertTrue(
+            client.login(email='noperms@domain.com', password='password1')
+        )
+        response = client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'facility_details.html')
 
 
 class TestDashBoardView(LoginMixin, APITestCase):
@@ -787,6 +821,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "pending_updates": 0,
             "recently_created": 1,
             "county_summary": [
                 {
@@ -850,6 +885,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "pending_updates": 0,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [],
@@ -912,6 +948,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
+            "pending_updates": 0,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [
@@ -1562,3 +1599,155 @@ class TestFacilityLevelChangeReasonView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         reason_refetched = FacilityLevelChangeReason.objects.get(id=reason.id)
         self.assertEquals(reason_refetched.reason, data.get("reason"))
+
+
+class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
+    def setUp(self):
+        super(TestRegulatoryBodyContacts, self).setUp()
+
+    def test_save(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        reg_status = mommy.make(RegulationStatus)
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
+            "contacts": [
+                {
+                    "contact": "jina@mail.com",
+                    "contact_type": mommy.make(ContactType, name="EAMIL").id
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, RegulatingBody.objects.count())
+        self.assertEquals(1, Contact.objects.count())
+
+    def test_save_errors(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        reg_status = mommy.make(RegulationStatus)
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
+            "contacts": [
+                {
+                    "contact": "jina@mail.com"
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, RegulatingBody.objects.count())
+        self.assertEquals(0, Contact.objects.count())
+
+    def test_save_contact_missing(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        reg_status = mommy.make(RegulationStatus)
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
+            "contacts": [
+                {
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, RegulatingBody.objects.count())
+        self.assertEquals(0, Contact.objects.count())
+
+    def test_save_contact_type_invalid(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        contact_type = mommy.make(ContactType, name="EAMIL")
+        contact_type_id = contact_type.id
+        contact_type.delete()
+        reg_status = mommy.make(RegulationStatus)
+        data = {
+            "name": "this is a reg body",
+            'regulation_verb': 'REGISTER',
+            'default_status': str(reg_status.id),
+            "contacts": [
+                {
+                    "contact": "jina@mail.com",
+                    "contact_type": contact_type_id
+                }
+            ]
+        }
+        response = self.client.post(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, RegulatingBody.objects.count())
+        self.assertEquals(0, Contact.objects.count())
+
+    def test_upate_contact_type_valid(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        reg_body = mommy.make(RegulatingBody)
+        url = url + "{}/".format(reg_body.id)
+        contact_type = mommy.make(ContactType)
+        data = {
+            "contacts": [
+                {
+                    "contact": "jina@mail.com",
+                    "contact_type": str(contact_type.id)
+                }
+            ]
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, RegulatingBody.objects.count())
+        self.assertEquals(1, Contact.objects.count())
+
+    def test_upate_contact_invalid(self):
+        url = reverse("api:facilities:regulating_bodies_list")
+        reg_body = mommy.make(RegulatingBody)
+        url = url + "{}/".format(reg_body.id)
+        contact_type = mommy.make(ContactType)
+        data = {
+
+            "contacts": [
+                {
+                    "contact_type": str(contact_type.id)
+                }
+            ]
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(1, RegulatingBody.objects.count())
+        self.assertEquals(0, Contact.objects.count())
+
+
+class TestRegulatorSyncView(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:facilities:regulator_syncs_list")
+        super(TestRegulatorSyncView, self).setUp()
+
+    def test_post(self):
+        county = mommy.make(County)
+        owner = mommy.make(Owner)
+        facility_type = mommy.make(FacilityType)
+        data = {
+            "name": "Jina",
+            "registration_number": 100,
+            "county": county.code,
+            "owner": str(owner.id),
+            "facility_type": str(facility_type.id)
+        }
+        response = self.client.post(self.url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, RegulatorSync.objects.count())
+
+    def test_list(self):
+        county = mommy.make(County)
+        mommy.make(RegulatorSync, county=county.code)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+
+    def test_get_single(self):
+        county = mommy.make(County)
+        sync = mommy.make(RegulatorSync, county=county.code)
+        url = self.url + str(sync.id) + "/"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)

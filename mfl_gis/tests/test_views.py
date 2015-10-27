@@ -4,11 +4,16 @@ from common.models import Ward, County, Constituency
 from django.core.urlresolvers import reverse
 from model_mommy import mommy
 
+from facilities.models import FacilityUpdates, Facility
+
 from ..models import (
     WorldBorder,
     CountyBoundary,
     ConstituencyBoundary,
-    WardBoundary
+    WardBoundary,
+    FacilityCoordinates,
+    GeoCodeMethod,
+    GeoCodeSource
 )
 from ..serializers import WorldBorderDetailSerializer
 
@@ -129,6 +134,235 @@ class TestPostingFacilityCoordinates(LoginMixin, APITestCase):
         url = self.url + "{}/".format(str(facility_gps.id))
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+    def test_create_facility_coordinates_success(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        facilities = Facility.objects.all()
+        ward = facilities[0].ward
+        facility = mommy.make(Facility, ward=ward)
+        method = mommy.make(GeoCodeMethod)
+        source = mommy.make(GeoCodeSource)
+        facility_coords = FacilityCoordinates.objects.all()
+        data = {
+            "facility": str(facility.id),
+            "method": str(method.id),
+            "source": str(source.id),
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [
+                    facility_coords[0].coordinates[0],
+                    facility_coords[0].coordinates[1]
+                ]
+
+            }
+
+        }
+        url = self.url
+        response = self.client.post(url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(2, FacilityCoordinates.objects.count())
+
+    def test_create_facility_coordinates_success_facility_approved(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        facilities = Facility.objects.all()
+        ward = facilities[0].ward
+        facility = mommy.make(Facility, ward=ward)
+        facility.approved = True
+        facility.save(allow_save=True)
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertTrue(facility_refetched.approved)
+        method = mommy.make(GeoCodeMethod)
+        source = mommy.make(GeoCodeSource)
+        facility_coords = FacilityCoordinates.objects.all()
+        data = {
+            "facility": facility.id,
+            "method": method.id,
+            "source": source.id,
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [
+                    facility_coords[0].coordinates[0],
+                    facility_coords[0].coordinates[1]
+                ]
+
+            }
+
+        }
+        url = self.url
+        response = self.client.post(url, data)
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+        update = FacilityUpdates.objects.all()[0]
+        approval_url = reverse(
+            "api:facilities:facility_updates_detail",
+            kwargs={'pk': str(update.id)})
+        approval_payload = {
+            "approved": True
+        }
+        approval_response = self.client.patch(approval_url, approval_payload)
+        self.assertEquals(200, approval_response.status_code)
+        self.assertEquals(2, FacilityCoordinates.objects.count())
+
+    def test_create_facility_coordinates_error(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        facilities = Facility.objects.all()
+        ward = facilities[0].ward
+        facility = mommy.make(Facility, ward=ward)
+        method = mommy.make(GeoCodeMethod)
+        source = mommy.make(GeoCodeSource)
+        facility_coords = FacilityCoordinates.objects.all()
+        data = {
+            "facility": str(facility.id),
+            "method": str(method.id),
+            "source": str(source.id),
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [
+                    facility_coords[0].coordinates[1],
+                    facility_coords[0].coordinates[0]
+                ]
+
+            }
+
+        }
+
+        response = self.client.post(self.url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+
+    def test_update_facility_coordinates(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        method = mommy.make(GeoCodeMethod)
+        source = mommy.make(GeoCodeSource)
+        data = {
+            "method": str(method.id),
+            "source": str(source.id),
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [13525, 23525]
+
+            }
+
+        }
+        facility_coords = FacilityCoordinates.objects.all()
+        url = self.url + str(facility_coords[0].id) + "/"
+        response = self.client.patch(url, data)
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(0, FacilityUpdates.objects.count())
+
+    def test_update_facility_coordinates_success(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        method = mommy.make(GeoCodeMethod)
+        source = mommy.make(GeoCodeSource)
+        facility_coords = FacilityCoordinates.objects.all()
+        facility = facility_coords[0].facility
+        facility.approved = True
+        facility.save(allow_save=True)
+        data = {
+            "facility": str(facility.id),
+            "method": str(method.id),
+            "source": str(source.id),
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [
+                    facility_coords[0].coordinates[0],
+                    facility_coords[0].coordinates[1]
+                ]
+
+            }
+
+        }
+
+        url = self.url + str(facility_coords[0].id) + "/"
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+        # approve the facility updates
+        update = FacilityUpdates.objects.all()[0]
+        approval_url = reverse(
+            "api:facilities:facility_updates_detail",
+            kwargs={'pk': str(update.id)})
+        approval_payload = {
+            "approved": True
+        }
+        approval_response = self.client.patch(approval_url, approval_payload)
+        self.assertEquals(200, approval_response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+
+    def test_update_facility_coordinates_success_facility_not_approved(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+        method = mommy.make(GeoCodeMethod)
+        source = mommy.make(GeoCodeSource)
+        facility_coords = FacilityCoordinates.objects.all()
+        facility = facility_coords[0].facility
+        data = {
+            "facility": str(facility.id),
+            "method": str(method.id),
+            "source": str(source.id),
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [
+                    facility_coords[0].coordinates[0],
+                    facility_coords[0].coordinates[1]
+                ]
+
+            }
+
+        }
+
+        url = self.url + str(facility_coords[0].id) + "/"
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(0, FacilityUpdates.objects.count())
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+
+    def test_update_coordinates_only(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+
+        facility_coords = FacilityCoordinates.objects.all()
+        facility = facility_coords[0].facility
+        facility.approved = True
+        facility.save(allow_save=True)
+        data = {
+            "facility": str(facility.id),
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [
+                    facility_coords[0].coordinates[0],
+                    facility_coords[0].coordinates[1]
+                ]
+
+            }
+
+        }
+
+        url = self.url + str(facility_coords[0].id) + "/"
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+        update = FacilityUpdates.objects.all()[0]
+        approval_url = reverse(
+            "api:facilities:facility_updates_detail",
+            kwargs={'pk': str(update.id)})
+        approval_payload = {
+            "approved": True
+        }
+        approval_response = self.client.patch(approval_url, approval_payload)
+        self.assertEquals(200, approval_response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
 
 
 class TestBoundaryBoundsView(LoginMixin, APITestCase):

@@ -193,6 +193,9 @@ class DashBoard(QuerysetFilterMixin, APIView):
             facility__in=self.get_queryset(),
             date_established__gte=three_months_ago).count()
 
+    def get_facility_with_pending_updates(self):
+        return self.filter_queryset().filter(has_edits=True).count()
+
     def filter_queryset(self):
         return self.get_queryset()
         # user = self.request.user
@@ -224,7 +227,8 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "owner_types": self.get_facility_owner_types_summary(),
             "recently_created": self.get_recently_created_facilities(),
             "recently_created_chus": self.get_recently_created_chus(),
-            "facilities_pending_approval_count": self.facilities_pending_approval_count()
+            "facilities_pending_approval_count": self.facilities_pending_approval_count(),
+            "pending_updates": self.get_facility_with_pending_updates()
         }
         fields = self.request.query_params.get("fields", None)
         if fields:

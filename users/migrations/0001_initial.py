@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.db.models.deletion
 import django.contrib.postgres.fields
 import oauth2_provider.validators
+import django.contrib.auth.models
 import oauth2_provider.generators
 import django.utils.timezone
 from django.conf import settings
@@ -35,16 +37,27 @@ class Migration(migrations.Migration):
                 ('is_national', models.BooleanField(default=False)),
                 ('search', models.CharField(max_length=255, null=True, blank=True)),
                 ('deleted', models.BooleanField(default=False)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
                 ('password_history', django.contrib.postgres.fields.ArrayField(size=None, null=True, base_field=models.TextField(null=True, blank=True), blank=True)),
                 ('employee_number', models.CharField(unique=True, max_length=20)),
-                ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'ordering': ('-date_joined',),
                 'default_permissions': ('add', 'change', 'delete', 'view'),
-                'permissions': (('county_group_marker', 'A marker permission for county level groups'), ('manipulate_superusers', 'A permission to create and manipulate superusers')),
             },
+        ),
+        migrations.CreateModel(
+            name='CustomGroup',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('regulator', models.BooleanField(default=False, help_text=b'Are the regulators in this group?')),
+                ('national', models.BooleanField(default=False, help_text=b'Will the users in this group see all facilities in the country?')),
+                ('administrator', models.BooleanField(default=False, help_text=b'Will the users in this group administor user rights?')),
+                ('county_level', models.BooleanField(default=False, help_text=b'Will the user be creating sub county users?')),
+                ('sub_county_level', models.BooleanField(default=False, help_text=b'Will the user be creating users below the sub county level users?')),
+            ],
         ),
         migrations.CreateModel(
             name='MFLOAuthApplication',
@@ -64,5 +77,37 @@ class Migration(migrations.Migration):
                 'verbose_name': 'mfl oauth application',
                 'verbose_name_plural': 'mfl oauth applications',
             },
+        ),
+        migrations.CreateModel(
+            name='ProxyGroup',
+            fields=[
+            ],
+            options={
+                'proxy': True,
+            },
+            bases=('auth.group',),
+            managers=[
+                (b'objects', django.contrib.auth.models.GroupManager()),
+            ],
+        ),
+        migrations.AddField(
+            model_name='customgroup',
+            name='group',
+            field=models.OneToOneField(related_name='custom_group_fields', on_delete=django.db.models.deletion.PROTECT, to='auth.Group'),
+        ),
+        migrations.AddField(
+            model_name='mfluser',
+            name='groups',
+            field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups'),
+        ),
+        migrations.AddField(
+            model_name='mfluser',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='mfluser',
+            name='user_permissions',
+            field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions'),
         ),
     ]

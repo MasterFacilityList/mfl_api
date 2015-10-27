@@ -2,21 +2,32 @@ machine:
   environment:
     DATABASE_URL: postgres://ubuntu@localhost:5432/circle_test
     COVERALLS_REPO_TOKEN: Di6cfRDQKGKrOaNNfO8vTMMC28gHGZYA2
+
+  node:
+    version: 4.1.0
+
   services:
     - elasticsearch
 
-checkout:
+
+dependencies:
+  override:
+    - pip install tox
   post:
     - cp .env-example .env
 
-dependencies:
-  post:
-    - pip install fabric
 
 test:
   override:
-    - fab test
+    - python setup.py check
+    - case $CIRCLE_NODE_INDEX in 0) tox -v;; 1) bash test_e2e.sh ;; esac:
+        parallel: true
+        timeout: 300
+        environment:
+          LOG_FOLDER: "$HOME/$CIRCLE_PROJECT_REPONAME/_logs_"
+
 
 general:
   artifacts:
     - "htmlcov"
+    - "_logs_"

@@ -6,9 +6,10 @@ Master Facility List API
 .. image:: https://badge.fury.io/py/mfl.svg
     :target: http://badge.fury.io/py/mfl
 
-.. image:: https://readthedocs.org/projects/mfl-api/badge/?version=latest
-    :target: https://readthedocs.org/projects/mfl-api/?badge=latest
+.. image:: https://readthedocs.org/projects/mfl-api-docs/badge/?version=latest
+    :target: http://mfl-api-docs.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status
+
 
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/MasterFacilityList/mfl_api
@@ -17,6 +18,11 @@ Master Facility List API
 .. image:: https://requires.io/github/MasterFacilityList/mfl_api/requirements.svg?branch=develop
      :target: https://requires.io/github/MasterFacilityList/mfl_api/requirements/?branch=develop
      :alt: Requirements Status
+
+.. image:: https://www.quantifiedcode.com/api/v1/project/5512ed77922647478a419056baf3431c/badge.svg
+  :target: https://www.quantifiedcode.com/app/project/5512ed77922647478a419056baf3431c
+  :alt: Code issues
+
 
 This is the API server for the second generation Kenyan Ministry of Health Master Facility List ( MFL ).
 

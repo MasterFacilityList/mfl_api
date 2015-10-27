@@ -13,6 +13,7 @@ from common.tests.test_views import LoginMixin
 
 
 class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestFacilityCountByCountyReport, self).setUp()
 
@@ -21,6 +22,12 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         url = reverse("api:reporting:reports")
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+    def test_get_undefined_report(self):
+        mommy.make(Facility, _quantity=5)
+        url = reverse("api:reporting:reports")
+        response = self.client.get(url+"?report_type=hakuna_kitu")
+        self.assertEquals(404, response.status_code)
 
     def test_get_reports_with_extra_filtering(self):
         county = mommy.make(County)
@@ -96,7 +103,7 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         url = main_url + "?county={}".format(county.id)
         expected_data = {
             "total_facilities_changed": 1,
-            "facilities": [
+            "results": [
                 {
                     "name": facility.name,
                     "code": facility.code,
@@ -119,7 +126,7 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         url = main_url + "?county={}".format(county_1.id)
         expected_data_2 = {
             "total_facilities_changed": 1,
-            "facilities": [
+            "results": [
                 {
                     "name": facility_1.name,
                     "code": facility_1.code,
@@ -200,3 +207,70 @@ class TestFacilityCountByCountyReport(LoginMixin, APITestCase):
         # all changes
         response = self.client.get(url)
         self.assertEquals(4, response.data.get("total_number_of_changes"))
+
+
+class TestBedsAndCots(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestBedsAndCots, self).setUp()
+        self.base_url = reverse("api:reporting:reports")
+        self.coun1 = mommy.make(County)
+        self.coun2 = mommy.make(County)
+        self.coun3 = mommy.make(County)
+
+        self.cons1 = mommy.make(Constituency, county=self.coun1)
+        self.cons2 = mommy.make(Constituency, county=self.coun1)
+        self.cons3 = mommy.make(Constituency, county=self.coun2)
+
+        self.ward1 = mommy.make(Ward, constituency=self.cons1)
+        self.ward2 = mommy.make(Ward, constituency=self.cons1)
+        self.ward3 = mommy.make(Ward, constituency=self.cons2)
+
+        mommy.make(
+            Facility, ward=self.ward1, number_of_cots=2, number_of_beds=5,
+            _quantity=2
+        )
+        mommy.make(Facility, ward=self.ward1)
+
+        mommy.make(
+            Facility, ward=self.ward2, number_of_cots=2, number_of_beds=5
+        )
+        mommy.make(
+            Facility, _quantity=3, number_of_beds=2, number_of_cots=4,
+            ward=self.ward3
+        )
+
+    def test_beds_and_cots_without_filter(self):
+        params = [
+            "beds_and_cots_by_county", "beds_and_cots_by_constituency",
+            "beds_and_cots_by_ward"
+        ]
+        for i in params:
+            response = self.client.get("{}?report_type={}".format(
+                self.base_url, i
+            ))
+            self.assertEquals(200, response.status_code)
+
+    def test_constituency_with_county_filter(self):
+        response = self.client.get("{}?report_type={}&county={}".format(
+            self.base_url, "beds_and_cots_by_constituency", str(self.coun1.pk)
+        ))
+        self.assertEquals(200, response.status_code)
+
+    def test_constituency_with_county_filter_empty_county(self):
+        response = self.client.get("{}?report_type={}&county={}".format(
+            self.base_url, "beds_and_cots_by_constituency", str(self.coun3.pk)
+        ))
+        self.assertEquals(200, response.status_code)
+
+    def test_ward_with_constituency_filter(self):
+        response = self.client.get("{}?report_type={}&constituency={}".format(
+            self.base_url, "beds_and_cots_by_ward", str(self.cons1.pk)
+        ))
+        self.assertEquals(200, response.status_code)
+
+    def test_ward_with_constituency_filter_empty_constituency(self):
+        response = self.client.get("{}?report_type={}&constituency={}".format(
+            self.base_url, "beds_and_cots_by_ward", str(self.cons3.pk)
+        ))
+        self.assertEquals(200, response.status_code)

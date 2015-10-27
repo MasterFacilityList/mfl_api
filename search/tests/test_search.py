@@ -6,13 +6,16 @@ from django.test.utils import override_settings
 from django.core.urlresolvers import reverse
 from django.core.management import call_command
 from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 
 from model_mommy import mommy
 
 from facilities.models import Facility, FacilityApproval
 from facilities.serializers import FacilitySerializer
+from common.models import County, Constituency, UserConstituency, UserCounty
 from common.tests import ViewTestBase
 from mfl_gis.models import FacilityCoordinates
+from chul.models import CommunityHealthUnit
 
 from search.filters import SearchFilter
 from search.search_utils import (
@@ -29,7 +32,10 @@ SEARCH_TEST_SETTINGS = {
         "mfl_gis.WorldBorder",
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
-        "mfl_gis.WardBoundary"],
+        "mfl_gis.WardBoundary",
+        "users.CustomGroup",
+        "users.ProxyGroup"
+    ],
     "FULL_TEXT_SEARCH_FIELDS": {
 
         "models": [
@@ -163,6 +169,7 @@ class TestElasticSearchAPI(TestCase):
 class TestSearchFunctions(ViewTestBase):
     def setUp(self):
         self.elastic_search_api = ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
         super(TestSearchFunctions, self).setUp()
 
     def test_serialize_model(self):
@@ -197,16 +204,36 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility, name='Kanyakini')
         index_instance(facility, 'test_index')
         url = url + "?search={}".format('Kanyakini')
-        response = ""
-        # temporary hack there is a delay in getting the search results
-        while True:
-            response = self.client.get(url)
-            if len(response.data.get('results')):
-                break
+
+        response = self.client.get(url)
 
         self.assertEquals(200, response.status_code)
-        self.assertEquals(facility, Facility.objects.get(
-            id=response.data['results'][0].get("id")))
+        self.assertIsInstance(response.data.get('results'), list)
+
+        self.elastic_search_api.delete_index('test_index')
+
+    def test_search_facility_using_query_dsl(self):
+        url = reverse('api:facilities:facilities_list')
+        self.elastic_search_api = ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
+        facility = mommy.make(Facility, name='Kanyakini')
+        index_instance(facility, 'test_index')
+        query_dsl = {
+            "from": 0,
+            "size": 30,
+            "query": {
+                "query_string": {
+                    "default_field": "name",
+                    "query": "Kanyakini"
+                }
+            }
+        }
+        url = url + "?search={}".format(json.dumps(query_dsl))
+
+        response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+        self.assertIsInstance(response.data.get('results'), list)
 
         self.elastic_search_api.delete_index('test_index')
 
@@ -217,16 +244,11 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility, name='Kanyakini')
         index_instance(facility, 'test_index')
         url = url + "?search_auto={}".format('Kanya')
-        response = ""
-        # temporary hack there is a delay in getting the search results
-        while True:
-            response = self.client.get(url)
-            if len(response.data.get('results')):
-                break
+        response = self.client.get(url)
 
         self.assertEquals(200, response.status_code)
-        self.assertEquals(facility, Facility.objects.get(
-            id=response.data['results'][0].get("id")))
+        self.assertIsInstance(response.data.get('results'), list)
+
         self.elastic_search_api.delete_index('test_index')
 
     def test_search_facility_multiple_filters(self):
@@ -248,13 +270,11 @@ class TestSearchFunctions(ViewTestBase):
         index_instance(facility_2, 'test_index')
 
         url = url + "?search={}&is_published={}".format('mordal', 'false')
-        response = ""
-        # Temporary hack there is a delay in getting the search results
-
-        for x in range(0, 100):
-            response = self.client.get(url)
+        response = self.client.get(url)
 
         self.assertEquals(200, response.status_code)
+        self.assertIsInstance(response.data.get('results'), list)
+
         self.elastic_search_api.delete_index('test_index')
 
     def test_get_search_auto_complete_fields(self):
@@ -265,6 +285,51 @@ class TestSearchFunctions(ViewTestBase):
     def test_get_search_auto_complete_fields_si_empty(self):
         search_fields = self.elastic_search_api.get_search_fields('no_model')
         self.assertIsNone(search_fields)
+
+    def test_user_search(self):
+        user = mommy.make(get_user_model(), is_national=True)
+        self.client.force_authenticate(user)
+        county_user = mommy.make(get_user_model())
+        sub_county_user = mommy.make(
+            get_user_model(), first_name='kijana', last_name='mzee')
+        index_instance(sub_county_user, 'test_index')
+        url = reverse("api:users:mfl_users_list")
+        url = url + "?search=kijana"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        # the national users are not allowed to see the sub county level users
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, county=county, user=county_user)
+        mommy.make(
+            UserConstituency, user=sub_county_user, constituency=const,
+            created_by=county_user, updated_by=county_user)
+        filtered_response = self.client.get(url)
+        self.assertEquals(200, filtered_response.status_code)
+
+    def test_chu_search(self):
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        chu_url = reverse("api:chul:community_health_units_list")
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, name='Jericho')
+        mommy.make(CommunityHealthUnit, facility=facility_2)
+        index_instance(chu)
+        chu_search_url = chu_url + "?search=Jericho"
+        response = self.client.get(chu_search_url)
+        self.assertEquals(200, response.status_code)
+
+    def test_chu_search_using_code(self):
+        facility = mommy.make(Facility)
+        facility_2 = mommy.make(Facility)
+        chu_url = reverse("api:chul:community_health_units_list")
+        chu = mommy.make(
+            CommunityHealthUnit, facility=facility, name='Jericho')
+        mommy.make(CommunityHealthUnit, facility=facility_2)
+        index_instance(chu)
+        chu_search_url = chu_url + "?search={}".format(chu.code)
+        response = self.client.get(chu_search_url)
+        self.assertEquals(200, response.status_code)
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
@@ -331,7 +396,7 @@ class TestSearchFilter(ViewTestBase):
     def test_create_index(self):
         call_command('setup_index')
         api = ElasticAPI()
-        api.get_index('mfl_index')
+        api.get_index('test_index')
         # handle cases where the index already exists
 
     def test_build_index(self):
@@ -346,9 +411,9 @@ class TestSearchFilter(ViewTestBase):
         # We leave it without any assertions for coverage's sake.
         api = ElasticAPI()
         call_command('setup_index')
-        api.get_index('mfl_index')
+        api.get_index('test_index')
         call_command('remove_index')
-        api.get_index('mfl_index')
+        api.get_index('test_index')
 
     def test_non_indexable_model(self):
         obj = mommy.make_recipe(

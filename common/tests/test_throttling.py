@@ -6,6 +6,7 @@ from rest_framework.test import APITestCase
 from model_mommy import mommy
 
 from facilities.models import FacilityService, Service
+from chul.models import CommunityHealthUnit
 from ..models import County
 from ..serializers import CountySerializer
 from .test_views import LoginMixin, default
@@ -72,4 +73,17 @@ class TestThrottling(LoginMixin, APITestCase):
 
         response_2 = self.client.post(
             path=url, data=data_2, REMOTE_ADDR="127.0.0.1")
+        self.assertEquals(429, response_2.status_code)
+
+    def test_rate_chu(self):
+        chu = mommy.make(CommunityHealthUnit)
+        data = {
+            "chu": str(chu.id),
+            "rating": 4
+        }
+        url = reverse("api:chul:chu_ratings")
+        response = self.client.post(url, data)
+        self.assertEquals(201, response.status_code)
+
+        response_2 = self.client.post(url, data)
         self.assertEquals(429, response_2.status_code)

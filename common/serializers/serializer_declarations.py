@@ -11,7 +11,8 @@ from ..models import (
     UserContact,
     Town,
     UserConstituency,
-    SubCounty
+    SubCounty,
+    DocumentUpload,
 )
 from .serializer_base import AbstractFieldsMixin
 
@@ -151,6 +152,8 @@ class UserCountySerializer(
         source='user.get_full_name')
     county_name = serializers.ReadOnlyField(
         source='county.name')
+    county_code = serializers.ReadOnlyField(
+        source='county.code')
     user_email = serializers.ReadOnlyField(
         source='user.email')
 
@@ -182,3 +185,13 @@ class UserConstituencySerializer(
 
     class Meta:
         model = UserConstituency
+
+
+class DocumentUploadSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+
+    class Meta(object):
+        model = DocumentUpload
+        read_only_fields = (
+            'created', 'created_by', 'updated', 'updated_by', 'deleted',
+        )

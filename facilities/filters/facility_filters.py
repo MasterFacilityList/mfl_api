@@ -33,7 +33,9 @@ from ..models import (
     FacilityUpdates,
     KephLevel,
     OptionGroup,
-    FacilityLevelChangeReason
+    FacilityLevelChangeReason,
+    FacilityDepartment,
+    RegulatorSync
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
@@ -44,32 +46,46 @@ from common.filters.filter_shared import (
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
+class RegulatorSyncFilter(CommonFieldsFilterset):
+    mfl_code = ListCharFilter(lookup_type='exact')
+    county = ListCharFilter(lookup_type='exact')
+
+    class Meta:
+        model = RegulatorSync
+
+
 class OptionGroupFilter(CommonFieldsFilterset):
+
     class Meta:
         model = OptionGroup
 
 
 class FacilityLevelChangeReasonFilter(CommonFieldsFilterset):
+
     class Meta:
         model = FacilityLevelChangeReason
 
 
 class KephLevelFilter(CommonFieldsFilterset):
+
     class Meta:
         model = KephLevel
 
 
 class FacilityUpdatesFilter(CommonFieldsFilterset):
+
     class Meta:
         model = FacilityUpdates
 
 
 class RegulatoryBodyUserFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = RegulatoryBodyUser
 
 
 class FacilityOfficerFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = FacilityOfficer
 
@@ -78,13 +94,15 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(
         name='facility_service__facility',
         lookup_type='exact')
-    service = django_filters.AllValuesFilter(lookup_type='exact')
+    service = django_filters.AllValuesFilter(
+        name="facility_service__service", lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
 
 
 class RegulatingBodyContactFilter(CommonFieldsFilterset):
+
     class Meta(object):
         model = RegulatingBodyContact
 
@@ -104,7 +122,7 @@ class FacilityUpgradeFilter(CommonFieldsFilterset):
 class FacilityOperationStateFilter(CommonFieldsFilterset):
     operation_status = django_filters.AllValuesFilter(lookup_type='exact')
     facility = django_filters.AllValuesFilter(lookup_type='exact')
-    reason = django_filters.CharFilter(lookup_type='icontains')
+    reason = django_filters.CharFilter(lookup_type='exact')
 
     class Meta(object):
         model = FacilityOperationState
@@ -113,6 +131,9 @@ class FacilityOperationStateFilter(CommonFieldsFilterset):
 class FacilityApprovalFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(lookup_type='exact')
     comment = django_filters.CharFilter(lookup_type='icontains')
+    is_cancelled = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
 
     class Meta(object):
         model = FacilityApproval
@@ -190,8 +211,8 @@ class JobTitleFilter(CommonFieldsFilterset):
 
 
 class OfficerContactFilter(CommonFieldsFilterset):
-    officer = django_filters.AllValuesFilter(lookup_type='icontains')
-    contact = django_filters.AllValuesFilter(lookup_type='icontains')
+    officer = django_filters.AllValuesFilter(lookup_type='exact')
+    contact = django_filters.AllValuesFilter(lookup_type='exact')
 
     class Meta(object):
         model = OfficerContact
@@ -257,6 +278,7 @@ class FacilityContactFilter(CommonFieldsFilterset):
 
 
 class FacilityFilter(CommonFieldsFilterset):
+
     def service_filter(self, value):
         categories = value.split(',')
         facility_ids = []
@@ -281,6 +303,17 @@ class FacilityFilter(CommonFieldsFilterset):
             return self.filter(Q(approved=True) | Q(rejected=True))
         else:
             return self.filter(Q(rejected=True) | Q(has_edits=True))
+
+    def facilities_pending_approval(self, value):
+        if value in TRUTH_NESS:
+            return Facility.objects.filter(
+                Q(rejected=False),
+                Q(has_edits=True) | Q(approved=False)
+            )
+        else:
+            return Facility.objects.filter(
+                Q(rejected=True) |
+                Q(has_edits=False) & Q(approved=True))
 
     id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
@@ -346,6 +379,8 @@ class FacilityFilter(CommonFieldsFilterset):
         coerce=strtobool)
     closed = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES, coerce=strtobool)
+    pending_approval = django_filters.MethodFilter(
+        action=facilities_pending_approval)
 
     class Meta(object):
         model = Facility
@@ -364,3 +399,9 @@ class FacilityUnitRegulationFilter(CommonFieldsFilterset):
 
     class Meta(object):
         model = FacilityUnitRegulation
+
+
+class FacilityDepartmentFilter(CommonFieldsFilterset):
+
+    class Meta(object):
+        model = FacilityDepartment

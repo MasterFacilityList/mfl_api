@@ -1,5 +1,3 @@
-import uuid
-
 from datetime import timedelta, datetime
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -33,16 +31,6 @@ class AbstractBaseModelTest(TestCase):
         self.juzi = timezone.now() - timedelta(days=2)
         self.user_1 = mommy.make(settings.AUTH_USER_MODEL)
         self.user_2 = mommy.make(settings.AUTH_USER_MODEL)
-
-    def test_unicode(self):
-        from ..models import AbstractBase
-
-        class TestModel(AbstractBase):
-            class Meta:
-                abstract = True
-
-        ct = TestModel(id=uuid.uuid4())
-        self.assertEqual(str(ct), 'test model ' + str(ct.pk))
 
     def test_validate_updated_date_greater_than_created(self):
         fake = ContactType(created=self.leo, updated=self.jana)
@@ -126,6 +114,7 @@ class BaseTestCase(TestCase):
 
 
 class TestContactModel(BaseTestCase):
+
     def test_save_contact(self):
         contact_type = mommy.make(ContactType, name='EMAIL')
         contact_data = {
@@ -135,16 +124,6 @@ class TestContactModel(BaseTestCase):
         contact_data = self.inject_audit_fields(contact_data)
         Contact.objects.create(**contact_data)
         self.assertEquals(1, Contact.objects.count())
-
-    def test_unicode(self):
-        contact_type = mommy.make(ContactType, name='PHONE')
-        contact_data = {
-            "contact": "0756832902",
-            "contact_type": contact_type
-        }
-        contact_data = self.inject_audit_fields(contact_data)
-        obj = Contact.objects.create(**contact_data)
-        self.assertEquals("PHONE::0756832902", obj.__unicode__())
 
     def test_save_model_with_id(self):
         contact_type = mommy.make(ContactType)
@@ -165,13 +144,6 @@ class TestCountyModel(BaseTestCase):
         county = County.objects.create(**county_data)
         self.assertEquals(1, County.objects.count())
         self.assertIsNotNone(county.code)
-
-    def test_unicode(self):
-        county_name = "Texas"
-        county = County.objects.create(
-            created_by=self.user, updated_by=self.user,
-            name=county_name, code=234)
-        self.assertEquals(county_name, county.__unicode__())
 
     def test_county_code_seq(self):
         # make code None so that model mommy does not supply it
@@ -196,6 +168,7 @@ class TestCountyModel(BaseTestCase):
 
 
 class TestConstituencyModel(BaseTestCase):
+
     def setUp(self):
         super(TestConstituencyModel, self).setUp()
         self.county = County.objects.create(
@@ -213,12 +186,6 @@ class TestConstituencyModel(BaseTestCase):
         self.assertEquals(1, Constituency.objects.count())
         self.assertIsNotNone(constituency.code)
 
-    def test_unicode(self):
-        const = Constituency.objects.create(
-            created_by=self.user, updated_by=self.user,
-            name="jina", code=687, county=self.county)
-        self.assertEquals("jina", const.__unicode__())
-
     def test_constituency_code_sequence(self):
         constituency_1 = mommy.make(Constituency, code=None)
         constituency_2 = mommy.make(Constituency, code=None)
@@ -234,6 +201,7 @@ class TestConstituencyModel(BaseTestCase):
 
 
 class TestWardModel(BaseTestCase):
+
     def setUp(self):
         super(TestWardModel, self).setUp()
         county = mommy.make(County)
@@ -251,12 +219,6 @@ class TestWardModel(BaseTestCase):
         self.assertEquals(1, Ward.objects.count())
         self.assertIsNotNone(ward.code)
 
-    def test_unicode(self):
-        const = Ward.objects.create(
-            updated_by=self.user, created_by=self.user,
-            name="jina", constituency=self.constituency)
-        self.assertEquals("jina", const.__unicode__())
-
     def test_sub_county_code_seq(self):
         sub_county_1 = mommy.make(Ward, code=None)
         sub_county_2 = mommy.make(Ward, code=None)
@@ -270,19 +232,8 @@ class TestWardModel(BaseTestCase):
         self.assertEquals(county, ward.county)
 
 
-class TestContactType(BaseTestCase):
-    def test_unicode_(self):
-        ct = mommy.make(ContactType, name='EMAIL')
-        self.assertEquals('EMAIL', ct.__unicode__())
-
-
-class TestTown(BaseTestCase):
-    def test_unicode_(self):
-        town = mommy.make(Town, name='Nyairofi')
-        self.assertEquals('Nyairofi', str(town))
-
-
 class TestPhysicalAddress(BaseTestCase):
+
     def test_save(self):
         data = {
             "town": mommy.make(Town, name="Nairobi"),
@@ -290,12 +241,12 @@ class TestPhysicalAddress(BaseTestCase):
             "plot_number": "35135"
         }
         data = self.inject_audit_fields(data)
-        phy = PhysicalAddress.objects.create(**data)
+        PhysicalAddress.objects.create(**data)
         self.assertEquals(1, PhysicalAddress.objects.count())
-        self.assertEquals("Nairobi", phy.__unicode__())
 
 
 class TestUserCountyModel(BaseTestCase):
+
     def test_save(self):
         user = mommy.make(get_user_model())
         county = mommy.make(County)
@@ -303,10 +254,8 @@ class TestUserCountyModel(BaseTestCase):
             "user": user,
             "county": county
         }
-        user_county = UserCounty.objects.create(**data)
+        UserCounty.objects.create(**data)
         self.assertEquals(1, UserCounty.objects.count())
-        expected_unicode = "{}: {}".format(user.email, county.name)
-        self.assertEquals(expected_unicode, user_county.__unicode__())
 
     def test_user_is_only_active_in_one_count(self):
         user = mommy.make(get_user_model())
@@ -324,6 +273,7 @@ class TestUserCountyModel(BaseTestCase):
 
 
 class TestUserContactModel(BaseTestCase):
+
     def test_save(self):
         user = mommy.make(get_user_model())
         contact = mommy.make(Contact)
@@ -332,15 +282,12 @@ class TestUserContactModel(BaseTestCase):
             "contact": contact
         }
         data = self.inject_audit_fields(data)
-        user_contact = UserContact.objects.create(**data)
+        UserContact.objects.create(**data)
         self.assertEquals(1, UserContact.objects.count())
-
-        # test unicode
-        expected_unicode = "{}: {}".format(user.get_full_name, contact.contact)
-        self.assertEquals(expected_unicode, user_contact.__unicode__())
 
 
 class TestUserConstituencyModel(BaseTestCase):
+
     def test_save(self):
         user = mommy.make(get_user_model())
         county = mommy.make(County)
@@ -348,14 +295,10 @@ class TestUserConstituencyModel(BaseTestCase):
         creator_user = mommy.make(get_user_model())
         mommy.make(
             UserCounty, county=county, user=creator_user)
-        user_const = mommy.make(
+        mommy.make(
             UserConstituency, constituency=const, user=user,
             created_by=creator_user)
         self.assertEquals(1, UserConstituency.objects.count())
-
-        # test unicode
-        expected_unicode = "{}: {}".format(user, const)
-        self.assertEquals(expected_unicode, user_const.__unicode__())
 
     def test_validator_constituency_in_creators_county(self):
         county = mommy.make(County)
@@ -379,13 +322,28 @@ class TestUserConstituencyModel(BaseTestCase):
         # test user constituencies
         self.assertEquals(const, user.constituency)
 
+    def test_user_created_is_in_the_creators_sub_county(self):
+        county = mommy.make(County)
+        constituency = mommy.make(Constituency, county=county)
+        constituency_2 = mommy.make(Constituency)
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        user_3 = mommy.make(get_user_model())
+        mommy.make(UserCounty, county=county, user=user)
+        mommy.make(
+            UserConstituency, constituency=constituency,
+            user=user_2, created_by=user, updated_by=user)
+
+        # the user being created and the creating user are not in
+        # the same constituency
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                UserConstituency, constituency=constituency_2,
+                user=user_3, created_by=user_2, updated_by=user_2)
+
 
 class TestSubCounty(TestCase):
+
     def test_save(self):
         mommy.make(SubCounty)
         self.assertEquals(1, SubCounty.objects.count())
-
-    def test_unicode(self):
-        name = "awesome name"
-        sub_county = mommy.make(SubCounty, name=name)
-        self.assertEquals(name, sub_county.name)

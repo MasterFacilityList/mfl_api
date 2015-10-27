@@ -3,15 +3,19 @@
   name: Install MFL API and front-ends
   sudo: True
   vars:
-    mfl_public_web_version: "0.0.1a6"
-    mfl_admin_web_version: "0.0.1a7"
+    mfl_public_web_version: "0.0.1a13"
+    mfl_admin_web_version: "0.0.1a21"
+    mfl_last_update: "2015-09-10T04:17:54.400Z"
+    has_ssl: true
+    cert_file: ""
+    key_file: ""
   roles:
     - common
     - {
         role: frontend,
         frontend_name: "mfl_public_web",
-        server_name: mfl-public.azure.slade360.co.ke,
-        server_url: "http://mfl.azure.slade360.co.ke/",
+        server_name: mfl-public.slade360.co.ke,
+        server_url: "https://mfl.slade360.co.ke/",
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
         client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
         frontend_tag: "{{mfl_public_web_version}}",
@@ -19,27 +23,37 @@
         download_url: "https://github.com/MasterFacilityList/mfl_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
         tags: "public-frontend",
         username: public@mfltest.slade360.co.ke,
+        last_update: "{{mfl_last_update}}",
         password: public,
+        ssl_on: "{{has_ssl}}",
+        ssl_cert_file: "{{cert_file}}",
+        ssl_key_file: "{{key_file}}"
       }
     - {
         role: frontend,
         frontend_name: "mfl_admin_web",
-        server_name: mfl-admin.azure.slade360.co.ke,
-        server_url: "http://mfl.azure.slade360.co.ke/",
+        server_name: mfl-admin.slade360.co.ke,
+        server_url: "https://mfl.slade360.co.ke/",
         client_id: 5O1KlpwBb96ANWe27ZQOpbWSF4DZDm4sOytwdzGv,
         client_secret: PqV0dHbkjXAtJYhY9UOCgRVi5BzLhiDxGU91kbt5EoayQ5SYOoJBYRYAYlJl2RetUeDMpSvhe9DaQr0HKHan0B9ptVyoLvOqpekiOmEqUJ6HZKuIoma0pvqkkKDU9GPv,
         frontend_tag: "{{mfl_admin_web_version}}",
         frontend_archive_file_name: "mfl_admin_web__{{frontend_tag}}.tar.gz",
         download_url: "https://github.com/MasterFacilityList/mfl_admin_web/releases/download/{{frontend_tag}}/{{frontend_archive_file_name}}",
-        tags: "admin-frontend"
+        last_update: "{{mfl_last_update}}",
+        tags: "admin-frontend",
+        ssl_on: "{{has_ssl}}",
+        ssl_cert_file: "{{cert_file}}",
+        ssl_key_file: "{{key_file}}"
       }
     - { role: postgresql }
+    - { role: nginx, install_from: 'apt' }
+    - { role: ufw }
     - {
         role: api,
-        server_name: mfl.azure.slade360.co.ke,
+        server_name: mfl.slade360.co.ke,
         tags: "api-server",
         app_ports: [8000, 8001, 8002, 8003, 8004, 8005],
-        frontend_url: "http://mfl-admin.azure.slade360.co.ke",
+        frontend_url: "https://mfl-admin.slade360.co.ke",
 
         # drop and recreate database
         setup_new_db: false,
@@ -50,9 +64,18 @@
 
         # the settings below are for warming up the cache
         warm_cache: false,
-        server_url: "http://mfl.azure.slade360.co.ke",
+        server_url: "https://mfl.slade360.co.ke",
         username: public@mfltest.slade360.co.ke,
         password: public,
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
         client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
+
+        ssl_on: "{{has_ssl}}",
+        ssl_cert_file: "{{cert_file}}",
+        ssl_key_file: "{{key_file}}",
+
+        storage_bucket: "{{storage_bucket}}",
+        storage_account: "{{storage_account}}",
+        storage_key: "{{storage_key}}",
+        storage_backend: "storages.backends.s3boto.S3BotoStorage"
       }
