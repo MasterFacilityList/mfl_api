@@ -649,8 +649,8 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True,
         help_text="Branch name of the facility's bank")
     bank_account = models.CharField(max_length=100, null=True, blank=True)
-    facility_catchment_population = models.CharField(
-        max_length=100, null=True, blank=True,
+    facility_catchment_population = models.IntegerField(
+        null=True, blank=True,
         help_text="The population size which the facility serves")
     sub_county = models.ForeignKey(
         SubCounty, null=True, blank=True,
