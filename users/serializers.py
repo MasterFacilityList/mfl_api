@@ -247,7 +247,12 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                         'contact_type')
                     user_contact_obj.contact.save()
                 except UserContact.DoesNotExist:
-                    LOGGER.info('Contact with id provided does not exist')
+                    msg = "User contact with id {0} does not exist".format(
+                        contact.get('id'))
+                    raise ValidationError(
+                        {
+                            "user_contact": [msg]
+                        })
             else:
                 contact['updated_by_id'] = self.context.get(
                     'request').user.id

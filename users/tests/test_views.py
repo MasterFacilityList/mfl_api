@@ -812,22 +812,14 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
     def test_update_user_contacts_id_does_not_exist(self):
         user = mommy.make(MflUser)
         contact_type = mommy.make(ContactType)
-        contact_type_2 = mommy.make(ContactType)
         contact_1 = mommy.make(Contact, contact_type=contact_type)
-        contact_2 = mommy.make(Contact, contact_type=contact_type_2)
         user_contact_1 = mommy.make(UserContact, contact=contact_1, user=user)
-        user_contact_2 = mommy.make(UserContact, contact=contact_2, user=user)
 
         contacts = [
             {
                 "id": str(user_contact_1.id),
                 "contact": "075658699",
                 "contact_type": str(contact_type.id)
-            },
-            {
-                "id": str(user_contact_2.id),
-                "contact": "testmail@domain.com",
-                "contact_type": str(contact_type_2.id)
             }
         ]
         user_contact_1.delete()
@@ -836,9 +828,9 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         }
         url = self.url + "{0}/".format(user.id)
         response = self.client.patch(url, data)
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(2, Contact.objects.count())
-        self.assertEquals(1, len(UserContact.objects.filter(
+        self.assertEquals(400, response.status_code)
+        self.assertEquals(1, Contact.objects.count())
+        self.assertEquals(0, len(UserContact.objects.filter(
             user=user)))
 
     def test_post_user_with_inlined_user(self):
