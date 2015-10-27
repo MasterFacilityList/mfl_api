@@ -99,12 +99,10 @@ class TestCHUpdatesApproval(LoginMixin, APITestCase):
             {
                 "first_name": "Chew wa kwanza",
                 "last_name": "Jina ya pili",
-                'id_number': 135935,
             },
             {
                 "first_name": "Chew wa pili",
                 "last_name": "Jina ya pili ya chew wa pili",
-                'id_number': 14474747,
             }
         ]
         data = {
@@ -201,12 +199,10 @@ class TestCHUpdatesApproval(LoginMixin, APITestCase):
             {
                 "first_name": "Chew wa kwanza",
                 "last_name": "Jina ya pili",
-                'id_number': 135935,
             },
             {
                 "first_name": "Chew wa pili",
                 "last_name": "Jina ya pili ya chew wa pili",
-                'id_number': 14474747,
             }
         ]
         date_established = "2015-09-23"
@@ -275,12 +271,10 @@ class TestCHUpdatesApproval(LoginMixin, APITestCase):
             {
                 "first_name": "Chew wa kwanza",
                 "last_name": "Jina ya pili",
-                'id_number': 135935,
             },
             {
                 "first_name": "Chew wa pili",
                 "last_name": "Jina ya pili ya chew wa pili",
-                'id_number': 14474747,
             }
         ]
         date_established = "2015-09-23"
@@ -332,14 +326,12 @@ class TestCHUpdatesApproval(LoginMixin, APITestCase):
             {
                 "first_name": "Chew wa kwanza",
                 "last_name": "Jina ya pili",
-                'id_number': 135935,
                 "id": str(chew_1.id),
                 'is_incharge': True,
             },
             {
                 "first_name": "Chew wa pili",
                 "last_name": "Jina ya pili ya chew wa pili",
-                'id_number': 14474747,
                 'is_incharge': False,
                 "id": str(chew_2.id)
             }
