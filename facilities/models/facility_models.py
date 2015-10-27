@@ -666,8 +666,8 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True,
         help_text="Branch name of the facility's bank")
     bank_account = models.CharField(max_length=100, null=True, blank=True)
-    facility_catchment_population = models.CharField(
-        max_length=100, null=True, blank=True,
+    facility_catchment_population = models.IntegerField(
+        null=True, blank=True,
         help_text="The population size which the facility serves")
     sub_county = models.ForeignKey(
         SubCounty, null=True, blank=True,
@@ -1455,7 +1455,7 @@ class FacilityUnit(AbstractBase):
         unique_together = ('facility', 'unit', )
 
 
-@reversion.register(follow=['keph_level', ])
+@reversion.register(follow=['parent', ])
 @encoding.python_2_unicode_compatible
 class ServiceCategory(AbstractBase):
 
@@ -1470,9 +1470,9 @@ class ServiceCategory(AbstractBase):
     abbreviation = models.CharField(
         max_length=50, null=True, blank=True,
         help_text='A short form of the category e.g ANC for antenatal')
-    keph_level = models.ForeignKey(
-        KephLevel, null=True, blank=True,
-        help_text="The KEPH level at which certain services should be offered")
+    parent = models.ForeignKey(
+        'self', null=True, blank=True,
+        help_text='The parent category under which the category falls')
 
     def __str__(self):
         return self.name
@@ -1539,7 +1539,7 @@ class Option(AbstractBase):
         return "{}: {}".format(self.option_type, self.display_text)
 
 
-@reversion.register(follow=['category', 'group', ])
+@reversion.register(follow=['category', 'group', 'keph_level', ])
 @encoding.python_2_unicode_compatible
 class Service(SequenceMixin, AbstractBase):
 
@@ -1560,7 +1560,10 @@ class Service(SequenceMixin, AbstractBase):
     group = models.ForeignKey(
         OptionGroup,
         help_text="The option group containing service options")
-    has_options = models.BooleanField(default=True)
+    has_options = models.BooleanField(default=False)
+    keph_level = models.ForeignKey(
+        KephLevel, null=True, blank=True,
+        help_text="The KEPH level at which the service ought to be offered")
 
     def save(self, *args, **kwargs):
         if not self.code:
