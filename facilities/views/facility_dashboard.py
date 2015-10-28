@@ -19,6 +19,18 @@ from ..views import QuerysetFilterMixin
 class DashBoard(QuerysetFilterMixin, APIView):
     queryset = Facility.objects.all()
 
+    def get_chu_count_in_county_summary(self, county):
+        return CommunityHealthUnit.objects.filter(
+            facility__ward__constituency__county=county).count()
+
+    def get_chu_count_in_constituency_summary(self, const):
+        return CommunityHealthUnit.objects.filter(
+            facility__ward__constituency=const).count()
+
+    def get_chu_count_in_ward_summary(self, ward):
+        return CommunityHealthUnit.objects.filter(
+            facility__ward=ward).count()
+
     def get_facility_county_summary(self):
         counties = County.objects.all()
         facility_county_summary = {}
@@ -26,21 +38,22 @@ class DashBoard(QuerysetFilterMixin, APIView):
             facility_county_count = self.get_queryset().filter(
                 ward__constituency__county=county).count()
             facility_county_summary[str(county.name)] = facility_county_count
+
         top_10_counties = sorted(
             facility_county_summary.items(),
             key=lambda x: x[1], reverse=True)[0:20]
         facility_county_summary
         top_10_counties_summary = []
         for item in top_10_counties:
+            county = County.objects.get(name=item[0])
+            chu_count = self.get_chu_count_in_county_summary(county)
             top_10_counties_summary.append(
                 {
                     "name": item[0],
-                    "count": item[1]
+                    "count": item[1],
+                    "chu_count": chu_count
                 })
-        if self.request.user.is_national:
-            return top_10_counties_summary
-        else:
-            return []
+        return top_10_counties_summary if self.request.user.is_national else []
 
     def get_facility_constituency_summary(self):
         constituencies = Constituency.objects.filter(
@@ -58,10 +71,13 @@ class DashBoard(QuerysetFilterMixin, APIView):
             key=lambda x: x[1], reverse=True)[0:20]
         top_10_consts_summary = []
         for item in top_10_consts:
+            const = Constituency.objects.get(name=item[0])
+            chu_count = self.get_chu_count_in_constituency_summary(const)
             top_10_consts_summary.append(
                 {
                     "name": item[0],
-                    "count": item[1]
+                    "count": item[1],
+                    "chu_count": chu_count
                 })
         return top_10_consts_summary
 
@@ -69,22 +85,24 @@ class DashBoard(QuerysetFilterMixin, APIView):
         if self.request.user.constituency:
             wards = Ward.objects.filter(
                 constituency=self.request.user.constituency)
-        else:
-            wards = []
         facility_ward_summary = {}
         for ward in wards:
             facility_ward_count = self.get_queryset().filter(
                 ward=ward).count()
-            facility_ward_summary[str(ward.name)] = facility_ward_count
+            facility_ward_summary[
+                str(ward.name + "|" + str(ward.code))] = facility_ward_count
         top_10_wards = sorted(
             facility_ward_summary.items(),
             key=lambda x: x[1], reverse=True)[0:20]
         top_10_wards_summary = []
         for item in top_10_wards:
+            ward = Ward.objects.get(code=item[0].split('|')[1])
+            chu_count = self.get_chu_count_in_ward_summary(ward)
             top_10_wards_summary.append(
                 {
-                    "name": item[0],
-                    "count": item[1]
+                    "name": item[0].split('|')[0],
+                    "count": item[1],
+                    "chu_count": chu_count
                 })
         return top_10_wards_summary
 
@@ -210,9 +228,12 @@ class DashBoard(QuerysetFilterMixin, APIView):
         user = self.request.user
         data = {
             "total_facilities": self.get_queryset().count(),
-            "county_summary": self.get_facility_county_summary() if user.is_national else [],
-            "constituencies_summary": self.get_facility_constituency_summary() if user.county else [],
-            "wards_summary": self.get_facility_ward_summary() if user.constituency else [],
+            "county_summary": self.get_facility_county_summary()
+            if user.is_national else [],
+            "constituencies_summary": self.get_facility_constituency_summary()
+            if user.county else [],
+            "wards_summary": self.get_facility_ward_summary()
+            if user.constituency else [],
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),

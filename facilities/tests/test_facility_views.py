@@ -817,12 +817,14 @@ class TestDashBoardView(LoginMixin, APITestCase):
             "county_summary": [
                 {
                     "count": 1,
-                    "name": str(county.name)
+                    "name": str(county.name),
+                    "chu_count": 0
                 },
                 # the county belonging to the logged in user
                 {
                     "count": 0,
-                    "name": "Kiambu"
+                    "name": "Kiambu",
+                    "chu_count": 0
                 },
             ],
             "wards_summary": [],
@@ -902,7 +904,8 @@ class TestDashBoardView(LoginMixin, APITestCase):
             "constituencies_summary": [
                 {
                     "name": str(constituency.name),
-                    "count": 1
+                    "count": 1,
+                    "chu_count": 0
                 }
             ],
             "types_summary": [
@@ -968,7 +971,8 @@ class TestDashBoardView(LoginMixin, APITestCase):
             "wards_summary": [
                 {
                     "name": str(ward.name),
-                    "count": 1
+                    "count": 1,
+                    "chu_count": 0
                 }
             ],
             "total_facilities": 1,
