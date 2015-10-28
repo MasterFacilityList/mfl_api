@@ -86,9 +86,6 @@ class CommunityHealthUnitSerializer(
                 'status_id': str(validated_data['status'].id),
                 'status_name': validated_data['status'].name
             }
-        for key, value in updates.iteritems():
-            if hasattr(value, 'isoformat'):
-                updates[key] = validated_data[key].isoformat()
         updates.pop('health_unit_workers', None)
         updates.pop('contacts', None)
         return json.dumps(updates)
