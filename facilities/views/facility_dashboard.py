@@ -23,7 +23,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
         counties = County.objects.all()
         facility_county_summary = {}
         for county in counties:
-            facility_county_count = self.filter_queryset().filter(
+            facility_county_count = self.get_queryset().filter(
                 ward__constituency__county=county).count()
             facility_county_summary[str(county.name)] = facility_county_count
         top_10_counties = sorted(
@@ -49,7 +49,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
 
         facility_constituency_summary = {}
         for const in constituencies:
-            facility_const_count = self.filter_queryset().filter(
+            facility_const_count = self.get_queryset().filter(
                 ward__constituency=const).count()
             facility_constituency_summary[
                 str(const.name)] = facility_const_count
@@ -73,7 +73,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
             wards = []
         facility_ward_summary = {}
         for ward in wards:
-            facility_ward_count = self.filter_queryset().filter(
+            facility_ward_count = self.get_queryset().filter(
                 ward=ward).count()
             facility_ward_summary[str(ward.name)] = facility_ward_count
         top_10_wards = sorted(
@@ -94,8 +94,8 @@ class DashBoard(QuerysetFilterMixin, APIView):
         for facility_type in facility_types:
                 facility_type_summary.append(
                     {
-                        "name": facility_type.name,
-                        "count": self.filter_queryset().filter(
+                        "name": str(facility_type.name),
+                        "count": self.get_queryset().filter(
                             facility_type=facility_type).count()
                     })
         facility_type_summary_sorted = sorted(
@@ -111,7 +111,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
             facility_owners_summary.append(
                 {
                     "name": owner.name,
-                    "count": self.filter_queryset().filter(
+                    "count": self.get_queryset().filter(
                         owner=owner).count()
                 })
         return facility_owners_summary
@@ -123,7 +123,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
                 status_summary.append(
                     {
                         "name": status.name,
-                        "count": self.filter_queryset().filter(
+                        "count": self.get_queryset().filter(
                             operation_status=status).count()
                     })
 
@@ -136,7 +136,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
             owner_types_summary.append(
                 {
                     "name": owner_type.name,
-                    "count": self.filter_queryset().filter(
+                    "count": self.get_queryset().filter(
                         owner__owner_type=owner_type).count()
                 })
         return owner_types_summary
@@ -150,19 +150,19 @@ class DashBoard(QuerysetFilterMixin, APIView):
         three_months_ago = right_now - timedelta(days=90)
         if last_week:
             weekly = right_now - timedelta(days=7)
-            return self.filter_queryset().filter(
+            return self.get_queryset().filter(
                 created__gte=weekly).count()
 
         if last_month:
             monthly = right_now - timedelta(days=30)
-            return self.filter_queryset().filter(
+            return self.get_queryset().filter(
                 created__gte=monthly).count()
 
         if last_three_months:
-            return self.filter_queryset().filter(
+            return self.get_queryset().filter(
                 created__gte=three_months_ago).count()
 
-        return self.filter_queryset().filter(
+        return self.get_queryset().filter(
             created__gte=three_months_ago).count()
 
     def get_recently_created_chus(self):
@@ -193,9 +193,6 @@ class DashBoard(QuerysetFilterMixin, APIView):
             facility__in=self.get_queryset(),
             date_established__gte=three_months_ago).count()
 
-    def filter_queryset(self):
-        return self.get_queryset()
-
     def facilities_pending_approval_count(self):
         updated_pending_approval = self.get_queryset().filter(has_edits=True)
         newly_created = self.queryset.filter(approved=False, rejected=False)
@@ -210,11 +207,12 @@ class DashBoard(QuerysetFilterMixin, APIView):
         return self.get_queryset().filter(closed=True).count()
 
     def get(self, *args, **kwargs):
+        user = self.request.user
         data = {
-            "total_facilities": len(self.filter_queryset()),
-            "county_summary": self.get_facility_county_summary(),
-            "constituencies_summary": self.get_facility_constituency_summary(),
-            "wards_summary": self.get_facility_ward_summary(),
+            "total_facilities": self.get_queryset().count(),
+            "county_summary": self.get_facility_county_summary() if user.is_national else [],
+            "constituencies_summary": self.get_facility_constituency_summary() if user.county else [],
+            "wards_summary": self.get_facility_ward_summary() if user.constituency else [],
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
