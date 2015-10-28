@@ -82,7 +82,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         self.assertEquals(1, FacilityCoordinates.objects.count())
         self.assertIsInstance(facility_gps.json_features, dict)
 
-    def test_validate_longitude_and_latitude_within_kenya_invalid(self):
+    def test_validate_long_and_lat_within_kenya_invalid(self):
         """The Kampala Serena - 0.319590, 32.586484; definitely not in Kenya"""
         with self.assertRaises(ValidationError):
             mommy.make_recipe(
@@ -90,7 +90,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
                 coordinates=Point(32.586484, 0.319590)
             )
 
-    def test_validate_longitude_and_latitude_within_county_invalid(self):
+    def test_validate_long_and_lat_within_county_invalid(self):
         """Thomson Falls - 0.044444, 36.370416 - is in Kenya but not Nairobi"""
         with self.assertRaises(ValidationError):
             mommy.make_recipe(
@@ -98,7 +98,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
                 coordinates=Point(36.370416, 0.044444)
             )
 
-    def test_validate_longitude_and_latitude_within_constituency_invalid(self):
+    def test_validate_long_and_lat_within_constituency_invalid(self):
         """Taj Mall (-1.323139, 36.898769) is in Nrb but not Dagoretti North"""
         with self.assertRaises(ValidationError):
             mommy.make_recipe(
@@ -106,7 +106,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
                 coordinates=Point(36.898769, -1.323139)
             )
 
-    def test_validate_longitude_and_latitude_within_ward_invalid(self):
+    def test_validate_long_and_lat_within_ward_invalid(self):
         """Kenya High (-1.275611, 36.780612) - is just outside Kilimani ward"""
         with self.assertRaises(ValidationError):
             mommy.make_recipe(
@@ -116,7 +116,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
 
     def test_validate_longitude_and_latitude_no_country_boundaries(self):
         with self.assertRaises(ValidationError) as c:
-            self.test_coords.validate_longitude_and_latitude_within_kenya()
+            self.test_coords.validate_long_and_lat_within_kenya()
 
         self.assertTrue(
             'Setup error: Kenyan boundaries not loaded'
@@ -125,7 +125,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
 
     def test_validate_longitude_and_latitude_no_county_boundaries(self):
         with self.assertRaises(ValidationError) as c:
-            self.test_coords.validate_longitude_and_latitude_within_county(
+            self.test_coords.validate_long_and_lat_within_county(
                 self.test_county)
 
         self.assertTrue(
@@ -136,7 +136,7 @@ class TestFacilityCoordinatesModel(BaseTestCase):
     def test_validate_longitude_and_latitude_no_constituency_boundaries(self):
         with self.assertRaises(ValidationError) as c:
             self.test_coords.\
-                validate_longitude_and_latitude_within_constituency(
+                validate_long_and_lat_within_constituency(
                     self.test_constituency)
 
         self.assertTrue(
@@ -145,6 +145,6 @@ class TestFacilityCoordinatesModel(BaseTestCase):
         )
 
     def test_validate_longitude_and_latitude_no_ward_boundaries(self):
-        self.test_coords.validate_longitude_and_latitude_within_ward(
+        self.test_coords.validate_long_and_lat_within_ward(
             self.test_ward)
         # Because some wards have no boundaries, we choose to let this pass
