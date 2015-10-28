@@ -14,8 +14,6 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
-)
-from facilities.models import(
     FacilityStatus,
     ServiceCategory,
     FacilityType,
@@ -398,15 +396,15 @@ class TownDetailView(
 
 class FilteringSummariesView(views.APIView):
 
-    """
-        Retrieves filtering summaries
-    """
+    """Retrieves filtering summaries"""
+
     serializer_cls = FilteringSummariesSerializer
 
     def get(self, request):
         fields = request.query_params.get('fields', None)
         fields_model_mapping = {
             'county': (County, ('id', 'name')),
+            'sub_county': (SubCounty, ('id', 'name')),
             'facility_type': (FacilityType, ('id', 'name')),
             'constituency': (Constituency, ('id', 'name', 'county')),
             'ward': (Ward, ('id', 'name', 'constituency')),
