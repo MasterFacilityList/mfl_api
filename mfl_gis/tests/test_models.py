@@ -128,7 +128,10 @@ class TestFacilityCoordinatesModel(BaseTestCase):
             self.test_coords.validate_long_and_lat_within_county(
                 self.test_county)
 
-        self.assertIn(str(self.test_county), c.exception.detail)
+        self.assertIn(
+            str(self.test_county),
+            c.exception.detail["coordinates"][0]
+        )
 
     def test_validate_longitude_and_latitude_no_constituency_boundaries(self):
         with self.assertRaises(ValidationError) as c:
@@ -136,7 +139,10 @@ class TestFacilityCoordinatesModel(BaseTestCase):
                 self.test_constituency
             )
 
-        self.assertIn(str(self.test_constituency), c.exception.detail)
+        self.assertIn(
+            str(self.test_constituency),
+            c.exception.detail["coordinates"][0]
+        )
 
     def test_validate_longitude_and_latitude_no_ward_boundaries(self):
         self.test_coords.validate_long_and_lat_within_ward(self.test_ward)
