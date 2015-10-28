@@ -126,8 +126,6 @@ class CommunityHealthUnitSerializer(
             contacts = json.dumps(contacts)
 
             update.contacts = contacts
-        # import pdb
-        # pdb.set_trace()
         update.save()
 
     def _ensure_all_chew_required_provided(self, chew):
