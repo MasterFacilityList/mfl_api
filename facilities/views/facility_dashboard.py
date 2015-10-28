@@ -82,9 +82,9 @@ class DashBoard(QuerysetFilterMixin, APIView):
         return top_10_consts_summary
 
     def get_facility_ward_summary(self):
-        if self.request.user.constituency:
-            wards = Ward.objects.filter(
-                constituency=self.request.user.constituency)
+        wards = Ward.objects.filter(
+            constituency=self.request.user.constituency) \
+            if self.request.user.constituency else []
         facility_ward_summary = {}
         for ward in wards:
             facility_ward_count = self.get_queryset().filter(
