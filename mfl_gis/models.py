@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 
 class CoordinatesValidatorMixin(object):
 
-    def validate_longitude_and_latitude_within_kenya(self):
+    def validate_long_and_lat_within_kenya(self):
         try:
             boundary = WorldBorder.objects.get(code='KEN')
             if not boundary.mpoly.contains(self.coordinates):
@@ -33,64 +33,34 @@ class CoordinatesValidatorMixin(object):
         except WorldBorder.DoesNotExist:
             raise ValidationError('Setup error: Kenyan boundaries not loaded')
 
-    def validate_longitude_and_latitude_within_constituency(
-            self, constituency):
+    def _validate_within_boundaries(self, boundary_model, area, raise_not_found=True):  # noqa
         try:
-            boundary = ConstituencyBoundary.objects.get(
-                area=constituency)
+            boundary = boundary_model.objects.get(area=area)
             if not boundary.mpoly.contains(self.coordinates):
-                raise ValidationError(
-                    {
-                        "coordinates": [
-                            '{0} not contained in boundary of {1}'.format(
-                                self.coordinates,
-                                constituency)
-                        ]
-                    }
+                raise ValidationError({
+                    "coordinates": [
+                        '({0}, {1}) not contained in boundary of {2}'.format(
+                            self.coordinates.x, self.coordinates.y, area
+                        )
+                    ]
+                })
+        except boundary_model.DoesNotExist:
+            LOGGER.error('{0} does not have boundary info'.format(area))
+            if raise_not_found:
+                raise ValidationError({
+                    'coordinates': [
+                        'No boundary information for {0}'.format(area)
+                    ]
+                })
 
-                )
-        except ConstituencyBoundary.DoesNotExist:
-            raise ValidationError(
-                'No boundary for {0}'.format(
-                    constituency
-                )
-            )
+    def validate_long_and_lat_within_constituency(self, constituency):
+        self._validate_within_boundaries(ConstituencyBoundary, constituency)
 
-    def validate_longitude_and_latitude_within_county(self, county):
-        try:
-            boundary = CountyBoundary.objects.get(
-                area=county)
-            if not boundary.mpoly.contains(self.coordinates):
-                raise ValidationError(
-                    {
-                        "coordinates": [
-                            '({0}, {1}) not contained in boundary of {2}'
-                            ''.format(
-                                self.coordinates.x, self.coordinates.y, county)
-                        ]
-                    }
-                )
-        except CountyBoundary.DoesNotExist:
-            raise ValidationError(
-                'No boundary for {0}'.format(county)
-            )
+    def validate_long_and_lat_within_county(self, county):
+        self._validate_within_boundaries(CountyBoundary, county)
 
-    def validate_longitude_and_latitude_within_ward(self, ward):
-        try:
-            boundary = WardBoundary.objects.get(area=ward)
-            if not boundary.mpoly.contains(self.coordinates):
-                raise ValidationError(
-                    {
-                        "coordinates": [
-                            '{0} not contained in boundary of {1}'.format(
-                                self.coordinates, ward)
-                        ]
-                    }
-                )
-        except WardBoundary.DoesNotExist:
-            LOGGER.error(
-                'Ward {0} does not have boundary info'.format(ward)
-            )
+    def validate_long_and_lat_within_ward(self, ward):
+        self._validate_within_boundaries(WardBoundary, ward, False)
 
 
 class CustomGeoManager(gis_models.GeoManager):
@@ -223,12 +193,12 @@ class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
         }
 
     def clean(self):
-        self.validate_longitude_and_latitude_within_kenya()
-        self.validate_longitude_and_latitude_within_county(
+        self.validate_long_and_lat_within_kenya()
+        self.validate_long_and_lat_within_county(
             self.facility.ward.constituency.county)
-        self.validate_longitude_and_latitude_within_constituency(
+        self.validate_long_and_lat_within_constituency(
             self.facility.ward.constituency)
-        self.validate_longitude_and_latitude_within_ward(
+        self.validate_long_and_lat_within_ward(
             self.facility.ward)
         super(FacilityCoordinates, self).clean()
 
