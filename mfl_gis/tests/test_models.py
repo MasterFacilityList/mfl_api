@@ -128,23 +128,16 @@ class TestFacilityCoordinatesModel(BaseTestCase):
             self.test_coords.validate_long_and_lat_within_county(
                 self.test_county)
 
-        self.assertTrue(
-            'No boundary for ' + str(self.test_county)
-            in c.exception.detail
-        )
+        self.assertIn(str(self.test_county), c.exception.detail)
 
     def test_validate_longitude_and_latitude_no_constituency_boundaries(self):
         with self.assertRaises(ValidationError) as c:
-            self.test_coords.\
-                validate_long_and_lat_within_constituency(
-                    self.test_constituency)
+            self.test_coords.validate_long_and_lat_within_constituency(
+                self.test_constituency
+            )
 
-        self.assertTrue(
-            'No boundary for ' + str(self.test_constituency)
-            in c.exception.detail
-        )
+        self.assertIn(str(self.test_constituency), c.exception.detail)
 
     def test_validate_longitude_and_latitude_no_ward_boundaries(self):
-        self.test_coords.validate_long_and_lat_within_ward(
-            self.test_ward)
+        self.test_coords.validate_long_and_lat_within_ward(self.test_ward)
         # Because some wards have no boundaries, we choose to let this pass
