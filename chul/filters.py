@@ -87,7 +87,6 @@ class CommunityHealthWorkerFilter(CommonFieldsFilterset):
     first_name = django_filters.CharFilter(lookup_type='icontains')
     last_name = django_filters.CharFilter(lookup_type='icontains')
     username = django_filters.CharFilter(lookup_type='icontains')
-    id_number = django_filters.CharFilter(lookup_type='exact')
     ward = django_filters.CharFilter(name='health_unit__community__ward')
     constituency = django_filters.CharFilter(
         name='health_unit__community_ward__constituency')

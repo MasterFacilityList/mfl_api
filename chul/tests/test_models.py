@@ -155,7 +155,7 @@ class TestCommunityHealthUnit(TestCase):
 class TestCommunityHealthWorkerModel(TestCase):
 
     def test_save(self):
-        mommy.make(CommunityHealthWorker, id_number='12345678')
+        mommy.make(CommunityHealthWorker)
         self.assertEquals(1, CommunityHealthWorker.objects.count())
 
 
