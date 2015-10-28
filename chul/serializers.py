@@ -73,13 +73,15 @@ class CommunityHealthUnitSerializer(
         read_only_fields = ('code', )
 
     def get_basic_updates(self, chu_instance, validated_data):
-        updates = validated_data
-        if 'facility' in validated_data:
+        updates = self.initial_data
+        if ('facility' in self.initial_data and
+                validated_data['facility'] != chu_instance):
             updates['facility'] = {
                 "facility_id": str(validated_data['facility'].id),
                 "facility_name": validated_data['facility'].name,
             }
-        if 'status' in validated_data:
+        if ('status' in self.initial_data and
+                validated_data['status'] != chu_instance.status):
             updates['status'] = {
                 'status_id': str(validated_data['status'].id),
                 'status_name': validated_data['status'].name
@@ -127,6 +129,8 @@ class CommunityHealthUnitSerializer(
             contacts = json.dumps(contacts)
 
             update.contacts = contacts
+        # import pdb
+        # pdb.set_trace()
         update.save()
 
     def _ensure_all_chew_required_provided(self, chew):
@@ -202,7 +206,6 @@ class CommunityHealthUnitSerializer(
 
         for contact_data in contacts:
             contact = self.create_contact(contact_data)
-            # if contact:
             health_unit_contact_data_unadit = {
                 "contact": contact.id,
                 "health_unit": instance.id
