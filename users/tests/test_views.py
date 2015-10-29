@@ -747,11 +747,11 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         contact_type_2 = mommy.make(ContactType)
         contacts = [
             {
-                "contact": "075658699",
+                "contact_text": "075658699",
                 "contact_type": str(contact_type.id)
             },
             {
-                "contact": "testmail@domain.com",
+                "contact_text": "testmail@domain.com",
                 "contact_type": str(contact_type_2.id)
             }
         ]
@@ -783,12 +783,12 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         contacts = [
             {
                 "id": str(user_con_1.id),
-                "contact": "075658699",
+                "contact_text": "075658699",
                 "contact_type": str(contact_type.id)
             },
             {
                 "id": str(user_con_2.id),
-                "contact": "testmail@domain.com",
+                "contact_text": "testmail@domain.com",
                 "contact_type": str(contact_type_2.id)
             }
         ]
@@ -818,7 +818,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         contacts = [
             {
                 "id": str(user_contact_1.id),
-                "contact": "075658699",
+                "contact_text": "075658699",
                 "contact_type": str(contact_type.id)
             }
         ]

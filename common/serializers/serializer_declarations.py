@@ -28,12 +28,19 @@ class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class UserContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    contact = serializers.CharField(validators=[], required=False)
-    user = serializers.CharField(validators=[], required=False)
-    contact_text = serializers.ReadOnlyField(source='contact.contact')
+    contact = serializers.PrimaryKeyRelatedField(
+        queryset=Contact.objects.all(),
+        validators=[], required=False)
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[],
+        queryset=get_user_model().objects.all(),
+        required=False)
+    contact_text = serializers.CharField(
+        source='contact.contact', required=False)
     contact_type_text = serializers.ReadOnlyField(
         source='contact.contact_type.name'
     )
+    contact_type = serializers.CharField(source='contact.contact_type.id')
 
     class Meta(object):
         model = UserContact

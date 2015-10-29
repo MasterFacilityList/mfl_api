@@ -242,7 +242,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 try:
                     user_contact_obj = UserContact.objects.get(
                         id=contact.get('id'))
-                    user_contact_obj.contact.contact = contact.get('contact')
+                    user_contact_obj.contact.contact = contact.get(
+                        'contact_text')
                     user_contact_obj.contact.contact_type_id = contact.get(
                         'contact_type')
                     user_contact_obj.contact.save()
@@ -259,7 +260,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 contact['created_by_id'] = self.context.get(
                     'request').user.id
                 contact['contact_type_id'] = contact.pop('contact_type')
-
+                contact['contact'] = contact.pop('contact_text')
                 contact_obj = Contact.objects.create(**contact)
                 user_contact = {}
                 user_contact['updated_by_id'] = self.context.get(
