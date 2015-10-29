@@ -31,15 +31,5 @@
             "national": true,
             "administrator": true,
             "county_level": true
-        },
-        {
-          "group": "Facility Officer Group",
-            "administrator": true,
-            "sub_county_level": true
-        },
-        {
-            "group": "Community Officer Group",
-            "administrator": true,
-            "sub_county_level": true
         }
 ]
