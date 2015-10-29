@@ -31,5 +31,9 @@
             "national": true,
             "administrator": true,
             "county_level": true
+        },
+        {
+            "group": "National Manager",
+            "national": true
         }
 ]

@@ -20,7 +20,17 @@
     },
     {
         "mfluser": {
-            "email": "changamwe@mfltest.slade360.co.ke"
+            "email": "national_manager@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "National Manager"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "jomvu@mfltest.slade360.co.ke"
         },
         "groups": [
             {
