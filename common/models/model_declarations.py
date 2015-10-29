@@ -290,6 +290,7 @@ class UserConstituency(AbstractBase):
 
     class Meta:
         verbose_name_plural = 'user constituencies'
+        unique_together = ('user', 'constituency')
 
 
 @reversion.register
