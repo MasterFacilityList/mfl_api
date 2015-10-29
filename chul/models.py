@@ -72,7 +72,8 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         Facility,
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
-    households_monitored = models.PositiveIntegerField(default=0)
+    households_monitored = models.PositiveIntegerField(
+        help_text='The number of house holds a CHU is in-charge of')
     date_established = models.DateField(default=timezone.now)
     date_operational = models.DateField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
@@ -194,6 +195,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         return self.chu_ratings.count()
 
     class Meta(AbstractBase.Meta):
+        unique_together = ('name', 'facility', )
         permissions = (
             (
                 "view_rejected_chus",
@@ -235,7 +237,6 @@ class CommunityHealthWorker(AbstractBase):
     """
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    id_number = models.PositiveIntegerField(unique=True, null=True, blank=True)
     is_incharge = models.BooleanField(default=False)
     health_unit = models.ForeignKey(
         CommunityHealthUnit,
@@ -243,10 +244,7 @@ class CommunityHealthWorker(AbstractBase):
         related_name='health_unit_workers')
 
     def __str__(self):
-        return "{} ({})".format(self.first_name, self.id_number)
-
-    class Meta(AbstractBase.Meta):
-        unique_together = ('id_number', 'health_unit')
+        return "{} ({})".format(self.first_name, self.health_unit.name)
 
     @property
     def name(self):
@@ -338,22 +336,11 @@ class ChuUpdateBuffer(AbstractBase):
                     id=chew['id'])
                 chew_obj.first_name = chew['first_name']
                 chew_obj.last_name = chew['last_name']
-                if 'id_number' in chew:
-                    chew_obj.id_number = chew['id_number']
                 if 'is_incharge' in chew:
                     chew_obj.is_incharge = chew['is_incharge']
                 chew_obj.save()
             else:
-                try:
-
-                    id_number = chew.get('id_number', None)
-                    if id_number:
-                        CommunityHealthWorker.objects.get(
-                            id_number=chew['id_number'])
-                    else:
-                        CommunityHealthWorker.objects.create(**chew)
-                except CommunityHealthWorker.DoesNotExist:
-                    CommunityHealthWorker.objects.create(**chew)
+                CommunityHealthWorker.objects.create(**chew)
 
     def update_contacts(self):
         contacts = json.loads(self.contacts)

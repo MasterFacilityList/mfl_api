@@ -73,20 +73,19 @@ class CommunityHealthUnitSerializer(
         read_only_fields = ('code', )
 
     def get_basic_updates(self, chu_instance, validated_data):
-        updates = validated_data
-        if 'facility' in validated_data:
+        updates = self.initial_data
+        if ('facility' in self.initial_data and
+                validated_data['facility'] != chu_instance):
             updates['facility'] = {
                 "facility_id": str(validated_data['facility'].id),
                 "facility_name": validated_data['facility'].name,
             }
-        if 'status' in validated_data:
+        if ('status' in self.initial_data and
+                validated_data['status'] != chu_instance.status):
             updates['status'] = {
                 'status_id': str(validated_data['status'].id),
                 'status_name': validated_data['status'].name
             }
-        for key, value in updates.iteritems():
-            if hasattr(value, 'isoformat'):
-                updates[key] = validated_data[key].isoformat()
         updates.pop('health_unit_workers', None)
         updates.pop('contacts', None)
         return json.dumps(updates)
@@ -149,7 +148,6 @@ class CommunityHealthUnitSerializer(
                 chew_obj = CommunityHealthWorker.objects.get(id=chew_id)
                 chew_obj.first_name = chew['first_name']
                 chew_obj.last_name = chew['last_name']
-                chew_obj.id_number = chew['id_number']
                 chew_obj.is_incharge = chew['is_incharge']
                 chew_obj.save()
             else:
@@ -203,7 +201,6 @@ class CommunityHealthUnitSerializer(
 
         for contact_data in contacts:
             contact = self.create_contact(contact_data)
-            # if contact:
             health_unit_contact_data_unadit = {
                 "contact": contact.id,
                 "health_unit": instance.id

@@ -50,8 +50,7 @@ def check_password_strength(raw_password):
         error = (
             {
                 "password": [
-                    "The password must be at least 8"
-                    "characters long and have at least one number"
+                    "The password must be at least 8 characters and contain both letters and numbers"  # noqa
                 ]
             }
         )

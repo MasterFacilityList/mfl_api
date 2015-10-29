@@ -256,7 +256,7 @@ class CommunityHealthWorkerContactDetailView(
         generics.RetrieveUpdateDestroyAPIView):
 
     """
-    Retrieves a paritular community health_worker contact
+    Retrieves a particular community health_worker contact
 
     health_worker -- A community health worker
     contact -- A contact

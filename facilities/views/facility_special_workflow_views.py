@@ -181,7 +181,7 @@ class FacilityPDFDownloadView(DownloadPDFMixin, generics.RetrieveAPIView):
             ctx_data["latitude"] = (
                 facility_coordinates.simplify_coordinates.get('coordinates')[1]
                 if facility_coordinates else None
-                )
+            )
             ctx_data["facility_coordinates"] = facility_coordinates
 
         file_name = '{} ({})'.format(
