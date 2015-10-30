@@ -1,4 +1,6 @@
 from __future__ import division
+from datetime import datetime, timedelta
+
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
@@ -40,15 +42,20 @@ class TestCommunityHealthUnit(TestCase):
         self.assertEquals(1, CommunityHealthUnit.objects.count())
 
     def test_date_operational_less_than_date_established(self):
-        from django.utils import timezone
-        from datetime import timedelta
-
-        today = timezone.now()
+        today = datetime.now().date()
         last_week = today - timedelta(days=7)
         with self.assertRaises(ValidationError):
             mommy.make(
                 CommunityHealthUnit,
                 date_established=today, date_operational=last_week)
+
+    def test_date_established_not_in_future(self):
+        today = datetime.now().date()
+        next_month = today + timedelta(days=30)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                CommunityHealthUnit,
+                date_established=next_month, date_operational=today)
 
     def test_save_with_code(self):
         mommy.make(CommunityHealthUnit, code='7800')
