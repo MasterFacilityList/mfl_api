@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from common.models import Contact, ContactType
+from users.models import MflUser
 
 from common.serializers import (
     AbstractFieldsMixin,
@@ -80,6 +81,10 @@ class RegulatoryBodyUserSerializer(
     user_name = serializers.ReadOnlyField(source='user.get_full_name')
     regulatory_body_name = serializers.ReadOnlyField(
         source='regulatory_body.name')
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=MflUser.objects.all())
+    regulatory_body = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=RegulatingBody.objects.all())
 
     class Meta:
         model = RegulatoryBodyUser

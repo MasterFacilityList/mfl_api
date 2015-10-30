@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoModelSerializer
 from ..models import (
@@ -26,11 +28,19 @@ class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
 class UserContactSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-
-    contact_text = serializers.ReadOnlyField(source='contact.contact')
+    contact = serializers.PrimaryKeyRelatedField(
+        queryset=Contact.objects.all(),
+        validators=[], required=False)
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[],
+        queryset=get_user_model().objects.all(),
+        required=False)
+    contact_text = serializers.CharField(
+        source='contact.contact', required=False)
     contact_type_text = serializers.ReadOnlyField(
         source='contact.contact_type.name'
     )
+    contact_type = serializers.CharField(source='contact.contact_type.id')
 
     class Meta(object):
         model = UserContact
@@ -156,6 +166,12 @@ class UserCountySerializer(
         source='county.code')
     user_email = serializers.ReadOnlyField(
         source='user.email')
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False,
+        queryset=get_user_model().objects.all())
+    county = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False,
+        queryset=County.objects.all())
 
     class Meta(object):
         model = UserCounty
@@ -182,6 +198,10 @@ class UserConstituencySerializer(
     constituency_name = serializers.ReadOnlyField(source='constituency.name')
     county_name = serializers.ReadOnlyField(source='constituency.county.name')
     county_id = serializers.ReadOnlyField(source='constituency.county.id')
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=get_user_model().objects.all())
+    constituency = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=Constituency.objects.all())
 
     class Meta:
         model = UserConstituency

@@ -864,6 +864,133 @@
     },
     {
         "group": {
+            "name": "National Manager"
+        },
+        "permissions": [
+            {
+                "codename": "view_communityhealthunit"
+            },
+            {
+                "codename": "view_communityhealthunitcontact"
+            },
+            {
+                "codename": "view_communityhealthworkercontact"
+            },
+            {
+                "codename": "view_constituency"
+            },
+            {
+                "codename": "view_contact"
+            },
+            {
+                "codename": "view_contacttype"
+            },
+            {
+                "codename": "view_county"
+            },
+            {
+                "codename": "view_physicaladdress"
+            },
+            {
+                "codename": "view_town"
+            },
+            {
+                "codename": "view_usercontact"
+            },
+            {
+                "codename": "view_usercounty"
+            },
+            {
+                "codename": "view_ward"
+            },
+            {
+                "codename": "view_facility"
+            },
+            {
+                "codename": "view_facilitycontact"
+            },
+            {
+                "codename": "view_facilityofficer"
+            },
+            {
+                "codename": "view_facilityservice"
+            },
+            {
+                "codename": "view_facilityservicerating"
+            },
+            {
+                "codename": "view_facilitystatus"
+            },
+            {
+                "codename": "view_facilitytype"
+            },
+            {
+                "codename": "view_facilityunit"
+            },
+            {
+                "codename": "view_facilityunitregulation"
+            },
+            {
+                "codename": "view_jobtitle"
+            },
+            {
+                "codename": "view_officer"
+            },
+            {
+                "codename": "view_officercontact"
+            },
+            {
+                "codename": "view_option"
+            },
+            {
+                "codename": "view_owner"
+            },
+            {
+                "codename": "view_ownertype"
+            },
+            {
+                "codename": "view_regulatingbody"
+            },
+            {
+                "codename": "view_regulatingbodycontact"
+            },
+            {
+                "codename": "view_regulationstatus"
+            },
+            {
+                "codename": "view_regulatorybodyuser"
+            },
+            {
+                "codename": "view_service"
+            },
+            {
+                "codename": "view_servicecategory"
+            },
+            {
+                "codename": "view_constituencyboundary"
+            },
+            {
+                "codename": "view_countyboundary"
+            },
+            {
+                "codename": "view_facilitycoordinates"
+            },
+            {
+                "codename": "view_geocodemethod"
+            },
+            {
+                "codename": "view_geocodesource"
+            },
+            {
+                "codename": "view_wardboundary"
+            },
+            {
+                "codename": "view_worldborder"
+            }
+        ]
+    },
+    {
+        "group": {
             "name": "County Health Records Information Officer"
         },
         "permissions": [

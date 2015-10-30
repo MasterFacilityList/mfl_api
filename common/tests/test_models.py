@@ -257,7 +257,7 @@ class TestUserCountyModel(BaseTestCase):
         UserCounty.objects.create(**data)
         self.assertEquals(1, UserCounty.objects.count())
 
-    def test_user_is_only_active_in_one_count(self):
+    def test_user_is_only_active_in_one_county(self):
         user = mommy.make(get_user_model())
         county_1 = mommy.make(County)
         county_2 = mommy.make(County)
@@ -270,6 +270,29 @@ class TestUserCountyModel(BaseTestCase):
                 user=user,
                 county=county_2
             )
+
+    def test_user_linked_to_a_county_once(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        # First time should save with no issue
+        user_county_rec = mommy.make(UserCounty, user=user, county=county)
+        # Deactivating the record should have no incident
+        user_county_rec.active = False
+        user_county_rec.save()
+
+        # Deactivating an already deactivated record should raise an error
+        with self.assertRaises(ValidationError):
+            user_county_rec.active = False
+            user_county_rec.save()
+
+        # Reactive an inactive record should not have issues
+        user_county_rec.active = True
+        user_county_rec.save()
+
+        # activating an already active record should raise an error
+        with self.assertRaises(ValidationError):
+            user_county_rec.active = True
+            user_county_rec.save()
 
 
 class TestUserContactModel(BaseTestCase):
@@ -284,6 +307,21 @@ class TestUserContactModel(BaseTestCase):
         data = self.inject_audit_fields(data)
         UserContact.objects.create(**data)
         self.assertEquals(1, UserContact.objects.count())
+
+    def test_user_and_contact_unique(self):
+        contact = mommy.make(Contact)
+        user = mommy.make(get_user_model())
+        mommy.make(UserContact, user=user, contact=contact)
+        with self.assertRaises(ValidationError):
+            mommy.make(UserContact, user=user, contact=contact)
+
+    def test_user_contact_deletion(self):
+        contact = mommy.make(Contact)
+        user = mommy.make(get_user_model())
+        user_contact = mommy.make(UserContact, user=user, contact=contact)
+        self.assertEquals(1, UserContact.objects.filter(user=user).count())
+        user_contact.delete()
+        self.assertEquals(0, UserContact.objects.filter(user=user).count())
 
 
 class TestUserConstituencyModel(BaseTestCase):
