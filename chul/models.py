@@ -134,18 +134,20 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
     def validate_date_established_not_in_future(self):
         """
-        Only the date established needs to be validated.
+        Only the date operational needs to be validated.
 
         date_established should always be less then the date_operational.
+        Thus is the date_operational is not in future the date_established
+        is also not in future
         """
 
         today = datetime.datetime.now().date()
 
-        if self.date_established and self.date_established > today:
+        if self.date_operational and self.date_operational > today:
             raise ValidationError(
                 {
-                    "date_established": [
-                        "The date established cannot be in the future"
+                    "date_operational": [
+                        "The date operational cannot be in the future"
                     ]
                 })
 

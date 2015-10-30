@@ -55,7 +55,7 @@ class TestCommunityHealthUnit(TestCase):
         with self.assertRaises(ValidationError):
             mommy.make(
                 CommunityHealthUnit,
-                date_established=next_month, date_operational=today)
+                date_established=today, date_operational=next_month)
 
     def test_valid_dates(self):
         today = datetime.now().date()
