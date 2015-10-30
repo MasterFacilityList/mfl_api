@@ -57,6 +57,14 @@ class TestCommunityHealthUnit(TestCase):
                 CommunityHealthUnit,
                 date_established=next_month, date_operational=today)
 
+    def test_valid_dates(self):
+        today = datetime.now().date()
+        last_week = today - timedelta(days=7)
+        mommy.make(
+            CommunityHealthUnit,
+            date_established=last_week, date_operational=today)
+        self.assertEquals(1, CommunityHealthUnit.objects.count())
+
     def test_save_with_code(self):
         mommy.make(CommunityHealthUnit, code='7800')
         self.assertEquals(1, CommunityHealthUnit.objects.count())
