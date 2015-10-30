@@ -1,4 +1,5 @@
 import json
+import datetime
 import reversion
 
 from django.db import models
@@ -120,6 +121,36 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         if values.count(True) > 1:
             raise ValidationError(error)
 
+    def validate_date_operation_is_less_than_date_established(self):
+        if self.date_operational and self.date_established:
+            if self.date_established > self.date_operational:
+                raise ValidationError(
+                    {
+                        "date_operational": [
+                            "Date operation cannot be greater than date "
+                            "established"
+                        ]
+                    })
+
+    def validate_date_established_not_in_future(self):
+        """
+        Only the date operational needs to be validated.
+
+        date_established should always be less then the date_operational.
+        Thus is the date_operational is not in future the date_established
+        is also not in future
+        """
+
+        today = datetime.datetime.now().date()
+
+        if self.date_operational and self.date_operational > today:
+            raise ValidationError(
+                {
+                    "date_operational": [
+                        "The date operational cannot be in the future"
+                    ]
+                })
+
     @property
     def contacts(self):
 
@@ -156,6 +187,8 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         super(CommunityHealthUnit, self).clean()
         self.validate_facility_is_not_closed()
         self.validate_either_approved_or_rejected_and_not_both()
+        self.validate_date_operation_is_less_than_date_established()
+        self.validate_date_established_not_in_future()
 
     @property
     def pending_updates(self):
