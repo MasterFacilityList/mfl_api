@@ -56,9 +56,23 @@ class RegulatorSyncSerializer(
     county_name = serializers.ReadOnlyField()
     owner_name = serializers.ReadOnlyField(source='owner.name')
     facility_type_name = serializers.ReadOnlyField(source='facility_type.name')
+    regulatory_body_name = serializers.ReadOnlyField(
+        source='regulatory_body.name'
+    )
+    probable_matches = serializers.ReadOnlyField()
+
+    def create(self, validated_data):
+        reg = self.context['request'].user.regulator
+        if reg:
+            validated_data['regulatory_body'] = reg
+            return super(RegulatorSyncSerializer, self).create(validated_data)
+        raise ValidationError(
+            {"regulatory_body": ["The user is not assigned a regulatory body"]}
+        )
 
     class Meta:
         model = RegulatorSync
+        read_only_fields = ('regulatory_body', 'mfl_code', )
 
 
 class FacilityLevelChangeReasonSerializer(
@@ -276,7 +290,7 @@ class FacilityRegulationStatusSerializer(
         model = FacilityRegulationStatus
 
 
-class FacilityTypeSerializer(serializers.ModelSerializer):
+class FacilityTypeSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     owner_type_name = serializers.ReadOnlyField(source='owner_type.name')
 
     class Meta(object):

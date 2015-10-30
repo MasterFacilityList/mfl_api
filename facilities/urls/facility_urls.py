@@ -5,6 +5,11 @@ from .. import views
 
 urlpatterns = patterns(
     '',
+
+    url(r'^regulator_sync_update/(?P<pk>[^/]+)/$',
+        views.RegualorSyncUpdateView.as_view(),
+        name='regulator_sync_update'),
+
     url(r'^regulator_sync/(?P<pk>[^/]+)/$',
         views.RegualorSyncDetailView.as_view(),
         name='regulator_sync_detail'),

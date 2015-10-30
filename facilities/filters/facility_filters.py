@@ -40,14 +40,15 @@ from ..models import (
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
     ListIntegerFilter,
-    ListCharFilter
+    ListCharFilter,
+    NoneFilter
 )
 
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class RegulatorSyncFilter(CommonFieldsFilterset):
-    mfl_code = ListCharFilter(lookup_type='exact')
+    mfl_code_null = NoneFilter(name='mfl_code')
     county = ListCharFilter(lookup_type='exact')
 
     class Meta:

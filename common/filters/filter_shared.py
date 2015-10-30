@@ -9,13 +9,29 @@ from rest_framework import ISO_8601
 from search.filters import SearchFilter, AutoCompleteSearchFilter
 
 
+class NoneFilter(django_filters.Filter):
+
+    """
+    Filter a field on whether it is null or not.
+    """
+
+    def filter(self, qs, value):
+        filter_none = False
+        if value.lower() == 'true':
+            filter_none = True
+
+        return qs.filter(**{self.name + '__isnull': filter_none})
+
+
 class IsoDateTimeField(forms.DateTimeField):
+
     """
     It support 'iso-8601' date format too which is out the scope of
     the ``datetime.strptime`` standard library
 
     # ISO 8601: ``http://www.w3.org/TR/NOTE-datetime``
     """
+
     def strptime(self, value, format):
         value = force_str(value)
         if format == ISO_8601:
@@ -27,11 +43,13 @@ class IsoDateTimeField(forms.DateTimeField):
 
 
 class IsoDateTimeFilter(django_filters.DateTimeFilter):
+
     """ Extend ``DateTimeFilter`` to filter by ISO 8601 formated dates too"""
     field_class = IsoDateTimeField
 
 
 class ListFilterMixin(object):
+
     """
     Enable filtering by comma separated values.
 
@@ -63,6 +81,7 @@ class ListFilterMixin(object):
 
 
 class ListCharFilter(ListFilterMixin, django_filters.CharFilter):
+
     """
     Enable filtering of comma separated strings.
     """
@@ -70,6 +89,7 @@ class ListCharFilter(ListFilterMixin, django_filters.CharFilter):
 
 
 class ListIntegerFilter(ListCharFilter):
+
     """
     Enable filtering of comma separated integers.
     """
@@ -79,6 +99,7 @@ class ListIntegerFilter(ListCharFilter):
 
 
 class CommonFieldsFilterset(django_filters.FilterSet):
+
     """Every model that descends from AbstractBase should have this
 
     The usage pattern for this is presently simplistic; mix it in, then add to
