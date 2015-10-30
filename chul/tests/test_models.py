@@ -39,6 +39,17 @@ class TestCommunityHealthUnit(TestCase):
         mommy.make(CommunityHealthUnit)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
 
+    def test_date_operational_less_than_date_established(self):
+        from django.utils import timezone
+        from datetime import timedelta
+
+        today = timezone.now()
+        last_week = today - timedelta(days=7)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                CommunityHealthUnit,
+                date_established=today, date_operational=last_week)
+
     def test_save_with_code(self):
         mommy.make(CommunityHealthUnit, code='7800')
         self.assertEquals(1, CommunityHealthUnit.objects.count())

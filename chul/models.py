@@ -120,6 +120,17 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         if values.count(True) > 1:
             raise ValidationError(error)
 
+    def validate_date_operation_is_less_than_date_established(self):
+        if self.date_operational and self.date_established:
+            if self.date_established > self.date_operational:
+                raise ValidationError(
+                    {
+                        "date_operational": [
+                            "Date operation cannot be greater than date "
+                            "established"
+                        ]
+                    })
+
     @property
     def contacts(self):
 
@@ -156,6 +167,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         super(CommunityHealthUnit, self).clean()
         self.validate_facility_is_not_closed()
         self.validate_either_approved_or_rejected_and_not_both()
+        self.validate_date_operation_is_less_than_date_established()
 
     @property
     def pending_updates(self):
