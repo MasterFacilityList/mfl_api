@@ -1030,6 +1030,17 @@ class TestRegulatoryBodyUserModel(BaseTestCase):
         self.assertIsNotNone(reg_body.user.regulator)
         self.assertEquals(reg_body.user.regulator, reg_body.regulatory_body)
 
+    def test_validate_one_user_one_regulator(self):
+        user = mommy.make(get_user_model())
+        regulatory_body = mommy.make(RegulatingBody)
+        mommy.make(
+            RegulatoryBodyUser, user=user,
+            regulatory_body=regulatory_body, active=True)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                RegulatoryBodyUser, user=user,
+                regulatory_body=regulatory_body, active=True)
+
 
 class TestFacilityUnitRegulation(BaseTestCase):
 

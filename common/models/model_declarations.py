@@ -14,6 +14,30 @@ from .base import AbstractBase, SequenceMixin
 LOGGER = logging.getLogger(__file__)
 
 
+def validate_user_linked_to_certain_admin_area_once(model_instance):
+    """
+    Ensure that a user is assigned to a certain admin area once.
+
+    If one wants to remove the user from the area, then
+    they should use deactivate the record and to link back the user to the
+    admin area they should activate the record
+    """
+    try:
+        old_obj = model_instance.__class__.objects.get(
+            user=model_instance.user)
+        active_list = [old_obj.active, model_instance.active]
+        if active_list.count(True) == 2 or active_list.count(True) == 0:
+            msg = ("You can only activate an inactive "
+                   "record or deactivate an active record")
+            raise ValidationError(
+                {
+                    "Error": [msg]
+                })
+    except model_instance.__class__.DoesNotExist:
+        # the record is being created for the first time
+        pass
+
+
 @reversion.register
 @encoding.python_2_unicode_compatible
 class ContactType(AbstractBase):
@@ -21,11 +45,11 @@ class ContactType(AbstractBase):
     """
     Captures the different types of contacts that we have in the real world.
 
-    The most common contacts are email, phone numbers, landline etc.
+    The most common contacts are email, phone numbers, land-line etc.
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="A short name, preferrably 6 characters long, "
+        help_text="A short name, preferably 6 characters long, "
         "representing a certain type of contact e.g EMAIL")
     description = models.TextField(
         null=True, blank=True,
@@ -42,8 +66,8 @@ class Contact(AbstractBase):
     """
     Holds ways in which entities can communicate.
 
-    The commincation ways are not limited provided that all parties
-    willing to communicate will be able to do so. The commucation
+    The communication ways are not limited provided that all parties
+    willing to communicate will be able to do so. The communication
     ways may include emails, phone numbers, landlines etc.
     """
     contact = models.CharField(
@@ -205,7 +229,7 @@ class Ward(AdministrativeUnitBase):
 class SubCounty(AdministrativeUnitBase):
 
     """
-    A county cab be sub divided into sub counties.
+    A county can be sub divided into sub counties.
 
     The sub-counties do not necessarily map to constituencies
     """
@@ -220,9 +244,9 @@ class SubCounty(AdministrativeUnitBase):
 class UserCounty(AbstractBase):
 
     """
-    Will store a record of the counties that a user has been incharge of.
+    Will store a record of the counties that a user has been in-charge of.
 
-    A user can only be incharge of only one county at a time.
+    A user can only be in-charge of only one county at a time.
     """
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='user_counties',
@@ -234,16 +258,17 @@ class UserCounty(AbstractBase):
 
     def validate_only_one_county_active(self):
         """
-        A user can be incharge of only one county at the a time.
+        A user can be in-charge of only one county at the a time.
         """
         counties = self.__class__.objects.filter(
             user=self.user, active=True, deleted=False)
-        if counties.count() > 0 and not self.deleted:
+        if counties.count() > 0 and not self.deleted and self.active:
             raise ValidationError(
                 "A user can only be active in one county at a time")
 
     def save(self, *args, **kwargs):
         self.validate_only_one_county_active()
+        validate_user_linked_to_certain_admin_area_once(self)
         super(UserCounty, self).save(*args, **kwargs)
 
     class Meta(AbstractBase.Meta):
@@ -265,6 +290,25 @@ class UserContact(AbstractBase):
     def __str__(self):
         return "{}: ({})".format(self.user, self.contact)
 
+    def validate_user_linked_to_a_certain_contact_once(self):
+        """
+        Ensures that user contacts are not duplicated
+        """
+        user_contact_instance_count = self.__class__.objects.filter(
+            user=self.user, contact=self.contact).count()
+        if user_contact_instance_count > 0 and not self.deleted:
+            msg = "The user contact {0} is already added to the user".format(
+                self.contact.contact)
+            raise ValidationError(
+                {
+                    "contact": [msg]
+
+                })
+
+    def clean(self, *args, **kwargs):
+        super(UserContact, self).clean(*args, **kwargs)
+        self.validate_user_linked_to_a_certain_contact_once()
+
 
 @reversion.register(follow=['user', 'constituency'])
 @encoding.python_2_unicode_compatible
@@ -284,6 +328,7 @@ class UserConstituency(AbstractBase):
 
     def clean(self, *args, **kwargs):
         self.validate_constituency_county_in_creator_county()
+        validate_user_linked_to_certain_admin_area_once(self)
 
     def __str__(self):
         return "{}: {}".format(self.user, self.constituency)
