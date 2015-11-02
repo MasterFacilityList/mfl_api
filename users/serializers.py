@@ -1,3 +1,5 @@
+import logging
+
 from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth.models import Permission
@@ -12,13 +14,20 @@ from common.serializers import (
     UserContactSerializer,
     PartialResponseMixin
 )
+
+from common.models import (
+    UserConstituency, UserContact, UserCounty, Contact)
 from facilities.serializers import RegulatoryBodyUserSerializer
+from facilities.models import RegulatoryBodyUser
 from .models import (
     MflUser,
     MFLOAuthApplication,
     check_password_strength,
     CustomGroup,
     ProxyGroup)
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _lookup_permissions(validated_data):
@@ -214,18 +223,164 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 return True
         return False
 
+    def _update_or_create_contacts(self, instance, contacts):
+        """
+        Creates and updates user contacts in bulk
+
+        Sample Payload:
+            "user_contacts": [
+                {
+                    "id": <UserContact instance> // optional and provided
+                        only when updating a uuid string
+                    "contact": "the contact e.g 07224645657",
+                    "contact_type": "the pk of the contact type" // uuid string
+                }
+            ]
+        """
+        for contact in contacts:
+            if 'id' in contact:
+                try:
+                    user_contact_obj = UserContact.objects.get(
+                        id=contact.get('id'))
+                    user_contact_obj.contact.contact = contact.get(
+                        'contact_text')
+                    user_contact_obj.contact.contact_type_id = contact.get(
+                        'contact_type')
+                    user_contact_obj.contact.save()
+                except UserContact.DoesNotExist:
+                    msg = "User contact with id {0} does not exist".format(
+                        contact.get('id'))
+                    raise ValidationError(
+                        {
+                            "user_contact": [msg]
+                        })
+            else:
+                contact['updated_by_id'] = self.context.get(
+                    'request').user.id
+                contact['created_by_id'] = self.context.get(
+                    'request').user.id
+                contact['contact_type_id'] = contact.pop('contact_type')
+                contact['contact'] = contact.pop('contact_text')
+                contact_obj = Contact.objects.create(**contact)
+                user_contact = {}
+                user_contact['updated_by_id'] = self.context.get(
+                    'request').user.id
+                user_contact['created_by_id'] = self.context.get(
+                    'request').user.id
+                user_contact['user_id'] = instance.id
+                user_contact['contact_id'] = contact_obj.id
+                UserContact.objects.create(**user_contact)
+
+    def _create_user_county(self, instance, counties):
+        """
+        Allows batch linking of a user to counties
+
+        Sample Payload:
+            "user_counties": [
+                {
+                    "id": <UserCounty instance> // optional and provided
+                        only when updating a uuid string
+                    "county": "The county id of
+                    the county to be linked",// uuid string
+
+                }
+            ]
+        """
+        for county in counties:
+            if 'id' in county:
+                LOGGER.info("User is already linked to the county")
+            else:
+                county['updated_by_id'] = self.context.get(
+                    'request').user.id
+                county['created_by_id'] = self.context.get(
+                    'request').user.id
+                county['county_id'] = county.pop('county')
+                county['user_id'] = instance.id
+                UserCounty.objects.create(**county)
+
+    def _create_user_constituency(self, instance, constituencies):
+        """
+        Allow batch linking of users to constituencies
+
+        Sample Payload:
+            "user_constituencies": [
+                {
+                    "id": <UserConstituency instance> // optional and provided
+                        only when updating a uuid string
+                    "constituency": "The constituency id of
+                        the constituency to be linked",// uuid string
+
+                }
+            ]
+        """
+        for constituency in constituencies:
+            if 'id' in constituency:
+                LOGGER.info("User is already linked to the constituency")
+            else:
+                constituency['updated_by_id'] = self.context.get(
+                    'request').user.id
+                constituency['created_by_id'] = self.context.get(
+                    'request').user.id
+                constituency['constituency_id'] = constituency.pop(
+                    'constituency')
+                constituency['user_id'] = instance.id
+                UserConstituency.objects.create(**constituency)
+
+    def _create_regulator(self, instance, regulators):
+        """
+        Links a user to a regulatory body
+
+        Sample Payload:
+             "regulatory_users": [
+                {
+                    "id": <RegulatoryBodyUser instance>
+                        // optional and provided
+                        only when updating a uuid string
+                    "regulatory_body": "The regulatory body id of
+                        the regulatory body to be linked",// uuid string
+
+                }
+            ]
+
+        """
+        for regulator in regulators:
+            if 'id' in regulator:
+                LOGGER.info("The user is already linked to that regulator")
+            else:
+                regulator['updated_by_id'] = self.context.get(
+                    'request').user.id
+                regulator['created_by_id'] = self.context.get(
+                    'request').user.id
+                regulator['user'] = instance
+                regulator['regulatory_body_id'] = regulator.pop(
+                    'regulatory_body')
+                RegulatoryBodyUser.objects.create(**regulator)
+
     @transaction.atomic
     def create(self, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
             validated_data, is_creation=True)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
+        validated_data.pop('user_contacts', None)
+        contacts = self.initial_data.pop('user_contacts', [])
+        validated_data.pop('user_constituencies', None)
+        constituencies = self.initial_data.pop('user_constituencies', [])
+        validated_data.pop('user_counties', None)
+        counties = self.initial_data.pop('user_counties', [])
+        validated_data.pop('regulatory_users', None)
+        regulators = self.initial_data.pop('regulatory_users', [])
 
         new_user = MflUser.objects.create_user(**validated_data)
         if self._assign_is_staff(groups):
             new_user.is_staff = True
         new_user.save()
+
         new_user.groups.add(*groups)
+        self._create_user_constituency(new_user, constituencies)
+        self._create_user_county(new_user, counties)
+        self._update_or_create_contacts(new_user, contacts)
+        self._create_regulator(new_user, regulators)
 
         return new_user
 
@@ -235,6 +390,15 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
             validated_data)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
+
+        validated_data.pop('user_contacts', None)
+        contacts = self.initial_data.pop('user_contacts', [])
+        validated_data.pop('user_constituencies', None)
+        constituencies = self.initial_data.pop('user_constituencies', [])
+        validated_data.pop('user_counties', None)
+        counties = self.initial_data.pop('user_counties', [])
+        validated_data.pop('regulatory_users', None)
+        regulators = self.initial_data.pop('regulatory_users', [])
 
         pwd = validated_data.pop('password', None)
 
@@ -253,6 +417,11 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         instance.save()
         instance.groups.clear()
         instance.groups.add(*groups)
+
+        self._create_user_constituency(instance, constituencies)
+        self._create_user_county(instance, counties)
+        self._update_or_create_contacts(instance, contacts)
+        self._create_regulator(instance, regulators)
 
         return instance
 
