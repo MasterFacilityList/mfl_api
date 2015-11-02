@@ -3,10 +3,11 @@ from __future__ import division
 import reversion
 import json
 import logging
+import re
 
 from django.conf import settings
 from django.core import validators
-from django.db import models
+from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
@@ -1701,13 +1702,14 @@ class FacilityDepartment(AbstractBase):
 @reversion.register(follow=['facility_type', 'owner'])
 @encoding.python_2_unicode_compatible
 class RegulatorSync(AbstractBase):
+
     """
-    Stage facilities that are  created initially in the Regulator system RHRIS
+    Stage facilities that are created initially in the Regulator system RHRIS
     before they are created in the MFL
     """
     name = models.CharField(
-        max_length=100,
-        help_text='The name of the facility')
+        max_length=100, help_text='The official name of the facility'
+    )
     registration_number = models.CharField(
         max_length=100,
         help_text='The registration number given by the regulator')
@@ -1715,18 +1717,47 @@ class RegulatorSync(AbstractBase):
     facility_type = models.ForeignKey(
         FacilityType,
         help_text='The type of the facility e.g Medical Clinic')
-    owner = models.ForeignKey(
-        Owner,
-        help_text='The owner of the facility')
-    mfl_code = models.CharField(
-        max_length=100,
-        null=True, blank=True,
-        help_text='The MFL code assigned in MFL')
+    owner = models.ForeignKey(Owner, help_text='The owner of the facility')
+    regulatory_body = models.ForeignKey(
+        RegulatingBody, help_text="The regulatory body the record came from"
+    )
+    mfl_code = models.PositiveIntegerField(
+        null=True, blank=True, help_text='The assigned MFL code'
+    )
 
     @property
     def county_name(self):
         county = County.objects.get(code=self.county)
         return county.name
+
+    @property
+    def probable_matches(self):
+        """Retrieve probable facilities that match the sync's criteria"""
+        query = Facility.objects.values('name', 'official_name', 'code')
+        if self.mfl_code:
+            return query.filter(code=self.mfl_code)
+
+        # consider only alphanumerics for comparison of names
+        alphanumerics = re.findall(r'[a-z0-9]+', self.name, re.IGNORECASE)
+        for i in alphanumerics:
+            query = query.filter(official_name__icontains=i)
+
+        return query.filter(
+            ward__constituency__county__code=self.county,
+            owner=self.owner,
+            regulatory_body=self.regulatory_body
+        )
+
+    def update_facility(self, facility):
+        """Update a facility with registration number, update sync record
+           with facility's mfl code
+        """
+        with transaction.atomic():
+            facility.registration_number = self.registration_number
+            self.mfl_code = facility.code
+            facility.save(allow_save=True)
+            self.save()
+        return self
 
     def validate_county_exits(self):
         try:
