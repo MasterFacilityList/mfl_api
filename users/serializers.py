@@ -396,7 +396,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         validated_data.pop('groups', None)
 
         validated_data.pop('contacts', None)
-        contacts = self.initial_data.pop('user_contacts', [])
+        contacts = self.initial_data.pop('contacts', [])
         validated_data.pop('user_constituencies', None)
         constituencies = self.initial_data.pop('user_constituencies', [])
         validated_data.pop('user_counties', None)
