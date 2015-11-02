@@ -47,6 +47,9 @@ def _lookup_permissions(validated_data):
 def _lookup_groups(validated_data):
     try:
         user_supplied_groups = validated_data.get('groups', [])
+        for user_supplied_group in user_supplied_groups:
+            user_supplied_group.pop('permissions', None)
+
         return [
             ProxyGroup.objects.get(**user_supplied_group)
             for user_supplied_group in user_supplied_groups
@@ -102,7 +105,7 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
     # Don't even ask; in order for the manual create() in the user serializer
     # to work, the UniqueValidator on this name had to be silenced
     name = serializers.CharField(validators=[])
-    permissions = PermissionSerializer(many=True, required=False)
+    # permissions = PermissionSerializer(many=True, required=False)
     is_regulator = serializers.ReadOnlyField()
     is_national = serializers.ReadOnlyField()
     is_administrator = serializers.ReadOnlyField()
@@ -388,8 +391,9 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     def update(self, instance, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
             validated_data)
-        groups = _lookup_groups(validated_data)
-        validated_data.pop('groups', None)
+        if 'groups' in validated_data:
+            groups = _lookup_groups(validated_data)
+            validated_data.pop('groups', None)
 
         validated_data.pop('user_contacts', None)
         contacts = self.initial_data.pop('user_contacts', [])
@@ -410,13 +414,13 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         if pwd is not None:
             instance.set_password(pwd)
+        if 'groups' in validated_data:
+            if self._assign_is_staff(groups):
 
-        if self._assign_is_staff(groups):
-
-            instance.is_staff = True
-        instance.save()
-        instance.groups.clear()
-        instance.groups.add(*groups)
+                instance.is_staff = True
+            instance.save()
+            instance.groups.clear()
+            instance.groups.add(*groups)
 
         self._create_user_constituency(instance, constituencies)
         self._create_user_county(instance, counties)
