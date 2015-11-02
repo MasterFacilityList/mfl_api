@@ -11,7 +11,6 @@ from rest_auth.serializers import PasswordChangeSerializer
 from common.serializers import (
     UserCountySerializer,
     UserConstituencySerializer,
-    UserContactSerializer,
     PartialResponseMixin
 )
 
@@ -391,7 +390,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     def update(self, instance, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
             validated_data)
-        # if 'groups' in validated_data:
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
@@ -414,7 +412,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         if pwd is not None:
             instance.set_password(pwd)
-        # if 'groups' in validated_data:
         if self._assign_is_staff(groups):
 
             instance.is_staff = True
