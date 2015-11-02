@@ -105,7 +105,7 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
     # Don't even ask; in order for the manual create() in the user serializer
     # to work, the UniqueValidator on this name had to be silenced
     name = serializers.CharField(validators=[])
-    # permissions = PermissionSerializer(many=True, required=False)
+    permissions = PermissionSerializer(many=True, required=False)
     is_regulator = serializers.ReadOnlyField()
     is_national = serializers.ReadOnlyField()
     is_administrator = serializers.ReadOnlyField()
@@ -205,7 +205,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     county_name = serializers.ReadOnlyField(source='county.name')
     constituency = serializers.ReadOnlyField(source='constituency.id')
     constituency_name = serializers.ReadOnlyField(source='constituency.name')
-    user_contacts = UserContactSerializer(many=True, required=False)
+    contacts = serializers.ReadOnlyField()
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
@@ -365,8 +365,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
             validated_data, is_creation=True)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
-        validated_data.pop('user_contacts', None)
-        contacts = self.initial_data.pop('user_contacts', [])
+        validated_data.pop('contacts', None)
+        contacts = self.initial_data.pop('contacts', [])
         validated_data.pop('user_constituencies', None)
         constituencies = self.initial_data.pop('user_constituencies', [])
         validated_data.pop('user_counties', None)
@@ -395,7 +395,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
             groups = _lookup_groups(validated_data)
             validated_data.pop('groups', None)
 
-        validated_data.pop('user_contacts', None)
+        validated_data.pop('contacts', None)
         contacts = self.initial_data.pop('user_contacts', [])
         validated_data.pop('user_constituencies', None)
         constituencies = self.initial_data.pop('user_constituencies', [])

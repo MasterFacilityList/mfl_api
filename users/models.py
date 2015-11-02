@@ -247,6 +247,20 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
         return django_login
 
+    @property
+    def contacts(self):
+        from common.models import UserContact
+        return [
+            {
+                "id": user_contact.id,
+                "contact": user_contact.contact.id,
+                "contact_text": user_contact.contact.contact,
+                "contact_type": user_contact.contact.contact_type.id,
+                "contact_type_name": user_contact.contact.contact_type.name
+
+            } for user_contact in UserContact.objects.filter(user=self)
+        ]
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 
