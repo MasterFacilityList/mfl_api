@@ -11,6 +11,9 @@
     key_file: ""
   roles:
     - common
+    - { role: postgresql }
+    - { role: nginx, install_from: 'apt' }
+    - { role: ufw }
     - {
         role: frontend,
         frontend_name: "mfl_public_web",
@@ -45,9 +48,6 @@
         ssl_cert_file: "{{cert_file}}",
         ssl_key_file: "{{key_file}}"
       }
-    - { role: postgresql }
-    - { role: nginx, install_from: 'apt' }
-    - { role: ufw }
     - {
         role: api,
         server_name: mfl.slade360.co.ke,

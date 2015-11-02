@@ -54,8 +54,7 @@ from ..models import (
     FacilityApproval,
     FacilityUpdates,
     KephLevel,
-    FacilityLevelChangeReason,
-    RegulatorSync
+    FacilityLevelChangeReason
 )
 
 from django.contrib.auth.models import Group, Permission
@@ -1740,38 +1739,3 @@ class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
         self.assertEquals(400, response.status_code)
         self.assertEquals(1, RegulatingBody.objects.count())
         self.assertEquals(0, Contact.objects.count())
-
-
-class TestRegulatorSyncView(LoginMixin, APITestCase):
-    def setUp(self):
-        self.url = reverse("api:facilities:regulator_syncs_list")
-        super(TestRegulatorSyncView, self).setUp()
-
-    def test_post(self):
-        county = mommy.make(County)
-        owner = mommy.make(Owner)
-        facility_type = mommy.make(FacilityType)
-        data = {
-            "name": "Jina",
-            "registration_number": 100,
-            "county": county.code,
-            "owner": str(owner.id),
-            "facility_type": str(facility_type.id)
-        }
-        response = self.client.post(self.url, data)
-        self.assertEquals(201, response.status_code)
-        self.assertEquals(1, RegulatorSync.objects.count())
-
-    def test_list(self):
-        county = mommy.make(County)
-        mommy.make(RegulatorSync, county=county.code)
-        response = self.client.get(self.url)
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(1, response.data.get('count'))
-
-    def test_get_single(self):
-        county = mommy.make(County)
-        sync = mommy.make(RegulatorSync, county=county.code)
-        url = self.url + str(sync.id) + "/"
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)
