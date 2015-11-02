@@ -196,7 +196,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     user_counties = UserCountySerializer(many=True, required=False)
     short_name = serializers.ReadOnlyField(source='get_short_name')
     full_name = serializers.ReadOnlyField(source='get_full_name')
-    all_permissions = serializers.ReadOnlyField(source='permissions')
+    # all_permissions = serializers.ReadOnlyField(source='permissions')
     requires_password_change = serializers.ReadOnlyField()
     groups = GroupSerializer(many=True, required=False)
     regulator = serializers.ReadOnlyField(source='regulator.id')
@@ -391,9 +391,9 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     def update(self, instance, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
             validated_data)
-        if 'groups' in validated_data:
-            groups = _lookup_groups(validated_data)
-            validated_data.pop('groups', None)
+        # if 'groups' in validated_data:
+        groups = _lookup_groups(validated_data)
+        validated_data.pop('groups', None)
 
         validated_data.pop('contacts', None)
         contacts = self.initial_data.pop('user_contacts', [])
@@ -414,13 +414,13 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         if pwd is not None:
             instance.set_password(pwd)
-        if 'groups' in validated_data:
-            if self._assign_is_staff(groups):
+        # if 'groups' in validated_data:
+        if self._assign_is_staff(groups):
 
-                instance.is_staff = True
-            instance.save()
-            instance.groups.clear()
-            instance.groups.add(*groups)
+            instance.is_staff = True
+        instance.save()
+        instance.groups.clear()
+        instance.groups.add(*groups)
 
         self._create_user_constituency(instance, constituencies)
         self._create_user_county(instance, counties)
