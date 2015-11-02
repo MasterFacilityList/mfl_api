@@ -19,7 +19,7 @@ def _dict(ordered_dict_val):
     return json.loads(json.dumps(ordered_dict_val, default=default))
 
 
-class TestNullFilter():
+class TestNullFilter(APITestCase):
 
     def test_null_filter(self):
         ContactType.objects.create(name="a", description="desc")
@@ -28,11 +28,11 @@ class TestNullFilter():
         nf = NullFilter(name='description')
         qs = nf.filter(ContactType.objects.all(), 'true')
         self.assertEqual(qs.count(), 1)
-        self.assertEqual(qs[0].name, "a")
+        self.assertEqual(qs[0].name, "b")
 
         qs = nf.filter(ContactType.objects.all(), 'false')
         self.assertEqual(qs.count(), 1)
-        self.assertEqual(qs[0].name, "b")
+        self.assertEqual(qs[0].name, "a")
 
 
 class TestIsoDateTimeField(LoginMixin, APITestCase):
