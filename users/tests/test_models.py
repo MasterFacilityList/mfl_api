@@ -15,7 +15,7 @@ class TestMflUserModel(BaseTestCase):
 
     def test_save_normal_user(self):
         data = {
-            "email": "some@email.com",
+            "email": "marika@savannahinformatics.com",
             "employee_number": "some",
             "first_name": "jina",
             "last_name": "mwisho",
@@ -98,6 +98,10 @@ class TestMflUserModel(BaseTestCase):
         }
         with self.assertRaises(ValidationError):
             MflUser.objects.create_user(**data)
+
+    def test_user_contacts_property(self):
+        user = mommy.make(MflUser)
+        self.assertIsInstance(user.contacts, list)
 
 
 class TestLastLog(TestCase):

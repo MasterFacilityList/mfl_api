@@ -757,7 +757,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         ]
 
         post_data = {
-            "user_contacts": contacts,
+            "contacts": contacts,
             "email": "testmail@domain.com",
             "first_name": "Jina ya Kwanza",
             "last_name": "Ya Pili",
@@ -794,7 +794,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         ]
 
         post_data = {
-            "user_contacts": contacts,
+            "contacts": contacts,
         }
         url = self.url + "{}/".format(user.id)
 
@@ -824,7 +824,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         ]
         user_contact_1.delete()
         data = {
-            "user_contacts": contacts,
+            "contacts": contacts,
         }
         url = self.url + "{0}/".format(user.id)
         response = self.client.patch(url, data)
