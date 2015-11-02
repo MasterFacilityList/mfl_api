@@ -9,7 +9,7 @@ from django.conf import settings
 from users.models import CustomGroup, MflUser
 
 from . import _get_file_path
-
+1
 Logger = logging.getLogger(__name__)
 
 
@@ -21,11 +21,7 @@ class Command(BaseCommand):
 
                 g = Group.objects.get(**gp["group"])
                 for perm in gp["permissions"]:
-                    try:
-                        g.permissions.add(Permission.objects.get(**perm))
-                    except Permission.DoesNotExist:
-                        import pdb
-                        pdb.set_trace()
+                    g.permissions.add(Permission.objects.get(**perm))
 
     def _annotate_groups_with_booleans(self):
         file_path = 'data/data/v2_data/0102_group_booleans'

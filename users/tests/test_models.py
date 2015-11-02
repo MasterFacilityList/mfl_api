@@ -15,7 +15,7 @@ class TestMflUserModel(BaseTestCase):
 
     def test_save_normal_user(self):
         data = {
-            "email": "marika@savannahinformatics.com",
+            "email": "some@email.com",
             "employee_number": "some",
             "first_name": "jina",
             "last_name": "mwisho",
