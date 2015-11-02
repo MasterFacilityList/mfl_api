@@ -50,6 +50,22 @@ class TestRegulatorSyncView(RegulatorMixin, APITestCase):
             str(response.data['regulatory_body']), str(self.regulator.id)
         )
 
+    def test_post_by_not_a_regulator(self):
+        RegulatoryBodyUser.objects.filter(user=self.user).delete()
+        county = mommy.make(County)
+        owner = mommy.make(Owner)
+        facility_type = mommy.make(FacilityType)
+        data = {
+            "name": "Jina",
+            "registration_number": 100,
+            "county": county.code,
+            "owner": str(owner.id),
+            "facility_type": str(facility_type.id)
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(RegulatorSync.objects.count(), 0)
+
     def test_list(self):
         county = mommy.make(County)
         mommy.make(RegulatorSync, county=county.code)
