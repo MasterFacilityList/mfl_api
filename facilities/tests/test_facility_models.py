@@ -53,7 +53,8 @@ from ..models import (
 )
 
 
-class TestRegultorSync(BaseTestCase):
+class TestRegulatorSync(BaseTestCase):
+
     def test_save(self):
         county = mommy.make(County, code=1999)
         mommy.make(RegulatorSync, county=county.code)
@@ -74,6 +75,81 @@ class TestRegultorSync(BaseTestCase):
             RegulatorSync,
             name="Clinic ya Musa", county=county.code)
         self.assertEquals("Clinic ya Musa", sync.__str__())
+
+    def test_probable_matches_without_mflcode(self):
+        fac_type = mommy.make(FacilityType)
+        owner = mommy.make(Owner)
+        ward = mommy.make(Ward)
+        reg = mommy.make(RegulatingBody)
+
+        for i in ["Test facility", "facility test", "fac test", "tes t f"]:
+            mommy.make(
+                Facility, official_name=i, facility_type=fac_type,
+                ward=ward, owner=owner, regulatory_body=reg
+            )
+        mommy.make(
+            Facility, official_name="test",
+            facility_type=mommy.make(FacilityType),
+            ward=ward, owner=owner, regulatory_body=reg
+        )
+        mommy.make(
+            Facility, official_name="test",
+            facility_type=fac_type, ward=ward, owner=mommy.make(Owner)
+        )
+        sync = RegulatorSync.objects.create(
+            name="test facility", owner=owner, facility_type=fac_type,
+            county=ward.constituency.county.code, registration_number="342",
+            regulatory_body=reg
+        )
+        matches = sync.probable_matches
+        self.assertListEqual(
+            [i['official_name'] for i in matches],
+            ["facility test", "Test facility", ]
+        )
+
+    def test_probable_matches_with_mflcode(self):
+        fac_type = mommy.make(FacilityType)
+        owner = mommy.make(Owner)
+        ward = mommy.make(Ward)
+        reg = mommy.make(RegulatingBody)
+
+        for i in ["Test facility", "a facility test", "fac test", "tes t f"]:
+            mommy.make(
+                Facility, official_name=i, facility_type=fac_type,
+                ward=ward, owner=owner, regulatory_body=reg
+            )
+        mommy.make(
+            Facility, official_name="test",
+            facility_type=mommy.make(FacilityType),
+            ward=ward, owner=owner, regulatory_body=reg
+        )
+        mommy.make(
+            Facility, official_name="test", regulatory_body=reg,
+            facility_type=fac_type, ward=ward, owner=mommy.make(Owner)
+        )
+        mommy.make(
+            Facility, official_name="Test di facility", code=1234,
+            facility_type=fac_type, ward=ward, owner=mommy.make(Owner)
+        )
+        sync = RegulatorSync.objects.create(
+            name="test facility", owner=owner, facility_type=fac_type,
+            county=ward.constituency.county.code, mfl_code=1234,
+            regulatory_body=reg, registration_number=290324
+        )
+        matches = sync.probable_matches
+        self.assertListEqual(
+            [i['official_name'] for i in matches], ["Test di facility"]
+        )
+
+    def test_update_facility(self):
+        fac = mommy.make(Facility)
+        county = mommy.make(County, code=8923)
+        sync = mommy.make(RegulatorSync, county=county.code)
+        sync.update_facility(fac)
+        fac = Facility.objects.get(id=fac.id)
+        sync = RegulatorSync.objects.get(id=sync.id)
+        self.assertEqual(fac.registration_number, sync.registration_number)
+        self.assertEqual(fac.code, sync.mfl_code)
 
 
 class TestOptionGroup(BaseTestCase):

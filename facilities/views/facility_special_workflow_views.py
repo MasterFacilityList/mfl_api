@@ -32,7 +32,8 @@ from ..serializers import (
     RegulationStatusSerializer,
     RegulatoryBodyUserSerializer,
     FacilityOperationStateSerializer,
-    FacilityUpdatesSerializer
+    FacilityUpdatesSerializer,
+    FacilitySerializer
 )
 
 from ..filters import (
@@ -144,6 +145,7 @@ class RegulationStatusDetailView(
 
 class FacilityPDFDownloadView(DownloadPDFMixin, generics.RetrieveAPIView):
     queryset = Facility.objects.all()
+    serializer_class = FacilitySerializer
 
     @never_cache
     def get(self, request, *args, **kwargs):

@@ -1,13 +1,12 @@
 import json
 
-from rest_framework import generics
-from rest_framework import status
+from django.utils import timezone
+from rest_framework import generics, status
 from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
 from common.models import ContactType
-
 
 from ..models import (
     Facility,
@@ -643,3 +642,25 @@ class RegualorSyncDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     queryset = RegulatorSync.objects.all()
     serializer_class = RegulatorSyncSerializer
+
+
+class RegualorSyncUpdateView(generics.GenericAPIView):
+
+    """Updates RegulatorSync object with an MFL code"""
+    serializer_class = RegulatorSyncSerializer
+
+    def get_queryset(self):
+        return RegulatorSync.objects.filter(mfl_code__isnull=True)
+
+    def post(self, request, *args, **kwargs):
+        sync_obj = self.get_object()
+        facility = generics.get_object_or_404(
+            Facility.objects.all(), code=request.data.get("mfl_code")
+        )
+        facility.updated_by = self.request.user
+        facility.updated = timezone.now()
+        sync_obj.updated_by = self.request.user
+        sync_obj.updated = timezone.now()
+        sync_obj.update_facility(facility)
+        serializer = self.get_serializer(sync_obj)
+        return Response(serializer.data)
