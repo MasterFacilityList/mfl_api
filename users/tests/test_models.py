@@ -99,6 +99,10 @@ class TestMflUserModel(BaseTestCase):
         with self.assertRaises(ValidationError):
             MflUser.objects.create_user(**data)
 
+    def test_user_contacts_property(self):
+        user = mommy.make(MflUser)
+        self.assertIsInstance(user.contacts, list)
+
 
 class TestLastLog(TestCase):
 

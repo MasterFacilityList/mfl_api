@@ -11,7 +11,6 @@ from rest_auth.serializers import PasswordChangeSerializer
 from common.serializers import (
     UserCountySerializer,
     UserConstituencySerializer,
-    UserContactSerializer,
     PartialResponseMixin
 )
 
@@ -47,6 +46,9 @@ def _lookup_permissions(validated_data):
 def _lookup_groups(validated_data):
     try:
         user_supplied_groups = validated_data.get('groups', [])
+        for user_supplied_group in user_supplied_groups:
+            user_supplied_group.pop('permissions', None)
+
         return [
             ProxyGroup.objects.get(**user_supplied_group)
             for user_supplied_group in user_supplied_groups
@@ -202,7 +204,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     county_name = serializers.ReadOnlyField(source='county.name')
     constituency = serializers.ReadOnlyField(source='constituency.id')
     constituency_name = serializers.ReadOnlyField(source='constituency.name')
-    user_contacts = UserContactSerializer(many=True, required=False)
+    contacts = serializers.ReadOnlyField()
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
@@ -362,8 +364,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
             validated_data, is_creation=True)
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
-        validated_data.pop('user_contacts', None)
-        contacts = self.initial_data.pop('user_contacts', [])
+        validated_data.pop('contacts', None)
+        contacts = self.initial_data.pop('contacts', [])
         validated_data.pop('user_constituencies', None)
         constituencies = self.initial_data.pop('user_constituencies', [])
         validated_data.pop('user_counties', None)
@@ -391,8 +393,8 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
-        validated_data.pop('user_contacts', None)
-        contacts = self.initial_data.pop('user_contacts', [])
+        validated_data.pop('contacts', None)
+        contacts = self.initial_data.pop('contacts', [])
         validated_data.pop('user_constituencies', None)
         constituencies = self.initial_data.pop('user_constituencies', [])
         validated_data.pop('user_counties', None)
@@ -410,7 +412,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         if pwd is not None:
             instance.set_password(pwd)
-
         if self._assign_is_staff(groups):
 
             instance.is_staff = True
