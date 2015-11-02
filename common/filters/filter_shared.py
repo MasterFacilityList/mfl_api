@@ -9,18 +9,14 @@ from rest_framework import ISO_8601
 from search.filters import SearchFilter, AutoCompleteSearchFilter
 
 
-class NoneFilter(django_filters.Filter):
+class NullFilter(django_filters.Filter):
 
     """
     Filter a field on whether it is null or not.
     """
 
     def filter(self, qs, value):
-        filter_none = False
-        if value.lower() == 'true':
-            filter_none = True
-
-        return qs.filter(**{self.name + '__isnull': filter_none})
+        return qs.filter(**{self.name + '__isnull': (value.lower() == 'true')})
 
 
 class IsoDateTimeField(forms.DateTimeField):

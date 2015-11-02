@@ -73,6 +73,14 @@ class TestRegulatorSyncView(RegulatorMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, response.data.get('count'))
 
+    def test_fetch_list_without_mfl_code(self):
+        county = mommy.make(County)
+        mommy.make(RegulatorSync, county=county.code)
+        mommy.make(RegulatorSync, county=county.code, mfl_code=123)
+        response = self.client.get(self.url+"?mfl_code_null=True")
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+
     def test_get_single(self):
         county = mommy.make(County)
         sync = mommy.make(RegulatorSync, county=county.code)

@@ -8,8 +8,8 @@ from rest_framework.test import APITestCase
 from rest_framework import ISO_8601
 from model_mommy import mommy
 
-from ..filters.filter_shared import IsoDateTimeField
-from ..models import County
+from ..filters.filter_shared import IsoDateTimeField, NullFilter
+from ..models import County, ContactType
 from ..serializers import CountySerializer
 from .test_views import LoginMixin, default
 
@@ -17,6 +17,22 @@ from .test_views import LoginMixin, default
 def _dict(ordered_dict_val):
     """A hack that converts pesky nested OrderedDicts to nice dicts"""
     return json.loads(json.dumps(ordered_dict_val, default=default))
+
+
+class TestNullFilter():
+
+    def test_null_filter(self):
+        ContactType.objects.create(name="a", description="desc")
+        ContactType.objects.create(name="b")
+
+        nf = NullFilter(name='description')
+        qs = nf.filter(ContactType.objects.all(), 'true')
+        self.assertEqual(qs.count(), 1)
+        self.assertEqual(qs[0].name, "a")
+
+        qs = nf.filter(ContactType.objects.all(), 'false')
+        self.assertEqual(qs.count(), 1)
+        self.assertEqual(qs[0].name, "b")
 
 
 class TestIsoDateTimeField(LoginMixin, APITestCase):
