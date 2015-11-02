@@ -9,7 +9,7 @@ from django.conf import settings
 from users.models import CustomGroup, MflUser
 
 from . import _get_file_path
-1
+
 Logger = logging.getLogger(__name__)
 
 

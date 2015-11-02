@@ -195,7 +195,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     user_counties = UserCountySerializer(many=True, required=False)
     short_name = serializers.ReadOnlyField(source='get_short_name')
     full_name = serializers.ReadOnlyField(source='get_full_name')
-    # all_permissions = serializers.ReadOnlyField(source='permissions')
+    all_permissions = serializers.ReadOnlyField(source='permissions')
     requires_password_change = serializers.ReadOnlyField()
     groups = GroupSerializer(many=True, required=False)
     regulator = serializers.ReadOnlyField(source='regulator.id')
