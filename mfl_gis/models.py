@@ -185,11 +185,6 @@ class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
     def json_features(self):
         return {
             "geometry": self.simplify_coordinates,
-            "properties": {
-                "ward": self.facility.ward.id,
-                "constituency": self.facility.ward.constituency.id,
-                "county": self.facility.ward.county.id
-            }
         }
 
     def clean(self):
