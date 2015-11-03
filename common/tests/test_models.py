@@ -279,20 +279,11 @@ class TestUserCountyModel(BaseTestCase):
         # Deactivating the record should have no incident
         user_county_rec.active = False
         user_county_rec.save()
+        self.assertFalse(UserCounty.objects.get(user=user).active)
 
-        # Deactivating an already deactivated record should raise an error
-        with self.assertRaises(ValidationError):
-            user_county_rec.active = False
-            user_county_rec.save()
-
-        # Reactive an inactive record should not have issues
         user_county_rec.active = True
         user_county_rec.save()
-
-        # activating an already active record should raise an error
-        with self.assertRaises(ValidationError):
-            user_county_rec.active = True
-            user_county_rec.save()
+        self.assertTrue(UserCounty.objects.get(user=user).active)
 
 
 class TestUserContactModel(BaseTestCase):
@@ -378,6 +369,25 @@ class TestUserConstituencyModel(BaseTestCase):
             mommy.make(
                 UserConstituency, constituency=constituency_2,
                 user=user_3, created_by=user_2, updated_by=user_2)
+
+    def test_user_linked_to_a_constituency_once(self):
+        user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        creator_user = mommy.make(get_user_model())
+        mommy.make(UserCounty, user=creator_user, county=county)
+        # First time should save with no issue
+        user_const_rec = mommy.make(
+            UserConstituency, user=user, constituency=const,
+            created_by=creator_user, updated_by=creator_user)
+        # Deactivating the record should have no incident
+        user_const_rec.active = False
+        user_const_rec.save()
+        self.assertFalse(UserConstituency.objects.get(user=user).active)
+
+        user_const_rec.active = True
+        user_const_rec.save()
+        self.assertTrue(UserConstituency.objects.get(user=user).active)
 
 
 class TestSubCounty(TestCase):

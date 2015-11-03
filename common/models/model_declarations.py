@@ -14,28 +14,29 @@ from .base import AbstractBase, SequenceMixin
 LOGGER = logging.getLogger(__file__)
 
 
-def validate_user_linked_to_certain_admin_area_once(model_instance):
-    """
-    Ensure that a user is assigned to a certain admin area once.
+class UserAdminAreaLinkageMixin(object):
+    def should_update_user_area(self, *args, **kwargs):
+        """
+        Ensure that a user is assigned to a certain admin area once.
 
-    If one wants to remove the user from the area, then
-    they should use deactivate the record and to link back the user to the
-    admin area they should activate the record
-    """
-    try:
-        old_obj = model_instance.__class__.objects.get(
-            user=model_instance.user)
-        active_list = [old_obj.active, model_instance.active]
-        if active_list.count(True) == 2 or active_list.count(True) == 0:
-            msg = ("You can only activate an inactive "
-                   "record or deactivate an active record")
-            raise ValidationError(
-                {
-                    "Error": [msg]
-                })
-    except model_instance.__class__.DoesNotExist:
-        # the record is being created for the first time
-        pass
+        If one wants to remove the user from the area, then
+        they should use deactivate the record and to link back the user to the
+        admin area they should activate the record
+        """
+        try:
+            old_obj = self.__class__.objects.get(
+                user=self.user)
+            active_list = [old_obj.active, self.active]
+            if active_list.count(True) == 2 or active_list.count(True) == 0:
+                # the record is already in the database and active
+                pass
+            else:
+                # the record is being deactivated
+                return True
+        except self.__class__.DoesNotExist:
+            # the record is being created for the first time
+            return True
+        return False
 
 
 @reversion.register
@@ -241,7 +242,7 @@ class SubCounty(AdministrativeUnitBase):
 
 @reversion.register(follow=['user', 'county'])
 @encoding.python_2_unicode_compatible
-class UserCounty(AbstractBase):
+class UserCounty(UserAdminAreaLinkageMixin, AbstractBase):
 
     """
     Will store a record of the counties that a user has been in-charge of.
@@ -266,10 +267,14 @@ class UserCounty(AbstractBase):
             raise ValidationError(
                 "A user can only be active in one county at a time")
 
-    def save(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
         self.validate_only_one_county_active()
-        validate_user_linked_to_certain_admin_area_once(self)
-        super(UserCounty, self).save(*args, **kwargs)
+        super(UserCounty, self).clean(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.full_clean(exclude=None)
+        if self.should_update_user_area():
+            super(UserCounty, self).save(*args, **kwargs)
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'user_counties'
@@ -312,7 +317,7 @@ class UserContact(AbstractBase):
 
 @reversion.register(follow=['user', 'constituency'])
 @encoding.python_2_unicode_compatible
-class UserConstituency(AbstractBase):
+class UserConstituency(UserAdminAreaLinkageMixin, AbstractBase):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='user_constituencies')
     constituency = models.ForeignKey(Constituency)
@@ -328,10 +333,14 @@ class UserConstituency(AbstractBase):
 
     def clean(self, *args, **kwargs):
         self.validate_constituency_county_in_creator_county()
-        validate_user_linked_to_certain_admin_area_once(self)
 
     def __str__(self):
         return "{}: {}".format(self.user, self.constituency)
+
+    def save(self, *args, **kwargs):
+        self.full_clean(exclude=None)
+        if self.should_update_user_area():
+            super(UserConstituency, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'user constituencies'
