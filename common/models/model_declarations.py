@@ -267,8 +267,8 @@ class UserCounty(UserAdminAreaLinkageMixin, AbstractBase):
 
     def save(self, *args, **kwargs):
         self.full_clean(exclude=None)
-        if self.should_update_user_area():
-            super(UserCounty, self).save(*args, **kwargs)
+        super(UserCounty, self).save(*args, **kwargs) if \
+            self.should_update_user_area() else None
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'user_counties'
@@ -333,8 +333,8 @@ class UserConstituency(UserAdminAreaLinkageMixin, AbstractBase):
 
     def save(self, *args, **kwargs):
         self.full_clean(exclude=None)
-        if self.should_update_user_area():
-            super(UserConstituency, self).save(*args, **kwargs)
+        super(UserConstituency, self).save(*args, **kwargs) if \
+            self.should_update_user_area() else None
 
     class Meta:
         verbose_name_plural = 'user constituencies'
