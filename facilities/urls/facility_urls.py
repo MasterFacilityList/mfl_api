@@ -6,6 +6,10 @@ from .. import views
 urlpatterns = patterns(
     '',
 
+    url(r'^flattened_categories/$',
+        views.FlattenedCategories.as_view(),
+        name='flattened_categories'),
+
     url(r'^regulator_sync_update/(?P<pk>[^/]+)/$',
         views.RegualorSyncUpdateView.as_view(),
         name='regulator_sync_update'),

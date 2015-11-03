@@ -33,6 +33,21 @@ from ..filters import (
 )
 
 
+class FlattenedCategories(generics.ListAPIView):
+    """Filter out categories and return only the sub-categories """
+    def get_queryset(self):
+        categories_with_sub_categories = []
+        for cat in ServiceCategory.objects.all():
+            if len(cat.sub_categories.all()) > 0:
+                categories_with_sub_categories.append(cat.id)
+        return ServiceCategory.objects.exclude(
+            id__in=categories_with_sub_categories)
+
+    serializer_class = ServiceCategorySerializer
+    filter_class = ServiceCategoryFilter
+    ordering_fields = ('name', 'description', 'abbreviation')
+
+
 class ServiceCategoryListView(generics.ListCreateAPIView):
     """
     Lists and creates service categories
@@ -44,6 +59,7 @@ class ServiceCategoryListView(generics.ListCreateAPIView):
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
+
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
     filter_class = ServiceCategoryFilter
