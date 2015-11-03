@@ -936,8 +936,8 @@ class Facility(SequenceMixin, AbstractBase):
     def _dump_updates(self, origi_model):
         fields = [field.name for field in self._meta.fields]
         forbidden_fields = [
-            'operation_status', 'regulatory_status', 'facility_type',
-            'operation_status_id', 'regulatory_status_id', 'facility_type_id',
+            'regulatory_status', 'facility_type',
+            'regulatory_status_id', 'facility_type_id',
             'keph_level', 'keph_level_id']
         data = []
         for field in fields:

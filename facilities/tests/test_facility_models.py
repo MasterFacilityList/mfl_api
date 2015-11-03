@@ -1119,7 +1119,6 @@ class TestFacilityUpdates(BaseTestCase):
         self.assertEquals(updated_name, facility_refetched_2.name)
 
     def test_updating_forbidden_fields(self):
-        operation_status = mommy.make(FacilityStatus)
         user = mommy.make(get_user_model())
         regulator = mommy.make(RegulatingBody)
         mommy.make(RegulatoryBodyUser, user=user, regulatory_body=regulator)
@@ -1128,7 +1127,6 @@ class TestFacilityUpdates(BaseTestCase):
             FacilityRegulationStatus, created_by=user)
         facility = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility)
-        facility.operation_status = operation_status
         facility.regulatory_status = regulation_status
         facility.facility_type = facility_type
         facility.save()
