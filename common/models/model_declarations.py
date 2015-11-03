@@ -27,16 +27,10 @@ class UserAdminAreaLinkageMixin(object):
             old_obj = self.__class__.objects.get(
                 user=self.user)
             active_list = [old_obj.active, self.active]
-            if active_list.count(True) == 2 or active_list.count(True) == 0:
-                # the record is already in the database and active
-                pass
-            else:
-                # the record is being deactivated
-                return True
+            return active_list.count(True) == 1
         except self.__class__.DoesNotExist:
             # the record is being created for the first time
             return True
-        return False
 
 
 @reversion.register
