@@ -19,7 +19,7 @@ def get_version(v):
         sub = mapping[v[3]] + str(v[4])
     return str(main + sub)
 
-VERSION = (2, 0, 0, 'alpha', 1)
+VERSION = (2, 0, 0, 'alpha', 2)
 
 __version__ = get_version(VERSION)
 
