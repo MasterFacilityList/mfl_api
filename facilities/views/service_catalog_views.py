@@ -33,19 +33,23 @@ from ..filters import (
 )
 
 
-class FlattenedCategories(generics.ListAPIView):
-    """Filter out categories and return only the sub-categories """
-    def get_queryset(self):
-        categories_with_sub_categories = []
-        for cat in ServiceCategory.objects.all():
-            if len(cat.sub_categories.all()) > 0:
-                categories_with_sub_categories.append(cat.id)
-        return ServiceCategory.objects.exclude(
-            id__in=categories_with_sub_categories)
+class FlattenedCategories(generics.GenericAPIView):
 
-    serializer_class = ServiceCategorySerializer
-    filter_class = ServiceCategoryFilter
-    ordering_fields = ('name', 'description', 'abbreviation')
+    """Specialized endpoint to filter out :
+        - parent categories
+        - categories without services
+        This is a temporary fix and will be removed
+    """
+
+    def get(self, *args, **kwargs):
+        vals = Service.objects.values(
+                'category', 'category__name'
+            ).distinct().order_by()
+        vals = [  # is there a better way of doing alias in django ?
+            {"id": i["category"], "name": i["category__name"]}
+            for i in vals
+        ]
+        return Response({"count": len(vals), "results": vals})
 
 
 class ServiceCategoryListView(generics.ListCreateAPIView):

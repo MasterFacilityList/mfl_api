@@ -8,6 +8,7 @@ from facilities.models import Option, OptionGroup, ServiceCategory
 
 
 class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse("api:facilities:post_option_group_with_options")
         super(TestPostOptionGroupWithOptions, self).setUp()
