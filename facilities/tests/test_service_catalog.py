@@ -4,10 +4,11 @@ from rest_framework.test import APITestCase
 from model_mommy import mommy
 
 from common.tests.test_views import LoginMixin
-from facilities.models import Option, OptionGroup
+from facilities.models import Option, OptionGroup, ServiceCategory, Service
 
 
 class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse("api:facilities:post_option_group_with_options")
         super(TestPostOptionGroupWithOptions, self).setUp()
@@ -124,3 +125,18 @@ class TestPostOptionGroupWithOptions(LoginMixin, APITestCase):
         response = self.client.delete(url)
 
         self.assertEquals(404, response.status_code)
+
+    def test_flattened_categories_view(self):
+        mama = mommy.make(ServiceCategory)
+        c1 = mommy.make(ServiceCategory)
+        c2 = mommy.make(ServiceCategory, parent=mama)
+        mommy.make(Service, category=c1)
+        mommy.make(Service, category=c2)
+        url = reverse("api:facilities:flattened_categories")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, response.data.get('count'))
+        self.assertNotEquals(
+            str(mama.id), response.data.get('results')[0].get('id'))
+        self.assertNotEquals(
+            str(mama.id), response.data.get('results')[1].get('id'))
