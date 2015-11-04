@@ -21,15 +21,15 @@ from common.models import Contact, ContactType
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 })
-class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
+class TestFacilityUdpatesBuffering(LoginMixin, APITestCase):
 
     def setUp(self):
         self.url = reverse("api:facilities:facilities_list")
-        super(NOTTestFacilityUdpatesBuffering, self).setUp()
+        super(TestFacilityUdpatesBuffering, self).setUp()
 
     def tearDown(self):
         cache.clear()
-        super(NOTTestFacilityUdpatesBuffering, self).tearDown()
+        super(TestFacilityUdpatesBuffering, self).tearDown()
 
     def test_facility_updates_facility_not_approved(self):
         facility = mommy.make(Facility)
@@ -379,8 +379,45 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, FacilityUpdates.objects.count())
         self.assertEquals(0, FacilityOfficer.objects.count())
-        self.assertEquals(0, Officer.objects.count())
         self.assertEquals(0, OfficerContact.objects.count())
+        self.assertEquals(0, Officer.objects.count())
+
+    def test_try_update_facility_officer_in_charge_details_not_changed(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        job_title = mommy.make(JobTitle)
+        officer = mommy.make(
+            Officer,
+            name="Brenda Makena",
+            registration_number="DEN/90/2000",
+            job_title=job_title)
+        mommy.make(FacilityOfficer, officer=officer, facility=facility)
+
+        contact_type = mommy.make(ContactType)
+
+        data = {
+            "name": "Brenda Makena",
+            "id_no": "545454545",
+            "reg_no": "DEN/90/2000",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
+        data = {
+            "officer_in_charge": data
+        }
+        url = self.url + "{}/".format(facility.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(0, FacilityUpdates.objects.count())
 
     def test_update_officer_incharge_facility_not_approved(self):
         facility = mommy.make(Facility)
