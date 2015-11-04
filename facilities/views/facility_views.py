@@ -461,9 +461,12 @@ class FacilityDetailView(
 
         return verdict
 
-    def something_changed(self, services, contacts, units, officer_in_charge, instance):
+    def something_changed(
+            self, services, contacts, units, officer_in_charge, instance):
 
-        if services == [] and contacts == [] and units == [] and not self.should_buffer_officer_incharge(officer_in_charge, instance):
+        if (services == [] and contacts == [] and units == [] and not
+                self.should_buffer_officer_incharge(
+                    officer_in_charge, instance)):
             return False
         return True
 
@@ -513,8 +516,6 @@ class FacilityDetailView(
             return Response(
                 data=self.validation_errors,
                 status=status.HTTP_400_BAD_REQUEST)
-        # import pdb
-        # pdb.set_trace()
         if instance.approved and self.something_changed(
                 services, contacts, units, officer_in_charge, instance):
             try:
@@ -533,7 +534,9 @@ class FacilityDetailView(
             units = self.populate_department_names(units)
             self.buffer_units(update, units)
 
-            if officer_in_charge != {} and self.should_buffer_officer_incharge(officer_in_charge, instance):
+            if (officer_in_charge != {} and
+                    self.should_buffer_officer_incharge(
+                        officer_in_charge, instance)):
                 officer_in_charge = self.populate_officer_incharge_contacts(
                     officer_in_charge)
                 officer_in_charge = self.populate_officer_incharge_job_title(
