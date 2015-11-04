@@ -824,7 +824,7 @@ class Facility(SequenceMixin, AbstractBase):
                 "service_name": str(service.service.name),
                 "service_code": service.service.code,
                 "option_name": str(
-                    service.option.display_text) if service.option else "N/A",
+                    service.option.display_text) if service.option else "Yes",
                 "option": str(
                     service.option.id) if service.option else None,
                 "category_name": str(
@@ -1256,6 +1256,7 @@ class FacilityUpdates(AbstractBase):
             self.facility.save(allow_save=True)
         if self.cancelled:
             self.reject_upgrades()
+
         super(FacilityUpdates, self).save(*args, **kwargs)
 
     def __str__(self):
