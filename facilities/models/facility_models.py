@@ -1473,7 +1473,8 @@ class ServiceCategory(AbstractBase):
         help_text='A short form of the category e.g ANC for antenatal')
     parent = models.ForeignKey(
         'self', null=True, blank=True,
-        help_text='The parent category under which the category falls')
+        help_text='The parent category under which the category falls',
+        related_name='sub_categories')
 
     def __str__(self):
         return self.name
