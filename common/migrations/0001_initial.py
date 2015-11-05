@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 import common.models.base
 import django.db.models.deletion
+import common.models.model_declarations
 import django.utils.timezone
 from django.conf import settings
 import common.fields
@@ -63,7 +64,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('name', models.CharField(help_text=b'A short name, preferrably 6 characters long, representing a certain type of contact e.g EMAIL', unique=True, max_length=100)),
+                ('name', models.CharField(help_text=b'A short name, preferably 6 characters long, representing a certain type of contact e.g EMAIL', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A brief description of the contact type.', null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -95,6 +96,27 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'counties',
             },
             bases=(common.models.base.SequenceMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='DocumentUpload',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+                ('description', models.TextField(null=True, blank=True)),
+                ('fyl', models.FileField(upload_to=b'')),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
+            },
         ),
         migrations.CreateModel(
             name='PhysicalAddress',
@@ -175,6 +197,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'user constituencies',
             },
+            bases=(common.models.model_declarations.UserAdminAreaLinkageMixin, models.Model),
         ),
         migrations.CreateModel(
             name='UserContact',
@@ -216,6 +239,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'verbose_name_plural': 'user_counties',
             },
+            bases=(common.models.model_declarations.UserAdminAreaLinkageMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Ward',

@@ -14,8 +14,9 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', 'admin_unit_codes'),
+        ('common', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('users', '0001_initial'),
     ]
 
     operations = [
@@ -50,7 +51,7 @@ class Migration(migrations.Migration):
                 ('bank_name', models.CharField(help_text=b"The name of the facility's banker e.g Equity Bank", max_length=100, null=True, blank=True)),
                 ('branch_name', models.CharField(help_text=b"Branch name of the facility's bank", max_length=100, null=True, blank=True)),
                 ('bank_account', models.CharField(max_length=100, null=True, blank=True)),
-                ('facility_catchment_population', models.CharField(help_text=b'The population size which the facility serves', max_length=100, null=True, blank=True)),
+                ('facility_catchment_population', models.IntegerField(help_text=b'The population size which the facility serves', null=True, blank=True)),
                 ('nearest_landmark', models.TextField(help_text=b'well-known physical features /structure that can be used to simplify directions to a given place. e.g town market or village ', null=True, blank=True)),
                 ('plot_number', models.CharField(help_text=b'This is the same number found on the title deeds of thepiece of land on which this facility is located', max_length=100, null=True, blank=True)),
                 ('location_desc', models.TextField(help_text=b'This field allows a more detailed description of the location', null=True, blank=True)),
@@ -101,6 +102,25 @@ class Migration(migrations.Migration):
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='facility_contacts', on_delete=django.db.models.deletion.PROTECT, to='facilities.Facility')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'abstract': False,
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+            },
+        ),
+        migrations.CreateModel(
+            name='FacilityDepartment',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
+                ('name', models.CharField(max_length=255)),
+                ('description', models.TextField(null=True, blank=True)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -196,8 +216,8 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('is_confirmed', models.BooleanField(default=False, help_text=b'Indiates whether a service has been approved by the CHRIO')),
-                ('is_cancelled', models.BooleanField(default=False, help_text=b'Indicates whether a service has been cancelled by the CHRIO')),
+                ('is_confirmed', models.BooleanField(default=False, help_text=b'Indicates whether a service has been approved by the CHRIO')),
+                ('is_cancelled', models.BooleanField(default=False, help_text=b'Indicates whether a service has been canceled by the CHRIO')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='facility_services', to='facilities.Facility')),
             ],
@@ -260,7 +280,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'A short unique name for the facility type e.g DISPENSARY', unique=True, max_length=100)),
                 ('abbreviation', models.CharField(max_length=100, null=True, blank=True)),
-                ('sub_division', models.CharField(help_text=b'This is a further division of the facility type e.g Hospitals can be further divided into District hispitals and Provincial Hospitals.', max_length=100, null=True, blank=True)),
+                ('sub_division', models.CharField(help_text=b'This is a further division of the facility type e.g Hospitals can be further divided into District hospitals and Provincial Hospitals.', max_length=100, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -278,10 +298,10 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('name', models.CharField(max_length=100)),
-                ('description', models.TextField(help_text=b'A short summary of the facility unit.')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='facility_units', on_delete=django.db.models.deletion.PROTECT, to='facilities.Facility')),
+                ('unit', models.ForeignKey(related_name='unit_facilities', on_delete=django.db.models.deletion.PROTECT, to='facilities.FacilityDepartment')),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -323,6 +343,7 @@ class Migration(migrations.Migration):
                 ('services', models.TextField(null=True, blank=True)),
                 ('officer_in_charge', models.TextField(null=True, blank=True)),
                 ('units', models.TextField(null=True, blank=True)),
+                ('geo_codes', models.TextField(null=True, blank=True)),
                 ('is_new', models.BooleanField(default=False)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='updates', to='facilities.Facility')),
@@ -344,34 +365,13 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('is_confirmed', models.BooleanField(default=False, help_text=b'Indicates whether a facility upgrade or downgrade has been confirmed')),
-                ('is_cancelled', models.BooleanField(default=False, help_text=b'Indicates whether a facility upgrade or downgrade has beencancelled or not')),
+                ('is_cancelled', models.BooleanField(default=False, help_text=b'Indicates whether a facility upgrade or downgrade has beencanceled or not')),
                 ('is_upgrade', models.BooleanField(default=True)),
                 ('current_keph_level_name', models.CharField(max_length=100, null=True, blank=True)),
                 ('current_facility_type_name', models.CharField(max_length=100, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('facility', models.ForeignKey(related_name='facility_upgrades', to='facilities.Facility')),
                 ('facility_type', models.ForeignKey(to='facilities.FacilityType')),
-            ],
-            options={
-                'ordering': ('-updated', '-created'),
-                'default_permissions': ('add', 'change', 'delete', 'view'),
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='JobTitle',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('deleted', models.BooleanField(default=False)),
-                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
-                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('name', models.CharField(help_text=b'A short name for the job title', unique=True, max_length=100)),
-                ('abbreviation', models.CharField(help_text=b'The short name for the title', max_length=100, null=True, blank=True)),
-                ('description', models.TextField(help_text=b'A short summary of the job title', null=True, blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -390,6 +390,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'The name of the KEPH e.g Level 1', max_length=30)),
                 ('description', models.TextField(help_text=b'A short description of the KEPH level', null=True, blank=True)),
+                ('is_facility_level', models.BooleanField(default=True, help_text=b'Is the KEPH level applicable to facilities')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
@@ -410,7 +411,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'the name of the officer in-charge e.g Roselyne Wiyanga ', max_length=255)),
                 ('id_number', models.CharField(help_text=b'The  National Identity number of the officer', max_length=10, null=True, blank=True)),
-                ('registration_number', models.CharField(help_text=b'This is the licence number of the officer. e.g for a nurse use the NCK registration number.', max_length=100, null=True, blank=True)),
+                ('registration_number', models.CharField(help_text=b'This is the license number of the officer. e.g for a nurse use the NCK registration number.', max_length=100, null=True, blank=True)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -428,7 +429,7 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
-                ('contact', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Contact', help_text=b'The contact of the officer incharge may it be email,  mobile number etc')),
+                ('contact', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Contact', help_text=b'The contact of the officer in-charge may it be email,  mobile number etc')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
                 ('officer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='facilities.Officer', help_text=b'The is the officer in charge')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
@@ -490,7 +491,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'The name of owner e.g Ministry of Health.', unique=True, max_length=100)),
                 ('description', models.TextField(help_text=b'A brief summary of the owner.', null=True, blank=True)),
-                ('code', common.fields.SequenceField(help_text=b'A unique number to identify the owner.Could be up to 7 characteres long.', unique=True, editable=False, blank=True)),
+                ('code', common.fields.SequenceField(help_text=b'A unique number to identify the owner.Could be up to 7 characters long.', unique=True, editable=False, blank=True)),
                 ('abbreviation', models.CharField(help_text=b'Short form of the name of the owner e.g Ministry of health could be shortened as MOH', max_length=30, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
@@ -573,12 +574,12 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('name', models.CharField(help_text=b'A short unique name representing a state/stage of regulation e.g. PENDING_OPENING ', unique=True, max_length=100)),
-                ('description', models.TextField(help_text=b"A short description of the regulation state or state e.gPENDING_LICENSING could be descriped as 'waiting for the license tobegin operating' ", null=True, blank=True)),
+                ('description', models.TextField(help_text=b"A short description of the regulation state or state e.gPENDING_LICENSING could be described as 'waiting for the license tobegin operating' ", null=True, blank=True)),
                 ('is_initial_state', models.BooleanField(default=False, help_text=b'Indicates whether it is the very first statein the regulation workflow.')),
                 ('is_final_state', models.BooleanField(default=False, help_text=b'Indicates whether it is the last state in the regulation work-flow')),
-                ('is_default', models.BooleanField(default=False, help_text=b'The default regulation status for facilties')),
+                ('is_default', models.BooleanField(default=False, help_text=b'The default regulation status for facilities')),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('next_status', models.ForeignKey(related_name='next_state', blank=True, to='facilities.RegulationStatus', help_text=b'The regulation_status suceedding this regulation status.', null=True)),
+                ('next_status', models.ForeignKey(related_name='next_state', blank=True, to='facilities.RegulationStatus', help_text=b'The regulation_status succeeding this regulation status.', null=True)),
                 ('previous_status', models.ForeignKey(related_name='previous_state', blank=True, to='facilities.RegulationStatus', help_text=b'The regulation_status preceding this regulation status.', null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
@@ -587,6 +588,31 @@ class Migration(migrations.Migration):
                 'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'verbose_name_plural': 'regulation_statuses',
+            },
+        ),
+        migrations.CreateModel(
+            name='RegulatorSync',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+                ('deleted', models.BooleanField(default=False)),
+                ('active', models.BooleanField(default=True, help_text=b'Indicates whether the record has been retired?')),
+                ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
+                ('name', models.CharField(help_text=b'The official name of the facility', max_length=100)),
+                ('registration_number', models.CharField(help_text=b'The registration number given by the regulator', max_length=100)),
+                ('county', models.PositiveIntegerField(help_text=b'The code of the county')),
+                ('mfl_code', models.PositiveIntegerField(help_text=b'The assigned MFL code', null=True, blank=True)),
+                ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+                ('facility_type', models.ForeignKey(help_text=b'The type of the facility e.g Medical Clinic', to='facilities.FacilityType')),
+                ('owner', models.ForeignKey(help_text=b'The owner of the facility', to='facilities.Owner')),
+                ('regulatory_body', models.ForeignKey(help_text=b'The regulatory body the record came from', to='facilities.RegulatingBody')),
+                ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ('-updated', '-created'),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
             },
         ),
         migrations.CreateModel(
@@ -605,8 +631,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
-                'abstract': False,
                 'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
             },
         ),
         migrations.CreateModel(
@@ -622,7 +648,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(null=True, blank=True)),
                 ('abbreviation', models.CharField(help_text=b'A short form for the service e.g FANC for Focused Antenatal Care', max_length=50, null=True, blank=True)),
                 ('code', common.fields.SequenceField(unique=True, editable=False, blank=True)),
-                ('has_options', models.BooleanField(default=True)),
+                ('has_options', models.BooleanField(default=False)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
@@ -645,7 +671,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(null=True, blank=True)),
                 ('abbreviation', models.CharField(help_text=b'A short form of the category e.g ANC for antenatal', max_length=50, null=True, blank=True)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('keph_level', models.ForeignKey(blank=True, to='facilities.KephLevel', help_text=b'The keph level at which certain services should be offered', null=True)),
+                ('parent', models.ForeignKey(related_name='sub_categories', blank=True, to='facilities.ServiceCategory', help_text=b'The parent category under which the category falls', null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -669,6 +695,11 @@ class Migration(migrations.Migration):
             model_name='service',
             name='group',
             field=models.ForeignKey(help_text=b'The option group containing service options', to='facilities.OptionGroup'),
+        ),
+        migrations.AddField(
+            model_name='service',
+            name='keph_level',
+            field=models.ForeignKey(blank=True, to='facilities.KephLevel', help_text=b'The KEPH level at which the service ought to be offered', null=True),
         ),
         migrations.AddField(
             model_name='service',
@@ -723,7 +754,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='officer',
             name='job_title',
-            field=models.ForeignKey(to='facilities.JobTitle', on_delete=django.db.models.deletion.PROTECT),
+            field=models.ForeignKey(to='users.JobTitle', on_delete=django.db.models.deletion.PROTECT),
         ),
         migrations.AddField(
             model_name='officer',
@@ -752,16 +783,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='facilityunitregulation',
-            name='updated_by',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='facilityunit',
-            name='regulating_body',
-            field=models.ForeignKey(blank=True, to='facilities.RegulatingBody', null=True),
-        ),
-        migrations.AddField(
-            model_name='facilityunit',
             name='updated_by',
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
@@ -831,6 +852,16 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
+            model_name='facilitydepartment',
+            name='regulatory_body',
+            field=models.ForeignKey(to='facilities.RegulatingBody'),
+        ),
+        migrations.AddField(
+            model_name='facilitydepartment',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
             model_name='facility',
             name='contacts',
             field=models.ManyToManyField(help_text=b'Facility contacts - email, phone, fax, postal etc', to='common.Contact', through='facilities.FacilityContact'),
@@ -891,19 +922,19 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Ward', help_text=b'County ward in which the facility is located'),
         ),
         migrations.AlterUniqueTogether(
-            name='regulatorybodyuser',
-            unique_together=set([('regulatory_body', 'user')]),
-        ),
-        migrations.AlterUniqueTogether(
             name='facilityunit',
-            unique_together=set([('facility', 'name')]),
+            unique_together=set([('facility', 'unit')]),
         ),
         migrations.AlterUniqueTogether(
             name='facilitytype',
-            unique_together=set([('name', 'sub_division')]),
+            unique_together=set([('name',)]),
         ),
         migrations.AlterUniqueTogether(
             name='facilityofficer',
             unique_together=set([('facility', 'officer')]),
+        ),
+        migrations.AlterUniqueTogether(
+            name='facilitycontact',
+            unique_together=set([('facility', 'contact')]),
         ),
     ]
