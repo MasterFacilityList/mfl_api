@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
 
-
+from users.models import JobTitle
 from common.models import (
     AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town,
     County
@@ -121,31 +121,6 @@ class Owner(AbstractBase, SequenceMixin):
         return self.name
 
 
-@reversion.register
-@encoding.python_2_unicode_compatible
-class JobTitle(AbstractBase):
-
-    """
-    This is the job title names of the officers in-charge of facilities.
-
-    For example, Nursing Officer In-Charge, Medical Superintendent, and
-    Hospital Director. This should not be confused with the professional
-     (Nursing Officer I) or Job Group title.Officer
-    """
-    name = models.CharField(
-        max_length=100, unique=True,
-        help_text="A short name for the job title")
-    abbreviation = models.CharField(
-        max_length=100, null=True, blank=True,
-        help_text="The short name for the title")
-    description = models.TextField(
-        null=True, blank=True,
-        help_text="A short summary of the job title")
-
-    def __str__(self):
-        return self.name
-
-
 @reversion.register(follow=['officer', 'contact'])
 @encoding.python_2_unicode_compatible
 class OfficerContact(AbstractBase):
@@ -189,7 +164,7 @@ class Officer(AbstractBase):
         max_length=100, null=True, blank=True,
         help_text="This is the license number of the officer. e.g for a nurse"
         " use the NCK registration number.")
-    job_title = models.ForeignKey(JobTitle, on_delete=models.PROTECT)
+    job_title = models.ForeignKey('users.JobTitle', on_delete=models.PROTECT)
 
     contacts = models.ManyToManyField(
         Contact, through=OfficerContact,
