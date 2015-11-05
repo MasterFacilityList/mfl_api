@@ -10,6 +10,7 @@ import oauth2_provider.generators
 import django.utils.timezone
 from django.conf import settings
 import django.core.validators
+import uuid
 
 
 class Migration(migrations.Migration):
@@ -62,7 +63,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='JobTitle',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
                 ('name', models.CharField(help_text=b'A short name for the job title', unique=True, max_length=100)),
                 ('abbreviation', models.CharField(help_text=b'The short name for the title', max_length=100, null=True, blank=True)),
                 ('description', models.TextField(help_text=b'A short summary of the job title', null=True, blank=True)),

@@ -1,5 +1,6 @@
 import reversion
 import datetime
+import uuid
 
 from django.db import models
 from django.utils import timezone, encoding
@@ -101,6 +102,7 @@ class JobTitle(models.Model):
     Hospital Director. This should not be confused with the professional
      (Nursing Officer I) or Job Group title.Officer
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(
         max_length=100, unique=True,
         help_text="A short name for the job title")

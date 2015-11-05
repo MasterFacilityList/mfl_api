@@ -417,12 +417,7 @@ class TestOwnerModel(BaseTestCase):
 class TestJobTitleModel(BaseTestCase):
 
     def test_save(self):
-        data = {
-            "name": "Nurse officer incharge",
-            "description": "some good description"
-        }
-        data = self.inject_audit_fields(data)
-        JobTitle.objects.create(**data)
+        mommy.make(JobTitle)
         self.assertEquals(1, JobTitle.objects.count())
 
 
