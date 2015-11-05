@@ -110,6 +110,12 @@ class JobTitle(models.Model):
     description = models.TextField(
         null=True, blank=True,
         help_text="A short summary of the job title")
+    search = models.TextField(
+        null=True, blank=True,
+        help_text='A dummy field to enable search on the model through a'
+        ' filter')
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name

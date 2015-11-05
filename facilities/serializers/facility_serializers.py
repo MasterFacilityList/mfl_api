@@ -309,7 +309,7 @@ class OfficerContactSerializer(
         model = OfficerContact
 
 
-class JobTitleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+class JobTitleSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = JobTitle
