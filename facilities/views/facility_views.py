@@ -448,9 +448,9 @@ class FacilityDetailView(
          """
         verdict = False
         old_details = instance.officer_in_charge
-        if not old_details:
+        if not old_details and officer_in_charge != {}:
             verdict = True
-        else:
+        elif old_details and officer_in_charge != {}:
             if officer_in_charge.get('name') != old_details.get('name'):
                 verdict = True
             if officer_in_charge.get('title') != str(old_details.get('title')):
