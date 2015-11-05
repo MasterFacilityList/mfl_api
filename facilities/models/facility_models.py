@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
 
-from users.models import JobTitle
+from users.models import JobTitle  # NOQA
 from common.models import (
     AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town,
     County
