@@ -326,6 +326,44 @@ class TestPostingFacilityCoordinates(LoginMixin, APITestCase):
         self.assertEquals(0, FacilityUpdates.objects.count())
         self.assertEquals(1, FacilityCoordinates.objects.count())
 
+    def test_update_coordinates_only(self):
+        mommy.make_recipe(
+            'mfl_gis.tests.facility_coordinates_recipe')
+
+        facility_coords = FacilityCoordinates.objects.all()
+        facility = facility_coords[0].facility
+        facility.approved = True
+        facility.save(allow_save=True)
+        data = {
+            "facility": str(facility.id),
+            "coordinates": {
+                "type": "POINT",
+                "coordinates": [
+                    facility_coords[0].coordinates[0],
+                    facility_coords[0].coordinates[1]
+                ]
+
+            }
+
+        }
+
+        url = self.url + str(facility_coords[0].id) + "/"
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+        self.assertEquals(1, FacilityUpdates.objects.count())
+
+        update = FacilityUpdates.objects.all()[0]
+        approval_url = reverse(
+            "api:facilities:facility_updates_detail",
+            kwargs={'pk': str(update.id)})
+        approval_payload = {
+            "approved": True
+        }
+        approval_response = self.client.patch(approval_url, approval_payload)
+        self.assertEquals(200, approval_response.status_code)
+        self.assertEquals(1, FacilityCoordinates.objects.count())
+
 
 class TestBoundaryBoundsView(LoginMixin, APITestCase):
     def test_get_county_boundary(self):

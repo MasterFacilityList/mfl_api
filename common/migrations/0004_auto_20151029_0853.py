@@ -7,12 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('facilities', '0010_regulatorsync'),
+        ('common', '0003_remove_documentupload_public'),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='facilitytype',
-            unique_together=set([('name',)]),
+            name='userconstituency',
+            unique_together=set([('user', 'constituency')]),
         ),
     ]

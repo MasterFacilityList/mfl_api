@@ -1,5 +1,0 @@
--r requirements.txt
-
-sphinx
-sphinxcontrib-napoleon
-sphinx_rtd_theme

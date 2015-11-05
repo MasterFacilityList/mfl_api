@@ -28,8 +28,28 @@ from ..filters import (
     ServiceCategoryFilter,
     OptionFilter,
     ServiceFilter,
-    FacilityServiceFilter
+    FacilityServiceFilter,
+    FacilityServiceRatingFilter
 )
+
+
+class FlattenedCategories(generics.GenericAPIView):
+
+    """Specialized endpoint to filter out :
+        - parent categories
+        - categories without services
+        This is a temporary fix and will be removed
+    """
+
+    def get(self, *args, **kwargs):
+        vals = Service.objects.values(
+                'category', 'category__name'
+            ).distinct().order_by()
+        vals = [  # is there a better way of doing alias in django ?
+            {"id": i["category"], "name": i["category__name"]}
+            for i in vals
+        ]
+        return Response({"count": len(vals), "results": vals})
 
 
 class ServiceCategoryListView(generics.ListCreateAPIView):
@@ -43,6 +63,7 @@ class ServiceCategoryListView(generics.ListCreateAPIView):
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
     """
+
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
     filter_class = ServiceCategoryFilter
@@ -146,6 +167,7 @@ class FacilityServiceRatingListView(generics.ListCreateAPIView):
     throttle_scope = 'rating'
     queryset = FacilityServiceRating.objects.all()
     serializer_class = FacilityServiceRatingSerializer
+    filter_class = FacilityServiceRatingFilter
     ordering_fields = ('rating', )
 
 

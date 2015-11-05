@@ -176,6 +176,17 @@
                 "is_national": true,
                 "is_superuser": false,
                 "employee_number": 10016
+            },
+            {
+                "email": "national_manager@mfltest.slade360.co.ke",
+                "first_name": "Crispin",
+                "last_name": "Mugwanja",
+                "username": "Mugwanja",
+                "password": "pbkdf2_sha256$20000$eWm5w0VPlAje$OMksWbcHbWlTHmf/U82GSVWo6LE0dZSYgrronVRvYJo=",
+                "is_staff": false,
+                "is_national": true,
+                "is_superuser": false,
+                "employee_number": 100457
             }
         ]
     },

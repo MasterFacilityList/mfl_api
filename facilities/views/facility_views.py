@@ -1,13 +1,12 @@
 import json
 
-from rest_framework import generics
-from rest_framework import status
+from django.utils import timezone
+from rest_framework import generics, status
 from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
 from common.models import ContactType
-
 
 from ..models import (
     Facility,
@@ -438,6 +437,39 @@ class FacilityDetailView(
             id=officer_in_charge['title']).name
         return officer_in_charge
 
+    def should_buffer_officer_incharge(self, officer_in_charge, instance):
+        """
+        Fixes a a bug where the officer in-charge is indicated to be
+        changed even when thats not the case.
+
+        returns Boolean:
+            True if the officer in-charge should be buffered
+            False if the officer in-charge should not be buffered
+         """
+        verdict = False
+        old_details = instance.officer_in_charge
+        if not old_details and officer_in_charge != {}:
+            verdict = True
+        elif old_details and officer_in_charge != {}:
+            if officer_in_charge.get('name') != old_details.get('name'):
+                verdict = True
+            if officer_in_charge.get('title') != str(old_details.get('title')):
+                verdict = True
+            if officer_in_charge.get('reg_no') != str(
+                    old_details.get('reg_no')):
+                verdict = True
+
+        return verdict
+
+    def something_changed(
+            self, services, contacts, units, officer_in_charge, instance):
+
+        if (services == [] and contacts == [] and units == [] and not
+                self.should_buffer_officer_incharge(
+                    officer_in_charge, instance)):
+            return False
+        return True
+
     def _validate_payload(self, services, contacts, units, officer_in_charge):
         """
         Validates the updated attributes before  buffering them
@@ -484,7 +516,8 @@ class FacilityDetailView(
             return Response(
                 data=self.validation_errors,
                 status=status.HTTP_400_BAD_REQUEST)
-        if instance.approved:
+        if instance.approved and self.something_changed(
+                services, contacts, units, officer_in_charge, instance):
             try:
                 update = FacilityUpdates.objects.filter(
                     facility=instance, cancelled=False, approved=False)[0]
@@ -501,7 +534,9 @@ class FacilityDetailView(
             units = self.populate_department_names(units)
             self.buffer_units(update, units)
 
-            if officer_in_charge != {}:
+            if (officer_in_charge != {} and
+                    self.should_buffer_officer_incharge(
+                        officer_in_charge, instance)):
                 officer_in_charge = self.populate_officer_incharge_contacts(
                     officer_in_charge)
                 officer_in_charge = self.populate_officer_incharge_job_title(
@@ -639,6 +674,29 @@ class RegualorSyncListView(generics.ListCreateAPIView):
         'owner', 'mfl_code')
 
 
-class RegualorSyncDetailView(generics.ListCreateAPIView):
+class RegualorSyncDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     queryset = RegulatorSync.objects.all()
     serializer_class = RegulatorSyncSerializer
+
+
+class RegualorSyncUpdateView(generics.GenericAPIView):
+
+    """Updates RegulatorSync object with an MFL code"""
+    serializer_class = RegulatorSyncSerializer
+
+    def get_queryset(self):
+        return RegulatorSync.objects.filter(mfl_code__isnull=True)
+
+    def post(self, request, *args, **kwargs):
+        sync_obj = self.get_object()
+        facility = generics.get_object_or_404(
+            Facility.objects.all(), code=request.data.get("mfl_code")
+        )
+        facility.updated_by = self.request.user
+        facility.updated = timezone.now()
+        sync_obj.updated_by = self.request.user
+        sync_obj.updated = timezone.now()
+        sync_obj.update_facility(facility)
+        serializer = self.get_serializer(sync_obj)
+        return Response(serializer.data)

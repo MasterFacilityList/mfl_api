@@ -1,6 +1,3314 @@
 [
     {
         "mfluser": {
+            "email": "repoty@yahoo.com"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            },
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "a@c.com"
+        },
+        "groups": []
+    },
+    {
+        "mfluser": {
+            "email": "national_manager@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "National Manager"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "jomvu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "jomvu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kisauni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyali@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "likoni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mvita@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "msambweni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lunga lunga@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "matuga@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kinango@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kilifi north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kilifi south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kaloleni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "rabai@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ganze@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "malindi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "magarini@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "garsen@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "galole@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bura@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lamu east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lamu west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "taveta@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "wundanyi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mwatate@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "voi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "garissa township@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "balambala@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lagdera@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "daadab@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "fafi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ijara@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "wajir north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "wajir east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tarbaj@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "wajir west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "eldas@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "wajir south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mandera west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "banissa@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mandera north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mandera south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mandera east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lafey@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "moyale@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "north horr@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "saku@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "laisamis@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "isiolo north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "isiolo south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "igembe south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "igembe central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "igembe north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tigania west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tigania east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "north imenti@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "buuri@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "central imenti@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "south imenti@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "maara@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "chuka/igambang'ombe@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tharaka@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "manyatta@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "runyenjes@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mbeere south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mbeere north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mwingi north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mwingi west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mwingi central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitui west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitui rural@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitui central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitui east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitui south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "masinga@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "yatta@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kangundo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "matungulu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kathiani@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mavoko@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "machakos town@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mwala@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mbooni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kilome@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kaiti@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kibwezi west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kibwezi east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kinangop@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kipipiri@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ol kalou@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ol jorok@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ndaragwa@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tetu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kieni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mathira@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "othaya@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mukurweini@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyeri town@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mwea@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "gichugu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ndia@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kirinyaga central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kangema@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mathioya@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kiharu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kigumo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "maragwa@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kandara@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "gatanga@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "gatundu south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "gatundu north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "juja@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "thika town@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ruiru@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "githunguri@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kiambaa@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kabete@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kikuyu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "limuru@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lari@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "turkana north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "turkana west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "turkana central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "loima@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "turkana south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "turkana east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kapenguria@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "sigor@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kacheliba@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "pokot south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "samburu west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "samburu north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "samburu east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kwanza@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "endebess@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "saboti@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kiminini@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "cherangany@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "soy@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "turbo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "moiben@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ainabkoi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kapseret@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kesses@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "marakwet east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "marakwet west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "keiyo north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "keiyo south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tinderet@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "aldai@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nandi hills@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "chesumei@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "emgwen@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mosop@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tiaty@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "baringo north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "baringo central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "baringo south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mogotio@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "eldama ravine@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "laikipia west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "laikipia east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "laikipia north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "molo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "njoro@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "naivasha@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "gilgil@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kuresoi south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kuresoi north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "subukia@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "rongai@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bahati@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nakuru town west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nakuru town east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kilgoris@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "emurua dikirr@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "narok north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "narok east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "narok south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "narok west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kajiado north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kajiado central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kajiado east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kajiado west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kajiado south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kipkelion east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kipkelion west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ainamoi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bureti@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "belgut@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "sigowet/soin@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "sotik@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "chepalungu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bomet east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bomet central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "konoin@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lugari@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "likuyani@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "malava@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lurambi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "navakholo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mumias west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mumias east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "matungu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "butere@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "khwisero@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "shinyalu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ikolomani@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "sabatia@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "hamisi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "luanda@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "emuhaya@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mt. elgon@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "sirisia@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kabuchai@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bumula@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kanduyi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "webuye east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "webute west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kimilili@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tongaren@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "teso north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "teso south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nambale@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "matayos@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "butula@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "funyula@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "budalangi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ugenya@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ugunja@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "alego usonga@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "gem@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bondo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "rarieda@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kisumu east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kisumu west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kisumu central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "seme@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyando@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "muhoroni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyakach@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kasipul@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kabondo kasipul@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "karachuonyo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "rangwe@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "homa bay town@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ndhiwa@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mbita@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "suba@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "rongo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "awendo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "suna east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "suna west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "uriri@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyatike@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kuria west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kuria east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bonchari@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "south mugirango@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bomachoge borabu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bobasi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bomachoge chache@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyaribari masaba@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyaribari chache@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitutu chache north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitutu chache south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitutu masaba@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "west mugirango@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "north mugirango@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "borabu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "westlands@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "dagoretti north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "dagoretti south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "langata@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kibra@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "roysambu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kasarani@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "ruaraka@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "embakasi south@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "embakasi north@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "embakasi central@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "embakasi east@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "embakasi west@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "makadara@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kwale@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tana river@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "lamu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "taita taveta@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "garissa@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "wajir@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "mandera@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "marsabit@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "isiolo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "meru@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "tharaka-nithi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "embu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kitui@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "machakos@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "makueni@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            },
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyandarua@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyeri@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kirinyaga@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "murang'a@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kiambu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            },
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "turkana@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "west pokot@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "samburu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "trans nzoia@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "uasin gishu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "elegeyo-marakwet@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nandi@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "baringo@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "laikipia@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nakuru@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kajiado@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kericho@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bomet@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kakamega@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "vihiga@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            },
+            {
+                "name": "Sub County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "bungoma@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "busia@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "siaya@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kisumu@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "homa bay@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "migori@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "kisii@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
+            "email": "nyamira@mfltest.slade360.co.ke"
+        },
+        "groups": [
+            {
+                "name": "County Health Records Information Officer"
+            }
+        ]
+    },
+    {
+        "mfluser": {
             "email": "ncck@mfltest.slade360.co.ke"
         },
         "groups": [
@@ -136,16 +3444,6 @@
         "groups": [
             {
                 "name": "Superusers"
-            }
-        ]
-    },
-    {
-        "mfluser": {
-            "email": "facility_officer@mfltest.slade360.co.ke"
-        },
-        "groups": [
-            {
-                "name": "Facility Officer Group"
             }
         ]
     },

@@ -50,8 +50,7 @@ def check_password_strength(raw_password):
         error = (
             {
                 "password": [
-                    "The password must be at least 8"
-                    "characters long and have at least one number"
+                    "The password must be at least 8 characters and contain both letters and numbers"  # noqa
                 ]
             }
         )
@@ -179,6 +178,30 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         return self.get_all_permissions()
 
     @property
+    def user_groups(self):
+        user_groups = self.groups.all()
+        proxy_groups = ProxyGroup.objects.filter(
+            id__in=[group.id for group in user_groups]
+        )
+
+        reg, admin, county, sub_county, national = (False,) * 5
+
+        for proxy in proxy_groups:
+            reg = True if proxy.is_regulator else reg
+            admin = True if proxy.is_administrator else admin
+            county = True if proxy.is_county_level else county
+            sub_county = True if proxy.is_sub_county_level else sub_county
+            national = True if proxy.is_national else national
+
+        return {
+            "is_regulator": reg,
+            "is_administrator": admin,
+            "is_county_level": county,
+            "is_national": national,
+            "is_sub_county_level": sub_county
+        }
+
+    @property
     def county(self):
         from common.models import UserCounty
         user_counties = UserCounty.objects.filter(
@@ -224,6 +247,20 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
 
         return django_login
 
+    @property
+    def contacts(self):
+        from common.models import UserContact
+        return [
+            {
+                "id": user_contact.id,
+                "contact": user_contact.contact.id,
+                "contact_text": user_contact.contact.contact,
+                "contact_type": user_contact.contact.contact_type.id,
+                "contact_type_name": user_contact.contact.contact_type.name
+
+            } for user_contact in UserContact.objects.filter(user=self)
+        ]
+
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 
@@ -256,7 +293,7 @@ class CustomGroup(models.Model):
         'country?')
     administrator = models.BooleanField(
         default=False,
-        help_text='Will the users in this group administor user rights?')
+        help_text='Will the users in this group administrator user rights?')
     county_level = models.BooleanField(
         default=False, help_text='Will the user be creating sub county users?')
     sub_county_level = models.BooleanField(

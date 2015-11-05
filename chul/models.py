@@ -1,4 +1,5 @@
 import json
+import datetime
 import reversion
 
 from django.db import models
@@ -45,11 +46,11 @@ class CommunityHealthUnitContact(AbstractBase):
     class Meta:
         unique_together = ('health_unit', 'contact', )
         # a hack since the view_communityhealthunitcontact
-        # is disppearing into thin air
+        # is disappearing into thin air
         permissions = (
             (
                 "view_communityhealthunitcontact",
-                "Can view communty health_unit contact"
+                "Can view community health_unit contact"
             ),
         )
 
@@ -72,7 +73,8 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         Facility,
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
-    households_monitored = models.PositiveIntegerField(default=0)
+    households_monitored = models.PositiveIntegerField(
+        help_text='The number of house holds a CHU is in-charge of')
     date_established = models.DateField(default=timezone.now)
     date_operational = models.DateField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
@@ -90,6 +92,12 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
     def __str__(self):
         return self.name
+
+    @property
+    def workers(self):
+        from .serializers import CommunityHealthWorkerPostSerializer
+        return CommunityHealthWorkerPostSerializer(
+            self.health_unit_workers, many=True).data
 
     def validate_facility_is_not_closed(self):
         if self.facility.closed:
@@ -113,6 +121,36 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         if values.count(True) > 1:
             raise ValidationError(error)
 
+    def validate_date_operation_is_less_than_date_established(self):
+        if self.date_operational and self.date_established:
+            if self.date_established > self.date_operational:
+                raise ValidationError(
+                    {
+                        "date_operational": [
+                            "Date operation cannot be greater than date "
+                            "established"
+                        ]
+                    })
+
+    def validate_date_established_not_in_future(self):
+        """
+        Only the date operational needs to be validated.
+
+        date_established should always be less then the date_operational.
+        Thus is the date_operational is not in future the date_established
+        is also not in future
+        """
+
+        today = datetime.datetime.now().date()
+
+        if self.date_operational and self.date_operational > today:
+            raise ValidationError(
+                {
+                    "date_operational": [
+                        "The date operational cannot be in the future"
+                    ]
+                })
+
     @property
     def contacts(self):
 
@@ -129,10 +167,28 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
                 health_unit=self)
         ]
 
+    @property
+    def json_features(self):
+        return {
+            "geometry": {
+                "coordinates": [
+                    self.facility.facility_coordinates_through.coordinates[0],
+                    self.facility.facility_coordinates_through.coordinates[1]
+                ]
+            },
+            "properties": {
+                "ward": self.facility.ward.id,
+                "constituency": self.facility.ward.constituency.id,
+                "county": self.facility.ward.county.id
+            }
+        }
+
     def clean(self):
         super(CommunityHealthUnit, self).clean()
         self.validate_facility_is_not_closed()
         self.validate_either_approved_or_rejected_and_not_both()
+        self.validate_date_operation_is_less_than_date_established()
+        self.validate_date_established_not_in_future()
 
     @property
     def pending_updates(self):
@@ -172,6 +228,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         return self.chu_ratings.count()
 
     class Meta(AbstractBase.Meta):
+        unique_together = ('name', 'facility', )
         permissions = (
             (
                 "view_rejected_chus",
@@ -190,7 +247,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 class CommunityHealthWorkerContact(AbstractBase):
 
     """
-    The contacts of the healh worker.
+    The contacts of the health worker.
 
     They may be as many as the health worker has.
     """
@@ -206,25 +263,21 @@ class CommunityHealthWorkerContact(AbstractBase):
 class CommunityHealthWorker(AbstractBase):
 
     """
-    A person who is incharge of a certain community health area.
+    A person who is in-charge of a certain community health area.
 
     The status of the worker that is whether still active or not will be
     shown by the active field inherited from abstract base.
     """
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    id_number = models.PositiveIntegerField(unique=True, null=True, blank=True)
     is_incharge = models.BooleanField(default=False)
     health_unit = models.ForeignKey(
         CommunityHealthUnit,
-        help_text='The health unit the worker is incharge of',
+        help_text='The health unit the worker is in-charge of',
         related_name='health_unit_workers')
 
     def __str__(self):
-        return "{} ({})".format(self.first_name, self.id_number)
-
-    class Meta(AbstractBase.Meta):
-        unique_together = ('id_number', 'health_unit')
+        return "{} ({})".format(self.first_name, self.health_unit.name)
 
     @property
     def name(self):
@@ -234,6 +287,17 @@ class CommunityHealthWorker(AbstractBase):
 @reversion.register
 @encoding.python_2_unicode_compatible
 class CHUService(AbstractBase):
+
+    """
+    The services offered by the Community Health Units
+
+    Examples:
+        1. First Aid Administration
+        2. De-worming e.t.c.
+
+    All the community health units offer these services. Hence, there is
+    no need to link a COmmunity Health Unit to a CHUService instance
+    """
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
 
@@ -275,7 +339,7 @@ class ChuUpdateBuffer(AbstractBase):
     def validate_atleast_one_attribute_updated(self):
         if not self.workers and not self.contacts and not \
                 self.basic and not self.is_new:
-            raise ValidationError({"__all__": ["Nothing was editted"]})
+            raise ValidationError({"__all__": ["Nothing was edited"]})
 
     def update_basic_details(self):
         basic_details = json.loads(self.basic)
@@ -305,15 +369,11 @@ class ChuUpdateBuffer(AbstractBase):
                     id=chew['id'])
                 chew_obj.first_name = chew['first_name']
                 chew_obj.last_name = chew['last_name']
-                chew_obj.id_number = chew['id_number']
-                chew_obj.is_incharge = chew['is_incharge']
+                if 'is_incharge' in chew:
+                    chew_obj.is_incharge = chew['is_incharge']
                 chew_obj.save()
             else:
-                try:
-                    CommunityHealthWorker.objects.get(
-                        id_number=chew['id_number'])
-                except CommunityHealthWorker.DoesNotExist:
-                    CommunityHealthWorker.objects.create(**chew)
+                CommunityHealthWorker.objects.create(**chew)
 
     def update_contacts(self):
         contacts = json.loads(self.contacts)

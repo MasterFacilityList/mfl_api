@@ -40,14 +40,15 @@ from ..models import (
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
     ListIntegerFilter,
-    ListCharFilter
+    ListCharFilter,
+    NullFilter
 )
 
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class RegulatorSyncFilter(CommonFieldsFilterset):
-    mfl_code = ListCharFilter(lookup_type='exact')
+    mfl_code_null = NullFilter(name='mfl_code')
     county = ListCharFilter(lookup_type='exact')
 
     class Meta:
@@ -94,7 +95,8 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
     facility = django_filters.AllValuesFilter(
         name='facility_service__facility',
         lookup_type='exact')
-    service = django_filters.AllValuesFilter(lookup_type='exact')
+    service = django_filters.AllValuesFilter(
+        name="facility_service__service", lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
@@ -281,29 +283,23 @@ class FacilityFilter(CommonFieldsFilterset):
     def service_filter(self, value):
         categories = value.split(',')
         facility_ids = []
-        cat_len = len(categories)
 
-        for facility in Facility.objects.all():
-            cats_seen = []
+        for facility in self.filter():
             for cat in categories:
                 service_count = FacilityService.objects.filter(
                     service__category=cat,
                     facility=facility).count()
                 if service_count > 0:
-                    cats_seen.append(cat)
-            if len(cats_seen) == cat_len:
-                facility_ids.append(facility.id)
+                    facility_ids.append(facility.id)
 
-        return Facility.objects.filter(id__in=facility_ids)
+        return self.filter(id__in=list(set(facility_ids)))
 
     def filter_approved_facilities(self, value):
-        approved_facilities = [
-            approval.facility.id
-            for approval in FacilityApproval.objects.all()]
+
         if value in TRUTH_NESS:
-            return Facility.objects.filter(id__in=approved_facilities)
+            return self.filter(Q(approved=True) | Q(rejected=True))
         else:
-            return Facility.objects.exclude(id__in=approved_facilities)
+            return self.filter(rejected=False, approved=False)
 
     def facilities_pending_approval(self, value):
         if value in TRUTH_NESS:

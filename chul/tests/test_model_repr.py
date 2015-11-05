@@ -31,22 +31,27 @@ class TestModelRepr(ModelReprMixin, TestCase):
         self.check_repr(chu_contact, "c-h-u: (twirra: @m)")
 
     def test_chw(self):
+        health_unit = mommy.make(models.CommunityHealthUnit, name='jina')
         instance = mommy.make(
-            models.CommunityHealthWorker, first_name="fname", id_number="123",
+            models.CommunityHealthWorker, first_name="fname",
+            health_unit=health_unit
         )
-        self.check_repr(instance, "fname (123)")
+        self.check_repr(instance, "fname (jina)")
 
     def test_chw_contact(self):
         ct = models.Contact._meta.get_field(
             "contact_type").related_model.objects.create(name="twirra")
         contact = models.Contact.objects.create(contact="@m", contact_type=ct)
+        health_unit = mommy.make(models.CommunityHealthUnit, name='jina')
+
         chw = mommy.make(
-            models.CommunityHealthWorker, first_name="fname", id_number="123",
+            models.CommunityHealthWorker, first_name="fname",
+            health_unit=health_unit
         )
         chw_contact = models.CommunityHealthWorkerContact.objects.create(
             health_worker=chw, contact=contact
         )
-        self.check_repr(chw_contact, "fname (123): (twirra: @m)")
+        self.check_repr(chw_contact, "fname (jina): (twirra: @m)")
 
     def test_chu_rating(self):
         chu = mommy.make(models.CommunityHealthUnit, name='di chu')

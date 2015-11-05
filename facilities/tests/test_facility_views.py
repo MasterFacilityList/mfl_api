@@ -54,14 +54,14 @@ from ..models import (
     FacilityApproval,
     FacilityUpdates,
     KephLevel,
-    FacilityLevelChangeReason,
-    RegulatorSync
+    FacilityLevelChangeReason
 )
 
 from django.contrib.auth.models import Group, Permission
 
 
 class TestGroupAndPermissions(object):
+
     def setUp(self):
         super(TestGroupAndPermissions, self).setUp()
         self.view_unpublished_perm = Permission.objects.get(
@@ -340,15 +340,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-
-            ]
+            "results": [FacilitySerializer(facility).data]
         }
         self.assertEquals(
             load_dump(expected_data['results'], default=default),
@@ -374,15 +366,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "results": [
-                FacilitySerializer(
-                    facility,
-                    context={
-                        'request': response.request
-                    }
-                ).data
-
-            ]
+            "results": [FacilitySerializer(facility).data]
         }
         self.assertEquals(
             load_dump(expected_data['results'], default=default),
@@ -417,7 +401,7 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         expected_data = {
-            "results": []
+            "results": [FacilitySerializer(facility).data]
         }
         self.assertEquals(
             load_dump(expected_data['results'], default=default),
@@ -447,6 +431,9 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
 
     def test_get_approved_facilities(self):
         self.maxDiff = None
+        self.user.is_national = True
+        self.user.is_superuser = True
+        self.user.save()
         facility = mommy.make(Facility)
         facility_2 = mommy.make(Facility)
         mommy.make(FacilityApproval, facility=facility)
@@ -756,6 +743,38 @@ class TestInspectionAndCoverReportsView(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, 'correction_template.html')
 
+    def test_facility_detail_with_permission(self):
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_detail_report',
+            kwargs={'pk': facility.id}
+        )
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'facility_details.html')
+
+    def test_facility_detail_without_permission(self):
+        ward = mommy.make(Ward)
+        facility = mommy.make(Facility, ward=ward)
+        url = reverse(
+            'api:facilities:facility_detail_report',
+            kwargs={'pk': facility.id}
+        )
+        get_user_model().objects.create_user(
+            email='noperms@domain.com',
+            password='password1',
+            first_name='fname',
+            employee_number='enum'
+        )
+        client = self.client.__class__()
+        self.assertTrue(
+            client.login(email='noperms@domain.com', password='password1')
+        )
+        response = client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertTemplateUsed(response, 'facility_details.html')
+
 
 class TestDashBoardView(LoginMixin, APITestCase):
 
@@ -764,6 +783,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.url = reverse('api:facilities:dashboard')
         county = mommy.make(County, name='Kiambu')
         mommy.make(UserCounty, county=county, user=self.user)
+
+    def _equate_json(self, payload):
+        return json.loads(json.dumps(payload))
 
     def test_get_dashboard_national_user(self):
         county = mommy.make(County)
@@ -781,6 +803,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             operation_status=status,
 
         )
+        self.assertEquals(1, Facility.objects.count())
         expected_data = {
             "owners_summary": [
                 {
@@ -788,17 +811,19 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
-            "pending_updates": 0,
+            "pending_updates": 1,
             "recently_created": 1,
             "county_summary": [
                 {
                     "count": 1,
-                    "name": county.name
+                    "name": str(county.name),
+                    "chu_count": 0
                 },
                 # the county belonging to the logged in user
                 {
                     "count": 0,
-                    "name": "Kiambu"
+                    "name": "Kiambu",
+                    "chu_count": 0
                 },
             ],
             "wards_summary": [],
@@ -806,25 +831,31 @@ class TestDashBoardView(LoginMixin, APITestCase):
             "status_summary": [
                 {
                     "count": 1,
-                    "name": status.name
+                    "name": str(status.name)
                 },
             ],
             "owner_types": [
                 {
                     "count": 1,
-                    "name": owner_type. name
+                    "name": str(owner_type. name)
                 },
             ],
             "constituencies_summary": [],
             "types_summary": [
                 {
                     "count": 1,
-                    "name": facility_type.name
+                    "name": str(facility_type.name)
                 },
-            ]
+            ],
+            "rejected_facilities_count": 0,
+            "recently_created_chus": 0,
+            "closed_facilities_count": 0
         }
         response = self.client.get(self.url)
-        self.assertEquals(expected_data, response.data)
+
+        self.assertAlmostEquals(
+            self._equate_json(expected_data),
+            self._equate_json(response.data))
 
     def test_get_dashboard_as_county_user(self):
         # remove the user as a national user
@@ -852,7 +883,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "name": owner.name
                 },
             ],
-            "pending_updates": 0,
+            "pending_updates": 1,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [],
@@ -871,8 +902,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
             ],
             "constituencies_summary": [
                 {
-                    "name": constituency.name,
-                    "count": 1
+                    "name": str(constituency.name),
+                    "count": 1,
+                    "chu_count": 0
                 }
             ],
             "types_summary": [
@@ -880,15 +912,29 @@ class TestDashBoardView(LoginMixin, APITestCase):
                     "count": 1,
                     "name": facility_type.name
                 },
-            ]
+            ],
+            "rejected_facilities_count": 0,
+            "recently_created_chus": 0,
+            "closed_facilities_count": 0
         }
         response = self.client.get(self.url)
-        self.assertEquals(expected_data, response.data)
+        self.assertEquals(
+            self._equate_json(expected_data),
+            self._equate_json(response.data))
 
     def test_get_dashboard_as_sub_county_user(self):
+        # ensure user has all facilities to see facilities
+        facility_perms = Permission.objects.filter(
+            codename__icontains='facility')
+        facility_perms_2 = Permission.objects.filter(
+            codename__icontains='facilities')
         user = mommy.make(get_user_model())
-        self.client.force_authenticate(user)
+        for perm in facility_perms:
+            user.permissions.add(perm)
+        for perm in facility_perms_2:
+            user.permissions.add(perm)
         self.user.is_national = False
+
         self.user.save()
         constituency = mommy.make(
             Constituency, county=self.user.county)
@@ -908,45 +954,55 @@ class TestDashBoardView(LoginMixin, APITestCase):
             operation_status=status,
 
         )
+        self.client.force_authenticate(user)
+        user.is_superuser = True
+        user.save()
         expected_data = {
             "owners_summary": [
                 {
                     "count": 1,
-                    "name": owner.name
+                    "name": str(owner.name)
                 },
             ],
-            "pending_updates": 0,
+            "pending_updates": 1,
             "recently_created": 1,
             "county_summary": [],
             "wards_summary": [
                 {
-                    "name": ward.name,
-                    "count": 1
+                    "name": str(ward.name),
+                    "count": 1,
+                    "chu_count": 0
                 }
             ],
             "total_facilities": 1,
             "status_summary": [
                 {
                     "count": 1,
-                    "name": status.name
+                    "name": str(status.name)
                 },
             ],
             "owner_types": [
                 {
                     "count": 1,
-                    "name": owner_type. name
+                    "name": str(owner_type. name)
                 },
             ],
             "constituencies_summary": [],
             "types_summary": [
                 {
                     "count": 1,
-                    "name": facility_type.name
+                    "name": str(facility_type.name)
                 },
-            ]
+            ],
+            "rejected_facilities_count": 0,
+            "recently_created_chus": 0,
+            "closed_facilities_count": 0
         }
         response = self.client.get(self.url)
-        self.assertEquals(expected_data, response.data)
+
+        self.assertEquals(
+            self._equate_json(expected_data),
+            self._equate_json(response.data))
 
     def test_get_dashboard_user_has_no_role(self):
         user = mommy.make(get_user_model())
@@ -1683,38 +1739,3 @@ class TestRegulatoryBodyContacts(LoginMixin, APITestCase):
         self.assertEquals(400, response.status_code)
         self.assertEquals(1, RegulatingBody.objects.count())
         self.assertEquals(0, Contact.objects.count())
-
-
-class TestRegulatorSyncView(LoginMixin, APITestCase):
-    def setUp(self):
-        self.url = reverse("api:facilities:regulator_syncs_list")
-        super(TestRegulatorSyncView, self).setUp()
-
-    def test_post(self):
-        county = mommy.make(County)
-        owner = mommy.make(Owner)
-        facility_type = mommy.make(FacilityType)
-        data = {
-            "name": "Jina",
-            "registration_number": 100,
-            "county": county.code,
-            "owner": str(owner.id),
-            "facility_type": str(facility_type.id)
-        }
-        response = self.client.post(self.url, data)
-        self.assertEquals(201, response.status_code)
-        self.assertEquals(1, RegulatorSync.objects.count())
-
-    def test_list(self):
-        county = mommy.make(County)
-        mommy.make(RegulatorSync, county=county.code)
-        response = self.client.get(self.url)
-        self.assertEquals(200, response.status_code)
-        self.assertEquals(1, response.data.get('count'))
-
-    def test_get_single(self):
-        county = mommy.make(County)
-        sync = mommy.make(RegulatorSync, county=county.code)
-        url = self.url + str(sync) + "/"
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)

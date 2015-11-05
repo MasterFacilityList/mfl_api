@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from common.models import Contact, ContactType
+from users.models import MflUser
 
 from common.serializers import (
     AbstractFieldsMixin,
@@ -56,9 +57,23 @@ class RegulatorSyncSerializer(
     county_name = serializers.ReadOnlyField()
     owner_name = serializers.ReadOnlyField(source='owner.name')
     facility_type_name = serializers.ReadOnlyField(source='facility_type.name')
+    regulatory_body_name = serializers.ReadOnlyField(
+        source='regulatory_body.name'
+    )
+    probable_matches = serializers.ReadOnlyField()
+
+    def create(self, validated_data):
+        reg = self.context['request'].user.regulator
+        if reg:
+            validated_data['regulatory_body'] = reg
+            return super(RegulatorSyncSerializer, self).create(validated_data)
+        raise ValidationError(
+            {"regulatory_body": ["The user is not assigned a regulatory body"]}
+        )
 
     class Meta:
         model = RegulatorSync
+        read_only_fields = ('regulatory_body', 'mfl_code', )
 
 
 class FacilityLevelChangeReasonSerializer(
@@ -80,6 +95,10 @@ class RegulatoryBodyUserSerializer(
     user_name = serializers.ReadOnlyField(source='user.get_full_name')
     regulatory_body_name = serializers.ReadOnlyField(
         source='regulatory_body.name')
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=MflUser.objects.all())
+    regulatory_body = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=RegulatingBody.objects.all())
 
     class Meta:
         model = RegulatoryBodyUser
@@ -113,6 +132,10 @@ class RegulatingBodyContactSerializer(
 
 class FacilityUpgradeSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
+    current_keph_level = serializers.ReadOnlyField(
+        source='facility.keph_level_name')
+    current_facility_type = serializers.ReadOnlyField(
+        source='facility.facility_type_name')
 
     class Meta(object):
         model = FacilityUpgrade
@@ -272,7 +295,7 @@ class FacilityRegulationStatusSerializer(
         model = FacilityRegulationStatus
 
 
-class FacilityTypeSerializer(serializers.ModelSerializer):
+class FacilityTypeSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     owner_type_name = serializers.ReadOnlyField(source='owner_type.name')
 
     class Meta(object):
@@ -560,6 +583,9 @@ class FacilityServiceRatingSerializer(
 
     facility_name = serializers.ReadOnlyField(
         source='facility_service.facility.name'
+    )
+    facility_id = serializers.ReadOnlyField(
+        source='facility_service.facility.id'
     )
     service_name = serializers.ReadOnlyField(
         source='facility_service.service.name'

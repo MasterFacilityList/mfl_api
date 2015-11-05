@@ -8,7 +8,7 @@ from facilities.models import (
     Service, FacilityService, FacilityContact,
     RegulatingBody, FacilityUnit, JobTitle,
     OfficerContact, Officer, FacilityOfficer,
-    Option, FacilityDepartment)
+    Option, FacilityDepartment, FacilityUpgrade, KephLevel)
 
 from model_mommy import mommy
 
@@ -21,15 +21,15 @@ from common.models import Contact, ContactType
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 })
-class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
+class TestFacilityUdpatesBuffering(LoginMixin, APITestCase):
 
     def setUp(self):
         self.url = reverse("api:facilities:facilities_list")
-        super(NOTTestFacilityUdpatesBuffering, self).setUp()
+        super(TestFacilityUdpatesBuffering, self).setUp()
 
     def tearDown(self):
         cache.clear()
-        super(NOTTestFacilityUdpatesBuffering, self).tearDown()
+        super(TestFacilityUdpatesBuffering, self).tearDown()
 
     def test_facility_updates_facility_not_approved(self):
         facility = mommy.make(Facility)
@@ -379,8 +379,83 @@ class NOTTestFacilityUdpatesBuffering(LoginMixin, APITestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, FacilityUpdates.objects.count())
         self.assertEquals(0, FacilityOfficer.objects.count())
-        self.assertEquals(0, Officer.objects.count())
         self.assertEquals(0, OfficerContact.objects.count())
+        self.assertEquals(0, Officer.objects.count())
+
+    def test_try_update_facility_officer_in_charge_details_not_changed(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        job_title = mommy.make(JobTitle)
+        officer = mommy.make(
+            Officer,
+            name="Brenda Makena",
+            registration_number="DEN/90/2000",
+            job_title=job_title)
+        mommy.make(FacilityOfficer, officer=officer, facility=facility)
+
+        contact_type = mommy.make(ContactType)
+
+        data = {
+            "name": "Brenda Makena",
+            "id_no": "545454545",
+            "reg_no": "DEN/90/2000",
+            "title": str(job_title.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
+        data = {
+            "officer_in_charge": data
+        }
+        url = self.url + "{}/".format(facility.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(0, FacilityUpdates.objects.count())
+
+    def test_try_update_facility_officer_in_charge_details_changed(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        job_title = mommy.make(JobTitle)
+        job_title_2 = mommy.make(JobTitle)
+        officer = mommy.make(
+            Officer,
+            name="Brenda Makena",
+            registration_number="DEN/90/2000",
+            job_title=job_title)
+        mommy.make(FacilityOfficer, officer=officer, facility=facility)
+
+        contact_type = mommy.make(ContactType)
+
+        data = {
+            "name": "Brenda Makena mpya",
+            "id_no": "5454545455",
+            "reg_no": "DEN/90/2010",
+            "title": str(job_title_2.id),
+            "contacts": [
+                {
+                    "type": str(contact_type.id),
+                    "contact": "08235839"
+                },
+                {
+                    "type": str(contact_type.id),
+                    "contact": "0823583941"
+                }
+            ]
+        }
+        data = {
+            "officer_in_charge": data
+        }
+        url = self.url + "{}/".format(facility.id)
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, FacilityUpdates.objects.count())
 
     def test_update_officer_incharge_facility_not_approved(self):
         facility = mommy.make(Facility)
@@ -605,3 +680,63 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
         self.assertEquals(0, FacilityService.objects.count())
         self.assertEquals(0, FacilityContact.objects.count())
         self.assertEquals(0, FacilityUnit.objects.count())
+
+
+class TestFacilityUpgradeConfirmationAndRejection(LoginMixin, APITestCase):
+
+    def test_get_facility_upgrades(self):
+        facility = mommy.make(Facility)
+        keph = mommy.make(KephLevel)
+        mommy.make(FacilityApproval, facility=facility)
+        mommy.make(
+            FacilityUpgrade, facility=facility, keph_level=keph)
+        pending_update = FacilityUpdates.objects.all()[0]
+        update_url = reverse(
+            "api:facilities:facility_updates_detail",
+            kwargs={'pk': str(pending_update.id)})
+        response = self.client.get(update_url)
+        self.assertEquals(200, response.status_code)
+
+        self.assertIsNotNone(
+            response.data.get('facility_updated_json').get('upgrades'))
+
+    def test_upgrade_confirmation(self):
+        facility = mommy.make(Facility)
+        keph = mommy.make(KephLevel)
+        mommy.make(FacilityApproval, facility=facility)
+        upgrade = mommy.make(
+            FacilityUpgrade, facility=facility, keph_level=keph)
+        pending_update = FacilityUpdates.objects.all()[0]
+        pending_update.approved = True
+        pending_update.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertEquals(upgrade.keph_level, facility_refetched.keph_level)
+        self.assertEquals(
+            upgrade.facility_type, facility_refetched.facility_type)
+
+    def test_upgrade_confirmation_no_keph_level(self):
+        facility = mommy.make(Facility)
+        mommy.make(FacilityApproval, facility=facility)
+        upgrade = mommy.make(
+            FacilityUpgrade, facility=facility)
+        pending_update = FacilityUpdates.objects.all()[0]
+        pending_update.approved = True
+        pending_update.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertEquals(
+            upgrade.facility_type, facility_refetched.facility_type)
+
+    def test_upgrade_rejection(self):
+        facility = mommy.make(Facility)
+        keph = mommy.make(KephLevel)
+        mommy.make(FacilityApproval, facility=facility)
+        upgrade = mommy.make(
+            FacilityUpgrade,
+            facility=facility, keph_level=keph)
+        pending_update = FacilityUpdates.objects.all()[0]
+        pending_update.cancelled = True
+        pending_update.save()
+        facility_refetched = Facility.objects.get(id=facility.id)
+        self.assertNotEquals(upgrade.keph_level, facility_refetched.keph_level)
+        self.assertNotEquals(
+            upgrade.facility_type, facility_refetched.facility_type)

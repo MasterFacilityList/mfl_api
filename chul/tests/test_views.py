@@ -103,7 +103,6 @@ class TestCommunityHealthUnitView(ViewTestBase):
                 {
                     "first_name": "Muuguzi",
                     "last_name": "Mnoma",
-                    "id_number": "3477757",
                     "is_incharge": True
                 }
             ]
@@ -201,7 +200,6 @@ class TestCommunityHealthUnitView(ViewTestBase):
                     "id": str(chew.id),
                     "first_name": "Muuguzi tabibu",
                     "last_name": "Mnoma",
-                    "id_number": "3477757",
                     "is_incharge": True
                 }
             ]

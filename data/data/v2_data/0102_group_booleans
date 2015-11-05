@@ -1,0 +1,39 @@
+[
+        {
+            "group": "County Health Records Information Officer",
+            "administrator": true
+
+        },
+        {
+            "group": "Sub County Health Records Information Officer",
+            "administrator": true,
+            "county_level": true
+        },
+        {
+            "group": "Regulators",
+             "regulator": true,
+            "national": true,
+            "administrator": true
+        },
+
+        {
+            "group": "Public Users",
+            "national": true
+        },
+        {
+            "group": "National Administrators",
+            "national": true,
+            "administrator": true
+        },
+
+        {
+            "group": "Reporting Group",
+            "national": true,
+            "administrator": true,
+            "county_level": true
+        },
+        {
+            "group": "National Manager",
+            "national": true
+        }
+]

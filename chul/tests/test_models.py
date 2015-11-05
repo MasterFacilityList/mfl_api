@@ -1,4 +1,6 @@
 from __future__ import division
+from datetime import datetime, timedelta
+
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
@@ -39,6 +41,30 @@ class TestCommunityHealthUnit(TestCase):
         mommy.make(CommunityHealthUnit)
         self.assertEquals(1, CommunityHealthUnit.objects.count())
 
+    def test_date_operational_less_than_date_established(self):
+        today = datetime.now().date()
+        last_week = today - timedelta(days=7)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                CommunityHealthUnit,
+                date_established=today, date_operational=last_week)
+
+    def test_date_established_not_in_future(self):
+        today = datetime.now().date()
+        next_month = today + timedelta(days=30)
+        with self.assertRaises(ValidationError):
+            mommy.make(
+                CommunityHealthUnit,
+                date_established=today, date_operational=next_month)
+
+    def test_valid_dates(self):
+        today = datetime.now().date()
+        last_week = today - timedelta(days=7)
+        mommy.make(
+            CommunityHealthUnit,
+            date_established=last_week, date_operational=today)
+        self.assertEquals(1, CommunityHealthUnit.objects.count())
+
     def test_save_with_code(self):
         mommy.make(CommunityHealthUnit, code='7800')
         self.assertEquals(1, CommunityHealthUnit.objects.count())
@@ -51,7 +77,7 @@ class TestCommunityHealthUnit(TestCase):
     def test_chu_approval_or_rejection_and_not_both(self):
         with self.assertRaises(ValidationError):
             mommy.make(CommunityHealthUnit, is_approved=True, is_rejected=True)
-        # test rejecting an approvec chu
+        # test rejecting an approve chu
         chu = mommy.make(CommunityHealthUnit, is_approved=True)
         chu.is_rejected = True
         chu.is_approved = False
@@ -133,7 +159,7 @@ class TestCommunityHealthUnit(TestCase):
         chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
         self.assertFalse(chu_refetched.has_edits)
 
-    def test_has_edits_false_afater_rejection(self):
+    def test_has_edits_false_after_rejection(self):
         chu = mommy.make(CommunityHealthUnit)
         chu.is_approved = True
         chu.save()
@@ -146,11 +172,16 @@ class TestCommunityHealthUnit(TestCase):
         chu_refetched = CommunityHealthUnit.objects.get(id=chu.id)
         self.assertFalse(chu_refetched.has_edits)
 
+    def test_chu_workers(self):
+        chu = mommy.make(CommunityHealthUnit)
+        mommy.make(CommunityHealthWorker, health_unit=chu)
+        self.assertIsInstance(chu.workers, list)
+
 
 class TestCommunityHealthWorkerModel(TestCase):
 
     def test_save(self):
-        mommy.make(CommunityHealthWorker, id_number='12345678')
+        mommy.make(CommunityHealthWorker)
         self.assertEquals(1, CommunityHealthWorker.objects.count())
 
 

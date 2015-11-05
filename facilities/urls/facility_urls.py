@@ -5,13 +5,22 @@ from .. import views
 
 urlpatterns = patterns(
     '',
-    url(r'^regulator_sync/$',
-        views.RegualorSyncListView.as_view(),
-        name='regulator_syncs_list'),
+
+    url(r'^flattened_categories/$',
+        views.FlattenedCategories.as_view(),
+        name='flattened_categories'),
+
+    url(r'^regulator_sync_update/(?P<pk>[^/]+)/$',
+        views.RegualorSyncUpdateView.as_view(),
+        name='regulator_sync_update'),
 
     url(r'^regulator_sync/(?P<pk>[^/]+)/$',
         views.RegualorSyncDetailView.as_view(),
         name='regulator_sync_detail'),
+
+    url(r'^regulator_sync/$',
+        views.RegualorSyncListView.as_view(),
+        name='regulator_syncs_list'),
 
     url(r'^option_group_with_options/$',
         views.PostOptionGroupWithOptionsView.as_view(),
