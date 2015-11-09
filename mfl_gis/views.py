@@ -1,8 +1,11 @@
-from rest_framework import generics
-from rest_framework.views import Response
-from rest_framework import status
+import six
 
+from django.contrib.gis.geos import Point
+from rest_framework import generics, views, status
+from rest_framework import settings as rest_settings
 from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.compat import OrderedDict
+
 from facilities.models import Facility
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
@@ -48,6 +51,7 @@ from .generics import GISListCreateAPIView
 
 
 class GeoCodeSourceListView(generics.ListCreateAPIView):
+
     """
     List and creates Geo-Code sources
 
@@ -69,6 +73,7 @@ class GeoCodeSourceListView(generics.ListCreateAPIView):
 
 class GeoCodeSourceDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular Geo Code Source
     """
@@ -78,6 +83,7 @@ class GeoCodeSourceDetailView(
 
 
 class GeoCodeMethodListView(GISListCreateAPIView):
+
     """
     Lists and creates Geo-Code collection methods
 
@@ -98,6 +104,7 @@ class GeoCodeMethodListView(GISListCreateAPIView):
 
 class GeoCodeMethodDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular Geo-Code Collectiom method
     """
@@ -107,6 +114,7 @@ class GeoCodeMethodDetailView(
 
 
 class FacilityCoordinatesListView(GISListCreateAPIView):
+
     """
     Lists and creates facility coordinates
 
@@ -146,11 +154,12 @@ class FacilityCoordinatesListView(GISListCreateAPIView):
                 facility__ward__constituency=constituency)
 
         result = [fc.json_features for fc in queryset]
-        return Response(data=result)
+        return views.Response(data=result)
 
 
 class FacilityCoordinatesDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular facility coordinates details
     """
@@ -164,6 +173,7 @@ class FacilityCoordinatesDetailView(
 
 class FacilityCoordinatesCreationAndListing(
         BufferCooridinatesMixin, GISListCreateAPIView):
+
     """
     Lists and creates facility coordinates
 
@@ -200,12 +210,13 @@ class FacilityCoordinatesCreationAndListing(
         else:
             self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(
+        return views.Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class FacilityCoordinatesCreationAndDetail(
         BufferCooridinatesMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Lists and creates facility coordinates
 
@@ -228,6 +239,7 @@ class FacilityCoordinatesCreationAndDetail(
 
 
 class WorldBorderListView(GISListCreateAPIView):
+
     """
     Lists and creates ward borders
 
@@ -249,6 +261,7 @@ class WorldBorderListView(GISListCreateAPIView):
 
 class WorldBorderDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular ward border details
     """
@@ -257,6 +270,7 @@ class WorldBorderDetailView(
 
 
 class CountyBoundaryListView(GISListCreateAPIView):
+
     """
     Lists and creates county boundaries
 
@@ -279,6 +293,7 @@ class CountyBoundaryListView(GISListCreateAPIView):
 
 class CountyBoundaryDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular county boundary detail
     """
@@ -288,6 +303,7 @@ class CountyBoundaryDetailView(
 
 class CountyBoundView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular county boundary detail
     """
@@ -296,6 +312,7 @@ class CountyBoundView(
 
 
 class ConstituencyBoundaryListView(GISListCreateAPIView):
+
     """
     Lists and creates constituency boundaries
 
@@ -318,6 +335,7 @@ class ConstituencyBoundaryListView(GISListCreateAPIView):
 
 class ConstituencyBoundaryDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular constituency boundary detail
     """
@@ -327,6 +345,7 @@ class ConstituencyBoundaryDetailView(
 
 class ConstituencyBoundView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular constituency boundary detail
     """
@@ -335,6 +354,7 @@ class ConstituencyBoundView(
 
 
 class WardBoundaryListView(GISListCreateAPIView):
+
     """
     Lists and creates ward boundaries
 
@@ -357,8 +377,68 @@ class WardBoundaryListView(GISListCreateAPIView):
 
 class WardBoundaryDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
     """
     Retrieves a particular ward boundary detail
     """
     queryset = WardBoundary.objects.all()
     serializer_class = WardBoundaryDetailSerializer
+
+
+class IkoWapi(views.APIView):
+
+    """
+    A utility service to determine adminitrative unit based on geocoordinates.
+    """
+
+    def _validate_lat_long(self, lat, lng):
+        err_dict = {}
+
+        if not isinstance(lng, six.integer_types + (float, )):
+            err_dict["longitude"] = ["Invalid longitude provided"]
+
+        if not isinstance(lat, six.integer_types + (float, )):
+            err_dict["latitude"] = ["Invalid latitude provided"]
+
+        return err_dict
+
+    def post(self, request, *args, **kwargs):
+        lng, lat = request.data.get('longitude'), request.data.get('latitude')
+
+        err = self._validate_lat_long(lat, lng)
+        if err:
+            return views.Response(err, status=400)
+
+        try:
+            point = Point(x=lng, y=lat)
+        except TypeError:
+            return views.Response({
+                rest_settings.api_settings.NON_FIELD_ERRORS_KEY: [
+                    "Invalid value given for longitude or latitude",
+                ],
+            }, status=400)
+
+        try:
+            data = WardBoundary.objects.values(
+                'area', 'area__name',
+                'area__constituency', 'area__constituency__name',
+                'area__constituency__county',
+                'area__constituency__county__name',
+            ).get(mpoly__contains=point)
+
+            return views.Response(OrderedDict([
+                ('ward', data['area']),
+                ('ward_name', data['area__name']),
+                ('constituency', data['area__constituency']),
+                ('constituency_name', data['area__constituency__name']),
+                ('county', data['area__constituency__county']),
+                ('county_name', data['area__constituency__county__name'])
+            ]))
+        except WardBoundary.DoesNotExist:
+            return views.Response({
+                rest_settings.api_settings.NON_FIELD_ERRORS_KEY: [
+                    "No ward contains the coordinates ({}, {})".format(
+                        lng, lat
+                    )
+                ]
+            }, status=400)

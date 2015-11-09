@@ -40,6 +40,7 @@ class TestCountryBoundariesView(LoginMixin, APITestCase):
 
 
 class TestCountyBoundaryViews(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestCountyBoundaryViews, self).setUp()
         self.list_url = reverse('api:mfl_gis:county_boundaries_list')
@@ -53,6 +54,7 @@ class TestCountyBoundaryViews(LoginMixin, APITestCase):
 
 
 class TestConstituencyBoundaryViews(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestConstituencyBoundaryViews, self).setUp()
         self.list_url = reverse('api:mfl_gis:constituency_boundaries_list')
@@ -66,6 +68,7 @@ class TestConstituencyBoundaryViews(LoginMixin, APITestCase):
 
 
 class TestWardBoundaryViews(LoginMixin, APITestCase):
+
     def setUp(self):
         super(TestWardBoundaryViews, self).setUp()
         self.list_url = reverse('api:mfl_gis:ward_boundaries_list')
@@ -87,6 +90,7 @@ class TestWardBoundaryViews(LoginMixin, APITestCase):
 
 
 class TestFacilityCoordinatesListing(LoginMixin, APITestCase):
+
     def test_list_facility_coordinates(self):
         url = reverse("api:mfl_gis:facility_coordinates_list")
         ward = mommy.make(Ward)
@@ -118,6 +122,7 @@ class TestFacilityCoordinatesListing(LoginMixin, APITestCase):
 
 
 class TestPostingFacilityCoordinates(LoginMixin, APITestCase):
+
     def setUp(self):
         self.url = reverse("api:mfl_gis:facility_coordinates_simple_list")
         super(TestPostingFacilityCoordinates, self).setUp()
@@ -366,6 +371,7 @@ class TestPostingFacilityCoordinates(LoginMixin, APITestCase):
 
 
 class TestBoundaryBoundsView(LoginMixin, APITestCase):
+
     def test_get_county_boundary(self):
         boundary = mommy.make(CountyBoundary)
         url = reverse(
@@ -381,3 +387,34 @@ class TestBoundaryBoundsView(LoginMixin, APITestCase):
             kwargs={'pk': str(boundary.id)})
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+
+class TestIkoWapi(LoginMixin, APITestCase):
+    url = reverse("api:mfl_gis:ikowapi")
+
+    def test_invalid_lat_long(self):
+        resp = self.client.post(self.url, {
+            "longitude": "1.234",
+            "latitude": "32.234"
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn(resp.data, "longitude")
+        self.assertIn(resp.data, "latitude")
+
+    def test_invalid_lat(self):
+        resp = self.client.post(self.url, {
+            "longitude": 1.234,
+            "latitude": "32.234"
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertNotIn(resp.data, "longitude")
+        self.assertIn(resp.data, "latitude")
+
+    def test_invalid_long(self):
+        resp = self.client.post(self.url, {
+            "longitude": "1.234",
+            "latitude": 32.234
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn(resp.data, "longitude")
+        self.assertNotIn(resp.data, "latitude")
