@@ -1,3 +1,4 @@
+{% load mfl_none_filter %}
 {% load humanize %}
 
 <html>
@@ -11,7 +12,7 @@
 
     <hr>
         {% for x, y in value.items %}
-            <p><strong>{{x}}: </strong>{{y}}</p>
+            <p><strong>{{x}}: </strong>{{y | mfl_filter}}</p>
 
         {% endfor %}
     {% endfor %}
@@ -26,7 +27,7 @@
 
     {% for x, y in data.items %}
         {% if not y.0.items %}
-            <p><strong>{{x}}: </strong>{{y}}</p>
+            <p><strong>{{x}}: </strong>{{y | mfl_bool_none_date_filter}}</p>
 
         {%  else %}
                     <h4>{{x}}</h4>
@@ -36,7 +37,7 @@
                         <table>
                         {% for q, p in k.items %}
                         <tr>
-                            <td><strong>{{q}}: </strong>{{p}}</td>
+                            <td><strong>{{q}}: </strong>{{p | mfl_bool_none_date_filter}}</td>
                         </tr>
                         {% endfor %}
                     </table>
