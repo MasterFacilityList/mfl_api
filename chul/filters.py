@@ -14,7 +14,11 @@ from .models import (
     ChuUpdateBuffer
 )
 
-from common.filters.filter_shared import CommonFieldsFilterset
+
+from common.filters.filter_shared import (
+    CommonFieldsFilterset,
+    ListCharFilter)
+
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
@@ -61,10 +65,10 @@ class CommunityHealthUnitFilter(CommonFieldsFilterset):
                 Q(is_rejected=False) | Q(has_edits=False)
             )
     name = django_filters.CharFilter(lookup_type='icontains')
-    ward = django_filters.CharFilter(name='facility__ward')
-    constituency = django_filters.CharFilter(
+    ward = ListCharFilter(name='facility__ward')
+    constituency = ListCharFilter(
         name='facility__ward__constituency')
-    county = django_filters.CharFilter(
+    county = ListCharFilter(
         name='facility__ward__constituency__county')
 
     is_approved = django_filters.TypedChoiceFilter(
