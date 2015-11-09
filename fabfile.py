@@ -111,6 +111,8 @@ def load_demo_data_from_scratch(*args, **kwargs):
     manage('approve_facilities')
     manage('bootstrap', data_files_10)
     manage('bootstrap', data_files_11)
+    manage('update_hours_of_operation')
+    manage('link_officers_to_facilities')
 
 
 def load_gis_data(*args, **kwargs):

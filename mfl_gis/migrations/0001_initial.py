@@ -7,13 +7,14 @@ import common.models.base
 import django.db.models.deletion
 import django.utils.timezone
 from django.conf import settings
+import mfl_gis.models
 import uuid
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', 'admin_unit_codes'),
+        ('common', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('facilities', '0001_initial'),
     ]
@@ -86,6 +87,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'facility coordinates',
                 'verbose_name_plural': 'facility coordinates',
             },
+            bases=(mfl_gis.models.CoordinatesValidatorMixin, models.Model),
         ),
         migrations.CreateModel(
             name='GeoCodeMethod',
