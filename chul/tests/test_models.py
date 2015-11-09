@@ -29,6 +29,13 @@ class TestChuUpdateBuffer(TestCase):
         self.assertEquals(1, ChuUpdateBuffer.objects.count())
         self.assertEquals(chu_update.__str__(), chu_update.health_unit.name)
 
+    def test_chu_update_basic_not_edited(self):
+        chu_update = mommy.make(
+            ChuUpdateBuffer,
+            workers='[{"first_name": "jina"}]'
+        )
+        self.assertIsNone(chu_update.updates.get('basic'))
+
     def test_atleast_one_thing_editted(self):
         with self.assertRaises(ValidationError):
             mommy.make(
