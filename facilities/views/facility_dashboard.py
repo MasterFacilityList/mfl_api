@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.utils import timezone
+from django.db.models import Q
 
 from rest_framework.views import APIView, Response
 from common.models import County, Constituency, Ward
@@ -218,6 +219,21 @@ class DashBoard(QuerysetFilterMixin, APIView):
             list(set(list(updated_pending_approval) + list(newly_created)))
         )
 
+    def get_chus_pending_approval(self):
+        """
+        Get the number of CHUs pending approval
+        """
+
+        return CommunityHealthUnit.objects.filter(
+            Q(is_approved=False, is_rejected=False) |
+            Q(has_edits=True)).distinct().count()
+
+    def get_rejected_chus(self):
+        """
+        Get the number of CHUs that have been rejected
+        """
+        return CommunityHealthUnit.objects.filter(is_rejected=True).count()
+
     def get_rejected_facilities_count(self):
         return self.get_queryset().filter(rejected=True).count()
 
@@ -242,7 +258,9 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "recently_created_chus": self.get_recently_created_chus(),
             "pending_updates": self.facilities_pending_approval_count(),
             "rejected_facilities_count": self.get_rejected_facilities_count(),
-            "closed_facilities_count": self.get_closed_facilities_count()
+            "closed_facilities_count": self.get_closed_facilities_count(),
+            "rejected_chus": self.get_rejected_chus(),
+            "chus_pending_approval": self.get_chus_pending_approval()
 
         }
         fields = self.request.query_params.get("fields", None)
