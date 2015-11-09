@@ -309,7 +309,7 @@ class OfficerContactSerializer(
         model = OfficerContact
 
 
-class JobTitleSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+class JobTitleSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = JobTitle
@@ -392,6 +392,8 @@ class FacilitySerializer(
     date_approved = serializers.ReadOnlyField(
         source='latest_approval.created')
     latest_approval_or_rejection = serializers.ReadOnlyField()
+    sub_county_name = serializers.ReadOnlyField(
+        source='sub_county.name')
 
     class Meta(object):
         model = Facility
