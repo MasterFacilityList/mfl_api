@@ -388,7 +388,7 @@ class WardBoundaryDetailView(
 class IkoWapi(views.APIView):
 
     """
-    A utility service to determine adminitrative unit based on geocoordinates.
+    A utility service to determine administrative unit based on geocoordinates.
     """
 
     def _validate_lat_long(self, lat, lng):
@@ -411,7 +411,8 @@ class IkoWapi(views.APIView):
 
         try:
             point = Point(x=lng, y=lat)
-        except TypeError:
+        except TypeError:   # pragma: no cover
+            # this is one wiered edgecase
             return views.Response({
                 rest_settings.api_settings.NON_FIELD_ERRORS_KEY: [
                     "Invalid value given for longitude or latitude",
@@ -420,19 +421,24 @@ class IkoWapi(views.APIView):
 
         try:
             data = WardBoundary.objects.values(
-                'area', 'area__name',
+                'area', 'area__name', 'area__code',
                 'area__constituency', 'area__constituency__name',
+                'area__constituency__code',
                 'area__constituency__county',
                 'area__constituency__county__name',
+                'area__constituency__county__code',
             ).get(mpoly__contains=point)
 
             return views.Response(OrderedDict([
                 ('ward', data['area']),
                 ('ward_name', data['area__name']),
+                ('ward_code', data['area__code'])
                 ('constituency', data['area__constituency']),
                 ('constituency_name', data['area__constituency__name']),
+                ('constituency_code', data['area__constituency__code']),
                 ('county', data['area__constituency__county']),
-                ('county_name', data['area__constituency__county__name'])
+                ('county_name', data['area__constituency__county__name']),
+                ('county_code', data['area__constituency__county__code'])
             ]))
         except WardBoundary.DoesNotExist:
             return views.Response({

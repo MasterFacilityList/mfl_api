@@ -418,3 +418,23 @@ class TestIkoWapi(LoginMixin, APITestCase):
         self.assertEqual(resp.status_code, 400)
         self.assertIn(resp.data, "longitude")
         self.assertNotIn(resp.data, "latitude")
+
+    def test_find_ward_found(self):
+        mommy.make_recipe("mfl_gis.tests.ward_boundary_recipe")
+        resp = self.client.post(self.url, {
+            "longitude": 36.78378206656476,
+            "latitude": -1.2840274151085824
+        })
+        self.assertEqual(resp.status_code, 200)
+        for i in ['ward', 'ward_name', 'constituency', 'county']:
+            self.assertIn(resp.data, i)
+
+    def test_find_ward_not_found(self):
+        mommy.make_recipe("mfl_gis.tests.ward_boundary_recipe")
+        resp = self.client.post(self.url, {
+            "longitude": 3.780612,
+            "latitude": -1.275611
+        })
+        self.assertEqual(resp.status_code, 400)
+        for i in ['ward', 'ward_name', 'constituency', 'county']:
+            self.assertIn(resp.data, i)
