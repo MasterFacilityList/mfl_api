@@ -21,6 +21,7 @@ from .views import (
     FacilityCoordinatesCreationAndDetail,
     ConstituencyBoundView,
     CountyBoundView,
+    IkoWapi
 )
 
 
@@ -30,6 +31,9 @@ coordinates_cache_seconds = (60 * 60 * 24)
 
 urlpatterns = patterns(
     '',
+
+    url(r'^ikowapi/$', IkoWapi.as_view(), name='ikowapi'),
+
     url(r'^geo_code_sources/$',
         GeoCodeSourceListView.as_view(),
         name='geo_code_sources_list'),
