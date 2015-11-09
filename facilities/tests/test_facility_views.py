@@ -849,7 +849,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
             ],
             "rejected_facilities_count": 0,
             "recently_created_chus": 0,
-            "closed_facilities_count": 0
+            "closed_facilities_count": 0,
+            "rejected_chus": 0,
+            "chus_pending_approval": 0,
         }
         response = self.client.get(self.url)
 
@@ -915,7 +917,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
             ],
             "rejected_facilities_count": 0,
             "recently_created_chus": 0,
-            "closed_facilities_count": 0
+            "closed_facilities_count": 0,
+            "rejected_chus": 0,
+            "chus_pending_approval": 0,
         }
         response = self.client.get(self.url)
         self.assertEquals(
@@ -996,7 +1000,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
             ],
             "rejected_facilities_count": 0,
             "recently_created_chus": 0,
-            "closed_facilities_count": 0
+            "closed_facilities_count": 0,
+            "rejected_chus": 0,
+            "chus_pending_approval": 0,
         }
         response = self.client.get(self.url)
 
