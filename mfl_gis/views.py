@@ -432,13 +432,13 @@ class IkoWapi(views.APIView):
             return views.Response(OrderedDict([
                 ('ward', data['area']),
                 ('ward_name', data['area__name']),
-                ('ward_code', data['area__code'])
+                ('ward_code', data['area__code']),
                 ('constituency', data['area__constituency']),
                 ('constituency_name', data['area__constituency__name']),
                 ('constituency_code', data['area__constituency__code']),
                 ('county', data['area__constituency__county']),
                 ('county_name', data['area__constituency__county__name']),
-                ('county_code', data['area__constituency__county__code'])
+                ('county_code', data['area__constituency__county__code']),
             ]))
         except WardBoundary.DoesNotExist:
             return views.Response({

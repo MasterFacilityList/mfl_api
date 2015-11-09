@@ -387,3 +387,55 @@ class TestBoundaryBoundsView(LoginMixin, APITestCase):
             kwargs={'pk': str(boundary.id)})
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
+
+
+class TestIkoWapi(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestIkoWapi, self).setUp()
+        self.url = reverse("api:mfl_gis:ikowapi")
+
+    def test_invalid_lat_long(self):
+        resp = self.client.post(self.url, {
+            "longitude": "1.234",
+            "latitude": "32.234"
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("longitude", resp.data)
+        self.assertIn("latitude", resp.data, )
+
+    def test_invalid_lat(self):
+        resp = self.client.post(self.url, {
+            "longitude": 1.234,
+            "latitude": "32.234"
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertNotIn("longitude", resp.data)
+        self.assertIn("latitude", resp.data)
+
+    def test_invalid_long(self):
+        resp = self.client.post(self.url, {
+            "longitude": "1.234",
+            "latitude": 32.234
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("longitude", resp.data)
+        self.assertNotIn("latitude", resp.data)
+
+    def test_find_ward_found(self):
+        mommy.make_recipe("mfl_gis.tests.ward_boundary_recipe")
+        resp = self.client.post(self.url, {
+            "longitude": 36.78378206656476,
+            "latitude": -1.2840274151085824
+        })
+        self.assertEqual(resp.status_code, 200)
+        for i in ['ward', 'constituency', 'county']:
+            self.assertIn(i, resp.data)
+
+    def test_find_ward_not_found(self):
+        mommy.make_recipe("mfl_gis.tests.ward_boundary_recipe")
+        resp = self.client.post(self.url, {
+            "longitude": 3.780612,
+            "latitude": -1.275611
+        })
+        self.assertEqual(resp.status_code, 400)
