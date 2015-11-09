@@ -12,7 +12,7 @@
 
     <hr>
         {% for x, y in value.items %}
-            <p><strong>{{x}}: </strong>{{y | mfl_filter}}</p>
+            <p><strong>{{x}}: </strong>{{y | mfl_bool_none_date_filter}}</p>
 
         {% endfor %}
     {% endfor %}

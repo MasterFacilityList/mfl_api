@@ -84,7 +84,7 @@ Facility Details
         <span><span class="text-black fw-600">Code:</span> {{facility.code}}</span>
     </p>
     <p style="margin-top: -10px;">
-        <span><span class="text-black fw-600">Abbreviation:</span> {{facility.abbreviation}}</span>
+        <span><span class="text-black fw-600">Abbreviation:</span> {{facility.abbreviation | mfl_bool_none_date_filter}}</span>
     </p>
     <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Type:</span> {{facility.facility_type.name}}</span>
@@ -96,10 +96,10 @@ Facility Details
         <span><span class="text-black fw-600">Owner:</span> {{facility.owner.name}}</span>
     </p>
     <p style="margin-top: -10px;">
-        <span><span class="text-black fw-600">No. of Beds:</span> {{facility.number_of_beds}}</span>
+        <span><span class="text-black fw-600">No. of Beds:</span> {{facility.number_of_beds | mfl_bool_none_date_filter}}</span>
     </p>
     <p style="margin-top: -10px;">
-        <span><span class="text-black fw-600">No. of Cots:</span> {{facility.number_of_cots}}</span>
+        <span><span class="text-black fw-600">No. of Cots:</span> {{facility.number_of_cots | mfl_bool_none_date_filter}}</span>
     </p>
     <p style="margin-top: -10px;">
         <span><span class="text-black fw-600">Open on Public Holidays: </span> {{facility.open_public_holidays | yesno}}</span>
@@ -133,19 +133,19 @@ Facility Details
     </h4>
     <div style="padding: 2px; margin-top: -35px;">
         <p>
-            <span><span class="text-black fw-600">Source:</span> {{facility_coordinates.source.name}}</span>
+            <span><span class="text-black fw-600">Source:</span> {{facility_coordinates.source.name | mfl_bool_none_date_filter}}</span>
         </p>
         <p style="margin-top: -10px;">
-            <span><span class="text-black fw-600">Method:</span> {{facility_coordinates.method.name}}</span>
+            <span><span class="text-black fw-600">Method:</span> {{facility_coordinates.method.name | mfl_bool_none_date_filter}}</span>
         </p>
         <p style="margin-top: -10px;">
-            <span><span class="text-black fw-600">Longitude:</span> {{longitude}}</span>
+            <span><span class="text-black fw-600">Longitude:</span> {{longitude | mfl_bool_none_date_filter}}</span>
         </p>
         <p style="margin-top: -10px;">
-            <span><span class="text-black fw-600">Latitude:</span> {{latitude}}</span>
+            <span><span class="text-black fw-600">Latitude:</span> {{latitude | mfl_bool_none_date_filter}}</span>
         </p>
         <p style="margin-top: -10px;">
-            <span><span class="text-black fw-600">Directions:</span> {{facility.location_desc}}</span>
+            <span><span class="text-black fw-600">Directions:</span> {{facility.location_desc mfl_bool_none_date_filter}}</span>
         </p>
     </div>
 </div>
@@ -172,13 +172,13 @@ Facility Details
     </h4>
     <div style="padding: 2px; margin-top: -35px;">
         <p>
-            <span style="margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.officer_in_charge.name}}</span>
+            <span style="margin-bottom: 5px;"><span class="text-black fw-600">Name:</span> {{facility.officer_in_charge.name |mfl_bool_none_date_filter}}</span>
         </p>
         <p style="margin-top : -10px;">
-            <span style="margin-bottom: 5px;"><span class="text-black fw-600">Registration/License No. :</span> {{facility.officer_in_charge.reg_no}}</span>
+            <span style="margin-bottom: 5px;"><span class="text-black fw-600">Registration/License No. :</span> {{facility.officer_in_charge.reg_no | mfl_bool_none_date_filter}}</span>
         </p>
         <p style="margin-top : -10px;">
-            <span><span class="text-black fw-600">Title:</span> {{facility.officer_in_charge.title_name}}</span>
+            <span><span class="text-black fw-600">Title:</span> {{facility.officer_in_charge.title_name | mfl_bool_none_date_filter}}</span>
         </p>
     </div>
 </div>
@@ -215,7 +215,7 @@ Facility Details
                 {{chu.status.name}}
                 </td>
                 <td>
-                {{chu.households_monitored}}
+                {{chu.households_monitored | mfl_bool_none_date_filter}}
                 </td>
             </tr>
             {% endfor %}
