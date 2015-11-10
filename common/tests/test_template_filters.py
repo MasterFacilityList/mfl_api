@@ -6,7 +6,7 @@ class TestTemplateTags(TestCase):
 
     def test_true_filter(self):
         template = (
-            "{% load mfl_filter %}"
+            "{% load mfl_none_filter %}"
             "{{attribute | mfl_bool_none_date_filter}}"
         )
         context = Context({
@@ -18,7 +18,7 @@ class TestTemplateTags(TestCase):
 
     def test_false_filter(self):
         template = (
-            "{% load mfl_filter %}"
+            "{% load mfl_none_filter %}"
             "{{attribute | mfl_bool_none_date_filter}}"
         )
         context = Context({
@@ -30,7 +30,7 @@ class TestTemplateTags(TestCase):
 
     def test_none_filter(self):
         template = (
-            "{% load mfl_filter %}"
+            "{% load mfl_none_filter %}"
             "{{attribute | mfl_bool_none_date_filter}}"
         )
         context = Context({
@@ -42,7 +42,7 @@ class TestTemplateTags(TestCase):
 
     def test_datetime_filter(self):
         template = (
-            "{% load mfl_filter %}"
+            "{% load mfl_none_filter %}"
             "{{attribute | mfl_bool_none_date_filter}}"
         )
         context = Context({
@@ -54,7 +54,7 @@ class TestTemplateTags(TestCase):
 
     def test_date_filter(self):
         template = (
-            "{% load mfl_filter %}"
+            "{% load mfl_none_filter %}"
             "{{attribute | mfl_bool_none_date_filter}}"
         )
         context = Context({
@@ -66,7 +66,7 @@ class TestTemplateTags(TestCase):
 
     def test_non_filterable_value(self):
         template = (
-            "{% load mfl_filter %}"
+            "{% load mfl_none_filter %}"
             "{{attribute | mfl_bool_none_date_filter}}"
         )
         context = Context({
