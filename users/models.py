@@ -122,6 +122,14 @@ class JobTitle(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta(object):
+        permissions = (
+            (
+                "view_jobtitle",
+                "Can view job title"
+            ),
+        )
+
 
 @encoding.python_2_unicode_compatible
 class MflUser(AbstractBaseUser, PermissionsMixin):
