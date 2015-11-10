@@ -36,6 +36,13 @@ def approve_chus(chu):
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        p = Pool(5)
-        p.map(update_facility, Facility.objects.all())
-        p.map(approve_chus, CommunityHealthUnit.objects.all())
+        def do_approve_facilities():
+            for facility in Facility.objects.all():
+                update_facility(facility)
+
+        def approve_community_units():
+            q = Pool(5)
+            q.map(approve_chus, CommunityHealthUnit.objects.all())
+
+        do_approve_facilities()
+        approve_community_units()
