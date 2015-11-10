@@ -41,7 +41,7 @@ function run_e2e(){
     cd $old_pwd
 }
 
-exit 0 # disable e2e for now until things stabilize
 
 run_backend
+sleep 10  # some time for things to start up
 run_e2e
