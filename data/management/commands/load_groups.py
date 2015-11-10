@@ -20,6 +20,7 @@ class Command(BaseCommand):
             for gp in group_permissions:
 
                 g = Group.objects.get(**gp["group"])
+                g.permissions.clear()
                 for perm in gp["permissions"]:
                     g.permissions.add(Permission.objects.get(**perm))
 
