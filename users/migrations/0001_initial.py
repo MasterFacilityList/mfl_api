@@ -71,6 +71,10 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
                 ('updated', models.DateTimeField(default=django.utils.timezone.now)),
             ],
+             options={
+                'ordering': ('-created',),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+            },
         ),
         migrations.CreateModel(
             name='MFLOAuthApplication',
