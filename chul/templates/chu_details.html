@@ -1,3 +1,4 @@
+{% load mfl_none_filter %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -93,16 +94,16 @@ Community Health Unit Details
         <span><span class="text-black fw-600">Ward:</span> {{chu.facility_ward}}</span>
     </p>
     <p class="word-wrap" style="margin-top: -10px;">
-        <span><span class="text-black fw-600">Location:</span> {{chu.location}}</span>
+        <span><span class="text-black fw-600">Location:</span> {{chu.location | mfl_bool_none_date_filter}}</span>
     </p>
     <p class="word-wrap" style="margin-top: -10px;">
-        <span><span class="text-black fw-600">Date established:</span> {{chu.date_established}}</span>
+        <span><span class="text-black fw-600">Date established:</span> {{chu.date_established | mfl_bool_none_date_filter}}</span>
     </p>
     <p class="word-wrap" style="margin-top: -10px;">
-        <span><span class="text-black fw-600">Date operational:</span> {{chu.date_operational}}</span>
+        <span><span class="text-black fw-600">Date operational:</span> {{chu.date_operational | mfl_bool_none_date_filter}}</span>
     </p>
     <p class="word-wrap" style="margin-top: -10px;">
-        <span><span class="text-black fw-600">Households monitored:</span> {{chu.households_monitored}}</span>
+        <span><span class="text-black fw-600">Households monitored:</span> {{chu.households_monitored | mfl_bool_none_date_filter}}</span>
     </p>
     <p class="word-wrap" style="margin-top: -10px;">
         <span><span class="text-black fw-600">Status:</span> {{chu.status_name}}</span>
