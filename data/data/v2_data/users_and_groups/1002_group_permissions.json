@@ -990,6 +990,9 @@
         },
         "permissions": [
             {
+                "codename": "view_churating"
+            },
+            {
                 "codename": "view_chuservice"
             },
             {
@@ -1188,6 +1191,9 @@
             "name": "Sub County Health Records Information Officer"
         },
         "permissions": [
+            {
+                "codename": "view_churating"
+            },
             {
                 "codename": "view_chuservice"
             },
@@ -1617,6 +1623,9 @@
             "name": "National Administrators"
         },
         "permissions": [
+            {
+                "codename": "view_churating"
+            },
 
             {
                 "codename": "add_chuservice"

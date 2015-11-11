@@ -341,12 +341,12 @@ class TestCommunityHealthUnitView(ViewTestBase):
         url = self.url + "{}".format("?pending_approval=true")
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(2, response.data.get('count'))
+        self.assertEquals(1, response.data.get('count'))
 
         url = self.url + "{}".format("?pending_approval=false")
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
-        self.assertEquals(3, response.data.get('count'))
+        self.assertEquals(2, response.data.get('count'))
 
     def test_pdf_details(self):
         health_unit = mommy.make(CommunityHealthUnit)
