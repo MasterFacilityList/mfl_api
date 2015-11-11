@@ -21,7 +21,8 @@ from .views import (
     FacilityCoordinatesCreationAndDetail,
     ConstituencyBoundView,
     CountyBoundView,
-    IkoWapi
+    IkoWapi,
+    DrilldownBase
 )
 
 
@@ -31,6 +32,12 @@ coordinates_cache_seconds = (60 * 60 * 24)
 
 urlpatterns = patterns(
     '',
+
+    url(
+        r'^drilldown/$',
+        cache_page(7*24*60*60)(DrilldownBase.as_view()),
+        name='drilldown'
+    ),
 
     url(r'^ikowapi/$', IkoWapi.as_view(), name='ikowapi'),
 

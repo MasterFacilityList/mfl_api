@@ -21,6 +21,7 @@ from facilities.models import FacilityUpdates
 
 
 class BufferCooridinatesMixin(object):
+
     def buffer_coordinates(self, facility, validated_data):
 
         facility = Facility.objects.get(id=facility.id) if hasattr(

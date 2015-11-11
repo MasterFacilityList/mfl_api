@@ -17,7 +17,8 @@ from .models import (
     WorldBorder,
     CountyBoundary,
     ConstituencyBoundary,
-    WardBoundary
+    WardBoundary,
+    DrilldownView
 )
 from .filters import (
     GeoCodeSourceFilter,
@@ -448,3 +449,41 @@ class IkoWapi(views.APIView):
                     )
                 ]
             }, status=400)
+
+
+class DrilldownBase(views.APIView):
+
+    """Gets all facility geocoordinates (highly slimmed down)
+    """
+
+    def _fetch_data(self, params=None):
+        qset = FacilityCoordinates.objects.values_list(
+            'facility__name',
+            'coordinates',
+            'facility__ward__constituency__county__code',
+            'facility__ward__constituency__code',
+            'facility__ward__code',
+        ).filter(
+            facility__is_published=True, facility__closed=False,
+            facility__rejected=False, facility__approved=True,
+            facility__is_classified=False
+        )
+        if params:
+            return qset.filter(**params)
+        return [
+            [i[0], i[1].x, i[1].y, i[2], i[3], i[4]]
+            for i in qset
+        ]
+
+    def _fetch_data_2(self, params=None):
+        qset = DrilldownView.objects.values_list(
+            'name', 'lat', 'lng', 'county', 'constituency', 'ward',
+        )
+        if params:
+            return qset.filter(**params)
+        return qset
+
+    def get(self, request, *args, **kwargs):
+        if request.query_params.get('mat'):
+            return views.Response(self._fetch_data_2())
+        return views.Response(self._fetch_data())

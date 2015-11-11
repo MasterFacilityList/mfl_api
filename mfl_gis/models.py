@@ -1,7 +1,9 @@
-import reversion
 import logging
 import json
+import uuid
+import reversion
 
+from django.db import models as db_models
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models import Union
 from django.contrib.gis.geos import MultiPolygon
@@ -398,3 +400,16 @@ class WardBoundary(AdministrativeUnitBoundary):
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'
+
+
+class DrilldownView(db_models.Model):
+    county = db_models.PositiveIntegerField()
+    constituency = db_models.PositiveIntegerField()
+    ward = db_models.PositiveIntegerField()
+    name = db_models.CharField(max_length=255)
+    lat = db_models.FloatField()
+    lng = db_models.FloatField()
+
+    class Meta(object):
+        managed = False
+        db_table = 'mfl_gis_drilldown'
