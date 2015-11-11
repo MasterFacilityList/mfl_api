@@ -185,7 +185,11 @@ def index_instance(obj, index_name=INDEX_NAME):
     elastic_api = ElasticAPI()
     if confirm_model_is_indexable(obj.__class__):
         data = serialize_model(obj)
-        return elastic_api.index_document(index_name, data)
+
+        return elastic_api.index_document(index_name, data) if data else \
+            LOGGER.info("something weired occurred while indexing {}".format(
+                obj))
+
     else:
         LOGGER.info(
             "Instance of model {} skipped for indexing as it should not be"

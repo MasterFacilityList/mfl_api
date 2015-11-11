@@ -1,6 +1,6 @@
 <p>Medical Officer of Health </p>
 <p>{{facility.ward.county.name}} </p>
-<p>Date: {{report_date}}</p>
+<p>Date:  {% now "d F Y" %}</p>
 
 <p>TO: {{facility.current_regulatory_status.regulating_body.name}} </p>
 <p>P.O BOX {{regulating_body.regulating_body.postal_address.contact.contact}}</p>

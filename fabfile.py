@@ -83,7 +83,6 @@ def load_demo_data(*args, **kwargs):
 
 def load_demo_data_from_scratch(*args, **kwargs):
     """Loads demo data for testing purpose. Do not use this in production"""
-    manage("createinitialrevisions")
     data_files_1 = os.path.join(BASE_DIR, 'data/data/setup/*.json')
     data_files_2 = os.path.join(BASE_DIR, 'data/data/admin_units/*.json')
     data_files_3 = os.path.join(BASE_DIR, 'data/data/v2_data/*.json')
@@ -111,6 +110,9 @@ def load_demo_data_from_scratch(*args, **kwargs):
     manage('approve_facilities')
     manage('bootstrap', data_files_10)
     manage('bootstrap', data_files_11)
+    manage('update_hours_of_operation')
+    manage('link_officers_to_facilities')
+    manage("createinitialrevisions")
 
 
 def load_gis_data(*args, **kwargs):

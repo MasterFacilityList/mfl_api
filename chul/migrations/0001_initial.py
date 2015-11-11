@@ -14,9 +14,9 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0003_remove_documentupload_public'),
-        ('facilities', '0010_regulatorsync'),
+        ('common', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('facilities', '0001_initial'),
     ]
 
     operations = [
@@ -92,7 +92,7 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('name', models.CharField(max_length=100)),
                 ('code', common.fields.SequenceField(unique=True, blank=True)),
-                ('households_monitored', models.PositiveIntegerField(default=0)),
+                ('households_monitored', models.PositiveIntegerField(help_text=b'The number of house holds a CHU is in-charge of')),
                 ('date_established', models.DateField(default=django.utils.timezone.now)),
                 ('date_operational', models.DateField(null=True, blank=True)),
                 ('is_approved', models.BooleanField(default=False)),
@@ -109,9 +109,9 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-updated', '-created'),
-                'default_permissions': ('add', 'change', 'delete', 'view'),
                 'abstract': False,
                 'permissions': (('view_rejected_chus', 'Can see the rejected community health units'), ('can_approve_chu', 'Can approve or reject a Community Health Unit')),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
             },
             bases=(common.models.base.SequenceMixin, models.Model),
         ),
@@ -130,7 +130,7 @@ class Migration(migrations.Migration):
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'permissions': ('view_communityhealthunitcontact', 'Can view communty health_unit contact'),
+                'permissions': (('view_communityhealthunitcontact', 'Can view community health_unit contact'),),
             },
         ),
         migrations.CreateModel(
@@ -144,16 +144,15 @@ class Migration(migrations.Migration):
                 ('search', models.CharField(max_length=255, null=True, editable=False, blank=True)),
                 ('first_name', models.CharField(max_length=50)),
                 ('last_name', models.CharField(max_length=50, null=True, blank=True)),
-                ('id_number', models.PositiveIntegerField(unique=True, null=True, blank=True)),
                 ('is_incharge', models.BooleanField(default=False)),
                 ('created_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
-                ('health_unit', models.ForeignKey(related_name='health_unit_workers', to='chul.CommunityHealthUnit', help_text=b'The health unit the worker is incharge of')),
+                ('health_unit', models.ForeignKey(related_name='health_unit_workers', to='chul.CommunityHealthUnit', help_text=b'The health unit the worker is in-charge of')),
                 ('updated_by', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-updated', '-created'),
-                'abstract': False,
                 'default_permissions': ('add', 'change', 'delete', 'view'),
+                'abstract': False,
             },
         ),
         migrations.CreateModel(
@@ -233,11 +232,11 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.PROTECT, default=common.models.base.get_default_system_user_id, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterUniqueTogether(
-            name='communityhealthworker',
-            unique_together=set([('id_number', 'health_unit')]),
-        ),
-        migrations.AlterUniqueTogether(
             name='communityhealthunitcontact',
             unique_together=set([('health_unit', 'contact')]),
+        ),
+        migrations.AlterUniqueTogether(
+            name='communityhealthunit',
+            unique_together=set([('name', 'facility')]),
         ),
     ]

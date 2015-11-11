@@ -384,12 +384,15 @@ class ChuUpdateBuffer(AbstractBase):
             contact.pop('contact_type', None)
             contact.pop('contact_id', None)
             contact.pop('contact_type_name', None)
+            contact['contact'] = contact['contact']
+            contact_data = {
+                'contact_type_id': contact['contact_type_id'],
+                'contact': contact['contact']
+            }
             try:
+                contact_obj = Contact.objects.get(**contact_data)
+            except Contact.DoesNotExist:
                 contact_obj = Contact.objects.create(**contact)
-            except ValidationError:
-                contact_obj = Contact.objects.get(
-                    contact=contact['contact'],
-                    contact_type_id=contact['contact_type_id'])
             try:
                 CommunityHealthUnitContact.objects.filter(
                     contact=contact_obj)[0]
@@ -403,7 +406,8 @@ class ChuUpdateBuffer(AbstractBase):
     @property
     def updates(self):
         updates = {}
-        updates['basic'] = json.loads(self.basic)
+        if self.basic:
+            updates['basic'] = json.loads(self.basic)
         if self.contacts:
             updates['contacts'] = json.loads(self.contacts)
         if self.workers:

@@ -1,5 +1,6 @@
 import reversion
 import datetime
+import uuid
 
 from django.db import models
 from django.utils import timezone, encoding
@@ -90,6 +91,46 @@ class MflUserManager(BaseUserManager):
             MflUserManager, self).get_queryset().filter(deleted=False)
 
 
+@reversion.register
+@encoding.python_2_unicode_compatible
+class JobTitle(models.Model):
+
+    """
+    This is the job title names of the officers in-charge of facilities.
+
+    For example, Nursing Officer In-Charge, Medical Superintendent, and
+    Hospital Director. This should not be confused with the professional
+     (Nursing Officer I) or Job Group title.Officer
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(
+        max_length=100, unique=True,
+        help_text="A short name for the job title")
+    abbreviation = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text="The short name for the title")
+    description = models.TextField(
+        null=True, blank=True,
+        help_text="A short summary of the job title")
+    search = models.TextField(
+        null=True, blank=True,
+        help_text='A dummy field to enable search on the model through a'
+        ' filter')
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+    class Meta(object):
+        permissions = (
+            (
+                "view_jobtitle",
+                "Can view job title"
+            ),
+        )
+
+
 @encoding.python_2_unicode_compatible
 class MflUser(AbstractBaseUser, PermissionsMixin):
 
@@ -107,6 +148,10 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=60, blank=True)
     other_names = models.CharField(max_length=80, null=False, blank=True,
                                    default="")
+    job_title = models.ForeignKey(
+        JobTitle, null=True, blank=True,
+        help_text="The job title of the user e.g County Reproductive "
+        "Health Officer")
     username = models.CharField(
         max_length=60, null=True,
         blank=True, unique=True,

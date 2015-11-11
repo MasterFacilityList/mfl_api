@@ -12,6 +12,7 @@ from django.core.management import BaseCommand
 from django.core.exceptions import ValidationError
 
 from facilities.models import Facility
+from chul.models import CommunityHealthUnit
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +28,21 @@ def update_facility(facility):
         logger.debug(error, exc_info=True)
 
 
+def approve_chus(chu):
+    chu.is_approved = True
+    chu.save()
+
+
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        p = Pool(5)
-        p.map(update_facility, Facility.objects.all())
+        def do_approve_facilities():
+            for facility in Facility.objects.all():
+                update_facility(facility)
+
+        def approve_community_units():
+            q = Pool(5)
+            q.map(approve_chus, CommunityHealthUnit.objects.all())
+
+        do_approve_facilities()
+        approve_community_units()

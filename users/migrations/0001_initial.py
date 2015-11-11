@@ -10,6 +10,7 @@ import oauth2_provider.generators
 import django.utils.timezone
 from django.conf import settings
 import django.core.validators
+import uuid
 
 
 class Migration(migrations.Migration):
@@ -54,10 +55,26 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('regulator', models.BooleanField(default=False, help_text=b'Are the regulators in this group?')),
                 ('national', models.BooleanField(default=False, help_text=b'Will the users in this group see all facilities in the country?')),
-                ('administrator', models.BooleanField(default=False, help_text=b'Will the users in this group administor user rights?')),
+                ('administrator', models.BooleanField(default=False, help_text=b'Will the users in this group administrator user rights?')),
                 ('county_level', models.BooleanField(default=False, help_text=b'Will the user be creating sub county users?')),
                 ('sub_county_level', models.BooleanField(default=False, help_text=b'Will the user be creating users below the sub county level users?')),
             ],
+        ),
+        migrations.CreateModel(
+            name='JobTitle',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
+                ('name', models.CharField(help_text=b'A short name for the job title', unique=True, max_length=100)),
+                ('abbreviation', models.CharField(help_text=b'The short name for the title', max_length=100, null=True, blank=True)),
+                ('description', models.TextField(help_text=b'A short summary of the job title', null=True, blank=True)),
+                ('search', models.TextField(help_text=b'A dummy field to enable search on the model through a filter', null=True, blank=True)),
+                ('created', models.DateTimeField(default=django.utils.timezone.now)),
+                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
+            ],
+             options={
+                'ordering': ('-created',),
+                'default_permissions': ('add', 'change', 'delete', 'view'),
+            },
         ),
         migrations.CreateModel(
             name='MFLOAuthApplication',
@@ -99,6 +116,11 @@ class Migration(migrations.Migration):
             model_name='mfluser',
             name='groups',
             field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups'),
+        ),
+        migrations.AddField(
+            model_name='mfluser',
+            name='job_title',
+            field=models.ForeignKey(blank=True, to='users.JobTitle', help_text=b'The job title of the user e.g County Reproductive Health Officer', null=True),
         ),
         migrations.AddField(
             model_name='mfluser',
