@@ -1623,6 +1623,9 @@
             "name": "National Administrators"
         },
         "permissions": [
+            {
+                "codename": "view_churating"
+            },
 
             {
                 "codename": "add_chuservice"
