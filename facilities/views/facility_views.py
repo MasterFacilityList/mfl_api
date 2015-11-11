@@ -24,7 +24,8 @@ from ..models import (
     Option,
     JobTitle,
     FacilityDepartment,
-    RegulatorSync
+    RegulatorSync,
+    FacilityEportExcelMaterialView
 )
 
 from ..serializers import (
@@ -41,7 +42,8 @@ from ..serializers import (
     OptionGroupSerializer,
     CreateFacilityOfficerMixin,
     FacilityLevelChangeReasonSerializer,
-    RegulatorSyncSerializer
+    RegulatorSyncSerializer,
+    FacilityEportExcelMaterialViewSerializer
 )
 
 from ..filters import (
@@ -328,13 +330,13 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     active  -- Boolean is the record active<br>
     deleted -- Boolean is the record deleted<br>
     """
-    queryset = Facility.objects.all()
-    serializer_class = FacilitySerializer
-    filter_class = FacilityFilter
-    ordering_fields = (
-        'name', 'code', 'number_of_beds', 'number_of_cots',
-        'operation_status', 'ward', 'owner',
-    )
+    queryset = FacilityEportExcelMaterialView.objects.all()
+    serializer_class = FacilityEportExcelMaterialViewSerializer
+    # filter_class = FacilityFilter
+    # ordering_fields = (
+    #     'name', 'code', 'number_of_beds', 'number_of_cots',
+    #     'operation_status', 'ward', 'owner',
+    # )
 
 
 class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):

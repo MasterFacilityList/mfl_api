@@ -1752,3 +1752,44 @@ class RegulatorSync(AbstractBase):
 
     def __str__(self):
         return self.name
+
+
+class FacilityEportExcelMaterialView(models.Model):
+    class Meta(object):
+        managed = False
+        db_table = 'facilities_excel_export'
+    id = models.CharField(primary_key=True, max_length=100)
+    name = models.CharField(
+        max_length=100, help_text='Name of the facility')
+    code = models.CharField(
+        max_length=100, help_text='The facility code')
+    registration_number = models.CharField(
+        max_length=100,
+        help_text='The facilities registration_number')
+    keph_level = models.CharField(
+        max_length=100,
+        help_text='The facility\'s keph-level')
+    facility_type_name = models.CharField(
+        max_length=100,
+        help_text='The facility type')
+    county = models.CharField(
+        max_length=100,
+        help_text='Name of the facility\'s county')
+    constituency = models.CharField(
+        max_length=100,
+        help_text='The name of the facility\'s constituency ')
+    ward_name = models.CharField(
+        max_length=100,
+        help_text='Name of the facility\'s ward')
+    owner_name = models.CharField(
+        max_length=100,
+        help_text='The facility\'s owner')
+    regulatory_body_name = models.CharField(
+        max_length=100,
+        help_text='The name of the facility\'s regulator')
+    beds = models.CharField(
+        max_length=100,
+        help_text='The number of beds in the facility')
+    cots = models.CharField(
+        max_length=100,
+        help_text='The number of cots in the facility')
