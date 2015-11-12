@@ -25,7 +25,7 @@ from ..models import (
     JobTitle,
     FacilityDepartment,
     RegulatorSync,
-    FacilityEportExcelMaterialView
+    FacilityExportExcelMaterialView
 )
 
 from ..serializers import (
@@ -43,7 +43,7 @@ from ..serializers import (
     CreateFacilityOfficerMixin,
     FacilityLevelChangeReasonSerializer,
     RegulatorSyncSerializer,
-    FacilityEportExcelMaterialViewSerializer
+    FacilityExportExcelMaterialViewSerializer
 )
 
 from ..filters import (
@@ -58,7 +58,7 @@ from ..filters import (
     OptionGroupFilter,
     FacilityLevelChangeReasonFilter,
     RegulatorSyncFilter,
-    FacilityEportExcelMaterialViewFilter
+    FacilityExportExcelMaterialViewFilter
 
 )
 
@@ -354,9 +354,9 @@ class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
 
 
 class FacilityExportMaterialListView(generics.ListAPIView):
-    queryset = FacilityEportExcelMaterialView.objects.all()
-    serializer_class = FacilityEportExcelMaterialViewSerializer
-    filter_class = FacilityEportExcelMaterialViewFilter
+    queryset = FacilityExportExcelMaterialView.objects.all()
+    serializer_class = FacilityExportExcelMaterialViewSerializer
+    filter_class = FacilityExportExcelMaterialViewFilter
 
 
 class FacilityDetailView(

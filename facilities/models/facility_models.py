@@ -11,6 +11,7 @@ from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
+from django.contrib.postgres.fields import ArrayField
 
 from users.models import JobTitle  # NOQA
 from common.models import (
@@ -1754,10 +1755,12 @@ class RegulatorSync(AbstractBase):
         return self.name
 
 
-class FacilityEportExcelMaterialView(models.Model):
+class FacilityExportExcelMaterialView(models.Model):
+
     class Meta(object):
         managed = False
         db_table = 'facilities_excel_export'
+
     id = models.CharField(primary_key=True, max_length=100)
     name = models.CharField(
         max_length=100, help_text='Name of the facility')
@@ -1766,7 +1769,7 @@ class FacilityEportExcelMaterialView(models.Model):
     registration_number = models.CharField(
         max_length=100,
         help_text='The facilities registration_number')
-    keph_level = models.CharField(
+    keph_level_name = models.CharField(
         max_length=100,
         help_text='The facility\'s keph-level')
     facility_type_name = models.CharField(
@@ -1796,3 +1799,32 @@ class FacilityEportExcelMaterialView(models.Model):
     search = models.CharField(
         max_length=255, null=True, blank=True,
         help_text='A dummy search field')
+    county_name = models.CharField(max_length=100, null=True, blank=True)
+    constituency_name = models.CharField(max_length=100, null=True, blank=True)
+    ward_name = models.CharField(max_length=100, null=True, blank=True)
+    keph_level = models.CharField(max_length=100, null=True, blank=True)
+    facility_type = models.CharField(max_length=100, null=True, blank=True)
+    owner_type = models.CharField(max_length=100, null=True, blank=True)
+    owner = models.CharField(max_length=100, null=True, blank=True)
+    operation_status = models.CharField(
+        max_length=100, null=True, blank=True)
+    operation_status_name = models.CharField(
+        max_length=100, null=True, blank=True)
+    open_whole_day = models.BooleanField(
+        default=False,
+        help_text="Does the facility operate 24 hours a day")
+    open_public_holidays = models.BooleanField(
+        default=False,
+        help_text="Is the facility open on public holidays?")
+    open_weekends = models.BooleanField(
+        default=False,
+        help_text="Is the facility_open during weekends?")
+    open_late_night = models.BooleanField(
+        default=False,
+        help_text="Indicates if a facility is open late night e.g up-to 11 pm")
+    services = ArrayField(
+        models.UUIDField(null=True, blank=True), null=True, blank=True
+    )
+    categories = ArrayField(
+        models.UUIDField(null=True, blank=True), null=True, blank=True
+    )

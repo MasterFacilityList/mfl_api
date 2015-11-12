@@ -1,4 +1,5 @@
 import django_filters
+import uuid
 
 from django import forms
 from django.utils.encoding import force_str
@@ -59,6 +60,9 @@ class ListFilterMixin(object):
     For an example, look at ListCharFilter, ListIntegerFilter below.
     """
 
+    _lookup_type = 'in'
+    _customize_fxn = lambda v: v
+
     def sanitize(self, value_list):
         """
         remove empty items
@@ -66,13 +70,15 @@ class ListFilterMixin(object):
         return [v for v in value_list if v != u'']
 
     def customize(self, value):
-        return value
+        return self._customize_fxn(value)
 
     def filter(self, qs, value):
         multiple_vals = value.split(u",")
         multiple_vals = self.sanitize(multiple_vals)
         multiple_vals = map(self.customize, multiple_vals)
-        actual_filter = django_filters.fields.Lookup(multiple_vals, 'in')
+        actual_filter = django_filters.fields.Lookup(
+            multiple_vals, self._lookup_type
+        )
         return super(ListFilterMixin, self).filter(qs, actual_filter)
 
 
@@ -84,14 +90,18 @@ class ListCharFilter(ListFilterMixin, django_filters.CharFilter):
     pass
 
 
+class ListUUIDFilter(ListFilterMixin, django_filters.CharFilter):
+    _lookup_type = 'contains'
+    _customize_fxn = uuid.UUID
+
+
 class ListIntegerFilter(ListCharFilter):
 
     """
     Enable filtering of comma separated integers.
     """
 
-    def customize(self, value):
-        return int(value)
+    _customize_fxn = int
 
 
 class CommonFieldsFilterset(django_filters.FilterSet):
