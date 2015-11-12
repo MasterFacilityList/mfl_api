@@ -6,6 +6,8 @@ def  create_export_excel_view(apps, schema_editor):
     from django.db import connection
     cursor = connection.cursor()
     sql = """
+        DROP MATERIALIZED VIEW IF EXISTS facilities_excel_export;
+
         CREATE MATERIALIZED VIEW facilities_excel_export AS
         SELECT facilities_facility.id as id, facilities_facility.search as search,
         facilities_facility.name as name, facilities_facility.code as code,
@@ -24,6 +26,21 @@ def  create_export_excel_view(apps, schema_editor):
         LEFT JOIN common_ward ON  common_ward.id = facilities_facility.ward_id
         LEFT JOIN common_constituency ON  common_constituency.id = common_ward.constituency_id
         LEFT JOIN common_county ON  common_county.id = common_constituency.county_id;
+
+        DROP TRIGGER IF EXISTS refresh_mat_view ON facilities_facility;
+        create or replace function refresh_mat_view()
+        returns trigger language plpgsql
+        as $$
+        begin
+            refresh materialized view facilities_excel_export;
+            return null;
+        end $$;
+
+
+        create trigger refresh_mat_view
+        after insert or update or delete or truncate
+        on facilities_facility for each statement
+        execute procedure refresh_mat_view();
         """
     cursor = cursor.execute(sql)
 
