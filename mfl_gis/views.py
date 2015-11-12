@@ -1,5 +1,7 @@
 import six
+import json
 
+from django.contrib.gis.db.models import Union
 from django.contrib.gis.geos import Point
 from rest_framework import generics, views, status
 from rest_framework import settings as rest_settings
@@ -451,7 +453,7 @@ class IkoWapi(views.APIView):
             }, status=400)
 
 
-class DrilldownBase(views.APIView):
+class DrillFacilityCoords(views.APIView):
 
     """Gets all facility geocoordinates (highly slimmed down)
     """
@@ -487,3 +489,34 @@ class DrilldownBase(views.APIView):
         if request.query_params.get('mat'):
             return views.Response(self._fetch_data_2())
         return views.Response(self._fetch_data())
+
+
+class DrillCountryBorders(views.APIView):
+    model = WorldBorder
+
+
+class DrillBorderBase(views.APIView):
+
+    def get_queryset(self, code):
+        return self.model.objects.filter(area__code=code)
+
+    def get(self, request, code, *args, **kwargs):
+        return views.Response(
+            json.loads(
+                self.model.objects.aggregate(
+                        Union('mpoly')
+                    )['mpoly__union'].geojson
+                )
+            )
+
+
+class DrillCountyBorders(DrillBorderBase):
+    model = CountyBoundary
+
+
+class DrillConstBorders(DrillBorderBase):
+    model = ConstituencyBoundary
+
+
+class DrillWardBorders(DrillBorderBase):
+    model = WardBoundary
