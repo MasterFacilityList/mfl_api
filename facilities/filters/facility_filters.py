@@ -35,16 +35,25 @@ from ..models import (
     OptionGroup,
     FacilityLevelChangeReason,
     FacilityDepartment,
-    RegulatorSync
+    RegulatorSync,
+    FacilityEportExcelMaterialView
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
     ListIntegerFilter,
     ListCharFilter,
-    NullFilter
+    NullFilter,
+    SearchFilter
 )
 
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
+
+
+class FacilityEportExcelMaterialViewFilter(django_filters.FilterSet):
+    search = SearchFilter(name='search')
+
+    class Meta(object):
+        model = FacilityEportExcelMaterialView
 
 
 class RegulatorSyncFilter(CommonFieldsFilterset):

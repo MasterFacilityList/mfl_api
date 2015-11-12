@@ -7,7 +7,7 @@ def  create_export_excel_view(apps, schema_editor):
     cursor = connection.cursor()
     sql = """
         CREATE MATERIALIZED VIEW facilities_excel_export AS
-        SELECT facilities_facility.id as id,
+        SELECT facilities_facility.id as id, facilities_facility.search as search,
         facilities_facility.name as name, facilities_facility.code as code,
         facilities_facility.registration_number, facilities_facility.number_of_beds as beds,
         facilities_facility.number_of_cots as cots, common_ward.name as ward_name,

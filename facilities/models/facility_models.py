@@ -1793,3 +1793,6 @@ class FacilityEportExcelMaterialView(models.Model):
     cots = models.CharField(
         max_length=100,
         help_text='The number of cots in the facility')
+    search = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text='A dummy search field')
