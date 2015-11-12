@@ -357,10 +357,6 @@ class FacilityExportMaterialListView(generics.ListAPIView):
     queryset = FacilityEportExcelMaterialView.objects.all()
     serializer_class = FacilityEportExcelMaterialViewSerializer
     filter_class = FacilityEportExcelMaterialViewFilter
-    # ordering_fields = (
-    #     'name', 'code', 'number_of_beds', 'number_of_cots',
-    #     'operation_status', 'ward', 'owner',
-    # )
 
 
 class FacilityDetailView(
