@@ -19,7 +19,7 @@ from common.models import (
 )
 
 from ..models import (
-    FacilityEportExcelMaterialView,
+    FacilityExportExcelMaterialView,
     OwnerType,
     Owner,
     JobTitle,
@@ -1227,5 +1227,5 @@ class TestFacilityMaterializedModel(BaseTestCase):
     def test_query(self):
         self.assertEquals(
             0,
-            FacilityEportExcelMaterialView.objects.count()
+            FacilityExportExcelMaterialView.objects.count()
         )
