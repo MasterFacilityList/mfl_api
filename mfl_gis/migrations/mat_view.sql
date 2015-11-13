@@ -1,6 +1,8 @@
 
 CREATE MATERIALIZED VIEW mfl_gis_drilldown AS
- SELECT st_x(mfl_gis_facilitycoordinates.coordinates) AS lat,
+ SELECT
+    mfl_gis_facilitycoordinates.id AS id,
+    st_x(mfl_gis_facilitycoordinates.coordinates) AS lat,
     st_y(mfl_gis_facilitycoordinates.coordinates) AS lng,
     facilities_facility.name,
     common_county.code AS county,

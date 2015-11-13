@@ -402,6 +402,7 @@ class WardBoundary(AdministrativeUnitBoundary):
 
 
 class DrilldownView(db_models.Model):
+    id = db_models.UUIDField(primary_key=True)
     county = db_models.PositiveIntegerField()
     constituency = db_models.PositiveIntegerField()
     ward = db_models.PositiveIntegerField()
