@@ -502,12 +502,11 @@ class DrillCountyBorders(DrillBorderBase):
     parent_model = CountyBoundary
 
     def _get_meta(self):
-        v = self.parent_model.objects.values('area__name', 'area__code').get(
-            code=self._get_code()
-        )
+        v = self.parent_model.objects.get(code=self._get_code())
         return {
-            "name": v.get('area__name'),
-            "code": v.get('area__code')
+            "name": v.name,
+            "code": v.code,
+            "bound": v.bound
         }
 
     def get_queryset(self):

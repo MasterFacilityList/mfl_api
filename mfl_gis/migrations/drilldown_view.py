@@ -6,7 +6,9 @@ import os
 from django.db import migrations
 
 
-with open(os.path.dirname(__file__)+'/mat_view.sql') as f:
+fname = os.path.join(os.path.dirname(__file__), 'mat_view.sql')
+
+with open(fname) as f:
     mat_view_sql = f.read()
 
 
