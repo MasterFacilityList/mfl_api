@@ -260,7 +260,9 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "rejected_facilities_count": self.get_rejected_facilities_count(),
             "closed_facilities_count": self.get_closed_facilities_count(),
             "rejected_chus": self.get_rejected_chus(),
-            "chus_pending_approval": self.get_chus_pending_approval()
+            "chus_pending_approval": self.get_chus_pending_approval(),
+            "total_chus": CommunityHealthUnit.objects.filter(
+                facility__in=self.get_queryset()).count()
 
         }
         fields = self.request.query_params.get("fields", None)

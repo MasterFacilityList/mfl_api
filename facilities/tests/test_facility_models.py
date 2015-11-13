@@ -19,6 +19,7 @@ from common.models import (
 )
 
 from ..models import (
+    FacilityExportExcelMaterialView,
     OwnerType,
     Owner,
     JobTitle,
@@ -1220,3 +1221,11 @@ class TestFacilityUpgrade(BaseTestCase):
         self.assertEquals(1, FacilityUpgrade.objects.count())
         facility_level_change.is_cancelled = True
         facility_level_change.save()
+
+
+class TestFacilityMaterializedModel(BaseTestCase):
+    def test_query(self):
+        self.assertEquals(
+            0,
+            FacilityExportExcelMaterialView.objects.count()
+        )

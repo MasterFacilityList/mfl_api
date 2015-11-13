@@ -202,9 +202,7 @@ class CountyBoundarySerializer(AbstractBoundarySerializer):
 
 
 class CountyBoundaryDetailSerializer(AbstractBoundarySerializer):
-    constituency_ids = serializers.ReadOnlyField()
     constituency_boundary_ids = serializers.ReadOnlyField()
-    facility_coordinates = serializers.ReadOnlyField()
     county_id = serializers.ReadOnlyField(source='area.id')
 
     class Meta(AbstractBoundarySerializer.Meta):
@@ -221,7 +219,6 @@ class CountyBoundSerializer(
 
 
 class ConstituencyBoundarySerializer(AbstractBoundarySerializer):
-    ward_ids = serializers.ReadOnlyField()
     ward_boundary_ids = serializers.ReadOnlyField()
     constituency_id = serializers.CharField(source='area.id')
     geometry = serializers.ReadOnlyField()
@@ -236,9 +233,7 @@ class ConstituencyBoundarySerializer(AbstractBoundarySerializer):
 
 
 class ConstituencyBoundaryDetailSerializer(AbstractBoundarySerializer):
-    ward_ids = serializers.ReadOnlyField()
     ward_boundary_ids = serializers.ReadOnlyField()
-    facility_coordinates = serializers.ReadOnlyField()
     constituency_id = serializers.ReadOnlyField(source='area.id')
 
     class Meta(AbstractBoundarySerializer.Meta):
@@ -269,7 +264,6 @@ class WardBoundarySerializer(AbstractBoundarySerializer):
 
 class WardBoundaryDetailSerializer(AbstractBoundarySerializer):
     facility_coordinates = serializers.ReadOnlyField()
-    facility_ids = serializers.ReadOnlyField()
     ward_id = serializers.ReadOnlyField(source='area.id')
 
     class Meta(AbstractBoundarySerializer.Meta):

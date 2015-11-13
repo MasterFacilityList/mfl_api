@@ -391,12 +391,6 @@ class WardBoundary(AdministrativeUnitBoundary):
     def __str__(self):
         return self.name
 
-    @property
-    def facility_ids(self):
-        return FacilityCoordinates.objects.filter(
-            coordinates__contained=self.mpoly
-        ).values_list('id', flat=True) if self and self.mpoly else []
-
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'
 

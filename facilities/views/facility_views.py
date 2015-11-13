@@ -6,7 +6,7 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
-from common.models import ContactType
+from common.models import ContactType, UserConstituency, UserCounty
 
 from ..models import (
     Facility,
@@ -24,7 +24,8 @@ from ..models import (
     Option,
     JobTitle,
     FacilityDepartment,
-    RegulatorSync
+    RegulatorSync,
+    FacilityExportExcelMaterialView
 )
 
 from ..serializers import (
@@ -41,7 +42,8 @@ from ..serializers import (
     OptionGroupSerializer,
     CreateFacilityOfficerMixin,
     FacilityLevelChangeReasonSerializer,
-    RegulatorSyncSerializer
+    RegulatorSyncSerializer,
+    FacilityExportExcelMaterialViewSerializer
 )
 
 from ..filters import (
@@ -55,7 +57,8 @@ from ..filters import (
     KephLevelFilter,
     OptionGroupFilter,
     FacilityLevelChangeReasonFilter,
-    RegulatorSyncFilter
+    RegulatorSyncFilter,
+    FacilityExportExcelMaterialViewFilter
 
 )
 
@@ -90,7 +93,9 @@ class QuerysetFilterMixin(object):
                 self.request.user.county \
                 and hasattr(self.queryset.model, 'ward'):
             self.queryset = self.queryset.filter(
-                ward__constituency__county=self.request.user.county)
+                ward__constituency__county__in=[
+                    uc.county for uc in UserCounty.objects.filter(
+                        user=self.request.user)])
 
         elif self.request.user.regulator and hasattr(
                 self.queryset.model, 'regulatory_body'):
@@ -102,7 +107,10 @@ class QuerysetFilterMixin(object):
         elif self.request.user.constituency and hasattr(
                 self.queryset.model, 'ward'):
             self.queryset = self.queryset.filter(
-                ward__constituency=self.request.user.constituency)
+                ward__constituency__in=[
+                    uc.constituency
+                    for uc in UserConstituency.objects.filter(
+                        user=self.request.user)])
         else:
             self.queryset = self.queryset
 
@@ -343,6 +351,12 @@ class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
         'code', 'name', 'county', 'constituency', 'facility_type_name',
         'owner_type_name', 'is_published'
     )
+
+
+class FacilityExportMaterialListView(generics.ListAPIView):
+    queryset = FacilityExportExcelMaterialView.objects.all()
+    serializer_class = FacilityExportExcelMaterialViewSerializer
+    filter_class = FacilityExportExcelMaterialViewFilter
 
 
 class FacilityDetailView(
