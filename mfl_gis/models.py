@@ -1,6 +1,5 @@
 import logging
 import json
-import uuid
 import reversion
 
 from django.db import models as db_models

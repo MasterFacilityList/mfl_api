@@ -5,7 +5,6 @@ from rest_framework import generics, views, status
 from rest_framework import settings as rest_settings
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.compat import OrderedDict
-from rest_framework_extensions.etag.decorators import etag
 
 from facilities.models import Facility
 from common.views import AuditableDetailViewMixin
