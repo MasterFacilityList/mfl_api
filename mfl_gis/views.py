@@ -1,12 +1,11 @@
 import six
-import json
 
-from django.contrib.gis.db.models import Union
 from django.contrib.gis.geos import Point
 from rest_framework import generics, views, status
 from rest_framework import settings as rest_settings
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.compat import OrderedDict
+from rest_framework_extensions.etag.decorators import etag
 
 from facilities.models import Facility
 from common.views import AuditableDetailViewMixin
@@ -47,7 +46,10 @@ from .serializers import (
     FacilityCoordinateSimpleSerializer,
     CountyBoundSerializer,
     ConstituencyBoundSerializer,
-    BufferCooridinatesMixin
+    BufferCooridinatesMixin,
+    DrillCountyBoundarySerializer,
+    DrillConstituencyBoundarySerializer,
+    DrillWardBoundarySerializer
 )
 from .pagination import GISPageNumberPagination
 from .generics import GISListCreateAPIView
@@ -491,32 +493,68 @@ class DrillFacilityCoords(views.APIView):
         return views.Response(self._fetch_data())
 
 
-class DrillCountryBorders(views.APIView):
-    model = WorldBorder
+class DrillBorderBase(generics.ListAPIView):
+    lookup_field = 'code'
+    pagination_class = GISPageNumberPagination
+
+    def _get_meta(self):
+        return {}
+
+    def _get_code(self):
+        return self.kwargs.get(self.lookup_field)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return views.Response({
+            "meta": self._get_meta(),
+            "geojson": serializer.data
+        })
 
 
-class DrillBorderBase(views.APIView):
+class DrillCountryBorders(DrillBorderBase):
+    model = CountyBoundary
+    serializer_class = DrillCountyBoundarySerializer
 
-    def get_queryset(self, code):
-        return self.model.objects.filter(area__code=code)
+    def _get_meta(self):
+        return {"name": "KENYA"}
 
-    def get(self, request, code, *args, **kwargs):
-        return views.Response(
-            json.loads(
-                self.model.objects.aggregate(
-                        Union('mpoly')
-                    )['mpoly__union'].geojson
-                )
-            )
+    def get_queryset(self):
+        return self.model.objects.all()
 
 
 class DrillCountyBorders(DrillBorderBase):
-    model = CountyBoundary
-
-
-class DrillConstBorders(DrillBorderBase):
     model = ConstituencyBoundary
+    serializer_class = DrillConstituencyBoundarySerializer
+    parent_model = CountyBoundary
+
+    def _get_meta(self):
+        v = self.parent_model.objects.values('area__name', 'area__code').get(
+            code=self._get_code()
+        )
+        return {
+            "name": v.get('area__name'),
+            "code": v.get('area__code')
+        }
+
+    def get_queryset(self):
+        return self.model.objects.filter(
+            area__county__code=self._get_code()
+        )
 
 
-class DrillWardBorders(DrillBorderBase):
+class DrillConstituencyBorders(DrillCountyBorders):
     model = WardBoundary
+    serializer_class = DrillWardBoundarySerializer
+    parent_model = ConstituencyBoundary
+
+    def get_queryset(self):
+        return self.model.objects.filter(
+            area__constituency__code=self._get_code()
+        )
+
+
+class DrillWardBorders(WardBoundaryDetailView):
+    lookup_field = 'code'
+    lookup_url_kwarg = 'code'
+    serializer_class = DrillWardBoundarySerializer

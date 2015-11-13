@@ -5,7 +5,7 @@ from django.db import transaction
 from django.utils import six
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from common.serializers import AbstractFieldsMixin
+from common.serializers import AbstractFieldsMixin, PartialResponseMixin
 from facilities.models import Facility
 from .models import (
     GeoCodeSource,
@@ -273,4 +273,44 @@ class WardBoundaryDetailSerializer(AbstractBoundarySerializer):
     ward_id = serializers.ReadOnlyField(source='area.id')
 
     class Meta(AbstractBoundarySerializer.Meta):
+        model = WardBoundary
+
+
+class DrillBoundarySerializer(GeoFeatureModelSerializer):
+    id = serializers.ReadOnlyField(source='area.code')
+    name = serializers.ReadOnlyField(source='area.name')
+    geometry = serializers.ReadOnlyField()
+    center = serializers.ReadOnlyField()
+    facility_count = serializers.ReadOnlyField()
+    density = serializers.ReadOnlyField()
+    bound = serializers.ReadOnlyField()
+
+    class Meta(object):
+        geo_field = 'geometry'
+        fields = (
+            'geometry', 'center', 'bound', 'id',
+            'facility_count', 'name',
+        )
+
+    def get_fields(self):
+        p = PartialResponseMixin()
+        origi_fields = super(DrillBoundarySerializer, self).get_fields()
+        return p.strip_fields(self.context.get('request'), origi_fields)
+
+
+class DrillCountyBoundarySerializer(DrillBoundarySerializer):
+
+    class Meta(DrillBoundarySerializer.Meta):
+        model = CountyBoundary
+
+
+class DrillConstituencyBoundarySerializer(DrillBoundarySerializer):
+
+    class Meta(DrillBoundarySerializer.Meta):
+        model = ConstituencyBoundary
+
+
+class DrillWardBoundarySerializer(DrillBoundarySerializer):
+
+    class Meta(DrillBoundarySerializer.Meta):
         model = WardBoundary

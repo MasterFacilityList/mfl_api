@@ -26,7 +26,7 @@ from .views import (
     DrillFacilityCoords,
     DrillCountryBorders,
     DrillCountyBorders,
-    DrillConstBorders,
+    DrillConstituencyBorders,
     DrillWardBorders,
 )
 
@@ -54,12 +54,12 @@ urlpatterns = patterns(
         name='drilldown_county'
     ),
     url(
-        r'^drilldown/constituency/(?P<code>\d{1,2})/$',
-        cache_page(7*24*60*60)(DrillConstBorders.as_view()),
+        r'^drilldown/constituency/(?P<code>\d{1,3})/$',
+        cache_page(7*24*60*60)(DrillConstituencyBorders.as_view()),
         name='drilldown_const'
     ),
     url(
-        r'^drilldown/ward/(?P<code>\d{1,2})/$',
+        r'^drilldown/ward/(?P<code>\d{1,3})/$',
         cache_page(7*24*60*60)(DrillWardBorders.as_view()),
         name='drilldown_ward'
     ),
