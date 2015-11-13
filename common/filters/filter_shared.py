@@ -60,8 +60,11 @@ class ListFilterMixin(object):
     For an example, look at ListCharFilter, ListIntegerFilter below.
     """
 
+    def _format_value(self, value):
+        return value
+
     _lookup_type = 'in'
-    _customize_fxn = lambda v: v   # NOQA
+    _customize_fxn = _format_value
 
     def sanitize(self, value_list):
         """
@@ -91,6 +94,9 @@ class ListCharFilter(ListFilterMixin, django_filters.CharFilter):
 
 
 class ListUUIDFilter(ListFilterMixin, django_filters.CharFilter):
+    """
+    Enable filtering a list of UUUIDs in an array field
+    """
     _lookup_type = 'contains'
     _customize_fxn = uuid.UUID
 
