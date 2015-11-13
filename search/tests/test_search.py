@@ -11,6 +11,7 @@ from django.contrib.auth import get_user_model
 from model_mommy import mommy
 
 from facilities.models import Facility, FacilityApproval
+
 from facilities.serializers import FacilitySerializer
 from common.models import County, Constituency, UserConstituency, UserCounty
 from common.tests import ViewTestBase
@@ -204,6 +205,22 @@ class TestSearchFunctions(ViewTestBase):
         facility = mommy.make(Facility, name='Kanyakini')
         index_instance(facility, 'test_index')
         url = url + "?search={}".format('Kanyakini')
+
+        response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+        self.assertIsInstance(response.data.get('results'), list)
+
+        self.elastic_search_api.delete_index('test_index')
+
+    def test_search_facility_using_material_view(self):
+        self.elastic_search_api = ElasticAPI()
+        self.elastic_search_api.setup_index(index_name='test_index')
+
+        facility = mommy.make(Facility, name='Facility ya kutest material')
+        url = reverse('api:facilities:material')
+        index_instance(facility, 'test_index')
+        url = url + "?search={}".format('material')
 
         response = self.client.get(url)
 
