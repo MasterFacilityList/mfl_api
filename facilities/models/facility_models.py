@@ -13,7 +13,6 @@ from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
 from django.contrib.postgres.fields import ArrayField
 
-from users.models import JobTitle  # NOQA
 from common.models import (
     AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town,
     County
@@ -193,7 +192,7 @@ class FacilityStatus(AbstractBase):
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="A short name respresenting the operanation status"
+        help_text="A short name representing the operation status"
         " e.g OPERATIONAL")
     description = models.TextField(
         null=True, blank=True,
@@ -1757,29 +1756,30 @@ class RegulatorSync(AbstractBase):
 
 class FacilityExportExcelMaterialView(models.Model):
 
-    class Meta(object):
-        managed = False
-        db_table = 'facilities_excel_export'
+    """
+    Django's Interface to the facility material view.
 
-    id = models.CharField(primary_key=True, max_length=100)
+    This speeds up fetching facilities
+    """
+
+    id = models.UUIDField(primary_key=True)
     name = models.CharField(
         max_length=100, help_text='Name of the facility')
-    code = models.CharField(
-        max_length=100, help_text='The facility code')
+    code = models.IntegerField(help_text='The facility code')
     registration_number = models.CharField(
         max_length=100,
         help_text='The facilities registration_number')
-    keph_level_name = models.CharField(
-        max_length=100,
+    keph_level_name = models.UUIDField(
+        null=True, blank=True,
         help_text='The facility\'s keph-level')
     facility_type_name = models.CharField(
         max_length=100,
         help_text='The facility type')
-    county = models.CharField(
-        max_length=100,
+    county = models.UUIDField(
+        null=True, blank=True,
         help_text='Name of the facility\'s county')
-    constituency = models.CharField(
-        max_length=100,
+    constituency = models.UUIDField(
+        null=True, blank=True,
         help_text='The name of the facility\'s constituency ')
     ward_name = models.CharField(
         max_length=100,
@@ -1790,11 +1790,9 @@ class FacilityExportExcelMaterialView(models.Model):
     regulatory_body_name = models.CharField(
         max_length=100,
         help_text='The name of the facility\'s regulator')
-    beds = models.CharField(
-        max_length=100,
+    beds = models.IntegerField(
         help_text='The number of beds in the facility')
-    cots = models.CharField(
-        max_length=100,
+    cots = models.IntegerField(
         help_text='The number of cots in the facility')
     search = models.CharField(
         max_length=255, null=True, blank=True,
@@ -1805,9 +1803,8 @@ class FacilityExportExcelMaterialView(models.Model):
     keph_level = models.CharField(max_length=100, null=True, blank=True)
     facility_type = models.CharField(max_length=100, null=True, blank=True)
     owner_type = models.CharField(max_length=100, null=True, blank=True)
-    owner = models.CharField(max_length=100, null=True, blank=True)
-    operation_status = models.CharField(
-        max_length=100, null=True, blank=True)
+    owner = models.UUIDField(null=True, blank=True)
+    operation_status = models.UUIDField(null=True, blank=True)
     operation_status_name = models.CharField(
         max_length=100, null=True, blank=True)
     open_whole_day = models.BooleanField(
@@ -1828,3 +1825,7 @@ class FacilityExportExcelMaterialView(models.Model):
     categories = ArrayField(
         models.UUIDField(null=True, blank=True), null=True, blank=True
     )
+
+    class Meta(object):
+        managed = False
+        db_table = 'facilities_excel_export'

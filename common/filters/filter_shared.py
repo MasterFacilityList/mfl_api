@@ -61,7 +61,7 @@ class ListFilterMixin(object):
     """
 
     _lookup_type = 'in'
-    _customize_fxn = lambda v: v
+    _customize_fxn = lambda v: v   # NOQA
 
     def sanitize(self, value_list):
         """
