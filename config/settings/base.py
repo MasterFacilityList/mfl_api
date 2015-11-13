@@ -97,15 +97,15 @@ INSTALLED_APPS = (
 # This was forced by the need to override rest_framework templates in common
 # It is a list because order matters
 LOCAL_APPS = [
-    'users',
-    'common',
-    'facilities',
-    'chul',
+    # 'users',
+    # 'common',
+    # 'facilities',
+    # 'chul',
     'mfl_gis',
-    'data_bootstrap',
-    'data',
-    'reporting',
-    'search',
+    # 'data_bootstrap',
+    # 'data',
+    # 'reporting',
+    # 'search',
 ]
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
@@ -491,3 +491,12 @@ if env('STORAGE_BACKEND'):
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
+
+
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'

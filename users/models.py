@@ -16,10 +16,12 @@ from django.conf import settings
 from django.template import Context, loader
 from django.core.mail import EmailMultiAlternatives
 
+from celery.decorators import task
 from oauth2_provider.models import AbstractApplication, AccessToken
 from oauth2_provider.settings import oauth2_settings
 
 
+@task
 def send_email_on_signup(user, user_password):
     html_email_template = loader.get_template(
         "registration/registration_success.html")

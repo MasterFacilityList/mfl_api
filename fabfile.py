@@ -78,7 +78,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 def load_demo_data(*args, **kwargs):
     """Loads data through fixture"""
-    manage("loaddata", "mfl_fixture.json")
+    manage('index_material_records')
 
 
 def load_demo_data_from_scratch(*args, **kwargs):

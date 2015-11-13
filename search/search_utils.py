@@ -9,6 +9,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.db.models import get_app, get_models
 
+from celery.decorators import task
+
 from .index_settings import INDEX_SETTINGS
 
 ELASTIC_URL = settings.SEARCH.get('ELASTIC_URL')
@@ -181,6 +183,7 @@ def serialize_model(obj):
         }
 
 
+@task
 def index_instance(obj, index_name=INDEX_NAME):
     elastic_api = ElasticAPI()
     if confirm_model_is_indexable(obj.__class__):

@@ -3,6 +3,7 @@ from django.db.models import get_app, get_models
 from django.conf import settings
 
 from search.search_utils import index_instance, confirm_model_is_indexable
+from mfl_gis.models import DrillDown
 
 
 class Command(BaseCommand):
@@ -22,6 +23,9 @@ class Command(BaseCommand):
         for app_name in apps_lists:
             app = get_app(app_name)
             for model in get_models(app):
+                if model == DrillDown:
+                    import pdb
+                    pdb.set_trace()
                 if model and confirm_model_is_indexable(model):
                     all_instances = model.objects.all()[0:100] \
                         if options.get('test') else model.objects.all()
