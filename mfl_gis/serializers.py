@@ -312,5 +312,25 @@ class DrillConstituencyBoundarySerializer(DrillBoundarySerializer):
 
 class DrillWardBoundarySerializer(DrillBoundarySerializer):
 
-    class Meta(DrillBoundarySerializer.Meta):
+    county_name = serializers.ReadOnlyField(
+        source='area.constituency.county.name'
+    )
+    county_code = serializers.ReadOnlyField(
+        source='area.constituency.county.code'
+    )
+    constituency_name = serializers.ReadOnlyField(
+        source='area.constituency.name'
+    )
+    constituency_code = serializers.ReadOnlyField(
+        source='area.constituency.code'
+    )
+
+    class Meta(object):
+        geo_field = 'geometry'
         model = WardBoundary
+        fields = (
+            'geometry', 'center', 'bound', 'id',
+            'facility_count', 'name',
+            'county_name', 'county_code',
+            'constituency_code', 'constituency_name'
+        )
