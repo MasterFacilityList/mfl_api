@@ -35,16 +35,51 @@ from ..models import (
     OptionGroup,
     FacilityLevelChangeReason,
     FacilityDepartment,
-    RegulatorSync
+    RegulatorSync,
+    FacilityExportExcelMaterialView
 )
 from common.filters.filter_shared import (
     CommonFieldsFilterset,
     ListIntegerFilter,
     ListCharFilter,
-    NullFilter
+    NullFilter,
+    SearchFilter, ListUUIDFilter
 )
 
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
+
+
+class FacilityExportExcelMaterialViewFilter(django_filters.FilterSet):
+
+    search = SearchFilter(name='search')
+    county = ListCharFilter(lookup_type='exact')
+    code = ListCharFilter(lookup_type='exact')
+    constituency = ListCharFilter(
+        name='ward__constituency', lookup_type='exact')
+    owner = ListCharFilter(lookup_type='exact')
+    owner_type = ListCharFilter(lookup_type='exact')
+    number_of_beds = ListIntegerFilter(lookup_type='exact')
+    number_of_cots = ListIntegerFilter(lookup_type='exact')
+    open_whole_day = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    open_late_night = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    open_weekends = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    open_public_holidays = django_filters.TypedChoiceFilter(
+        choices=BOOLEAN_CHOICES,
+        coerce=strtobool)
+    keph_level = ListCharFilter(lookup_type='exact')
+    facility_type = ListCharFilter(lookup_type='exact')
+    operation_status = ListCharFilter(lookup_type='exact')
+    service = ListUUIDFilter(lookup_type='exact', name='services')
+    service_category = ListUUIDFilter(lookup_type='exact', name='categories')
+
+    class Meta(object):
+        model = FacilityExportExcelMaterialView
 
 
 class RegulatorSyncFilter(CommonFieldsFilterset):
@@ -332,7 +367,7 @@ class FacilityFilter(CommonFieldsFilterset):
         name='ward__constituency__code', lookup_type='icontains')
     county = ListCharFilter(
         name='ward__constituency__county',
-        lookup_type='icontains')
+        lookup_type='exact')
     constituency = ListCharFilter(
         name='ward__constituency', lookup_type='icontains')
     owner = ListCharFilter(lookup_type='icontains')

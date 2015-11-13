@@ -46,10 +46,16 @@ from ..models import (
     OptionGroup,
     FacilityLevelChangeReason,
     FacilityDepartment,
-    RegulatorSync
+    RegulatorSync,
+    FacilityExportExcelMaterialView
 )
 
 from ..utils import CreateFacilityOfficerMixin
+
+
+class FacilityExportExcelMaterialViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FacilityExportExcelMaterialView
 
 
 class RegulatorSyncSerializer(
