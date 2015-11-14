@@ -49,17 +49,17 @@ urlpatterns = patterns(
         name='drilldown_country'
     ),
     url(
-        r'^drilldown/county/(?P<code>\d{1,2})/$',
+        r'^drilldown/county/(?P<code>\d{1,5})/$',
         cache_page(7*24*60*60)(DrillCountyBorders.as_view()),
         name='drilldown_county'
     ),
     url(
-        r'^drilldown/constituency/(?P<code>\d{1,3})/$',
+        r'^drilldown/constituency/(?P<code>\d{1,5})/$',
         cache_page(7*24*60*60)(DrillConstituencyBorders.as_view()),
         name='drilldown_const'
     ),
     url(
-        r'^drilldown/ward/(?P<code>\d{1,3})/$',
+        r'^drilldown/ward/(?P<code>\d{1,5})/$',
         cache_page(7*24*60*60)(DrillWardBorders.as_view()),
         name='drilldown_ward'
     ),
