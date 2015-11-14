@@ -234,3 +234,10 @@ def warmup_cache(
             requests.request("GET", url=_get_url(i), headers=gzipped_headers)
 
     prod_api(login())
+
+
+def start_celery_worker(*args, **kwargs):
+    """
+    Starts the celery worker
+    """
+    local("celery -A config worker -l info")
