@@ -15,3 +15,16 @@ CREATE MATERIALIZED VIEW mfl_gis_drilldown AS
      JOIN common_county ON ((common_constituency.county_id = common_county.id)))
   WHERE ((((((mfl_gis_facilitycoordinates.deleted = false) AND (facilities_facility.is_published = true)) AND (facilities_facility.rejected = false)) AND (facilities_facility.is_classified = false)) AND (facilities_facility.closed = false)) AND (facilities_facility.approved = true))
   ORDER BY mfl_gis_facilitycoordinates.updated DESC, mfl_gis_facilitycoordinates.created DESC;
+
+CREATE FUNCTION mfl_gis_refresh_drilldown_fxn()
+returns trigger language plpgsql
+AS $$
+BEGIN
+  REFRESH MATERIALIZED VIEW mfl_gis_drilldown;
+  return NULL;
+END $$;
+
+CREATE TRIGGER mfl_gis_refresh_drilldown_trigger
+AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+ON mfl_gis_facilitycoordinates FOR EACH STATEMENT
+EXECUTE PROCEDURE mfl_gis_refresh_drilldown_fxn();

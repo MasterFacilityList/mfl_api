@@ -461,8 +461,12 @@ class FacilityDetailSerializer(FacilitySerializer):
     coordinates = serializers.ReadOnlyField(source='coordinates.id')
     lat_long = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField(source='latest_approval.id')
-    county_code = serializers.ReadOnlyField(source='ward.constituency.county.code')
-    constituency_code = serializers.ReadOnlyField(source='ward.constituency.code')
+    county_code = serializers.ReadOnlyField(
+        source='ward.constituency.county.code'
+    )
+    constituency_code = serializers.ReadOnlyField(
+        source='ward.constituency.code'
+    )
     ward_code = serializers.ReadOnlyField(source='ward.code')
     service_catalogue_active = serializers.ReadOnlyField()
     facility_units = FacilityUnitSerializer(many=True, required=False)

@@ -945,6 +945,7 @@ class Facility(SequenceMixin, AbstractBase):
             return self.facility_coordinates_through
         except:
             return None
+
     @property
     def lat_long(self):
         coords = self.coordinates
