@@ -78,7 +78,7 @@ def psql(query, no_sudo=False, is_file=False):
 
 def load_demo_data(*args, **kwargs):
     """Loads data through fixture"""
-    manage('index_material_records')
+    manage("loaddata", "mfl_fixture.json")
 
 
 def load_demo_data_from_scratch(*args, **kwargs):
@@ -138,6 +138,7 @@ def remove_search_index(*args, **kwargs):
 def build_search_index(*args, **kwargs):
     """Creates the entire search index"""
     manage('build_index')
+    manage('index_material_records')
 
 
 def recreate_search_index(*args, **kwargs):

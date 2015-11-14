@@ -97,15 +97,15 @@ INSTALLED_APPS = (
 # This was forced by the need to override rest_framework templates in common
 # It is a list because order matters
 LOCAL_APPS = [
-    # 'users',
-    # 'common',
-    # 'facilities',
-    # 'chul',
+    'users',
+    'common',
+    'facilities',
+    'chul',
     'mfl_gis',
-    # 'data_bootstrap',
-    # 'data',
-    # 'reporting',
-    # 'search',
+    'data_bootstrap',
+    'data',
+    'reporting',
+    'search',
 ]
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
