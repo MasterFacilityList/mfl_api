@@ -949,7 +949,7 @@ class Facility(SequenceMixin, AbstractBase):
     def lat_long(self):
         coords = self.coordinates
         if coords:
-            return [coords.coordinates.x, coords.coordinates.y]
+            return [coords.coordinates.y, coords.coordinates.x]
         return None
 
     def validate_closing_date_supplied_on_close(self):
