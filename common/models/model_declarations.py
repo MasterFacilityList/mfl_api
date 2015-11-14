@@ -13,6 +13,17 @@ from .base import AbstractBase, SequenceMixin
 
 LOGGER = logging.getLogger(__file__)
 
+ERROR_TYPES = (
+    (
+        'SEARCH_INDEXING_ERROR',
+        'An error that occurred during search indexing'
+    ),
+    (
+        'SEND_EMAIL_ERROR',
+        'An error that occurs when sending a user email'
+    )
+)
+
 
 class UserAdminAreaLinkageMixin(object):
     def should_update_user_area(self, *args, **kwargs):
@@ -399,3 +410,25 @@ class DocumentUpload(AbstractBase):
 
     def __str__(self):
         return self.name
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class ErrorQueue(models.Model):
+    """
+    A model to store errors that occur when processing data
+    """
+    object_pk = models.CharField(max_length=100, null=True, blank=True)
+    app_label = models.CharField(max_length=100, null=True, blank=True)
+    model_name = models.CharField(max_length=100, null=True, blank=True)
+    resolved = models.BooleanField(default=False)
+    retries = models.IntegerField(default=0)
+    except_message = models.TextField(null=True, blank=True)
+    error_type = models.CharField(choices=ERROR_TYPES, max_length=100)
+
+    class Meta(object):
+        unique_together = ('object_pk', 'app_label', 'model_name')
+
+    def __str__(self):
+        return "{} - {} - {}".format(
+            self.object_pk, self.app_label, self.model_name)

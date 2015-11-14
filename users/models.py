@@ -16,18 +16,21 @@ from django.conf import settings
 from django.template import Context, loader
 from django.core.mail import EmailMultiAlternatives
 
-from celery.decorators import task
+from celery import shared_task
 from oauth2_provider.models import AbstractApplication, AccessToken
 from oauth2_provider.settings import oauth2_settings
 
 
-@task
-def send_email_on_signup(user, user_password):
+@shared_task(name='send_user_email')
+def send_email_on_signup(
+        user_id, email, first_name, employee_number, user_password=None):
     html_email_template = loader.get_template(
         "registration/registration_success.html")
     context = Context(
         {
-            "user": user,
+            "email": email,
+            "first_name": first_name,
+            "employee_number": employee_number,
             "user_password": user_password,
             "login_url": settings.FRONTEND_URL
         }
@@ -38,9 +41,20 @@ def send_email_on_signup(user, user_password):
     html_content = html_email_template.render(context)
     mfl_email = settings.EMAIL_HOST_USER
     msg = EmailMultiAlternatives(
-        subject, plain_text_content, mfl_email, [user.email])
+        subject, plain_text_content, mfl_email, [email])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except:
+        from common.models import ErrorQueue
+        error_object = ErrorQueue(
+            object_pk=user_id,
+            error_type="SEND_EMAIL_ERROR",
+            app_label='users',
+            model_name='MflUser',
+            except_message='Unable to send user email'
+        )
+        error_object.save()
 
 
 def check_password_strength(raw_password):
@@ -75,7 +89,8 @@ class MflUserManager(BaseUserManager):
                           is_staff=is_staff, is_active=True,
                           is_superuser=False, date_joined=now, **extra_fields)
         user.save(using=self._db)
-        send_email_on_signup(user, password)
+        send_email_on_signup.delay(
+            user.id, email, first_name, employee_number, password)
         return user
 
     def create_superuser(self, email, first_name, employee_number,

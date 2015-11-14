@@ -8,8 +8,9 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.db.models import get_app, get_models
-
-from celery.decorators import task
+from django.core.exceptions import ValidationError
+from common.models import ErrorQueue
+from celery import shared_task
 
 from .index_settings import INDEX_SETTINGS
 
@@ -27,6 +28,16 @@ def default(obj):
 
 
 class ElasticAPI(object):
+
+    @property
+    def _is_on(self):
+        url = ELASTIC_URL
+        try:
+            requests.get(url)
+            return True
+        except requests.exceptions.ConnectionError:
+            return False
+
     def setup_index(self, index_name=INDEX_NAME):
         url = ELASTIC_URL + index_name
         mfl_settings = json.dumps(INDEX_SETTINGS)
@@ -183,16 +194,34 @@ def serialize_model(obj):
         }
 
 
-@task
-def index_instance(obj, index_name=INDEX_NAME):
+@shared_task(name='Update_the_search_index')
+def index_instance(app_label, model_name, instance_id, index_name=INDEX_NAME):
     elastic_api = ElasticAPI()
+    obj_path = "{0}.models.{1}".format(app_label, model_name)
+    obj = pydoc.locate(obj_path).objects.get(id=instance_id)
+    if not elastic_api._is_on:
+        error_obj = ErrorQueue(
+            object_pk=str(obj.pk),
+            app_label=obj._meta.app_label,
+            model_name=obj.__class__.__name__,
+            except_message="Elastic Search is not running",
+            error_type="SEARCH_INDEXING_ERROR"
+        )
+        try:
+            error_obj.save()
+        except ValidationError:
+            # the object is already in the error queue
+            pass
+        return
+
     if confirm_model_is_indexable(obj.__class__):
         data = serialize_model(obj)
-
-        return elastic_api.index_document(index_name, data) if data else \
+        if data:
+            elastic_api.index_document(index_name, data)
+            LOGGER.info("Indexed {0}".format(data))
+        else:
             LOGGER.info("something weired occurred while indexing {}".format(
                 obj))
-
     else:
         LOGGER.info(
             "Instance of model {} skipped for indexing as it should not be"
@@ -204,7 +233,12 @@ def index_on_save(sender, instance, **kwargs):
     """
     Listen for save signals and index the instances being created.
     """
+    if sender == ErrorQueue:
+        pass
+        return
     app_label = instance._meta.app_label
+    model_name = sender.__name__
+    instance_id = str(instance.id)
     index_in_realtime = settings.SEARCH.get("REALTIME_INDEX")
-    if app_label in settings.LOCAL_APPS:
-        index_instance(instance) if index_in_realtime else None
+    if app_label in settings.LOCAL_APPS and index_in_realtime:
+        index_instance.delay(app_label, model_name, instance_id)
