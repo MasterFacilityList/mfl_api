@@ -305,6 +305,7 @@ SEARCH = {
         "mfl_gis.CountyBoundary",
         "mfl_gis.ConstituencyBoundary",
         "mfl_gis.WardBoundary",
+        "mfl_gis.DrilldownView",
         "users.CustomGroup",
         "users.ProxyGroup",
         "facilities.FacilityUpdates"

@@ -439,3 +439,94 @@ class TestIkoWapi(LoginMixin, APITestCase):
             "latitude": -1.275611
         })
         self.assertEqual(resp.status_code, 400)
+
+
+class TestDrillDownFacility(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestDrillDownFacility, self).setUp()
+        self.url = reverse("api:mfl_gis:drilldown_facility")
+
+    def test_listing(self):
+        mommy.make_recipe('mfl_gis.tests.facility_coordinates_recipe')
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+
+
+class TestDrillDownCountry(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestDrillDownCountry, self).setUp()
+        self.url = reverse("api:mfl_gis:drilldown_country")
+
+    def test_get_listing(self):
+        mommy.make_recipe('mfl_gis.tests.county_boundary_recipe')
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.data['meta']['name'], 'KENYA')
+        self.assertIsInstance(resp.data['geojson'], dict)
+
+
+class TestDrillDownCounty(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestDrillDownCounty, self).setUp()
+        self.url = "api:mfl_gis:drilldown_county"
+
+    def test_get_listing(self):
+        cb = mommy.make_recipe('mfl_gis.tests.county_boundary_recipe')
+        mommy.make_recipe("mfl_gis.tests.constituency_boundary_recipe")
+        resp = self.client.get(
+            reverse(self.url, kwargs={"code": cb.area.code})
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.data['meta']['name'], cb.area.name)
+        self.assertIsInstance(resp.data['geojson'], dict)
+
+
+class TestDrillDownConstituency(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestDrillDownConstituency, self).setUp()
+        self.url = "api:mfl_gis:drilldown_constituency"
+
+    def test_get_listing(self):
+        mommy.make_recipe('mfl_gis.tests.county_boundary_recipe')
+        cb2 = mommy.make_recipe("mfl_gis.tests.constituency_boundary_recipe")
+        mommy.make_recipe("mfl_gis.tests.ward_boundary_recipe")
+        resp = self.client.get(
+            reverse(self.url, kwargs={"code": cb2.area.code})
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.data['meta']['name'], cb2.area.name)
+        self.assertEqual(
+            resp.data['meta']['county_code'], cb2.area.county.code
+        )
+        self.assertIsInstance(resp.data['geojson'], dict)
+
+
+class TestDrillDownWard(LoginMixin, APITestCase):
+
+    def setUp(self):
+        super(TestDrillDownWard, self).setUp()
+        self.url = "api:mfl_gis:drilldown_ward"
+
+    def test_get_listing(self):
+        wb = mommy.make_recipe("mfl_gis.tests.ward_boundary_recipe")
+        resp = self.client.get(
+            reverse(self.url, kwargs={"code": wb.area.code})
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.data['properties']['name'], wb.area.name)
+        self.assertEqual(
+            resp.data['properties']['county_code'],
+            wb.area.constituency.county.code
+        )
+        self.assertEqual(
+            resp.data['properties']['constituency_code'],
+            wb.area.constituency.code
+        )
+        self.assertEqual(
+            resp.data['id'], wb.area.code
+        )
+        self.assertIsInstance(resp.data['geometry'], dict)

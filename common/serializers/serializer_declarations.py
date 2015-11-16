@@ -204,7 +204,7 @@ class UserConstituencySerializer(
     constituency = serializers.PrimaryKeyRelatedField(
         validators=[], required=False, queryset=Constituency.objects.all())
 
-    class Meta:
+    class Meta(object):
         model = UserConstituency
 
 

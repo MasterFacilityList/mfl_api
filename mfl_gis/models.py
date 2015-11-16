@@ -1,7 +1,8 @@
-import reversion
 import logging
 import json
+import reversion
 
+from django.db import models as db_models
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models import Union
 from django.contrib.gis.geos import MultiPolygon
@@ -212,8 +213,15 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     All common operations and fields are here.
     We retain the default SRID ( 4326 - WGS84 ).
     """
+
+    # 3 decimal places for the web map ( about 10 meter accuracy )
+    PRECISION = 3
+    TOLERANCE = (1.0 / 10 ** PRECISION)
+
     # These two fields should mirror the contents of the relevant admin
     # area model
+    # TODO : remove the two fields in CountyBoundary, ConstituencyBoundary and
+    # WardBoundary models, retain them in WorldBorder model.
     name = gis_models.CharField(max_length=100)
     code = gis_models.CharField(max_length=10, unique=True)
 
@@ -278,24 +286,19 @@ class AdministrativeUnitBoundary(GISAbstractBase):
                 polygon = geometry
 
             return json.loads(
-                polygon.simplify(
-                    tolerance=(1.0 / 10 ** precision)
-                ).geojson
+                polygon.simplify(tolerance=tolerance).geojson
             )
 
-        # 3 decimal places for the web map ( about 10 meter accuracy )
-        precision = 3
-        tolerance = (1.0 / 10 ** precision)
         geojson_dict = _simplify(
-            tolerance=tolerance, geometry=self.mpoly.cascaded_union
+            tolerance=self.TOLERANCE, geometry=self.mpoly.cascaded_union
         )
         original_coordinates = geojson_dict['coordinates']
         assert original_coordinates
         new_coordinates = [
             [
                 [
-                    round(coordinate_pair[0], precision),
-                    round(coordinate_pair[1], precision)
+                    round(coordinate_pair[0], self.PRECISION),
+                    round(coordinate_pair[1], self.PRECISION)
                 ]
                 for coordinate_pair in original_coordinates[0]
                 if coordinate_pair and
@@ -392,3 +395,17 @@ class WardBoundary(AdministrativeUnitBoundary):
 
     class Meta(GISAbstractBase.Meta):
         verbose_name_plural = 'ward boundaries'
+
+
+class DrilldownView(db_models.Model):
+    id = db_models.UUIDField(primary_key=True)
+    county = db_models.PositiveIntegerField()
+    constituency = db_models.PositiveIntegerField()
+    ward = db_models.PositiveIntegerField()
+    name = db_models.CharField(max_length=255)
+    lat = db_models.FloatField()
+    lng = db_models.FloatField()
+
+    class Meta(object):
+        managed = False
+        db_table = 'mfl_gis_drilldown'

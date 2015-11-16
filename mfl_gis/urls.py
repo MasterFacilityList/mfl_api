@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import url, patterns
 from django.views.decorators.cache import cache_page
 from django.views.decorators.gzip import gzip_page
+
 from .views import (
     GeoCodeSourceListView,
     GeoCodeSourceDetailView,
@@ -21,7 +22,12 @@ from .views import (
     FacilityCoordinatesCreationAndDetail,
     ConstituencyBoundView,
     CountyBoundView,
-    IkoWapi
+    IkoWapi,
+    DrillFacilityCoords,
+    DrillCountryBorders,
+    DrillCountyBorders,
+    DrillConstituencyBorders,
+    DrillWardBorders,
 )
 
 
@@ -31,6 +37,34 @@ coordinates_cache_seconds = (60 * 60 * 24)
 
 urlpatterns = patterns(
     '',
+
+    url(
+        r'^drilldown/facility/$',
+        cache_page(60*60)(DrillFacilityCoords.as_view()),
+        name='drilldown_facility'
+    ),
+    url(
+        r'^drilldown/country/$',
+        cache_page(coordinates_cache_seconds)(DrillCountryBorders.as_view()),
+        name='drilldown_country'
+    ),
+    url(
+        r'^drilldown/county/(?P<code>\d{1,5})/$',
+        cache_page(coordinates_cache_seconds)(DrillCountyBorders.as_view()),
+        name='drilldown_county'
+    ),
+    url(
+        r'^drilldown/constituency/(?P<code>\d{1,5})/$',
+        cache_page(coordinates_cache_seconds)(
+            DrillConstituencyBorders.as_view()
+        ),
+        name='drilldown_constituency'
+    ),
+    url(
+        r'^drilldown/ward/(?P<code>\d{1,5})/$',
+        cache_page(coordinates_cache_seconds)(DrillWardBorders.as_view()),
+        name='drilldown_ward'
+    ),
 
     url(r'^ikowapi/$', IkoWapi.as_view(), name='ikowapi'),
 

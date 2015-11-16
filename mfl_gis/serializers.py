@@ -5,7 +5,7 @@ from django.db import transaction
 from django.utils import six
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from common.serializers import AbstractFieldsMixin
+from common.serializers import AbstractFieldsMixin, PartialResponseMixin
 from facilities.models import Facility
 from .models import (
     GeoCodeSource,
@@ -21,6 +21,7 @@ from facilities.models import FacilityUpdates
 
 
 class BufferCooridinatesMixin(object):
+
     def buffer_coordinates(self, facility, validated_data):
 
         facility = Facility.objects.get(id=facility.id) if hasattr(
@@ -267,3 +268,64 @@ class WardBoundaryDetailSerializer(AbstractBoundarySerializer):
 
     class Meta(AbstractBoundarySerializer.Meta):
         model = WardBoundary
+
+
+class DrillBoundarySerializer(GeoFeatureModelSerializer):
+    id = serializers.ReadOnlyField(source='area.code')
+    name = serializers.ReadOnlyField(source='area.name')
+    geometry = serializers.ReadOnlyField()
+    center = serializers.ReadOnlyField()
+    facility_count = serializers.ReadOnlyField()
+    density = serializers.ReadOnlyField()
+    bound = serializers.ReadOnlyField()
+
+    class Meta(object):
+        geo_field = 'geometry'
+        fields = (
+            'geometry', 'center', 'bound', 'id',
+            'facility_count', 'name',
+        )
+
+    def get_fields(self):
+        p = PartialResponseMixin()
+        origi_fields = super(DrillBoundarySerializer, self).get_fields()
+        return p.strip_fields(self.context.get('request'), origi_fields)
+
+
+class DrillCountyBoundarySerializer(DrillBoundarySerializer):
+
+    class Meta(DrillBoundarySerializer.Meta):
+        model = CountyBoundary
+
+
+class DrillConstituencyBoundarySerializer(DrillBoundarySerializer):
+
+    class Meta(DrillBoundarySerializer.Meta):
+        model = ConstituencyBoundary
+
+
+class DrillWardBoundarySerializer(DrillBoundarySerializer):
+
+    area_id = serializers.ReadOnlyField(source='area.id')
+    county_name = serializers.ReadOnlyField(
+        source='area.constituency.county.name'
+    )
+    county_code = serializers.ReadOnlyField(
+        source='area.constituency.county.code'
+    )
+    constituency_name = serializers.ReadOnlyField(
+        source='area.constituency.name'
+    )
+    constituency_code = serializers.ReadOnlyField(
+        source='area.constituency.code'
+    )
+
+    class Meta(object):
+        geo_field = 'geometry'
+        model = WardBoundary
+        fields = (
+            'geometry', 'center', 'bound', 'id', 'area_id',
+            'facility_count', 'name',
+            'county_name', 'county_code',
+            'constituency_code', 'constituency_name'
+        )

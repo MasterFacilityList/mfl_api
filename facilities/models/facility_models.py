@@ -946,6 +946,11 @@ class Facility(SequenceMixin, AbstractBase):
         except:
             return None
 
+    @property
+    def lat_long(self):
+        coords = self.coordinates
+        return [coords.coordinates.y, coords.coordinates.x] if coords else None
+
     def validate_closing_date_supplied_on_close(self):
         if self.closed and not self.closed_date:
             self.closed_date = timezone.now()

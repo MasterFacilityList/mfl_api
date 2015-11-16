@@ -21,7 +21,7 @@ from .models import (
 class ChuUpdateBufferSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(object):
         model = ChuUpdateBuffer
 
 
@@ -59,6 +59,8 @@ class CommunityHealthUnitSerializer(
         source='facility.ward.constituency.name')
     facility_county = serializers.ReadOnlyField(
         source='facility.ward.constituency.county.name')
+    ward_code = serializers.ReadOnlyField(source='facility.ward.code')
+    lat_long = serializers.ReadOnlyField(source='facility.lat_long')
     contacts = serializers.ReadOnlyField()
     geo_features = serializers.ReadOnlyField(source='json_features')
     boundaries = serializers.ReadOnlyField(source='facility.boundaries')

@@ -331,7 +331,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 
-    class Meta:
+    class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'view', )
         ordering = ('-date_joined', )
 
@@ -410,7 +410,7 @@ class ProxyGroup(Group):
         except CustomGroup.DoesNotExist:
             return False
 
-    class Meta:
+    class Meta(object):
         proxy = True
 
     def __str__(self):
