@@ -1,5 +1,6 @@
 import json
 from mock import patch
+from requests.exceptions import ConnectionError
 
 from django.test import TestCase
 from django.test.utils import override_settings
@@ -13,7 +14,13 @@ from model_mommy import mommy
 from facilities.models import Facility, FacilityApproval
 
 from facilities.serializers import FacilitySerializer
-from common.models import County, Constituency, UserConstituency, UserCounty
+from common.models import (
+    County,
+    Constituency,
+    UserConstituency,
+    UserCounty,
+    ErrorQueue
+)
 from common.tests import ViewTestBase
 from mfl_gis.models import FacilityCoordinates
 from chul.models import CommunityHealthUnit
@@ -114,16 +121,18 @@ class TestElasticSearchAPI(TestCase):
     def test_index_document(self):
         facility = mommy.make(Facility, name='Fig tree medical clinic')
         self.elastic_search_api.setup_index(index_name='test_index')
-        result = index_instance(facility, 'test_index')
-        self.assertEquals(201, result.status_code)
+        result = index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
+        self.assertTrue(result)
 
     def test_search_document_no_instance_type(self):
         index_name = 'test_index'
         response = self.elastic_search_api.setup_index(index_name=index_name)
         self.assertEquals(200, response.status_code)
         facility = mommy.make(Facility, name='Fig tree medical clinic')
-        result = index_instance(facility, 'test_index')
-        self.assertEquals(201, result.status_code)
+        result = index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
+        self.assertTrue(result)
         self.elastic_search_api.search_document(
             index_name=index_name, instance_type=Facility, query='tree')
 
@@ -131,8 +140,9 @@ class TestElasticSearchAPI(TestCase):
         index_name = 'test_index'
         self.elastic_search_api.setup_index(index_name=index_name)
         facility = mommy.make(Facility, name='Fig tree medical clinic')
-        result = index_instance(facility, 'test_index')
-        self.assertEquals(201, result.status_code)
+        result = index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
+        self.assertTrue(result)
         self.elastic_search_api.remove_document(
             index_name, 'facility', str(facility.id))
         self.elastic_search_api.delete_index(index_name='test_index')
@@ -158,6 +168,15 @@ class TestElasticSearchAPI(TestCase):
                         self.assertEquals(
                             True,
                             values.get('store'))
+
+    def test_is_on_true(self):
+        self.assertTrue(self.elastic_search_api._is_on)
+
+    def test_is_on_false(self):
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            elastic_api = ElasticAPI()
+            self.assertFalse(elastic_api._is_on)
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
@@ -203,7 +222,8 @@ class TestSearchFunctions(ViewTestBase):
         self.elastic_search_api = ElasticAPI()
         self.elastic_search_api.setup_index(index_name='test_index')
         facility = mommy.make(Facility, name='Kanyakini')
-        index_instance(facility, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
         url = url + "?search={}".format('Kanyakini')
 
         response = self.client.get(url)
@@ -219,7 +239,8 @@ class TestSearchFunctions(ViewTestBase):
 
         facility = mommy.make(Facility, name='Facility ya kutest material')
         url = reverse('api:facilities:material')
-        index_instance(facility, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
         url = url + "?search={}".format('material')
 
         response = self.client.get(url)
@@ -234,7 +255,8 @@ class TestSearchFunctions(ViewTestBase):
         self.elastic_search_api = ElasticAPI()
         self.elastic_search_api.setup_index(index_name='test_index')
         facility = mommy.make(Facility, name='Kanyakini')
-        index_instance(facility, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
         query_dsl = {
             "from": 0,
             "size": 30,
@@ -259,7 +281,8 @@ class TestSearchFunctions(ViewTestBase):
         self.elastic_search_api = ElasticAPI()
         self.elastic_search_api.setup_index(index_name='test_index')
         facility = mommy.make(Facility, name='Kanyakini')
-        index_instance(facility, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
         url = url + "?search_auto={}".format('Kanya')
         response = self.client.get(url)
 
@@ -282,9 +305,11 @@ class TestSearchFunctions(ViewTestBase):
             Facility,
             name='Eye of mordal health center',
             is_published=False)
-        index_instance(facility, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(facility.id), 'test_index')
 
-        index_instance(facility_2, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(facility_2.id), 'test_index')
 
         url = url + "?search={}&is_published={}".format('mordal', 'false')
         response = self.client.get(url)
@@ -309,7 +334,9 @@ class TestSearchFunctions(ViewTestBase):
         county_user = mommy.make(get_user_model())
         sub_county_user = mommy.make(
             get_user_model(), first_name='kijana', last_name='mzee')
-        index_instance(sub_county_user, 'test_index')
+
+        index_instance(
+            'users', 'MflUser', str(sub_county_user.id), 'test_index')
         url = reverse("api:users:mfl_users_list")
         url = url + "?search=kijana"
         response = self.client.get(url)
@@ -331,7 +358,8 @@ class TestSearchFunctions(ViewTestBase):
         chu = mommy.make(
             CommunityHealthUnit, facility=facility, name='Jericho')
         mommy.make(CommunityHealthUnit, facility=facility_2)
-        index_instance(chu)
+        index_instance(
+            'chul', 'CommunityHealthUnit', str(chu.id), 'test_index')
         chu_search_url = chu_url + "?search=Jericho"
         response = self.client.get(chu_search_url)
         self.assertEquals(200, response.status_code)
@@ -343,10 +371,55 @@ class TestSearchFunctions(ViewTestBase):
         chu = mommy.make(
             CommunityHealthUnit, facility=facility, name='Jericho')
         mommy.make(CommunityHealthUnit, facility=facility_2)
-        index_instance(chu)
+        index_instance(
+            'chul', 'CommunityHealthUnit', str(chu.id), 'test_index')
         chu_search_url = chu_url + "?search={}".format(chu.code)
         response = self.client.get(chu_search_url)
         self.assertEquals(200, response.status_code)
+
+    def test_record_pushed_to_error_queue(self):
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            mommy.make(Facility, name='Ile Noma')
+            self.assertEquals(1, ErrorQueue.objects.count())
+
+    def test_unique_record_in_error_queue(self):
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            facility = mommy.make(Facility, name='Ile Noma')
+            self.assertEquals(1, ErrorQueue.objects.count())
+            facility.name = 'Ile noma sana'
+            facility.save()
+            self.assertEquals(1, ErrorQueue.objects.count())
+
+    def test_retrying_indexing_elastic_search_off(self):
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            mommy.make(Facility, name='Ile Noma')
+            call_command('retry_indexing')
+
+            # elastic search down hence no records updated
+            self.assertEquals(1, ErrorQueue.objects.count())
+
+    def test_retrying_indexing_elastic_search_on(self):
+        mommy.make(Facility, name='Ile Noma')
+        self.assertEquals(0, ErrorQueue.objects.count())
+        call_command('retry_indexing')
+
+        # elastic search up hence records updated
+        self.assertEquals(0, ErrorQueue.objects.count())
+
+    def test_retrying_indexing_object_already_deleted(self):
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            facility = mommy.make(Facility, name='Ile Noma')
+            self.assertEquals(1, ErrorQueue.objects.count())
+            facility.delete()
+            self.assertEquals(0, Facility.objects.count())
+            call_command('retry_indexing')
+
+        # elastic search up hence records updated
+        self.assertEquals(1, ErrorQueue.objects.count())
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
@@ -400,7 +473,8 @@ class TestSearchFilter(ViewTestBase):
         api.delete_index('test_index')
         api.setup_index('test_index')
         test_facility = mommy.make(Facility, name='test facility')
-        index_instance(test_facility, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(test_facility.id), 'test_index')
         mommy.make(Facility)
         qs = Facility.objects.all()
 
@@ -437,7 +511,8 @@ class TestSearchFilter(ViewTestBase):
             'mfl_gis.tests.facility_coordinates_recipe')
         self.assertEquals(1, FacilityCoordinates.objects.count())
 
-        index_instance(obj)
+        index_instance(
+            'mfl_gis', 'FacilityCoordinates', str(obj.id), 'test_index')
 
     def test_seach_facility_by_code(self):
         mommy.make(Facility, code=17780)
@@ -445,7 +520,8 @@ class TestSearchFilter(ViewTestBase):
         api.delete_index('test_index')
         api.setup_index('test_index')
         test_facility = mommy.make(Facility, name='test facility')
-        index_instance(test_facility, 'test_index')
+        index_instance(
+            'facilities', 'Facility', str(test_facility.id), 'test_index')
         mommy.make(Facility)
         qs = Facility.objects.all()
 

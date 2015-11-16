@@ -17,8 +17,8 @@ def retry_indexing():
     for obj in objects_with_errors:
         obj_path = "{}.models.{}".format(obj.app_label, obj.model_name)
         model = pydoc.locate(obj_path)
+        instance = model.objects.get(id=obj.object_pk)
         try:
-            instance = model.objects.get(id=obj.object_pk)
             result = index_instance(
                 instance._meta.app_label,
                 instance.__class__.__name__,

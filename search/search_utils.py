@@ -8,6 +8,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.db.models import get_app, get_models
+from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
 from common.models import ErrorQueue
 from celery import shared_task
@@ -201,18 +202,13 @@ def index_instance(app_label, model_name, instance_id, index_name=INDEX_NAME):
     obj_path = "{0}.models.{1}".format(app_label, model_name)
     obj = pydoc.locate(obj_path).objects.get(id=instance_id)
     if not elastic_api._is_on:
-        error_obj = ErrorQueue(
+        ErrorQueue.objects.get_or_create(
             object_pk=str(obj.pk),
             app_label=obj._meta.app_label,
             model_name=obj.__class__.__name__,
             except_message="Elastic Search is not running",
             error_type="SEARCH_INDEXING_ERROR"
         )
-        try:
-            error_obj.save()
-        except ValidationError:
-            # the object is already in the error queue
-            pass
         return indexed
 
     if confirm_model_is_indexable(obj.__class__):

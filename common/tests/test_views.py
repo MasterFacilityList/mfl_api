@@ -18,7 +18,8 @@ from ..models import (
     UserConstituency,
     UserCounty,
     Town,
-    SubCounty
+    SubCounty,
+    ErrorQueue
 )
 from ..serializers import (
     ContactSerializer,
@@ -822,10 +823,68 @@ class TestSubCountyView(LoginMixin, APITestCase):
     def test_updating(self):
         sub_county = mommy.make(SubCounty)
         data = {
-            "name": "name has been editted"
+            "name": "name has been edited"
         }
         url = self.url + "{}/".format(sub_county.id)
         response = self.client.patch(url, data)
         ssub_county_refetched = SubCounty.objects.get(id=sub_county.id)
         self.assertEquals(200, response.status_code)
         self.assertEquals(ssub_county_refetched.name, data.get("name"))
+
+
+class TestErrorQueueView(LoginMixin, APITestCase):
+    def setUp(self):
+        self.url = reverse("api:common:error_queues_list")
+        super(TestErrorQueueView, self).setUp()
+
+    def test_listing(self):
+        mommy.make(ErrorQueue, _quantity=6)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(6, response.data.get('count'))
+
+    def test_retrieval(self):
+        error = mommy.make(ErrorQueue)
+        mommy.make(ErrorQueue)
+        url = self.url + "{}/".format(error.id)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(error.id, response.data.get('id'))
+
+    def test_filtering(self):
+        mommy.make(ErrorQueue, error_type='SEARCH_INDEXING_ERROR')
+        mommy.make(ErrorQueue, error_type='SEND_EMAIL_ERROR')
+        url = self.url + "?error_type=SEND_EMAIL_ERROR"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            'SEND_EMAIL_ERROR',
+            response.data.get('results')[0].get('error_type'))
+
+        url = self.url + "?error_type=SEARCH_INDEXING_ERROR"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            'SEARCH_INDEXING_ERROR',
+            response.data.get('results')[0].get('error_type'))
+
+    def test_retrying(self):
+        user = mommy.make(get_user_model())
+        user_2 = mommy.make(get_user_model())
+        mommy.make(
+            ErrorQueue,
+            object_pk=user.id,
+            app_label='users',
+            model_name='MflUser',
+            error_type='SEND_EMAIL_ERROR')
+        mommy.make(
+            ErrorQueue,
+            object_pk=user_2.id,
+            error_type='SEARCH_INDEXING_ERROR',
+            app_label='users',
+            model_name='MflUser')
+        url = self.url + "?resolve_errors=true"
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)

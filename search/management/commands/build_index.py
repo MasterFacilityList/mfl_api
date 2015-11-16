@@ -25,7 +25,12 @@ class Command(BaseCommand):
                 if model and confirm_model_is_indexable(model):
                     all_instances = model.objects.all()[0:100] \
                         if options.get('test') else model.objects.all()
-                    [index_instance(obj) for obj in all_instances]
+                    [
+                        index_instance(
+                            obj._meta.app_label,
+                            obj.__class__.__name__,
+                            str(obj.id))
+                        for obj in all_instances]
                     message = "Indexed {} {}".format(
                         all_instances.count(),
                         model._meta.verbose_name_plural.capitalize())
