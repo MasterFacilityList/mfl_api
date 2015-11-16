@@ -517,14 +517,16 @@ class TestDrillDownWard(LoginMixin, APITestCase):
             reverse(self.url, kwargs={"code": wb.area.code})
         )
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.data['meta']['name'], wb.area.name)
+        self.assertEqual(resp.data['properties']['name'], wb.area.name)
         self.assertEqual(
-            resp.data['meta']['county_code'], wb.area.constituency.county.code
+            resp.data['properties']['county_code'],
+            wb.area.constituency.county.code
         )
         self.assertEqual(
-            resp.data['meta']['constituency_code'], wb.area.constituency.code
+            resp.data['properties']['constituency_code'],
+            wb.area.constituency.code
         )
         self.assertEqual(
-            resp.data['meta']['code'], wb.area.code
+            resp.data['id'], wb.area.code
         )
-        self.assertIsInstance(resp.data['geojson'], dict)
+        self.assertIsInstance(resp.data['geometry'], dict)

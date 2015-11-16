@@ -56,7 +56,7 @@ urlpatterns = patterns(
     url(
         r'^drilldown/constituency/(?P<code>\d{1,5})/$',
         cache_page(7*24*60*60)(DrillConstituencyBorders.as_view()),
-        name='drilldown_const'
+        name='drilldown_constituency'
     ),
     url(
         r'^drilldown/ward/(?P<code>\d{1,5})/$',

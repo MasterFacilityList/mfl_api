@@ -502,7 +502,7 @@ class DrillCountyBorders(DrillBorderBase):
     parent_model = CountyBoundary
 
     def _get_meta(self):
-        v = self.parent_model.objects.get(code=self._get_code())
+        v = self.parent_model.objects.get(area__code=self._get_code())
         return {
             "area_id": v.area.id,
             "name": v.area.name,
@@ -522,7 +522,7 @@ class DrillConstituencyBorders(DrillCountyBorders):
     parent_model = ConstituencyBoundary
 
     def _get_meta(self):
-        v = self.parent_model.objects.get(code=self._get_code())
+        v = self.parent_model.objects.get(area__code=self._get_code())
         return {
             "area_id": v.area.id,
             "name": v.area.name,
@@ -539,6 +539,6 @@ class DrillConstituencyBorders(DrillCountyBorders):
 
 
 class DrillWardBorders(WardBoundaryDetailView):
-    lookup_field = 'code'
+    lookup_field = 'area__code'
     lookup_url_kwarg = 'code'
     serializer_class = DrillWardBoundarySerializer
