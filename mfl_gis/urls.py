@@ -40,27 +40,29 @@ urlpatterns = patterns(
 
     url(
         r'^drilldown/facility/$',
-        cache_page(7*24*60*60)(DrillFacilityCoords.as_view()),
+        cache_page(60*60)(DrillFacilityCoords.as_view()),
         name='drilldown_facility'
     ),
     url(
         r'^drilldown/country/$',
-        cache_page(7*24*60*60)(DrillCountryBorders.as_view()),
+        cache_page(coordinates_cache_seconds)(DrillCountryBorders.as_view()),
         name='drilldown_country'
     ),
     url(
         r'^drilldown/county/(?P<code>\d{1,5})/$',
-        cache_page(7*24*60*60)(DrillCountyBorders.as_view()),
+        cache_page(coordinates_cache_seconds)(DrillCountyBorders.as_view()),
         name='drilldown_county'
     ),
     url(
         r'^drilldown/constituency/(?P<code>\d{1,5})/$',
-        cache_page(7*24*60*60)(DrillConstituencyBorders.as_view()),
+        cache_page(coordinates_cache_seconds)(
+            DrillConstituencyBorders.as_view()
+        ),
         name='drilldown_constituency'
     ),
     url(
         r'^drilldown/ward/(?P<code>\d{1,5})/$',
-        cache_page(7*24*60*60)(DrillWardBorders.as_view()),
+        cache_page(coordinates_cache_seconds)(DrillWardBorders.as_view()),
         name='drilldown_ward'
     ),
 

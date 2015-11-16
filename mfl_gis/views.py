@@ -470,9 +470,6 @@ class DrillBorderBase(generics.ListAPIView):
     lookup_field = 'code'
     pagination_class = GISPageNumberPagination
 
-    def _get_meta(self):
-        return {}
-
     def _get_code(self):
         return self.kwargs.get(self.lookup_field)
 
@@ -480,7 +477,7 @@ class DrillBorderBase(generics.ListAPIView):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         return views.Response({
-            "meta": self._get_meta(),
+            "meta": self._get_meta() if hasattr(self, "_get_meta") else {},
             "geojson": serializer.data
         })
 

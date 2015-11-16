@@ -213,6 +213,11 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     All common operations and fields are here.
     We retain the default SRID ( 4326 - WGS84 ).
     """
+
+    # 3 decimal places for the web map ( about 10 meter accuracy )
+    PRECISION = 3
+    TOLERANCE = (1.0 / 10 ** PRECISION)
+
     # These two fields should mirror the contents of the relevant admin
     # area model
     # TODO : remove the two fields in CountyBoundary, ConstituencyBoundary and
@@ -281,24 +286,19 @@ class AdministrativeUnitBoundary(GISAbstractBase):
                 polygon = geometry
 
             return json.loads(
-                polygon.simplify(
-                    tolerance=(1.0 / 10 ** precision)
-                ).geojson
+                polygon.simplify(tolerance=tolerance).geojson
             )
 
-        # 3 decimal places for the web map ( about 10 meter accuracy )
-        precision = 3
-        tolerance = (1.0 / 10 ** precision)
         geojson_dict = _simplify(
-            tolerance=tolerance, geometry=self.mpoly.cascaded_union
+            tolerance=self.TOLERANCE, geometry=self.mpoly.cascaded_union
         )
         original_coordinates = geojson_dict['coordinates']
         assert original_coordinates
         new_coordinates = [
             [
                 [
-                    round(coordinate_pair[0], precision),
-                    round(coordinate_pair[1], precision)
+                    round(coordinate_pair[0], self.PRECISION),
+                    round(coordinate_pair[1], self.PRECISION)
                 ]
                 for coordinate_pair in original_coordinates[0]
                 if coordinate_pair and

@@ -153,7 +153,6 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
 
     @property
     def contacts(self):
-
         return [
             {
                 "id": con.id,
