@@ -86,31 +86,31 @@ class RegulatorSyncFilter(CommonFieldsFilterset):
     mfl_code_null = NullFilter(name='mfl_code')
     county = ListCharFilter(lookup_type='exact')
 
-    class Meta:
+    class Meta(object):
         model = RegulatorSync
 
 
 class OptionGroupFilter(CommonFieldsFilterset):
 
-    class Meta:
+    class Meta(object):
         model = OptionGroup
 
 
 class FacilityLevelChangeReasonFilter(CommonFieldsFilterset):
 
-    class Meta:
+    class Meta(object):
         model = FacilityLevelChangeReason
 
 
 class KephLevelFilter(CommonFieldsFilterset):
 
-    class Meta:
+    class Meta(object):
         model = KephLevel
 
 
 class FacilityUpdatesFilter(CommonFieldsFilterset):
 
-    class Meta:
+    class Meta(object):
         model = FacilityUpdates
 
 
