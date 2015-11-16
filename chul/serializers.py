@@ -21,7 +21,7 @@ from .models import (
 class ChuUpdateBufferSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(object):
         model = ChuUpdateBuffer
 
 

@@ -15,6 +15,7 @@ LOGGER = logging.getLogger(__file__)
 
 
 class UserAdminAreaLinkageMixin(object):
+
     def should_update_user_area(self, *args, **kwargs):
         """
         Ensure that a user is assigned to a certain admin area once.
@@ -341,7 +342,7 @@ class UserConstituency(UserAdminAreaLinkageMixin, AbstractBase):
         super(UserConstituency, self).save(*args, **kwargs) if \
             self.should_update_user_area(field_name='constituency') else None
 
-    class Meta:
+    class Meta(object):
         verbose_name_plural = 'user constituencies'
 
 

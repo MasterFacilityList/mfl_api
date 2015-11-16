@@ -43,7 +43,7 @@ class CommunityHealthUnitContact(AbstractBase):
     def __str__(self):
         return "{}: ({})".format(self.health_unit, self.contact)
 
-    class Meta:
+    class Meta(object):
         unique_together = ('health_unit', 'contact', )
         # a hack since the view_communityhealthunitcontact
         # is disappearing into thin air

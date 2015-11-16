@@ -23,7 +23,8 @@ from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class ChuUpdateBufferFilter(CommonFieldsFilterset):
-    class Meta:
+
+    class Meta(object):
         model = ChuUpdateBuffer
 
 

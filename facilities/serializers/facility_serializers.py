@@ -54,7 +54,8 @@ from ..utils import CreateFacilityOfficerMixin
 
 
 class FacilityExportExcelMaterialViewSerializer(serializers.ModelSerializer):
-    class Meta:
+
+    class Meta(object):
         model = FacilityExportExcelMaterialView
 
 
@@ -77,7 +78,7 @@ class RegulatorSyncSerializer(
             {"regulatory_body": ["The user is not assigned a regulatory body"]}
         )
 
-    class Meta:
+    class Meta(object):
         model = RegulatorSync
         read_only_fields = ('regulatory_body', 'mfl_code', )
 
@@ -85,13 +86,13 @@ class RegulatorSyncSerializer(
 class FacilityLevelChangeReasonSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(object):
         model = FacilityLevelChangeReason
 
 
 class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(object):
         model = KephLevel
 
 
@@ -106,7 +107,7 @@ class RegulatoryBodyUserSerializer(
     regulatory_body = serializers.PrimaryKeyRelatedField(
         validators=[], required=False, queryset=RegulatingBody.objects.all())
 
-    class Meta:
+    class Meta(object):
         model = RegulatoryBodyUser
 
 
@@ -625,7 +626,7 @@ class FacilityUpdatesSerializer(
     created_by_name = serializers.ReadOnlyField(
         source='updated_by.get_full_name')
 
-    class Meta:
+    class Meta(object):
         model = FacilityUpdates
         exclude = ('facility_updates', )
 
@@ -633,7 +634,7 @@ class FacilityUpdatesSerializer(
 class OptionGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     options = OptionSerializer(required=False, many=True)
 
-    class Meta:
+    class Meta(object):
         model = OptionGroup
 
 
@@ -644,5 +645,5 @@ class FacilityDepartmentSerializer(
         source='regulatory_body.name'
     )
 
-    class Meta:
+    class Meta(object):
         model = FacilityDepartment
