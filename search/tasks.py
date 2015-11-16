@@ -1,10 +1,14 @@
 import pydoc
+import logging
 
 from common.models import ErrorQueue
 from search.search_utils import index_instance
 
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 @periodic_task(
@@ -17,8 +21,9 @@ def retry_indexing():
     for obj in objects_with_errors:
         obj_path = "{}.models.{}".format(obj.app_label, obj.model_name)
         model = pydoc.locate(obj_path)
-        instance = model.objects.get(id=obj.object_pk)
+
         try:
+            instance = model.objects.get(id=obj.object_pk)
             result = index_instance(
                 instance._meta.app_label,
                 instance.__class__.__name__,
@@ -28,6 +33,6 @@ def retry_indexing():
             else:
                 obj.retries = obj.retries + 1
                 obj.save()
-        except instance.DoesNotExist:
+        except model.DoesNotExist:
             # The related object is already deleted in the database
-            pass
+            LOGGER.info("The record to be indexed has been deleted")

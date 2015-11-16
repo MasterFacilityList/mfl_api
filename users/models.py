@@ -25,6 +25,7 @@ from oauth2_provider.settings import oauth2_settings
 @shared_task(name='send_user_email')
 def send_email_on_signup(
         user_id, email, first_name, employee_number, user_password=None):
+    sent = False
     html_email_template = loader.get_template(
         "registration/registration_success.html")
     context = Context(
@@ -46,6 +47,7 @@ def send_email_on_signup(
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
+        sent = True
     except socket.gaierror:
         from common.models import ErrorQueue
         ErrorQueue.objects.get_or_create(
@@ -55,6 +57,7 @@ def send_email_on_signup(
             model_name='MflUser',
             except_message='Unable to send user email'
         )
+    return sent
 
 
 def check_password_strength(raw_password):
