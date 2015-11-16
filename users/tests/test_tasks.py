@@ -3,8 +3,6 @@ from socket import gaierror
 
 from django.core.management import call_command
 
-from model_mommy import mommy
-
 from common.tests.test_models import BaseTestCase
 from common.models import ErrorQueue
 from ..models import MflUser

@@ -8,8 +8,6 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.db.models import get_app, get_models
-from django.db.utils import IntegrityError
-from django.core.exceptions import ValidationError
 from common.models import ErrorQueue
 from celery import shared_task
 
