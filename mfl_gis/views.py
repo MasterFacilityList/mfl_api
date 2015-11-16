@@ -504,6 +504,7 @@ class DrillCountyBorders(DrillBorderBase):
     def _get_meta(self):
         v = self.parent_model.objects.get(code=self._get_code())
         return {
+            "area_id": v.area.id,
             "name": v.area.name,
             "code": v.area.code,
             "bound": v.bound
@@ -523,6 +524,7 @@ class DrillConstituencyBorders(DrillCountyBorders):
     def _get_meta(self):
         v = self.parent_model.objects.get(code=self._get_code())
         return {
+            "area_id": v.area.id,
             "name": v.area.name,
             "code": v.area.code,
             "bound": v.bound,
