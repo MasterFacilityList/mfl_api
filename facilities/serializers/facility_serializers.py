@@ -46,10 +46,17 @@ from ..models import (
     OptionGroup,
     FacilityLevelChangeReason,
     FacilityDepartment,
-    RegulatorSync
+    RegulatorSync,
+    FacilityExportExcelMaterialView
 )
 
 from ..utils import CreateFacilityOfficerMixin
+
+
+class FacilityExportExcelMaterialViewSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = FacilityExportExcelMaterialView
 
 
 class RegulatorSyncSerializer(
@@ -71,7 +78,7 @@ class RegulatorSyncSerializer(
             {"regulatory_body": ["The user is not assigned a regulatory body"]}
         )
 
-    class Meta:
+    class Meta(object):
         model = RegulatorSync
         read_only_fields = ('regulatory_body', 'mfl_code', )
 
@@ -79,13 +86,13 @@ class RegulatorSyncSerializer(
 class FacilityLevelChangeReasonSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(object):
         model = FacilityLevelChangeReason
 
 
 class KephLevelSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(object):
         model = KephLevel
 
 
@@ -100,7 +107,7 @@ class RegulatoryBodyUserSerializer(
     regulatory_body = serializers.PrimaryKeyRelatedField(
         validators=[], required=False, queryset=RegulatingBody.objects.all())
 
-    class Meta:
+    class Meta(object):
         model = RegulatoryBodyUser
 
 
@@ -453,8 +460,15 @@ class FacilityDetailSerializer(FacilitySerializer):
     facility_contacts = serializers.ReadOnlyField(
         read_only=True, source="get_facility_contacts")
     coordinates = serializers.ReadOnlyField(source='coordinates.id')
+    lat_long = serializers.ReadOnlyField()
     latest_approval = serializers.ReadOnlyField(source='latest_approval.id')
-    boundaries = serializers.ReadOnlyField()
+    county_code = serializers.ReadOnlyField(
+        source='ward.constituency.county.code'
+    )
+    constituency_code = serializers.ReadOnlyField(
+        source='ward.constituency.code'
+    )
+    ward_code = serializers.ReadOnlyField(source='ward.code')
     service_catalogue_active = serializers.ReadOnlyField()
     facility_units = FacilityUnitSerializer(many=True, required=False)
     officer_in_charge = serializers.ReadOnlyField()
@@ -612,7 +626,7 @@ class FacilityUpdatesSerializer(
     created_by_name = serializers.ReadOnlyField(
         source='updated_by.get_full_name')
 
-    class Meta:
+    class Meta(object):
         model = FacilityUpdates
         exclude = ('facility_updates', )
 
@@ -620,7 +634,7 @@ class FacilityUpdatesSerializer(
 class OptionGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
     options = OptionSerializer(required=False, many=True)
 
-    class Meta:
+    class Meta(object):
         model = OptionGroup
 
 
@@ -631,5 +645,5 @@ class FacilityDepartmentSerializer(
         source='regulatory_body.name'
     )
 
-    class Meta:
+    class Meta(object):
         model = FacilityDepartment

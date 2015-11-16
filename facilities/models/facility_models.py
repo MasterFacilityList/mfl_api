@@ -11,8 +11,10 @@ from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
+from django.contrib.postgres.fields import ArrayField
 
 from users.models import JobTitle  # NOQA
+from search.search_utils import index_instance
 from common.models import (
     AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town,
     County
@@ -192,7 +194,7 @@ class FacilityStatus(AbstractBase):
     """
     name = models.CharField(
         max_length=100, unique=True,
-        help_text="A short name respresenting the operanation status"
+        help_text="A short name representing the operation status"
         " e.g OPERATIONAL")
     description = models.TextField(
         null=True, blank=True,
@@ -542,6 +544,83 @@ class FacilityContact(AbstractBase):
         unique_together = ('facility', 'contact')
 
 
+class FacilityExportExcelMaterialView(models.Model):
+
+    """
+    Django's Interface to the facility material view.
+
+    This speeds up fetching facilities
+    """
+
+    id = models.UUIDField(primary_key=True)
+    name = models.CharField(
+        max_length=100, help_text='Name of the facility')
+    code = models.IntegerField(help_text='The facility code')
+    registration_number = models.CharField(
+        max_length=100,
+        help_text='The facilities registration_number')
+    keph_level_name = models.UUIDField(
+        null=True, blank=True,
+        help_text='The facility\'s keph-level')
+    facility_type_name = models.CharField(
+        max_length=100,
+        help_text='The facility type')
+    county = models.UUIDField(
+        null=True, blank=True,
+        help_text='Name of the facility\'s county')
+    constituency = models.UUIDField(
+        null=True, blank=True,
+        help_text='The name of the facility\'s constituency ')
+    ward_name = models.CharField(
+        max_length=100,
+        help_text='Name of the facility\'s ward')
+    owner_name = models.CharField(
+        max_length=100,
+        help_text='The facility\'s owner')
+    regulatory_body_name = models.CharField(
+        max_length=100,
+        help_text='The name of the facility\'s regulator')
+    beds = models.IntegerField(
+        help_text='The number of beds in the facility')
+    cots = models.IntegerField(
+        help_text='The number of cots in the facility')
+    search = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text='A dummy search field')
+    county_name = models.CharField(max_length=100, null=True, blank=True)
+    constituency_name = models.CharField(max_length=100, null=True, blank=True)
+    ward_name = models.CharField(max_length=100, null=True, blank=True)
+    keph_level = models.CharField(max_length=100, null=True, blank=True)
+    facility_type = models.CharField(max_length=100, null=True, blank=True)
+    owner_type = models.CharField(max_length=100, null=True, blank=True)
+    owner = models.UUIDField(null=True, blank=True)
+    operation_status = models.UUIDField(null=True, blank=True)
+    operation_status_name = models.CharField(
+        max_length=100, null=True, blank=True)
+    open_whole_day = models.BooleanField(
+        default=False,
+        help_text="Does the facility operate 24 hours a day")
+    open_public_holidays = models.BooleanField(
+        default=False,
+        help_text="Is the facility open on public holidays?")
+    open_weekends = models.BooleanField(
+        default=False,
+        help_text="Is the facility_open during weekends?")
+    open_late_night = models.BooleanField(
+        default=False,
+        help_text="Indicates if a facility is open late night e.g up-to 11 pm")
+    services = ArrayField(
+        models.UUIDField(null=True, blank=True), null=True, blank=True
+    )
+    categories = ArrayField(
+        models.UUIDField(null=True, blank=True), null=True, blank=True
+    )
+
+    class Meta(object):
+        managed = False
+        db_table = 'facilities_excel_export'
+
+
 @reversion.register(follow=[
     'facility_type', 'operation_status', 'ward', 'owner', 'contacts',
     'parent', 'regulatory_body', 'keph_level', 'sub_county', 'town'
@@ -867,6 +946,11 @@ class Facility(SequenceMixin, AbstractBase):
         except:
             return None
 
+    @property
+    def lat_long(self):
+        coords = self.coordinates
+        return [coords.coordinates.y, coords.coordinates.x] if coords else None
+
     def validate_closing_date_supplied_on_close(self):
         if self.closed and not self.closed_date:
             self.closed_date = timezone.now()
@@ -934,6 +1018,22 @@ class Facility(SequenceMixin, AbstractBase):
             message = "The facility was not scheduled for update"
             LOGGER.info(message)
 
+    def index_facility_material_view(self):
+        """
+        Updates the search index with facilities in the material view
+
+        Facilities are pushed to the material view via a trigger while
+        search works at the django level and thus will not cater for
+        updates on the material views.
+        This function ensures that once a facility is saved, the
+        search index is updated with the  respective record in the
+        material view is updated
+        """
+
+        mat_view_facility_record = FacilityExportExcelMaterialView.objects.get(
+            id=self.id)
+        index_instance(mat_view_facility_record)
+
     def save(self, *args, **kwargs):  # NOQA
         """
         Override the save method in order to capture updates to a facility.
@@ -949,6 +1049,7 @@ class Facility(SequenceMixin, AbstractBase):
         if not self.is_approved:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
+            self.index_facility_material_view()
             return
 
         # Allow publishing facilities without requiring approvals
@@ -956,23 +1057,27 @@ class Facility(SequenceMixin, AbstractBase):
         if not old_details.is_published and self.is_published:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
+            self.index_facility_material_view()
             return
         # enable unpublishing a facility
         if old_details.is_published and not self.is_published:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
+            self.index_facility_material_view()
             return
 
         # enable closing a facility
         if not old_details.closed and self.closed:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
+            self.index_facility_material_view()
             return
 
         # enable opening a facility
         if old_details.closed and not self.closed:
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
+            self.index_facility_material_view()
             return
 
         old_details_serialized = FacilityDetailSerializer(
@@ -990,6 +1095,7 @@ class Facility(SequenceMixin, AbstractBase):
         allow_save = kwargs.pop('allow_save', None)
         if allow_save:
             super(Facility, self).save(*args, **kwargs)
+            self.index_facility_material_view()
         else:
             updates = self._dump_updates(origi_model)
             try:

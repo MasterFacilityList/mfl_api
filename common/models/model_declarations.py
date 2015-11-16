@@ -15,6 +15,7 @@ LOGGER = logging.getLogger(__file__)
 
 
 class UserAdminAreaLinkageMixin(object):
+
     def should_update_user_area(self, *args, **kwargs):
         """
         Ensure that a user is assigned to a certain admin area once.
@@ -24,8 +25,13 @@ class UserAdminAreaLinkageMixin(object):
         admin area they should activate the record
         """
         try:
-            old_obj = self.__class__.objects.get(
-                user=self.user)
+            if kwargs.pop('field_name', None) == 'constituency':
+                old_obj = self.__class__.objects.get(
+                    user=self.user, constituency=self.constituency)
+            else:
+                old_obj = self.__class__.objects.get(
+                    user=self.user, county=self.county)
+
             active_list = [old_obj.active, self.active]
             return active_list.count(True) == 1
         except self.__class__.DoesNotExist:
@@ -268,7 +274,7 @@ class UserCounty(UserAdminAreaLinkageMixin, AbstractBase):
     def save(self, *args, **kwargs):
         self.full_clean(exclude=None)
         super(UserCounty, self).save(*args, **kwargs) if \
-            self.should_update_user_area() else None
+            self.should_update_user_area(field_name='county') else None
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'user_counties'
@@ -334,9 +340,9 @@ class UserConstituency(UserAdminAreaLinkageMixin, AbstractBase):
     def save(self, *args, **kwargs):
         self.full_clean(exclude=None)
         super(UserConstituency, self).save(*args, **kwargs) if \
-            self.should_update_user_area() else None
+            self.should_update_user_area(field_name='constituency') else None
 
-    class Meta:
+    class Meta(object):
         verbose_name_plural = 'user constituencies'
 
 

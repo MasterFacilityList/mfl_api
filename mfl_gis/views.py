@@ -17,7 +17,8 @@ from .models import (
     WorldBorder,
     CountyBoundary,
     ConstituencyBoundary,
-    WardBoundary
+    WardBoundary,
+    DrilldownView
 )
 from .filters import (
     GeoCodeSourceFilter,
@@ -44,7 +45,10 @@ from .serializers import (
     FacilityCoordinateSimpleSerializer,
     CountyBoundSerializer,
     ConstituencyBoundSerializer,
-    BufferCooridinatesMixin
+    BufferCooridinatesMixin,
+    DrillCountyBoundarySerializer,
+    DrillConstituencyBoundarySerializer,
+    DrillWardBoundarySerializer
 )
 from .pagination import GISPageNumberPagination
 from .generics import GISListCreateAPIView
@@ -448,3 +452,90 @@ class IkoWapi(views.APIView):
                     )
                 ]
             }, status=400)
+
+
+class DrillFacilityCoords(views.APIView):
+
+    """Gets all facility geocoordinates (highly slimmed down)
+    """
+
+    def get(self, request, *args, **kwargs):
+        qset = DrilldownView.objects.values_list(
+            'name', 'lat', 'lng', 'county', 'constituency', 'ward',
+        )
+        return views.Response(qset)
+
+
+class DrillBorderBase(generics.ListAPIView):
+    lookup_field = 'code'
+    pagination_class = GISPageNumberPagination
+
+    def _get_code(self):
+        return self.kwargs.get(self.lookup_field)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return views.Response({
+            "meta": self._get_meta() if hasattr(self, "_get_meta") else {},
+            "geojson": serializer.data
+        })
+
+
+class DrillCountryBorders(DrillBorderBase):
+    model = CountyBoundary
+    serializer_class = DrillCountyBoundarySerializer
+
+    def _get_meta(self):
+        return {"name": "KENYA"}
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+
+class DrillCountyBorders(DrillBorderBase):
+    model = ConstituencyBoundary
+    serializer_class = DrillConstituencyBoundarySerializer
+    parent_model = CountyBoundary
+
+    def _get_meta(self):
+        v = self.parent_model.objects.get(area__code=self._get_code())
+        return {
+            "area_id": v.area.id,
+            "name": v.area.name,
+            "code": v.area.code,
+            "bound": v.bound
+        }
+
+    def get_queryset(self):
+        return self.model.objects.filter(
+            area__county__code=self._get_code()
+        )
+
+
+class DrillConstituencyBorders(DrillCountyBorders):
+    model = WardBoundary
+    serializer_class = DrillWardBoundarySerializer
+    parent_model = ConstituencyBoundary
+
+    def _get_meta(self):
+        v = self.parent_model.objects.get(area__code=self._get_code())
+        return {
+            "area_id": v.area.id,
+            "name": v.area.name,
+            "code": v.area.code,
+            "bound": v.bound,
+            "county_name": v.area.county.name,
+            "county_code": v.area.county.code
+        }
+
+    def get_queryset(self):
+        return self.model.objects.filter(
+            area__constituency__code=self._get_code()
+        )
+
+
+class DrillWardBorders(WardBoundaryDetailView):
+    lookup_field = 'area__code'
+    lookup_url_kwarg = 'code'
+    serializer_class = DrillWardBoundarySerializer

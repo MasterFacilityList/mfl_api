@@ -80,7 +80,7 @@ class JobTitleListView(generics.ListCreateAPIView):
 
 
 class JobTitleDetailView(
-        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+        AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
 
     """
     Retrieves a particular job title

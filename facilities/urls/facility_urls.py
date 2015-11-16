@@ -6,6 +6,10 @@ from .. import views
 urlpatterns = patterns(
     '',
 
+    url(r'^material/$',
+        views.FacilityExportMaterialListView.as_view(),
+        name='material'),
+
     url(r'^flattened_categories/$',
         views.FlattenedCategories.as_view(),
         name='flattened_categories'),

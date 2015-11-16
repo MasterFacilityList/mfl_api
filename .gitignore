@@ -102,4 +102,3 @@ data/data/facilities/*
 data/data/geocodes/*
 data/data/last/*
 data/data/setup/*
-*.sql

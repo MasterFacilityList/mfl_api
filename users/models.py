@@ -123,6 +123,7 @@ class JobTitle(models.Model):
         return self.name
 
     class Meta(object):
+        ordering = ('-created', )
         permissions = (
             (
                 "view_jobtitle",
@@ -151,7 +152,8 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     job_title = models.ForeignKey(
         JobTitle, null=True, blank=True,
         help_text="The job title of the user e.g County Reproductive "
-        "Health Officer")
+        "Health Officer",
+        on_delete=models.PROTECT)
     username = models.CharField(
         max_length=60, null=True,
         blank=True, unique=True,
@@ -309,7 +311,7 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super(MflUser, self).save(*args, **kwargs)
 
-    class Meta:
+    class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'view', )
         ordering = ('-date_joined', )
 
@@ -388,7 +390,7 @@ class ProxyGroup(Group):
         except CustomGroup.DoesNotExist:
             return False
 
-    class Meta:
+    class Meta(object):
         proxy = True
 
     def __str__(self):
