@@ -241,3 +241,11 @@ def start_celery_worker(*args, **kwargs):
     Starts the celery worker
     """
     local("celery -A config worker -l info")
+
+
+def start_celery_beat(*args, **kwargs):
+    """
+    Starts the celery beat to retry indexing failed records and
+    resend emails that were not successfully sent to users
+    """
+    local("celery -A config beat -l info")

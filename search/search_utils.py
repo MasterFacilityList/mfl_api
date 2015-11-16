@@ -196,6 +196,7 @@ def serialize_model(obj):
 
 @shared_task(name='Update_the_search_index')
 def index_instance(app_label, model_name, instance_id, index_name=INDEX_NAME):
+    indexed = False
     elastic_api = ElasticAPI()
     obj_path = "{0}.models.{1}".format(app_label, model_name)
     obj = pydoc.locate(obj_path).objects.get(id=instance_id)
@@ -212,13 +213,14 @@ def index_instance(app_label, model_name, instance_id, index_name=INDEX_NAME):
         except ValidationError:
             # the object is already in the error queue
             pass
-        return
+        return indexed
 
     if confirm_model_is_indexable(obj.__class__):
         data = serialize_model(obj)
         if data:
             elastic_api.index_document(index_name, data)
             LOGGER.info("Indexed {0}".format(data))
+            indexed = True
         else:
             LOGGER.info("something weired occurred while indexing {}".format(
                 obj))
@@ -226,6 +228,7 @@ def index_instance(app_label, model_name, instance_id, index_name=INDEX_NAME):
         LOGGER.info(
             "Instance of model {} skipped for indexing as it should not be"
             " indexed".format(obj.__class__))
+    return indexed
 
 
 @receiver(post_save)
@@ -237,8 +240,9 @@ def index_on_save(sender, instance, **kwargs):
         pass
         return
     app_label = instance._meta.app_label
-    model_name = sender.__name__
-    instance_id = str(instance.id)
     index_in_realtime = settings.SEARCH.get("REALTIME_INDEX")
+
     if app_label in settings.LOCAL_APPS and index_in_realtime:
+        model_name = sender.__name__
+        instance_id = str(instance.id)
         index_instance.delay(app_label, model_name, instance_id)

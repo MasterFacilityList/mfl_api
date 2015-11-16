@@ -1,6 +1,5 @@
 import pydoc
 
-from django.core.management import BaseCommand
 from common.models import ErrorQueue
 from search.search_utils import index_instance
 
@@ -10,7 +9,7 @@ from celery.decorators import periodic_task
 
 @periodic_task(
     run_every=(crontab(minute='*/2')),
-    name="try_indexing",
+    name="try_indexing_failed_records",
     ignore_result=True)
 def retry_indexing():
     objects_with_errors = ErrorQueue.objects.filter(
@@ -32,9 +31,3 @@ def retry_indexing():
         except instance.DoesNotExist:
             # The related object is already deleted in the database
             pass
-
-
-class Command(BaseCommand):
-
-    def handle(self, *args, **kwargs):
-        retry_indexing()
