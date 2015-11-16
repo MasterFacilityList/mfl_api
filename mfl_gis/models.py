@@ -215,6 +215,8 @@ class AdministrativeUnitBoundary(GISAbstractBase):
     """
     # These two fields should mirror the contents of the relevant admin
     # area model
+    # TODO : remove the two fields in CountyBoundary, ConstituencyBoundary and
+    # WardBoundary models, retain them in WorldBorder model.
     name = gis_models.CharField(max_length=100)
     code = gis_models.CharField(max_length=10, unique=True)
 

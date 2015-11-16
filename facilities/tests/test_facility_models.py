@@ -657,6 +657,15 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility)
         self.assertIsNone(facility.coordinates)
 
+    def test_null_lat_long(self):
+        fac = mommy.make(Facility)
+        self.assertIsNone(fac.lat_long)
+
+    def test_lat_long(self):
+        fc = mommy.make_recipe('mfl_gis.tests.facility_coordinates_recipe')
+        ans = fc.facility.lat_long
+        self.assertIsInstance(ans, list)
+
     def test_latest_approval(self):
         facility = mommy.make(Facility)
         approval = mommy.make(FacilityApproval, facility=facility)
