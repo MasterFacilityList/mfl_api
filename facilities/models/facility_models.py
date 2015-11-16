@@ -635,7 +635,7 @@ class Facility(SequenceMixin, AbstractBase):
     Health Centers, Dispensaries, Hospitals etc.
     """
     name = models.CharField(
-        max_length=100,
+        max_length=100, unique=True,
         help_text='This is the unique name of the facility')
     official_name = models.CharField(
         max_length=150, null=True, blank=True,
@@ -1027,7 +1027,11 @@ class Facility(SequenceMixin, AbstractBase):
 
         mat_view_facility_record = FacilityExportExcelMaterialView.objects.get(
             id=self.id)
-        index_instance(mat_view_facility_record)
+        index_instance(
+            "facilities",
+            "FacilityExportExcelMaterialView",
+            str(mat_view_facility_record.id)
+        )
 
     def save(self, *args, **kwargs):  # NOQA
         """

@@ -226,7 +226,8 @@ class DashBoard(QuerysetFilterMixin, APIView):
 
         return CommunityHealthUnit.objects.filter(
             Q(is_approved=False, is_rejected=False) |
-            Q(has_edits=True)).distinct().count()
+            Q(has_edits=True)).distinct().filter(
+                facility__in=self.get_queryset())
 
     def get_rejected_chus(self):
         """

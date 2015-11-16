@@ -54,8 +54,8 @@ class FacilityExportExcelMaterialViewFilter(django_filters.FilterSet):
     search = SearchFilter(name='search')
     county = ListCharFilter(lookup_type='exact')
     code = ListCharFilter(lookup_type='exact')
-    constituency = ListCharFilter(
-        name='ward__constituency', lookup_type='exact')
+    constituency = ListCharFilter(lookup_type='exact')
+    ward = ListCharFilter(lookup_type='exact')
     owner = ListCharFilter(lookup_type='exact')
     owner_type = ListCharFilter(lookup_type='exact')
     number_of_beds = ListIntegerFilter(lookup_type='exact')

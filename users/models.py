@@ -2,6 +2,7 @@ import reversion
 import datetime
 import uuid
 
+from smtplib import socket
 from django.db import models
 from django.utils import timezone, encoding
 from django.core.validators import (
@@ -45,16 +46,15 @@ def send_email_on_signup(
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except:
+    except socket.gaierror:
         from common.models import ErrorQueue
-        error_object = ErrorQueue(
+        ErrorQueue.objects.get_or_create(
             object_pk=user_id,
             error_type="SEND_EMAIL_ERROR",
             app_label='users',
             model_name='MflUser',
             except_message='Unable to send user email'
         )
-        error_object.save()
 
 
 def check_password_strength(raw_password):
@@ -89,7 +89,7 @@ class MflUserManager(BaseUserManager):
                           is_staff=is_staff, is_active=True,
                           is_superuser=False, date_joined=now, **extra_fields)
         user.save(using=self._db)
-        send_email_on_signup.delay(
+        send_email_on_signup(
             user.id, email, first_name, employee_number, password)
         return user
 
