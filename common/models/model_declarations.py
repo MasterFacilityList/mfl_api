@@ -4,7 +4,7 @@ import json
 
 from django.db import models
 from django.conf import settings
-from django.utils import encoding
+from django.utils import encoding, timezone
 
 from rest_framework.exceptions import ValidationError
 
@@ -425,9 +425,11 @@ class ErrorQueue(models.Model):
     retries = models.IntegerField(default=0)
     except_message = models.TextField(null=True, blank=True)
     error_type = models.CharField(choices=ERROR_TYPES, max_length=100)
+    created = models.DateTimeField(default=timezone.now)
 
     class Meta(object):
         unique_together = ('object_pk', 'app_label', 'model_name')
+        ordering = ('-created', )
 
     def __str__(self):
         return "{} - {} - {}".format(

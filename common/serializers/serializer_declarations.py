@@ -15,6 +15,7 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
+    ErrorQueue
 )
 from .serializer_base import AbstractFieldsMixin
 
@@ -215,3 +216,8 @@ class DocumentUploadSerializer(
         read_only_fields = (
             'created', 'created_by', 'updated', 'updated_by', 'deleted',
         )
+
+
+class ErrorQueueSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    class Meta(object):
+        model = ErrorQueue
