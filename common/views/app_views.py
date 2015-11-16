@@ -406,11 +406,11 @@ class FilteringSummariesView(views.APIView):
     def get(self, request):
         fields = request.query_params.get('fields', None)
         fields_model_mapping = {
-            'county': (County, ('id', 'name', 'code', )),
-            'sub_county': (SubCounty, ('id', 'name', 'county', 'code', )),
+            'county': (County, ('id', 'name', )),
+            'sub_county': (SubCounty, ('id', 'name', 'county', )),
             'facility_type': (FacilityType, ('id', 'name')),
-            'constituency': (Constituency, ('id', 'name', 'county', 'code', )),
-            'ward': (Ward, ('id', 'name', 'constituency', 'code', )),
+            'constituency': (Constituency, ('id', 'name', 'county', )),
+            'ward': (Ward, ('id', 'name', 'constituency', )),
             'operation_status': (FacilityStatus, ('id', 'name')),
             'chu_status': (chu_models.Status, ('id', 'name', )),
             'service_category': (ServiceCategory, ('id', 'name')),

@@ -1,14 +1,12 @@
 ---
 
-- name: copy the customized pg_hba.conf over
+- name: copy postgresql config files
   sudo: yes
-  template: src=../templates/pg_hba.conf.j2 dest=/etc/postgresql/9.4/main/pg_hba.conf
-  notify:
-    - restart postgresql
-
-- name: copy the customized pg_ident.conf over
-  sudo: yes
-  template: src=../templates/pg_ident.conf.j2 dest=/etc/postgresql/9.4/main/pg_ident.conf
+  template: src={{item.src}} dest={{item.dest}}
+  with_items:
+    - {src:../templates/pg_hba.conf.j2, dest:/etc/postgresql/9.4/main/pg_hba.conf}
+    - {src:../templates/pg_ident.conf.j2, dest:/etc/postgresql/9.4/main/pg_ident.conf}
+    - {src:../templates/postgresql.j2, dest:/etc/postgresql/9.4/main/postgresql.conf}
   notify:
     - restart postgresql
 
