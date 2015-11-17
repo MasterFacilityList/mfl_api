@@ -869,22 +869,3 @@ class TestErrorQueueView(LoginMixin, APITestCase):
         self.assertEquals(
             'SEARCH_INDEXING_ERROR',
             response.data.get('results')[0].get('error_type'))
-
-    def test_retrying(self):
-        user = mommy.make(get_user_model())
-        user_2 = mommy.make(get_user_model())
-        mommy.make(
-            ErrorQueue,
-            object_pk=user.id,
-            app_label='users',
-            model_name='MflUser',
-            error_type='SEND_EMAIL_ERROR')
-        mommy.make(
-            ErrorQueue,
-            object_pk=user_2.id,
-            error_type='SEARCH_INDEXING_ERROR',
-            app_label='users',
-            model_name='MflUser')
-        url = self.url + "?resolve_errors=true"
-        response = self.client.get(url)
-        self.assertEquals(200, response.status_code)

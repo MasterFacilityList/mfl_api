@@ -65,16 +65,16 @@ class TestMflUserModel(BaseTestCase):
     def test_retry_sending_email_related_object_deleted(self):
         with patch('django.core.mail.EmailMultiAlternatives.send') as socket_mock:   # noqa
             socket_mock.side_effect = gaierror
-            user = MflUser.objects.create_user(
-                email='mimi@wewe.com',
-                first_name='wao',
-                last_name='yule',
-                employee_number='sdfsd44',
-                password='yule454858345')
+            # the object pk does not exist
+            ErrorQueue.objects.create(
+                object_pk='100000',
+                app_label='users',
+                model_name='MflUser',
+                error_type='SEND_EMAIL_ERROR',
+                except_message='Error sending user email')
             # Network is unreachable hence email not sent
             self.assertEquals(1, ErrorQueue.objects.count())
-            user.delete()
             call_command("resend_user_emails")
 
-            # the network is still unreachable hence not email sent
+            # the user does not exist hence the error record was left as is
             self.assertEquals(1, ErrorQueue.objects.count())

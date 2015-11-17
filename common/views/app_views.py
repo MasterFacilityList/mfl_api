@@ -1,5 +1,4 @@
 from rest_framework import generics, views, response, parsers
-from django.core.management import call_command
 
 from rest_framework_xml.parsers import XMLParser
 
@@ -171,7 +170,7 @@ class PhysicalAddressDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular physical address
+    Retrieves a particular physical address
     """
     queryset = PhysicalAddress.objects.all()
     serializer_class = PhysicalAddressSerializer
@@ -473,13 +472,6 @@ class ErrorQueueListView(generics.ListCreateAPIView):
     filter_class = ErrorQueueFilter
     queryset = ErrorQueue.objects.all()
     ordering_fields = ('app_label', )
-
-    def get(self, *args, **kwargs):
-        resolve_errors = self.request.query_params.get('resolve_errors')
-        if resolve_errors:
-            call_command('retry_indexing')
-            call_command('resend_user_emails')
-        return super(ErrorQueueListView, self).get(*args, **kwargs)
 
 
 class ErrorQueueDetailView(generics.RetrieveUpdateDestroyAPIView):

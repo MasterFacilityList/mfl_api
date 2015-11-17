@@ -635,7 +635,7 @@ class Facility(SequenceMixin, AbstractBase):
     Health Centers, Dispensaries, Hospitals etc.
     """
     name = models.CharField(
-        max_length=100, unique=True,
+        max_length=100,
         help_text='This is the unique name of the facility')
     official_name = models.CharField(
         max_length=150, null=True, blank=True,
