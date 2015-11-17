@@ -430,6 +430,12 @@ class TestSearchFunctions(ViewTestBase):
         call_command('retry_indexing')
         self.assertEquals(0, ErrorQueue.objects.count())
 
+    def test_index_non_indexable_model(self):
+        group = mommy.make(Group)
+        self.assertIsNone(
+            index_instance('auth', 'Group', group.id)
+        )
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFunctions, self).tearDown()
