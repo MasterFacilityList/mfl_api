@@ -410,16 +410,25 @@ class TestSearchFunctions(ViewTestBase):
         self.assertEquals(0, ErrorQueue.objects.count())
 
     def test_retrying_indexing_object_already_deleted(self):
+        facility = mommy.make(Facility, name='Ile Noma')
+        facility.delete()
+        ErrorQueue.objects.create(
+            object_pk=str(facility.pk),
+            error_type='SEARCH_INDEXING_ERROR',
+            app_label='facilities',
+            model_name='Facility')
+        call_command('retry_indexing')
+        self.assertEquals(1, ErrorQueue.objects.count())
+
+    def test_retry_indexing_objects_in_queue(self):
         with patch('search.search_utils.requests.get') as mock_get:
             mock_get.side_effect = ConnectionError
-            facility = mommy.make(Facility, name='Ile Noma')
+            mommy.make(Facility, name='Ile Noma')
             self.assertEquals(1, ErrorQueue.objects.count())
-            facility.delete()
-            self.assertEquals(0, Facility.objects.count())
-            call_command('retry_indexing')
 
         # elastic search up hence records updated
-        self.assertEquals(1, ErrorQueue.objects.count())
+        call_command('retry_indexing')
+        self.assertEquals(0, ErrorQueue.objects.count())
 
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')

@@ -216,8 +216,10 @@ def index_instance(app_label, model_name, instance_id, index_name=INDEX_NAME):
             LOGGER.info("Indexed {0}".format(data))
             indexed = True
         else:
-            LOGGER.info("something weired occurred while indexing {}".format(
-                obj))
+            LOGGER.info(
+                "something unexpected occurred when indexing {} - {}"
+                .format(model_name, instance_id)
+            )
     else:
         LOGGER.info(
             "Instance of model {} skipped for indexing as it should not be"
@@ -235,8 +237,8 @@ def index_on_save(sender, instance, **kwargs):
         return
     app_label = instance._meta.app_label
     index_in_realtime = settings.SEARCH.get("REALTIME_INDEX")
+    model_name = sender.__name__
+    instance_id = str(instance.id)
 
-    if app_label in settings.LOCAL_APPS and index_in_realtime:
-        model_name = sender.__name__
-        instance_id = str(instance.id)
-        index_instance.delay(app_label, model_name, instance_id)
+    index_instance.delay(app_label, model_name, instance_id) if app_label \
+        in settings.LOCAL_APPS and index_in_realtime else None
