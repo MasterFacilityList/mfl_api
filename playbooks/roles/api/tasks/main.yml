@@ -16,13 +16,17 @@
 
 - name: copy the supervisor configuration to its destination
   sudo: yes
-  template: src=../templates/mfl_supervisor_conf.j2 dest=/etc/supervisor/conf.d/mfl_api.conf
+  template: src={{item.src}} dest={{item.dest}}
+  with_items:
+    - { src: mfl_supervisor_conf.j2, dest: /etc/supervisor/conf.d/mfl_api.conf}
+    - { src: celery_beat.conf, dest: /etc/supervisor/conf.d/celery_beat.conf}
+    - { src: celery_worker.conf, dest: /etc/supervisor/conf.d/celery_worker.conf}
   notify:
     - restart supervisor
 
 - name: copy the nginx configuration to its destination
   sudo: yes
-  template: src=../templates/mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
+  template: src=mfl_nginx.j2 dest=/etc/nginx/sites-enabled/mfl.conf
   notify:
     - restart nginx
 
@@ -68,3 +72,6 @@
     fab warmup_cache:server_location="{{server_url}}",username="{{username}}",password="{{password}}",client_id="{{client_id}}",client_secret="{{client_secret}}" executable=/bin/bash
   when: warm_cache
   tags: warm_cache
+
+- name: Create celery logs folder and files
+  shell: "mkdir /var/log/celery && touch /var/log/celery/celery_worker.log && touch /var/log/celery/celery_beat.log"

@@ -61,6 +61,7 @@
         realtime_index: true,
         load_demo_data: false,
         recreate_search_index: false,
+        celery_user:"",
 
         # the settings below are for warming up the cache
         warm_cache: false,
