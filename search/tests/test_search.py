@@ -28,7 +28,7 @@ from chul.models import CommunityHealthUnit
 from search.filters import SearchFilter
 from search.search_utils import (
     ElasticAPI, index_instance, default, serialize_model)
-
+from users.models import JobTitle
 from ..index_settings import get_mappings
 
 
@@ -431,9 +431,9 @@ class TestSearchFunctions(ViewTestBase):
         self.assertEquals(0, ErrorQueue.objects.count())
 
     def test_index_non_indexable_model(self):
-        group = mommy.make(Group)
-        self.assertIsNone(
-            index_instance('auth', 'Group', group.id)
+        job_title = mommy.make(JobTitle)
+        self.assertFalse(
+            index_instance('users', 'JobTitle', job_title.id)
         )
 
     def tearDown(self):
