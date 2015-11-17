@@ -74,4 +74,4 @@
   tags: warm_cache
 
 - name: Create celery logs folder and files
-  shell: "mkdir /var/log/celery && touch /var/log/celery/celery_worker.log && touch /var/log/celery/celery_beat.log executable=/bin/bash"
+  shell: "mkdir -p /var/log/celery && touch /var/log/celery/celery_worker.log && touch /var/log/celery/celery_beat.log executable=/bin/bash"
