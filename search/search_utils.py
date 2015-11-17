@@ -238,7 +238,7 @@ def index_on_save(sender, instance, **kwargs):
     app_label = instance._meta.app_label
     index_in_realtime = settings.SEARCH.get("REALTIME_INDEX")
     model_name = sender.__name__
-    instance_id = str(instance.id)
+    instance_id = str(instance.id) if hasattr(instance, 'id') else None
 
     index_instance.delay(app_label, model_name, instance_id) if app_label \
         in settings.LOCAL_APPS and index_in_realtime else None
