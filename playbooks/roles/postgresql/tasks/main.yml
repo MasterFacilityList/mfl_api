@@ -4,9 +4,9 @@
   sudo: yes
   template: src={{item.src}} dest={{item.dest}}
   with_items:
-    - {src:../templates/pg_hba.conf.j2, dest:/etc/postgresql/9.4/main/pg_hba.conf}
-    - {src:../templates/pg_ident.conf.j2, dest:/etc/postgresql/9.4/main/pg_ident.conf}
-    - {src:../templates/postgresql.j2, dest:/etc/postgresql/9.4/main/postgresql.conf}
+    - {src: pg_hba.conf.j2, dest: /etc/postgresql/9.4/main/pg_hba.conf}
+    - {src: pg_ident.conf.j2, dest: /etc/postgresql/9.4/main/pg_ident.conf}
+    - {src: postgresql.j2, dest: /etc/postgresql/9.4/main/postgresql.conf}
   notify:
     - restart postgresql
 

@@ -571,7 +571,7 @@ class FacilityExportExcelMaterialView(models.Model):
     constituency = models.UUIDField(
         null=True, blank=True,
         help_text='The name of the facility\'s constituency ')
-    ward_name = models.CharField(
+    ward = models.UUIDField(
         max_length=100,
         help_text='Name of the facility\'s ward')
     owner_name = models.CharField(
