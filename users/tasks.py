@@ -1,10 +1,14 @@
 import pydoc
 import logging
 
-from common.models import ErrorQueue
-from users.models import send_email_on_signup, MflUser
+from django.core.mail import mail_admins
+
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
+
+from common.models import ErrorQueue
+from users.models import send_email_on_signup, MflUser
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -14,6 +18,10 @@ LOGGER = logging.getLogger(__name__)
     name="try_sending_failed_emails",
     ignore_result=True)
 def resend_user_signup_emails():
+    """
+    Resends emails that failed to be sent during user registration
+    """
+
     objects_with_errors = ErrorQueue.objects.filter(
         error_type='SEND_EMAIL_ERROR')
     for obj in objects_with_errors:
@@ -31,6 +39,11 @@ def resend_user_signup_emails():
                 obj.delete()
             else:
                 obj.retries = obj.retries + 1
+                if obj.retries > 2:
+                    mail_admins(
+                        message="Sending emails to users on registration is "
+                        "failing. Check the email settings in the environment"
+                    )
                 obj.save()
         except MflUser.DoesNotExist:
-            LOGGER.info("The user has deleted")
+            LOGGER.info("The user has been deleted")
