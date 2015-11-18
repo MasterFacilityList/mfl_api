@@ -1628,107 +1628,41 @@
             },
 
             {
-                "codename": "add_chuservice"
-            },
-            {
                 "codename": "view_chuservice"
-            },
-            {
-                "codename": "change_chuservice"
-            },
-            {
-                "codename": "delete_chuservice"
-            },
-            {
-                "codename": "add_status"
-            },
-            {
-                "codename": "change_status"
             },
             {
                 "codename": "view_status"
             },
-            {
-                "codename": "delete_status"
-            },
-            {
-                "codename": "add_subcounty"
-            },
+
             {
                 "codename": "view_subcounty"
             },
-            {
-                "codename": "change_subcounty"
-            },
-            {
-                "codename": "delete_subcounty"
-            },
-            {
-                "codename": "add_service"
-            },
-            {
-                "codename": "change_service"
-            },
+
             {
                 "codename": "view_service"
             },
+
             {
-                "codename": "delete_service"
-            },
-            {
-                "codename": "add_option"
-            },
-             {
                 "codename": "view_option"
             },
-             {
-                "codename": "change_option"
-            },
-             {
-                "codename": "delete_option"
-            },
-            {
-                "codename": "add_optiongroup"
-            },
+
+
             {
                 "codename": "view_optiongroup"
             },
-            {
-                "codename": "change_optiongroup"
-            },
-            {
-                "codename": "delete_optiongroup"
-            },
-            {
-                "codename": "add_servicecategory"
-            },
-            {
-                "codename": "change_servicecategory"
-            },
+
+
             {
                 "codename": "view_servicecategory"
             },
-            {
-                "codename": "delete_servicecategory"
-            },
-            {
-                "codename": "add_regulationstatus"
-            },
-            {
-                "codename": "change_regulationstatus"
-            },
+
+
             {
                 "codename": "view_regulationstatus"
             },
-            {
-                "codename": "delete_regulationstatus"
-            },
-            {
-                "codename": "add_owner"
-            },
-            {
-                "codename": "add_ownertype"
-            },
+
+
+
             {
                 "codename": "can_approve_chu"
             },
@@ -1780,54 +1714,26 @@
             {
                 "codename": "view_constituency"
             },
-            {
-                "codename": "add_contacttype"
-            },
-            {
-                "codename": "change_contacttype"
-            },
-            {
-                "codename": "delete_contacttype"
-            },
+
             {
                 "codename": "view_contacttype"
             },
             {
                 "codename": "view_county"
             },
-            {
-                "codename": "add_documentupload"
-            },
-            {
-                "codename": "change_documentupload"
-            },
-            {
-                "codename": "delete_documentupload"
-            },
+
             {
                 "codename": "view_documentupload"
             },
             {
                 "codename": "view_subcounty"
             },
-            {
-                "codename": "add_town"
-            },
-            {
-                "codename": "change_town"
-            },
+
             {
                 "codename": "view_town"
             },
-            {
-                "codename": "add_userconstituency"
-            },
-            {
-                "codename": "change_userconstituency"
-            },
-            {
-                "codename": "delete_userconstituency"
-            },
+
+
             {
                 "codename": "add_usercontact"
             },
@@ -1892,25 +1798,7 @@
                 "codename": "view_kephlevel"
             },
             {
-                "codename": "add_kephlevel"
-            },
-            {
-                "codename": "change_kephlevel"
-            },
-            {
-                "codename": "delete_kephlevel"
-            },
-            {
                 "codename": "view_jobtitle"
-            },
-            {
-                "codename": "add_jobtitle"
-            },
-            {
-                "codename": "change_jobtitle"
-            },
-            {
-                "codename": "delete_jobtitle"
             },
             {
                 "codename": "view_option"
@@ -1922,25 +1810,7 @@
                 "codename": "view_ownertype"
             },
             {
-                "codename": "add_regulatingbody"
-            },
-            {
-                "codename": "change_regulatingbody"
-            },
-            {
-                "codename": "delete_regulatingbody"
-            },
-            {
                 "codename": "view_regulatingbody"
-            },
-            {
-                "codename": "add_regulatingbodycontact"
-            },
-            {
-                "codename": "change_regulatingbodycontact"
-            },
-            {
-                "codename": "delete_regulatingbodycontact"
             },
             {
                 "codename": "view_regulatingbodycontact"
