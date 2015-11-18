@@ -233,7 +233,6 @@ def index_on_save(sender, instance, **kwargs):
     Listen for save signals and index the instances being created.
     """
     if sender == ErrorQueue:
-        pass
         return
     app_label = instance._meta.app_label
     index_in_realtime = settings.SEARCH.get("REALTIME_INDEX")
