@@ -106,5 +106,7 @@ class TestMflUserModel(BaseTestCase):
             self.assertEquals(1, ErrorQueue.objects.count())
             error_queue_object = ErrorQueue.objects.all()[0]
             self.assertEquals(2, error_queue_object.retries)
+            error_queue_object.retries = 3
+            error_queue_object.save
 
         call_command("resend_user_emails")
