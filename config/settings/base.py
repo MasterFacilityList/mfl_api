@@ -19,9 +19,19 @@ env = environ.Env(
     AWS_ACCESS_KEY_ID=(str, ''),
     AWS_SECRET_ACCESS_KEY=(str, ''),
     AWS_STORAGE_BUCKET_NAME=(str, ''),
-    STORAGE_BACKEND=(str, '')
+    STORAGE_BACKEND=(str, ''),
+    ADMINS=(str, "admin:admin@example.com,"),
+    SERVER_EMAIL=(str, "root@localhost")
+
+
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
+
+ADMINS = tuple(
+    tuple(name.split(':')) for name in env('ADMINS').split(',') if name != ''
+)
+SERVER_EMAIL = env('SERVER_EMAIL')
+
 
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
