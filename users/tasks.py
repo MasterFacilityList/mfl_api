@@ -40,11 +40,10 @@ def resend_user_signup_emails():
             else:
                 obj.retries = obj.retries + 1
                 obj.save()
-            if obj.retries > 2:
                 mail_admins(
                     subject="Send User Email Error",
                     message="Sending emails to users on registration is "
                     "failing. Check the email settings in the environment"
-                )
+                ) if obj.retries > 2 else None
         except MflUser.DoesNotExist:
             LOGGER.info("The user has been deleted")
