@@ -1,9 +1,9 @@
-Hi {{user.first_name}},
+Hi {{first_name}},
 
 A user account linked to your email has been created on the Master Facility List Kenya (MFL).
 The email and password to login to the MFL are as given below:
-Email: {{user.email}}
-Employee Number: {{user.employee_number}}
+Email: {{email}}
+Employee Number: {{employee_number}}
 Password: {{user_password}}
 
 

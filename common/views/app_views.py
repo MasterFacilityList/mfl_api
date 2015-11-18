@@ -1,4 +1,5 @@
 from rest_framework import generics, views, response, parsers
+
 from rest_framework_xml.parsers import XMLParser
 
 from ..models import (
@@ -14,6 +15,7 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
+    ErrorQueue
 )
 from facilities.models import(
     FacilityStatus,
@@ -44,7 +46,8 @@ from ..serializers import (
     FilteringSummariesSerializer,
     UserConstituencySerializer,
     SubCountySerializer,
-    DocumentUploadSerializer
+    DocumentUploadSerializer,
+    ErrorQueueSerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -58,7 +61,8 @@ from ..filters import (
     TownFilter,
     UserConstituencyFilter,
     SubCountyFilter,
-    DocumentUploadFilter
+    DocumentUploadFilter,
+    ErrorQueueFilter
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
@@ -166,7 +170,7 @@ class PhysicalAddressDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular physical address
+    Retrieves a particular physical address
     """
     queryset = PhysicalAddress.objects.all()
     serializer_class = PhysicalAddressSerializer
@@ -457,3 +461,23 @@ class DocumentUploadListView(generics.ListCreateAPIView):
     filter_class = DocumentUploadFilter
     ordering_fields = ('name', )
     parser_classes = (parsers.JSONParser, parsers.MultiPartParser, XMLParser, )
+
+
+class ErrorQueueListView(generics.ListCreateAPIView):
+    """
+    Mainly used to list the errors that occur when undertaking async tasks
+    """
+
+    serializer_class = ErrorQueueSerializer
+    filter_class = ErrorQueueFilter
+    queryset = ErrorQueue.objects.all()
+    ordering_fields = ('app_label', )
+
+
+class ErrorQueueDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves a single error that occurred when performing an async task
+    """
+
+    serializer_class = ErrorQueueSerializer
+    queryset = ErrorQueue.objects.all()

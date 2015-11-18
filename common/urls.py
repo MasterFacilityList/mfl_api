@@ -28,12 +28,22 @@ from .views import (
     SubCountyDetailView,
     SubCountyListView,
     DocumentUploadListView,
-    DocumentUploadDetailView
+    DocumentUploadDetailView,
+    ErrorQueueDetailView,
+    ErrorQueueListView
 )
 
 
 urlpatterns = patterns(
     '',
+
+    url(r'^errors/$',
+        ErrorQueueListView.as_view(),
+        name='error_queues_list'),
+    url(r'^errors/(?P<pk>[^/]+)/$',
+        ErrorQueueDetailView.as_view(),
+        name='error_queue_detail'),
+
     url(r'^sub_counties/$',
         SubCountyListView.as_view(),
         name='sub_counties_list'),

@@ -138,6 +138,7 @@ def remove_search_index(*args, **kwargs):
 def build_search_index(*args, **kwargs):
     """Creates the entire search index"""
     manage('build_index')
+    manage('index_material_records')
 
 
 def recreate_search_index(*args, **kwargs):
@@ -233,3 +234,18 @@ def warmup_cache(
             requests.request("GET", url=_get_url(i), headers=gzipped_headers)
 
     prod_api(login())
+
+
+def start_celery_worker(*args, **kwargs):
+    """
+    Starts the celery worker
+    """
+    local("celery -A config worker -l info")
+
+
+def start_celery_beat(*args, **kwargs):
+    """
+    Starts the celery beat to retry indexing failed records and
+    resend emails that were not successfully sent to users
+    """
+    local("celery -A config beat -l info")
