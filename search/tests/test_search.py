@@ -436,6 +436,33 @@ class TestSearchFunctions(ViewTestBase):
             index_instance('users', 'JobTitle', job_title.id)
         )
 
+    def test_sending_email_to_admins(self):
+        """
+        This is for test coverage only.
+        Tests that emails are sent to admins if the number
+        of retries on a record is more than one
+        """
+
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            mommy.make(Facility, name='Ile Noma')
+            self.assertEquals(1, ErrorQueue.objects.count())
+            # elastic search up hence records updated
+            call_command('retry_indexing')
+            self.assertEquals(1, ErrorQueue.objects.count())
+            error_queue_object = ErrorQueue.objects.all()[0]
+            self.assertEquals(1, error_queue_object.retries)
+
+            call_command('retry_indexing')
+            self.assertEquals(1, ErrorQueue.objects.count())
+            error_queue_object = ErrorQueue.objects.all()[0]
+            self.assertEquals(2, error_queue_object.retries)
+
+            call_command('retry_indexing')
+            self.assertEquals(1, ErrorQueue.objects.count())
+            error_queue_object = ErrorQueue.objects.all()[0]
+            self.assertEquals(3, error_queue_object.retries)
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFunctions, self).tearDown()

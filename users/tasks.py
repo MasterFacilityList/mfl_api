@@ -41,6 +41,7 @@ def resend_user_signup_emails():
                 obj.retries = obj.retries + 1
                 if obj.retries > 2:
                     mail_admins(
+                        subject="Send User Email Error",
                         message="Sending emails to users on registration is "
                         "failing. Check the email settings in the environment"
                     )

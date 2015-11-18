@@ -78,3 +78,33 @@ class TestMflUserModel(BaseTestCase):
 
             # the user does not exist hence the error record was left as is
             self.assertEquals(1, ErrorQueue.objects.count())
+
+    def test_sending_emails_to_admins(self):
+        """
+        This is for test coverage purpose only
+
+        Tests that emails are sent to users if the number of retries
+        is greater than one
+        """
+
+        with patch('django.core.mail.EmailMultiAlternatives.send') as socket_mock:   # noqa
+            socket_mock.side_effect = gaierror
+            MflUser.objects.create_user(
+                email='mimi@wewe.com',
+                first_name='wao',
+                last_name='yule',
+                employee_number='sdfsd44',
+                password='yule454858345')
+            # Network is unreachable hence email not sent
+            self.assertEquals(1, ErrorQueue.objects.count())
+            call_command("resend_user_emails")
+            self.assertEquals(1, ErrorQueue.objects.count())
+            error_queue_object = ErrorQueue.objects.all()[0]
+            self.assertEquals(1, error_queue_object.retries)
+
+            call_command("resend_user_emails")
+            self.assertEquals(1, ErrorQueue.objects.count())
+            error_queue_object = ErrorQueue.objects.all()[0]
+            self.assertEquals(2, error_queue_object.retries)
+
+        call_command("resend_user_emails")

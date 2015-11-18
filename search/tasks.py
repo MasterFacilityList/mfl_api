@@ -39,6 +39,7 @@ def retry_indexing():
                 obj.retries = obj.retries + 1
                 if obj.retries > 2:
                     mail_admins(
+                        subject="Update Search Index Error",
                         message="Indexing failed records is failing."
                         " Please check and ensure elasticsearch is up"
                     )
