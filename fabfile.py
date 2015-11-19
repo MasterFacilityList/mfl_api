@@ -312,12 +312,13 @@ def restore_db(*args, **kwargs):
     """
     Fetches the latest database backup file from aws and restores it
     """
-
-    # fetch the latest db
+    # confirm the user wants to restore the database
     answer = raw_input(
         "This will remove the existing database and "
-        "replace it with the latest backup. Do you with to continue? [Y/N] \n"
+        "replace it with the latest backup. Do you wish to continue? [Y/N] \n"
     )
+
+    # fetch the latest db and restore the db
     if answer == 'Y' or answer == 'y':
         aws_key = os.environ.get('AWS_KEY')
         aws_secret = os.environ.get('AWS_SECRET')

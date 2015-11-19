@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
-Backup the Mfl database
+Backup the MFL database
 
-Creates a backup file for the mfl db, zips and ships
-it to storage at S3 every day at midnight
+Creates a backup file for the MFL db, zips and ships
+it to amazon S3 every day at midnight
 """
 
 from django.core.mail import mail_admins
