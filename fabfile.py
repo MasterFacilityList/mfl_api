@@ -1,10 +1,14 @@
 #! /usr/bin/env python
 import json
 import os
+import datetime
+import time
 
 from config.settings import base
 from fabric.api import local
 from fabric.context_managers import lcd
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -249,3 +253,74 @@ def start_celery_beat(*args, **kwargs):
     resend emails that were not successfully sent to users
     """
     local("celery -A config beat -l info")
+
+
+def backup_mfl_db(*args, **kwargs):
+    """
+    Creates a backup of the database
+    """
+
+    # generate the backup file
+    timestamp = time.time()
+    value = datetime.datetime.fromtimestamp(timestamp)
+    value = value.strftime('%Y-%m-%d-%H-%M-%S')
+    file_name = 'mfl_dump_{0}'.format(value)
+    command = 'sudo -u postgres pg_dump mfl > {0}.sql'.format(file_name)
+    local(command)
+    tar_command = "tar -czf {0}.tar.gz {1}.sql".format(
+        file_name, file_name)
+    local(tar_command)
+
+    def save_the_db_backup_to_s3():
+        # send the file generated to aws s3
+        aws_key = os.environ.get('AWS_KEY')
+        aws_secret = os.environ.get('AWS_SECRET')
+        aws_connection = S3Connection(aws_key, aws_secret)
+        bucket = aws_connection.create_bucket(os.environ.get('AWS_BUCKET'))
+        k = Key(bucket)
+        k.key = "{0}.tar.gz".format(file_name)
+        k.set_contents_from_filename('{0}.tar.gz'.format(file_name))
+
+    def test_generated_backup_file(*args, **kwargs):
+        # check the file generated does not have errors in it
+        no_sudo = True if 'no-sudo' in args else False
+        kwargs['sql'] if 'sql' in kwargs else None
+        db_name = 'mfl_backup_db'
+        db_user = base.DATABASES.get('default').get('USER')
+        psql("DROP DATABASE IF EXISTS {0}".format(db_name), no_sudo)
+        psql('CREATE DATABASE {0}'.format(db_name), no_sudo)
+        psql('CREATE EXTENSION IF NOT EXISTS postgis')
+        psql('GRANT ALL on database {0} to {1}'.format(db_name, db_user))
+        command = 'sudo -u postgres psql {0} < {1}.sql'.format(
+            db_name, file_name)
+        local(command)
+        psql("DROP DATABASE IF EXISTS {0};".format(db_name), no_sudo)
+
+    def remove_local_files():
+        # remove the local files created during the backup process
+        local('rm {0}.tar.gz'.format(file_name))
+        local('rm {0}.sql'.format(file_name))
+
+    test_generated_backup_file()
+    save_the_db_backup_to_s3()
+    remove_local_files()
+
+
+def restore_db():
+    """
+    Fetches the latest database backup file from aws and restores it
+    """
+
+    aws_key = os.environ.get('AWS_KEY')
+    aws_secret = os.environ.get('AWS_SECRET')
+    aws_connection = S3Connection(aws_key, aws_secret)
+    bucket = aws_connection.get_bucket(os.environ.get('AWS_BUCKET'))
+    latest_file = reversed([obj for obj in bucket.list()]).next()
+
+    latest_file.get_contents_to_filename('mfl_db_backup.tar.gz')
+
+    local('tar -xzf mfl_db_backup.tar.gz mfl_db_backup.sql')
+    setup_db()
+    command = 'sudo -u postgres psql {0} <mfl_db_backup.sql'.format(
+        'mfl')
+    local(command)
