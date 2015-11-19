@@ -6,17 +6,8 @@ from django.test.utils import override_settings
 from ..tasks import backup_db
 
 
-class S3MultipleUploadMock(object):
-    def upload_part_from_file(self, *args, **kwargs):
-        return True
-
-    def complete_upload(self, *args, **kwargs):
-        return True
-
-
 class S3BucketMock(object):
-    def initiate_multipart_upload(self, *args, **kwargs):
-        return S3MultipleUploadMock()
+    pass
 
 
 class S3Mock(object):
@@ -24,7 +15,6 @@ class S3Mock(object):
         super(S3Mock, self).__init__(*args, **kwargs)
 
     def create_bucket(self, *args, **kwargs):
-
         return S3BucketMock()
 
 
