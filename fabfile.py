@@ -3,6 +3,7 @@ import json
 import os
 import datetime
 import time
+import logging
 
 from config.settings import base
 from fabric.api import local
@@ -12,6 +13,7 @@ from boto.s3.key import Key
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOGGER = logging.getLogger(__name__)
 
 
 def manage(command, args=''):
@@ -306,21 +308,45 @@ def backup_mfl_db(*args, **kwargs):
     remove_local_files()
 
 
-def restore_db():
+def restore_db(*args, **kwargs):
     """
     Fetches the latest database backup file from aws and restores it
     """
 
-    aws_key = os.environ.get('AWS_KEY')
-    aws_secret = os.environ.get('AWS_SECRET')
-    aws_connection = S3Connection(aws_key, aws_secret)
-    bucket = aws_connection.get_bucket(os.environ.get('AWS_BUCKET'))
-    latest_file = reversed([obj for obj in bucket.list()]).next()
+    # fetch the latest db
+    answer = raw_input(
+        "This will remove the existing database and "
+        "replace it with the latest backup. Do you with to continue? [Y/N] \n"
+    )
+    if answer == 'Y' or answer == 'y':
+        aws_key = os.environ.get('AWS_KEY')
+        aws_secret = os.environ.get('AWS_SECRET')
+        aws_connection = S3Connection(aws_key, aws_secret)
+        bucket = aws_connection.get_bucket(os.environ.get('AWS_BUCKET'))
+        latest_file = reversed([obj for obj in bucket.list()]).next()
 
-    latest_file.get_contents_to_filename('mfl_db_backup.tar.gz')
+        # unzip the file
+        latest_file.get_contents_to_filename('mfl_db_backup.tar.gz')
+        filename = latest_file.key.split('.')[0]
+        local('tar -xzf mfl_db_backup.tar.gz {0}.sql'.format(
+            filename))
 
-    local('tar -xzf mfl_db_backup.tar.gz mfl_db_backup.sql')
-    setup_db()
-    command = 'sudo -u postgres psql {0} <mfl_db_backup.sql'.format(
-        'mfl')
-    local(command)
+        db_name = base.DATABASES.get('default').get('NAME')
+        no_sudo = True if 'no-sudo' in args else False
+        kwargs['sql'] if 'sql' in kwargs else None
+
+        # drop and create the mfl database
+        psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
+        psql('CREATE DATABASE {}'.format(db_name), no_sudo)
+
+        # restore the data and structure from the saved file
+        command = 'sudo -u postgres psql {0} <{1}.sql'.format(
+            'mfl', filename)
+        local(command)
+
+        # remove the downloaded files
+        local('rm {0}.tar.gz'.format('mfl_db_backup'))
+        local('rm {0}.sql'.format(filename))
+        LOGGER.info("Done")
+    else:
+        LOGGER.info("Exiting Bye!")
