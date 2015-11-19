@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+from common.constants import TRUTH_NESS
 import json
 import os
 import datetime
@@ -16,7 +17,6 @@ from boto.s3.key import Key
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGGER = logging.getLogger(__name__)
-from common.constants import TRUTH_NESS
 
 
 def manage(command, args=''):
