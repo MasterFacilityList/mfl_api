@@ -18,7 +18,8 @@ from ..models import (
     UserCounty,
     UserContact,
     UserConstituency,
-    SubCounty
+    SubCounty,
+    ErrorQueue
 )
 from facilities.models import RegulationStatus
 
@@ -395,3 +396,18 @@ class TestSubCounty(TestCase):
     def test_save(self):
         mommy.make(SubCounty)
         self.assertEquals(1, SubCounty.objects.count())
+
+
+class TestErrorQueue(TestCase):
+    def test_save(self):
+        mommy.make(ErrorQueue)
+        self.assertEquals(1, ErrorQueue.objects.count())
+
+    def test_representation(self):
+        error = mommy.make(
+            ErrorQueue,
+            object_pk='1',
+            app_label='users',
+            model_name='MflUser')
+        string_rep = "1 - users - MflUser"
+        self.assertEquals(string_rep, error.__str__())

@@ -571,7 +571,7 @@ class FacilityExportExcelMaterialView(models.Model):
     constituency = models.UUIDField(
         null=True, blank=True,
         help_text='The name of the facility\'s constituency ')
-    ward_name = models.CharField(
+    ward = models.UUIDField(
         max_length=100,
         help_text='Name of the facility\'s ward')
     owner_name = models.CharField(
@@ -1032,7 +1032,11 @@ class Facility(SequenceMixin, AbstractBase):
 
         mat_view_facility_record = FacilityExportExcelMaterialView.objects.get(
             id=self.id)
-        index_instance(mat_view_facility_record)
+        index_instance(
+            "facilities",
+            "FacilityExportExcelMaterialView",
+            str(mat_view_facility_record.id)
+        )
 
     def save(self, *args, **kwargs):  # NOQA
         """

@@ -12,13 +12,20 @@ from ..models import (
     Town,
     UserConstituency,
     SubCounty,
-    DocumentUpload
+    DocumentUpload,
+    ErrorQueue
 )
 from .filter_shared import (
     CommonFieldsFilterset,
     ListCharFilter,
     ListIntegerFilter
 )
+
+
+class ErrorQueueFilter(django_filters.FilterSet):
+
+    class Meta(object):
+        model = ErrorQueue
 
 
 class SubCountyFilter(CommonFieldsFilterset):

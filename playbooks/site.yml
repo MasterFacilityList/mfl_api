@@ -9,6 +9,7 @@
     has_ssl: true
     cert_file: ""
     key_file: ""
+    celery_user: ""
   roles:
     - common
     - { role: postgresql }
@@ -61,6 +62,7 @@
         realtime_index: true,
         load_demo_data: false,
         recreate_search_index: false,
+        mfl_celery_user: "{{celery_user}}",
 
         # the settings below are for warming up the cache
         warm_cache: false,

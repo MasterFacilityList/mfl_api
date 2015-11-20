@@ -116,6 +116,7 @@ setup(
         "WeasyPrint>=0.23,<0.24.0",
         "django-redis>=4.0.0,<4.1.0",
         "django-storages==1.1.8",
-        "boto==2.38.0"
+        "boto==2.38.0",
+        "celery==3.1.19"
     ],
 )
