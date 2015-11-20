@@ -351,7 +351,6 @@ def restore_db(*args, **kwargs):
         # unzip the file
         latest_file.get_contents_to_filename('mfl_db_backup.tar.gz')
         filename = latest_file.key.split('.')[0]
-        print filename
         local('tar -xzf mfl_db_backup.tar.gz {0}.sql'.format(
             filename))
 
