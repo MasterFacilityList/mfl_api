@@ -1,13 +1,22 @@
 #! /usr/bin/env python
+from common.constants import TRUTH_NESS
 import json
 import os
+import datetime
+import time
+import logging
+import math
 
+from filechunkio import FileChunkIO
 from config.settings import base
 from fabric.api import local
 from fabric.context_managers import lcd
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOGGER = logging.getLogger(__name__)
 
 
 def manage(command, args=''):
@@ -249,3 +258,118 @@ def start_celery_beat(*args, **kwargs):
     resend emails that were not successfully sent to users
     """
     local("celery -A config beat -l info")
+
+
+def backup_mfl_db(*args, **kwargs):
+    """
+    Creates a backup of the database
+    """
+
+    # generate the backup file
+    timestamp = time.time()
+    value = datetime.datetime.fromtimestamp(timestamp)
+    value = value.strftime('%Y-%m-%d-%H-%M-%S')
+    file_name = 'mfl_dump_{0}'.format(value)
+    command = 'sudo -u postgres pg_dump mfl > {0}.sql'.format(file_name)
+    local(command)
+    tar_command = "tar -czf {0}.tar.gz {1}.sql".format(
+        file_name, file_name)
+    local(tar_command)
+
+    def save_the_db_backup_to_s3():
+        # send the file generated to aws s3
+        aws_key = os.environ.get('AWS_KEY')
+        aws_secret = os.environ.get('AWS_SECRET')
+        aws_connection = S3Connection(aws_key, aws_secret)
+
+        bucket = aws_connection.create_bucket(os.environ.get('AWS_BUCKET'))
+        k = Key(bucket)
+        k.key = "{0}.tar.gz".format(file_name)
+
+        # upload the file in chunks just in case its too big
+        source_file_path = os.path.join(BASE_DIR, k.key)
+        source_size = os.stat(source_file_path).st_size
+        mp = bucket.initiate_multipart_upload(
+            os.path.basename(source_file_path))
+
+        chunk_size = 20971520  # 20 MB
+        chunk_count = int(math.ceil(source_size / float(chunk_size)))
+
+        for i in range(chunk_count):
+            offset = chunk_size * i
+            bytes = min(chunk_size, source_size - offset)
+            with FileChunkIO(source_file_path, 'r', offset=offset,
+                             bytes=bytes) as fp:
+                mp.upload_part_from_file(fp, part_num=i + 1)
+
+        mp.complete_upload()
+
+    def test_generated_backup_file(*args, **kwargs):
+        # check the file generated does not have errors in it
+        no_sudo = True if 'no-sudo' in args else False
+        kwargs['sql'] if 'sql' in kwargs else None
+        db_name = 'mfl_backup_db'
+        db_user = base.DATABASES.get('default').get('USER')
+        psql("DROP DATABASE IF EXISTS {0}".format(db_name), no_sudo)
+        psql('CREATE DATABASE {0}'.format(db_name), no_sudo)
+        psql('CREATE EXTENSION IF NOT EXISTS postgis')
+        psql('GRANT ALL on database {0} to {1}'.format(db_name, db_user))
+        command = 'sudo -u postgres psql {0} < {1}.sql'.format(
+            db_name, file_name)
+        local(command)
+        psql("DROP DATABASE IF EXISTS {0}".format(db_name), no_sudo)
+
+    def remove_local_files():
+        # remove the local files created during the backup process
+        local('rm {0}.tar.gz'.format(file_name))
+        local('rm {0}.sql'.format(file_name))
+
+    test_generated_backup_file()
+    save_the_db_backup_to_s3()
+    remove_local_files()
+
+
+def restore_db(*args, **kwargs):
+    """
+    Fetches the latest database backup file from AWS and restores it
+    """
+    # confirm the user wants to restore the database
+    confirmation = raw_input(
+        "This will remove the existing database and "
+        "replace it with the latest backup. "
+        "Do you wish to continue? [Y/N] \n"
+    )
+
+    # fetch the latest db and restore the db
+    if confirmation in TRUTH_NESS:
+        aws_key = os.environ.get('AWS_KEY')
+        aws_secret = os.environ.get('AWS_SECRET')
+        aws_connection = S3Connection(aws_key, aws_secret)
+        bucket = aws_connection.get_bucket(os.environ.get('AWS_BUCKET'))
+        latest_file = reversed([obj for obj in bucket.list()]).next()
+
+        # unzip the file
+        latest_file.get_contents_to_filename('mfl_db_backup.tar.gz')
+        filename = latest_file.key.split('.')[0]
+        local('tar -xzf mfl_db_backup.tar.gz {0}.sql'.format(
+            filename))
+
+        db_name = base.DATABASES.get('default').get('NAME')
+        no_sudo = True if 'no-sudo' in args else False
+        kwargs['sql'] if 'sql' in kwargs else None
+
+        # drop and create the mfl database
+        psql("DROP DATABASE IF EXISTS {}".format(db_name), no_sudo)
+        psql('CREATE DATABASE {}'.format(db_name), no_sudo)
+
+        # restore the data and structure from the saved file
+        command = 'sudo -u postgres psql {0} <{1}.sql'.format(
+            'mfl', filename)
+        local(command)
+
+        # remove the downloaded files
+        local('rm {0}.tar.gz'.format('mfl_db_backup'))
+        local('rm {0}.sql'.format(filename))
+        LOGGER.info("Done")
+    else:
+        LOGGER.info("Exiting Bye!")
