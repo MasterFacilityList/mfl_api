@@ -615,9 +615,12 @@ class FacilityExportExcelMaterialView(models.Model):
     categories = ArrayField(
         models.UUIDField(null=True, blank=True), null=True, blank=True
     )
+    approved = models.BooleanField(default=False)
+    created = models.DateTimeField()
 
     class Meta(object):
         managed = False
+        ordering = ('-created', )
         db_table = 'facilities_excel_export'
 
 
@@ -793,11 +796,6 @@ class Facility(SequenceMixin, AbstractBase):
     def get_constituency(self):
         return self.ward.constituency.name
 
-    def validate_publish(self):
-        if self.is_published and not self.is_approved:
-            message = "A facility has to be approved for it to be published"
-            raise ValidationError(message)
-
     @property
     def current_regulatory_status(self):
         try:
@@ -964,7 +962,6 @@ class Facility(SequenceMixin, AbstractBase):
                 })
 
     def clean(self, *args, **kwargs):
-        self.validate_publish(*args, **kwargs)
         self.validate_closing_date_supplied_on_close()
         super(Facility, self).clean()
 
@@ -1480,6 +1477,7 @@ class FacilityApproval(AbstractBase):
         else:
             self.facility.rejected = False
             self.facility.approved = True
+            self.facility.is_published = True
         self.facility.save(allow_save=True)
 
     def clean(self, *args, **kwargs):

@@ -85,6 +85,7 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
+
         custom_queryset = kwargs.pop('custom_queryset', None)
         if hasattr(custom_queryset, 'count'):
             self.queryset = custom_queryset
@@ -116,11 +117,10 @@ class QuerysetFilterMixin(object):
 
         if self.request.user.has_perm(
             "facilities.view_unpublished_facilities") \
-            is False and 'is_published' in [
-                field.name for field in
-                self.queryset.model._meta.get_fields()]:
-
-            self.queryset = self.queryset.filter(is_published=True)
+            is False and self.queryset.model in [
+                FacilityExportExcelMaterialView,
+                Facility]:
+            self.queryset = self.queryset.filter(approved=True)
 
         if self.request.user.has_perm(
             "facilities.view_unapproved_facilities") \
@@ -353,7 +353,8 @@ class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
     )
 
 
-class FacilityExportMaterialListView(generics.ListAPIView):
+class FacilityExportMaterialListView(
+        QuerysetFilterMixin, generics.ListAPIView):
     queryset = FacilityExportExcelMaterialView.objects.all()
     serializer_class = FacilityExportExcelMaterialViewSerializer
     filter_class = FacilityExportExcelMaterialViewFilter
