@@ -698,19 +698,6 @@ class TestFacility(BaseTestCase):
         facility.name = "name"
         facility.save()
 
-    def test_unpublish_facility(self):
-        facility = mommy.make(Facility)
-        self.assertFalse(facility.is_published)
-        mommy.make(FacilityApproval, facility=facility)
-        facility.is_published = True
-        facility.save()
-        facility_refetched = Facility.objects.get(id=facility.id)
-        self.assertTrue(facility_refetched.is_published)
-        facility_refetched.is_published = False
-        facility_refetched.save()
-        facility_refetched = Facility.objects.get(id=facility.id)
-        self.assertFalse(facility_refetched.is_published)
-
     def test_facility_official_name_not_given(self):
         facility = mommy.make(Facility)
         self.assertEquals(facility.name, facility.official_name)
