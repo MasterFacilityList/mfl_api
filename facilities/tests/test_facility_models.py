@@ -628,10 +628,6 @@ class TestFacility(BaseTestCase):
             created_by=user)
         self.assertTrue(facility.is_regulated)
 
-    def test_publishing(self):
-        with self.assertRaises(ValidationError):
-            mommy.make(Facility, is_published=True)
-
     def test_facility_get_properties(self):
         town = mommy.make(Town, name='Londiani')
         county = mommy.make(County, name='Bomet')
@@ -701,19 +697,6 @@ class TestFacility(BaseTestCase):
         facility = mommy.make(Facility, name="name")
         facility.name = "name"
         facility.save()
-
-    def test_unpublish_facility(self):
-        facility = mommy.make(Facility)
-        self.assertFalse(facility.is_published)
-        mommy.make(FacilityApproval, facility=facility)
-        facility.is_published = True
-        facility.save()
-        facility_refetched = Facility.objects.get(id=facility.id)
-        self.assertTrue(facility_refetched.is_published)
-        facility_refetched.is_published = False
-        facility_refetched.save()
-        facility_refetched = Facility.objects.get(id=facility.id)
-        self.assertFalse(facility_refetched.is_published)
 
     def test_facility_official_name_not_given(self):
         facility = mommy.make(Facility)
