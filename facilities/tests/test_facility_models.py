@@ -628,10 +628,6 @@ class TestFacility(BaseTestCase):
             created_by=user)
         self.assertTrue(facility.is_regulated)
 
-    def test_publishing(self):
-        with self.assertRaises(ValidationError):
-            mommy.make(Facility, is_published=True)
-
     def test_facility_get_properties(self):
         town = mommy.make(Town, name='Londiani')
         county = mommy.make(County, name='Bomet')
