@@ -1055,17 +1055,6 @@ class Facility(SequenceMixin, AbstractBase):
 
         # Allow publishing facilities without requiring approvals
         old_details = self.__class__.objects.get(id=self.id)
-        if not old_details.is_published and self.is_published:
-            kwargs.pop('allow_save', None)
-            super(Facility, self).save(*args, **kwargs)
-            self.index_facility_material_view()
-            return
-        # enable unpublishing a facility
-        if old_details.is_published and not self.is_published:
-            kwargs.pop('allow_save', None)
-            super(Facility, self).save(*args, **kwargs)
-            self.index_facility_material_view()
-            return
 
         # enable closing a facility
         if not old_details.closed and self.closed:
