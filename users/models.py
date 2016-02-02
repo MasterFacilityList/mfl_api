@@ -25,6 +25,7 @@ from oauth2_provider.settings import oauth2_settings
 @shared_task(name='send_user_email')
 def send_email_on_signup(
         user_id, email, first_name, employee_number, user_password=None):
+    from common.models import ErrorQueue
     sent = False
     html_email_template = loader.get_template(
         "registration/registration_success.html")
@@ -48,15 +49,26 @@ def send_email_on_signup(
     try:
         msg.send()
         sent = True
-    except (socket.gaierror, SMTPAuthenticationError):
-        from common.models import ErrorQueue
+    except socket.gaierror:
         ErrorQueue.objects.get_or_create(
             object_pk=user_id,
             error_type="SEND_EMAIL_ERROR",
             app_label='users',
             model_name='MflUser',
-            except_message='Unable to send user email'
+            except_message=(
+                'Unable to send user email; Please confirm that email'
+                'settings are present in the environment')
         )
+    except SMTPAuthenticationError:
+      ErrorQueue.objects.get_or_create(
+        object_pk=user_id,
+        error_type="SEND_EMAIL_ERROR",
+        app_label='users',
+        model_name='MflUser',
+        except_message=(
+                'Unable to send user email; The email '
+                'and password given in settings are not correct')
+    )
     return sent
 
 
