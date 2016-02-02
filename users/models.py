@@ -60,15 +60,15 @@ def send_email_on_signup(
                 'settings are present in the environment')
         )
     except SMTPAuthenticationError:
-      ErrorQueue.objects.get_or_create(
-        object_pk=user_id,
-        error_type="SEND_EMAIL_ERROR",
-        app_label='users',
-        model_name='MflUser',
-        except_message=(
-            'Unable to send user email; The email '
-            'and password given in settings are not correct')
-    )
+        ErrorQueue.objects.get_or_create(
+            object_pk=user_id,
+            error_type="SEND_EMAIL_ERROR",
+            app_label='users',
+            model_name='MflUser',
+            except_message=(
+                'Unable to send user email; The email '
+                'and password given in settings are not correct')
+        )
     return sent
 
 
