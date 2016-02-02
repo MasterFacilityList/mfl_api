@@ -57,7 +57,7 @@ def send_email_on_signup(
             model_name='MflUser',
             except_message=(
                 'Unable to send user email; Please confirm that email'
-                'settings are present in the environment')
+                ' settings are present in the environment')
         )
     except SMTPAuthenticationError:
         ErrorQueue.objects.get_or_create(
