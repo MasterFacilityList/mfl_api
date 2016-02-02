@@ -34,7 +34,7 @@ class TestMflUserModel(BaseTestCase):
                 last_name='yule',
                 employee_number='sdfsd44',
                 password='yule454858345')
-            # the event is pushed to the error queue due to authentication error
+            # the event is pushed to the error queue due to error
             self.assertEquals(1, ErrorQueue.objects.count())
 
     def test_send_email_success(self):
