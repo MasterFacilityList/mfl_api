@@ -2,7 +2,7 @@ import reversion
 import datetime
 import uuid
 
-from smtplib import socket
+from smtplib import socket, SMTPAuthenticationError
 from django.db import models
 from django.utils import timezone, encoding
 from django.core.validators import (
@@ -25,6 +25,7 @@ from oauth2_provider.settings import oauth2_settings
 @shared_task(name='send_user_email')
 def send_email_on_signup(
         user_id, email, first_name, employee_number, user_password=None):
+    from common.models import ErrorQueue
     sent = False
     html_email_template = loader.get_template(
         "registration/registration_success.html")
@@ -49,13 +50,24 @@ def send_email_on_signup(
         msg.send()
         sent = True
     except socket.gaierror:
-        from common.models import ErrorQueue
         ErrorQueue.objects.get_or_create(
             object_pk=user_id,
             error_type="SEND_EMAIL_ERROR",
             app_label='users',
             model_name='MflUser',
-            except_message='Unable to send user email'
+            except_message=(
+                'Unable to send user email; Please confirm that email'
+                ' settings are present in the environment')
+        )
+    except SMTPAuthenticationError:
+        ErrorQueue.objects.get_or_create(
+            object_pk=user_id,
+            error_type="SEND_EMAIL_ERROR",
+            app_label='users',
+            model_name='MflUser',
+            except_message=(
+                'Unable to send user email; The email '
+                'and password given in settings are not correct')
         )
     return sent
 
