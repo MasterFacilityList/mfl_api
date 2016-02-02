@@ -2,7 +2,7 @@ import reversion
 import datetime
 import uuid
 
-from smtplib import socket
+from smtplib import socket, SMTPAuthenticationError
 from django.db import models
 from django.utils import timezone, encoding
 from django.core.validators import (
@@ -48,7 +48,7 @@ def send_email_on_signup(
     try:
         msg.send()
         sent = True
-    except socket.gaierror:
+    except (socket.gaierror, SMTPAuthenticationError):
         from common.models import ErrorQueue
         ErrorQueue.objects.get_or_create(
             object_pk=user_id,
