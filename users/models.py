@@ -66,8 +66,8 @@ def send_email_on_signup(
         app_label='users',
         model_name='MflUser',
         except_message=(
-                'Unable to send user email; The email '
-                'and password given in settings are not correct')
+            'Unable to send user email; The email '
+            'and password given in settings are not correct')
     )
     return sent
 
