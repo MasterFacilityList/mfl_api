@@ -1,5 +1,6 @@
 from mock import patch
-from socket import gaierror, SMTPAuthenticationError
+from socket import gaierror
+from smtplib import SMTPAuthenticationError
 
 from django.core.management import call_command
 
@@ -24,14 +25,16 @@ class TestMflUserModel(BaseTestCase):
 
     def test_send_email_wrong_email_creds_in_settings(self):
         with patch('django.core.mail.EmailMultiAlternatives.send') as socket_mock:  # noqa
-            socket_mock.side_effect = SMTPAuthenticationError
+            socket_mock.side_effect = SMTPAuthenticationError(
+                500, 'authentication failed'
+            )
             MflUser.objects.create_user(
                 email='mimi@wewe.com',
                 first_name='wao',
                 last_name='yule',
                 employee_number='sdfsd44',
                 password='yule454858345')
-            # Network is unreachable hence email not sent
+            # the event is pushed to the error queue due to authentication error
             self.assertEquals(1, ErrorQueue.objects.count())
 
     def test_send_email_success(self):
