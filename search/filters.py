@@ -5,6 +5,7 @@ Add a custom django_filters field that interacts with Elasticsearch
 """
 
 from django.conf import settings
+from django.db.models import Q  # NOQA
 
 import django_filters
 
