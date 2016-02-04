@@ -1,7 +1,13 @@
+"""
+Custom search filters.
+
+Add a custom django_filters field that interacts with Elasticsearch
+"""
+
 from django.conf import settings
-from django.db.models import Q
 
 import django_filters
+
 from search.search_utils import ElasticAPI
 
 
@@ -12,12 +18,16 @@ FIELD_TYPES = [
 
 class SearchFilter(django_filters.filters.Filter):
     """
-    Given a query searches elastic search index and returns a queryset of hits.
+    Given a query searches elastic search index.
+
+    Returns a django queryset of the model searched.
     """
+
     api = ElasticAPI()
     search_type = 'full_text'
 
     def filter(self, qs, value):
+        """Override this method in order to search in Elasticsearch index."""
         super(SearchFilter, self).filter(qs, value)
         api = ElasticAPI()
         if api._is_on:
@@ -80,6 +90,9 @@ class SearchFilter(django_filters.filters.Filter):
             q_filter = ""
             for key, value in filter_params.items():
                 q_filter += "Q({0}='{1}') | ".format(key, value)
+
+            # remove the pipe character at the end of the string
+            #
             q_filter_reverse = q_filter[::-1]
             q_filter = q_filter_reverse[3:len(q_filter_reverse) + 1]
             q_filter = q_filter[::-1]
@@ -88,4 +101,6 @@ class SearchFilter(django_filters.filters.Filter):
 
 
 class AutoCompleteSearchFilter(SearchFilter):
+    """Autocomplete search filter."""
+
     search_type = "auto_complete"
