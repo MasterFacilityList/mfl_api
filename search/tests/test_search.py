@@ -481,7 +481,6 @@ class TestSearchFunctions(ViewTestBase):
             response = self.client.get(url)
             self.assertEquals(200, response.status_code)
 
-
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFunctions, self).tearDown()
