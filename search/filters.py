@@ -92,7 +92,6 @@ class SearchFilter(django_filters.filters.Filter):
                 q_filter += "Q({0}='{1}') | ".format(key, value)
 
             # remove the pipe character at the end of the string
-            #
             q_filter_reverse = q_filter[::-1]
             q_filter = q_filter_reverse[3:len(q_filter_reverse) + 1]
             q_filter = q_filter[::-1]
