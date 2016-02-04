@@ -463,6 +463,25 @@ class TestSearchFunctions(ViewTestBase):
             error_queue_object = ErrorQueue.objects.all()[0]
             self.assertEquals(3, error_queue_object.retries)
 
+    def test_search_using_facility_name_when_elastic_search_is_off(self):
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            mommy.make(Facility, name='Ile Noma')
+            url = reverse('api:facilities:facilities_list')
+            url = url + '?search=noma'
+            response = self.client.get(url)
+            self.assertEquals(200, response.status_code)
+
+    def test_search_using_facility_code_when_elastic_search_is_off(self):
+        with patch('search.search_utils.requests.get') as mock_get:
+            mock_get.side_effect = ConnectionError
+            mommy.make(Facility, name='Ile Noma', code=10000)
+            url = reverse('api:facilities:facilities_list')
+            url = url + '?search=10000'
+            response = self.client.get(url)
+            self.assertEquals(200, response.status_code)
+
+
     def tearDown(self):
         self.elastic_search_api.delete_index(index_name='test_index')
         super(TestSearchFunctions, self).tearDown()
