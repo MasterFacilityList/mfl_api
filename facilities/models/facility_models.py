@@ -615,9 +615,14 @@ class FacilityExportExcelMaterialView(models.Model):
     categories = ArrayField(
         models.UUIDField(null=True, blank=True), null=True, blank=True
     )
+    approved = models.BooleanField(default=False)
+    created = models.DateTimeField()
+    closed = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=False)
 
     class Meta(object):
         managed = False
+        ordering = ('-created', )
         db_table = 'facilities_excel_export'
 
 
@@ -793,11 +798,6 @@ class Facility(SequenceMixin, AbstractBase):
     def get_constituency(self):
         return self.ward.constituency.name
 
-    def validate_publish(self):
-        if self.is_published and not self.is_approved:
-            message = "A facility has to be approved for it to be published"
-            raise ValidationError(message)
-
     @property
     def current_regulatory_status(self):
         try:
@@ -964,7 +964,6 @@ class Facility(SequenceMixin, AbstractBase):
                 })
 
     def clean(self, *args, **kwargs):
-        self.validate_publish(*args, **kwargs)
         self.validate_closing_date_supplied_on_close()
         super(Facility, self).clean()
 
@@ -997,7 +996,8 @@ class Facility(SequenceMixin, AbstractBase):
         forbidden_fields = [
             'regulatory_status', 'facility_type',
             'regulatory_status_id', 'facility_type_id',
-            'keph_level', 'keph_level_id']
+            'keph_level', 'keph_level_id', 'closed',
+            'closing_reason', 'closed_date']
         data = []
         for field in fields:
             if (getattr(self, field) != getattr(origi_model, field) and
@@ -1056,22 +1056,11 @@ class Facility(SequenceMixin, AbstractBase):
             self.index_facility_material_view()
             return
 
-        # Allow publishing facilities without requiring approvals
         old_details = self.__class__.objects.get(id=self.id)
-        if not old_details.is_published and self.is_published:
-            kwargs.pop('allow_save', None)
-            super(Facility, self).save(*args, **kwargs)
-            self.index_facility_material_view()
-            return
-        # enable unpublishing a facility
-        if old_details.is_published and not self.is_published:
-            kwargs.pop('allow_save', None)
-            super(Facility, self).save(*args, **kwargs)
-            self.index_facility_material_view()
-            return
 
         # enable closing a facility
         if not old_details.closed and self.closed:
+            self.is_published = False
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             self.index_facility_material_view()
@@ -1079,6 +1068,7 @@ class Facility(SequenceMixin, AbstractBase):
 
         # enable opening a facility
         if old_details.closed and not self.closed:
+            self.is_published = True
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             self.index_facility_material_view()
@@ -1480,6 +1470,7 @@ class FacilityApproval(AbstractBase):
         else:
             self.facility.rejected = False
             self.facility.approved = True
+            self.facility.is_published = True
         self.facility.save(allow_save=True)
 
     def clean(self, *args, **kwargs):

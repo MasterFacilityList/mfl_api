@@ -46,7 +46,7 @@ class FilterCommunityUnitsMixin(object):
 
         if not self.request.user.has_perm(
                 "facilities.view_unpublished_facilities"):
-            self.queryset = self.queryset.filter(facility__is_published=True)
+            self.queryset = self.queryset.filter(facility__approved=True)
 
         if not self.request.user.has_perm(
                 "chul.view_rejected_chus"):

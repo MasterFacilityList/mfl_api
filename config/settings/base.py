@@ -472,7 +472,7 @@ SITE_ID = 1
 
 EXCEL_EXCEPT_FIELDS = [
     'id', 'updated', 'created', 'created_by', 'updated_by', 'active',
-    'deleted', 'search'
+    'deleted', 'search', 'services', 'categories', 'is_published'
 ]
 
 FRONTEND_URL = env("FRONTEND_URL")

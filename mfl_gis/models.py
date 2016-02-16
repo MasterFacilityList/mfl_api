@@ -165,10 +165,10 @@ class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
         Facility, related_name='facility_coordinates_through', unique=True)
     coordinates = gis_models.PointField()
     source = gis_models.ForeignKey(
-        GeoCodeSource,
+        GeoCodeSource, null=True, blank=True,
         help_text="where the geo code came from", on_delete=gis_models.PROTECT)
     method = gis_models.ForeignKey(
-        GeoCodeMethod,
+        GeoCodeMethod, null=True, blank=True,
         help_text="Method used to obtain the geo codes. e.g"
         " taken with GPS device")
     collection_date = gis_models.DateTimeField(default=timezone.now)

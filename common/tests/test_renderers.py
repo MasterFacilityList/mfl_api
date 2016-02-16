@@ -49,12 +49,14 @@ class TestExcelRenderer(LoginMixin, APITestCase):
             {
                 "key_a": "data",
                 "key_b": "data",
-                "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
+                "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd",
+                'boolean_key': False
             },
             {
                 "key_a": "data",
                 "key_b": "data",
-                "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd"
+                "key_b": "39f97a13-4f3f-45a3-a411-970e496526cd",
+                'boolean_key': True
             },
             {
                 "key_a": "data",
