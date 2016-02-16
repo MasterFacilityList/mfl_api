@@ -125,17 +125,24 @@ def _write_excel_file(data):  # noqa
                         try:
                             uuid.UUID(str(data_dict.get(key)))
                         except ValueError:
+                            cell_data = data_dict.get(key)
+
+                            if cell_data is True:
+                                cell_data = "Yes"
+
+                            if cell_data is False:
+                                cell_data = "No"
                             try:
                                 worksheet.write(
                                     row,
                                     col,
-                                    data_dict.get(key).encode(
-                                        "utf-8").strip().decode('utf-8'))
+                                    cell_data.encode(
+                                        "utf-8").strip().decode("utf-8"))
                             except AttributeError:
                                 worksheet.write(
                                     row,
                                     col,
-                                    str(data_dict.get(key)).decode('utf-8'))
+                                    str(cell_data).decode("utf-8"))
                         col = col + 1
                     else:
                         # write sheets to new work sheets
