@@ -3,7 +3,7 @@ from requests.exceptions import ConnectionError
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from ..tasks import backup_db
+from ..tasks import backup_db, refresh_material_views
 
 
 class S3BucketMock(object):
@@ -39,3 +39,7 @@ class TestCommonCeleryTasks(TestCase):
                 fabric_local_mock.return_value = None
                 fabric_local_mock.side_effect = None
                 backup_db()
+
+    def test_refresh_material_view(self):
+        # The test is just for coverage purpose only
+        refresh_material_views()
