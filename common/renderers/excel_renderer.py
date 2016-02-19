@@ -93,13 +93,15 @@ def _write_excel_file(data):  # noqa
             # find uuid fields and remove them from data
             data = work_sheet_data[0]
             reject_keys = []
+            cleaned_fields = []
             for key in sample_keys:
                 try:
                     uuid.UUID(str(data.get(key)))
                     reject_keys.append(key)
-                    del sample_keys[sample_keys.index(key)]
                 except ValueError:
-                    pass
+                    cleaned_fields.append(key)
+
+            sample_keys = cleaned_fields
 
             # remove data with uuid fields
             for data in work_sheet_data:
