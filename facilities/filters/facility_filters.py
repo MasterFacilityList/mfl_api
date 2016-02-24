@@ -132,6 +132,12 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
         lookup_type='exact')
     service = django_filters.AllValuesFilter(
         name="facility_service__service", lookup_type='exact')
+    county = django_filters.AllValuesFilter(
+        name="facility_service__ward__constituency__county", lookup_type='exact')
+    constituency = django_filters.AllValuesFilter(
+        name="facility_service__ward__constituency", lookup_type='exact')
+    ward = django_filters.AllValuesFilter(
+        name="facility_service__ward", lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
