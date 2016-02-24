@@ -192,11 +192,13 @@ class TestCommunityHealthWorkerModel(TestCase):
         self.assertEquals(1, CommunityHealthWorker.objects.count())
 
     def test_name(self):
-        worker = mommy.make(CommunityHealthWorker,
+        worker = mommy.make(
+            CommunityHealthWorker,
             first_name='Test', last_name='Test')
         self.assertEquals('Test Test', worker.name)
 
-        worker = mommy.make(CommunityHealthWorker,
+        worker = mommy.make(
+            CommunityHealthWorker,
             first_name='Test', last_name=None)
         self.assertEquals('Test', worker.name)
 

@@ -15,15 +15,15 @@ urlpatterns = patterns(
         name='flattened_categories'),
 
     url(r'^regulator_sync_update/(?P<pk>[^/]+)/$',
-        views.RegualorSyncUpdateView.as_view(),
+        views.RegulatorSyncUpdateView.as_view(),
         name='regulator_sync_update'),
 
     url(r'^regulator_sync/(?P<pk>[^/]+)/$',
-        views.RegualorSyncDetailView.as_view(),
+        views.RegulatorSyncDetailView.as_view(),
         name='regulator_sync_detail'),
 
     url(r'^regulator_sync/$',
-        views.RegualorSyncListView.as_view(),
+        views.RegulatorSyncListView.as_view(),
         name='regulator_syncs_list'),
 
     url(r'^option_group_with_options/$',

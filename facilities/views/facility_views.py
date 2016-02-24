@@ -706,7 +706,7 @@ class OptionGroupDetailView(
     serializer_class = OptionGroupSerializer
 
 
-class RegualorSyncListView(generics.ListCreateAPIView):
+class RegulatorSyncListView(generics.ListCreateAPIView):
     queryset = RegulatorSync.objects.all()
     serializer_class = RegulatorSyncSerializer
     filter_class = RegulatorSyncFilter
@@ -715,13 +715,13 @@ class RegualorSyncListView(generics.ListCreateAPIView):
         'owner', 'mfl_code')
 
 
-class RegualorSyncDetailView(
+class RegulatorSyncDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
     queryset = RegulatorSync.objects.all()
     serializer_class = RegulatorSyncSerializer
 
 
-class RegualorSyncUpdateView(generics.GenericAPIView):
+class RegulatorSyncUpdateView(generics.GenericAPIView):
 
     """Updates RegulatorSync object with an MFL code"""
     serializer_class = RegulatorSyncSerializer
