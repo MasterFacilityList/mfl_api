@@ -529,13 +529,26 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
 
     def test_approve_requested_updates(self):
         facility = mommy.make(Facility)
+
         mommy.make(FacilityApproval, facility=facility)
         url = self.facilities_url + "{}/".format(facility.id)
 
         service_1 = mommy.make(Service)
+
+        # also include a service that is already in the facility
+        service_2 = mommy.make(Service)
+        mommy.make(FacilityService, service=service_2, facility=facility)
+
         services = [
             {
                 "service": str(service_1.id)
+            },
+            # Add the same service to test for duplicates removal
+            {
+                "service": str(service_1.id)
+            },
+            {
+                "service": str(service_2.id)
             }
         ]
         contact_type = mommy.make(ContactType)
@@ -588,7 +601,7 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
         self.assertIsNotNone(update.units)
         self.assertEquals(0, FacilityContact.objects.count())
         self.assertEquals(0, FacilityUnit.objects.count())
-        self.assertEquals(0, FacilityService.objects.count())
+        self.assertEquals(1, FacilityService.objects.count())
 
         # approve the facility updates
         approval_url = reverse(
@@ -601,7 +614,7 @@ class TestFacilityUpdatesApproval(LoginMixin, APITestCase):
         self.assertEquals(200, approval_response.status_code)
         facility_refetched = Facility.objects.get(id=facility.id)
         self.assertEquals(data.get('name'), facility_refetched.name)
-        self.assertEquals(1, FacilityService.objects.count())
+        self.assertEquals(2, FacilityService.objects.count())
         self.assertEquals(1, FacilityContact.objects.count())
         self.assertEquals(1, FacilityUnit.objects.count())
 

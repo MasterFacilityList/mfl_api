@@ -377,7 +377,14 @@ class FacilityDetailView(
         """
         if update.contacts and update.contacts != 'null':
             proposed_contacts = json.loads(update.contacts)
-            update.contacts = json.dumps(proposed_contacts + contacts)
+
+            # remove duplicates
+            updated_contacts = [
+                contact for contact in contacts if contact not in
+                proposed_contacts
+            ]
+
+            update.contacts = json.dumps(proposed_contacts + updated_contacts)
         else:
             update.contacts = json.dumps(contacts)
 
@@ -388,7 +395,13 @@ class FacilityDetailView(
         """
         if update.services and update.services != 'null':
             proposed_services = json.loads(update.services)
-            update.services = json.dumps(proposed_services + services)
+
+            # remove duplicates
+            updated_services = [
+                service for service in services if service not in
+                proposed_services
+            ]
+            update.services = json.dumps(proposed_services + updated_services)
         else:
             update.services = json.dumps(services)
 
@@ -399,7 +412,12 @@ class FacilityDetailView(
         """
         if update.units and update.units != 'null':
             proposed_units = json.loads(update.units)
-            update.units = json.dumps(proposed_units + units)
+            # remove duplicates
+            updated_units = [
+                unit for unit in units if unit not in
+                proposed_units
+            ]
+            update.units = json.dumps(proposed_units + updated_units)
         else:
             update.units = json.dumps(units)
 
@@ -407,14 +425,22 @@ class FacilityDetailView(
         """
         Resolves and updates the service names and option display_name
         """
+        resolved_ids = []
         for service in services:
-            id = service.get('service')
-            obj = Service.objects.get(id=id)
-            service['name'] = obj.name
-            option = service.get('option', None)
-            if option:
-                service['display_name'] = Option.objects.get(
-                    id=option).display_text
+            service_id = service.get('service')
+
+            if service_id in resolved_ids:
+                continue
+
+            else:
+                resolved_ids.append(service_id)
+
+                obj = Service.objects.get(id=service_id)
+                service['name'] = obj.name
+                option = service.get('option', None)
+                if option:
+                    service['display_name'] = Option.objects.get(
+                        id=option).display_text
         return services
 
     def populate_contact_type_names(self, contacts):

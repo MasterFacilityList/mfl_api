@@ -338,12 +338,12 @@ class FacilityFilter(CommonFieldsFilterset):
 
     def facilities_pending_approval(self, value):
         if value in TRUTH_NESS:
-            return Facility.objects.filter(
+            return self.filter(
                 Q(rejected=False),
                 Q(has_edits=True) | Q(approved=False)
             )
         else:
-            return Facility.objects.filter(
+            return self.filter(
                 Q(rejected=True) |
                 Q(has_edits=False) & Q(approved=True))
 
