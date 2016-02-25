@@ -132,6 +132,13 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
         lookup_type='exact')
     service = django_filters.AllValuesFilter(
         name="facility_service__service", lookup_type='exact')
+    county = django_filters.AllValuesFilter(
+        name="facility_service__ward__constituency__county",
+        lookup_type='exact')
+    constituency = django_filters.AllValuesFilter(
+        name="facility_service__ward__constituency", lookup_type='exact')
+    ward = django_filters.AllValuesFilter(
+        name="facility_service__ward", lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
@@ -338,12 +345,12 @@ class FacilityFilter(CommonFieldsFilterset):
 
     def facilities_pending_approval(self, value):
         if value in TRUTH_NESS:
-            return Facility.objects.filter(
+            return self.filter(
                 Q(rejected=False),
                 Q(has_edits=True) | Q(approved=False)
             )
         else:
-            return Facility.objects.filter(
+            return self.filter(
                 Q(rejected=True) |
                 Q(has_edits=False) & Q(approved=True))
 

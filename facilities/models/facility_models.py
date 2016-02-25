@@ -1236,8 +1236,15 @@ class FacilityUpdates(AbstractBase):
         validated_data['updated'] = self.updated
         validated_data['created_by'] = self.created_by.id
         validated_data['updated_by'] = self.updated_by.id
+
         for service in services_to_add:
-            create_facility_services(self.facility, service, validated_data)
+
+            try:
+                FacilityService.objects.get(
+                    service_id=service.get('service'), facility=self.facility)
+            except FacilityService.DoesNotExist:
+                create_facility_services(
+                    self.facility, service, validated_data)
 
     def update_facility_contacts(self):
         from facilities.utils import create_facility_contacts

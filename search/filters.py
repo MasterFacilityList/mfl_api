@@ -66,11 +66,12 @@ class SearchFilter(django_filters.filters.Filter):
             )
 
             ordering = 'CASE %s END' % clauses
-            queryset = qs.model.objects.filter(pk__in=pk_list).extra(
+            queryset = qs.filter(pk__in=pk_list).extra(
                 select={'ordering': ordering}, order_by=('ordering',))
 
             return queryset
         else:
+
             model = qs.model
 
             fields = [
@@ -96,8 +97,7 @@ class SearchFilter(django_filters.filters.Filter):
             q_filter_reverse = q_filter[::-1]
             q_filter = q_filter_reverse[3:len(q_filter_reverse) + 1]
             q_filter = q_filter[::-1]
-
-            return model.objects.filter(eval(q_filter))
+            return qs.filter(eval(q_filter))
 
 
 class AutoCompleteSearchFilter(SearchFilter):

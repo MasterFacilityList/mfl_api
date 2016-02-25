@@ -280,7 +280,10 @@ class CommunityHealthWorker(AbstractBase):
 
     @property
     def name(self):
-        return "{} {}".format(self.first_name, self.last_name).strip()
+        if self.first_name and self.last_name:
+            return "{} {}".format(self.first_name, self.last_name).strip()
+        else:
+            return self.first_name
 
 
 @reversion.register
