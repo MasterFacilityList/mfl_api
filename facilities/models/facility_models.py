@@ -1236,8 +1236,15 @@ class FacilityUpdates(AbstractBase):
         validated_data['updated'] = self.updated
         validated_data['created_by'] = self.created_by.id
         validated_data['updated_by'] = self.updated_by.id
+
         for service in services_to_add:
-            create_facility_services(self.facility, service, validated_data)
+
+            try:
+                FacilityService.objects.get(
+                    service_id=service.get('service'), facility=self.facility)
+            except FacilityService.DoesNotExist:
+                create_facility_services(
+                    self.facility, service, validated_data)
 
     def update_facility_contacts(self):
         from facilities.utils import create_facility_contacts
@@ -1817,8 +1824,17 @@ class RegulatorSync(AbstractBase):
 
         # consider only alphanumerics for comparison of names
         alphanumerics = re.findall(r'[a-z0-9]+', self.name, re.IGNORECASE)
+        name_filter = None
         for i in alphanumerics:
-            query = query.filter(official_name__icontains=i)
+            f = models.Q(
+                    official_name__icontains=i) | models.Q(name__icontains=i)
+            if name_filter is None:
+                name_filter = f
+            else:
+                name_filter = name_filter | f
+
+        if name_filter is not None:
+            query = query.filter(name_filter)
 
         return query.filter(
             ward__constituency__county__code=self.county,

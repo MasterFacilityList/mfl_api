@@ -282,7 +282,13 @@ def backup_mfl_db(*args, **kwargs):
         aws_secret = os.environ.get('AWS_SECRET')
         aws_connection = S3Connection(aws_key, aws_secret)
 
-        bucket = aws_connection.create_bucket(os.environ.get('AWS_BUCKET'))
+        try:
+            bucket = aws_connection.create_bucket(
+                os.environ.get('AWS_DB_BACKUP_BUCKET'))
+        except:
+            bucket = aws_connection.get_bucket(
+                os.environ.get('AWS_DB_BACKUP_BUCKET'))
+
         k = Key(bucket)
         k.key = "{0}.tar.gz".format(file_name)
 
@@ -345,14 +351,16 @@ def restore_db(*args, **kwargs):
         aws_key = os.environ.get('AWS_KEY')
         aws_secret = os.environ.get('AWS_SECRET')
         aws_connection = S3Connection(aws_key, aws_secret)
-        bucket = aws_connection.get_bucket(os.environ.get('AWS_BUCKET'))
+        bucket = aws_connection.get_bucket(
+            os.environ.get('AWS_DB_BACKUP_BUCKET'))
+
         latest_file = reversed([obj for obj in bucket.list()]).next()
 
         # unzip the file
+        LOGGER.info("Downloading the latest backup")
         latest_file.get_contents_to_filename('mfl_db_backup.tar.gz')
         filename = latest_file.key.split('.')[0]
-        local('tar -xzf mfl_db_backup.tar.gz {0}.sql'.format(
-            filename))
+        local('tar -xzf mfl_db_backup.tar.gz {0}.sql'.format(filename))
 
         db_name = base.DATABASES.get('default').get('NAME')
         no_sudo = True if 'no-sudo' in args else False
@@ -364,7 +372,7 @@ def restore_db(*args, **kwargs):
 
         # restore the data and structure from the saved file
         command = 'sudo -u postgres psql {0} <{1}.sql'.format(
-            'mfl', filename)
+           db_name, filename)
         local(command)
 
         # remove the downloaded files

@@ -1,3 +1,4 @@
+DROP MATERIALIZED VIEW IF EXISTS mfl_gis_drilldown;
 
 CREATE MATERIALIZED VIEW mfl_gis_drilldown AS
  SELECT
@@ -13,10 +14,11 @@ CREATE MATERIALIZED VIEW mfl_gis_drilldown AS
      JOIN common_ward ON ((facilities_facility.ward_id = common_ward.id)))
      JOIN common_constituency ON ((common_ward.constituency_id = common_constituency.id)))
      JOIN common_county ON ((common_constituency.county_id = common_county.id)))
-  WHERE ((((((mfl_gis_facilitycoordinates.deleted = false) AND (facilities_facility.is_published = true)) AND (facilities_facility.rejected = false)) AND (facilities_facility.is_classified = false)) AND (facilities_facility.closed = false)) AND (facilities_facility.approved = true))
+  WHERE ((((((mfl_gis_facilitycoordinates.deleted = false)) AND (facilities_facility.rejected = false)) AND (facilities_facility.is_classified = false)) AND (facilities_facility.closed = false)) AND (facilities_facility.approved = true))
   ORDER BY mfl_gis_facilitycoordinates.updated DESC, mfl_gis_facilitycoordinates.created DESC;
 
-CREATE FUNCTION mfl_gis_refresh_drilldown_fxn()
+
+CREATE OR REPLACE FUNCTION  mfl_gis_refresh_drilldown_fxn()
 returns trigger language plpgsql
 AS $$
 BEGIN
@@ -24,6 +26,7 @@ BEGIN
   return NULL;
 END $$;
 
+DROP TRIGGER IF EXISTS mfl_gis_refresh_drilldown_trigger on mfl_gis_facilitycoordinates ;
 CREATE TRIGGER mfl_gis_refresh_drilldown_trigger
 AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
 ON mfl_gis_facilitycoordinates FOR EACH STATEMENT
