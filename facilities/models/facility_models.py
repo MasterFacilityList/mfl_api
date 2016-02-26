@@ -1826,7 +1826,8 @@ class RegulatorSync(AbstractBase):
         alphanumerics = re.findall(r'[a-z0-9]+', self.name, re.IGNORECASE)
         name_filter = None
         for i in alphanumerics:
-            f = models.Q(official_name__icontains=i) | models.Q(name__icontains=i)
+            f = models.Q(
+                    official_name__icontains=i) | models.Q(name__icontains=i)
             if name_filter is None:
                 name_filter = f
             else:

@@ -97,14 +97,20 @@ class TestRegulatorSync(BaseTestCase):
             Facility, official_name="test",
             facility_type=fac_type, ward=ward, owner=mommy.make(Owner)
         )
-        sync = RegulatorSync(owner=owner, facility_type=fac_type,
+        sync = RegulatorSync(
+            owner=owner, facility_type=fac_type,
             county=ward.constituency.county.code, registration_number="342",
             regulatory_body=reg
         )
         matches = sync.probable_matches
         self.assertListEqual(
             sorted([str(i['official_name']) for i in matches]),
-            sorted(["Test facility", "facility test", "fac tet", "tes t f", "test"])
+            sorted(
+                [
+                    "Test facility", "facility test",
+                    "fac tet", "tes t f", "test"
+                ]
+            )
         )
 
     def test_probable_matches_without_mflcode(self):
