@@ -1824,8 +1824,16 @@ class RegulatorSync(AbstractBase):
 
         # consider only alphanumerics for comparison of names
         alphanumerics = re.findall(r'[a-z0-9]+', self.name, re.IGNORECASE)
+        name_filter = None
         for i in alphanumerics:
-            query = query.filter(official_name__icontains=i)
+            f = models.Q(official_name__icontains=i) | models.Q(name__icontains=i)
+            if name_filter is None:
+                name_filter = f
+            else:
+                name_filter = name_filter | f
+
+        if name_filter is not None:
+            query = query.filter(name_filter)
 
         return query.filter(
             ward__constituency__county__code=self.county,

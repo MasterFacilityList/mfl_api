@@ -77,13 +77,43 @@ class TestRegulatorSync(BaseTestCase):
             name="Clinic ya Musa", county=county.code)
         self.assertEquals("Clinic ya Musa", sync.__str__())
 
+    def test_probable_matches_without_name(self):
+        fac_type = mommy.make(FacilityType)
+        owner = mommy.make(Owner)
+        ward = mommy.make(Ward)
+        reg = mommy.make(RegulatingBody)
+
+        for i in ["Test facility", "facility test", "fac tet", "tes t f"]:
+            mommy.make(
+                Facility, official_name=i, facility_type=fac_type,
+                ward=ward, owner=owner, regulatory_body=reg
+            )
+        mommy.make(
+            Facility, official_name="test",
+            facility_type=mommy.make(FacilityType),
+            ward=ward, owner=owner, regulatory_body=reg
+        )
+        mommy.make(
+            Facility, official_name="test",
+            facility_type=fac_type, ward=ward, owner=mommy.make(Owner)
+        )
+        sync = RegulatorSync(owner=owner, facility_type=fac_type,
+            county=ward.constituency.county.code, registration_number="342",
+            regulatory_body=reg
+        )
+        matches = sync.probable_matches
+        self.assertListEqual(
+            sorted([str(i['official_name']) for i in matches]),
+            sorted(["Test facility", "facility test", "fac tet", "tes t f", "test"])
+        )
+
     def test_probable_matches_without_mflcode(self):
         fac_type = mommy.make(FacilityType)
         owner = mommy.make(Owner)
         ward = mommy.make(Ward)
         reg = mommy.make(RegulatingBody)
 
-        for i in ["Test facility", "facility test", "fac test", "tes t f"]:
+        for i in ["Test facility", "facility test", "fac tst", "tes t f"]:
             mommy.make(
                 Facility, official_name=i, facility_type=fac_type,
                 ward=ward, owner=owner, regulatory_body=reg
@@ -104,8 +134,8 @@ class TestRegulatorSync(BaseTestCase):
         )
         matches = sync.probable_matches
         self.assertListEqual(
-            [i['official_name'] for i in matches],
-            ["facility test", "Test facility", ]
+            sorted([str(i['official_name']) for i in matches]),
+            sorted(["Test facility", "facility test", "test"])
         )
 
     def test_probable_matches_with_mflcode(self):
