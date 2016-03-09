@@ -1465,7 +1465,7 @@ class FacilityApproval(AbstractBase):
     The user who approves a facility will be the same as the created_by field.
     """
     facility = models.ForeignKey(Facility)
-    comment = models.TextField()
+    comment = models.TextField(null=True, blank=True)
     is_cancelled = models.BooleanField(
         default=False, help_text='Cancel a facility approval'
     )
