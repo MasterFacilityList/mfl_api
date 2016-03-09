@@ -68,7 +68,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
 
-ALLOWED_HOSTS = ['.ehealth.or.ke', '.slade360.co.ke', '.localhost', '.health.go.ke']
+ALLOWED_HOSTS = [
+    '.ehealth.or.ke', '.slade360.co.ke', '.localhost',
+    '.health.go.ke'
+]
 INSTALLED_APPS = (
     'django.contrib.sites',
     'users',

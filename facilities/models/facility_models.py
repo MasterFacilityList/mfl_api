@@ -5,6 +5,8 @@ import json
 import logging
 import re
 
+from datetime import date
+
 from django.conf import settings
 from django.core import validators
 from django.db import models, transaction
@@ -12,6 +14,7 @@ from django.core.exceptions import ValidationError
 from django.utils import encoding, timezone
 from django.contrib.gis.geos import Point
 from django.contrib.postgres.fields import ArrayField
+
 
 from users.models import JobTitle  # NOQA
 from search.search_utils import index_instance
@@ -669,6 +672,9 @@ class Facility(SequenceMixin, AbstractBase):
     open_public_holidays = models.BooleanField(
         default=False,
         help_text="Is the facility open on public holidays?")
+    open_normal_day = models.BooleanField(
+        default=True,
+        help_text="Is the facility open from 8 am to 5 pm")
     open_weekends = models.BooleanField(
         default=False,
         help_text="Is the facility_open during weekends?")
@@ -755,6 +761,9 @@ class Facility(SequenceMixin, AbstractBase):
         null=True, blank=True, help_text='Date the facility was closed')
     closing_reason = models.TextField(
         null=True, blank=True, help_text="Reason for closing the facility")
+    date_established = models.DateField(
+        default=date.today,
+        help_text='The date when the facility became operational')
 
     # hard code the operational status name in order to avoid more crud
     @property
