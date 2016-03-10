@@ -21,7 +21,8 @@ env = environ.Env(
     AWS_STORAGE_BUCKET_NAME=(str, ''),
     STORAGE_BACKEND=(str, ''),
     ADMINS=(str, "admin:admin@example.com,"),
-    SERVER_EMAIL=(str, "root@localhost")
+    SERVER_EMAIL=(str, "root@localhost"),
+    ALLOWED_HOSTS=(str, "")
 
 
 )
@@ -68,10 +69,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
 
-ALLOWED_HOSTS = [
-    '.ehealth.or.ke', '.slade360.co.ke', '.localhost',
-    '.health.go.ke'
-]
+ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
+
 INSTALLED_APPS = (
     'django.contrib.sites',
     'users',
