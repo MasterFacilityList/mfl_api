@@ -200,6 +200,22 @@ class Constituency(AdministrativeUnitBase):
         unique_together = ('name', 'county')
 
 
+@reversion.register(follow=['county'])
+@encoding.python_2_unicode_compatible
+class SubCounty(AdministrativeUnitBase):
+
+    """
+    A county can be sub divided into sub counties.
+
+    The sub-counties do not necessarily map to constituencies
+    """
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.name
+
+
+
 @reversion.register(follow=['constituency'])
 @encoding.python_2_unicode_compatible
 class Ward(AdministrativeUnitBase):
@@ -218,6 +234,10 @@ class Ward(AdministrativeUnitBase):
         Constituency,
         help_text="The constituency where the ward is located.",
         on_delete=models.PROTECT)
+    sub_county = models.ForeignKey(
+        SubCounty, null=True, blank=True,
+        help_text='The sub-county where the ward is located',
+        on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -234,21 +254,6 @@ class Ward(AdministrativeUnitBase):
         except:  # Handling RelatedObjectDoesNotExist is a little funky
             LOGGER.info('No boundaries found for {}'.format(self))
             return _lookup_facility_coordinates(None)
-
-
-@reversion.register(follow=['county'])
-@encoding.python_2_unicode_compatible
-class SubCounty(AdministrativeUnitBase):
-
-    """
-    A county can be sub divided into sub counties.
-
-    The sub-counties do not necessarily map to constituencies
-    """
-    county = models.ForeignKey(County, on_delete=models.PROTECT)
-
-    def __str__(self):
-        return self.name
 
 
 @reversion.register(follow=['user', 'county'])
@@ -435,3 +440,13 @@ class ErrorQueue(models.Model):
     def __str__(self):
         return "{} - {} - {}".format(
             self.object_pk, self.app_label, self.model_name)
+
+
+
+class UserSubCounty(AbstractBase):
+    """
+    Link a user to a sub-county
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='user_sub_counties')
+    sub_county = models.ForeignKey(SubCounty, on_delete=models.PROTECT)
