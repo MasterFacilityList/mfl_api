@@ -6,6 +6,6 @@ user=nobody
 autostart=true
 autorestart=true
 redirect_stderr=true
-environment=DEBUG="{{django_debug}}",FRONTEND_URL="{{frontend_url}}",EMAIL_HOST="{{email_host}}",EMAIL_HOST_USER="{{email_host_user}}",EMAIL_HOST_PASSWORD="{{email_host_password}}",REALTIME_INDEX="{{realtime_index}}",HTTPS_ENABLED="{{ssl_on}}",AWS_ACCESS_KEY_ID="{{storage_account}}",AWS_SECRET_ACCESS_KEY="{{storage_key}}",AWS_STORAGE_BUCKET_NAME="{{storage_bucket}}",STORAGE_BACKEND="{{storage_backend}}",AWS_DB_BACKUP_BUCKET="{{aws_db_backup_bucket}}"
+environment=DEBUG="{{django_debug}}",FRONTEND_URL="{{frontend_url}}",EMAIL_HOST="{{email_host}}",EMAIL_HOST_USER="{{email_host_user}}",EMAIL_HOST_PASSWORD="{{email_host_password}}",REALTIME_INDEX="{{realtime_index}}",HTTPS_ENABLED="{{ssl_on}}",AWS_ACCESS_KEY_ID="{{storage_account}}",AWS_SECRET_ACCESS_KEY="{{storage_key}}",AWS_STORAGE_BUCKET_NAME="{{storage_bucket}}",STORAGE_BACKEND="{{storage_backend}}",AWS_DB_BACKUP_BUCKET="{{aws_db_backup_bucket}}", ALLOWED_HOSTS="{{allowed_hosts}}"
 
 {% endfor %}

@@ -11,6 +11,7 @@
     key_file: ""
     celery_user: ""
     aws_db_backup_bucket: ""
+    allowed_hosts: ""
   roles:
     - common
     - { role: postgresql }
@@ -81,5 +82,6 @@
         storage_account: "{{storage_account}}",
         storage_key: "{{storage_key}}",
         storage_backend: "storages.backends.s3boto.S3BotoStorage",
-        aws_db_backup_bucket: "{{aws_db_backup_bucket}}}"
+        aws_db_backup_bucket: "{{aws_db_backup_bucket}}}",
+        allowed_hosts: "{{allowed_hosts}}"
       }
