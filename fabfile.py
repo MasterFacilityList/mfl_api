@@ -269,7 +269,7 @@ def backup_mfl_db(*args, **kwargs):
     timestamp = time.time()
     value = datetime.datetime.fromtimestamp(timestamp)
     value = value.strftime('%Y-%m-%d-%H-%M-%S')
-    file_name = 'mfl_dump_{0}'.format(value)
+    file_name = '/tmp/mfl_dump_{0}'.format(value)
     command = 'sudo -u postgres pg_dump mfl > {0}.sql'.format(file_name)
     local(command)
     tar_command = "tar -czf {0}.tar.gz {1}.sql".format(
