@@ -255,6 +255,20 @@ class Ward(AdministrativeUnitBase):
             LOGGER.info('No boundaries found for {}'.format(self))
             return _lookup_facility_coordinates(None)
 
+    def validate_county(self):
+        if self.sub_county:
+            if not self.sub_county.county == self.constituency.county:
+                raise ValidationError(
+                    {
+                    "sub_county": ["Ensure the sub-county and the constituency"
+                        " are in the same county"]
+                    }
+                )
+
+    def clean(self, *args, **kwargs):
+        super(Ward, self).clean(*args, **kwargs)
+        self.validate_county()
+
 
 @reversion.register(follow=['user', 'county'])
 @encoding.python_2_unicode_compatible
@@ -277,14 +291,17 @@ class UserCounty(UserAdminAreaLinkageMixin, AbstractBase):
         """
         A user can be in-charge of only one county at the a time.
         """
-        counties = self.__class__.objects.filter(
-            user=self.user, active=True, deleted=False)
-        if counties.count() > 0 and not self.deleted and self.active:
+
+        counties = self.__class__.objects.filter(user=self.user, active=True, deleted=False)
+        if counties.count() == 1 and not self.deleted and self.active:
             raise ValidationError(
-                "A user can only be active in one county at a time")
+                {
+                    "county": ["A user can only be active in one county at a time"]
+                }
+            )
 
     def clean(self, *args, **kwargs):
-        self.validate_only_one_county_active()
+        # self.validate_only_one_county_active()
         super(UserCounty, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):

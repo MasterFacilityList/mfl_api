@@ -11,11 +11,13 @@ from rest_auth.serializers import PasswordChangeSerializer
 from common.serializers import (
     UserCountySerializer,
     UserConstituencySerializer,
-    PartialResponseMixin
+    PartialResponseMixin,
+    UserSubCountySerializer
 )
 
 from common.models import (
-    UserConstituency, UserContact, UserCounty, Contact)
+    UserConstituency, UserContact, UserCounty, Contact,
+    UserSubCounty,)
 from facilities.serializers import RegulatoryBodyUserSerializer
 from facilities.models import RegulatoryBodyUser
 from .models import (
@@ -207,6 +209,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     contacts = serializers.ReadOnlyField()
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
+    user_sub_counties = UserSubCountySerializer(many=True, required=False)
     last_login = serializers.ReadOnlyField(source='lastlog')
     user_groups = serializers.ReadOnlyField()
     job_title_name = serializers.ReadOnlyField(source='job_title.name')
@@ -292,6 +295,10 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         for county in counties:
             if 'id' in county:
                 LOGGER.info("User is already linked to the county")
+                active = county.get('active', True)
+                uc = UserCounty.objects.get(id=county.get('id'))
+                uc.active = active
+                uc.save()
             else:
                 county['updated_by_id'] = self.context.get(
                     'request').user.id
@@ -299,6 +306,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                     'request').user.id
                 county['county_id'] = county.pop('county')
                 county['user_id'] = instance.id
+                county['active'] = county.get('active', True)
                 UserCounty.objects.create(**county)
 
     def _create_user_constituency(self, instance, constituencies):
@@ -319,6 +327,10 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         for constituency in constituencies:
             if 'id' in constituency:
                 LOGGER.info("User is already linked to the constituency")
+                active = constituency.get('active', True)
+                uc = UserConstituency.objects.get(id=constituency.get('id'))
+                uc.active = active
+                uc.save()
             else:
                 constituency['updated_by_id'] = self.context.get(
                     'request').user.id
@@ -327,7 +339,41 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 constituency['constituency_id'] = constituency.pop(
                     'constituency')
                 constituency['user_id'] = instance.id
+                constituency['active'] = constituency.get('active', True)
                 UserConstituency.objects.create(**constituency)
+
+    def _create_user_sub_counties(self, instance, sub_counties):
+        """
+        Allow batch linking of users to sub_counties
+
+        Sample Payload:
+            "user_sub_counties": [
+                {
+                    "id": <UserSubCounty instance> // optional and provided
+                        only when updating a uuid string
+                    "sub_county": "The sub_county id of
+                        the sub_county to be linked",// uuid string
+
+                }
+            ]
+        """
+        for sub_county in sub_counties:
+            if 'id' in sub_county:
+                LOGGER.info("User is already linked to the sub_county")
+                active = sub_county.get('active', True)
+                usub = UserSubCounty.objects.get(id=sub_county.get('id'))
+                usub.active = active
+                usub.save()
+            else:
+                sub_county['updated_by_id'] = self.context.get(
+                    'request').user.id
+                sub_county['created_by_id'] = self.context.get(
+                    'request').user.id
+                sub_county['sub_county_id'] = sub_county.pop(
+                    'sub_county')
+                sub_county['user_id'] = instance.id
+                sub_county['active'] = sub_county.get('active', True)
+                UserSubCounty.objects.create(**sub_county)
 
     def _create_regulator(self, instance, regulators):
         """
@@ -359,6 +405,12 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                     'regulatory_body')
                 RegulatoryBodyUser.objects.create(**regulator)
 
+    def _validate_group_county_and_sub_county(self, groups, counties, sub_counties):
+        if not groups and not counties and not sub_counties:
+            raise ValidationError({
+                  "user_groups": ["Please select group for the user"]
+                })
+
     @transaction.atomic
     def create(self, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
@@ -369,10 +421,14 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         contacts = self.initial_data.pop('contacts', [])
         validated_data.pop('user_constituencies', None)
         constituencies = self.initial_data.pop('user_constituencies', [])
+        sub_counties = self.initial_data.pop('user_sub_counties', [])
+        validated_data.pop('user_sub_counties', None)
         validated_data.pop('user_counties', None)
         counties = self.initial_data.pop('user_counties', [])
         validated_data.pop('regulatory_users', None)
         regulators = self.initial_data.pop('regulatory_users', [])
+
+        self._validate_group_county_and_sub_county(groups, counties, sub_counties)
 
         new_user = MflUser.objects.create_user(**validated_data)
         if self._assign_is_staff(groups):
@@ -384,6 +440,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         self._create_user_county(new_user, counties)
         self._update_or_create_contacts(new_user, contacts)
         self._create_regulator(new_user, regulators)
+        self._create_user_sub_counties(new_user, sub_counties)
 
         return new_user
 
@@ -394,14 +451,19 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
+
         validated_data.pop('contacts', None)
         contacts = self.initial_data.pop('contacts', [])
         validated_data.pop('user_constituencies', None)
         constituencies = self.initial_data.pop('user_constituencies', [])
         validated_data.pop('user_counties', None)
         counties = self.initial_data.pop('user_counties', [])
+        sub_counties = self.initial_data.pop('user_sub_counties', [])
+        validated_data.pop('user_sub_counties', None)
         validated_data.pop('regulatory_users', None)
         regulators = self.initial_data.pop('regulatory_users', [])
+
+        self._validate_group_county_and_sub_county(groups, counties, sub_counties)
 
         pwd = validated_data.pop('password', None)
 
@@ -410,6 +472,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         # Also: teach your API consumers to always prefer PATCH to PUT
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+
 
         if pwd is not None:
             instance.set_password(pwd)
@@ -424,6 +487,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         self._create_user_county(instance, counties)
         self._update_or_create_contacts(instance, contacts)
         self._create_regulator(instance, regulators)
+        self._create_user_sub_counties(instance, sub_counties)
 
         return instance
 

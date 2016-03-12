@@ -15,9 +15,25 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
-    ErrorQueue
+    ErrorQueue,
+    UserSubCounty
 )
 from .serializer_base import AbstractFieldsMixin
+
+
+class UserSubCountySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    county_id = serializers.ReadOnlyField(source='sub_county.county.id')
+
+    county_name = serializers.ReadOnlyField(source='sub_county.county.name')
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=get_user_model().objects.all())
+    sub_county = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=SubCounty.objects.all())
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
+
+    class Meta(object):
+        model = UserSubCounty
 
 
 class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
@@ -103,6 +119,7 @@ class TownSerializer(
 class WardSerializer(AbstractFieldsMixin, GeoModelSerializer):
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
     constituency_name = serializers.ReadOnlyField(source="constituency.name")
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
 
     class Meta(object):
         model = Ward
@@ -118,6 +135,7 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     county = CountySerializer(read_only=True)
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
     constituency_name = serializers.ReadOnlyField(source="constituency.name")
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
 
     class Meta(object):
         model = Ward
@@ -128,6 +146,7 @@ class WardSlimDetailSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
     constituency_name = serializers.ReadOnlyField(source="constituency.name")
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
 
     class Meta(object):
         model = Ward

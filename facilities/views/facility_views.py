@@ -6,7 +6,10 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
-from common.models import ContactType, UserConstituency, UserCounty
+
+from common.models import (
+    ContactType, UserConstituency, UserCounty, UserSubCounty
+)
 
 from ..models import (
     Facility,
@@ -96,7 +99,7 @@ class QuerysetFilterMixin(object):
             self.queryset = self.queryset.filter(
                 ward__constituency__county__in=[
                     uc.county for uc in UserCounty.objects.filter(
-                        user=self.request.user)])
+                        user=self.request.user, active=True)])
 
         elif self.request.user.regulator and hasattr(
                 self.queryset.model, 'regulatory_body'):
@@ -105,13 +108,6 @@ class QuerysetFilterMixin(object):
         elif self.request.user.is_national and not \
                 self.request.user.county:
             self.queryset = self.queryset
-        elif self.request.user.constituency and hasattr(
-                self.queryset.model, 'ward'):
-            self.queryset = self.queryset.filter(
-                ward__constituency__in=[
-                    uc.constituency
-                    for uc in UserConstituency.objects.filter(
-                        user=self.request.user)])
         else:
             self.queryset = self.queryset
 
@@ -147,6 +143,32 @@ class QuerysetFilterMixin(object):
             'closed' in [field.name for field in
                          self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(closed=False)
+
+        # filter facilities based on a users constituencies or sub_counties
+        if self.request.user.constituency and hasattr(
+                self.queryset.model, 'ward') and not \
+                self.request.user.sub_county:
+            self.queryset = self.queryset.filter(
+                ward__constituency__in=[
+                    uc.constituency
+                    for uc in UserConstituency.objects.filter(
+                        user=self.request.user, active=True)])
+
+        if self.request.user.sub_county and hasattr(
+                self.queryset.model, 'ward') and not self.request.user.constituency:
+            self.queryset = self.queryset.filter(
+                ward__sub_county__in=[
+                    us.sub_county
+                    for us in UserSubCounty.objects.filter(
+                        user=self.request.user, active=True)])
+
+        if self.request.user.sub_county and hasattr(
+                self.queryset.model, 'ward') and  self.request.user.constituency:
+            self.queryset = self.queryset.filter(
+                ward__sub_county__in=[
+                    us.sub_county
+                    for us in UserSubCounty.objects.filter(
+                        user=self.request.user, active=True)])
 
         return self.queryset
 
@@ -548,6 +570,10 @@ class FacilityDetailView(
         units = request.data.pop('units', [])
         officer_in_charge = request.data.pop(
             'officer_in_charge', {})
+
+        if officer_in_charge.get("name") == "":
+            officer_in_charge = {}
+
         if officer_in_charge:
             officer_in_charge['facility_id'] = str(instance.id)
 

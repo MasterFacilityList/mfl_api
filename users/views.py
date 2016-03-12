@@ -37,6 +37,22 @@ class GroupListView(generics.ListCreateAPIView):
     filter_class = GroupFilter
     ordering_fields = ('name', )
 
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+
+        if user.is_national:
+            return ProxyGroup.objects.all()
+        if user.county or user.sub_county:
+            group_ids = [grp.id for grp in ProxyGroup.objects.all() \
+                if grp.is_administrator and not grp.is_national
+            ]
+            return ProxyGroup.objects.filter(id__in=group_ids)
+        else:
+            group_ids = [grp.id for grp in ProxyGroup.objects.all() \
+                if grp.is_sub_county_level
+            ]
+            return ProxyGroup.objects.filter(id__in=group_ids)
+
 
 class GroupDetailView(CustomRetrieveUpdateDestroyView):
     queryset = ProxyGroup.objects.all()

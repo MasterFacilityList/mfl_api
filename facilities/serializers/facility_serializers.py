@@ -400,7 +400,11 @@ class FacilitySerializer(
         source='latest_approval.created')
     latest_approval_or_rejection = serializers.ReadOnlyField()
     sub_county_name = serializers.ReadOnlyField(
-        source='sub_county.name')
+        source='ward.sub_county.name')
+    sub_county= serializers.ReadOnlyField(
+        source='ward.sub_county.id')
+    county_name= serializers.ReadOnlyField(source='ward.constituency.county.name')
+    constituency_id = serializers.ReadOnlyField(source='ward.constituency.id')
 
     class Meta(object):
         model = Facility

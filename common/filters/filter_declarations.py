@@ -13,7 +13,8 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
-    ErrorQueue
+    ErrorQueue,
+    UserSubCounty
 )
 from .filter_shared import (
     CommonFieldsFilterset,
@@ -22,7 +23,15 @@ from .filter_shared import (
 )
 
 
+class UserSubCountyFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = UserSubCounty
+
+
 class ErrorQueueFilter(django_filters.FilterSet):
+    """
+    ErrorQueue model does not descend from abtractbase thus the FilterSet.
+    """
 
     class Meta(object):
         model = ErrorQueue
@@ -92,7 +101,8 @@ class WardFilter(CommonFieldsFilterset):
     ward_id = ListCharFilter(name='id', lookup_type='exact')
     name = ListCharFilter(lookup_type='icontains')
     code = ListIntegerFilter(lookup_type='exact')
-    constituency = ListCharFilter(lookup_type='icontains')
+    constituency = ListCharFilter(lookup_type='exact')
+    sub_county = ListCharFilter(lookup_type='exact')
     county = ListCharFilter(
         lookup_type='exact', name='constituency__county')
 

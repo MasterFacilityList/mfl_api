@@ -15,7 +15,8 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
-    ErrorQueue
+    ErrorQueue,
+    UserSubCounty
 )
 from facilities.models import(
     FacilityStatus,
@@ -47,7 +48,8 @@ from ..serializers import (
     UserConstituencySerializer,
     SubCountySerializer,
     DocumentUploadSerializer,
-    ErrorQueueSerializer
+    ErrorQueueSerializer,
+    UserSubCountySerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -62,7 +64,8 @@ from ..filters import (
     UserConstituencyFilter,
     SubCountyFilter,
     DocumentUploadFilter,
-    ErrorQueueFilter
+    ErrorQueueFilter,
+    UserSubCountyFilter
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
@@ -88,6 +91,38 @@ class FilterAdminUnitsMixin(object):
             return self.queryset
 
 
+
+class UserSubCountyListView(generics.ListCreateAPIView):
+
+    """
+    Lists and creates user sub counties
+
+    user  -- The user id of the linked user
+    sub_county --  The id of the sub_county
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = UserSubCounty.objects.all()
+    serializer_class = UserSubCountySerializer
+    ordering_fields = ('user', 'sub_county',)
+    filter_class = UserSubCountyFilter
+
+
+class UserSubCountyDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
+    """
+    Retrieves a particular user sub_county
+    """
+    queryset = UserSubCounty.objects.all()
+    serializer_class = UserSubCountySerializer
+
+
+
 class SubCountyListView(generics.ListCreateAPIView):
 
     """
@@ -108,12 +143,31 @@ class SubCountyListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code', 'county')
     filter_class = SubCountyFilter
 
+    def get_queryset(self):
+        if self.request.user.sub_county:
+            county_ids =  [
+                user_con.sub_county.county.id for user_con in UserSubCounty.objects.filter(
+                    user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.constituency:
+            county_ids =  [
+                user_con.constituency.county.id for user_con in UserConstituency.objects.filter(
+                    user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(user=self.request.user)]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        return self.queryset
+
 
 class SubCountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular contact
+    Retrieves a particular sub_county
     """
     queryset = SubCounty.objects.all()
     serializer_class = SubCountySerializer
@@ -142,7 +196,7 @@ class ContactDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular contact
+    Retrieves a particular contact
     """
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
@@ -151,7 +205,7 @@ class ContactDetailView(
 class PhysicalAddressView(generics.ListCreateAPIView):
 
     """
-    Lists and creaates physical addresses
+    Lists and creates physical addresses
 
     Created ---  Date the record was Created
     Updated -- Date the record was Updated
@@ -193,12 +247,34 @@ class CountyView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code',)
     filter_class = CountyFilter
 
+    def get_queryset(self):
+        if self.request.user.county:
+            county_ids =  [
+                user_county.county.id for user_county in UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.constituency:
+            county_ids =  [
+                user_con.constituency.county.id for user_con in UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.sub_county:
+            county_ids =  [
+                user_sub.sub_county.county.id for user_sub in UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        else:
+            return self.queryset
+
 
 class CountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular county including the county boundary
+    Retrieves a particular county including the county boundary
     and its facility coordinates
     """
     queryset = County.objects.all()
@@ -215,7 +291,7 @@ class CountySlimDetailView(
     serializer_class = CountySlimDetailSerializer
 
 
-class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
+class WardView(generics.ListCreateAPIView):
 
     """
     Lists and creates wards
@@ -233,12 +309,45 @@ class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     filter_class = WardFilter
     ordering_fields = ('name', 'code', 'constituency',)
 
+    def get_queryset(self):
+        if self.request.user.constituency:
+            const_ids = [
+                uc.constituency.id for uc in
+                UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency_id__in=const_ids)
+
+        if self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_counnty_id__in=const_ids)
+
+        if self.request.user.constituency and self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_counnty_id__in=const_ids)
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency__county_id__in=county_ids)
+        return Ward.objects.all()
+
+
 
 class WardDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular ward details including ward boundaries
+    Retrieves a particular ward details including ward boundaries
     and facility coordinates
     """
     queryset = Ward.objects.all()
@@ -249,7 +358,7 @@ class WardSlimDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
 
     """
-    Retrieves a patricular ward primary details
+    Retrieves a particular ward primary details
     """
     queryset = Ward.objects.all()
     serializer_class = WardSlimDetailSerializer
@@ -272,12 +381,30 @@ class ConstituencyView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     filter_class = ConstituencyFilter
     ordering_fields = ('name', 'code', 'county',)
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.constituency:
+            con_ids =  [
+                user_con.constituency.id for user_con in UserConstituency.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(id__in=con_ids)
+
+        if user.county:
+            county_ids =  [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(county_id__in=county_ids)
+
+        return self.queryset
+
 
 class ConstituencyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a  patricular constituency
+    Retrieves a  particular constituency
     """
     queryset = Constituency.objects.all()
     serializer_class = ConstituencyDetailSerializer
@@ -310,7 +437,7 @@ class ContactTypeDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular contact type
+    Retrieves a particular contact type
     """
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
@@ -340,7 +467,7 @@ class UserCountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular link between a user and a county
+    Retrieves a particular link between a user and a county
     """
     queryset = UserCounty.objects.all()
     serializer_class = UserCountySerializer
@@ -367,7 +494,7 @@ class UserContactDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular user contact
+    Retrieves a particular user contact
     """
     queryset = UserContact.objects.all()
     serializer_class = UserContactSerializer
@@ -394,7 +521,7 @@ class TownDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular town detail
+    Retrieves a particular town detail
     """
     queryset = Town.objects.all()
     serializer_class = TownSerializer
