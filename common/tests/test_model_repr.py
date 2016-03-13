@@ -97,3 +97,15 @@ class TestModelRepr(ModelReprMixin, TestCase):
     def test_document_upload(self):
         x = "implementation guide"
         self.check_repr(models.DocumentUpload(name=x,), x)
+
+    def test_user_sub_county(self):
+        c = models.County.objects.create(name="k")
+        sub = models.SubCounty.objects.create(name="sub", county=c)
+        user = mommy.make(
+            models.settings.AUTH_USER_MODEL, first_name="fname",
+            last_name="lname", email='a@b.com'
+        )
+        self.check_repr(
+            models.UserSubCounty(user=user, sub_county=sub),
+            "a@b.com - sub"
+        )

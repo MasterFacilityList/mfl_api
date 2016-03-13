@@ -19,7 +19,8 @@ from ..models import (
     UserCounty,
     Town,
     SubCounty,
-    ErrorQueue
+    ErrorQueue,
+    UserSubCounty
 )
 from ..serializers import (
     ContactSerializer,
@@ -869,3 +870,229 @@ class TestErrorQueueView(LoginMixin, APITestCase):
         self.assertEquals(
             'SEARCH_INDEXING_ERROR',
             response.data.get('results')[0].get('error_type'))
+
+
+class TestAdminUnitsFiltering(LoginMixin, APITestCase):
+    def test_filter_counties(self):
+        nat_user = mommy.make(get_user_model(), is_national=True)
+
+        # should see all counties
+        mommy.make(County, _quantity=5)
+        self.client.force_authenticate(nat_user)
+        url = reverse("api:common:counties_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+        self.client.logout()
+
+        # county user should see only his county
+        county_user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=county_user, county=county)
+        self.client.force_authenticate(county_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            county.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # constituency user should see the county they belong to
+        const = mommy.make(Constituency, county=county)
+        const_user = mommy.make(get_user_model())
+        mommy.make(
+            UserConstituency, constituency=const, created_by=county_user,
+            updated_by=county_user, user=const_user)
+        self.client.force_authenticate(const_user)
+        response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            county.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # sub-county user should see the county they belong to
+        sub = mommy.make(SubCounty, county=county)
+        sub_user = mommy.make(get_user_model())
+        mommy.make(
+            UserSubCounty, sub_county=sub, created_by=county_user,
+            updated_by=county_user, user=sub_user)
+        self.client.force_authenticate(sub_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            county.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+    def test_filter_constituencies(self):
+        nat_user = mommy.make(get_user_model(), is_national=True)
+
+        # should see all counties
+        mommy.make(Constituency, _quantity=5)
+        self.client.force_authenticate(nat_user)
+        url = reverse("api:common:constituencies_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+        self.client.logout()
+
+        # county user should see only his county
+        county_user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, user=county_user, county=county)
+        self.client.force_authenticate(county_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            const.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # constituency user should see the county they belong to
+        const = mommy.make(Constituency, county=county)
+        const_user = mommy.make(get_user_model())
+        mommy.make(
+            UserConstituency, constituency=const, created_by=county_user,
+            updated_by=county_user, user=const_user)
+        self.client.force_authenticate(const_user)
+        response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            const.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # sub-county user should see the county they belong to
+        sub = mommy.make(SubCounty, county=county)
+        sub_user = mommy.make(get_user_model())
+        mommy.make(
+            UserSubCounty, sub_county=sub, created_by=county_user,
+            updated_by=county_user, user=sub_user)
+        self.client.force_authenticate(sub_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, response.data.get('count'))
+        self.assertEquals(
+            const.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+    def test_filter_wards(self):
+        nat_user = mommy.make(get_user_model(), is_national=True)
+
+        # should see all counties
+        mommy.make(Ward, _quantity=5)
+        self.client.force_authenticate(nat_user)
+        url = reverse("api:common:wards_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+        self.client.logout()
+
+        # county user should see only his county
+        county_user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=const)
+        mommy.make(UserCounty, user=county_user, county=county)
+        self.client.force_authenticate(county_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            ward.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # constituency user should see the county they belong to
+        const = mommy.make(Constituency, county=county)
+        ward = mommy.make(Ward, constituency=const)
+        const_user = mommy.make(get_user_model())
+        mommy.make(
+            UserConstituency, constituency=const, created_by=county_user,
+            updated_by=county_user, user=const_user)
+        self.client.force_authenticate(const_user)
+        response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            ward.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # sub-county user should see the county they belong to
+        sub = mommy.make(SubCounty, county=county)
+        ward = mommy.make(Ward, constituency=const, sub_county=sub)
+        sub_user = mommy.make(get_user_model())
+        mommy.make(
+            UserSubCounty, sub_county=sub, created_by=county_user,
+            updated_by=county_user, user=sub_user)
+        self.client.force_authenticate(sub_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            ward.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # test user assigned both sub-county and constituency
+        mommy.make(
+            UserConstituency, user=sub_user, created_by=county_user,
+            updated_by=county_user, constituency=const)
+        self.client.force_authenticate(sub_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get("count"))
+
+    def test_filter_sub_counties(self):
+        nat_user = mommy.make(get_user_model(), is_national=True)
+
+        # should see all counties
+        mommy.make(SubCounty, _quantity=5)
+        self.client.force_authenticate(nat_user)
+        url = reverse("api:common:sub_counties_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(5, response.data.get('count'))
+        self.client.logout()
+
+        # county user should see only his county
+        county_user = mommy.make(get_user_model())
+        county = mommy.make(County)
+        sub = mommy.make(SubCounty, county=county)
+        mommy.make(UserCounty, user=county_user, county=county)
+        self.client.force_authenticate(county_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.assertEquals(
+            sub.name, response.data.get('results')[0].get('name'))
+        self.client.logout()
+
+        # constituency user should see the county they belong to
+        const = mommy.make(Constituency, county=county)
+        const_user = mommy.make(get_user_model())
+        mommy.make(
+            UserConstituency, constituency=const, created_by=county_user,
+            updated_by=county_user, user=const_user)
+        self.client.force_authenticate(const_user)
+        response = self.client.get(url)
+
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+
+        # sub-county user should see the county they belong to
+        sub = mommy.make(SubCounty, county=county)
+        sub_user = mommy.make(get_user_model())
+        mommy.make(
+            UserSubCounty, sub_county=sub, created_by=county_user,
+            updated_by=county_user, user=sub_user)
+        self.client.force_authenticate(sub_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, response.data.get('count'))
+        self.assertEquals(
+            sub.name, response.data.get('results')[0].get('name'))
+        self.client.logout()

@@ -18,7 +18,9 @@ from common.models import (
     Constituency,
     Contact,
     ContactType,
-    UserConstituency)
+    UserConstituency,
+    UserSubCounty,
+    SubCounty)
 
 from ..serializers import (
     OwnerSerializer,
@@ -574,6 +576,75 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
             },
             response.data
         )
+
+    def test_filter_facilities_by_sub_counties(self):
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        sub_county = mommy.make(SubCounty, county=county)
+        ward = mommy.make(Ward, sub_county=sub_county, constituency=const)
+        mommy.make(Facility, ward=ward)
+        mommy.make(Facility, _quantity=5)
+
+        # too lazy to bootstrap the entire facility workflow thus the superuser
+        nat_user = mommy.make(
+            get_user_model(), is_national=True, is_superuser=True)
+        county_user = mommy.make(get_user_model(), is_superuser=True)
+        mommy.make(UserCounty, county=county, user=county_user)
+        const_user = mommy.make(get_user_model(), is_superuser=True)
+        mommy.make(
+            UserConstituency, user=const_user, constituency=const,
+            created_by=county_user, updated_by=county_user
+        )
+        sub_county_user = mommy.make(get_user_model(), is_superuser=True)
+        mommy.make(
+            UserSubCounty, user=sub_county_user, sub_county=sub_county)
+
+        sub_county_const_user = mommy.make(
+            get_user_model(), is_superuser=True)
+        mommy.make(
+            UserConstituency, user=sub_county_const_user, constituency=const,
+            created_by=county_user, updated_by=county_user)
+
+        # nation user should see all facilities
+        self.client.force_authenticate(nat_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(6, response.data.get('count'))
+        self.client.logout()
+
+        # county user should see facilities in county
+        self.client.force_authenticate(county_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # constituencies user should see facilities in constituencies
+        self.client.force_authenticate(county_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # sub-county user should see facilities in sub-counties
+        self.client.force_authenticate(county_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # A user assigned to  both sub-county and constituency should see
+        # facilities in sub-county
+        self.client.force_authenticate(sub_county_const_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
 
 
 class CountyAndNationalFilterBackendTest(APITestCase):

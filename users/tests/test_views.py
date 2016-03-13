@@ -10,7 +10,7 @@ from model_mommy import mommy
 from facilities.models import RegulatingBody, RegulatoryBodyUser
 from common.models import (
     County, Constituency, UserCounty, UserConstituency,
-    ContactType, Contact, UserContact)
+    ContactType, Contact, UserContact, SubCounty, UserSubCounty)
 from common.tests.test_views import LoginMixin
 from ..models import MflUser, CustomGroup
 from ..serializers import _lookup_groups, GroupSerializer
@@ -415,6 +415,99 @@ class TestGroupViews(LoginMixin, APITestCase):
         # the login mixin somes with one preconfigured group
         self.assertEquals(1, Group.objects.count())
 
+    def test_group_filtering(self):
+        # test national-user-sees-all-groups
+        user = mommy.make(MflUser, is_national=True)
+        user_2 = mommy.make(MflUser)
+        user_3 = mommy.make(MflUser)
+        user_4 = mommy.make(MflUser)
+        user_5 = mommy.make(MflUser)
+
+        county = mommy.make(County)
+        mommy.make(UserCounty, user=user_2, county=county)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(
+            UserConstituency, user=user_3, constituency=const,
+            created_by=user_2, updated_by=user_2)
+        sub = mommy.make(SubCounty, county=county)
+        mommy.make(
+            UserSubCounty, user=user_4, sub_county=sub,
+            created_by=user_2, updated_by=user_2)
+        reg = mommy.make(RegulatingBody)
+        mommy.make(RegulatoryBodyUser, user=user_5, regulatory_body=reg)
+
+        group = mommy.make(Group, name='National Admins')
+        group_2 = mommy.make(Group, name='National Report Viewers')
+        group_3 = mommy.make(Group, name='Regulators')
+        group_4 = mommy.make(Group, name='CHRIOS')
+        group_5 = mommy.make(Group, name='SCHRIOS')
+        group_6 = mommy.make(Group, name='Report Viewers county')
+        group_7 = mommy.make(Group, name='county community coords')
+        group_8 = mommy.make(Group, name='Sub county comm focal persons')
+
+        mommy.make(
+            CustomGroup, national=True, administrator=True, group=group
+        )  # national admins
+        mommy.make(
+            CustomGroup, national=True, group=group_2
+        )  # public / reporting users
+        mommy.make(
+            CustomGroup, national=True, regulator=True, group=group_3
+        )  # regulators
+        mommy.make(
+            CustomGroup, administrator=True, group=group_4
+        )  # CHRIOS
+        mommy.make(
+            CustomGroup, administrator=True, county_level=True,
+            group=group_5)  # SCHRIOS
+        mommy.make(
+            CustomGroup, county_level=True, group=group_6)  # report viewers
+        mommy.make(
+            CustomGroup, county_level=True,
+            group=group_7)  # community coordinators
+        mommy.make(
+            CustomGroup, sub_county_level=True,
+            group=group_8)  # focal persons
+
+        # national_admin sees all groups
+        self.client.force_authenticate(user)
+        url = reverse("api:users:groups_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(9, response.data.get('count'))
+        self.client.logout()
+
+        # test a county user sees non-national-groups
+        self.client.force_authenticate(user_2)
+        url = reverse("api:users:groups_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(6, response.data.get('count'))
+        self.client.logout()
+
+        # test-sub-county-users-sees-sub-county groups
+        self.client.force_authenticate(user_3)
+        url = reverse("api:users:groups_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # test constituency-users-sees-sub-county groups
+        self.client.force_authenticate(user_4)
+        url = reverse("api:users:groups_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # Other users can see their groups
+        self.client.force_authenticate(user_5)
+        url = reverse("api:users:groups_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(9, response.data.get('count'))
+
 
 class TestDeleting(LoginMixin, APITestCase):
     def setUp(self):
@@ -677,11 +770,11 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
     def test_update_user_counties(self):
         user = mommy.make(MflUser)
         county = mommy.make(County)
-        mommy.make(UserCounty, user=user, county=county)
+        user_county = mommy.make(UserCounty, user=user, county=county)
         data = {
             "user_counties": [
                 {
-                    "id": str(county.id)
+                    "id": str(user_county.id)
                 }
             ]
         }
@@ -879,3 +972,46 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
             1,
             RegulatoryBodyUser.objects.filter(
                 user=user).count())
+
+    def test_inlined_sub_counties(self):
+        sub_county = mommy.make(SubCounty)
+        user_sub_counties = [
+            {
+                "sub_county": str(sub_county.id)
+            }
+        ]
+        post_data = {
+            "user_sub_counties": user_sub_counties,
+            "email": "testmail@domain.com",
+            "first_name": "Jina ya Kwanza",
+            "last_name": "Ya Pili",
+            "other_names": "Mengineyo",
+            "employee_number": "1241414",
+            "password": "#complexpwd456"
+        }
+        response = self.client.post(self.url, post_data)
+
+        self.assertEquals(201, response.status_code)
+        self.assertEquals(1, UserSubCounty.objects.count())
+
+    def test_update_user_sub_counties(self):
+        user = mommy.make(MflUser)
+        sub_1 = mommy.make(SubCounty)
+        us_1 = mommy.make(UserSubCounty, user=user, sub_county=sub_1)
+        sub_2 = mommy.make(SubCounty)
+        url = self.url + "{}/".format(user.id)
+        user_subs = [
+            {
+                "id": str(us_1.id),
+                "sub_county": str(sub_1.id)
+            },
+            {
+                "sub_county": str(sub_2.id)
+            }
+        ]
+        data = {
+            "user_sub_counties": user_subs
+        }
+        response = self.client.patch(url, data)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(2, UserSubCounty.objects.filter(user=user).count())

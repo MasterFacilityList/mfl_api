@@ -170,6 +170,8 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
             "sub_county_level": sub_county_level,
             "group": instance
         }
+        # update users in case the groups change this is for
+        #  is_staff and is_admin
         try:
             cg = CustomGroup.objects.get(group=instance)
             for key, value in custom_group_data.iteritems():
@@ -405,12 +407,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                     'regulatory_body')
                 RegulatoryBodyUser.objects.create(**regulator)
 
-    def _validate_group_county_and_sub_county(self, groups, counties, sub_counties):
-        if not groups and not counties and not sub_counties:
-            raise ValidationError({
-                  "user_groups": ["Please select group for the user"]
-                })
-
     @transaction.atomic
     def create(self, validated_data):
         validated_data = self._upadate_validated_data_with_audit_fields(
@@ -427,8 +423,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         counties = self.initial_data.pop('user_counties', [])
         validated_data.pop('regulatory_users', None)
         regulators = self.initial_data.pop('regulatory_users', [])
-
-        self._validate_group_county_and_sub_county(groups, counties, sub_counties)
 
         new_user = MflUser.objects.create_user(**validated_data)
         if self._assign_is_staff(groups):
@@ -451,7 +445,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         groups = _lookup_groups(validated_data)
         validated_data.pop('groups', None)
 
-
         validated_data.pop('contacts', None)
         contacts = self.initial_data.pop('contacts', [])
         validated_data.pop('user_constituencies', None)
@@ -463,8 +456,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         validated_data.pop('regulatory_users', None)
         regulators = self.initial_data.pop('regulatory_users', [])
 
-        self._validate_group_county_and_sub_county(groups, counties, sub_counties)
-
         pwd = validated_data.pop('password', None)
 
         # This does not handle password changes intelligently
@@ -472,7 +463,6 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         # Also: teach your API consumers to always prefer PATCH to PUT
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
-
 
         if pwd is not None:
             instance.set_password(pwd)

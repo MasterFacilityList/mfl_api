@@ -40,18 +40,20 @@ class GroupListView(generics.ListCreateAPIView):
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
 
-        if user.is_national:
-            return ProxyGroup.objects.all()
-        if user.county or user.sub_county:
-            group_ids = [grp.id for grp in ProxyGroup.objects.all() \
-                if grp.is_administrator and not grp.is_national
+        if user.county:
+            group_ids = [
+                grp.id for grp in ProxyGroup.objects.all()
+                if not grp.is_national or grp.is_county_level
             ]
             return ProxyGroup.objects.filter(id__in=group_ids)
-        else:
-            group_ids = [grp.id for grp in ProxyGroup.objects.all() \
+        elif user.sub_county or user.constituency:
+            group_ids = [
+                grp.id for grp in ProxyGroup.objects.all()
                 if grp.is_sub_county_level
             ]
             return ProxyGroup.objects.filter(id__in=group_ids)
+        else:
+            return ProxyGroup.objects.all()
 
 
 class GroupDetailView(CustomRetrieveUpdateDestroyView):

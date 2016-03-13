@@ -9,7 +9,9 @@ from facilities.models import Facility, FacilityApproval
 from facilities.tests.test_facility_views import load_dump
 from facilities.serializers import FacilitySerializer
 
-
+from common.models import (
+    UserSubCounty, SubCounty, Ward, UserCounty, UserConstituency,
+    County, Constituency)
 from common.tests.test_views import default, LoginMixin
 
 
@@ -208,6 +210,43 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         admin_response = self.client.get(self.url)
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(0, admin_response.data.get("count"))
+
+    def test_sub_county_users_facilities(self):
+        # test that sub-county users see facilities only in their sub-county
+        user = mommy.make(MflUser, is_superuser=True)
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        sub = mommy.make(SubCounty, county=county)
+        mommy.make(UserSubCounty, user=user, sub_county=sub)
+        ward = mommy.make(Ward, sub_county=sub, constituency=const)
+        mommy.make(Facility, ward=ward)
+        self.client.force_authenticate(user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+    def test_sub_county_and_consituency_facilities(self):
+        # Test users assigned to constituencies and sub-counties
+        # at the same time only see the facilities in the sub-county
+        user_1 = mommy.make(MflUser, is_superuser=True)
+        county = mommy.make(County)
+        mommy.make(UserCounty, county=county, user=user_1)
+        user = mommy.make(MflUser, is_superuser=True)
+        sub = mommy.make(SubCounty, county=county)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(
+            UserConstituency, user=user, constituency=const,
+            created_by=user_1, updated_by=user_1)
+        mommy.make(UserSubCounty, user=user, sub_county=sub)
+        ward = mommy.make(Ward, sub_county=sub, constituency=const)
+        ward_2 = mommy.make(Ward, constituency=const)
+        mommy.make(Facility, ward=ward)
+        mommy.make(Facility, ward=ward_2)
+        self.client.force_authenticate(user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
 
 
 class TestFacilitiesPendingApprovalFilter(LoginMixin, APITestCase):

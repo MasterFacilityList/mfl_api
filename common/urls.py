@@ -48,10 +48,10 @@ urlpatterns = patterns(
 
     url(r'^user_sub_counties/$',
         UserSubCountyListView.as_view(),
-        name='error_queues_list'),
+        name='user_sub_counties_list'),
     url(r'^user_sub_counties/(?P<pk>[^/]+)/$',
         UserSubCountyDetailView.as_view(),
-        name='error_queue_detail'),
+        name='user_sub_county_detail'),
 
     url(r'^sub_counties/$',
         SubCountyListView.as_view(),

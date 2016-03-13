@@ -88,7 +88,7 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-
+        user = self.request.user
         custom_queryset = kwargs.pop('custom_queryset', None)
         if hasattr(custom_queryset, 'count'):
             self.queryset = custom_queryset
@@ -110,13 +110,6 @@ class QuerysetFilterMixin(object):
             self.queryset = self.queryset
         else:
             self.queryset = self.queryset
-
-        if self.request.user.has_perm(
-            "facilities.view_unpublished_facilities") \
-            is False and self.queryset.model in [
-                FacilityExportExcelMaterialView,
-                Facility]:
-            self.queryset = self.queryset.filter(approved=True)
 
         if self.request.user.has_perm(
             "facilities.view_unapproved_facilities") \
@@ -155,7 +148,7 @@ class QuerysetFilterMixin(object):
                         user=self.request.user, active=True)])
 
         if self.request.user.sub_county and hasattr(
-                self.queryset.model, 'ward') and not self.request.user.constituency:
+                self.queryset.model, 'ward') and not user.constituency:
             self.queryset = self.queryset.filter(
                 ward__sub_county__in=[
                     us.sub_county
@@ -163,12 +156,12 @@ class QuerysetFilterMixin(object):
                         user=self.request.user, active=True)])
 
         if self.request.user.sub_county and hasattr(
-                self.queryset.model, 'ward') and  self.request.user.constituency:
+                self.queryset.model, 'ward') and user.constituency:
             self.queryset = self.queryset.filter(
                 ward__sub_county__in=[
                     us.sub_county
                     for us in UserSubCounty.objects.filter(
-                        user=self.request.user, active=True)])
+                        user=user, active=True)])
 
         return self.queryset
 
@@ -571,8 +564,8 @@ class FacilityDetailView(
         officer_in_charge = request.data.pop(
             'officer_in_charge', {})
 
-        if officer_in_charge.get("name") == "":
-            officer_in_charge = {}
+        officer_in_charge = {} if officer_in_charge.get(
+            "name") == "" else officer_in_charge
 
         if officer_in_charge:
             officer_in_charge['facility_id'] = str(instance.id)
