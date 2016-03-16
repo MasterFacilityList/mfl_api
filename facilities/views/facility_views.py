@@ -351,7 +351,7 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     filter_class = FacilityFilter
     ordering_fields = (
         'name', 'code', 'number_of_beds', 'number_of_cots',
-        'operation_status', 'ward', 'owner',
+        'operation_status', 'ward', 'owner', 'facility_type'
     )
 
 

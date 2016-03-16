@@ -113,6 +113,17 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
     is_county_level = serializers.ReadOnlyField()
     is_sub_county_level = serializers.ReadOnlyField()
 
+    def update_users_in_group(self, instance):
+
+        for user in MflUser.objects.all():
+            import pdb
+            pdb.set_trace()
+            if instance in user.groups.all():
+                user.is_staff = True
+            else:
+                user.is_staff = False
+            user.save()
+
     @transaction.atomic
     def create(self, validated_data):
         regulator = self.initial_data.pop('is_regulator', False)
@@ -136,7 +147,9 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
             'sub_county_level': sub_county_level,
             "group": new_group
         }
-        CustomGroup.objects.create(**custom_group_data)
+        custom_grp = CustomGroup.objects.create(**custom_group_data)
+        self.update_users_in_group(custom_grp)
+
         return new_group
 
     @transaction.atomic
@@ -170,8 +183,7 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
             "sub_county_level": sub_county_level,
             "group": instance
         }
-        # update users in case the groups change this is for
-        #  is_staff and is_admin
+        self.update_users_in_group(instance)
         try:
             cg = CustomGroup.objects.get(group=instance)
             for key, value in custom_group_data.iteritems():
@@ -294,26 +306,22 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 }
             ]
         """
+        updated_counties = []
+        user = self.context.get('request').user
+        UserCounty.everything.filter(user=instance).delete()
         for county in counties:
-            if 'id' in county:
-                LOGGER.info("User is already linked to the county")
-                active = county.get('active', True)
-                uc = UserCounty.objects.get(id=county.get('id'))
-                uc.active = active
-                uc.save()
-            else:
-                county['updated_by_id'] = self.context.get(
-                    'request').user.id
-                county['created_by_id'] = self.context.get(
-                    'request').user.id
-                county['county_id'] = county.pop('county')
-                county['user_id'] = instance.id
-                county['active'] = county.get('active', True)
-                UserCounty.objects.create(**county)
+            county_obj = {}
+            county_obj['updated_by'] = user
+            county_obj['created_by'] = user
+            county_obj['county_id'] = county.pop('id')
+            county_obj['user'] = instance
+            county_obj['active'] = county.get('active', True)
+            UserCounty.objects.create(**county_obj)
+            updated_counties.append(str(county_obj['county_id']))
 
     def _create_user_constituency(self, instance, constituencies):
         """
-        Allow batch linking of users to constituencies
+        Allow batch linking of users to constituencies.
 
         Sample Payload:
             "user_constituencies": [
@@ -326,27 +334,23 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 }
             ]
         """
+        updated_consts = []
+        user = self.context.get('request').user
+        UserConstituency.everything.filter(user=instance).delete()
         for constituency in constituencies:
-            if 'id' in constituency:
-                LOGGER.info("User is already linked to the constituency")
-                active = constituency.get('active', True)
-                uc = UserConstituency.objects.get(id=constituency.get('id'))
-                uc.active = active
-                uc.save()
-            else:
-                constituency['updated_by_id'] = self.context.get(
-                    'request').user.id
-                constituency['created_by_id'] = self.context.get(
-                    'request').user.id
-                constituency['constituency_id'] = constituency.pop(
-                    'constituency')
-                constituency['user_id'] = instance.id
-                constituency['active'] = constituency.get('active', True)
-                UserConstituency.objects.create(**constituency)
+            constituency_obj = {}
+            constituency_obj['updated_by'] = user
+            constituency_obj['created_by'] = user
+            constituency_obj['constituency_id'] = constituency.pop(
+                'id')
+            updated_consts.append(str(constituency_obj['constituency_id']))
+            constituency_obj['user'] = instance
+            constituency_obj['active'] = constituency.get('active', True)
+            UserConstituency.objects.create(**constituency_obj)
 
     def _create_user_sub_counties(self, instance, sub_counties):
         """
-        Allow batch linking of users to sub_counties
+        Allow batch linking of users to sub_counties.
 
         Sample Payload:
             "user_sub_counties": [
@@ -359,27 +363,23 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 }
             ]
         """
+        updated_subs = []
+        user = self.context.get('request').user
+        UserSubCounty.everything.filter(user=instance).delete()
         for sub_county in sub_counties:
-            if 'id' in sub_county:
-                LOGGER.info("User is already linked to the sub_county")
-                active = sub_county.get('active', True)
-                usub = UserSubCounty.objects.get(id=sub_county.get('id'))
-                usub.active = active
-                usub.save()
-            else:
-                sub_county['updated_by_id'] = self.context.get(
-                    'request').user.id
-                sub_county['created_by_id'] = self.context.get(
-                    'request').user.id
-                sub_county['sub_county_id'] = sub_county.pop(
-                    'sub_county')
-                sub_county['user_id'] = instance.id
-                sub_county['active'] = sub_county.get('active', True)
-                UserSubCounty.objects.create(**sub_county)
+            sub_county_obj = {}
+            sub_county_obj['updated_by'] = user
+            sub_county_obj['created_by'] = user
+            sub_county_obj['sub_county_id'] = sub_county.pop(
+                'id')
+            updated_subs.append(str(sub_county_obj['sub_county_id']))
+            sub_county_obj['user'] = instance
+            sub_county_obj['active'] = sub_county.get('active', True)
+            UserSubCounty.objects.create(**sub_county_obj)
 
     def _create_regulator(self, instance, regulators):
         """
-        Links a user to a regulatory body
+        Links a user to a regulatory body.
 
         Sample Payload:
              "regulatory_users": [

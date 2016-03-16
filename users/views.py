@@ -2,8 +2,11 @@ from rest_framework import generics
 from rest_framework.views import Response, status
 
 from django.contrib.auth.models import Permission, Group
+from django.shortcuts import get_object_or_404
 
 from common.utilities import CustomRetrieveUpdateDestroyView
+from common.models import(
+    UserCounty, UserSubCounty, UserConstituency, UserContact)
 
 from .models import MflUser, MFLOAuthApplication, CustomGroup, ProxyGroup
 
@@ -104,6 +107,7 @@ class UserList(generics.ListCreateAPIView):
         elif user.is_national and not user.is_superuser:
             # Should see the county users and the national users
             # Also should not see the system user
+            return MflUser.objects.all()
             county_users = [
                 county_user.user.id for county_user in
                 UserCounty.objects.all().distinct()
@@ -121,7 +125,7 @@ class UserList(generics.ListCreateAPIView):
 
             return self.queryset.filter(
                 id__in=all_users).exclude(id=self.request.user.id).distinct()
-        elif user.constituency:
+        elif user.constituency or user.sub_county:
             all_users = MflUser.objects.all()
             users_to_see = []
             sub_county_level_groups = [
@@ -156,6 +160,17 @@ class UserList(generics.ListCreateAPIView):
 class UserDetailView(CustomRetrieveUpdateDestroyView):
     queryset = MflUser.objects.all()
     serializer_class = MflUserSerializer
+
+    def delete(self, request, pk, format=None):
+
+        user = get_object_or_404(MflUser, id=pk)
+        user_contacts = UserContact.objects.filter(user=user)
+        [uc.contact.delete for uc in user_contacts]
+        user_contacts.delete()
+        UserCounty.objects.filter(user=user).delete()
+        UserConstituency.objects.filter(user=user).delete()
+        UserSubCounty.objects.filter(user=user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class MFLOauthApplicationListView(generics.ListCreateAPIView):

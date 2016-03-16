@@ -861,7 +861,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
     def test_get_dashboard_national_user(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=county)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)
@@ -937,7 +939,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.user.save()
         constituency = mommy.make(
             Constituency, county=self.user.county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=self.user.county)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)
@@ -1015,7 +1019,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.user.save()
         constituency = mommy.make(
             Constituency, county=self.user.county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=County)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)
@@ -1181,6 +1187,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
     def test_created_last_one_quarter_param(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
+        mommy.make(SubCounty, county=county)
         ward = mommy.make(Ward, constituency=constituency)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
@@ -1229,7 +1236,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
     def test_fields_response(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=county)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)

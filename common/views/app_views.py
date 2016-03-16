@@ -531,7 +531,7 @@ class FilteringSummariesView(views.APIView):
             'sub_county': (SubCounty, ('id', 'name', 'county', )),
             'facility_type': (FacilityType, ('id', 'name')),
             'constituency': (Constituency, ('id', 'name', 'county', )),
-            'ward': (Ward, ('id', 'name', 'constituency', )),
+            'ward': (Ward, ('id', 'name', 'constituency', 'sub_county')),
             'operation_status': (FacilityStatus, ('id', 'name')),
             'chu_status': (chu_models.Status, ('id', 'name', )),
             'service_category': (ServiceCategory, ('id', 'name')),
