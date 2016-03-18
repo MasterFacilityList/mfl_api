@@ -82,7 +82,10 @@ class UserList(generics.ListCreateAPIView):
     queryset = MflUser.objects.all()
     serializer_class = MflUserSerializer
     filter_class = MFLUserFilter
-    ordering_fields = ('first_name', 'last_name', 'email', 'username',)
+    ordering_fields = (
+        'first_name', 'email', 'is_active',
+        'last_login', 'employee_number'
+    )
 
     def get_queryset(self, *args, **kwargs):
         from common.models import UserCounty, UserConstituency
@@ -162,10 +165,9 @@ class UserDetailView(CustomRetrieveUpdateDestroyView):
     serializer_class = MflUserSerializer
 
     def delete(self, request, pk, format=None):
-
         user = get_object_or_404(MflUser, id=pk)
         user_contacts = UserContact.objects.filter(user=user)
-        [uc.contact.delete for uc in user_contacts]
+        [uc.contact.delete() for uc in user_contacts]
         user_contacts.delete()
         UserCounty.objects.filter(user=user).delete()
         UserConstituency.objects.filter(user=user).delete()

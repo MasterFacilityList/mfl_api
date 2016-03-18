@@ -202,6 +202,10 @@ class FacilityStatus(AbstractBase):
     description = models.TextField(
         null=True, blank=True,
         help_text="A short explanation of what the status entails.")
+    is_public_visible = models.BooleanField(
+        default=False,
+        help_text='The facilities with this status '
+        'should be visible to the public')
 
     def __str__(self):
         return self.name
@@ -592,6 +596,8 @@ class FacilityExportExcelMaterialView(models.Model):
         help_text='A dummy search field')
     county_name = models.CharField(max_length=100, null=True, blank=True)
     constituency_name = models.CharField(max_length=100, null=True, blank=True)
+    sub_county = models.CharField(max_length=100, null=True, blank=True)
+    sub_county_name = models.CharField(max_length=100, null=True, blank=True)
     ward_name = models.CharField(max_length=100, null=True, blank=True)
     keph_level = models.CharField(max_length=100, null=True, blank=True)
     facility_type = models.CharField(max_length=100, null=True, blank=True)
@@ -619,6 +625,7 @@ class FacilityExportExcelMaterialView(models.Model):
         models.UUIDField(null=True, blank=True), null=True, blank=True
     )
     approved = models.BooleanField(default=False)
+    is_public_visible = models.BooleanField(default=False)
     created = models.DateTimeField()
     closed = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)

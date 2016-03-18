@@ -115,7 +115,7 @@ class CHUServiceListView(generics.ListCreateAPIView):
     queryset = CHUService.objects.all()
     serializer_class = CHUServiceSerializer
     filter_class = CHUServiceFilter
-    ordering_fields = ('name', 'description', )
+    ordering_fields = ('name', 'description', 'date_established')
 
 
 class CHUServiceDetailView(
@@ -203,7 +203,7 @@ class CommunityHealthUnitListView(
     queryset = CommunityHealthUnit.objects.all()
     serializer_class = CommunityHealthUnitSerializer
     filter_class = CommunityHealthUnitFilter
-    ordering_fields = ('name', 'facility',)
+    ordering_fields = ('name', 'facility', 'code',)
 
 
 class CommunityHealthUnitDetailView(

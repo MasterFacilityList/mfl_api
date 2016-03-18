@@ -116,7 +116,15 @@ class QuerysetFilterMixin(object):
             is False and 'approved' in [
                 field.name for field in
                 self.queryset.model._meta.get_fields()]:
-            self.queryset = self.queryset.filter(approved=True)
+
+            # filter both facilities and facilities materialized view
+            try:
+                self.queryset = self.queryset.filter(
+                    approved=True,
+                    operation_status__is_public_visible=True)
+            except:
+                self.queryset = self.queryset.filter(
+                    approved=True, is_public_visible=True)
 
         if self.request.user.has_perm(
                 "facilities.view_classified_facilities") \

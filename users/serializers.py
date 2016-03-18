@@ -116,8 +116,6 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
     def update_users_in_group(self, instance):
 
         for user in MflUser.objects.all():
-            import pdb
-            pdb.set_trace()
             if instance in user.groups.all():
                 user.is_staff = True
             else:
@@ -220,6 +218,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
     county_name = serializers.ReadOnlyField(source='county.name')
     constituency = serializers.ReadOnlyField(source='constituency.id')
     constituency_name = serializers.ReadOnlyField(source='constituency.name')
+    sub_county_name = serializers.ReadOnlyField(source='sub_county.name')
     contacts = serializers.ReadOnlyField()
     regulatory_users = RegulatoryBodyUserSerializer(many=True, required=False)
     user_constituencies = UserConstituencySerializer(many=True, required=False)
@@ -308,6 +307,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         """
         updated_counties = []
         user = self.context.get('request').user
+
         UserCounty.everything.filter(user=instance).delete()
         for county in counties:
             county_obj = {}

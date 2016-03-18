@@ -11,12 +11,14 @@ facilities_facility.open_weekends, facilities_facility.open_late_night,
 facilities_facility.closed, facilities_facility.is_published,
 common_county.name as county_name, common_county.id as county,
 common_constituency.name as constituency_name,common_constituency.id as constituency,
+common_subcounty.name as sub_county_name,common_subcounty.id as sub_county,
 facilities_facilitytype.name as facility_type_name, facilities_facilitytype.id as facility_type,
 facilities_kephlevel.name as keph_level_name,facilities_kephlevel.id as keph_level,
 facilities_owner.name as owner_name,facilities_owner.id as owner,
 facilities_ownertype.name as owner_type_name,facilities_ownertype.id as owner_type,
 facilities_regulatingbody.name as regulatory_body_name,facilities_regulatingbody.id as regulatory_body,
 facilities_facilitystatus.name as operation_status_name, facilities_facilitystatus.id as operation_status,
+facilities_facilitystatus.is_public_visible as is_public_visible,
 array(select distinct service_id from facilities_facilityservice where facilities_facilityservice.facility_id=facilities_facility.id) as services,
 array(select distinct category_id from facilities_facilityservice inner join facilities_service on facilities_service.id=facilities_facilityservice.service_id where facilities_facilityservice.facility_id=facilities_facility.id) as categories
 
@@ -29,6 +31,7 @@ LEFT JOIN facilities_regulatingbody ON facilities_regulatingbody.id = facilities
 LEFT JOIN facilities_facilitystatus ON facilities_facilitystatus.id = facilities_facility.operation_status_id
 LEFT JOIN common_ward ON  common_ward.id = facilities_facility.ward_id
 LEFT JOIN common_constituency ON  common_constituency.id = common_ward.constituency_id
+LEFT JOIN common_subcounty ON  common_subcounty.id = common_ward.sub_county_id
 LEFT JOIN common_county ON  common_county.id = common_constituency.county_id;
 
 DROP TRIGGER IF EXISTS refresh_mat_view ON facilities_facility;

@@ -383,6 +383,9 @@ class FacilitySerializer(
     operation_status_name = serializers.CharField(read_only=True)
     county = serializers.CharField(read_only=True)
     constituency = serializers.CharField(read_only=True)
+    constituency_name = serializers.CharField(
+        read_only=True,
+        source='ward.constituency.name')
     ward_name = serializers.ReadOnlyField()
     average_rating = serializers.ReadOnlyField()
     facility_services = serializers.ReadOnlyField(
@@ -407,6 +410,9 @@ class FacilitySerializer(
         source='ward.constituency.county.name')
     constituency_id = serializers.ReadOnlyField(
         source='ward.constituency.id')
+    county_id = serializers.ReadOnlyField(
+        source='ward.constituency.county.id')
+    keph_level_name = serializers.ReadOnlyField(source='keph_level.name')
 
     class Meta(object):
         model = Facility
