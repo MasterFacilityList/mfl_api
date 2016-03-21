@@ -6,7 +6,10 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
-from common.models import ContactType, UserConstituency, UserCounty
+
+from common.models import (
+    ContactType, UserConstituency, UserCounty, UserSubCounty
+)
 
 from ..models import (
     Facility,
@@ -85,7 +88,7 @@ class QuerysetFilterMixin(object):
     def get_queryset(self, *args, **kwargs):
         # The line below reflects the fact that geographic "attachment"
         # will occur at the smallest unit i.e the ward
-
+        user = self.request.user
         custom_queryset = kwargs.pop('custom_queryset', None)
         if hasattr(custom_queryset, 'count'):
             self.queryset = custom_queryset
@@ -96,7 +99,7 @@ class QuerysetFilterMixin(object):
             self.queryset = self.queryset.filter(
                 ward__constituency__county__in=[
                     uc.county for uc in UserCounty.objects.filter(
-                        user=self.request.user)])
+                        user=self.request.user, active=True)])
 
         elif self.request.user.regulator and hasattr(
                 self.queryset.model, 'regulatory_body'):
@@ -105,29 +108,23 @@ class QuerysetFilterMixin(object):
         elif self.request.user.is_national and not \
                 self.request.user.county:
             self.queryset = self.queryset
-        elif self.request.user.constituency and hasattr(
-                self.queryset.model, 'ward'):
-            self.queryset = self.queryset.filter(
-                ward__constituency__in=[
-                    uc.constituency
-                    for uc in UserConstituency.objects.filter(
-                        user=self.request.user)])
         else:
             self.queryset = self.queryset
-
-        if self.request.user.has_perm(
-            "facilities.view_unpublished_facilities") \
-            is False and self.queryset.model in [
-                FacilityExportExcelMaterialView,
-                Facility]:
-            self.queryset = self.queryset.filter(approved=True)
 
         if self.request.user.has_perm(
             "facilities.view_unapproved_facilities") \
             is False and 'approved' in [
                 field.name for field in
                 self.queryset.model._meta.get_fields()]:
-            self.queryset = self.queryset.filter(approved=True)
+
+            # filter both facilities and facilities materialized view
+            try:
+                self.queryset = self.queryset.filter(
+                    approved=True,
+                    operation_status__is_public_visible=True)
+            except:
+                self.queryset = self.queryset.filter(
+                    approved=True, is_public_visible=True)
 
         if self.request.user.has_perm(
                 "facilities.view_classified_facilities") \
@@ -147,6 +144,32 @@ class QuerysetFilterMixin(object):
             'closed' in [field.name for field in
                          self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(closed=False)
+
+        # filter facilities based on a users constituencies or sub_counties
+        if self.request.user.constituency and hasattr(
+                self.queryset.model, 'ward') and not \
+                self.request.user.sub_county:
+            self.queryset = self.queryset.filter(
+                ward__constituency__in=[
+                    uc.constituency
+                    for uc in UserConstituency.objects.filter(
+                        user=self.request.user, active=True)])
+
+        if self.request.user.sub_county and hasattr(
+                self.queryset.model, 'ward') and not user.constituency:
+            self.queryset = self.queryset.filter(
+                ward__sub_county__in=[
+                    us.sub_county
+                    for us in UserSubCounty.objects.filter(
+                        user=self.request.user, active=True)])
+
+        if self.request.user.sub_county and hasattr(
+                self.queryset.model, 'ward') and user.constituency:
+            self.queryset = self.queryset.filter(
+                ward__sub_county__in=[
+                    us.sub_county
+                    for us in UserSubCounty.objects.filter(
+                        user=user, active=True)])
 
         return self.queryset
 
@@ -336,7 +359,7 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     filter_class = FacilityFilter
     ordering_fields = (
         'name', 'code', 'number_of_beds', 'number_of_cots',
-        'operation_status', 'ward', 'owner',
+        'operation_status', 'ward', 'owner', 'facility_type'
     )
 
 
@@ -548,6 +571,10 @@ class FacilityDetailView(
         units = request.data.pop('units', [])
         officer_in_charge = request.data.pop(
             'officer_in_charge', {})
+
+        officer_in_charge = {} if officer_in_charge.get(
+            "name") == "" else officer_in_charge
+
         if officer_in_charge:
             officer_in_charge['facility_id'] = str(instance.id)
 

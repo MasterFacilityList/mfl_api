@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.views.decorators.cache import never_cache
 from rest_framework import generics
 from common.views import AuditableDetailViewMixin, DownloadPDFMixin
+from common.models import UserConstituency, UserCounty, UserSubCounty
 from .models import (
     CommunityHealthUnit,
     CommunityHealthWorker,
@@ -57,11 +58,24 @@ class FilterCommunityUnitsMixin(object):
 
         if self.request.user.county:
             self.queryset = self.queryset.filter(
-                facility__ward__constituency__county=self.request.user.county)
+                facility__ward__constituency__county__in=[
+                    uc.county for uc in UserCounty.objects.filter(
+                        user=self.request.user)
+                ])
 
         if self.request.user.constituency:
             self.queryset = self.queryset.filter(
-                facility__ward__constituency=self.request.user.constituency)
+                facility__ward__constituency__in=[
+                    uc.constituency for uc in UserConstituency.objects.filter(
+                        user=self.request.user)
+                ])
+
+        if self.request.user.sub_county:
+            self.queryset = self.queryset.filter(
+                facility__ward__sub_county__in=[
+                    us.sub_county for us in UserSubCounty.objects.filter(
+                        user=self.request.user)
+                ])
 
         return self.queryset
 
@@ -101,7 +115,7 @@ class CHUServiceListView(generics.ListCreateAPIView):
     queryset = CHUService.objects.all()
     serializer_class = CHUServiceSerializer
     filter_class = CHUServiceFilter
-    ordering_fields = ('name', 'description', )
+    ordering_fields = ('name', 'description', 'date_established')
 
 
 class CHUServiceDetailView(
@@ -189,7 +203,7 @@ class CommunityHealthUnitListView(
     queryset = CommunityHealthUnit.objects.all()
     serializer_class = CommunityHealthUnitSerializer
     filter_class = CommunityHealthUnitFilter
-    ordering_fields = ('name', 'facility',)
+    ordering_fields = ('name', 'facility', 'code',)
 
 
 class CommunityHealthUnitDetailView(

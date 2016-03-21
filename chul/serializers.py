@@ -55,8 +55,10 @@ class CommunityHealthUnitSerializer(
     health_unit_workers = serializers.ReadOnlyField(source='workers')
     facility_name = serializers.ReadOnlyField(source='facility.name')
     facility_ward = serializers.ReadOnlyField(source='facility.ward.name')
-    facility_subcounty = serializers.ReadOnlyField(
+    facility_constituency = serializers.ReadOnlyField(
         source='facility.ward.constituency.name')
+    facility_subcounty = serializers.ReadOnlyField(
+        source='facility.ward.sub_county.name')
     facility_county = serializers.ReadOnlyField(
         source='facility.ward.constituency.county.name')
     ward_code = serializers.ReadOnlyField(source='facility.ward.code')

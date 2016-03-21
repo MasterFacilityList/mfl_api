@@ -8,7 +8,8 @@ from facilities.models import Facility, FacilityApproval
 from users.models import MflUser
 from common.models import (
     County, Constituency, UserCounty, UserConstituency, Ward,
-    Contact, ContactType)
+    Contact, ContactType,
+    UserSubCounty, SubCounty)
 
 from ..models import (
     Status,
@@ -356,6 +357,24 @@ class TestCommunityHealthUnitView(ViewTestBase):
         response = self.client.get(url)
         self.assertEquals(200, response.status_code)
         self.assertTemplateUsed(response, "chu_details.html")
+
+    def test_filter_chus_by_sub_county(self):
+        county_user = mommy.make(MflUser, is_superuser=True)
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(UserCounty, user=county_user, county=county)
+
+        sub_county_user = mommy.make(MflUser, is_superuser=True)
+        sub_county = mommy.make(SubCounty, county=county)
+        ward = mommy.make(Ward, constituency=const, sub_county=sub_county)
+        mommy.make(UserSubCounty, user=sub_county_user, sub_county=sub_county)
+        facility = mommy.make(Facility, ward=ward)
+        mommy.make(CommunityHealthUnit, facility=facility)
+        url = reverse("api:chul:community_health_units_list")
+        self.client.force_authenticate(sub_county_user)
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
 
 
 class TestCommunityHealthWorkerView(ViewTestBase):

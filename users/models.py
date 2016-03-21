@@ -295,6 +295,13 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         return user_consts[0].constituency if user_consts else None
 
     @property
+    def sub_county(self):
+        from common.models import UserSubCounty
+        user_subs = UserSubCounty.objects.filter(
+            user=self, active=True)
+        return user_subs[0].sub_county if user_subs else None
+
+    @property
     def regulator(self):
         from facilities.models import RegulatoryBodyUser
         user_regulators = RegulatoryBodyUser.objects.filter(

@@ -74,6 +74,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         help_text='The facility on which the health unit is tied to.')
     status = models.ForeignKey(Status)
     households_monitored = models.PositiveIntegerField(
+        default=0,
         help_text='The number of house holds a CHU is in-charge of')
     date_established = models.DateField(default=timezone.now)
     date_operational = models.DateField(null=True, blank=True)
@@ -89,6 +90,9 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         default=False,
         help_text='Indicates that a community health unit has updates that are'
                   ' pending approval')
+    number_of_chvs = models.PositiveIntegerField(
+        default=0,
+        help_text='Number of Community Health volunteers in the CHU')
 
     def __str__(self):
         return self.name

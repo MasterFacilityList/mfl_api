@@ -133,12 +133,13 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
     service = django_filters.AllValuesFilter(
         name="facility_service__service", lookup_type='exact')
     county = django_filters.AllValuesFilter(
-        name="facility_service__ward__constituency__county",
+        name="facility_service__facility__ward__constituency__county",
         lookup_type='exact')
     constituency = django_filters.AllValuesFilter(
-        name="facility_service__ward__constituency", lookup_type='exact')
+        name="facility_service__facility__ward__constituency",
+        lookup_type='exact')
     ward = django_filters.AllValuesFilter(
-        name="facility_service__ward", lookup_type='exact')
+        name="facility_service__facility__ward", lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
@@ -363,9 +364,9 @@ class FacilityFilter(CommonFieldsFilterset):
     keph_level = ListCharFilter(lookup_type='exact')
     operation_status = ListCharFilter(lookup_type='icontains')
     ward = ListCharFilter(lookup_type='icontains')
-    sub_county = ListCharFilter(lookup_type='exact')
+    sub_county = ListCharFilter(lookup_type='exact', name='ward__sub_county')
     sub_county_code = ListCharFilter(
-        name="sub_county__code", lookup_type='exact')
+        name="ward__sub_county__code", lookup_type='exact')
     ward_code = ListCharFilter(name="ward__code", lookup_type='icontains')
     county_code = ListCharFilter(
         name='ward__constituency__county__code',

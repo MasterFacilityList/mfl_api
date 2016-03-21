@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models import Q
 
 from rest_framework.views import APIView, Response
-from common.models import County, Constituency, Ward
+from common.models import County, SubCounty, Ward
 from chul.models import CommunityHealthUnit
 
 from ..models import (
@@ -22,11 +22,11 @@ class DashBoard(QuerysetFilterMixin, APIView):
 
     def get_chu_count_in_county_summary(self, county):
         return CommunityHealthUnit.objects.filter(
-            facility__ward__constituency__county=county).count()
+            facility__ward__sub_county__county=county).count()
 
     def get_chu_count_in_constituency_summary(self, const):
         return CommunityHealthUnit.objects.filter(
-            facility__ward__constituency=const).count()
+            facility__ward__sub_county=const).count()
 
     def get_chu_count_in_ward_summary(self, ward):
         return CommunityHealthUnit.objects.filter(
@@ -37,7 +37,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
         facility_county_summary = {}
         for county in counties:
             facility_county_count = self.get_queryset().filter(
-                ward__constituency__county=county).count()
+                ward__sub_county__county=county).count()
             facility_county_summary[str(county.name)] = facility_county_count
 
         top_10_counties = sorted(
@@ -57,14 +57,14 @@ class DashBoard(QuerysetFilterMixin, APIView):
         return top_10_counties_summary if self.request.user.is_national else []
 
     def get_facility_constituency_summary(self):
-        constituencies = Constituency.objects.filter(
+        constituencies = SubCounty.objects.filter(
             county=self.request.user.county)
         constituencies = constituencies if self.request.user.county else []
 
         facility_constituency_summary = {}
         for const in constituencies:
             facility_const_count = self.get_queryset().filter(
-                ward__constituency=const).count()
+                ward__sub_county=const).count()
             facility_constituency_summary[
                 str(const.name)] = facility_const_count
         top_10_consts = sorted(
@@ -72,7 +72,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
             key=lambda x: x[1], reverse=True)[0:20]
         top_10_consts_summary = []
         for item in top_10_consts:
-            const = Constituency.objects.get(name=item[0])
+            const = SubCounty.objects.get(name=item[0])
             chu_count = self.get_chu_count_in_constituency_summary(const)
             top_10_consts_summary.append(
                 {
@@ -84,8 +84,8 @@ class DashBoard(QuerysetFilterMixin, APIView):
 
     def get_facility_ward_summary(self):
         wards = Ward.objects.filter(
-            constituency=self.request.user.constituency) \
-            if self.request.user.constituency else []
+            sub_county=self.request.user.sub_county) \
+            if self.request.user.sub_county else []
         facility_ward_summary = {}
         for ward in wards:
             facility_ward_count = self.get_queryset().filter(

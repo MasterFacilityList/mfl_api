@@ -2,8 +2,11 @@ from rest_framework import generics
 from rest_framework.views import Response, status
 
 from django.contrib.auth.models import Permission, Group
+from django.shortcuts import get_object_or_404
 
 from common.utilities import CustomRetrieveUpdateDestroyView
+from common.models import(
+    UserCounty, UserSubCounty, UserConstituency, UserContact)
 
 from .models import MflUser, MFLOAuthApplication, CustomGroup, ProxyGroup
 
@@ -37,6 +40,24 @@ class GroupListView(generics.ListCreateAPIView):
     filter_class = GroupFilter
     ordering_fields = ('name', )
 
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+
+        if user.county:
+            group_ids = [
+                grp.id for grp in ProxyGroup.objects.all()
+                if not grp.is_national or grp.is_county_level
+            ]
+            return ProxyGroup.objects.filter(id__in=group_ids)
+        elif user.sub_county or user.constituency:
+            group_ids = [
+                grp.id for grp in ProxyGroup.objects.all()
+                if grp.is_sub_county_level
+            ]
+            return ProxyGroup.objects.filter(id__in=group_ids)
+        else:
+            return ProxyGroup.objects.all()
+
 
 class GroupDetailView(CustomRetrieveUpdateDestroyView):
     queryset = ProxyGroup.objects.all()
@@ -61,7 +82,10 @@ class UserList(generics.ListCreateAPIView):
     queryset = MflUser.objects.all()
     serializer_class = MflUserSerializer
     filter_class = MFLUserFilter
-    ordering_fields = ('first_name', 'last_name', 'email', 'username',)
+    ordering_fields = (
+        'first_name', 'email', 'is_active',
+        'last_login', 'employee_number'
+    )
 
     def get_queryset(self, *args, **kwargs):
         from common.models import UserCounty, UserConstituency
@@ -84,26 +108,9 @@ class UserList(generics.ListCreateAPIView):
             return self.queryset.filter(
                 id__in=area_users).exclude(id=self.request.user.id)
         elif user.is_national and not user.is_superuser:
-            # Should see the county users and the national users
-            # Also should not see the system user
-            county_users = [
-                county_user.user.id for county_user in
-                UserCounty.objects.all().distinct()
-            ]
-            national_users = [
-                nat_user.id for nat_user in MflUser.objects.filter(
-                    is_national=True)
-            ]
-            group_less_users = [
-                g_user.id
-                for g_user in MflUser.objects.all()
-                if not g_user.groups.all()
-            ]
-            all_users = county_users + national_users + group_less_users
+            return MflUser.objects.all()
 
-            return self.queryset.filter(
-                id__in=all_users).exclude(id=self.request.user.id).distinct()
-        elif user.constituency:
+        elif user.constituency or user.sub_county:
             all_users = MflUser.objects.all()
             users_to_see = []
             sub_county_level_groups = [
@@ -138,6 +145,18 @@ class UserList(generics.ListCreateAPIView):
 class UserDetailView(CustomRetrieveUpdateDestroyView):
     queryset = MflUser.objects.all()
     serializer_class = MflUserSerializer
+
+    def delete(self, request, pk, format=None):
+        user = get_object_or_404(MflUser, id=pk)
+        user_contacts = UserContact.objects.filter(user=user)
+        [uc.contact.delete() for uc in user_contacts]
+        user_contacts.delete()
+        UserCounty.objects.filter(user=user).delete()
+        UserConstituency.objects.filter(user=user).delete()
+        UserSubCounty.objects.filter(user=user).delete()
+        user.deleted = True
+        user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class MFLOauthApplicationListView(generics.ListCreateAPIView):

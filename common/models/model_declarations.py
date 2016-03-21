@@ -200,6 +200,21 @@ class Constituency(AdministrativeUnitBase):
         unique_together = ('name', 'county')
 
 
+@reversion.register(follow=['county'])
+@encoding.python_2_unicode_compatible
+class SubCounty(AdministrativeUnitBase):
+
+    """
+    A county can be sub divided into sub counties.
+
+    The sub-counties do not necessarily map to constituencies
+    """
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.name
+
+
 @reversion.register(follow=['constituency'])
 @encoding.python_2_unicode_compatible
 class Ward(AdministrativeUnitBase):
@@ -218,6 +233,10 @@ class Ward(AdministrativeUnitBase):
         Constituency,
         help_text="The constituency where the ward is located.",
         on_delete=models.PROTECT)
+    sub_county = models.ForeignKey(
+        SubCounty, null=True, blank=True,
+        help_text='The sub-county where the ward is located',
+        on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -235,20 +254,21 @@ class Ward(AdministrativeUnitBase):
             LOGGER.info('No boundaries found for {}'.format(self))
             return _lookup_facility_coordinates(None)
 
+    def validate_county(self):
+        if self.sub_county:
+            if not self.sub_county.county == self.constituency.county:
+                raise ValidationError(
+                    {
+                        "sub_county": [
+                            "Ensure the sub-county and the constituency "
+                            "are in the same county"
+                        ]
+                    }
+                )
 
-@reversion.register(follow=['county'])
-@encoding.python_2_unicode_compatible
-class SubCounty(AdministrativeUnitBase):
-
-    """
-    A county can be sub divided into sub counties.
-
-    The sub-counties do not necessarily map to constituencies
-    """
-    county = models.ForeignKey(County, on_delete=models.PROTECT)
-
-    def __str__(self):
-        return self.name
+    def clean(self, *args, **kwargs):
+        super(Ward, self).clean(*args, **kwargs)
+        self.validate_county()
 
 
 @reversion.register(follow=['user', 'county'])
@@ -268,18 +288,7 @@ class UserCounty(UserAdminAreaLinkageMixin, AbstractBase):
     def __str__(self):
         return "{}: {}".format(self.user, self.county)
 
-    def validate_only_one_county_active(self):
-        """
-        A user can be in-charge of only one county at the a time.
-        """
-        counties = self.__class__.objects.filter(
-            user=self.user, active=True, deleted=False)
-        if counties.count() > 0 and not self.deleted and self.active:
-            raise ValidationError(
-                "A user can only be active in one county at a time")
-
     def clean(self, *args, **kwargs):
-        self.validate_only_one_county_active()
         super(UserCounty, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
@@ -334,12 +343,18 @@ class UserConstituency(UserAdminAreaLinkageMixin, AbstractBase):
     constituency = models.ForeignKey(Constituency)
 
     def validate_constituency_county_in_creator_county(self):
-        error = ("Users created must be in the administrators "
-                 "county or sub county")
+        error = {
+            "constituency": [
+                "Users created must be in the administrators "
+                "county or sub county"
+            ]
+        }
+        nat_user = self.created_by.is_national or self.updated_by.is_national
         if self.created_by.constituency:
             if self.constituency.county != self.created_by.constituency.county:
                 raise ValidationError(error)
-        elif self.constituency.county != self.created_by.county:
+        elif (self.constituency.county != self.created_by.county and not
+                nat_user):
             raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
@@ -435,3 +450,16 @@ class ErrorQueue(models.Model):
     def __str__(self):
         return "{} - {} - {}".format(
             self.object_pk, self.app_label, self.model_name)
+
+
+class UserSubCounty(AbstractBase):
+    """
+    Link a user to a sub-county
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='user_sub_counties')
+    sub_county = models.ForeignKey(SubCounty, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "{0} - {1}".format(
+            self.user.email, self.sub_county.name)
