@@ -375,6 +375,27 @@ class TestGroupViews(LoginMixin, APITestCase):
         self.client.patch(update_url, data)
         self.assertEquals(1, CustomGroup.objects.count())
 
+    def test_user_group_update_updates_also_the_user_group_features(self):
+        group = mommy.make(Group)
+        self.assertEquals(0, CustomGroup.objects.count())
+
+        user = mommy.make(MflUser)
+        user.groups.add(group)
+        self.assertFalse(user.is_staff)
+
+        update_url = reverse(
+            'api:users:group_detail', kwargs={'pk': group.id})
+        data = {
+            "is_national": True,
+            "is_regulator": False,
+            "is_administrator": True,
+        }
+        self.client.patch(update_url, data)
+        self.assertEquals(1, CustomGroup.objects.count())
+
+        user_refetched = MflUser.objects.get(id=user.id)
+        self.assertTrue(user_refetched.is_staff)
+
     def test_failed_create(self):
         data = {
             "name": "Documentation Example Group",
@@ -514,7 +535,7 @@ class TestDeleting(LoginMixin, APITestCase):
         self.url = reverse('api:users:mfl_users_list')
         super(TestDeleting, self).setUp()
 
-    def test_delete_county(self):
+    def test_delete_user(self):
         user = mommy.make(MflUser)
         url = self.url + '{}/'.format(user.id)
         response = self.client.delete(url)
@@ -590,7 +611,7 @@ class TestUserFiltering(APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(200, response.status_code)
 
-        self.assertEquals(4, len(response.data.get("results")))
+        self.assertEquals(5, len(response.data.get("results")))
 
     def test_users_with_no_priviledges_see_no_user(self):
         user = mommy.make(MflUser)
@@ -752,7 +773,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         post_data = {
             "user_counties": [
                 {
-                    "county": str(county.id)
+                    "id": str(county.id)
                 }
             ],
             "email": "testmail@domain.com",
@@ -770,11 +791,11 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
     def test_update_user_counties(self):
         user = mommy.make(MflUser)
         county = mommy.make(County)
-        user_county = mommy.make(UserCounty, user=user, county=county)
+        mommy.make(UserCounty, user=user, county=county)
         data = {
             "user_counties": [
                 {
-                    "id": str(user_county.id)
+                    "id": str(county.id)
                 }
             ]
         }
@@ -791,7 +812,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         post_data = {
             "user_constituencies": [
                 {
-                    "constituency": str(constituency.id)
+                    "id": str(constituency.id)
                 }
             ],
             "email": "testmail@domain.com",
@@ -815,14 +836,13 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         county = mommy.make(County)
         mommy.make(UserCounty, user=user, county=county)
         constituency = mommy.make(Constituency, county=county)
-        user_const_id = mommy.make(
+        mommy.make(
             UserConstituency, user=user_2,
             constituency=constituency, created_by=user, updated_by=user)
         post_data = {
             "user_constituencies": [
                 {
-                    "id": str(user_const_id.id),
-                    "constituency": str(constituency.id)
+                    "id": str(constituency.id)
                 }
             ]
 
@@ -977,7 +997,7 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
         sub_county = mommy.make(SubCounty)
         user_sub_counties = [
             {
-                "sub_county": str(sub_county.id)
+                "id": str(sub_county.id)
             }
         ]
         post_data = {
@@ -997,16 +1017,15 @@ class TestInlinedUserDetails(LoginMixin, APITestCase):
     def test_update_user_sub_counties(self):
         user = mommy.make(MflUser)
         sub_1 = mommy.make(SubCounty)
-        us_1 = mommy.make(UserSubCounty, user=user, sub_county=sub_1)
+        mommy.make(UserSubCounty, user=user, sub_county=sub_1)
         sub_2 = mommy.make(SubCounty)
         url = self.url + "{}/".format(user.id)
         user_subs = [
             {
-                "id": str(us_1.id),
-                "sub_county": str(sub_1.id)
+                "id": str(sub_1.id)
             },
             {
-                "sub_county": str(sub_2.id)
+                "id": str(sub_2.id)
             }
         ]
         data = {

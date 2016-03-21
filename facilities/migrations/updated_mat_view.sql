@@ -18,6 +18,7 @@ facilities_owner.name as owner_name,facilities_owner.id as owner,
 facilities_ownertype.name as owner_type_name,facilities_ownertype.id as owner_type,
 facilities_regulatingbody.name as regulatory_body_name,facilities_regulatingbody.id as regulatory_body,
 facilities_facilitystatus.name as operation_status_name, facilities_facilitystatus.id as operation_status,
+facilities_facilitystatus.is_public_visible as is_public_visible,
 array(select distinct service_id from facilities_facilityservice where facilities_facilityservice.facility_id=facilities_facility.id) as services,
 array(select distinct category_id from facilities_facilityservice inner join facilities_service on facilities_service.id=facilities_facilityservice.service_id where facilities_facilityservice.facility_id=facilities_facility.id) as categories
 

@@ -2,7 +2,7 @@ import logging
 
 from django.db import transaction
 from django.utils import timezone
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, Group
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -115,11 +115,10 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     def update_users_in_group(self, instance):
 
+        group = Group.objects.get(id=instance.id)
         for user in MflUser.objects.all():
-            if instance in user.groups.all():
-                user.is_staff = True
-            else:
-                user.is_staff = False
+            user.is_staff = True if group in \
+                user.groups.all() else False
             user.save()
 
     @transaction.atomic
@@ -145,8 +144,7 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
             'sub_county_level': sub_county_level,
             "group": new_group
         }
-        custom_grp = CustomGroup.objects.create(**custom_group_data)
-        self.update_users_in_group(custom_grp)
+        CustomGroup.objects.create(**custom_group_data)
 
         return new_group
 

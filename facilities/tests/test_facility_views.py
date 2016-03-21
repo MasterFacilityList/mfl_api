@@ -980,7 +980,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             ],
             "constituencies_summary": [
                 {
-                    "name": str(constituency.name),
+                    "name": str(sub_county.name),
                     "count": 1,
                     "chu_count": 0
                 }
@@ -1019,7 +1019,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.user.save()
         constituency = mommy.make(
             Constituency, county=self.user.county)
-        sub_county = mommy.make(SubCounty, county=County)
+        sub_county = mommy.make(SubCounty, county=self.user.county)
         ward = mommy.make(
             Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
@@ -1029,6 +1029,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
         mommy.make(
             UserConstituency, created_by=self.user, updated_by=self.user,
             user=user, constituency=constituency)
+        mommy.make(
+            UserSubCounty, created_by=self.user, updated_by=self.user,
+            user=user, sub_county=sub_county)
         mommy.make(
             Facility,
             ward=ward,

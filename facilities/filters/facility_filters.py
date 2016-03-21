@@ -136,7 +136,8 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
         name="facility_service__facility__ward__constituency__county",
         lookup_type='exact')
     constituency = django_filters.AllValuesFilter(
-        name="facility_service__facility__ward__constituency", lookup_type='exact')
+        name="facility_service__facility__ward__constituency",
+        lookup_type='exact')
     ward = django_filters.AllValuesFilter(
         name="facility_service__facility__ward", lookup_type='exact')
 

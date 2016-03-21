@@ -15,7 +15,7 @@ from facilities.models import (
     KephLevel,
     FacilityUpgrade)
 from common.constants import TRUTH_NESS, FALSE_NESS
-from common.models import County, Constituency, Ward, SubCounty
+from common.models import County, Constituency, Ward
 from chul.models import CommunityHealthUnit, Status
 
 from .report_config import REPORTS

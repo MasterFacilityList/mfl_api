@@ -5,7 +5,9 @@ from rest_framework.test import APITestCase
 from model_mommy import mommy
 
 from users.models import MflUser
-from facilities.models import Facility, FacilityApproval
+from facilities.models import (
+    Facility, FacilityApproval, FacilityStatus
+)
 from facilities.tests.test_facility_views import load_dump
 from facilities.serializers import FacilitySerializer
 
@@ -57,8 +59,10 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_cant_see_unpublished_facilities(self):
         mommy.make(Facility)
+        op_status = mommy.make(FacilityStatus, is_public_visible=True)
         mommy.make(Facility, rejected=True)
-        facility_2 = mommy.make(Facility)
+        facility_2 = mommy.make(
+            Facility, operation_status=op_status)
         mommy.make(FacilityApproval, facility=facility_2)
         self.assertTrue(facility_2.approved)
         facility_2.is_published = True
@@ -70,7 +74,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(3, admin_response.data.get("count"))
 
-        # test public user sees only published facilties
+        # test public user sees only published facilities
         self.client.logout()
         self.client.force_authenticate(self.public_user)
         public_response = self.client.get(self.url)
@@ -84,7 +88,9 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_cant_see_unapproved_facilities(self):
         mommy.make(Facility)
-        facility_2 = mommy.make(Facility, approved=True)
+        op_status = mommy.make(FacilityStatus, is_public_visible=True)
+        facility_2 = mommy.make(
+            Facility, approved=True, operation_status=op_status)
         mommy.make(FacilityApproval, facility=facility_2)
         facility_2.is_published = True
         facility_2.save()
@@ -95,7 +101,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(2, admin_response.data.get("count"))
 
-        # test public user sees only approved facilties
+        # test public user sees only approved facilities
         self.client.logout()
         self.client.force_authenticate(self.public_user)
         public_response = self.client.get(self.url)
@@ -107,7 +113,8 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_cant_see_classified_facilities(self):
         mommy.make(Facility, is_classified=True)
-        facility_2 = mommy.make(Facility)
+        op_status = mommy.make(FacilityStatus, is_public_visible=True)
+        facility_2 = mommy.make(Facility, operation_status=op_status)
         mommy.make(FacilityApproval, facility=facility_2)
         facility_2.is_published = True
         facility_2.save()
@@ -118,7 +125,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(2, admin_response.data.get("count"))
 
-        # test public user sees only non classified facilties
+        # test public user sees only non classified facilities
         self.client.logout()
         self.client.force_authenticate(self.public_user)
         public_response = self.client.get(self.url)

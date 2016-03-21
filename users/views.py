@@ -108,26 +108,8 @@ class UserList(generics.ListCreateAPIView):
             return self.queryset.filter(
                 id__in=area_users).exclude(id=self.request.user.id)
         elif user.is_national and not user.is_superuser:
-            # Should see the county users and the national users
-            # Also should not see the system user
             return MflUser.objects.all()
-            county_users = [
-                county_user.user.id for county_user in
-                UserCounty.objects.all().distinct()
-            ]
-            national_users = [
-                nat_user.id for nat_user in MflUser.objects.filter(
-                    is_national=True)
-            ]
-            group_less_users = [
-                g_user.id
-                for g_user in MflUser.objects.all()
-                if not g_user.groups.all()
-            ]
-            all_users = county_users + national_users + group_less_users
 
-            return self.queryset.filter(
-                id__in=all_users).exclude(id=self.request.user.id).distinct()
         elif user.constituency or user.sub_county:
             all_users = MflUser.objects.all()
             users_to_see = []
@@ -172,6 +154,8 @@ class UserDetailView(CustomRetrieveUpdateDestroyView):
         UserCounty.objects.filter(user=user).delete()
         UserConstituency.objects.filter(user=user).delete()
         UserSubCounty.objects.filter(user=user).delete()
+        user.deleted = True
+        user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
