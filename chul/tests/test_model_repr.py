@@ -6,6 +6,13 @@ from common.tests import ModelReprMixin
 
 
 class TestModelRepr(ModelReprMixin, TestCase):
+    def test_chu_service_link(self):
+        chu = mommy.make(models.CommunityHealthUnit, name='Test C')
+        service = mommy.make(models.CHUService, name='Test S')
+        x = 'Test C - Test S'
+        chu_service = mommy.make(
+            models.CHUServiceLink, chu=chu, service=service)
+        self.check_repr(chu_service, x)
 
     def test_status(self):
         x = "hey ya"

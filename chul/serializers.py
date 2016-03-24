@@ -14,8 +14,22 @@ from .models import (
     CommunityHealthUnitContact,
     CHUService,
     CHURating,
-    ChuUpdateBuffer
+    ChuUpdateBuffer,
+    CHUServiceLink
 )
+
+
+class CHUServiceLinkSerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    chu = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False,
+        queryset=CommunityHealthUnit.objects.all())
+    service = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False,
+        queryset=CHUService.objects.all())
+
+    class Meta(object):
+        model = CHUServiceLink
 
 
 class ChuUpdateBufferSerializer(
@@ -70,6 +84,7 @@ class CommunityHealthUnitSerializer(
     latest_update = serializers.ReadOnlyField(source='latest_update.id')
     avg_rating = serializers.ReadOnlyField(source='average_rating')
     number_of_ratings = serializers.ReadOnlyField(source='rating_count')
+    services = CHUServiceLinkSerializer(many=True, required=False)
     inlined_errors = {}
 
     class Meta(object):
@@ -95,7 +110,8 @@ class CommunityHealthUnitSerializer(
         return json.dumps(updates)
 
     def buffer_updates(
-            self, validated_data, chu_instance, chews=None, contacts=None, ):
+            self, validated_data, chu_instance, chews=None, contacts=None,
+            services=None):
 
         try:
             update = ChuUpdateBuffer.objects.get(
@@ -241,14 +257,19 @@ class CommunityHealthUnitSerializer(
     def update(self, instance, validated_data):
         self.inlined_errors = {}
         chews = self.initial_data.pop('health_unit_workers', [])
+
         contacts = self.initial_data.pop('contacts', [])
+        services = self.initial_data.pop('services', [])
         chu = CommunityHealthUnit.objects.get(id=instance.id)
         self._validate_contacts(contacts)
         self._validate_chew(chews)
 
         if not self.inlined_errors:
             if chu.is_approved and not instance.is_rejected:
-                self.buffer_updates(validated_data, instance, chews, contacts)
+                self.buffer_updates(
+                    validated_data, instance, chews, contacts,
+                    services
+                )
                 return instance
 
             super(CommunityHealthUnitSerializer, self).update(

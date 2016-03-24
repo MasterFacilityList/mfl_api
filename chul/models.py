@@ -341,6 +341,7 @@ class ChuUpdateBuffer(AbstractBase):
     is_approved = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
     is_new = models.BooleanField(default=False)
+    services = models.TextField(null=True, blank=True)
 
     def validate_atleast_one_attribute_updated(self):
         if not self.workers and not self.contacts and not \
@@ -448,3 +449,22 @@ class ChuUpdateBuffer(AbstractBase):
 
     def __str__(self):
         return self.health_unit.name
+
+
+class CHUServiceLink(AbstractBase):
+    """
+    Links a CommunityHealthUnit to a CHUService.
+
+    This ensures that CHU can offer a subset of the services available
+    for CHUs.
+    """
+    chu = models.ForeignKey(
+        CommunityHealthUnit, on_delete=models.PROTECT, related_name='services')
+    service = models.ForeignKey(
+        CHUService, on_delete=models.PROTECT)
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('chu', 'service')
+
+    def __str__(self):
+        return "{} - {}".format(self.chu.name, self.service.name)
