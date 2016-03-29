@@ -6,7 +6,7 @@ class ThrottlingBySession(throttling.SimpleRateThrottle):
     Limits the rating of facility service to only 10 per day per IP.
     This rate is configurable at the DRF settings.DEFAULT_THROTTLE_RATES.
 
-    The rate will apply to both the publc user and other authenticated users.
+    The rate will apply to both the public user and other authenticated users.
     """
     scope = 'rating'
     scope_attr = 'throttle_scope'

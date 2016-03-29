@@ -117,8 +117,12 @@ class GroupSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         group = Group.objects.get(id=instance.id)
         for user in MflUser.objects.all():
-            user.is_staff = True if group in \
-                user.groups.all() else False
+            if (group in user.groups.all() and
+                    instance.is_administrator is True):
+                user.is_staff = True
+            if (group in user.groups.all() and
+                    instance.is_administrator is False):
+                user.is_staff = False
             user.save()
 
     @transaction.atomic

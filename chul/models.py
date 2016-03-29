@@ -390,11 +390,13 @@ class ChuUpdateBuffer(AbstractBase):
             service['updated_by_id'] = self.updated_by_id
             service.pop('created_by', None)
             service.pop('updated_by', None)
+            service.pop('name', None)
             try:
                 CHUServiceLink.objects.get(
                     service_id=service['service'],
-                    chu=self.health_unit)
+                    health_unit=self.health_unit)
             except CHUServiceLink.DoesNotExist:
+                service['service_id'] = service.pop('service')
                 CHUServiceLink.objects.create(**service)
 
     def update_contacts(self):
@@ -480,13 +482,13 @@ class CHUServiceLink(AbstractBase):
     This ensures that CHU can offer a subset of the services available
     for CHUs.
     """
-    chu = models.ForeignKey(
+    health_unit = models.ForeignKey(
         CommunityHealthUnit, on_delete=models.PROTECT, related_name='services')
     service = models.ForeignKey(
         CHUService, on_delete=models.PROTECT)
 
     class Meta(AbstractBase.Meta):
-        unique_together = ('chu', 'service')
+        unique_together = ('health_unit', 'service')
 
     def __str__(self):
-        return "{} - {}".format(self.chu.name, self.service.name)
+        return "{} - {}".format(self.health_unit.name, self.service.name)

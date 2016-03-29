@@ -21,12 +21,16 @@ from .models import (
 
 class CHUServiceLinkSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
-    chu = serializers.PrimaryKeyRelatedField(
+    health_unit = serializers.PrimaryKeyRelatedField(
         validators=[], required=False,
         queryset=CommunityHealthUnit.objects.all())
     service = serializers.PrimaryKeyRelatedField(
         validators=[], required=False,
         queryset=CHUService.objects.all())
+    name = serializers.CharField(
+        source='service.name', required=False)
+    health_unit_name = serializers.CharField(
+        source='health_unit.name', required=False)
 
     class Meta(object):
         model = CHUServiceLink
@@ -84,7 +88,8 @@ class CommunityHealthUnitSerializer(
     latest_update = serializers.ReadOnlyField(source='latest_update.id')
     avg_rating = serializers.ReadOnlyField(source='average_rating')
     number_of_ratings = serializers.ReadOnlyField(source='rating_count')
-    services = CHUServiceLinkSerializer(many=True, required=False)
+    services = CHUServiceLinkSerializer(
+        many=True, required=False, validators=[])
     inlined_errors = {}
 
     class Meta(object):
@@ -140,10 +145,12 @@ class CommunityHealthUnitSerializer(
 
         if services:
             for service in services:
+                sev_rec = CHUService.objects.get(id=service['service'])
                 service.pop('created', None)
                 service.pop('updated', None)
                 service.pop('updated_by', None)
                 service.pop('created_by', None)
+                service['name'] = sev_rec.name
 
             services = json.dumps(services)
             update.services = services
@@ -188,8 +195,9 @@ class CommunityHealthUnitSerializer(
                 chew_data.save() if chew_data.is_valid() else None
 
     def save_chu_services(self, instance, services, context):
+
         for service in services:
-            service['chu'] = instance.id
+            service['health_unit'] = instance.id
             chu_service = CHUServiceLinkSerializer(
                 data=service, context=context)
             chu_service.save() if chu_service.is_valid() else None
@@ -258,6 +266,7 @@ class CommunityHealthUnitSerializer(
         chews = self.initial_data.pop('health_unit_workers', [])
         contacts = self.initial_data.pop('contacts', [])
         services = self.initial_data.pop('services', [])
+        validated_data.pop('services', [])
 
         self._validate_contacts(contacts)
         self._validate_chew(chews)
@@ -280,6 +289,7 @@ class CommunityHealthUnitSerializer(
 
         contacts = self.initial_data.pop('contacts', [])
         services = self.initial_data.pop('services', [])
+        validated_data.pop('services', [])
         chu = CommunityHealthUnit.objects.get(id=instance.id)
         self._validate_contacts(contacts)
         self._validate_chew(chews)
