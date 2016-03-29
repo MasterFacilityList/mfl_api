@@ -382,6 +382,21 @@ class ChuUpdateBuffer(AbstractBase):
             else:
                 CommunityHealthWorker.objects.create(**chew)
 
+    def update_services(self):
+        services = json.loads(self.services)
+        for service in services:
+            service['health_unit'] = self.health_unit
+            service['created_by_id'] = self.created_by_id
+            service['updated_by_id'] = self.updated_by_id
+            service.pop('created_by', None)
+            service.pop('updated_by', None)
+            try:
+                CHUServiceLink.objects.get(
+                    service_id=service['service'],
+                    chu=self.health_unit)
+            except CHUServiceLink.DoesNotExist:
+                CHUServiceLink.objects.create(**service)
+
     def update_contacts(self):
         contacts = json.loads(self.contacts)
         for contact in contacts:
@@ -419,6 +434,8 @@ class ChuUpdateBuffer(AbstractBase):
             updates['contacts'] = json.loads(self.contacts)
         if self.workers:
             updates['workers'] = json.loads(self.workers)
+        if self.services:
+            updates['services'] = json.loads(self.services)
         updates['updated_by'] = self.updated_by.get_full_name
         return updates
 
@@ -438,6 +455,11 @@ class ChuUpdateBuffer(AbstractBase):
 
         if self.is_approved and self.basic:
             self.update_basic_details()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
+
+        if self.is_approved and self.services:
+            self.update_services()
             self.health_unit.has_edits = False
             self.health_unit.save()
 

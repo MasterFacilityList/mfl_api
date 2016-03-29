@@ -137,6 +137,17 @@ class CommunityHealthUnitSerializer(
 
             chews = json.dumps(chews)
             update.workers = chews
+
+        if services:
+            for service in services:
+                service.pop('created', None)
+                service.pop('updated', None)
+                service.pop('updated_by', None)
+                service.pop('created_by', None)
+
+            services = json.dumps(services)
+            update.services = services
+
         if contacts:
             for contact in contacts:
                 contact_type = ContactType.objects.get(
@@ -175,6 +186,13 @@ class CommunityHealthUnitSerializer(
                 chew_data = CommunityHealthWorkerSerializer(
                     data=chew, context=context)
                 chew_data.save() if chew_data.is_valid() else None
+
+    def save_chu_services(self, instance, services, context):
+        for service in services:
+            service['chu'] = instance.id
+            chu_service = CHUServiceLinkSerializer(
+                data=service, context=context)
+            chu_service.save() if chu_service.is_valid() else None
 
     def _validate_contacts(self, contacts):
         for contact in contacts:
@@ -239,6 +257,7 @@ class CommunityHealthUnitSerializer(
         self.inlined_errors = {}
         chews = self.initial_data.pop('health_unit_workers', [])
         contacts = self.initial_data.pop('contacts', [])
+        services = self.initial_data.pop('services', [])
 
         self._validate_contacts(contacts)
         self._validate_chew(chews)
@@ -250,6 +269,7 @@ class CommunityHealthUnitSerializer(
                 validated_data)
             self.save_chew(chu, chews, self.context)
             self.create_chu_contacts(chu, contacts, validated_data)
+            self.save_chu_services(chu, services, self.context)
             return chu
         else:
             raise ValidationError(self.inlined_errors)
@@ -276,6 +296,7 @@ class CommunityHealthUnitSerializer(
                 instance, validated_data)
             self.save_chew(instance, chews, self.context)
             self.create_chu_contacts(instance, contacts, validated_data)
+            self.save_chu_services(chu, services, self.context)
             return instance
         else:
             raise ValidationError(self.inlined_errors)

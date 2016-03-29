@@ -226,9 +226,8 @@ class FacilityType(AbstractBase):
         max_length=100, null=True, blank=True)
     sub_division = models.CharField(
         max_length=100, null=True, blank=True,
-        help_text="This is a further division of the facility type e.g "
-        "Hospitals can be further divided into District hospitals and"
-        " Provincial Hospitals.")
+        help_text="Parent of the facility type e.g sub-district hospitals "
+        "are under Hospitals.")
     preceding = models.ForeignKey(
         'self', null=True, blank=True, related_name='preceding_type',
         help_text='The facility type that comes before this type')
@@ -274,16 +273,16 @@ class RegulatingBody(AbstractBase):
         help_text="The name of the regulating body")
     abbreviation = models.CharField(
         max_length=50, null=True, blank=True,
-        help_text="A shortform of the name of the regulating body e.g Nursing"
+        help_text="A short-form of the name of the regulating body e.g Nursing"
         "Council of Kenya could be abbreviated as NCK.")
     regulation_verb = models.CharField(
-        max_length=100)
+        max_length=100, null=True, blank=True)
     regulatory_body_type = models.ForeignKey(
         OwnerType, null=True, blank=True,
         help_text='Show the kind of institutions that the body regulates e.g'
         'private facilities')
     default_status = models.ForeignKey(
-        "RegulationStatus",
+        "RegulationStatus", null=True, blank=True,
         help_text="The default status for the facilities regulated by "
         "the particular regulator")
 
@@ -516,9 +515,9 @@ class FacilityRegulationStatus(AbstractBase):
     def __str__(self):
         return "{}: {}".format(self.facility, self.regulation_status.name)
 
-    def clean(self, *args, **kwargs):
-        self.facility.regulated = True
-        self.facility.save(allow_save=True)
+    # def clean(self, *args, **kwargs):
+    #     self.facility.regulated = True
+    #     self.facility.save(allow_save=True)
 
     class Meta(AbstractBase.Meta):
         verbose_name_plural = 'facility regulation statuses'
@@ -769,8 +768,25 @@ class Facility(SequenceMixin, AbstractBase):
     closing_reason = models.TextField(
         null=True, blank=True, help_text="Reason for closing the facility")
     date_established = models.DateField(
-        default=date.today,
+        null=True, blank=True,
         help_text='The date when the facility became operational')
+    license_number = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text='The license number given to the hospital by the regulator')
+    regulation_status = models.ForeignKey(
+        RegulationStatus, null=True, blank=True,
+        help_text='The regulatory status of the hospital')
+
+    def update_facility_regulation_status(self):
+        self.regulated = True
+        if self.regulation_status:
+            FacilityRegulationStatus.objects.create(
+                license_number=self.license_number,
+                regulation_status=self.regulation_status,
+                regulating_body=self.regulatory_body,
+                created_by=self.created_by,
+                updated_by=self.updated_by,
+                facility=self)
 
     # hard code the operational status name in order to avoid more crud
     @property
@@ -1070,6 +1086,7 @@ class Facility(SequenceMixin, AbstractBase):
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             self.index_facility_material_view()
+            self.update_facility_regulation_status()
             return
 
         old_details = self.__class__.objects.get(id=self.id)
@@ -1106,6 +1123,7 @@ class Facility(SequenceMixin, AbstractBase):
         if allow_save:
             super(Facility, self).save(*args, **kwargs)
             self.index_facility_material_view()
+            self.update_facility_regulation_status()
         else:
             updates = self._dump_updates(origi_model)
             try:
