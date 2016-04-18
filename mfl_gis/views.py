@@ -199,7 +199,7 @@ class FacilityCoordinatesCreationAndListing(
     serializer_class = FacilityCoordinateSimpleSerializer
     filter_class = FacilityCoordinatesFilter
     ordering_fields = (
-        'facility', 'latitude', 'longitude', 'source', 'method',)
+        'facility', 'latitude', 'longitude',)
     pagination_class = GISPageNumberPagination
 
     def create(self, request, *args, **kwargs):

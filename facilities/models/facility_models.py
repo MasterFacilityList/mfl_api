@@ -5,8 +5,6 @@ import json
 import logging
 import re
 
-from datetime import date
-
 from django.conf import settings
 from django.core import validators
 from django.db import models, transaction
@@ -19,8 +17,8 @@ from django.contrib.postgres.fields import ArrayField
 from users.models import JobTitle  # NOQA
 from search.search_utils import index_instance
 from common.models import (
-    AbstractBase, Ward, Contact, SequenceMixin, SubCounty, Town,
-    County
+    AbstractBase, Ward, Contact, SequenceMixin, SubCounty, County,
+    Town
 )
 from common.fields import SequenceField
 
@@ -623,9 +621,13 @@ class FacilityExportExcelMaterialView(models.Model):
     categories = ArrayField(
         models.UUIDField(null=True, blank=True), null=True, blank=True
     )
+    service_names = ArrayField(
+        models.UUIDField(null=True, blank=True), null=True, blank=True
+    )
     approved = models.BooleanField(default=False)
     is_public_visible = models.BooleanField(default=False)
     created = models.DateTimeField()
+    updated = models.DateTimeField()
     closed = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
 
@@ -702,6 +704,7 @@ class Facility(SequenceMixin, AbstractBase):
         on_delete=models.PROTECT)
     operation_status = models.ForeignKey(
         FacilityStatus, null=True, blank=True,
+        on_delete=models.PROTECT,
         help_text="Indicates whether the facility"
         "has been approved to operate, is operating, is temporarily"
         "non-operational, or is closed down")
@@ -710,7 +713,8 @@ class Facility(SequenceMixin, AbstractBase):
         on_delete=models.PROTECT,
         help_text="County ward in which the facility is located")
     owner = models.ForeignKey(
-        Owner, help_text="A link to the organization that owns the facility")
+        Owner, on_delete=models.PROTECT,
+        help_text="A link to the organization that owns the facility")
     contacts = models.ManyToManyField(
         Contact, through=FacilityContact,
         help_text='Facility contacts - email, phone, fax, postal etc')
@@ -718,9 +722,12 @@ class Facility(SequenceMixin, AbstractBase):
         'self', help_text='Indicates the umbrella facility of a facility',
         null=True, blank=True)
     attributes = models.TextField(null=True, blank=True)
-    regulatory_body = models.ForeignKey(RegulatingBody)
+    regulatory_body = models.ForeignKey(
+        RegulatingBody, on_delete=models.PROTECT,
+        null=True, blank=True,)
     keph_level = models.ForeignKey(
         KephLevel, null=True, blank=True,
+        on_delete=models.PROTECT,
         help_text='The keph level of the facility')
 
     # set of boolean to optimize filtering though through tables
@@ -743,9 +750,14 @@ class Facility(SequenceMixin, AbstractBase):
         help_text="The population size which the facility serves")
     sub_county = models.ForeignKey(
         SubCounty, null=True, blank=True,
+        on_delete=models.PROTECT,
         help_text='The sub county in which the facility has been assigned')
     town = models.ForeignKey(
         Town, null=True, blank=True,
+        on_delete=models.PROTECT,
+        help_text="The town where the entity is located e.g Nakuru")
+    town_name = models.CharField(
+        max_length=100, null=True, blank=True,
         help_text="The town where the entity is located e.g Nakuru")
     nearest_landmark = models.TextField(
         null=True, blank=True,
@@ -775,6 +787,7 @@ class Facility(SequenceMixin, AbstractBase):
         help_text='The license number given to the hospital by the regulator')
     regulation_status = models.ForeignKey(
         RegulationStatus, null=True, blank=True,
+        on_delete=models.PROTECT,
         help_text='The regulatory status of the hospital')
 
     def update_facility_regulation_status(self):
@@ -995,8 +1008,20 @@ class Facility(SequenceMixin, AbstractBase):
                     ]
                 })
 
+    def validate_ward_and_sub_county(self):
+        if self.sub_county:
+            if self.sub_county != self.ward.sub_county:
+                raise ValidationError(
+                    {
+                        "ward": [
+                            "The facility ward must be in "
+                            " the selected sub-county"]
+                    }
+                )
+
     def clean(self, *args, **kwargs):
         self.validate_closing_date_supplied_on_close()
+        self.validate_ward_and_sub_county()
         super(Facility, self).clean()
 
     def _get_field_human_attribute(self, field_obj):
@@ -1006,6 +1031,7 @@ class Facility(SequenceMixin, AbstractBase):
             return "Yes"
         elif field_obj is False:
             return "No"
+
         else:
             return field_obj
 
@@ -1026,10 +1052,9 @@ class Facility(SequenceMixin, AbstractBase):
     def _dump_updates(self, origi_model):
         fields = [field.name for field in self._meta.fields]
         forbidden_fields = [
-            'regulatory_status', 'facility_type',
-            'regulatory_status_id', 'facility_type_id',
-            'keph_level', 'keph_level_id', 'closed',
-            'closing_reason', 'closed_date']
+            'closed', 'closing_reason', 'closed_date',
+            'date_established'
+        ]
         data = []
         for field in fields:
             if (getattr(self, field) != getattr(origi_model, field) and
@@ -1504,6 +1529,14 @@ class FacilityApproval(AbstractBase):
         default=False, help_text='Cancel a facility approval'
     )
 
+    def validate_rejection_comment(self):
+        if self.is_cancelled and not self.comment:
+            raise ValidationError(
+                {
+                    "rejection": ["A reason for the rejection is required"]
+                }
+            )
+
     def update_facility_rejection(self):
         if self.is_cancelled:
             self.facility.rejected = True
@@ -1515,6 +1548,7 @@ class FacilityApproval(AbstractBase):
         self.facility.save(allow_save=True)
 
     def clean(self, *args, **kwargs):
+        self.validate_rejection_comment()
         self.facility.save(allow_save=True)
         self.update_facility_rejection()
 
@@ -1560,6 +1594,10 @@ class FacilityUnit(AbstractBase):
     unit = models.ForeignKey(
         'FacilityDepartment', related_name='unit_facilities',
         on_delete=models.PROTECT)
+    license_number = models.CharField(
+        max_length=100, null=True, blank=True)
+    registration_number = models.CharField(
+        max_length=100, null=True, blank=True)
 
     @property
     def regulation_status(self):
@@ -1674,6 +1712,7 @@ class Service(SequenceMixin, AbstractBase):
         'Antenatal Care')
     category = models.ForeignKey(
         ServiceCategory,
+        on_delete=models.PROTECT,
         help_text="The classification that the service lies in.",
         related_name='category_services')
     code = SequenceField(unique=True, editable=False)
@@ -1708,8 +1747,11 @@ class FacilityService(AbstractBase):
     """
     A facility can have zero or more services.
     """
-    facility = models.ForeignKey(Facility, related_name='facility_services')
-    option = models.ForeignKey(Option, null=True, blank=True)
+    facility = models.ForeignKey(
+        Facility, related_name='facility_services',
+        on_delete=models.PROTECT)
+    option = models.ForeignKey(
+        Option, null=True, blank=True, on_delete=models.PROTECT)
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Indicates whether a service has been approved by the CHRIO')
@@ -1719,7 +1761,7 @@ class FacilityService(AbstractBase):
         'CHRIO')
     # For services that do not have options, the service will be linked
     # directly to the
-    service = models.ForeignKey(Service)
+    service = models.ForeignKey(Service, on_delete=models.PROTECT,)
 
     @property
     def service_has_options(self):
@@ -1772,7 +1814,8 @@ class FacilityServiceRating(AbstractBase):
     """Rating of a facility's service"""
 
     facility_service = models.ForeignKey(
-        FacilityService, related_name='facility_service_ratings'
+        FacilityService, related_name='facility_service_ratings',
+        on_delete=models.PROTECT,
     )
     rating = models.PositiveIntegerField(
         validators=[
@@ -1793,8 +1836,11 @@ class FacilityOfficer(AbstractBase):
     """
     A facility can have more than one officer. This models links the two.
     """
-    facility = models.ForeignKey(Facility, related_name='facility_officers')
-    officer = models.ForeignKey(Officer, related_name='officer_facilities')
+    facility = models.ForeignKey(
+        Facility, related_name='facility_officers',
+        on_delete=models.PROTECT)
+    officer = models.ForeignKey(
+        Officer, related_name='officer_facilities', on_delete=models.PROTECT)
 
     class Meta(AbstractBase.Meta):
         unique_together = ('facility', 'officer')
@@ -1861,7 +1907,7 @@ class RegulatorSync(AbstractBase):
         name_filter = None
         for i in alphanumerics:
             f = models.Q(
-                    official_name__icontains=i) | models.Q(name__icontains=i)
+                official_name__icontains=i) | models.Q(name__icontains=i)
             if name_filter is None:
                 name_filter = f
             else:

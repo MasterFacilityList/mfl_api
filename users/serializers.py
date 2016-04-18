@@ -493,6 +493,45 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         model = MflUser
         exclude = ('password_history', 'user_permissions', )
         extra_kwargs = {'password': {'write_only': True}}
+        _fields = [
+            "email",
+            "first_name",
+            "job_title_name",
+            "last_name",
+            "other_names",
+            "job_title",
+            "is_staff",
+            "is_active",
+            "sub_county_name",
+            "date_joined",
+            "is_national",
+            "search",
+            "deleted",
+            "created_by",
+            "updated_by",
+            "updated",
+            "created",
+            "employee_number",
+            "user_counties",
+            "short_name",
+            "full_name",
+            "all_permissions",
+            "requires_password_change",
+            "groups",
+            "regulator",
+            "regulator_name",
+            "county",
+            "county_name",
+            "constituency",
+            "constituency_name",
+            "contacts",
+            "regulatory_users",
+            "user_constituencies",
+            "user_sub_counties",
+            "last_login",
+            "user_groups",
+            "is_superuser",
+        ]
 
 
 class MFLOAuthApplicationSerializer(serializers.ModelSerializer):

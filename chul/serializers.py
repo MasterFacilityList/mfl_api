@@ -195,7 +195,7 @@ class CommunityHealthUnitSerializer(
                 chew_data.save() if chew_data.is_valid() else None
 
     def save_chu_services(self, instance, services, context):
-
+        CHUServiceLink.objects.filter(health_unit=instance).delete()
         for service in services:
             service['health_unit'] = instance.id
             chu_service = CHUServiceLinkSerializer(

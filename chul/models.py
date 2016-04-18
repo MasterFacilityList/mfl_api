@@ -384,6 +384,7 @@ class ChuUpdateBuffer(AbstractBase):
 
     def update_services(self):
         services = json.loads(self.services)
+        CHUServiceLink.objects.filter(health_unit=self.health_unit).delete()
         for service in services:
             service['health_unit'] = self.health_unit
             service['created_by_id'] = self.created_by_id

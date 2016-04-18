@@ -134,6 +134,8 @@ def create_facility_units(instance, unit_data, validated_data):
     unit_data.pop('regulating_body_name', None)
     unit_data['facility'] = instance.id
     unit_data = inject_audit_fields(unit_data, validated_data)
+    FacilityUnit.everything.filter(
+        unit_id=unit_data.get('unit'), facility_id=instance.id).delete()
     try:
         FacilityUnit.objects.get(**unit_data)
     except FacilityUnit.DoesNotExist:

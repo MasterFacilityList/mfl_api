@@ -248,9 +248,9 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "county_summary": self.get_facility_county_summary()
             if user.is_national else [],
             "constituencies_summary": self.get_facility_constituency_summary()
-            if user.county else [],
+            if user.county and not user.sub_county else [],
             "wards_summary": self.get_facility_ward_summary()
-            if user.constituency else [],
+            if user.sub_county else [],
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
@@ -266,6 +266,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
                 facility__in=self.get_queryset()).count()
 
         }
+
         fields = self.request.query_params.get("fields", None)
         if fields:
             required = fields.split(",")

@@ -57,6 +57,45 @@ class FacilityExportExcelMaterialViewSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = FacilityExportExcelMaterialView
+        fields = [
+            "code",
+            "name",
+            "registration_number",
+            "keph_level_name",
+            "facility_type_name",
+            "county",
+            "constituency",
+            "ward",
+            "owner_name",
+            "regulatory_body_name",
+            "beds",
+            "cots",
+            "search",
+            "county_name",
+            "constituency_name",
+            "sub_county",
+            "sub_county_name",
+            "ward_name",
+            "keph_level",
+            "facility_type",
+            "owner_type",
+            "owner",
+            "operation_status",
+            "operation_status_name",
+            "open_whole_day",
+            "open_public_holidays",
+            "open_weekends",
+            "open_late_night",
+            "services",
+            "categories",
+            "service_names",
+            "approved",
+            "is_public_visible",
+            "created",
+            "closed",
+            "is_published",
+            "id",
+        ]
 
 
 class RegulatorSyncSerializer(
@@ -187,6 +226,7 @@ class ServiceSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
 class FacilityServiceSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     service_name = serializers.CharField(read_only=True)
+    service_code = serializers.ReadOnlyField(source='service.code')
     option_display_value = serializers.CharField(read_only=True)
     average_rating = serializers.ReadOnlyField()
     number_of_ratings = serializers.ReadOnlyField()
@@ -404,7 +444,7 @@ class FacilitySerializer(
     latest_approval_or_rejection = serializers.ReadOnlyField()
     sub_county_name = serializers.ReadOnlyField(
         source='ward.sub_county.name')
-    sub_county = serializers.ReadOnlyField(
+    sub_county_id = serializers.ReadOnlyField(
         source='ward.sub_county.id')
     county_name = serializers.ReadOnlyField(
         source='ward.constituency.county.name')
@@ -536,6 +576,8 @@ class FacilityDetailSerializer(FacilitySerializer):
         unit_data['facility'] = instance.id
         unit_data = self.inject_audit_fields(unit_data, validated_data)
         unit = FacilityUnitSerializer(data=unit_data, context=self.context)
+        FacilityUnit.everything.filter(
+            unit_id=unit_data.get('unit'), facility_id=instance.id).delete()
 
         if unit.is_valid():
             return unit.save()

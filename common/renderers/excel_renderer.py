@@ -40,10 +40,12 @@ def sanitize_field_names(sample_keys):
         2. For name such as is_approved the is part is removed
            and approved left
     """
+    people_names = ["first_name", "last_name"]
     key_map = []
     for key in sample_keys:
         new_name = key.split('_')
-        if new_name[len(new_name) - 1] == 'name' and key != "name":
+        if (new_name[len(new_name) - 1] == 'name' and
+                key != "name" and key not in people_names):
             mapping_name = _build_name_from_list(new_name[0:len(new_name) - 1])
             key_map.append({
                 "actual": key,

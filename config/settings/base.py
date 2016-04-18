@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'mfl_gis',
     'search',
     'reporting',
+    'admin_offices',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
@@ -118,6 +119,7 @@ LOCAL_APPS = [
     'data',
     'reporting',
     'search',
+    'admin_offices',
 ]
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
@@ -175,8 +177,8 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'common.paginator.MflPaginationSerializer',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'PAGINATE_BY': 30,
     'PAGINATE_BY_PARAM': 'page_size',
@@ -281,13 +283,7 @@ TEMPLATES = [
 ]
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "COMPRESS_MIN_LEN": 10,
-            "IGNORE_EXCEPTIONS": True,
-        }
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache"
     }
 }
 CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default

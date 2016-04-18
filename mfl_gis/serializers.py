@@ -22,6 +22,17 @@ from facilities.models import FacilityUpdates
 
 class BufferCooridinatesMixin(object):
 
+    def get_facility_update(self, facility):
+        facility_update = None
+        try:
+            facility_update = FacilityUpdates.objects.filter(
+                facility=facility,
+                cancelled=False, approved=False)[0]
+        except IndexError:
+            facility_update = FacilityUpdates.objects.create(
+                facility=facility)
+        return facility_update
+
     def buffer_coordinates(self, facility, validated_data):
 
         facility = Facility.objects.get(id=facility.id) if hasattr(
@@ -34,14 +45,8 @@ class BufferCooridinatesMixin(object):
         if isinstance(validated_data.get('coordinates'), dict):
             coordinates = validated_data.get('coordinates')
 
-        facility_update = {}
-        try:
-            facility_update = FacilityUpdates.objects.filter(
-                facility=facility,
-                cancelled=False, approved=False)[0]
-        except IndexError:
-            facility_update = FacilityUpdates.objects.create(
-                facility=facility)
+        facility_update = self.get_facility_update(facility)
+
         serialized_data = {}
         method = validated_data.get('method', None)
         source = validated_data.get('source', None)
@@ -112,7 +117,7 @@ class FacilityCoordinatesListSerializer(
         geo_field = "geometry"
         exclude = (
             'created', 'created_by', 'updated', 'updated_by', 'deleted',
-            'search', 'collection_date', 'source', 'method', 'active',
+            'search', 'collection_date', 'active',
             'facility', 'coordinates', 'id'
         )
 
@@ -137,8 +142,6 @@ class FacilityCoordinatesDetailSerializer(
 class FacilityCoordinateSimpleSerializer(
         AbstractFieldsMixin, BufferCooridinatesMixin,
         serializers.ModelSerializer):
-    source_name = serializers.ReadOnlyField(source="source.name")
-    method_name = serializers.ReadOnlyField(source="method.name")
 
     class Meta(object):
         model = FacilityCoordinates

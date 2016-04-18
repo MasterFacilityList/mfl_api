@@ -46,6 +46,8 @@ from common.filters.filter_shared import (
     SearchFilter, ListUUIDFilter
 )
 
+from search.filters import SearchFilter
+
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
@@ -77,6 +79,7 @@ class FacilityExportExcelMaterialViewFilter(django_filters.FilterSet):
     operation_status = ListCharFilter(lookup_type='exact')
     service = ListUUIDFilter(lookup_type='exact', name='services')
     service_category = ListUUIDFilter(lookup_type='exact', name='categories')
+    service_name = SearchFilter(name='service_names')
 
     class Meta(object):
         model = FacilityExportExcelMaterialView
@@ -347,8 +350,14 @@ class FacilityFilter(CommonFieldsFilterset):
     def facilities_pending_approval(self, value):
         if value in TRUTH_NESS:
             return self.filter(
-                Q(rejected=False),
-                Q(has_edits=True) | Q(approved=False)
+                Q(
+                    Q(rejected=False),
+                    Q(has_edits=True) |
+                    Q(approved=False)
+                ) |
+                Q(
+                    Q(rejected=True),
+                    Q(has_edits=True) | Q(approved=False))
             )
         else:
             return self.filter(

@@ -27,6 +27,7 @@ from facilities.models import(
     Service,
     KephLevel
 )
+from users.models import JobTitle
 from chul import models as chu_models
 from ..serializers import (
     ContactSerializer,
@@ -524,6 +525,109 @@ class FilteringSummariesView(views.APIView):
     """
     serializer_cls = FilteringSummariesSerializer
 
+    def get_counties(self):
+        if self.request.user.county:
+            county_ids = [
+                user_county.county.id for user_county in
+                UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.constituency:
+            county_ids = [
+                user_con.constituency.county.id for user_con in
+                UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.sub_county:
+            county_ids = [
+                user_sub.sub_county.county.id for user_sub in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        else:
+            return County.objects.all()
+
+    def get_constituencies(self):
+        user = self.request.user
+        if user.constituency:
+            con_ids = [
+                user_con.constituency.id for user_con in
+                UserConstituency.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(id__in=con_ids)
+
+        if user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(county_id__in=county_ids)
+        if user.sub_county:
+            county_ids = [
+                uc.sub_county.county.id for uc in UserSubCounty.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(county_id__in=county_ids)
+        return Constituency.objects.all()
+
+    def get_sub_counties(self):
+        if self.request.user.sub_county:
+            county_ids = [
+                user_con.sub_county.county.id for user_con in
+                UserSubCounty.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.constituency:
+            county_ids = [
+                user_con.constituency.county.id for user_con in
+                UserConstituency.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in
+                UserCounty.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        return SubCounty.objects.all()
+
+    def get_wards(self):
+        if self.request.user.constituency and self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_county_id__in=const_ids)
+
+        if self.request.user.constituency:
+            const_ids = [
+                uc.constituency.id for uc in
+                UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency_id__in=const_ids)
+
+        if self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_county_id__in=const_ids)
+
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency__county_id__in=county_ids)
+        return Ward.objects.all()
+
     def get(self, request):
         fields = request.query_params.get('fields', None)
         fields_model_mapping = {
@@ -538,14 +642,29 @@ class FilteringSummariesView(views.APIView):
             'owner_type': (OwnerType, ('id', 'name')),
             'owner': (Owner, ('id', 'name', 'owner_type')),
             'service': (Service, ('id', 'name', 'category')),
-            'keph_level': (KephLevel, ('id', 'name'))
+            'keph_level': (KephLevel, ('id', 'name')),
+            'job_title': (JobTitle, ('id', 'name'))
         }
         if fields:
             resp = {}
             for key in fields.split(","):
                 if key in fields_model_mapping:
                     model, chosen_fields = fields_model_mapping[key]
-                    resp[key] = model.objects.values(*chosen_fields).distinct()
+                    if model == County:
+                        resp[key] = self.get_counties().values(
+                            *chosen_fields).distinct()
+                    elif model == Constituency:
+                        resp[key] = self.get_constituencies().values(
+                            *chosen_fields).distinct()
+                    elif model == SubCounty:
+                        resp[key] = self.get_sub_counties().values(
+                            *chosen_fields).distinct()
+                    elif model == Ward:
+                        resp[key] = self.get_wards().values(
+                            *chosen_fields).distinct()
+                    else:
+                        resp[key] = model.objects.values(
+                            *chosen_fields).distinct()
             res = self.serializer_cls(data=resp).initial_data
         else:
             res = {}

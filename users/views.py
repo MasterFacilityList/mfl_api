@@ -127,7 +127,7 @@ class UserList(generics.ListCreateAPIView):
                 id__in=users_to_see, created_by_id=self.request.user.id
             ).exclude(id=self.request.user.id)
         elif user.is_superuser:
-            return self.queryset.all().exclude(id=self.request.user.id)
+            return self.queryset.all()
 
         else:
             # The user is not allowed to see the users
