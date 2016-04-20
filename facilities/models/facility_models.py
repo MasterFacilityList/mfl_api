@@ -896,6 +896,7 @@ class Facility(SequenceMixin, AbstractBase):
     def latest_approval(self):
         approvals = FacilityApproval.objects.filter(
             facility=self, is_cancelled=False)
+
         if approvals:
             return approvals[0]
         else:
@@ -1160,10 +1161,43 @@ class Facility(SequenceMixin, AbstractBase):
             except:
                 pass
             if updates:
+
+
                 try:
                     facility_update = FacilityUpdates.objects.filter(
                         facility=self, cancelled=False, approved=False)[0]
-                    facility_update.facility_updates = updates
+                    json_updates = json.loads(facility_update.facility_updates)
+                    recent_updates = json.loads(updates)
+
+                    diffed_updates = []
+
+                    changed_recent_fields = []
+                    changed_older_fields = []
+                    for record in json_updates:
+                        for k, v in record.items():
+                            if k=='field_name':
+                                if v not in changed_older_fields:
+                                    changed_older_fields.append(v)
+                                break
+
+                    for record in recent_updates:
+                        for k, v in record.items():
+                            if k=='field_name':
+                                if v not in changed_recent_fields:
+                                    changed_recent_fields.append(v)
+                                break
+
+                    upated_upated_fields = list(set(
+                        changed_older_fields).intersection(changed_recent_fields))
+                    for record in json_updates:
+                        for key, value in record.items():
+                            if key == 'field_name' and value not in upated_upated_fields:
+                                recent_updates.append(record)
+                                break
+
+                    merged_updates = recent_updates
+
+                    facility_update.facility_updates = json.dumps(merged_updates)
                     facility_update.is_new = False
                     facility_update.save()
                 except IndexError:
@@ -1394,6 +1428,7 @@ class FacilityUpdates(AbstractBase):
             self.update_geo_codes() if self.update_geo_codes else None
             self.approve_upgrades()
             self.facility.has_edits = False
+            self.facility.updated = timezone.now()
             self.facility.save(allow_save=True)
         if self.cancelled:
             self.reject_upgrades()

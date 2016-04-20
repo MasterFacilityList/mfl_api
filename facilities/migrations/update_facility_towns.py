@@ -6,8 +6,14 @@ from facilities.models import Facility
 def update_facility_names(apps, schema_editor):
     for facility in Facility.everything.all():
         if facility.town:
-            facility.town_name = facility.town.name
-            facility.save(allow_save=True)
+            try:
+                facility.town_name = facility.town.name
+                facility.save(allow_save=True)
+            except:
+                if not facility.name:
+                    facility.name = facility.official_name
+                    facility.town_name = facility.town.name
+                    facility.save(allow_save=True)
 
 
 class Migration(migrations.Migration):

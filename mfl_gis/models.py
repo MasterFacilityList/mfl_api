@@ -181,6 +181,13 @@ class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
                 float('%.2f' % round(self.coordinates[1], 2))
             ]
         }
+    def validate_coordinates_decimal_places_at_least_six(self):
+        if (len(str(self.coordinates[0])) < 8 or
+                len(str(self.coordinates[1])) < 8):
+            raise ValidationError({
+                "coordinates":
+                    ["Please provide at-least 6 decimal places number. "]
+                })
 
     @property
     def json_features(self):
@@ -189,6 +196,7 @@ class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
         }
 
     def clean(self):
+        self.validate_coordinates_decimal_places_at_least_six()
         self.validate_long_and_lat_within_kenya()
         self.validate_long_and_lat_within_county(
             self.facility.ward.constituency.county)

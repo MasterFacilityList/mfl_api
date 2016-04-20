@@ -118,7 +118,7 @@ class FacilityCoordinatesListSerializer(
         exclude = (
             'created', 'created_by', 'updated', 'updated_by', 'deleted',
             'search', 'collection_date', 'active',
-            'facility', 'coordinates', 'id'
+            'facility', 'coordinates', 'id',
         )
 
 
@@ -145,6 +145,7 @@ class FacilityCoordinateSimpleSerializer(
 
     class Meta(object):
         model = FacilityCoordinates
+        exclude = ('source', 'method')
 
     @transaction.atomic
     def update(self, instance, validated_data):

@@ -179,5 +179,4 @@ class ExcelRenderer(DownloadMixin, renderers.BaseRenderer):
         is_list = self.check_list_output(data, renderer_context)
         if is_list is not True:
             return is_list
-
         return _write_excel_file(data['results'])

@@ -1,6 +1,7 @@
 import six
 
 from django.utils import timezone
+from collections import OrderedDict
 
 
 class PartialResponseMixin(object):
@@ -28,12 +29,16 @@ class PartialResponseMixin(object):
             return origi_fields
 
         fields = request.query_params.get('fields', None)
+
         if isinstance(fields, six.string_types) and fields:
             fields = fields.split(',')
-            return {
-                field: origi_fields[field]
-                for field in origi_fields if field in fields
-            }
+            allowed_fields = OrderedDict()
+
+            for field in origi_fields:
+                if field in fields:
+                    allowed_fields[field] =  origi_fields.get(field)
+            return allowed_fields
+
         return origi_fields
 
 

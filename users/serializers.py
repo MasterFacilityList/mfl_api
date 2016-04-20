@@ -491,13 +491,14 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
     class Meta(object):
         model = MflUser
-        exclude = ('password_history', 'user_permissions', )
+        # exclude = ('password_history', 'user_permissions', )
         extra_kwargs = {'password': {'write_only': True}}
-        _fields = [
+        fields = [
+            "id",
             "email",
             "first_name",
-            "job_title_name",
             "last_name",
+            "job_title_name",
             "other_names",
             "job_title",
             "is_staff",

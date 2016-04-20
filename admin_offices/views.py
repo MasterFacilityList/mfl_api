@@ -1,10 +1,10 @@
 from rest_framework import generics
+
 from common.views import AuditableDetailViewMixin
+from common.models import UserCounty, UserSubCounty
+
 from .models import AdminOffice, AdminOfficeContact
-
-
 from .serializers import AdminOfficeSerializer, AdminOfficeContactSerializer
-
 from .filters import AdminOfficeContactFilter, AdminOfficeFilter
 
 
@@ -24,6 +24,25 @@ class AdminOfficeListView(
     county --  The county of the admin office
     job_title -- The job title of the officer in the admin office
     """
+    def get_queryset(self, *args, **kwargs):
+        report_type = self.request.query_params.get('report_type')
+
+        if not report_type:
+            user = self.request.user
+            if user.county:
+                return AdminOffice.objects.filter(
+                    county_id__in=[
+                        uc.county.id for uc in
+                        UserCounty.objects.filter(user=user)
+                ])
+            if user.sub_county:
+                return AdminOffice.objects.filter(
+                    county_id__in=[
+                        us.sub_county.id for uc in
+                        UserSubCounty.objects.filter(user=user)
+                ])
+        return AdminOffice.objects.all()
+
     queryset = AdminOffice.objects.all()
     serializer_class = AdminOfficeSerializer
     filter_class = AdminOfficeFilter

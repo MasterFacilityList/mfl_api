@@ -47,3 +47,17 @@ def resend_user_signup_emails():
                 ) if obj.retries > 2 else None
         except MflUser.DoesNotExist:
             LOGGER.info("The user has been deleted")
+
+@periodic_task(
+    run_every=(crontab(minute='*/1')),
+    name="set_user_last_logins",
+    ignore_result=True)
+def update_user_last_login():
+    """
+    Synchronize last login for token and session based authentications
+    """
+    for user in MflUser.objects.all():
+        user.last_login = user.lastlog
+        user.save()
+        LOGGER.info(user.lastlog)
+        print user.email, user.last_login

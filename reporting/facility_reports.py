@@ -21,6 +21,7 @@ from common.models import (
     County, Constituency, Ward, SubCounty
 )
 from chul.models import CommunityHealthUnit, Status
+from mfl_gis.models import FacilityCoordinates
 
 from .report_config import REPORTS
 
@@ -111,6 +112,9 @@ class FilterReportMixin(object):
 
         if report_type == "facility_count_by_facility_type":
             return self._get_facility_count(category=False, f_type=True)
+
+        if report_type == "gis":
+            return self._get_gis_report()
 
         if report_type == "beds_and_cots_by_county":
             return self._get_beds_and_cots({
@@ -407,6 +411,50 @@ class FilterReportMixin(object):
             data.append(data_dict)
 
         return data, []
+
+    def _get_gis_report(self):
+        county = self.request.query_params.get('county', None)
+        sub_county = self.request.query_params.get('sub_county', None)
+        ward = self.request.query_params.get('ward', None)
+        constituency = self.request.query_params.get('ward', None)
+
+        queryset = FacilityCoordinates.objects.all()
+
+        if county:
+            queryset = FacilityCoordinates.objects.filter(
+                facility__ward__constituency__county_id__in=county.split(','))
+
+        if sub_county:
+            queryset =  FacilityCoordinates.objects.filter(
+                facility__ward__sub_county_id__in=sub_county.split('.'))
+
+        if constituency:
+            queryset =  FacilityCoordinates.objects.filter(
+                facility__ward__constituency_id__in=sub_county.split('.'))
+
+        if ward:
+            queryset =  FacilityCoordinates.objects.filter(
+                facility__ward_id__in=ward.split('.'))
+
+        cords = []
+        if any([county, sub_county, constituency, ward]):
+            for fac in  queryset:
+                record = {
+                    "facility_code": fac.facility.code,
+                    "facility_name": fac.facility.name,
+                    "facility_county": fac.facility.ward.constituency.county.name,
+                    "facility_ward": fac.facility.ward.name,
+                     "facility_constituency": fac.facility.ward.constituency.name,
+                    "facility_lat": fac.coordinates[1],
+                    "facility_long": fac.coordinates[0],
+                    "facility_id": fac.facility.id,
+                }
+                if fac.facility.ward.sub_county:
+                    record["facility_sub_county"] = fac.facility.ward.sub_county.name
+                cords.append(record)
+
+
+        return cords, [len(queryset)]
 
     def _get_facility_count(self, category=True, f_type=False, keph=False):
         county = self.request.query_params.get('county', None)
