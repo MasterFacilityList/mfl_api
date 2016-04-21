@@ -26,6 +26,7 @@ class AdminOfficeListView(
     """
     def get_queryset(self, *args, **kwargs):
         report_type = self.request.query_params.get('report_type')
+        is_national = self.request.query_params.get('is_national')
 
         if not report_type:
             user = self.request.user
@@ -41,6 +42,9 @@ class AdminOfficeListView(
                         us.sub_county.id for uc in
                         UserSubCounty.objects.filter(user=user)
                 ])
+        if is_national == 'true':
+            return AdminOffice.objects.filter(is_national=True)
+
         return AdminOffice.objects.all()
 
     queryset = AdminOffice.objects.all()

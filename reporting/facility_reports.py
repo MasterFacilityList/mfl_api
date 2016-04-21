@@ -2,7 +2,7 @@ import functools
 import uuid
 
 from datetime import timedelta
-
+from collections import OrderedDict
 from django.apps import apps
 from django.db.models import Sum
 from django.db.models import Q
@@ -436,19 +436,20 @@ class FilterReportMixin(object):
             queryset =  FacilityCoordinates.objects.filter(
                 facility__ward_id__in=ward.split('.'))
 
+
         cords = []
         if any([county, sub_county, constituency, ward]):
             for fac in  queryset:
-                record = {
-                    "facility_code": fac.facility.code,
-                    "facility_name": fac.facility.name,
-                    "facility_county": fac.facility.ward.constituency.county.name,
-                    "facility_ward": fac.facility.ward.name,
-                     "facility_constituency": fac.facility.ward.constituency.name,
-                    "facility_lat": fac.coordinates[1],
-                    "facility_long": fac.coordinates[0],
-                    "facility_id": fac.facility.id,
-                }
+                record = OrderedDict()
+                record["facility_code"] = fac.facility.code
+                record["facility_name"] = fac.facility.name
+                record["facility_county"] = fac.facility.ward.constituency.county.name
+                record["facility_ward"] = fac.facility.ward.name
+                record["facility_constituency"] = fac.facility.ward.constituency.name
+                record["facility_lat"] = fac.coordinates[1]
+                record["facility_long"] =  fac.coordinates[0]
+                record["facility_id"] = fac.facility.id
+
                 if fac.facility.ward.sub_county:
                     record["facility_sub_county"] = fac.facility.ward.sub_county.name
                 cords.append(record)
@@ -705,11 +706,32 @@ class CommunityHealthUnitReport(APIView):
             )
         return data, total_chus
 
+    def get_sub_county_reports(self, county=None, queryset=queryset):
+        data = []
+        sub_county = SubCounty.objects.all()
+
+        if county:
+            sub_county = sub_county.filter(county_id=county)
+        total_chus = 0
+        for sub in sub_county:
+            chu_count = queryset.filter(
+                facility__ward__sub_county=sub).count()
+            total_chus += chu_count
+            data.append(
+                {
+                    "sub_county_name": sub.name,
+                    "sub_county_id": sub.id,
+                    "number_of_units": chu_count
+                }
+            )
+        return data, total_chus
+
     def get_ward_reports(self, constituency=None, queryset=queryset):
         data = []
         wards = Ward.objects.all()
         if constituency:
-            wards = wards.filter(constituency_id=constituency)
+            wards = wards.filter(sub_county_id=constituency)
+
         total_chus = 0
         for ward in wards:
             chu_count = queryset.filter(
@@ -769,9 +791,10 @@ class CommunityHealthUnitReport(APIView):
                     }
                 )
         else:
-            status_filter = {
-                "status_id__in": status_id.split(',')
-            }
+            if status_id:
+                status_filter = {
+                    "status_id__in": status_id.split(',')
+                }
             for chu in self.queryset.filter(**status_filter):
                 chu = {
                     "name": chu.name,
@@ -797,6 +820,15 @@ class CommunityHealthUnitReport(APIView):
 
         if report_type == 'constituency' and county:
             report_data = self.get_constituency_reports(county=county)
+
+            data = {
+                "total": report_data[1],
+                "results": report_data[0]
+            }
+            return Response(data)
+
+        if report_type == 'sub_county':
+            report_data = self.get_sub_county_reports(county=county)
 
             data = {
                 "total": report_data[1],
