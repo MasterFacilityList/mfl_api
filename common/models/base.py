@@ -6,12 +6,31 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.db.models.deletion import Collector, ProtectedError
+
 
 from rest_framework.exceptions import ValidationError
 
 from ..utilities.sequence_helper import SequenceGenerator
 
 LOGGER = logging.getLogger(__file__)
+
+from rest_framework import generics
+
+
+
+def delete_child_instances(instance):
+    try:
+        collector = Collector(using='default')
+        collector.collect(objs=[instance], collect_related=True)
+    except ProtectedError as error:
+        raise
+        # raise ValidationError({
+
+        #        "Error": ["cannot deleted the record since there are"
+        #        " other records that depend on it"]
+
+        #     })
 
 
 def get_default_system_user_id():
@@ -112,6 +131,8 @@ class AbstractBase(models.Model):
 
     def delete(self, *args, **kwargs):
         # Mark the field model deleted
+        delete_child_instances(self)
+
         self.deleted = True
         self.save()
 

@@ -203,9 +203,11 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     search = models.CharField(max_length=255, null=True, blank=True)
     deleted = models.BooleanField(default=False)
     created_by = models.ForeignKey(
-        'self', null=True, blank=True, related_name='+')
+        'self', null=True, blank=True, related_name='+',
+        on_delete=models.PROTECT)
     updated_by = models.ForeignKey(
-        'self', null=True, blank=True, related_name='+')
+        'self', null=True, blank=True, related_name='+',
+        on_delete=models.PROTECT)
     updated = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(default=timezone.now)
 

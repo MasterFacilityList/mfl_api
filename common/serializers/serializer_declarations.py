@@ -16,9 +16,17 @@ from ..models import (
     SubCounty,
     DocumentUpload,
     ErrorQueue,
-    UserSubCounty
+    UserSubCounty,
+    Notification
 )
 from .serializer_base import AbstractFieldsMixin
+
+
+class NotificationSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    summary = serializers.ReadOnlyField()
+    group_name = serializers.CharField(source='group.name', read_only=True)
+    class Meta:
+        model = Notification
 
 
 class UserSubCountySerializer(

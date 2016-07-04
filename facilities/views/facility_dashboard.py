@@ -108,18 +108,31 @@ class DashBoard(QuerysetFilterMixin, APIView):
         return top_10_wards_summary
 
     def get_facility_type_summary(self):
-        facility_types = FacilityType.objects.all()
+        facility_type_parents_names = []
+        for f_type in FacilityType.objects.all():
+            if f_type.sub_division:
+                facility_type_parents_names.append(f_type.sub_division)
+
+        facility_types = FacilityType.objects.filter(
+            sub_division__in=facility_type_parents_names)
+
         facility_type_summary = []
+        summaries = {}
+        for parent in facility_type_parents_names:
+            summaries[parent] = 0
+
         for facility_type in facility_types:
-                facility_type_summary.append(
-                    {
-                        "name": str(facility_type.name),
-                        "count": self.get_queryset().filter(
-                            facility_type=facility_type).count()
-                    })
+            summaries[facility_type.sub_division] = summaries.get(
+                facility_type.sub_division) + self.get_queryset().filter(
+                        facility_type=facility_type).count()
+
+        facility_type_summary =  [
+            {"name": key, "count": value } for key, value in summaries.items()
+        ]
+
         facility_type_summary_sorted = sorted(
             facility_type_summary,
-            key=lambda x: x, reverse=True)[0:5]
+            key=lambda x: x, reverse=True)
 
         return facility_type_summary_sorted
 

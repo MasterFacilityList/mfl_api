@@ -14,13 +14,19 @@ from ..models import (
     SubCounty,
     DocumentUpload,
     ErrorQueue,
-    UserSubCounty
+    UserSubCounty,
+    Notification
 )
 from .filter_shared import (
     CommonFieldsFilterset,
     ListCharFilter,
     ListIntegerFilter
 )
+
+
+class NotificationFilter(CommonFieldsFilterset):
+    class Meta(object):
+        model = Notification
 
 
 class UserSubCountyFilter(CommonFieldsFilterset):

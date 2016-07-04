@@ -1,0 +1,3092 @@
+[
+    {
+        "county": "Baringo",
+        "ward": "RAVINE",
+        "faciilty_code": "16731"
+    },
+    {
+        "county": "Baringo",
+        "ward": "KOLOWA",
+        "faciilty_code": "16733"
+    },
+    {
+        "county": "Baringo",
+        "ward": "RAVINE",
+        "faciilty_code": "16729"
+    },
+    {
+        "county": "Baringo",
+        "ward": "RAVINE",
+        "faciilty_code": "16735"
+    },
+    {
+        "county": "Baringo",
+        "ward": "TANGULBEI/KOROSSI",
+        "faciilty_code": "16726"
+    },
+    {
+        "county": "Baringo",
+        "ward": "RAVINE",
+        "faciilty_code": "16732"
+    },
+    {
+        "county": "Baringo",
+        "ward": "KOLOWA",
+        "faciilty_code": "16734"
+    },
+    {
+        "county": "Baringo",
+        "ward": "RAVINE",
+        "faciilty_code": "16730"
+    },
+    {
+        "county": "Baringo",
+        "ward": "TANGULBEI/KOROSSI",
+        "faciilty_code": "16727"
+    },
+    {
+        "county": "Baringo",
+        "ward": "RAVINE",
+        "faciilty_code": "14678"
+    },
+    {
+        "county": "Baringo",
+        "ward": "RAVINE",
+        "faciilty_code": "15486"
+    },
+    {
+        "county": "Baringo",
+        "ward": "MARIGAT",
+        "faciilty_code": "17056"
+    },
+    {
+        "county": "Baringo",
+        "ward": "MOCHONGOI",
+        "faciilty_code": "17349"
+    },
+    {
+        "county": "Baringo",
+        "ward": "CHURO/AMAYA",
+        "faciilty_code": "17797"
+    },
+    {
+        "county": "Bomet",
+        "ward": "KAPLETUNDO",
+        "faciilty_code": "17808"
+    },
+    {
+        "county": "Bomet",
+        "ward": "KIMULOT",
+        "faciilty_code": "18072"
+    },
+    {
+        "county": "Bomet",
+        "ward": "KIMULOT",
+        "faciilty_code": "18074"
+    },
+    {
+        "county": "Bomet",
+        "ward": "SIGOR",
+        "faciilty_code": "18665"
+    },
+    {
+        "county": "Bomet",
+        "ward": "SIONGIROI",
+        "faciilty_code": "18666"
+    },
+    {
+        "county": "Bungoma",
+        "ward": "KAMUKUYWA",
+        "faciilty_code": "17194"
+    },
+    {
+        "county": "Bungoma",
+        "ward": "WEST SANG'ALO",
+        "faciilty_code": "17500"
+    },
+    {
+        "county": "Bungoma",
+        "ward": "KIMILILI",
+        "faciilty_code": "17506"
+    },
+    {
+        "county": "Bungoma",
+        "ward": "KIMILILI",
+        "faciilty_code": "17508"
+    },
+    {
+        "county": "Bungoma",
+        "ward": "WEST SANG'ALO",
+        "faciilty_code": "20571"
+    },
+    {
+        "county": "Bungoma",
+        "ward": "WEST SANG'ALO",
+        "faciilty_code": "20923"
+    },
+    {
+        "county": "Busia",
+        "ward": "BWIRI",
+        "faciilty_code": "21136"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "METKEI",
+        "faciilty_code": "17257"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "METKEI",
+        "faciilty_code": "17285"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "METKEI",
+        "faciilty_code": "17286"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "KAMARINY",
+        "faciilty_code": "17291"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "METKEI",
+        "faciilty_code": "17399"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "CHEPKORIO",
+        "faciilty_code": "17753"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "METKEI",
+        "faciilty_code": "18205"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "METKEI",
+        "faciilty_code": "18207"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "METKEI",
+        "faciilty_code": "18208"
+    },
+    {
+        "county": "Elgeyo Marakwet",
+        "ward": "KAPSOWAR",
+        "faciilty_code": "18209"
+    },
+    {
+        "county": "Embu",
+        "ward": "KYENI SOUTH",
+        "faciilty_code": "12227"
+    },
+    {
+        "county": "",
+        "ward": "KYENI SOUTH",
+        "faciilty_code": "12763"
+    },
+    {
+        "county": "Garissa",
+        "ward": "DADAAB",
+        "faciilty_code": "13368"
+    },
+    {
+        "county": "Garissa",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "13284"
+    },
+    {
+        "county": "Garissa",
+        "ward": "DADAAB",
+        "faciilty_code": "17338"
+    },
+    {
+        "county": "Garissa",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "17670"
+    },
+    {
+        "county": "Garissa",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "18437"
+    },
+    {
+        "county": "Garissa",
+        "ward": "DERTU",
+        "faciilty_code": "18821"
+    },
+    {
+        "county": "Garissa",
+        "ward": "LIBOI",
+        "faciilty_code": "20521"
+    },
+    {
+        "county": "Garissa",
+        "ward": "SANGAILU",
+        "faciilty_code": "20766"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "LAMBWE",
+        "faciilty_code": "13737"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "WEST KARACHUONYO",
+        "faciilty_code": "13606"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "WEST KARACHUONYO",
+        "faciilty_code": "13972"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "WEST KARACHUONYO",
+        "faciilty_code": "13472"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "MFANGANO ISLAND",
+        "faciilty_code": "18420"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "KOCHIA",
+        "faciilty_code": "18876"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "WEST KARACHUONYO",
+        "faciilty_code": "20173"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "GWASSI NORTH",
+        "faciilty_code": "21239"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "GWASSI NORTH",
+        "faciilty_code": "21252"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "GWASSI NORTH",
+        "faciilty_code": "21282"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "NORTH KARACHUONYO",
+        "faciilty_code": "21360"
+    },
+    {
+        "county": "Homa Bay",
+        "ward": "GWASSI NORTH",
+        "faciilty_code": "21412"
+    },
+    {
+        "county": "Isiolo",
+        "ward": "KINNA",
+        "faciilty_code": "19915"
+    },
+    {
+        "county": "Isiolo",
+        "ward": "KINNA",
+        "faciilty_code": "20739"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "KIMANA",
+        "faciilty_code": "14574"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "14486"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "OLOOLUA",
+        "faciilty_code": "15523"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "15663"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "14602"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "15350"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "15335"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "15644"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "15633"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "ROMBO",
+        "faciilty_code": "17054"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "OLOOLUA",
+        "faciilty_code": "17796"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "OLOOLUA",
+        "faciilty_code": "17798"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "NGONG",
+        "faciilty_code": "17799"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "OLOOLUA",
+        "faciilty_code": "17800"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "KITENGELA",
+        "faciilty_code": "17867"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "OLOOLUA",
+        "faciilty_code": "17868"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "OLOOLUA",
+        "faciilty_code": "19049"
+    },
+    {
+        "county": "Kajiado",
+        "ward": "OLOOLUA",
+        "faciilty_code": "19142"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "IDAKHO CENTRAL",
+        "faciilty_code": "15930"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "ISUKHA CENTRAL",
+        "faciilty_code": "16719"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "ISUKHA CENTRAL",
+        "faciilty_code": "16023"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "ISUKHA CENTRAL",
+        "faciilty_code": "15908"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "IDAKHO CENTRAL",
+        "faciilty_code": "17179"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "IDAKHO CENTRAL",
+        "faciilty_code": "17410"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "ISUKHA CENTRAL",
+        "faciilty_code": "17824"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "MUSANDA",
+        "faciilty_code": "18164"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "IDAKHO CENTRAL",
+        "faciilty_code": "18315"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "MUMIAS NORTH",
+        "faciilty_code": "18359"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "ISUKHA CENTRAL",
+        "faciilty_code": "20679"
+    },
+    {
+        "county": "Kericho",
+        "ward": "CHEBOIN",
+        "faciilty_code": "16471"
+    },
+    {
+        "county": "Kericho",
+        "ward": "LONDIANI",
+        "faciilty_code": "14238"
+    },
+    {
+        "county": "Kericho",
+        "ward": "LONDIANI",
+        "faciilty_code": "14249"
+    },
+    {
+        "county": "Kericho",
+        "ward": "LONDIANI",
+        "faciilty_code": "14808"
+    },
+    {
+        "county": "Kericho",
+        "ward": "LONDIANI",
+        "faciilty_code": "14725"
+    },
+    {
+        "county": "Kericho",
+        "ward": "AINAMOI",
+        "faciilty_code": "14731"
+    },
+    {
+        "county": "Kericho",
+        "ward": "AINAMOI",
+        "faciilty_code": "17310"
+    },
+    {
+        "county": "Kericho",
+        "ward": "AINAMOI",
+        "faciilty_code": "17312"
+    },
+    {
+        "county": "Kericho",
+        "ward": "AINAMOI",
+        "faciilty_code": "17315"
+    },
+    {
+        "county": "Kericho",
+        "ward": "AINAMOI",
+        "faciilty_code": "17590"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KOMOTHAI",
+        "faciilty_code": "11023"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10974"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NGOLIBA",
+        "faciilty_code": "10349"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10715"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10907"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "16748"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "11141"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10940"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MANG'U",
+        "faciilty_code": "16804"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MANG'U",
+        "faciilty_code": "16805"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10973"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10971"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "16752"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10972"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "11007"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10328"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "11033"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "11043"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "11055"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10101"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "10658"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KIHARA",
+        "faciilty_code": "17141"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NDEIYA",
+        "faciilty_code": "17195"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KINALE",
+        "faciilty_code": "17197"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KINALE",
+        "faciilty_code": "17199"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NDEIYA",
+        "faciilty_code": "17200"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NDEIYA",
+        "faciilty_code": "17204"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KINALE",
+        "faciilty_code": "17205"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KINALE",
+        "faciilty_code": "17206"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NDEIYA",
+        "faciilty_code": "17207"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NDEIYA",
+        "faciilty_code": "17208"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KINALE",
+        "faciilty_code": "17263"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "17395"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "17406"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "17483"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KINALE",
+        "faciilty_code": "17487"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "17490"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MANG'U",
+        "faciilty_code": "17823"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NGOLIBA",
+        "faciilty_code": "17866"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NGOLIBA",
+        "faciilty_code": "17968"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "NDEIYA",
+        "faciilty_code": "17973"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KABETE",
+        "faciilty_code": "17982"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KINOO",
+        "faciilty_code": "17991"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18041"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18105"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18106"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18181"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18183"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18184"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18200"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "18384"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18540"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18558"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18560"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "18570"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "19265"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MWIHOKO",
+        "faciilty_code": "19593"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "19826"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "19932"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "21154"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "11215"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "11663"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "11567"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "11344"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "11835"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "11829"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "16915"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "16916"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "16917"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "16919"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "17689"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "17965"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "18296"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "19028"
+    },
+    {
+        "county": "Kilifi",
+        "ward": "SABAKI",
+        "faciilty_code": "20321"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "11067"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "THIBA",
+        "faciilty_code": "10768"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARUMANDI",
+        "faciilty_code": "10045"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "10805"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "10238"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "10846"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "10028"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "10292"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "10621"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "10543"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "10071"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "10861"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARUMANDI",
+        "faciilty_code": "11163"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "10787"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "10001"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "10084"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "10668"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "17429"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "17452"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "THIBA",
+        "faciilty_code": "17577"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "17578"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "17617"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "INOI",
+        "faciilty_code": "17754"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "17764"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "17777"
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "KARITI",
+        "faciilty_code": "18175"
+    },
+    {
+        "county": "Kisii",
+        "ward": "MOTICHO",
+        "faciilty_code": "18092"
+    },
+    {
+        "county": "Kisii",
+        "ward": "MOTICHO",
+        "faciilty_code": "20112"
+    },
+    {
+        "county": "Kisii",
+        "ward": "MOTICHO",
+        "faciilty_code": "20113"
+    },
+    {
+        "county": "Kisii",
+        "ward": "MOTICHO",
+        "faciilty_code": "20114"
+    },
+    {
+        "county": "Kisii",
+        "ward": "KISII CENTRAL",
+        "faciilty_code": "20408"
+    },
+    {
+        "county": "Kisii",
+        "ward": "MOTICHO",
+        "faciilty_code": "20619"
+    },
+    {
+        "county": "Kisii",
+        "ward": "MOTICHO",
+        "faciilty_code": "21029"
+    },
+    {
+        "county": "Kisii",
+        "ward": "KIOGORO",
+        "faciilty_code": "21053"
+    },
+    {
+        "county": "Kisii",
+        "ward": "KEGOGI",
+        "faciilty_code": "21067"
+    },
+    {
+        "county": "Kisumu",
+        "ward": "KOBURA",
+        "faciilty_code": "16883"
+    },
+    {
+        "county": "Kitui",
+        "ward": "CHULUNI",
+        "faciilty_code": "17688"
+    },
+    {
+        "county": "Kitui",
+        "ward": "CHULUNI",
+        "faciilty_code": "18365"
+    },
+    {
+        "county": "Kwale",
+        "ward": "VANGA",
+        "faciilty_code": "11879"
+    },
+    {
+        "county": "Kwale",
+        "ward": "KASEMENI",
+        "faciilty_code": "11585"
+    },
+    {
+        "county": "Kwale",
+        "ward": "KASEMENI",
+        "faciilty_code": "11662"
+    },
+    {
+        "county": "Kwale",
+        "ward": "KASEMENI",
+        "faciilty_code": "11253"
+    },
+    {
+        "county": "Kwale",
+        "ward": "KASEMENI",
+        "faciilty_code": "11638"
+    },
+    {
+        "county": "Kwale",
+        "ward": "TIWI",
+        "faciilty_code": "16177"
+    },
+    {
+        "county": "Kwale",
+        "ward": "TIWI",
+        "faciilty_code": "16899"
+    },
+    {
+        "county": "Kwale",
+        "ward": "UKUNDA",
+        "faciilty_code": "16903"
+    },
+    {
+        "county": "Kwale",
+        "ward": "KINANGO",
+        "faciilty_code": "16905"
+    },
+    {
+        "county": "Kwale",
+        "ward": "KASEMENI",
+        "faciilty_code": "16906"
+    },
+    {
+        "county": "Kwale",
+        "ward": "TIWI",
+        "faciilty_code": "16908"
+    },
+    {
+        "county": "Kwale",
+        "ward": "TIWI",
+        "faciilty_code": "16910"
+    },
+    {
+        "county": "Kwale",
+        "ward": "MWERENI",
+        "faciilty_code": "17894"
+    },
+    {
+        "county": "Kwale",
+        "ward": "MWERENI",
+        "faciilty_code": "18499"
+    },
+    {
+        "county": "Kwale",
+        "ward": "TIWI",
+        "faciilty_code": "21012"
+    },
+    {
+        "county": "Kwale",
+        "ward": "MWERENI",
+        "faciilty_code": "21404"
+    },
+    {
+        "county": "Laikipia",
+        "ward": "NGOBIT",
+        "faciilty_code": "10665"
+    },
+    {
+        "county": "Laikipia",
+        "ward": "NGOBIT",
+        "faciilty_code": "10301"
+    },
+    {
+        "county": "Laikipia",
+        "ward": "TIGITHI",
+        "faciilty_code": "17567"
+    },
+    {
+        "county": "Laikipia",
+        "ward": "TIGITHI",
+        "faciilty_code": "18026"
+    },
+    {
+        "county": "Laikipia",
+        "ward": "TIGITHI",
+        "faciilty_code": "18027"
+    },
+    {
+        "county": "Laikipia",
+        "ward": "TIGITHI",
+        "faciilty_code": "18028"
+    },
+    {
+        "county": "Laikipia",
+        "ward": "NGOBIT",
+        "faciilty_code": "18615"
+    },
+    {
+        "county": "Lamu",
+        "ward": "FAZA",
+        "faciilty_code": "11373"
+    },
+    {
+        "county": "Lamu",
+        "ward": "KIUNGA",
+        "faciilty_code": "11492"
+    },
+    {
+        "county": "Lamu",
+        "ward": "KIUNGA",
+        "faciilty_code": "11628"
+    },
+    {
+        "county": "Lamu",
+        "ward": "BAHARI",
+        "faciilty_code": "11513"
+    },
+    {
+        "county": "Lamu",
+        "ward": "BAHARI",
+        "faciilty_code": "16912"
+    },
+    {
+        "county": "Lamu",
+        "ward": "BAHARI",
+        "faciilty_code": "16918"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "12144"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KATHIANI CENTRAL",
+        "faciilty_code": "12247"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "12411"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "12304"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KATHIANI CENTRAL",
+        "faciilty_code": "11932"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "16248"
+    },
+    {
+        "county": "Machakos",
+        "ward": "MATUNGULU EAST",
+        "faciilty_code": "12767"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KATHIANI CENTRAL",
+        "faciilty_code": "12219"
+    },
+    {
+        "county": "Machakos",
+        "ward": "MATUNGULU EAST",
+        "faciilty_code": "11920"
+    },
+    {
+        "county": "Machakos",
+        "ward": "MATUNGULU EAST",
+        "faciilty_code": "12052"
+    },
+    {
+        "county": "Machakos",
+        "ward": "MATUNGULU EAST",
+        "faciilty_code": "12058"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KANGUNDO WEST",
+        "faciilty_code": "12115"
+    },
+    {
+        "county": "Machakos",
+        "ward": "MATUNGULU EAST",
+        "faciilty_code": "12392"
+    },
+    {
+        "county": "Machakos",
+        "ward": "MATUNGULU EAST",
+        "faciilty_code": "12706"
+    },
+    {
+        "county": "Machakos",
+        "ward": "MATUNGULU EAST",
+        "faciilty_code": "12783"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KANGUNDO WEST",
+        "faciilty_code": "12265"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KATHIANI CENTRAL",
+        "faciilty_code": "17107"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KATHIANI CENTRAL",
+        "faciilty_code": "17665"
+    },
+    {
+        "county": "Machakos",
+        "ward": "ATHI RIVER",
+        "faciilty_code": "17907"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "18150"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "18151"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "18153"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "18154"
+    },
+    {
+        "county": "Machakos",
+        "ward": "ATHI RIVER",
+        "faciilty_code": "18155"
+    },
+    {
+        "county": "Machakos",
+        "ward": "ATHI RIVER",
+        "faciilty_code": "18157"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "18262"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KATHIANI CENTRAL",
+        "faciilty_code": "18607"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "18920"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KATHIANI CENTRAL",
+        "faciilty_code": "19109"
+    },
+    {
+        "county": "Machakos",
+        "ward": "KALAMA",
+        "faciilty_code": "21440"
+    },
+    {
+        "county": "Makueni",
+        "ward": "MUKAA",
+        "faciilty_code": "12010"
+    },
+    {
+        "county": "Mandera",
+        "ward": "MALKAMARI",
+        "faciilty_code": "13401"
+    },
+    {
+        "county": "Mandera",
+        "ward": "ELWAK SOUTH",
+        "faciilty_code": "13341"
+    },
+    {
+        "county": "Mandera",
+        "ward": "ELWAK SOUTH",
+        "faciilty_code": "13440"
+    },
+    {
+        "county": "Mandera",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "16941"
+    },
+    {
+        "county": "Mandera",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "16942"
+    },
+    {
+        "county": "Mandera",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "16945"
+    },
+    {
+        "county": "Mandera",
+        "ward": "SHIMBIR FATUMA",
+        "faciilty_code": "17228"
+    },
+    {
+        "county": "Mandera",
+        "ward": "GUBA",
+        "faciilty_code": "17649"
+    },
+    {
+        "county": "Mandera",
+        "ward": "GUBA",
+        "faciilty_code": "18487"
+    },
+    {
+        "county": "Mandera",
+        "ward": "GUBA",
+        "faciilty_code": "21190"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "GOLBO",
+        "faciilty_code": "11982"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "GOLBO",
+        "faciilty_code": "12050"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "GOLBO",
+        "faciilty_code": "12698"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "GOLBO",
+        "faciilty_code": "12634"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "GOLBO",
+        "faciilty_code": "17579"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "MARSABIT CENTRAL",
+        "faciilty_code": "17706"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "MARSABIT CENTRAL",
+        "faciilty_code": "17896"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "MARSABIT CENTRAL",
+        "faciilty_code": "17897"
+    },
+    {
+        "county": "Marsabit",
+        "ward": "MARSABIT CENTRAL",
+        "faciilty_code": "20603"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "12036"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "12234"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "12721"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "12664"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "12020"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI CENTRAL",
+        "faciilty_code": "12336"
+    },
+    {
+        "county": "Meru",
+        "ward": "KIBIRICHIA",
+        "faciilty_code": "16827"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16846"
+    },
+    {
+        "county": "Meru",
+        "ward": "KIBIRICHIA",
+        "faciilty_code": "16828"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16850"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16845"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16844"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16842"
+    },
+    {
+        "county": "Meru",
+        "ward": "KIBIRICHIA",
+        "faciilty_code": "16829"
+    },
+    {
+        "county": "Meru",
+        "ward": "KIBIRICHIA",
+        "faciilty_code": "16831"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16843"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI CENTRAL",
+        "faciilty_code": "16836"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16848"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16851"
+    },
+    {
+        "county": "Meru",
+        "ward": "KIBIRICHIA",
+        "faciilty_code": "12064"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "16849"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "16228"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "12778"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "16590"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "16223"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "16577"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "16578"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "16609"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "16606"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "16222"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "16586"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA EAST",
+        "faciilty_code": "16227"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "12580"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "12015"
+    },
+    {
+        "county": "Meru",
+        "ward": "TIMAU",
+        "faciilty_code": "17225"
+    },
+    {
+        "county": "Meru",
+        "ward": "TIMAU",
+        "faciilty_code": "17227"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI CENTRAL",
+        "faciilty_code": "17265"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI WEST",
+        "faciilty_code": "18242"
+    },
+    {
+        "county": "Meru",
+        "ward": "TIMAU",
+        "faciilty_code": "18306"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI CENTRAL",
+        "faciilty_code": "18504"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI CENTRAL",
+        "faciilty_code": "18667"
+    },
+    {
+        "county": "Meru",
+        "ward": "ABOTHUGUCHI CENTRAL",
+        "faciilty_code": "18696"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "18726"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "19073"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "19104"
+    },
+    {
+        "county": "Meru",
+        "ward": "NTIMA WEST",
+        "faciilty_code": "19328"
+    },
+    {
+        "county": "Migori",
+        "ward": "WEST SAKWA",
+        "faciilty_code": "13492"
+    },
+    {
+        "county": "Migori",
+        "ward": "ISIBANIA",
+        "faciilty_code": "16260"
+    },
+    {
+        "county": "Migori",
+        "ward": "SOUTH KAMAGAMBO",
+        "faciilty_code": "17341"
+    },
+    {
+        "county": "Migori",
+        "ward": "ISIBANIA",
+        "faciilty_code": "20019"
+    },
+    {
+        "county": "Migori",
+        "ward": "MASABA",
+        "faciilty_code": "21104"
+    },
+    {
+        "county": "Migori",
+        "ward": "ISIBANIA",
+        "faciilty_code": "21423"
+    },
+    {
+        "county": "Migori",
+        "ward": "MASABA",
+        "faciilty_code": "21424"
+    },
+    {
+        "county": "Migori",
+        "ward": "MASABA",
+        "faciilty_code": "21427"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11523"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11797"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "SHANZU",
+        "faciilty_code": "11405"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11596"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11324"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11348"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "16794"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11290"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11249"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11252"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11416"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11724"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11339"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "16531"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11765"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "JOMVU KUU",
+        "faciilty_code": "11224"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11546"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11389"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11857"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11872"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "11332"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11708"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "11211"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "SHANZU",
+        "faciilty_code": "11501"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11874"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11337"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11354"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11502"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "11898"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11326"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11325"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11343"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11345"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "11341"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "LIKONI",
+        "faciilty_code": "16897"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "16898"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "16902"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "16904"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "16907"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "17865"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "18024"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "18419"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "SHANZU",
+        "faciilty_code": "18431"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "18517"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHANGAMWE",
+        "faciilty_code": "20280"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "SHANZU",
+        "faciilty_code": "20491"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "MKOMANI",
+        "faciilty_code": "21007"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "SHANZU",
+        "faciilty_code": "21384"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "GATURI",
+        "faciilty_code": "10347"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "GATURI",
+        "faciilty_code": "10374"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "GATURI",
+        "faciilty_code": "10310"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "GATURI",
+        "faciilty_code": "16977"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "GATANGA",
+        "faciilty_code": "17057"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "GATURI",
+        "faciilty_code": "17235"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "KANYENYA-INI",
+        "faciilty_code": "17237"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "KAMACHARIA",
+        "faciilty_code": "17238"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "RUCHU",
+        "faciilty_code": "17311"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "RUCHU",
+        "faciilty_code": "17423"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "GATURI",
+        "faciilty_code": "17580"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "KAMACHARIA",
+        "faciilty_code": "17832"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "KIGUMO",
+        "faciilty_code": "17833"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "KANYENYA-INI",
+        "faciilty_code": "17834"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "MAKUYU",
+        "faciilty_code": "18060"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "KIGUMO",
+        "faciilty_code": "18537"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KITISURU",
+        "faciilty_code": "12985"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KANGEMI",
+        "faciilty_code": "16799"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "PARKLANDS/HIGHRIDGE",
+        "faciilty_code": "12964"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MUGUMO-INI",
+        "faciilty_code": "12923"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "PARKLANDS/HIGHRIDGE",
+        "faciilty_code": "16797"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "VIWANDANI",
+        "faciilty_code": "12888"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KANGEMI",
+        "faciilty_code": "16800"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "PARKLANDS/HIGHRIDGE",
+        "faciilty_code": "13073"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "HURUMA",
+        "faciilty_code": "12975"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MUGUMO-INI",
+        "faciilty_code": "16888"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KAREN",
+        "faciilty_code": "17419"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MUGUMO-INI",
+        "faciilty_code": "17459"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KWARE",
+        "faciilty_code": "17856"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KASARANI",
+        "faciilty_code": "17934"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "UTALII",
+        "faciilty_code": "17936"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KASARANI",
+        "faciilty_code": "17938"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KASARANI",
+        "faciilty_code": "17940"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "GITHURAI",
+        "faciilty_code": "17942"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KASARANI",
+        "faciilty_code": "17943"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KASARANI",
+        "faciilty_code": "17948"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KASARANI",
+        "faciilty_code": "17950"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "WOODLEY/KENYATTA GOLF COURSE",
+        "faciilty_code": "17954"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KASARANI",
+        "faciilty_code": "17971"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KARIOBANGI NORTH",
+        "faciilty_code": "17995"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "RUAI",
+        "faciilty_code": "17996"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "RUAI",
+        "faciilty_code": "18000"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KWA REUBEN",
+        "faciilty_code": "18201"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "NJIRU",
+        "faciilty_code": "18219"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "IMARA DAIMA",
+        "faciilty_code": "18261"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "IMARA DAIMA",
+        "faciilty_code": "18275"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "NJIRU",
+        "faciilty_code": "18368"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "PARKLANDS/HIGHRIDGE",
+        "faciilty_code": "18385"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "NJIRU",
+        "faciilty_code": "18386"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "DANDORA AREA IV",
+        "faciilty_code": "18387"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KARIOBANGI SOUTH",
+        "faciilty_code": "18388"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "RUAI",
+        "faciilty_code": "18389"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MAKONGENI",
+        "faciilty_code": "18394"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "DANDORA AREA IV",
+        "faciilty_code": "18436"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "WOODLEY/KENYATTA GOLF COURSE",
+        "faciilty_code": "18505"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "KILIMANI",
+        "faciilty_code": "18544"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "RIRUTA",
+        "faciilty_code": "18609"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "DANDORA AREA IV",
+        "faciilty_code": "18662"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "ROYSAMBU",
+        "faciilty_code": "19297"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "ROYSAMBU",
+        "faciilty_code": "19299"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "ROYSAMBU",
+        "faciilty_code": "20304"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "VIWANDANI",
+        "faciilty_code": "16382"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "VIWANDANI",
+        "faciilty_code": "16381"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "VIWANDANI",
+        "faciilty_code": "16378"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "BAHATI",
+        "faciilty_code": "14191"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "BAHATI",
+        "faciilty_code": "15330"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "BAHATI",
+        "faciilty_code": "15596"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "LANET/UMOJA",
+        "faciilty_code": "15660"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "LARE",
+        "faciilty_code": "16822"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "SUBUKIA",
+        "faciilty_code": "17031"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "DUNDORI",
+        "faciilty_code": "17044"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "VIWANDANI",
+        "faciilty_code": "17547"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "faciilty_code": "17792"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "faciilty_code": "17794"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "SUBUKIA",
+        "faciilty_code": "17815"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "NJORO",
+        "faciilty_code": "18137"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "NAKURU EAST",
+        "faciilty_code": "18375"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "NAKURU EAST",
+        "faciilty_code": "18448"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "NAKURU EAST",
+        "faciilty_code": "18602"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "MENENGAI",
+        "faciilty_code": "18688"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KOSIRAI",
+        "faciilty_code": "14587"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIPKAREN",
+        "faciilty_code": "15320"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KOSIRAI",
+        "faciilty_code": "15018"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIPKAREN",
+        "faciilty_code": "18466"
+    },
+    {
+        "county": "Narok",
+        "ward": "SIANA",
+        "faciilty_code": "17322"
+    },
+    {
+        "county": "Narok",
+        "ward": "KILGORIS CENTRAL",
+        "faciilty_code": "17457"
+    },
+    {
+        "county": "Narok",
+        "ward": "KILGORIS CENTRAL",
+        "faciilty_code": "17757"
+    },
+    {
+        "county": "Narok",
+        "ward": "KILGORIS CENTRAL",
+        "faciilty_code": "17784"
+    },
+    {
+        "county": "Narok",
+        "ward": "KILGORIS CENTRAL",
+        "faciilty_code": "17786"
+    },
+    {
+        "county": "Narok",
+        "ward": "NKARETA",
+        "faciilty_code": "17807"
+    },
+    {
+        "county": "Narok",
+        "ward": "NKARETA",
+        "faciilty_code": "17924"
+    },
+    {
+        "county": "Narok",
+        "ward": "OLOLULUNG'A",
+        "faciilty_code": "17925"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "13682"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "MAGOMBO",
+        "faciilty_code": "17140"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "RIGOMA",
+        "faciilty_code": "18576"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "GESIMA",
+        "faciilty_code": "18580"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "MAGOMBO",
+        "faciilty_code": "21052"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "NORTH KINANGOP",
+        "faciilty_code": "10426"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "NORTH KINANGOP",
+        "faciilty_code": "10062"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "NORTH KINANGOP",
+        "faciilty_code": "16176"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "NORTH KINANGOP",
+        "faciilty_code": "10682"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "CENTRAL",
+        "faciilty_code": "10550"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "KARAU",
+        "faciilty_code": "11114"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "NORTH KINANGOP",
+        "faciilty_code": "10387"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "GITHABAI",
+        "faciilty_code": "17493"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "MURUNGARU",
+        "faciilty_code": "17495"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "MURUNGARU",
+        "faciilty_code": "17496"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "MURUNGARU",
+        "faciilty_code": "17497"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "MURUNGARU",
+        "faciilty_code": "17498"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "KIPIPIRI",
+        "faciilty_code": "17555"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "GITHABAI",
+        "faciilty_code": "17556"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "GITHABAI",
+        "faciilty_code": "17562"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "SHAMATA",
+        "faciilty_code": "18249"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10486"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "faciilty_code": "10902"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10082"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "11146"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "11144"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10802"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10492"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "faciilty_code": "16773"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "faciilty_code": "16772"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KABARU",
+        "faciilty_code": "10541"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10923"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KABARU",
+        "faciilty_code": "11011"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10954"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "CHINGA",
+        "faciilty_code": "16778"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "AGUTHI-GAAKI",
+        "faciilty_code": "16782"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10327"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "KARATINA TOWN",
+        "faciilty_code": "10694"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "AGUTHI-GAAKI",
+        "faciilty_code": "10978"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MUKURWE-INI CENTRAL",
+        "faciilty_code": "16775"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MUKURWE-INI CENTRAL",
+        "faciilty_code": "10813"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "CHINGA",
+        "faciilty_code": "16777"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "faciilty_code": "10719"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "AGUTHI-GAAKI",
+        "faciilty_code": "17002"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "CHINGA",
+        "faciilty_code": "18337"
+    },
+    {
+        "county": "Samburu",
+        "ward": "WASO",
+        "faciilty_code": "15780"
+    },
+    {
+        "county": "Samburu",
+        "ward": "BAAWA",
+        "faciilty_code": "17188"
+    },
+    {
+        "county": "Siaya",
+        "ward": "SOUTH GEM",
+        "faciilty_code": "17518"
+    },
+    {
+        "county": "Siaya",
+        "ward": "SOUTH GEM",
+        "faciilty_code": "17525"
+    },
+    {
+        "county": "Siaya",
+        "ward": "SOUTH GEM",
+        "faciilty_code": "17530"
+    },
+    {
+        "county": "Siaya",
+        "ward": "SIGOMERE",
+        "faciilty_code": "18093"
+    },
+    {
+        "county": "Siaya",
+        "ward": "SIGOMERE",
+        "faciilty_code": "18096"
+    },
+    {
+        "county": "Siaya",
+        "ward": "SIGOMERE",
+        "faciilty_code": "18109"
+    },
+    {
+        "county": "Siaya",
+        "ward": "SIGOMERE",
+        "faciilty_code": "18320"
+    },
+    {
+        "county": "Siaya",
+        "ward": "UGUNJA",
+        "faciilty_code": "18321"
+    },
+    {
+        "county": "Siaya",
+        "ward": "UGUNJA",
+        "faciilty_code": "18369"
+    },
+    {
+        "county": "Siaya",
+        "ward": "UGUNJA",
+        "faciilty_code": "21175"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "MATA",
+        "faciilty_code": "11308"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "MATA",
+        "faciilty_code": "11576"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "MATA",
+        "faciilty_code": "11490"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "MATA",
+        "faciilty_code": "11703"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "MATA",
+        "faciilty_code": "11598"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "KASIGAU",
+        "faciilty_code": "11885"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "KASIGAU",
+        "faciilty_code": "17128"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "MARUNGU",
+        "faciilty_code": "17702"
+    },
+    {
+        "county": "Taita Taveta",
+        "ward": "MARUNGU",
+        "faciilty_code": "21383"
+    },
+    {
+        "county": "Tana River",
+        "ward": "WAYU",
+        "faciilty_code": "11792"
+    },
+    {
+        "county": "Tana River",
+        "ward": "WAYU",
+        "faciilty_code": "16913"
+    },
+    {
+        "county": "Tana River",
+        "ward": "CHEWANI",
+        "faciilty_code": "16914"
+    },
+    {
+        "county": "Tana River",
+        "ward": "CHEWANI",
+        "faciilty_code": "16920"
+    },
+    {
+        "county": "Tana River",
+        "ward": "MIKINDUNI",
+        "faciilty_code": "17697"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "MUGWE",
+        "faciilty_code": "17769"
+    },
+    {
+        "county": "Trans Nzoia",
+        "ward": "KWANZA",
+        "faciilty_code": "15032"
+    },
+    {
+        "county": "Trans Nzoia",
+        "ward": "KWANZA",
+        "faciilty_code": "15536"
+    },
+    {
+        "county": "Trans Nzoia",
+        "ward": "CHEPSIRO/KIPTOROR",
+        "faciilty_code": "15033"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "15049"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "15064"
+    },
+    {
+        "county": "Turkana",
+        "ward": "KATILIA",
+        "faciilty_code": "14700"
+    },
+    {
+        "county": "Turkana",
+        "ward": "KATILIA",
+        "faciilty_code": "14601"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "15067"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "16700"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "15066"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "15225"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "15749"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "14186"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "14863"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "15629"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "16324"
+    },
+    {
+        "county": "Turkana",
+        "ward": "KIBISH",
+        "faciilty_code": "14540"
+    },
+    {
+        "county": "Turkana",
+        "ward": "KIBISH",
+        "faciilty_code": "14854"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "17180"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "17181"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "17184"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOPUR",
+        "faciilty_code": "17249"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "18353"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "18366"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "20076"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOPUR",
+        "faciilty_code": "20219"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "20592"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "20781"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LODWAR TOWNSHIP",
+        "faciilty_code": "20966"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "21312"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "21315"
+    },
+    {
+        "county": "Turkana",
+        "ward": "LOKORI/KOCHODIN",
+        "faciilty_code": "21316"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SIMAT/KAPSERET",
+        "faciilty_code": "16344"
+    },
+    {
+        "county": "Turkana",
+        "ward": "HURUMA",
+        "faciilty_code": "16360"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SIMAT/KAPSERET",
+        "faciilty_code": "14420"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SIMAT/KAPSERET",
+        "faciilty_code": "14417"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SIMAT/KAPSERET",
+        "faciilty_code": "14421"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SIMAT/KAPSERET",
+        "faciilty_code": "14407"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SIMAT/KAPSERET",
+        "faciilty_code": "15471"
+    },
+    {
+        "county": "Turkana",
+        "ward": "HURUMA",
+        "faciilty_code": "17329"
+    },
+    {
+        "county": "Turkana",
+        "ward": "HURUMA",
+        "faciilty_code": "17330"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SOY",
+        "faciilty_code": "17485"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SHAMAKHOKHO",
+        "faciilty_code": "16454"
+    },
+    {
+        "county": "Turkana",
+        "ward": "SHAMAKHOKHO",
+        "faciilty_code": "16459"
+    },
+    {
+        "county": "Turkana",
+        "ward": "JEPKOYAI",
+        "faciilty_code": "17167"
+    },
+    {
+        "county": "Turkana",
+        "ward": "JEPKOYAI",
+        "faciilty_code": "17168"
+    },
+    {
+        "county": "Wajir",
+        "ward": "BUTE",
+        "faciilty_code": "13351"
+    },
+    {
+        "county": "Wajir",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "13395"
+    },
+    {
+        "county": "Wajir",
+        "ward": "IBRAHIM URE",
+        "faciilty_code": "17288"
+    },
+    {
+        "county": "Wajir",
+        "ward": "ARBAJAHAN",
+        "faciilty_code": "17464"
+    },
+    {
+        "county": "Wajir",
+        "ward": "HABASSWEIN",
+        "faciilty_code": "18982"
+    },
+    {
+        "county": "Wajir",
+        "ward": "TOWNSHIP",
+        "faciilty_code": "19184"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "KAPENGURIA",
+        "faciilty_code": "16703"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "KAPENGURIA",
+        "faciilty_code": "15269"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "KAPENGURIA",
+        "faciilty_code": "15189"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "BATEI",
+        "faciilty_code": "14635"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "SOOK",
+        "faciilty_code": "17153"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "SOOK",
+        "faciilty_code": "17159"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "KAPENGURIA",
+        "faciilty_code": "17234"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "KAPENGURIA",
+        "faciilty_code": "17332"
+    },
+    {
+        "county": "West Pokot",
+        "ward": "BATEI",
+        "faciilty_code": "19070"
+    }
+]

@@ -183,7 +183,7 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 30,
     'PAGINATE_BY_PARAM': 'page_size',
     # Should be able to opt in to see all wards at once
-    'MAX_PAGINATE_BY': 15000,
+    'MAX_PAGINATE_BY': 150000,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',

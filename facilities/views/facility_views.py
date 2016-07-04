@@ -205,13 +205,14 @@ class QuerysetFilterMixin(object):
             self.queryset = custom_queryset
 
         self.filter_for_county_users()
-        self.filter_for_consituency_users()
+        self.filter_for_consituency_users()  # TODO fix typo
         self.filter_for_sub_county_users()
         self.filter_for_sub_county_and_constituency_users()
         self.filter_for_regulators()
         self.filter_classified_facilities()
         self.filter_rejected_facilities()
         self.filter_closed_facilities()
+        self.filter_approved_facilities()
 
         return self.queryset
 
@@ -420,7 +421,7 @@ class FacilityExportMaterialListView(
     queryset = FacilityExportExcelMaterialView.objects.all()
     serializer_class = FacilityExportExcelMaterialViewSerializer
     filter_class = FacilityExportExcelMaterialViewFilter
-    ordering_fields = '__all__'
+    # ordering_fields = '__all__'
 
 
 class FacilityDetailView(

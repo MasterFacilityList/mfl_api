@@ -54,10 +54,10 @@ from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 class FacilityExportExcelMaterialViewFilter(django_filters.FilterSet):
 
     def filter_number_beds(self, value):
-        return self.filter(number_of_beds__gte=1)
+        return self.filter(beds__gte=1)
 
     def filter_number_cots(self, value):
-        return self.filter(number_of_cots__gte=1)
+        return self.filter(cots__gte=1)
 
     search = SearchFilter(name='search')
     county = ListCharFilter(lookup_type='exact')

@@ -6,12 +6,23 @@
     mfl_public_web_version: "0.0.1a13"
     mfl_admin_web_version: "0.0.1a21"
     mfl_last_update: "2015-09-10T04:17:54.400Z"
-    has_ssl: true
+    has_ssl: false
     cert_file: ""
     key_file: ""
-    celery_user: ""
+    celery_user: "nobody"
     aws_db_backup_bucket: ""
-    allowed_hosts: ""
+    storage_bucket: "mfl-documents"
+    storage_account: "Not set"
+    storage_key: "not set"
+    storage_backend: "S3BotoStorage"
+    aws_db_backup_bucket: "mfl-db-backups"
+    allowed_hosts: ".locahost, .konayangu.com"
+    database_name: "mfl"
+    database_user: "mfl"
+    database_password: "mfl"
+    email_host: "mail.health.go.ke "
+    email_host_user: "notifications.kmhfl@health.go.ke"
+    email_host_password: "Res00LVE72"
   roles:
     - common
     - { role: postgresql }
@@ -20,8 +31,8 @@
     - {
         role: frontend,
         frontend_name: "mfl_public_web",
-        server_name: mfl-public.slade360.co.ke,
-        server_url: "https://mfl.slade360.co.ke/",
+        server_name: mfl-public.konayangu.com,
+        server_url: "http://mfl.konayangu.com/",
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
         client_secret: PHrUzCRFm9558DGa6Fh1hEvSCh3C9Lijfq8sbCMZhZqmANYV5ZP04mUXGJdsrZLXuZG4VCmvjShdKHwU6IRmPQld5LDzvJoguEP8AAXGJhrqfLnmtFXU3x2FO1nWLxUx,
         frontend_tag: "{{mfl_public_web_version}}",
@@ -38,8 +49,8 @@
     - {
         role: frontend,
         frontend_name: "mfl_admin_web",
-        server_name: mfl-admin.slade360.co.ke,
-        server_url: "https://mfl.slade360.co.ke/",
+        server_name: mfl-admin.konayangu.com,
+        server_url: "http://mfl.konayangu.com/",
         client_id: 5O1KlpwBb96ANWe27ZQOpbWSF4DZDm4sOytwdzGv,
         client_secret: PqV0dHbkjXAtJYhY9UOCgRVi5BzLhiDxGU91kbt5EoayQ5SYOoJBYRYAYlJl2RetUeDMpSvhe9DaQr0HKHan0B9ptVyoLvOqpekiOmEqUJ6HZKuIoma0pvqkkKDU9GPv,
         frontend_tag: "{{mfl_admin_web_version}}",
@@ -53,22 +64,25 @@
       }
     - {
         role: api,
-        server_name: mfl.slade360.co.ke,
+        server_name: mfl.konayangu.com,
         tags: "api-server",
         app_ports: [8000, 8001, 8002, 8003, 8004, 8005],
-        frontend_url: "https://mfl-admin.slade360.co.ke",
+        frontend_url: "https://mfl-admin.konayangu.com",
 
         # drop and recreate database
-        setup_new_db: false,
+        setup_new_db: true,
         django_debug: False,
         realtime_index: true,
         load_demo_data: false,
         recreate_search_index: false,
         mfl_celery_user: "{{celery_user}}",
+        database_name: "{{database_name}}",
+        database_user: "{{database_user}}",
+        database_password: "{{database_password}}",
 
         # the settings below are for warming up the cache
         warm_cache: false,
-        server_url: "https://mfl.slade360.co.ke",
+        server_url: "https://mfl.konayangu.com",
         username: public@mfltest.slade360.co.ke,
         password: public,
         client_id: xMddOofHI0jOKboVxdoKAXWKpkEQAP0TuloGpfj5,
@@ -77,7 +91,7 @@
         ssl_on: "{{has_ssl}}",
         ssl_cert_file: "{{cert_file}}",
         ssl_key_file: "{{key_file}}",
-
+        base_dir: "/home/titan/MasterFacilityList/mfl_api",
         storage_bucket: "{{storage_bucket}}",
         storage_account: "{{storage_account}}",
         storage_key: "{{storage_key}}",

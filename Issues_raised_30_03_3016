@@ -1,0 +1,52 @@
+# Issues raised on MFL on 30th/03/2016
+
+1. Have the date-filter in reports
+2. It should be possible to download facilities with geo-codes for the sys config
+3. Have the minimum number of decimal places in geo-codes as 6
+4. Remove the marker
+
+
+Issues Noted:
+1. The facility approval page has sub-county as a uuid
+2. Add constituency field in the facility filter
+3. Add the constituency in the facility detail view
+4. The sub-county and CHRIO should see only the allowed admin units
+5. Remove the constituency in users
+6. Ensure a user is only moved from county to county based on assigned rights
+7. Server error on creating user after adding contacts
+8. The search on users need fixing
+9. The deletion should be for the national admins only
+10. The license the number and the reg number should be optional
+11. Open 24 hours disable the rest
+12. All location the details should be mandatory
+13. The nearest town as a text box
+14. Edit the facility approve/reject comment
+15. Remove the bold the text in public website
+16. Replace the 2 CHEWS with 5 CHEWs in the public website
+17. Have the MoH logo as the key logo in the partner's page
+18. Remove the CHU logo
+19. The text the under the CHU logo to be together with the other text
+20. Subdivide the partners section into 2 v1 and v2
+21. Do not say what the partner is doing
+22. Remove the logos for v1
+23. Have the two emails in the help-desk email
+25. Rename facility status
+26. Have all the facility regulations under the regulations tab
+27. Rename the facility regulation to facility department regulation
+28. Have a license number field in the departments under regulation tab
+29. Rename the regulatory status to regulation status
+30. Change-log not showing the changes done on facility
+31. Have the option to preview changes
+32. Have sub_county in the facility approval here http://admin.kmhfltest.health.go.ke/#/facilities_approve/pending_updates/3e8884d9-0515-4663-b52a-496b2a48e2a9/
+33. Order of excel codes code, name and the rest. also add operational status
+34. Confirm the caching is okay
+35. Enable delete document
+36. allow editing the document description without uploading
+37. Provide the authorities documentation by Monday
+38. update the documentation
+
+
+
+Useful links
+1. Moh website
+2. Community Health Website

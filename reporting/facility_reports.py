@@ -7,6 +7,7 @@ from django.apps import apps
 from django.db.models import Sum
 from django.db.models import Q
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 from rest_framework.views import APIView, Response
 from rest_framework.exceptions import NotFound, ValidationError
@@ -417,8 +418,15 @@ class FilterReportMixin(object):
         sub_county = self.request.query_params.get('sub_county', None)
         ward = self.request.query_params.get('ward', None)
         constituency = self.request.query_params.get('ward', None)
+        page = self.request.query_params.get('page', 1)
+        page_size = self.request.query_params.get('page_size', 30)
+        paginate = self.request.query_params.get('paginate', True)
 
         queryset = FacilityCoordinates.objects.all()
+        paginator = Paginator(queryset, 30)
+
+        if paginate:
+            queryset = paginator.page(1)
 
         if county:
             queryset = FacilityCoordinates.objects.filter(
@@ -438,7 +446,7 @@ class FilterReportMixin(object):
 
 
         cords = []
-        if any([county, sub_county, constituency, ward]):
+        if any([county, sub_county, constituency, ward, True]):
             for fac in  queryset:
                 record = OrderedDict()
                 record["facility_code"] = fac.facility.code

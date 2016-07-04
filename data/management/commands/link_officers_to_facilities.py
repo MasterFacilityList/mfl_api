@@ -19,16 +19,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         file_path = os.path.join(
             settings.BASE_DIR,
-            'data/data/msc/facility_officer_in_charge_link.json')
+            'data/new_data/demo_part_2/0027_facility_officers.json')
         with open(file_path) as ops_data:
             data = json.load(ops_data)
             records = data[0].get('records')
             for record in records:
                 try:
-                    facility = Facility.objects.get(code=record.get('code'))
+                    facility = Facility.objects.get(
+                        code=record.get('facility').get('code').decode('utf-8').strip())
                     officer = Officer.objects.filter(
                         name=str(
-                            record.get('name').encode('utf-8').strip()))[0]
+                            record.get('officer').get('name').decode('utf-8').strip()))[0]
                     try:
                         print FacilityOfficer.objects.create(
                             facility=facility, officer=officer,

@@ -96,6 +96,7 @@ mfl_models_graph.png
 # Temp file
 .fab_tasks~
 static/*
+*data*
 data/data/approvals/*
 data/data/demo/*
 data/data/facilities/*

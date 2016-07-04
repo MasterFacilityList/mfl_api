@@ -1,0 +1,4900 @@
+[
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": "Taveta", 
+        "code": 11703, 
+        "name": "Ndilidau Dispensary (Taveta)", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Ndilidau Dispensary (Taveta)", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Taita Taveta", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": "Shamakhokho", 
+        "code": 16454, 
+        "name": "Jirwani Dispensary", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Jirwani Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Vihiga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Community"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "division": "Shamakhokho", 
+        "code": 16459, 
+        "name": "Kisasi Dispensary", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Kisasi Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Vihiga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Community"
+        }, 
+        "keph_level": {
+            "name": "Level 1"
+        }
+    }, 
+    {
+        "town": {
+            "name": "eldoret"
+        }, 
+        "division": "Kapseret", 
+        "code": 14420, 
+        "name": "Dr Nyandiko Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Dr Nyandiko Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Uasin Gishu", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "eldoret"
+        }, 
+        "division": "Kapseret", 
+        "code": 14417, 
+        "name": "Dr Nabakwe Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Dr Nabakwe Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Uasin Gishu", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "eldoret"
+        }, 
+        "division": "Kapseret", 
+        "code": 14421, 
+        "name": "Dr Ogaro Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Dr Ogaro Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Uasin Gishu", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "eldoret"
+        }, 
+        "division": "Kapseret", 
+        "code": 14407, 
+        "name": "Dr Ayaya Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Dr Ayaya Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Uasin Gishu", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "voi"
+        }, 
+        "division": "Voi", 
+        "code": 11885, 
+        "name": "Voi Sisal", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Voi Sisal", 
+        "facility_type": {
+            "name": "Not in List"
+        }, 
+        "county": "Taita Taveta", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "nairobi"
+        }, 
+        "division": "Westlands", 
+        "code": 12964, 
+        "name": "Gtz Dispensary", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "GTZ Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Non-Governmental Organizations"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "meru"
+        }, 
+        "division": "Miriga Mieru West", 
+        "code": 12020, 
+        "name": "Fr Meru Dispensary", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "37.72172", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Meru", 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Fr Meru Dispensary", 
+        "latitude": "0.03407", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11523, 
+        "name": "Likoni Nursing Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "39.4293", 
+        "facility_type": {
+            "name": "Nursing Home"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "official_name": "Likoni Nursing Clinic", 
+        "latitude": "-3.9975", 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11797, 
+        "name": "Singawa Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "39.4293", 
+        "facility_type": {
+            "name": "Nursing Home"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Singawa Medical Clinic", 
+        "number_of_beds": 4.0, 
+        "latitude": "-3.9975", 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Kisauni", 
+        "code": 11405, 
+        "name": "Green Crescent Maternity", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Green Crescent Maternity", 
+        "facility_type": {
+            "name": "Maternity Home"
+        }, 
+        "county": "Mombasa", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kamwana"
+        }, 
+        "division": "Gichugu", 
+        "code": 10045, 
+        "name": "Baragwi Maternity Outreach Clinic Kamwana", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Baragwi Maternity outreach Clinic Kamwana", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "nyeri town"
+        }, 
+        "division": "Municipality", 
+        "code": 10902, 
+        "name": "Nyeri Nursing Home", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Nyeri Nursing Home", 
+        "facility_type": {
+            "name": "Nursing Home"
+        }, 
+        "county": "Nyeri", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "karatina"
+        }, 
+        "division": "Mathira", 
+        "code": 10082, 
+        "name": "Central Health Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Central Health Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyeri", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "owner": {
+            "name": "Private Practice - General Practitioner"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "gatwe"
+        }, 
+        "division": "Central", 
+        "code": 10238, 
+        "name": "Gatwe Clinic Dispensary", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Gatwe Clinic Dispensary", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": "11b", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "gatundutown"
+        }, 
+        "division": "Gatundu", 
+        "code": 16804, 
+        "name": "Nembu Medical Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Nembu Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Operational"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "gatundutown"
+        }, 
+        "division": "Gatundu", 
+        "code": 16805, 
+        "name": "St Ann Medical Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "St Ann Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Operational"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": " ", 
+        "code": 10846, 
+        "name": "Nelson Kariru Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Nelson Kariru Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": " ", 
+        "code": 10028, 
+        "name": "Amos Wanjohi Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Amos Wanjohi Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": " ", 
+        "code": 10292, 
+        "name": "God Sent Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "God Sent Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kibirichia market"
+        }, 
+        "division": "Kibirichia Division", 
+        "code": 16827, 
+        "name": "Jamii Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Jamii Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "28", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kinjo"
+        }, 
+        "division": "Abothuguchi West", 
+        "code": 16846, 
+        "name": "Kinjo Medical Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Kinjo Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "2b", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kibirichia market"
+        }, 
+        "division": "Kibirichia Division", 
+        "code": 16828, 
+        "name": "Twins Bell Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Twins Bell Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "762", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kithirune market"
+        }, 
+        "division": "Abothuguchi West", 
+        "code": 16850, 
+        "name": "Neki Medical Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Neki Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "21", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kithaku market"
+        }, 
+        "division": "Abothuguchi West", 
+        "code": 16845, 
+        "name": "Jamii Private Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Jamii Private Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "23", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kathiranga market"
+        }, 
+        "division": "Abothuguchi West", 
+        "code": 16844, 
+        "name": "Kathiranga Medical Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Kathiranga Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "945", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "ntugi"
+        }, 
+        "division": "Kibirichia Division", 
+        "code": 16829, 
+        "name": "Fanaka Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Fnanaka Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "ntugi"
+        }, 
+        "division": "Kibirichia Division", 
+        "code": 16831, 
+        "name": "Genesis Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Genesis Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kithaku market"
+        }, 
+        "division": "Abothuguchi West", 
+        "code": 16848, 
+        "name": "Mutethia Medical Clinic (Imenti Central)", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Mutethia Medical Clinic (Imenti Central)", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "2", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kithaku market"
+        }, 
+        "division": "Abothuguchi West", 
+        "code": 16851, 
+        "name": "Highland Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Highland Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "18", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "ntugi"
+        }, 
+        "division": "Kibirichia Division", 
+        "code": 12064, 
+        "name": "Huruma Medical Clinic (Imenti Central)", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Huruma Medical Clinic (Imenti Central)", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kibirichia market"
+        }, 
+        "division": "Abothuguchi West", 
+        "code": 12778, 
+        "name": "Sunrise Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Sunrise Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": "Ndia", 
+        "code": 10621, 
+        "name": "Kiranjim Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Kiranjim Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "meru"
+        }, 
+        "division": "Miriga Mieru West", 
+        "code": 16609, 
+        "name": "Meru Medical Stores", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Meru Medical Stores", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Meru", 
+        "plot_number": "b11/91", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": "Ndia", 
+        "code": 10071, 
+        "name": "Binadamu Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Binadamu Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": "Ndia", 
+        "code": 10861, 
+        "name": "Ngaris Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Ngaris Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "division": "Gichugu", 
+        "code": 11163, 
+        "name": "Wami Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Wami Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": "Ndia", 
+        "code": 10787, 
+        "name": "Mustard Seed Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Mustard Seed Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11596, 
+        "name": "Medical Clinic (Likoni)", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "039.4293", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Medical Clinic (Likoni)", 
+        "latitude": "-03.9975", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Changamwe", 
+        "code": 16794, 
+        "name": "Nyumbani Medical Clinic", 
+        "created": "2010-01-31T00:00:00", 
+        "official_name": "Nyumbani Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Island", 
+        "code": 11290, 
+        "name": "Conar Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Conar Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "division": "Likoni", 
+        "code": 11249, 
+        "name": "Bera Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "official_name": "Bera Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "longitude": "39.4293", 
+        "latitude": "-3.9975", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11252, 
+        "name": "Biham Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "39.4293", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "official_name": "Biham Clinic", 
+        "latitude": "-3.9975", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11416, 
+        "name": "Huduma Medical Clinic (Kilindini)", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "longitude": "39.4293", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Huduma Medical Clinic (Kilindini)", 
+        "latitude": "-3.9975", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Island", 
+        "code": 11724, 
+        "name": "Ocean Healthcare Centre", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "39.6766", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Ocean Healthcare Centre", 
+        "latitude": "-4.05188", 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "nairobi"
+        }, 
+        "division": "Westlands", 
+        "code": 16797, 
+        "name": "Dr Waris", 
+        "official_name": "Dr Waris", 
+        "created": "2010-01-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "near Highridge shopping centtre", 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "tala"
+        }, 
+        "division": "Matungulu", 
+        "code": 12767, 
+        "name": "St Michael Medical Clinic (Kangundo)", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "St Michael Medical Clinic (Kangundo)", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Machakos", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kathaana"
+        }, 
+        "division": "Kakuyuni", 
+        "code": 12219, 
+        "name": "Kathaana Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Kathaana Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Machakos", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Jomvu", 
+        "code": 11224, 
+        "name": "Apia Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Apia Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Island", 
+        "code": 11546, 
+        "name": "Makande Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Makande Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11389, 
+        "name": "Geuma Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "39.4293", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Geuma Medical Clinic", 
+        "latitude": "-3.9975", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11857, 
+        "name": "Triangle Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "039.4293", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Triangle Medical Clinic", 
+        "latitude": "-03.9975", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11872, 
+        "name": "Upeoni X-Ray", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "longitude": "39.4293", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "official_name": "Upeoni X-Ray", 
+        "latitude": "-3.9975", 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Changamwe", 
+        "code": 11708, 
+        "name": "Neighbours Medical Clinic", 
+        "official_name": "Neighbours Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "location_desc": "Just after mainland magongo junction on your left handside towards miritini", 
+        "longitude": "39.37203", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "plot_number": "18/17/vmm", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "latitude": "-04.01305", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Likoni", 
+        "code": 11211, 
+        "name": "Alfarooq Medical Clinic", 
+        "official_name": "Alfarooq Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Clinical Officers Council"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "location_desc": "Along Changamwe Magongo Mainland road.", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mtwapa"
+        }, 
+        "division": "Kikambala", 
+        "code": 11215, 
+        "name": "Amani Family Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Amani Family Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kilifi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Island", 
+        "code": 11874, 
+        "name": "Utu Bora Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Utu Bora Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "githurai"
+        }, 
+        "division": "Ruiru", 
+        "code": 10328, 
+        "name": "Hope Medical Clinic (Thika)", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Hope Medical Clinic (Thika)", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Island", 
+        "code": 11502, 
+        "name": "Kp&Tc Staff Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "longitude": "39.65512", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Company Medical Service"
+        }, 
+        "operation_status": {
+            "name": "Operational"
+        }, 
+        "official_name": "KP&TC Staff Clinic", 
+        "latitude": "-4.06441", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mweiga"
+        }, 
+        "division": " ", 
+        "code": 10813, 
+        "name": "Mwereri Sunrise Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Mwereri Sunrise Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyeri", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kiambere"
+        }, 
+        "division": "Nyamira", 
+        "code": 13682, 
+        "name": "Kiambere Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Kiambere Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyamira", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "thika"
+        }, 
+        "division": "Ruiru", 
+        "code": 10658, 
+        "name": "Lewis Welligton Hospital", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Lewis Welligton Hospital", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Kiambu", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "nairobi"
+        }, 
+        "division": "Westlands", 
+        "code": 13073, 
+        "name": "Masaba Hospital", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Masaba Hospital", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "code": 10084, 
+        "name": "CFWs Shops", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "CFWS Shops", 
+        "facility_type": {
+            "name": "Not in List"
+        }, 
+        "county": "Kirinyaga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Non-Governmental Organizations"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "code": 16887, 
+        "name": "Our Lady of Lourdes Mwea Hospital 11", 
+        "created": "2010-06-17T18:43:46.367", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 11", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "number_of_beds": 150.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }, 
+        "number_of_cots": 10.0
+    }, 
+    {
+        "code": 16889, 
+        "name": "Our Lady of Lourdes Mwea Hospital20", 
+        "created": "2010-06-17T18:48:05.003", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 150.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16890, 
+        "name": "Our Lady of Lourdes 19", 
+        "created": "2010-06-17T18:48:29.973", 
+        "official_name": "Our Lady of Lourdes19", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 60.0
+    }, 
+    {
+        "code": 16895, 
+        "name": "Our Lady of Lourdes Mwea Hospital 12", 
+        "created": "2010-06-17T18:55:15.510", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 12", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 21.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }, 
+        "number_of_cots": 2.0
+    }, 
+    {
+        "code": 16896, 
+        "name": "14", 
+        "created": "2010-06-17T18:56:46.913", 
+        "official_name": "our lady of lourdesss", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 16897, 
+        "name": "Our Lady of Lourdes Mwea Hospital-01", 
+        "created": "2010-06-24T11:25:10.027", 
+        "official_name": "our lady of lourdes mwea hospital-01", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Mombasa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 25.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "majengo"
+        }, 
+        "division": "island", 
+        "code": 16898, 
+        "name": "Our Lady of Lourdes Mwea Hospital -01", 
+        "created": "2010-06-24T11:26:25.163", 
+        "official_name": "our lady of lourdes Mwea Hospital -01", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Mombasa", 
+        "plot_number": "mn102x", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kwale"
+        }, 
+        "division": "Matuga", 
+        "code": 16899, 
+        "name": "Our Lady of Lourdes Mwea Hospital - 07", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital ", 
+        "created": "2010-06-24T11:30:22.670", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Kwale", 
+        "plot_number": "2001-2010", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Near Noor mosque", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "voi"
+        }, 
+        "division": "Voi", 
+        "code": 16900, 
+        "name": "Our Lady of Lourdes Mwea Hospital-03", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital", 
+        "created": "2010-06-24T11:33:05.430", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Taita Taveta", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Along Hospital Road", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mwatate"
+        }, 
+        "division": "mwatate", 
+        "code": 16901, 
+        "name": "Our Lady of Lourdes Mwea Hospital-09", 
+        "created": "2010-06-24T11:35:33.363", 
+        "official_name": "our lady of lourdes mwea hospital-09", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Taita Taveta", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "CHANGAMWE", 
+        "code": 16902, 
+        "name": "Our Lady of Lourdes Mwea Hospitall 10", 
+        "official_name": "our lady of lourdes mwea hosptalL", 
+        "created": "2010-06-24T11:38:03.737", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Mombasa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "NEXT TO MOI INTERNATIONAL AIRPORT OFF OLD AIRPORT ROAD", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "msambweni"
+        }, 
+        "division": "msambweni", 
+        "code": 16903, 
+        "name": "Our Lady of Lourdes Mwea Hospital 02", 
+        "official_name": "our lady of lourdes mwea hospital 02", 
+        "created": "2010-06-24T11:41:32.023", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Kwale", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "next to  main highway embu nairobi road", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Changamwe", 
+        "code": 16904, 
+        "name": "Our Lady of Lourdes Mwea Hospital 06", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 06", 
+        "created": "2010-06-24T11:42:26.500", 
+        "location_desc": "Next to main highway Nairobi-", 
+        "longitude": "+039.43220", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "plot_number": "348", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "latitude": "+04.01740", 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kinango"
+        }, 
+        "division": "Kinango", 
+        "code": 16905, 
+        "name": "Our Lady of Lourdes Mwea Hospital 05", 
+        "created": "2010-06-24T11:43:07.240", 
+        "official_name": "Our lady of Lourdes Mwea Hospital 05", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Kwale", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "lutsangani"
+        }, 
+        "division": "Kasemeni", 
+        "code": 16906, 
+        "name": "Our Lady of Lourdes Mwea 04", 
+        "official_name": "our Lady of Lourdes Mwea", 
+        "created": "2010-06-24T11:43:35.133", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Kwale", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Along Mazeras-Kinango road", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "tudor"
+        }, 
+        "division": "Island", 
+        "code": 16907, 
+        "name": "Our Lady of Loudes Mwea", 
+        "official_name": "Our Lady of Loudes Mwea", 
+        "created": "2010-06-24T11:45:26.483", 
+        "regulatory_body": {
+            "name": "Pharmacy & Poisons Board"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Mombasa", 
+        "plot_number": "999 /mn", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Along Moi Avenue off Nyali road near Stadium", 
+        "number_of_beds": 154.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 20.0
+    }, 
+    {
+        "town": {
+            "name": "near kcb bank"
+        }, 
+        "division": "Matuga", 
+        "code": 16908, 
+        "name": "Our Lady of Lourdes Mwea - 10", 
+        "official_name": "Our Lady of Lourdes Mwea", 
+        "created": "2010-06-24T11:46:55.477", 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Kwale", 
+        "plot_number": "176", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Kwale town centre.", 
+        "number_of_beds": 2.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16910, 
+        "name": "Our Lady of Lourdes Mwea Hospital 10", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital", 
+        "created": "2010-06-24T11:48:57.813", 
+        "location_desc": "along Nairobi-Embu Rd (off Embu-Mwea Rd)", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Kwale", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mpeketoni"
+        }, 
+        "division": "Mpeketoni", 
+        "code": 16912, 
+        "name": "Our Lady of Lourdes Lamu1 Hospital", 
+        "created": "2010-07-01T12:50:47.320", 
+        "official_name": "Our Lady of Lourdes Lamu1 Hospital", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Lamu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 100.0, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 20.0
+    }, 
+    {
+        "town": {
+            "name": "hola"
+        }, 
+        "division": "galole", 
+        "code": 16913, 
+        "name": "Our Lady of Lourdes Tana River2 Hospital", 
+        "created": "2010-07-01T12:58:32.247", 
+        "official_name": "Our lady of lourdes tana river2 hospital ", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Tana River", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 132.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 23.0
+    }, 
+    {
+        "town": {
+            "name": "kilifi"
+        }, 
+        "division": "bahari", 
+        "code": 16916, 
+        "name": "Our Lady of Lourdes Kilifi Hospital", 
+        "official_name": "Our Lady Of Lourdes Kilifi Hospital", 
+        "created": "2010-07-01T13:00:59.443", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Kilifi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Near kilifi town centre", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mpeketoni"
+        }, 
+        "division": "Mpeketoni", 
+        "code": 16918, 
+        "name": "Our Lady of Lourdes Lamu 2 Hospital", 
+        "official_name": "Our lady of lourdes lamu 2 hospital", 
+        "created": "2010-07-01T13:01:19.717", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Lamu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Located between mkunumbi and mpeketoni road", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "shella market"
+        }, 
+        "division": "Malindi", 
+        "code": 16919, 
+        "name": "Our Lady of Lourdes Malindi Hospital", 
+        "created": "2010-07-01T13:01:25.607", 
+        "official_name": "Our Lady Of Lourdes Malindi Hospital", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Kilifi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16920, 
+        "name": "Tana River 1 Hospital", 
+        "official_name": "Our Lady Of Lourdes Tana River 1 Hospital", 
+        "created": "2010-07-01T13:01:35.087", 
+        "location_desc": "Near the Malindi Garissa Highway", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Tana River", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16941, 
+        "name": "Our Lady of Lourdes Mwea Hospital 04", 
+        "created": "2010-07-08T11:49:10.007", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 04", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Mandera", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Other Public Institution"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "takaba"
+        }, 
+        "division": "Takaba x", 
+        "code": 16942, 
+        "name": "Our Lady of Lourdes Mwea Hospital 6", 
+        "created": "2010-07-08T11:52:29.050", 
+        "official_name": "Our Lady Of Lourdes Mwea  Hospital 6", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Mandera", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Local Authority"
+        }, 
+        "keph_level": {
+            "name": "Level 5"
+        }
+    }, 
+    {
+        "town": {
+            "name": "habaswein trading centre"
+        }, 
+        "division": "Habaswein", 
+        "code": 16943, 
+        "name": "Our Lady of Lourdes Mwea Hospital 7", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 7", 
+        "created": "2010-07-08T11:54:00.030", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Wajir", 
+        "plot_number": "t201/2010", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "adjacent to DC,s office Wajir South", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }
+    }, 
+    {
+        "town": {
+            "name": "griftu"
+        }, 
+        "division": "Arbajahan", 
+        "code": 16944, 
+        "name": "Our Lady of Lourdes Wajir West", 
+        "created": "2010-07-08T11:55:08.300", 
+        "official_name": "Our lady of lourdes mwea hospital 09", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Wajir", 
+        "plot_number": "005", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 4.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16945, 
+        "name": "Our Lady of Lourdes Mwea Hospital-08", 
+        "created": "2010-07-08T15:26:28.197", 
+        "official_name": "our lady of lourdes  hospital 08", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Mandera", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }
+    }, 
+    {
+        "code": 16946, 
+        "name": "Our Lady of Lourdes Mwea Hospital-100", 
+        "created": "2010-07-08T15:27:18.450", 
+        "official_name": "our lady of lourdes mwea hospital-100", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Wajir", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16947, 
+        "name": "Our Lady of Lourdes Mwea Hospital 3", 
+        "created": "2010-07-08T15:27:54.353", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 3", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Garissa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16948, 
+        "name": "Our Lady of Lourdes Mwea Hospital 5", 
+        "created": "2010-07-08T15:31:55.787", 
+        "official_name": "Our Lady Of Lourdes mwea Hospital 5", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Garissa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "code": 16949, 
+        "name": "Our Lady of Lourdes Mwea Hospital-02", 
+        "created": "2010-07-08T15:32:26.280", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 2", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Wajir", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }
+    }, 
+    {
+        "code": 16951, 
+        "name": "Our Lady of Lourdes Mwea Hospital 100", 
+        "created": "2010-07-08T15:37:19.727", 
+        "official_name": "Our Lady of Lourdes Mwea Hospital 100", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Wajir", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 16.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 8.0
+    }, 
+    {
+        "town": {
+            "name": "makutano"
+        }, 
+        "division": "Yatta", 
+        "code": 17107, 
+        "name": "Nys Mavoloni", 
+        "created": "2010-09-04T12:01:16.483", 
+        "official_name": "Nys Mavoloni", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Machakos", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 1.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }
+    }, 
+    {
+        "town": {
+            "name": "voi town"
+        }, 
+        "division": "Voi", 
+        "code": 17128, 
+        "name": "Moi Voi Hospital", 
+        "official_name": "Moi", 
+        "created": "2010-09-20T10:49:23.043", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Taita Taveta", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Near Voi GK prison", 
+        "number_of_beds": 96.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 16.0
+    }, 
+    {
+        "town": {
+            "name": "jepses"
+        }, 
+        "division": "Jepkoyai", 
+        "code": 17167, 
+        "name": "Kimogoi MOH Dispensary", 
+        "created": "2010-10-01T14:55:55.587", 
+        "official_name": "Kimogoi moh Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Vihiga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 2.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }, 
+        "number_of_cots": 2.0
+    }, 
+    {
+        "town": {
+            "name": "jepkoyai paste"
+        }, 
+        "division": "Jepkoyai ", 
+        "code": 17168, 
+        "name": "Jepkoyai Dispensary", 
+        "created": "2010-10-01T15:10:58.897", 
+        "official_name": "Jepkoyai Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Vihiga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 2.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }, 
+        "number_of_cots": 2.0
+    }, 
+    {
+        "town": {
+            "name": "lkuroto village"
+        }, 
+        "division": "Kirisia", 
+        "code": 17188, 
+        "name": "Lkuroto Dispensary", 
+        "created": "2010-10-11T12:31:25.283", 
+        "official_name": "Lkuroto Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Samburu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kimilili"
+        }, 
+        "division": "Kamukuywa", 
+        "code": 17194, 
+        "name": "Nasusi", 
+        "created": "2010-10-12T11:32:29.990", 
+        "official_name": "Nasusi", 
+        "facility_type": {
+            "name": "Not in List"
+        }, 
+        "county": "Bungoma", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "NOT IN LIST"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "limuru town"
+        }, 
+        "division": "Limuru", 
+        "code": 17195, 
+        "name": "St Paul's Health Centre", 
+        "official_name": "St. Paul's Health Centre", 
+        "created": "2010-10-12T12:43:48.980", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "plot_number": "5941/4/1/3 rwaka", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "St. Paul university Road, Limuru", 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kagwe shopping centre"
+        }, 
+        "division": "Lari", 
+        "code": 17197, 
+        "name": "Ahadi Maternity Services", 
+        "official_name": "Ahadi Maternity Services", 
+        "created": "2010-10-13T15:19:48.413", 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Kagwe Shopping centre", 
+        "number_of_beds": 7.0, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }, 
+        "number_of_cots": 7.0
+    }, 
+    {
+        "town": {
+            "name": "kagwe"
+        }, 
+        "division": "Lari", 
+        "code": 17199, 
+        "name": "AIC Nduriri Dispensary", 
+        "official_name": "AIC Nduriri Dispensary", 
+        "created": "2010-10-13T15:41:01.883", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kiambu", 
+        "plot_number": "564", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Off Githunguri-Kimende road, next to Nduriri secondary Scool,Gatamaiyu primary and AIC Nduriri church", 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "limuru"
+        }, 
+        "division": "Limuru", 
+        "code": 17200, 
+        "name": "Karirana Mch/Fp Clinic", 
+        "official_name": "Karirana MCH/FP Clinic", 
+        "created": "2010-10-13T15:49:17.957", 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "From Limuru town,Githiga Githunguri road", 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mboroti"
+        }, 
+        "division": "Limuru", 
+        "code": 17204, 
+        "name": "Holy Cross Dispensary", 
+        "created": "2010-10-14T11:37:54.633", 
+        "official_name": "Holy Cross Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kimende market"
+        }, 
+        "division": "Lari", 
+        "code": 17205, 
+        "name": "Kimende Orthodox Mission Health Centre", 
+        "official_name": "Kimende Orthodox Mission Health Centre", 
+        "created": "2010-10-14T13:08:04.803", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Health Centre"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Kimende Market,off Nairobi Nakuru high way", 
+        "number_of_beds": 2.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }, 
+        "number_of_cots": 2.0
+    }, 
+    {
+        "town": {
+            "name": "kambaa"
+        }, 
+        "division": "Lari", 
+        "code": 17206, 
+        "name": "Immaculate Heart Hospital Kereita", 
+        "official_name": "Immaculate Heart Hospital Kereita", 
+        "created": "2010-10-14T13:19:07.240", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Health Centre"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Kambaa Market, Kagwe road from Kimende shopping centre", 
+        "number_of_beds": 36.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 3"
+        }, 
+        "number_of_cots": 3.0
+    }, 
+    {
+        "town": {
+            "name": "murengeti shopping centre"
+        }, 
+        "division": "Limuru", 
+        "code": 17207, 
+        "name": "Bibirioni Dispensary", 
+        "official_name": "Bibirioni Dispensary", 
+        "created": "2010-10-14T13:30:37.170", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kiambu", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Off Murengeti stage on the Nairobi Nakuru highway", 
+        "number_of_beds": 3.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "limuru"
+        }, 
+        "division": "Limuru", 
+        "code": 17208, 
+        "name": "Imani Medical Clinic (Kiambu West)", 
+        "official_name": "Imani Medical Clinic (Kiambu West)", 
+        "created": "2010-10-14T13:42:14.610", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "plot_number": "14", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Limuru Shopping Centre, Opposite Rongai Supermarket", 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "iten"
+        }, 
+        "division": "chebiemit", 
+        "code": 17257, 
+        "name": "Kiplobotwo", 
+        "created": "2010-10-21T13:37:21.837", 
+        "official_name": "kiplobotwo dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Elgeyo Marakwet", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "grift"
+        }, 
+        "division": "Grift", 
+        "code": 17288, 
+        "name": "Shantaabaq Dispensary", 
+        "created": "2010-10-24T21:14:44.233", 
+        "official_name": "Shantaabaq Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Wajir", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kapsowar"
+        }, 
+        "division": "CHEBIEMIT", 
+        "code": 17399, 
+        "name": "Bungwet", 
+        "created": "2010-11-16T11:47:37.923", 
+        "official_name": "BUNGWET DISPENSARY", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Elgeyo Marakwet", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kilgoris"
+        }, 
+        "division": "Kilgoris", 
+        "code": 17457, 
+        "name": "Entargeeti Dispensary", 
+        "official_name": "Entargeeti Dispensary", 
+        "created": "2011-01-25T15:58:43.383", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Narok", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Kilgoris,Mutinkuar Entargeeti", 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "arbajahan"
+        }, 
+        "division": "Arbajahan", 
+        "code": 17464, 
+        "name": "Nomadic Clinic", 
+        "created": "2011-02-05T11:56:45.550", 
+        "official_name": "Nomadic clinic", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Wajir", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "magumu"
+        }, 
+        "division": "south kinangop", 
+        "code": 17493, 
+        "name": "Amani MC", 
+        "official_name": "Amani m/c", 
+        "created": "2011-02-28T17:37:33.400", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "along njabini olkalou road", 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "code": 17495, 
+        "name": "Amani Medical Clinic Murungaru", 
+        "created": "2011-03-01T01:06:15.717", 
+        "official_name": "Amani medical clinic murungaru ", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 17497, 
+        "name": "Our Lady of Mercy Dispensary", 
+        "created": "2011-03-01T01:51:01.560", 
+        "official_name": "Our Lady of Mercy Dispensary", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 17506, 
+        "name": "River Jordan Medical Clinic", 
+        "created": "2011-03-01T09:29:09.350", 
+        "official_name": "River Jordan Medical Clinic", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Bungoma", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Clinical Officers Council"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 17508, 
+        "name": "Grace Medical Clinic", 
+        "created": "2011-03-01T09:33:00.963", 
+        "official_name": "Grace Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Bungoma", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "division": "Kipipiri", 
+        "code": 17555, 
+        "name": "Lereshwa Dispensary", 
+        "created": "2011-03-04T21:15:40.077", 
+        "official_name": "LERESHWA DISPENSARY", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kutus"
+        }, 
+        "division": "Ndia", 
+        "code": 17578, 
+        "name": "Kimicha Medical Clinic", 
+        "official_name": "Kimicha Medical Clinic", 
+        "created": "2011-03-10T15:54:50.230", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": "11", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "location_desc": "Kimicha Shopping centre", 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "machakos town"
+        }, 
+        "division": "Central", 
+        "code": 17665, 
+        "name": "Kalimani VCT", 
+        "official_name": "Kalimani VCT", 
+        "created": "2011-05-08T14:56:16.840", 
+        "regulatory_body": {
+            "name": "Kenya Medical Laboratory, Tech & Technologists Board"
+        }, 
+        "facility_type": {
+            "name": "VCT Centre (Stand-Alone)"
+        }, 
+        "county": "Machakos", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "In Machakos Town, near Mwalimu Centre building", 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kapkoi"
+        }, 
+        "division": "Chepkorio", 
+        "code": 17753, 
+        "name": "Sabor", 
+        "created": "2011-05-31T13:00:37.633", 
+        "official_name": "Sabor dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Elgeyo Marakwet", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "riakinia"
+        }, 
+        "division": "Ndia East", 
+        "code": 17764, 
+        "name": "Karima-Ini Dispensary", 
+        "created": "2011-05-31T14:55:55.987", 
+        "official_name": "Karimani-ini Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kirinyaga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kajiado town"
+        }, 
+        "division": "Central", 
+        "code": 17796, 
+        "name": "Kajiado (AIC) Dispensary", 
+        "created": "2011-05-31T22:21:26.370", 
+        "official_name": "Kajiado(AIC) Dispensary ", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kajiado", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 3.0, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }, 
+        "number_of_cots": 1.0
+    }, 
+    {
+        "town": {
+            "name": "ngong town."
+        }, 
+        "division": " Ngong", 
+        "code": 17799, 
+        "name": "Ololua Dispensary", 
+        "official_name": "Oioiua Dispensary.", 
+        "created": "2011-05-31T22:58:44.727", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kajiado", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Ngong Ololua Road.", 
+        "number_of_beds": 2.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "embakasi airport"
+        }, 
+        "division": "Embakasi", 
+        "code": 17856, 
+        "name": "Gibbo Medical Clinic", 
+        "official_name": "Gibbo Medical Clinic", 
+        "created": "2011-06-13T08:54:05.070", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nairobi", 
+        "plot_number": "2089 utawala", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Opposite Administration Police", 
+        "number_of_beds": 2.0, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }, 
+        "number_of_cots": 1.0
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Changamwe", 
+        "code": 17865, 
+        "name": "Anne Medical Clinic (Kilindini)", 
+        "official_name": "Anne Medical Clinic", 
+        "created": "2011-06-13T14:55:40.710", 
+        "location_desc": "Off. airport road turnover holy ghost cathedral church straight near the celtel tower", 
+        "longitude": "039.37696", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "plot_number": "13/49 chaani", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "latitude": "-04.02031", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kiserian"
+        }, 
+        "division": "Ewuao Kedong", 
+        "code": 17868, 
+        "name": "Eremit Disp", 
+        "created": "2011-06-13T16:00:39.593", 
+        "official_name": "Eremit Disp", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kajiado", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mlolongo"
+        }, 
+        "division": "Athi River", 
+        "code": 17907, 
+        "name": "Kanco", 
+        "created": "2011-06-22T22:03:21.530", 
+        "official_name": "Kanco", 
+        "facility_type": {
+            "name": "VCT Centre (Stand-Alone)"
+        }, 
+        "county": "Machakos", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya Medical Laboratory, Tech & Technologists Board"
+        }, 
+        "owner": {
+            "name": "Non-Governmental Organizations"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "githuraii 45"
+        }, 
+        "division": "Ruaraka", 
+        "code": 17936, 
+        "name": "St John Hospital Limited", 
+        "official_name": "St John Hospital ", 
+        "created": "2011-07-01T10:25:25.420", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "plot_number": "119557", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Off Thika Road Ngumba Road", 
+        "number_of_beds": 42.0, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 6.0
+    }, 
+    {
+        "town": {
+            "name": "malindi"
+        }, 
+        "division": "Malindi", 
+        "code": 17965, 
+        "name": "Malindi Care Service Limited", 
+        "official_name": "Malindi care service limited", 
+        "created": "2011-07-04T19:57:35.507", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kilifi", 
+        "plot_number": "3505", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Oposite malindi hospital", 
+        "number_of_beds": 5.0, 
+        "owner": {
+            "name": "Private Practice - Medical Specialist"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }, 
+        "number_of_cots": 2.0
+    }, 
+    {
+        "town": {
+            "name": "mathare area 3"
+        }, 
+        "division": "Kasarani", 
+        "code": 17971, 
+        "name": "Provide International Health Care (Mathare)", 
+        "official_name": "Provide international health care ", 
+        "created": "2011-07-05T20:42:33.373", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "Health Centre"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Just direct opposite bethany bible college", 
+        "number_of_beds": 12.0, 
+        "owner": {
+            "name": "Non-Governmental Organizations"
+        }, 
+        "keph_level": {
+            "name": "Level 3"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mombasa"
+        }, 
+        "division": "Changamwe", 
+        "code": 18024, 
+        "name": "Westpark Clinic (The Yahes)", 
+        "official_name": "Westpark Clinic", 
+        "created": "2011-07-11T14:21:46.757", 
+        "location_desc": "Just near magongo mainland junctionnext to zain communication tower ", 
+        "longitude": "039.37236", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "owner": {
+            "name": "Private Practice - Clinical Officer"
+        }, 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Clinical Officers Council"
+        }, 
+        "latitude": "-04.01336", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 18026, 
+        "name": "Likii River Farm Dispensary", 
+        "created": "2011-07-12T11:27:45.547", 
+        "official_name": "Likii River Farm Dispensary", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Laikipia", 
+        "owner": {
+            "name": "Company Medical Service"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "gakoigo market"
+        }, 
+        "division": "Maragua", 
+        "code": 18060, 
+        "name": "Njawa Med Clinic", 
+        "created": "2011-07-18T08:27:19.837", 
+        "official_name": "Njawa Medical Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Murang'a", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 18150, 
+        "name": "Shalom Community Hospital Athi River", 
+        "created": "2011-08-27T21:18:24.370", 
+        "official_name": "Shalom Community Hospital Athi River", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Machakos", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "number_of_beds": 150.0, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 50.0
+    }, 
+    {
+        "code": 18151, 
+        "name": "Athi River Complex and Community Health Centre", 
+        "created": "2011-08-27T21:25:48.270", 
+        "official_name": "Athi River Complex and Community Health Centre", 
+        "facility_type": {
+            "name": "Health Centre"
+        }, 
+        "county": "Machakos", 
+        "owner": {
+            "name": "Private Practice - General Practitioner"
+        }
+    }, 
+    {
+        "code": 18153, 
+        "name": "Kimutwa Medical Clinic-Athi River", 
+        "created": "2011-08-27T21:35:29.357", 
+        "official_name": "Kimutwa Medical Clinic-Athi River", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Machakos", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 18154, 
+        "name": "Favour PHC", 
+        "created": "2011-08-27T21:38:47.617", 
+        "official_name": "Favour PHC", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Machakos", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "division": "Athi River", 
+        "code": 18157, 
+        "name": "Kmc Dispensary", 
+        "created": "2011-08-27T21:51:37.667", 
+        "official_name": "KMC Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Machakos", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya Medical Laboratory, Tech & Technologists Board"
+        }, 
+        "owner": {
+            "name": "Company Medical Service"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "ruiru"
+        }, 
+        "division": "Ruiru", 
+        "code": 18181, 
+        "name": "Quality of Life Medical Clinic", 
+        "official_name": "Quality of Life Medical Clinic", 
+        "created": "2011-09-13T10:11:01.587", 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "plot_number": "bl 1/460", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "location_desc": "Along Ruiru - Kiambu Road near GK Prisons Ruiru", 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kapcherop"
+        }, 
+        "division": "kapcherop", 
+        "code": 18205, 
+        "name": "Kerer", 
+        "created": "2011-09-20T12:39:42.703", 
+        "official_name": "Kerer Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Elgeyo Marakwet", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "musanda"
+        }, 
+        "division": "Ugunja", 
+        "code": 18369, 
+        "name": "Uhuyi Dispensary", 
+        "official_name": "Uhuyi Dispensary", 
+        "created": "2012-01-31T13:31:07.157", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Siaya", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Near Musanda Market", 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "garissa"
+        }, 
+        "division": "Central", 
+        "code": 18437, 
+        "name": "Bulla Mzuri Dispensary", 
+        "created": "2012-04-02T16:07:03.383", 
+        "official_name": "Bulla Mzuri Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Garissa", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "tudor primary school"
+        }, 
+        "division": "Island", 
+        "code": 18517, 
+        "name": "Zennith Community Project", 
+        "official_name": "Zennith", 
+        "created": "2012-06-13T11:18:22.753", 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Mombasa", 
+        "operation_status": {
+            "name": "Operational"
+        }, 
+        "location_desc": "In the compound of Tudor Primary School off Makupa Causeway", 
+        "owner": {
+            "name": "Community"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "ruiru town"
+        }, 
+        "division": "Ruiru", 
+        "code": 18540, 
+        "name": "Dr Ng'ang'a Medical Clinic", 
+        "official_name": "Dr Ng'ang'a Medical Clinic", 
+        "created": "2012-06-25T13:03:51.993", 
+        "location_desc": "Adjacent to Dcs offices Ruiru. Located at Intercity building Ruiru town", 
+        "longitude": "36.95982", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kiambu", 
+        "owner": {
+            "name": "Private Practice - General Practitioner"
+        }, 
+        "plot_number": "97/125 ruiru township", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "latitude": "-1.14678", 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "inside kabarak university compound"
+        }, 
+        "division": "Kampi ya Moto", 
+        "code": 18602, 
+        "name": "Kabarak University Centre", 
+        "created": "2012-08-02T12:08:11.957", 
+        "official_name": "Kabarak University Centre", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nakuru", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "ngando"
+        }, 
+        "division": "Riruta", 
+        "code": 18609, 
+        "name": "R-Care Health Service", 
+        "created": "2012-08-06T10:43:56.483", 
+        "official_name": "R-Care Health Service", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Private Practice - Medical Specialist"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "lodwar"
+        }, 
+        "division": "Central", 
+        "code": 18353, 
+        "name": "Ng'iitakito Dispensary", 
+        "official_name": "Ng'iitakito Dispensary", 
+        "created": "2012-01-16T17:36:25.423", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Turkana", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "At Nakwamekwi sub-location about one and half km west of Lodwar Towm", 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "lodwar"
+        }, 
+        "division": "Central", 
+        "code": 18366, 
+        "name": "Ngiitakito Dispensary", 
+        "official_name": "Ngiitakito Dispensary", 
+        "created": "2012-01-28T09:52:34.133", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Turkana", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Within Lodwar Town. situated 2 and half kilometeres from town centre on western part of the town.", 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "nyahururu"
+        }, 
+        "division": "Municipality", 
+        "code": 10387, 
+        "name": "Kaanan Medical Centre", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Kaanan Medical Centre", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Not-Operational"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 41.0, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": " "
+        }, 
+        "division": "Central", 
+        "code": 10668, 
+        "name": "Maendeleo Ya Wanawake", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Maendeleo Ya Wanawake", 
+        "facility_type": {
+            "name": "Not in List"
+        }, 
+        "county": "Kirinyaga", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Non-Governmental Organizations"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "code": 16885, 
+        "name": "Our Lady", 
+        "created": "2010-06-17T17:59:29.833", 
+        "official_name": "Our Lady", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 25.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 2.0
+    }, 
+    {
+        "code": 16886, 
+        "name": "Our Lady of Loudres Mwea Hospital 1", 
+        "created": "2010-06-17T18:41:55.890", 
+        "official_name": "Our Lady Of Loudres Mwea Hospital 1", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 5.0
+    }, 
+    {
+        "code": 16888, 
+        "name": "Langata Health Centre", 
+        "created": "2010-06-17T18:44:39.777", 
+        "official_name": "lang'ata health center", 
+        "facility_type": {
+            "name": "Health Centre"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "number_of_beds": 40.0, 
+        "owner": {
+            "name": "Local Authority T Fund"
+        }, 
+        "keph_level": {
+            "name": "Level 3"
+        }, 
+        "number_of_cots": 20.0
+    }, 
+    {
+        "town": {
+            "name": "otiende shopping center"
+        }, 
+        "division": "Langata", 
+        "code": 16891, 
+        "name": "Our Lady of Lourdes Mwea Hospital", 
+        "official_name": "Our Lady Of Lourdes Mwea Hospital", 
+        "created": "2010-06-17T18:51:08.860", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "plot_number": "lr 1250", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Next Langata Women Prison", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }, 
+        "number_of_cots": 40.0
+    }, 
+    {
+        "code": 16893, 
+        "name": "Our Lady of Lourdes Mwea Hospital", 
+        "created": "2010-06-17T18:52:39.647", 
+        "official_name": "our lady of lourdes mwea hospital", 
+        "facility_type": {
+            "name": "Other Hospital"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "taveta"
+        }, 
+        "division": "Bomeni", 
+        "code": 16909, 
+        "name": "Our Lady of Lourdes Mwea Hospital 77", 
+        "official_name": "Our lady of lourdes mwea hospital 77", 
+        "created": "2010-06-24T11:48:36.787", 
+        "location_desc": "The hospital is next to a main highway ( Nairobi-Embu road)", 
+        "longitude": "039.43215", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Taita Taveta", 
+        "owner": {
+            "name": "Other Faith Based"
+        }, 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "number_of_beds": 120.0, 
+        "latitude": "04.01683", 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "tarasaa"
+        }, 
+        "division": "Tarasaa", 
+        "code": 16914, 
+        "name": "Our Lady of Lourdes Tana Delta Hospital", 
+        "created": "2010-07-01T12:59:25.083", 
+        "official_name": "Our lady of Lourdes Tana Delta Hospital", 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Tana River", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 200.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kaloleni"
+        }, 
+        "division": "Kaloleni", 
+        "code": 16915, 
+        "name": "Our Lady of Lourdes Kaloleni1Hospital", 
+        "official_name": "Clarah Juaje", 
+        "created": "2010-07-01T13:00:58.113", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Kilifi", 
+        "plot_number": "523", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Next to Chalani Primary School", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mariakani"
+        }, 
+        "division": "Mariakani", 
+        "code": 16917, 
+        "name": "Our Lady of Lourdes Kaloleni2 Hospital", 
+        "official_name": "Our Lady Of Lourdes Kaloleni2 Hospital", 
+        "created": "2010-07-01T13:01:10.890", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "facility_type": {
+            "name": "District Hospital"
+        }, 
+        "county": "Kilifi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Along Mombasa-Nairobi Highway", 
+        "number_of_beds": 120.0, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 4"
+        }
+    }, 
+    {
+        "town": {
+            "name": "njukini market"
+        }, 
+        "division": "Rombo", 
+        "code": 17054, 
+        "name": "Njukini Dispensary", 
+        "created": "2010-08-23T09:52:02.490", 
+        "official_name": "Njukini Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kajiado", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 4.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "lodwar"
+        }, 
+        "division": "Central", 
+        "code": 17181, 
+        "name": "Kenya Medical Training Collge Lodwar", 
+        "official_name": "Kenya Medical Training Collge Lodwar", 
+        "created": "2010-10-05T23:11:11.610", 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "facility_type": {
+            "name": "Training Institution in Health (Stand-alone)"
+        }, 
+        "county": "Turkana", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Alongside the Lodwar District Hospital", 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "code": 17285, 
+        "name": "Songeto", 
+        "created": "2010-10-24T11:12:33.573", 
+        "official_name": "songeto  dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Elgeyo Marakwet", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "code": 17286, 
+        "name": "Kapchebar", 
+        "created": "2010-10-24T11:21:10.267", 
+        "official_name": "Kapchebar", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Elgeyo Marakwet", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }
+    }, 
+    {
+        "town": {
+            "name": "iten"
+        }, 
+        "division": "Kamariny", 
+        "code": 17291, 
+        "name": "17283", 
+        "created": "2010-10-25T11:50:43.563", 
+        "official_name": "kipsoen", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Elgeyo Marakwet", 
+        "plot_number": "15", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mukoe"
+        }, 
+        "division": "Kandara", 
+        "code": 17311, 
+        "name": "Mukoe", 
+        "created": "2010-10-26T13:47:08.857", 
+        "official_name": "Mukoe", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Murang'a", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "karen shopping center"
+        }, 
+        "division": "Lang'ata", 
+        "code": 17419, 
+        "name": "Dsc Karen Dispensary (Armed Forces)", 
+        "official_name": "DSC Karen Dispensary (Armed Forces)", 
+        "created": "2010-11-26T08:36:33.083", 
+        "regulatory_body": {
+            "name": "Other"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Off Karen-Ngong rd.After the Karen roundabout", 
+        "owner": {
+            "name": "Armed Forces"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "mukinduri"
+        }, 
+        "division": "Central", 
+        "code": 17452, 
+        "name": "Mukinduri Chemists", 
+        "created": "2011-01-13T16:37:45.367", 
+        "official_name": "Mukinduri Chemists", 
+        "facility_type": {
+            "name": "Not in List"
+        }, 
+        "county": "Kirinyaga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Pharmacy & Poisons Board"
+        }, 
+        "owner": {
+            "name": "Private Practice - Unspecified"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "city cabanas"
+        }, 
+        "division": "Lang'ata", 
+        "code": 17459, 
+        "name": "Courtesy Cbs", 
+        "official_name": "Courtesy Urban Slums,Peri-Urban and Rural Community Based Health Services", 
+        "created": "2011-01-28T11:25:37.727", 
+        "regulatory_body": {
+            "name": "Clinical Officers Council"
+        }, 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "location_desc": "Kyang'ombe Village near the gas factory,opposite Tusky's supermarket along Mombasa Highway", 
+        "owner": {
+            "name": "Non-Governmental Organizations"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kerugoya town"
+        }, 
+        "division": "Central", 
+        "code": 17617, 
+        "name": "Karatina Maternity & Nursing Home Annex", 
+        "official_name": "Karatina Maternity & Nursing Home Annex", 
+        "created": "2011-04-06T11:44:40.253", 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Private Practice"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kirinyaga", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "Opposite Jivanjee Gardens at Narc Kenya Offices Building up stairs", 
+        "owner": {
+            "name": "Private Practice - General Practitioner"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kisasi"
+        }, 
+        "division": "chuluni", 
+        "code": 17688, 
+        "name": "Kityu", 
+        "official_name": "Kityu", 
+        "created": "2011-05-22T23:31:50.570", 
+        "regulatory_body": {
+            "name": "Clinical Officers Council"
+        }, 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Kitui", 
+        "plot_number": "87bh65", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "location_desc": "in town", 
+        "owner": {
+            "name": "Private Practice - Clinical Officer"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "nyahururu"
+        }, 
+        "division": "Municipality", 
+        "code": 10062, 
+        "name": "Bethsaida (PCEA) Dispensary (Nyandarua)", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Bethsaida (PCEA) Dispensary (Nyandarua)", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Operational"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Christian Health Association of Kenya"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "olkalau"
+        }, 
+        "division": "Manyatta", 
+        "code": 10682, 
+        "name": "Manyatta Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Manyatta Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "ndaragwa"
+        }, 
+        "division": "Ndaragwa", 
+        "code": 10550, 
+        "name": "Kiandege M Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Kiandege M. Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Nursing Council of Kenya (Private Practice)"
+        }, 
+        "owner": {
+            "name": "Private Practice - Nurse / Midwife"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "olkalau"
+        }, 
+        "division": "Olkalau ", 
+        "code": 11114, 
+        "name": "Tumaini Catholic Dispensary", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Tumaini Catholic Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Nyandarua", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Kenya Episcopal Conference-Catholic Secretariat"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "nairobi"
+        }, 
+        "division": "Langata", 
+        "code": 12923, 
+        "name": "Dr Karos Medical Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Dr  Karos Medical clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Nairobi", 
+        "operation_status": {
+            "name": "Closed"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Not Classified"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kilome\u00a0\u00a0 mkt"
+        }, 
+        "division": "Kilome", 
+        "code": 12010, 
+        "name": "Enzai Afya Clinic", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Enzai Afya Clinic", 
+        "facility_type": {
+            "name": "Medical Clinic"
+        }, 
+        "county": "Makueni", 
+        "plot_number": "n/a", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Kenya MPDB - Institution"
+        }, 
+        "owner": {
+            "name": "Private Enterprise (Institution)"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }, 
+    {
+        "town": {
+            "name": "kimana"
+        }, 
+        "division": "Kimana", 
+        "code": 14574, 
+        "name": "Inchalai Dispensary", 
+        "created": "2009-10-31T00:00:00", 
+        "official_name": "Inchalai Dispensary", 
+        "facility_type": {
+            "name": "Dispensary"
+        }, 
+        "county": "Kajiado", 
+        "plot_number": " ", 
+        "operation_status": {
+            "name": "Invalid"
+        }, 
+        "regulatory_body": {
+            "name": "Ministry of Health"
+        }, 
+        "number_of_beds": 3.0, 
+        "owner": {
+            "name": "Ministry of Health"
+        }, 
+        "keph_level": {
+            "name": "Level 2"
+        }
+    }
+]

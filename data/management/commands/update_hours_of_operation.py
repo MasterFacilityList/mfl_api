@@ -16,14 +16,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         file_path = os.path.join(
             settings.BASE_DIR,
-            'data/data/msc/facility_hours_of_operation.json')
+            'data/new_data/demo_part_2/0001_hours_of_operation.json')
         with open(file_path) as ops_data:
             data = json.load(ops_data)
             records = data[0].get('records')
             for record in records:
                 try:
-                    facility = Facility.objects.get(code=record.get('code'))
-                    open_24_hours = record.get('open_24_hours', None)
+                    facility = Facility.objects.get(code=record.get('facility'))
+                    open_24_hours = record.get('open_whole_day', None)
                     open_weekends = record.get('open_weekends', None)
                     if open_24_hours == 1:
                         facility.open_whole_day = True

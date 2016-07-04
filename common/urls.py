@@ -32,12 +32,21 @@ from .views import (
     ErrorQueueDetailView,
     ErrorQueueListView,
     UserSubCountyDetailView,
-    UserSubCountyListView
+    UserSubCountyListView,
+    NotificationListView,
+    NotificationDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^notifications/$',
+        NotificationListView.as_view(),
+        name='notifications_list'),
+    url(r'^notifications/(?P<pk>[^/]+)/$',
+        NotificationDetailView.as_view(),
+        name='notification_detail'),
+
 
     url(r'^errors/$',
         ErrorQueueListView.as_view(),

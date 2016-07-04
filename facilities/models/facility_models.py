@@ -4,6 +4,9 @@ import reversion
 import json
 import logging
 import re
+import datetime
+
+from dateutil import parser
 
 from django.conf import settings
 from django.core import validators
@@ -229,9 +232,22 @@ class FacilityType(AbstractBase):
     preceding = models.ForeignKey(
         'self', null=True, blank=True, related_name='preceding_type',
         help_text='The facility type that comes before this type')
+    parent = models.ForeignKey(
+        'self', on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def validate_sub_division(self):
+        if self.sub_division:
+            parent_type = self.__class__.objects.get(name=self.sub_division)
+            self.parent = parent_type
+        else:
+            self.parent = None
+
+    def clean(self, *args, **kwargs):
+        super(FacilityType, self).clean(*args, **kwargs)
+        self.validate_sub_division()
 
     class Meta(AbstractBase.Meta):
         unique_together = ('name', )
@@ -245,8 +261,8 @@ class RegulatingBodyContact(AbstractBase):
     A regulating body contacts.
     """
     regulating_body = models.ForeignKey(
-        'RegulatingBody', related_name='reg_contacts')
-    contact = models.ForeignKey(Contact)
+        'RegulatingBody', related_name='reg_contacts', on_delete=models.PROTECT,)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT,)
 
     def __str__(self):
         return "{}: ({})".format(self.regulating_body, self.contact)
@@ -319,9 +335,11 @@ class RegulatoryBodyUser(AbstractBase):
     Links user to a regulatory body.
     These are the users who  will be carrying out the regulatory activities
     """
-    regulatory_body = models.ForeignKey(RegulatingBody)
+    regulatory_body = models.ForeignKey(
+        RegulatingBody, on_delete=models.PROTECT,)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='regulatory_users')
+        settings.AUTH_USER_MODEL, related_name='regulatory_users',
+        on_delete=models.PROTECT,)
 
     def _ensure_a_user_is_linked_to_just_one_regulator(self):
         reg_user_records = self.__class__.objects.filter(
@@ -709,9 +727,13 @@ class Facility(SequenceMixin, AbstractBase):
         "has been approved to operate, is operating, is temporarily"
         "non-operational, or is closed down")
     ward = models.ForeignKey(
-        Ward,
+        Ward, null=True, blank=True,
         on_delete=models.PROTECT,
         help_text="County ward in which the facility is located")
+
+    county = models.ForeignKey(
+        County, on_delete=models.PROTECT, null=True, blank=True)
+
     owner = models.ForeignKey(
         Owner, on_delete=models.PROTECT,
         help_text="A link to the organization that owns the facility")
@@ -860,7 +882,7 @@ class Facility(SequenceMixin, AbstractBase):
         )
 
     @property
-    def county(self):
+    def _county(self):
         return self.ward.constituency.county.name
 
     @property
@@ -1010,7 +1032,9 @@ class Facility(SequenceMixin, AbstractBase):
                 })
 
     def validate_ward_and_sub_county(self):
-        if self.sub_county:
+        old_details = self.__class__.objects.get(id=self.id)
+
+        if self.sub_county and not old_details.sub_county:
             if self.sub_county != self.ward.sub_county:
                 raise ValidationError(
                     {
@@ -1032,7 +1056,8 @@ class Facility(SequenceMixin, AbstractBase):
             return "Yes"
         elif field_obj is False:
             return "No"
-
+        elif hasattr(field_obj, 'isoformat'):
+            return field_obj.isoformat()
         else:
             return field_obj
 
@@ -1047,15 +1072,22 @@ class Facility(SequenceMixin, AbstractBase):
         if hasattr(getattr(self, field), 'id'):
             field_name = field + "_id"
             return str(getattr(self, field_name))
+        elif hasattr(getattr(self, field), 'isoformat'):
+            return getattr(self, field).isoformat()
         else:
             return getattr(self, field)
+
+    def _get_display_field_name(self, field):
+        if hasattr(getattr(self, field), 'id'):
+            field_name = field + "_name"
+            return field_name
+
+        return field
 
     def _dump_updates(self, origi_model):
         fields = [field.name for field in self._meta.fields]
         forbidden_fields = [
-            'closed', 'closing_reason', 'closed_date',
-            'date_established'
-        ]
+            'closed', 'closing_reason', 'closed_date']
         data = []
         for field in fields:
             if (getattr(self, field) != getattr(origi_model, field) and
@@ -1065,6 +1097,7 @@ class Facility(SequenceMixin, AbstractBase):
                     "display_value": self._get_field_human_attribute(
                         field_data),
                     "actual_value": self._get_field_data(field),
+                    "display_field_name": self._get_display_field_name(field),
                     "field_name": self._get_field_name(field),
                     "human_field_name": field.replace("_", " ")
                 }
@@ -1120,6 +1153,11 @@ class Facility(SequenceMixin, AbstractBase):
         # enable closing a facility
         if not old_details.closed and self.closed:
             self.is_published = False
+            try:
+                op_status = FacilityStatus.objects.get(name='Closed')
+                self.operation_status = op_status
+            except FacilityStatus.DoesNotExist:
+                pass
             kwargs.pop('allow_save', None)
             super(Facility, self).save(*args, **kwargs)
             self.index_facility_material_view()
@@ -1138,9 +1176,8 @@ class Facility(SequenceMixin, AbstractBase):
         del old_details_serialized['updated']
         del old_details_serialized['created']
         del old_details_serialized['updated_by']
-        new_details_serialized = FacilityDetailSerializer(
-            self).data
-        del new_details_serialized['updated']
+        new_details_serialized = FacilityDetailSerializer(self).data
+        # del new_details_serialized['updated']
         del new_details_serialized['created']
         del new_details_serialized['updated_by']
 
@@ -1156,17 +1193,20 @@ class Facility(SequenceMixin, AbstractBase):
                 updates.pop('updated_by')
             except:
                 pass
-            try:
-                updates.pop('updated_by_id')
-            except:
-                pass
+            # try:
+            #     updates.pop('updated_by_id')
+            # except:
+            #     pass
+
             if updates:
-
-
                 try:
                     facility_update = FacilityUpdates.objects.filter(
                         facility=self, cancelled=False, approved=False)[0]
-                    json_updates = json.loads(facility_update.facility_updates)
+                    try:
+                        json_updates = json.loads(facility_update.facility_updates)
+                    except TypeError:
+                        json_updates = {}
+
                     recent_updates = json.loads(updates)
 
                     diffed_updates = []
@@ -1317,7 +1357,12 @@ class FacilityUpdates(AbstractBase):
             data = json.loads(self.facility_updates)
             for field_changed in data:
                 field_name = field_changed.get("field_name")
-                value = field_changed.get("actual_value")
+                if field_name == 'date_established':
+                    value = parser.parse(field_changed.get("actual_value"))
+                    new_date = datetime.date(year=value.year, month=value.month, day=value.day)
+                    value = new_date
+                else:
+                    value = field_changed.get("actual_value")
                 setattr(self.facility, field_name, value)
             self.facility.save(allow_save=True)
 
@@ -1456,9 +1501,11 @@ class FacilityOperationState(AbstractBase):
         FacilityStatus,
         help_text="Indicates whether the facility"
         "has been approved to operate, is operating, is temporarily"
-        "non-operational, or is closed down")
+        "non-operational, or is closed down",
+        on_delete=models.PROTECT,)
     facility = models.ForeignKey(
-        Facility, related_name='facility_operation_states')
+        Facility, related_name='facility_operation_states',
+        on_delete=models.PROTECT,)
     reason = models.TextField(
         null=True, blank=True,
         help_text='Additional information for the transition')
@@ -1488,10 +1535,14 @@ class FacilityUpgrade(AbstractBase):
     """
     Logs the upgrades and the downgrades of a facility.
     """
-    facility = models.ForeignKey(Facility, related_name='facility_upgrades')
-    facility_type = models.ForeignKey(FacilityType)
-    keph_level = models.ForeignKey(KephLevel, null=True, blank=True)
-    reason = models.ForeignKey(FacilityLevelChangeReason)
+    facility = models.ForeignKey(Facility,
+        related_name='facility_upgrades',
+        on_delete=models.PROTECT,)
+    facility_type = models.ForeignKey(FacilityType, on_delete=models.PROTECT,)
+    keph_level = models.ForeignKey(
+        KephLevel, null=True, blank=True, on_delete=models.PROTECT,)
+    reason = models.ForeignKey(
+        FacilityLevelChangeReason, on_delete=models.PROTECT,)
     is_confirmed = models.BooleanField(
         default=False,
         help_text='Indicates whether a facility upgrade or downgrade has been'
@@ -1558,7 +1609,7 @@ class FacilityApproval(AbstractBase):
     at the county level.
     The user who approves a facility will be the same as the created_by field.
     """
-    facility = models.ForeignKey(Facility)
+    facility = models.ForeignKey(Facility, on_delete=models.PROTECT,)
     comment = models.TextField(null=True, blank=True)
     is_cancelled = models.BooleanField(
         default=False, help_text='Cancel a facility approval'
@@ -1603,7 +1654,7 @@ class FacilityUnitRegulation(AbstractBase):
     regulation status of the facility unit.
     """
     facility_unit = models.ForeignKey(
-        'FacilityUnit', related_name='regulations')
+        'FacilityUnit', related_name='regulations', on_delete=models.PROTECT)
     regulation_status = models.ForeignKey(
         RegulationStatus, related_name='facility_units')
 
@@ -1665,7 +1716,7 @@ class ServiceCategory(AbstractBase):
     parent = models.ForeignKey(
         'self', null=True, blank=True,
         help_text='The parent category under which the category falls',
-        related_name='sub_categories')
+        related_name='sub_categories', on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -1752,11 +1803,11 @@ class Service(SequenceMixin, AbstractBase):
         related_name='category_services')
     code = SequenceField(unique=True, editable=False)
     group = models.ForeignKey(
-        OptionGroup,
+        OptionGroup, on_delete=models.PROTECT,
         help_text="The option group containing service options")
     has_options = models.BooleanField(default=False)
     keph_level = models.ForeignKey(
-        KephLevel, null=True, blank=True,
+        KephLevel, null=True, blank=True, on_delete=models.PROTECT,
         help_text="The KEPH level at which the service ought to be offered")
 
     def save(self, *args, **kwargs):
@@ -1893,7 +1944,8 @@ class FacilityDepartment(AbstractBase):
     """
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    regulatory_body = models.ForeignKey(RegulatingBody)
+    regulatory_body = models.ForeignKey(
+        RegulatingBody, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -1916,14 +1968,19 @@ class RegulatorSync(AbstractBase):
     county = models.PositiveIntegerField(help_text='The code of the county')
     facility_type = models.ForeignKey(
         FacilityType,
+        on_delete=models.PROTECT,
         help_text='The type of the facility e.g Medical Clinic')
-    owner = models.ForeignKey(Owner, help_text='The owner of the facility')
+    owner = models.ForeignKey(
+        Owner, help_text='The owner of the facility', on_delete=models.PROTECT)
     regulatory_body = models.ForeignKey(
-        RegulatingBody, help_text="The regulatory body the record came from"
+        RegulatingBody, help_text="The regulatory body the record came from",
+        on_delete=models.PROTECT
     )
     mfl_code = models.PositiveIntegerField(
         null=True, blank=True, help_text='The assigned MFL code'
     )
+    # sub_county, constituency, district, the, directors, the facility contact
+    # inspectors_phone_number
 
     @property
     def county_name(self):
@@ -1933,7 +1990,7 @@ class RegulatorSync(AbstractBase):
     @property
     def probable_matches(self):
         """Retrieve probable facilities that match the sync's criteria"""
-        query = Facility.objects.values('name', 'official_name', 'code')
+        query = Facility.objects.values('id', 'name', 'official_name', 'code')
         if self.mfl_code:
             return query.filter(code=self.mfl_code)
 

@@ -381,3 +381,77 @@ def restore_db(*args, **kwargs):
         LOGGER.info("Done")
     else:
         LOGGER.info("Exiting Bye!")
+
+
+def port_data():
+    """
+    Migrates data from v1 to v2
+    """
+
+    manage('port_data')
+    return
+    setup_db()
+    data_files_1 = os.path.join(BASE_DIR, 'data/new_data/setup/*.json')
+    data_files_2 = os.path.join(BASE_DIR, 'data/new_data/admin_units/*.json')
+    data_files_3 = os.path.join(BASE_DIR, 'data/new_data/v2_data/*.json')
+    data_files_4 = os.path.join(
+        BASE_DIR, 'data/new_data/demo/0013_option_groups.json')
+    data_files_5 = os.path.join(
+        BASE_DIR, 'data/new_data/demo/0014_towns.json')
+    data_files_6 = os.path.join(
+        BASE_DIR, 'data/new_data/demo/0013_option_groups.json')
+
+    data_files_9 = os.path.join(
+        BASE_DIR, 'data/new_data/demo/00999_users.json')
+    data_files_10 = os.path.join(
+        BASE_DIR, 'data/new_data/demo/0026_officers.json')
+    data_files_11 = os.path.join(
+        BASE_DIR, 'data/new_data/demo/0016_facilities.json')
+
+
+    data_files_12 = os.path.join(
+        BASE_DIR, 'data/new_data/mcul/00101_statuses.json')
+    data_files_13 = os.path.join(
+        BASE_DIR, 'data/new_data/v2_data/0101_group.json')
+
+    manage('bootstrap', data_files_1)
+    manage('bootstrap', data_files_2)
+    manage('bootstrap', data_files_3)
+    manage('bootstrap', data_files_4)
+    manage('bootstrap', data_files_5)
+
+    manage('bootstrap', data_files_6)
+    manage('bootstrap', data_files_9)
+    manage('bootstrap', data_files_10)
+
+    load_gis_data()
+    manage('load_facility_coords')
+    manage('load_live_facility_coords')
+
+    manage('bootstrap', data_files_11)
+
+    manage('load_geocodes')
+    manage('load_live_codes')
+    manage('bootstrap', data_files_12)
+    manage('bootstrap', data_files_13)
+
+    manage('load_cus')
+    manage('approve_facilities')
+    manage('approve_chus')
+    manage('sample_users')
+    manage('load_groups')
+    manage('load_users')
+    manage('load_facility_contacts')
+    manage('load_facility_approvals')
+    manage('update_hours_of_operation')
+    manage('link_officers_to_facilities')
+    manage('load_service_catalogue')
+    manage('load_facility_services')
+
+
+# add the closed facility operation status in setup
+# load live towns
+#load all facility status
+# load all towns
+# loads the facility owner types
+# load Facility owners

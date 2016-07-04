@@ -72,7 +72,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     facility = models.ForeignKey(
         Facility,
         help_text='The facility on which the health unit is tied to.')
-    status = models.ForeignKey(Status)
+    status = models.ForeignKey(Status, on_delete=models.PROTECT)
     households_monitored = models.PositiveIntegerField(
         default=0,
         help_text='The number of house holds a CHU is in-charge of')
@@ -254,8 +254,9 @@ class CommunityHealthWorkerContact(AbstractBase):
 
     They may be as many as the health worker has.
     """
-    health_worker = models.ForeignKey('CommunityHealthWorker')
-    contact = models.ForeignKey(Contact)
+    health_worker = models.ForeignKey(
+        'CommunityHealthWorker', on_delete=models.PROTECT,)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT,)
 
     def __str__(self):
         return "{}: ({})".format(self.health_worker, self.contact)
@@ -275,7 +276,7 @@ class CommunityHealthWorker(AbstractBase):
     last_name = models.CharField(max_length=50, null=True, blank=True)
     is_incharge = models.BooleanField(default=False)
     health_unit = models.ForeignKey(
-        CommunityHealthUnit,
+        CommunityHealthUnit, on_delete=models.PROTECT,
         help_text='The health unit the worker is in-charge of',
         related_name='health_unit_workers')
 
@@ -317,7 +318,9 @@ class CHURating(AbstractBase):
 
     """Rating of a CHU"""
 
-    chu = models.ForeignKey(CommunityHealthUnit, related_name='chu_ratings')
+    chu = models.ForeignKey(
+        CommunityHealthUnit, related_name='chu_ratings',
+        on_delete=models.PROTECT,)
     rating = models.PositiveIntegerField(
         validators=[
             validators.MaxValueValidator(5),

@@ -176,8 +176,8 @@ class CreateFacilityOfficerMixin(object):
         if data.get('title', None) is None:
             errs["title"] = ["Job title is required"]
 
-        if data.get('reg_no', None) is None:
-            errs["registration_number"] = ["Registration Number is required"]
+        # if data.get('reg_no', None) is None:
+        #     errs["registration_number"] = ["Registration Number is required"]
 
         return errs
 
@@ -262,7 +262,7 @@ class CreateFacilityOfficerMixin(object):
             officer.save()
             facility_officer = FacilityOfficer.objects.get(
                 facility=facility, officer=officer)
-        except Officer.DoesNotExist:
+        except (Officer.DoesNotExist, Officer.MultipleObjectsReturned):
 
             officer = Officer.objects.create(**officer_dict)
             facility_officer_dict = {

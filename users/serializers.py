@@ -244,6 +244,12 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
                 return True
         return False
 
+    def _update_is_national(self, user_groups):
+        for group in user_groups:
+            if group.is_national:
+                return True
+        return False
+
     def _update_or_create_contacts(self, instance, contacts):
         """
         Creates and updates user contacts in bulk
@@ -396,6 +402,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
             ]
 
         """
+        RegulatoryBodyUser.everything.filter(user=instance).delete()
         for regulator in regulators:
             if 'id' in regulator:
                 LOGGER.info("The user is already linked to that regulator")
@@ -429,9 +436,13 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
         new_user = MflUser.objects.create_user(**validated_data)
         if self._assign_is_staff(groups):
             new_user.is_staff = True
+        if self._update_is_national(groups):
+            new_user.is_national = True
         new_user.save()
 
-        new_user.groups.add(*groups)
+        if groups:
+            new_user.groups.add(*groups)
+
         self._create_user_constituency(new_user, constituencies)
         self._create_user_county(new_user, counties)
         self._update_or_create_contacts(new_user, contacts)
@@ -468,12 +479,15 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
 
         if pwd is not None:
             instance.set_password(pwd)
-        if self._assign_is_staff(groups):
 
-            instance.is_staff = True
+        if groups:
+            instance.groups.clear()
+            instance.groups.add(*groups)
+            if self._assign_is_staff(groups):
+                instance.is_staff = True
+            if self._update_is_national(groups):
+                instance.is_national = True
         instance.save()
-        instance.groups.clear()
-        instance.groups.add(*groups)
 
         self._create_user_constituency(instance, constituencies)
         self._create_user_county(instance, counties)
@@ -532,6 +546,7 @@ class MflUserSerializer(PartialResponseMixin, serializers.ModelSerializer):
             "last_login",
             "user_groups",
             "is_superuser",
+            "password"
         ]
 
 

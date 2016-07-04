@@ -1,0 +1,1620 @@
+[
+    {
+        "county": "KILIFI",
+        "ward": "KIBARANI",
+        "facility_code": "21509"
+    },
+    {
+        "county": "meru",
+        "ward": "KARAMA",
+        "facility_code": "21496"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GATIMU",
+        "facility_code": "21495"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GATHANJI",
+        "facility_code": "21493"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "21492"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "Kochia",
+        "facility_code": "21491"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GATHANJI",
+        "facility_code": "21490"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "Kochia",
+        "facility_code": "21489"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KOJWACH",
+        "facility_code": "21488"
+    },
+    {
+        "county": "EMBU",
+        "ward": "KYENI NORTH",
+        "facility_code": "21484"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "NORTH KARACHUONYO",
+        "facility_code": "21482"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "JUNJU",
+        "facility_code": "21474"
+    },
+    {
+        "county": "kajiado",
+        "ward": "ILDAMAT",
+        "facility_code": "21473"
+    },
+    {
+        "county": "kajiado",
+        "ward": "ILDAMAT",
+        "facility_code": "21472"
+    },
+    {
+        "county": "kajiado",
+        "ward": "ILDAMAT",
+        "facility_code": "21471"
+    },
+    {
+        "county": "kajiado",
+        "ward": "MAGADI",
+        "facility_code": "21470"
+    },
+    {
+        "county": "kajiado",
+        "ward": "ILDAMAT",
+        "facility_code": "21469"
+    },
+
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "21440"
+    },
+    {
+        "county": "kajiado",
+        "ward": "ILDAMAT",
+        "facility_code": "21430"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "GWASSI NORTH",
+        "facility_code": "21412"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "KANGARI",
+        "facility_code": "21405"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "NORTH KARACHUONYO",
+        "facility_code": "21360"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "GWASSI NORTH",
+        "facility_code": "21282"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "WERU",
+        "facility_code": "21276"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "21275"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "facility_code": "21261"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "GWASSI NORTH",
+        "facility_code": "21252"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "EAST GEM",
+        "facility_code": "21239"
+    },
+
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "21211"
+    },
+    {
+        "county": "WAJIR",
+        "ward": "GURAR",
+        "facility_code": "21181"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "KARAU",
+        "facility_code": "21179"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "KARAU",
+        "facility_code": "21179"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "CENTRAL KASIPUL",
+        "facility_code": "21162"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "MWIMBI",
+        "facility_code": "21161"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "GATUNGA",
+        "facility_code": "21160"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "CHOGORIA",
+        "facility_code": "21159"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "MARIAKANI",
+        "facility_code": "21140"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KAGAN",
+        "facility_code": "21135"
+    },
+
+    {
+        "county": "LAIKIPIA",
+        "ward": "NANYUKI",
+        "facility_code": "21121"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KABUOCH SOUTH/PALA",
+        "facility_code": "21118"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "GATUNGA",
+        "facility_code": "21028"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "21003"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "NANYUKI",
+        "facility_code": "20955"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RUGI",
+        "facility_code": "20952"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "20951"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "KARAU",
+        "facility_code": "20944"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "KARAU",
+        "facility_code": "20944"
+    },
+
+    {
+        "county": "Kitui",
+        "ward": "TSEIKURU",
+        "facility_code": "20877"
+    },
+
+    {
+        "county": "NYANDARUA",
+        "ward": "WERU",
+        "facility_code": "20867"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "20867"
+    },
+    {
+        "county": "NYERI",
+        "ward": "KARATINA TOWN",
+        "facility_code": "20866"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "20865"
+    },
+    {
+        "county": "NYERI",
+        "ward": "IRIAINI",
+        "facility_code": "20864"
+    },
+    {
+        "county": "NYERI",
+        "ward": "KARATINA TOWN",
+        "facility_code": "20863"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "GATUNGA",
+        "facility_code": "20790"
+    },
+    {
+        "county": "WAJIR",
+        "ward": "BATALU",
+        "facility_code": "20771"
+    },
+
+    {
+        "county": "NYANDARUA",
+        "ward": "KARAU",
+        "facility_code": "20645"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "20643"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "ENGINEER",
+        "facility_code": "20631"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "ENGINEER",
+        "facility_code": "20630"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Bogichora",
+        "facility_code": "20620"
+    },
+    {
+        "county": "meru",
+        "ward": "IGOJI EAST",
+        "facility_code": "20601"
+    },
+    {
+        "county": "MIGORI",
+        "ward": "SOUTH KAMAGAMBO",
+        "facility_code": "20575"
+    },
+    {
+        "county": "EMBU",
+        "ward": "KYENI NORTH",
+        "facility_code": "20563"
+    },
+    {
+        "county": "Embu",
+        "ward": "GATURI SOUTH",
+        "facility_code": "20505"
+    },
+    {
+        "county": "Kitui",
+        "ward": "MATINYANI",
+        "facility_code": "20447"
+    },
+    {
+        "county": "Kitui",
+        "ward": "ZOMBE/MWITIKA",
+        "facility_code": "20446"
+    },
+    {
+        "county": "Kitui",
+        "ward": "MATINYANI",
+        "facility_code": "20445"
+    },
+    {
+        "county": "Kitui",
+        "ward": "MATINYANI",
+        "facility_code": "20425"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "NKONDI",
+        "facility_code": "20355"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Bonyamatuta",
+        "facility_code": "20333"
+    },
+
+    {
+        "county": "Nyamira",
+        "ward": "Bokeira",
+        "facility_code": "20292"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Itibo",
+        "facility_code": "20290"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Bomwagamo",
+        "facility_code": "20289"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KANYADOTO",
+        "facility_code": "20285"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "sabaki",
+        "facility_code": "20281"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KANYAMWA KOSEWE",
+        "facility_code": "20241"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "NORTH KARACHUONYO",
+        "facility_code": "20173"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KABUOCH SOUTH/PALA",
+        "facility_code": "20153"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "SOUTH KASIPUL",
+        "facility_code": "20152"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "GACHUBA",
+        "facility_code": "20142"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MOCHONGOI",
+        "facility_code": "20048"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "KISANANA",
+        "facility_code": "20047"
+    },
+
+    {
+        "county": "HOMA BAY",
+        "ward": "WEST GEM",
+        "facility_code": "19864"
+    },
+    {
+        "county": "MIGORI",
+        "ward": "NORTH KAMAGAMBO",
+        "facility_code": "19863"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "HOMA BAY ARUJO",
+        "facility_code": "19861"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "MURUNGARU",
+        "facility_code": "19793"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "19712"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "19417"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "19386"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "19350"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": "19200"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "19197"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "19142"
+    },
+
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": "19109"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "19104"
+    },
+    {
+        "county": "kajiado",
+        "ward": "KUKU",
+        "facility_code": "19049"
+    },
+    {
+        "county": "kajiado",
+        "ward": "ILDAMAT",
+        "facility_code": "18977"
+    },
+    {
+        "county": "kajiado",
+        "ward": "IMARORO",
+        "facility_code": "18976"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "18972"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "18936"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": "18920"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "18902"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KABUOCH NORTH",
+        "facility_code": "18876"
+    },
+    {
+        "county": "kisumu",
+        "ward": "CENTRAL SEME",
+        "facility_code": "18866"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GATIMU",
+        "facility_code": "18818"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "18726"
+    },
+    {
+        "county": "meru",
+        "ward": "KARAMA",
+        "facility_code": "18696"
+    },
+    {
+        "county": "meru",
+        "ward": "TIMAU",
+        "facility_code": "18694"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "18667"
+    },
+
+    {
+        "county": "HOMA BAY",
+        "ward": "KABONDO EAST",
+        "facility_code": "18610"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "18607"
+    },
+    {
+        "county": "NYAMIRA",
+        "ward": "Gesima",
+        "facility_code": "18580"
+    },
+    {
+        "county": "NYAMIRA",
+        "ward": "Rigoma",
+        "facility_code": "18576"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "SHAMATA",
+        "facility_code": "18528"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "18528"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "18504"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "18449"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "GEMBE",
+        "facility_code": "18420"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "18356"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "18337"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "18306"
+    },
+    {
+        "county": "Kitui",
+        "ward": "MBITINI",
+        "facility_code": "18253"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "18198"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": "18155"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "BAMBA",
+        "facility_code": "18124"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "18049"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "18047"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "NANYUKI",
+        "facility_code": "18028"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "RUMURUTI TOWNSHIP",
+        "facility_code": "18027"
+    },
+    {
+        "county": "kajiado",
+        "ward": "KUKU",
+        "facility_code": "17867"
+    },
+    {
+        "county": "kajiado",
+        "ward": "KUKU",
+        "facility_code": "17800"
+    },
+    {
+        "county": "kajiado",
+        "ward": "KUKU",
+        "facility_code": "17798"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "EMINING",
+        "facility_code": "17797"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Mekenene",
+        "facility_code": "17732"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "LAMBWE",
+        "facility_code": "17710"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "MWANAMWINGA",
+        "facility_code": "17689"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "17654"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "LAMBWE",
+        "facility_code": "17593"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KABONDO EAST",
+        "facility_code": "17586"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "17576"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "17575"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "IGWAMITI",
+        "facility_code": "17567"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GATHARA",
+        "facility_code": "17562"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "IGWAMITI",
+        "facility_code": "17436"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "WERU",
+        "facility_code": "17374"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "EMINING",
+        "facility_code": "17349"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MUMBERES/MAJI MAZURI",
+        "facility_code": "17348"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "17340"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "facility_code": "17306"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "17227"
+    },
+    {
+        "county": "meru",
+        "ward": "TIMAU",
+        "facility_code": "17225"
+    },
+
+    {
+        "county": "Nyamira",
+        "ward": "Magombo",
+        "facility_code": "17140"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "KISANANA",
+        "facility_code": "17095"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MOCHONGOI",
+        "facility_code": "17086"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MOCHONGOI",
+        "facility_code": "17084"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MUMBERES/MAJI MAZURI",
+        "facility_code": "17056"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "17002"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KABUOCH SOUTH/PALA",
+        "facility_code": "16987"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "HOMA BAY CENTRAL",
+        "facility_code": "16983"
+    },
+    {
+        "county": "NYAMIRA",
+        "ward": "Mekenene",
+        "facility_code": "16869"
+    },
+
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "16817"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "16782"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "16780"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "16778"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "16777"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "16775"
+    },
+    {
+        "county": "NYERI",
+        "ward": "KARATINA TOWN",
+        "facility_code": "16773"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "16772"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "EMINING",
+        "facility_code": "16735"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "EMINING",
+        "facility_code": "16734"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "KABARTONJO",
+        "facility_code": "16733"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "EMINING",
+        "facility_code": "16732"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "KISANANA",
+        "facility_code": "16731"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MOCHONGOI",
+        "facility_code": "16730"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MOCHONGOI",
+        "facility_code": "16729"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "KISANANA",
+        "facility_code": "16727"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "SACHO",
+        "facility_code": "16726"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "RUMURUTI TOWNSHIP",
+        "facility_code": "16678"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "facility_code": "16502"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "Iriaini",
+        "facility_code": "16499"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Gachuba",
+        "facility_code": "16263"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "16248"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "BAMBA",
+        "facility_code": "16187"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "MOCHONGOI",
+        "facility_code": "15725"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15663"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15644"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15642"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15523"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "EMINING",
+        "facility_code": "15486"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "KARAU",
+        "facility_code": "15469"
+    },
+    {
+        "county": "kajiado",
+        "ward": "KUKU",
+        "facility_code": "15433"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15350"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15335"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15334"
+    },
+    {
+        "county": "kajiado",
+        "ward": "OLOOLUA",
+        "facility_code": "15300"
+    },
+    {
+        "county": "BARINGO",
+        "ward": "SACHO",
+        "facility_code": "14678"
+    },
+    {
+        "county": "kajiado",
+        "ward": "ILDAMAT",
+        "facility_code": "14602"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "KANJUIRI RANGE",
+        "facility_code": "14537"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "NANYUKI",
+        "facility_code": "14414"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "CENTRAL KASIPUL",
+        "facility_code": "14109"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KOJWACH",
+        "facility_code": "14067"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "NORTH KARACHUONYO",
+        "facility_code": "13972"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "NORTH KARACHUONYO",
+        "facility_code": "13889"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "GWASSI NORTH",
+        "facility_code": "13854"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Ekerenyo",
+        "facility_code": "13838"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "NORTH KARACHUONYO",
+        "facility_code": "13795"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "CENTRAL KASIPUL",
+        "facility_code": "13784"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "GEMBE",
+        "facility_code": "13737"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "HOMA BAY ARUJO",
+        "facility_code": "13721"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KABUOCH SOUTH/PALA",
+        "facility_code": "13693"
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KABONDO EAST",
+        "facility_code": "13584"
+    },
+
+    {
+        "county": "Murang'a",
+        "ward": "KANGARI",
+        "facility_code": "13547"
+    },
+    {
+        "county": "Kitui",
+        "ward": "MBITINI",
+        "facility_code": "12853"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "12783"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "12766"
+    },
+    {
+        "county": "EMBU",
+        "ward": "KYENI NORTH",
+        "facility_code": "12763"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "12745"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "12706"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "12595"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": "12542"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "12411"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "12392"
+    },
+
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "12381"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": "12304"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "12265"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "12247"
+    },
+    {
+        "county": "machakos",
+        "ward": "IKOMBE",
+        "facility_code": "12115"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": "12058"
+    },
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": "11932"
+    },
+
+    {
+        "county": "KILIFI",
+        "ward": "JUNJU",
+        "facility_code": "11912"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "RURUMA",
+        "facility_code": "11869"
+    },
+    {
+        "county": "WAJIR",
+        "ward": "SARMAN",
+        "facility_code": "11795"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "11190"
+    },
+
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "11160"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "11144"
+    },
+    {
+        "county": "LAIKIPIA (Nyeri County)",
+        "ward": "NANYUKI",
+        "facility_code": "11120"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "11087"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "11070"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "11068"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "KIPIPIRI",
+        "facility_code": "11065"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "11061"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "11060"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "11038"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "11029"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "11028"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "11011"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "10992"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "10990"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "WANJOHI",
+        "facility_code": "10982"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "10978"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10970"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "10954"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "10941"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "10923"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "10918"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GATIMU",
+        "facility_code": "10913"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "10905"
+    },
+    {
+        "county": "LAIKIPIA (Nyeri County)",
+        "ward": "NANYUKI",
+        "facility_code": "10904"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "10904"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "10901"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "10897"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MWEIGA",
+        "facility_code": "10892"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "IGWAMITI",
+        "facility_code": "10891"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "IGWAMITI",
+        "facility_code": "10889"
+    },
+    {
+        "county": "NYERI",
+        "ward": "AGUTHI-GAAKI",
+        "facility_code": "10876"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10866"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10824"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10818"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10809"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10802"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10775"
+    },
+    {
+        "county": "NYERI",
+        "ward": "KARATINA TOWN",
+        "facility_code": "10752"
+    },
+    {
+        "county": "NYERI",
+        "ward": "KARATINA TOWN",
+        "facility_code": "10719"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10708"
+    },
+    {
+        "county": "NYERI",
+        "ward": "KARATINA TOWN",
+        "facility_code": "10707"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10705"
+    },
+    {
+        "county": "NYERI",
+        "ward": "KARATINA TOWN",
+        "facility_code": "10704"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10694"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10689"
+    },
+    {
+        "county": "NYERI",
+        "ward": "MAHIGA",
+        "facility_code": "10675"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "IGWAMITI",
+        "facility_code": "10665"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "facility_code": "10633"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GITHIORO",
+        "facility_code": "10580"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10572"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10572"
+    },
+    {
+        "county": "EMBU",
+        "ward": "NGINDA",
+        "facility_code": "10555"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "10541"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "10526"
+    },
+    {
+        "county": "NYERI",
+        "ward": "CHINGA",
+        "facility_code": "10492"
+    },
+    {
+        "county": "NYERI",
+        "ward": "CHINGA",
+        "facility_code": "10486"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10369"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10330"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10330"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RUGI",
+        "facility_code": "10327"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RUGI",
+        "facility_code": "10303"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "IGWAMITI",
+        "facility_code": "10301"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10276"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "WANJOHI",
+        "facility_code": "10218"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RUGI",
+        "facility_code": "10183"
+    },
+    {
+        "county": "NYERI",
+        "ward": "RWARE",
+        "facility_code": "10174"
+    },
+    {
+        "county": "NYERI",
+        "ward": "THEGU RIVER",
+        "facility_code": "10153"
+    },
+    {
+        "county": "NYERI",
+        "ward": "IRIAINI",
+        "facility_code": "10149"
+    },
+    {
+        "county": "NYERI",
+        "ward": "IRIAINI",
+        "facility_code": "10147"
+    },
+    {
+        "county": "NYERI",
+        "ward": "THEGU RIVER",
+        "facility_code": "10115"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10114"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10114"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10107"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "CHARAGITA",
+        "facility_code": "10085"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "NANYUKI",
+        "facility_code": "10056"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Rigoma",
+        "facility_code": "13555"
+    },
+      {
+        "county": "Nyamira",
+        "ward": "Rigoma",
+        "facility_code": "20901"
+    },
+
+    {
+        "county": "Nyamira",
+        "ward": "Kemera",
+        "facility_code": "21462"
+    },
+
+    {
+        "county": "Nyamira",
+        "ward": "Rigoma",
+        "facility_code": "21216"
+    },
+
+
+    {
+        "county": "Nyamira",
+        "ward": "Kemera",
+        "facility_code": "20684"
+    },
+
+     {
+        "county": "Machakos",
+        "ward": "KANGUNDO WEST",
+        "facility_code": "11920"
+    },
+
+    {
+        "county": "Nyamira",
+        "ward": "Bokeira",
+        "facility_code": "20294"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "Bokeira",
+        "facility_code": "20293"
+    },
+        {
+        "county": "meru",
+        "ward": "KARAMA",
+        "facility_code": "18697"
+    }
+
+]

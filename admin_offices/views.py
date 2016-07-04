@@ -19,10 +19,8 @@ class AdminOfficeListView(
     Updated_by -- User who updated the admin office
     active  -- Boolean is the record active
     deleted -- Boolean is the record deleted
-    first_name  --  First Name of the officer in the admin office
-    last_name -- Last Name of the officer in the admin office
+    name  -- Name of the admin office
     county --  The county of the admin office
-    job_title -- The job title of the officer in the admin office
     """
     def get_queryset(self, *args, **kwargs):
         report_type = self.request.query_params.get('report_type')
@@ -35,13 +33,13 @@ class AdminOfficeListView(
                     county_id__in=[
                         uc.county.id for uc in
                         UserCounty.objects.filter(user=user)
-                ])
+                    ])
             if user.sub_county:
                 return AdminOffice.objects.filter(
                     county_id__in=[
-                        us.sub_county.id for uc in
-                        UserSubCounty.objects.filter(user=user)
-                ])
+                        us.sub_county.id for us in
+                        UserSubCounty.objects.ilter(user=user)
+                    ])
         if is_national == 'true':
             return AdminOffice.objects.filter(is_national=True)
 
@@ -51,7 +49,7 @@ class AdminOfficeListView(
     serializer_class = AdminOfficeSerializer
     filter_class = AdminOfficeFilter
     ordering_fields = (
-        'county', 'first_name', 'last_name','sub_county', 'job_title' )
+        'county', 'name', 'sub_county', 'is_national')
 
 
 class AdminOfficeDetailView(

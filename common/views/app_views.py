@@ -16,7 +16,8 @@ from ..models import (
     SubCounty,
     DocumentUpload,
     ErrorQueue,
-    UserSubCounty
+    UserSubCounty,
+    Notification
 )
 from facilities.models import(
     FacilityStatus,
@@ -50,7 +51,8 @@ from ..serializers import (
     SubCountySerializer,
     DocumentUploadSerializer,
     ErrorQueueSerializer,
-    UserSubCountySerializer
+    UserSubCountySerializer,
+    NotificationSerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -66,10 +68,30 @@ from ..filters import (
     SubCountyFilter,
     DocumentUploadFilter,
     ErrorQueueFilter,
-    UserSubCountyFilter
+    UserSubCountyFilter,
+    NotificationFilter
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
+
+
+class NotificationListView(generics.ListCreateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    ordering_fields = ('group','created', 'title')
+    filter_class = NotificationFilter
+
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_national:
+            user_groups =user.groups.all()
+            return self.queryset.filter(group__in=user_groups)
+        return self.queryset
+
+
+class NotificationDetailView(CustomRetrieveUpdateDestroyView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
 
 
 class UserSubCountyListView(generics.ListCreateAPIView):

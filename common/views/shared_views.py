@@ -117,7 +117,7 @@ class AuditableDetailViewMixin(RetrieveModelMixin):
         )
         if audit_requested:
             data["revisions"] = self.generate_diffs(
-                instance, exclude=['deleted', 'search'],
+                instance, exclude=['deleted', 'search', 'has_edits'],
             )
 
         return Response(data)

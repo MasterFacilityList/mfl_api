@@ -416,12 +416,15 @@ class FacilitySerializer(
         read_only=True,
         source='current_regulatory_status')
     facility_type_name = serializers.CharField(read_only=True)
+    facility_type_parent = serializers.CharField(read_only=True, source='facility_type.sub_division')
     owner_name = serializers.CharField(read_only=True)
     owner_type_name = serializers.CharField(read_only=True)
     owner_type = serializers.CharField(
         read_only=True, source='owner.owner_type.pk')
     operation_status_name = serializers.CharField(read_only=True)
-    county = serializers.CharField(read_only=True)
+
+    county = serializers.ReadOnlyField(source='ward.sub_county.county.name')
+
     constituency = serializers.CharField(read_only=True)
     constituency_name = serializers.CharField(
         read_only=True,

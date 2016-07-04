@@ -108,7 +108,7 @@ class UserList(generics.ListCreateAPIView):
             return self.queryset.filter(
                 id__in=area_users).exclude(id=self.request.user.id)
         elif user.is_national and not user.is_superuser:
-            return MflUser.objects.exclude(is_national=True)
+            return self.queryset.exclude(is_national=True)
 
         elif user.constituency or user.sub_county:
             all_users = MflUser.objects.all()
