@@ -155,6 +155,20 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
                     ]
                 })
 
+    def validate_comment_required_on_rejection(self):
+        """
+        Comments will only be required on the rejection of a community health
+        unit. The approvals will not require comments.
+
+        """
+        if self.is_rejected and not self.rejection_reason:
+            raise ValidationError(
+                {
+                    "rejection_reason": [
+                        "Please provide the reason for rejecting the CHU"
+                    ]
+                })
+
     @property
     def contacts(self):
         return [
@@ -192,6 +206,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         self.validate_either_approved_or_rejected_and_not_both()
         self.validate_date_operation_is_less_than_date_established()
         self.validate_date_established_not_in_future()
+        self.validate_comment_required_on_rejection()
 
     @property
     def pending_updates(self):
