@@ -72,8 +72,9 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
     facility = models.ForeignKey(
         Facility,
         help_text='The facility on which the health unit is tied to.')
-    status = models.ForeignKey(Status)
+    status = models.ForeignKey(Status, on_delete=models.PROTECT)
     households_monitored = models.PositiveIntegerField(
+        default=0,
         help_text='The number of house holds a CHU is in-charge of')
     date_established = models.DateField(default=timezone.now)
     date_operational = models.DateField(null=True, blank=True)
@@ -89,6 +90,9 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         default=False,
         help_text='Indicates that a community health unit has updates that are'
                   ' pending approval')
+    number_of_chvs = models.PositiveIntegerField(
+        default=0,
+        help_text='Number of Community Health volunteers in the CHU')
 
     def __str__(self):
         return self.name
@@ -151,6 +155,20 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
                     ]
                 })
 
+    def validate_comment_required_on_rejection(self):
+        """
+        Comments will only be required on the rejection of a community health
+        unit. The approvals will not require comments.
+
+        """
+        if self.is_rejected and not self.rejection_reason:
+            raise ValidationError(
+                {
+                    "rejection_reason": [
+                        "Please provide the reason for rejecting the CHU"
+                    ]
+                })
+
     @property
     def contacts(self):
         return [
@@ -188,6 +206,7 @@ class CommunityHealthUnit(SequenceMixin, AbstractBase):
         self.validate_either_approved_or_rejected_and_not_both()
         self.validate_date_operation_is_less_than_date_established()
         self.validate_date_established_not_in_future()
+        self.validate_comment_required_on_rejection()
 
     @property
     def pending_updates(self):
@@ -250,8 +269,9 @@ class CommunityHealthWorkerContact(AbstractBase):
 
     They may be as many as the health worker has.
     """
-    health_worker = models.ForeignKey('CommunityHealthWorker')
-    contact = models.ForeignKey(Contact)
+    health_worker = models.ForeignKey(
+        'CommunityHealthWorker', on_delete=models.PROTECT,)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT,)
 
     def __str__(self):
         return "{}: ({})".format(self.health_worker, self.contact)
@@ -271,7 +291,7 @@ class CommunityHealthWorker(AbstractBase):
     last_name = models.CharField(max_length=50, null=True, blank=True)
     is_incharge = models.BooleanField(default=False)
     health_unit = models.ForeignKey(
-        CommunityHealthUnit,
+        CommunityHealthUnit, on_delete=models.PROTECT,
         help_text='The health unit the worker is in-charge of',
         related_name='health_unit_workers')
 
@@ -313,7 +333,9 @@ class CHURating(AbstractBase):
 
     """Rating of a CHU"""
 
-    chu = models.ForeignKey(CommunityHealthUnit, related_name='chu_ratings')
+    chu = models.ForeignKey(
+        CommunityHealthUnit, related_name='chu_ratings',
+        on_delete=models.PROTECT,)
     rating = models.PositiveIntegerField(
         validators=[
             validators.MaxValueValidator(5),
@@ -337,6 +359,7 @@ class ChuUpdateBuffer(AbstractBase):
     is_approved = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
     is_new = models.BooleanField(default=False)
+    services = models.TextField(null=True, blank=True)
 
     def validate_atleast_one_attribute_updated(self):
         if not self.workers and not self.contacts and not \
@@ -377,6 +400,24 @@ class ChuUpdateBuffer(AbstractBase):
             else:
                 CommunityHealthWorker.objects.create(**chew)
 
+    def update_services(self):
+        services = json.loads(self.services)
+        CHUServiceLink.objects.filter(health_unit=self.health_unit).delete()
+        for service in services:
+            service['health_unit'] = self.health_unit
+            service['created_by_id'] = self.created_by_id
+            service['updated_by_id'] = self.updated_by_id
+            service.pop('created_by', None)
+            service.pop('updated_by', None)
+            service.pop('name', None)
+            try:
+                CHUServiceLink.objects.get(
+                    service_id=service['service'],
+                    health_unit=self.health_unit)
+            except CHUServiceLink.DoesNotExist:
+                service['service_id'] = service.pop('service')
+                CHUServiceLink.objects.create(**service)
+
     def update_contacts(self):
         contacts = json.loads(self.contacts)
         for contact in contacts:
@@ -414,6 +455,8 @@ class ChuUpdateBuffer(AbstractBase):
             updates['contacts'] = json.loads(self.contacts)
         if self.workers:
             updates['workers'] = json.loads(self.workers)
+        if self.services:
+            updates['services'] = json.loads(self.services)
         updates['updated_by'] = self.updated_by.get_full_name
         return updates
 
@@ -436,6 +479,11 @@ class ChuUpdateBuffer(AbstractBase):
             self.health_unit.has_edits = False
             self.health_unit.save()
 
+        if self.is_approved and self.services:
+            self.update_services()
+            self.health_unit.has_edits = False
+            self.health_unit.save()
+
         if self.is_rejected:
             self.health_unit.has_edits = False
             self.health_unit.save()
@@ -444,3 +492,22 @@ class ChuUpdateBuffer(AbstractBase):
 
     def __str__(self):
         return self.health_unit.name
+
+
+class CHUServiceLink(AbstractBase):
+    """
+    Links a CommunityHealthUnit to a CHUService.
+
+    This ensures that CHU can offer a subset of the services available
+    for CHUs.
+    """
+    health_unit = models.ForeignKey(
+        CommunityHealthUnit, on_delete=models.PROTECT, related_name='services')
+    service = models.ForeignKey(
+        CHUService, on_delete=models.PROTECT)
+
+    class Meta(AbstractBase.Meta):
+        unique_together = ('health_unit', 'service')
+
+    def __str__(self):
+        return "{} - {}".format(self.health_unit.name, self.service.name)

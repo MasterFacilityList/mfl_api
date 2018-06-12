@@ -5,11 +5,15 @@ from rest_framework.test import APITestCase
 from model_mommy import mommy
 
 from users.models import MflUser
-from facilities.models import Facility, FacilityApproval
+from facilities.models import (
+    Facility, FacilityApproval, FacilityStatus
+)
 from facilities.tests.test_facility_views import load_dump
 from facilities.serializers import FacilitySerializer
 
-
+from common.models import (
+    UserSubCounty, SubCounty, Ward, UserCounty, UserConstituency,
+    County, Constituency)
 from common.tests.test_views import default, LoginMixin
 
 
@@ -55,8 +59,10 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_cant_see_unpublished_facilities(self):
         mommy.make(Facility)
+        op_status = mommy.make(FacilityStatus, is_public_visible=True)
         mommy.make(Facility, rejected=True)
-        facility_2 = mommy.make(Facility)
+        facility_2 = mommy.make(
+            Facility, operation_status=op_status)
         mommy.make(FacilityApproval, facility=facility_2)
         self.assertTrue(facility_2.approved)
         facility_2.is_published = True
@@ -68,7 +74,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(3, admin_response.data.get("count"))
 
-        # test public user sees only published facilties
+        # test public user sees only published facilities
         self.client.logout()
         self.client.force_authenticate(self.public_user)
         public_response = self.client.get(self.url)
@@ -82,7 +88,9 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_cant_see_unapproved_facilities(self):
         mommy.make(Facility)
-        facility_2 = mommy.make(Facility, approved=True)
+        op_status = mommy.make(FacilityStatus, is_public_visible=True)
+        facility_2 = mommy.make(
+            Facility, approved=True, operation_status=op_status)
         mommy.make(FacilityApproval, facility=facility_2)
         facility_2.is_published = True
         facility_2.save()
@@ -93,7 +101,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(2, admin_response.data.get("count"))
 
-        # test public user sees only approved facilties
+        # test public user sees only approved facilities
         self.client.logout()
         self.client.force_authenticate(self.public_user)
         public_response = self.client.get(self.url)
@@ -105,7 +113,8 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
 
     def test_public_cant_see_classified_facilities(self):
         mommy.make(Facility, is_classified=True)
-        facility_2 = mommy.make(Facility)
+        op_status = mommy.make(FacilityStatus, is_public_visible=True)
+        facility_2 = mommy.make(Facility, operation_status=op_status)
         mommy.make(FacilityApproval, facility=facility_2)
         facility_2.is_published = True
         facility_2.save()
@@ -116,7 +125,7 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(2, admin_response.data.get("count"))
 
-        # test public user sees only non classified facilties
+        # test public user sees only non classified facilities
         self.client.logout()
         self.client.force_authenticate(self.public_user)
         public_response = self.client.get(self.url)
@@ -208,6 +217,43 @@ class TestFacilityFilterApprovedAndPublished(APITestCase):
         admin_response = self.client.get(self.url)
         self.assertEquals(200, admin_response.status_code)
         self.assertEquals(0, admin_response.data.get("count"))
+
+    def test_sub_county_users_facilities(self):
+        # test that sub-county users see facilities only in their sub-county
+        user = mommy.make(MflUser, is_superuser=True)
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        sub = mommy.make(SubCounty, county=county)
+        mommy.make(UserSubCounty, user=user, sub_county=sub)
+        ward = mommy.make(Ward, sub_county=sub, constituency=const)
+        mommy.make(Facility, ward=ward)
+        self.client.force_authenticate(user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+    def test_sub_county_and_consituency_facilities(self):
+        # Test users assigned to constituencies and sub-counties
+        # at the same time only see the facilities in the sub-county
+        user_1 = mommy.make(MflUser, is_superuser=True)
+        county = mommy.make(County)
+        mommy.make(UserCounty, county=county, user=user_1)
+        user = mommy.make(MflUser, is_superuser=True)
+        sub = mommy.make(SubCounty, county=county)
+        const = mommy.make(Constituency, county=county)
+        mommy.make(
+            UserConstituency, user=user, constituency=const,
+            created_by=user_1, updated_by=user_1)
+        mommy.make(UserSubCounty, user=user, sub_county=sub)
+        ward = mommy.make(Ward, sub_county=sub, constituency=const)
+        ward_2 = mommy.make(Ward, constituency=const)
+        mommy.make(Facility, ward=ward)
+        mommy.make(Facility, ward=ward_2)
+        self.client.force_authenticate(user)
+        response = self.client.get(self.url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
 
 
 class TestFacilitiesPendingApprovalFilter(LoginMixin, APITestCase):

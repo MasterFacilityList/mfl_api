@@ -6,7 +6,10 @@ from rest_framework.views import Response, APIView
 
 from common.views import AuditableDetailViewMixin
 from common.utilities import CustomRetrieveUpdateDestroyView
-from common.models import ContactType, UserConstituency, UserCounty
+
+from common.models import (
+    ContactType, UserConstituency, UserCounty, UserSubCounty
+)
 
 from ..models import (
     Facility,
@@ -82,53 +85,77 @@ class QuerysetFilterMixin(object):
     only on views for resources that are directly linked to counties
     e.g. facilities ).
     """
-    def get_queryset(self, *args, **kwargs):
-        # The line below reflects the fact that geographic "attachment"
-        # will occur at the smallest unit i.e the ward
-
-        custom_queryset = kwargs.pop('custom_queryset', None)
-        if hasattr(custom_queryset, 'count'):
-            self.queryset = custom_queryset
-
+    def filter_for_county_users(self):
         if not self.request.user.is_national and \
                 self.request.user.county \
-                and hasattr(self.queryset.model, 'ward'):
-            self.queryset = self.queryset.filter(
-                ward__constituency__county__in=[
-                    uc.county for uc in UserCounty.objects.filter(
-                        user=self.request.user)])
-
-        elif self.request.user.regulator and hasattr(
-                self.queryset.model, 'regulatory_body'):
-            self.queryset = self.queryset.filter(
-                regulatory_body=self.request.user.regulator)
-        elif self.request.user.is_national and not \
-                self.request.user.county:
-            self.queryset = self.queryset
-        elif self.request.user.constituency and hasattr(
-                self.queryset.model, 'ward'):
-            self.queryset = self.queryset.filter(
-                ward__constituency__in=[
-                    uc.constituency
-                    for uc in UserConstituency.objects.filter(
-                        user=self.request.user)])
-        else:
-            self.queryset = self.queryset
-
-        if self.request.user.has_perm(
-            "facilities.view_unpublished_facilities") \
-            is False and self.queryset.model in [
-                FacilityExportExcelMaterialView,
-                Facility]:
-            self.queryset = self.queryset.filter(approved=True)
-
-        if self.request.user.has_perm(
-            "facilities.view_unapproved_facilities") \
-            is False and 'approved' in [
+                and 'ward' in [
                 field.name for field in
                 self.queryset.model._meta.get_fields()]:
-            self.queryset = self.queryset.filter(approved=True)
+            try:
+                self.queryset = self.queryset.filter(
+                    ward__constituency__county__in=[
+                        uc.county.id for uc in UserCounty.objects.filter(
+                            user=self.request.user, active=True)])
+            except:
+                self.queryset = self.queryset.filter(
+                    county__in=[
+                        uc.county.id for uc in UserCounty.objects.filter(
+                            user=self.request.user, active=True)])
 
+    def filter_for_sub_county_users(self):
+        if (self.request.user.sub_county and 'ward' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()] and not
+                self.request.user.constituency):
+            try:
+                self.queryset = self.queryset.filter(
+                    ward__sub_county__in=[
+                        us.sub_county
+                        for us in UserSubCounty.objects.filter(
+                            user=self.request.user, active=True)])
+            except:
+                self.queryset = self.queryset.filter(
+                    sub_county__in=[
+                        us.sub_county.id
+                        for us in UserSubCounty.objects.filter(
+                            user=self.request.user, active=True)])
+
+    def filter_for_consituency_users(self):
+        if (self.request.user.constituency and hasattr(
+                self.queryset.model, 'ward') and not
+                self.request.user.sub_county):
+            try:
+                self.queryset = self.queryset.filter(
+                    ward__constituency__in=[
+                        uc.constituency
+                        for uc in UserConstituency.objects.filter(
+                            user=self.request.user, active=True)])
+            except:
+                self.queryset = self.queryset.filter(
+                    constituency__in=[
+                        uc.constituency.id
+                        for uc in UserConstituency.objects.filter(
+                            user=self.request.user, active=True)])
+
+    def filter_for_sub_county_and_constituency_users(self):
+        if (self.request.user.sub_county and 'ward' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()] and
+                self.request.user.constituency):
+            try:
+                self.queryset = self.queryset.filter(
+                    ward__sub_county__in=[
+                        us.sub_county
+                        for us in UserSubCounty.objects.filter(
+                            user=self.request.user, active=True)])
+            except:
+                self.queryset = self.queryset.filter(
+                    sub_county__in=[
+                        us.sub_county.id
+                        for us in UserSubCounty.objects.filter(
+                            user=self.request.user, active=True)])
+
+    def filter_classified_facilities(self):
         if self.request.user.has_perm(
                 "facilities.view_classified_facilities") \
             is False and 'is_classified' in [
@@ -136,25 +163,58 @@ class QuerysetFilterMixin(object):
                 self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(is_classified=False)
 
+    def filter_approved_facilities(self):
+        if self.request.user.has_perm(
+            "facilities.view_unapproved_facilities") \
+            is False and 'approved' in [
+                field.name for field in
+                self.queryset.model._meta.get_fields()]:
+
+            # filter both facilities and facilities materialized view
+            try:
+                self.queryset = self.queryset.filter(approved=True, operation_status__is_public_visible=True)
+            except:
+                self.queryset = self.queryset.filter(approved=True, is_public_visible=True)
+
+    def filter_rejected_facilities(self):
         if self.request.user.has_perm("facilities.view_rejected_facilities") \
             is False and ('rejected' in [
                 field.name for field in
                 self.queryset.model._meta.get_fields()]):
             self.queryset = self.queryset.filter(rejected=False)
 
+    def filter_closed_facilities(self):
         if self.request.user.has_perm(
             "facilities.view_closed_facilities") is False and \
             'closed' in [field.name for field in
                          self.queryset.model._meta.get_fields()]:
             self.queryset = self.queryset.filter(closed=False)
 
+    def filter_for_regulators(self):
+        if self.request.user.regulator and hasattr(
+                self.queryset.model, 'regulatory_body'):
+            self.queryset = self.queryset.filter(
+                regulatory_body=self.request.user.regulator)
+
+    def get_queryset(self, *args, **kwargs):
+        custom_queryset = kwargs.pop('custom_queryset', None)
+        if hasattr(custom_queryset, 'count'):
+            self.queryset = custom_queryset
+
+        self.filter_for_county_users()
+        self.filter_for_consituency_users()  # TODO fix typo
+        self.filter_for_sub_county_users()
+        self.filter_for_sub_county_and_constituency_users()
+        self.filter_for_regulators()
+        self.filter_classified_facilities()
+        self.filter_rejected_facilities()
+        self.filter_closed_facilities()
+        self.filter_approved_facilities()
+
         return self.queryset
 
     def filter_queryset(self, queryset):
-        """
-        Overridden in order to constrain search results to what a user should
-        see.
-        """
+        """Limit search results to what a user should see."""
         queryset = super(QuerysetFilterMixin, self).filter_queryset(queryset)
         return self.get_queryset(custom_queryset=queryset)
 
@@ -336,7 +396,7 @@ class FacilityListView(QuerysetFilterMixin, generics.ListCreateAPIView):
     filter_class = FacilityFilter
     ordering_fields = (
         'name', 'code', 'number_of_beds', 'number_of_cots',
-        'operation_status', 'ward', 'owner',
+        'operation_status', 'ward', 'owner', 'facility_type','updated'
     )
 
 
@@ -349,7 +409,7 @@ class FacilityListReadOnlyView(QuerysetFilterMixin, generics.ListAPIView):
     filter_class = FacilityFilter
     ordering_fields = (
         'code', 'name', 'county', 'constituency', 'facility_type_name',
-        'owner_type_name', 'is_published'
+        'owner_type_name', 'is_published','updated'
     )
 
 
@@ -358,6 +418,7 @@ class FacilityExportMaterialListView(
     queryset = FacilityExportExcelMaterialView.objects.all()
     serializer_class = FacilityExportExcelMaterialViewSerializer
     filter_class = FacilityExportExcelMaterialViewFilter
+    # ordering_fields = '__all__'
 
 
 class FacilityDetailView(
@@ -548,6 +609,10 @@ class FacilityDetailView(
         units = request.data.pop('units', [])
         officer_in_charge = request.data.pop(
             'officer_in_charge', {})
+
+        officer_in_charge = {} if officer_in_charge.get(
+            "name") == "" else officer_in_charge
+
         if officer_in_charge:
             officer_in_charge['facility_id'] = str(instance.id)
 

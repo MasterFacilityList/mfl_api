@@ -94,7 +94,7 @@ setup(
         "pytest-django>=2.8,<2.9.0",
         "pytest-xdist>=1.11,<1.12.0",
         "six>=1.9,<1.10.0",
-        "django-reversion==1.9.3",
+        "django-reversion==2.0.5",
         "shapely>=1.5.7,<1.6.0",
         "wheel>=0.24.0,<1.25.0",
         "pytz>=2015.2",
@@ -113,11 +113,12 @@ setup(
         "xlsxwriter>=0.7.2,<0.8.0",
         "mock>=1.0.1,<1.1.0",
         "recommonmark>=0.1.1,<0.2.0",
-        "WeasyPrint>=0.23,<0.24.0",
+        "WeasyPrint>=0.29",
         "django-redis>=4.0.0,<4.1.0",
         "django-storages==1.1.8",
         "boto==2.38.0",
         "celery==3.1.19",
-        "filechunkio==1.6"
+        "filechunkio==1.6",
+        "python-dateutil"
     ],
 )

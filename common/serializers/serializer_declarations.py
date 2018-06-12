@@ -15,9 +15,70 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
-    ErrorQueue
+    ErrorQueue,
+    UserSubCounty,
+    Notification,
+    NoficiationGroup
 )
 from .serializer_base import AbstractFieldsMixin
+
+
+class NotificationGroupSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    group_name = serializers.ReadOnlyField(source='group.name')
+
+    class Meta:
+        model = NoficiationGroup
+
+
+class NotificationSerializer(AbstractFieldsMixin, serializers.ModelSerializer):
+    summary = serializers.ReadOnlyField()
+    notification_groups = NotificationGroupSerializer(many=True, read_only=True)
+    simple_groups = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Notification
+
+    def create(self, validated_data):
+        groups = self.initial_data.pop('groups', [])
+        notification = super(NotificationSerializer, self).create(validated_data)
+
+        for group in groups:
+            NoficiationGroup.objects.create(
+                notification=notification,
+                group_id=group.get('id'),
+                created_by=notification.created_by,
+                updated_by=notification.updated_by
+            )
+        return notification
+
+    def update(self, instance, validated_data):
+        groups = self.initial_data.pop('groups', [])
+        notification = super(NotificationSerializer, self).update(instance, validated_data)
+
+        NoficiationGroup.objects.filter(notification=notification).delete()
+        for group in groups:
+            NoficiationGroup.objects.create(
+                notification=notification,
+                group_id=group.get('id'),
+                created_by=notification.created_by,
+                updated_by=notification.updated_by
+            )
+        return notification
+
+
+class UserSubCountySerializer(
+        AbstractFieldsMixin, serializers.ModelSerializer):
+    county_id = serializers.ReadOnlyField(source='sub_county.county.id')
+
+    county_name = serializers.ReadOnlyField(source='sub_county.county.name')
+    user = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=get_user_model().objects.all())
+    sub_county = serializers.PrimaryKeyRelatedField(
+        validators=[], required=False, queryset=SubCounty.objects.all())
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
+
+    class Meta(object):
+        model = UserSubCounty
 
 
 class SubCountySerializer(AbstractFieldsMixin, serializers.ModelSerializer):
@@ -103,6 +164,8 @@ class TownSerializer(
 class WardSerializer(AbstractFieldsMixin, GeoModelSerializer):
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
     constituency_name = serializers.ReadOnlyField(source="constituency.name")
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
+    sub_county = serializers.CharField(source='sub_county.id')
 
     class Meta(object):
         model = Ward
@@ -118,6 +181,7 @@ class WardDetailSerializer(AbstractFieldsMixin, GeoModelSerializer):
     county = CountySerializer(read_only=True)
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
     constituency_name = serializers.ReadOnlyField(source="constituency.name")
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
 
     class Meta(object):
         model = Ward
@@ -128,6 +192,7 @@ class WardSlimDetailSerializer(
         AbstractFieldsMixin, serializers.ModelSerializer):
     county_name = serializers.ReadOnlyField(source="constituency.county.name")
     constituency_name = serializers.ReadOnlyField(source="constituency.name")
+    sub_county_name = serializers.ReadOnlyField(source="sub_county.name")
 
     class Meta(object):
         model = Ward

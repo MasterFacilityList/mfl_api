@@ -28,9 +28,34 @@ This is the API server for the second generation Kenyan Ministry of Health Maste
 
 The "home" of the canonical / production version is at http://ehealth.or.ke/facilities/ . The latest documentation can always be found at http://mfl-api-docs.readthedocs.org/en/latest/ . That includes installation instructions, guidance for contributors and API documentation.
 
+Quick Dev Setup & Installation Guide
++++++++++++++++++++++++++++++++++++++
+NB:
+ - This quick setup guide covers Linux **Debian** distributions.
+ - Assumes python >=2.7.x is installed (Not python 3.x.x)
+ - Assumes the this repository is cloned and available locally.
+ - Assumes relevant db is available locally.
+
+1. Go to `PosgreSQL Downloads page`_ and the **The PostgreSQL apt repository**. Do not run any other commands first.
+   You can run ``apt-get update`` though. Make sure this is for PostgreSQL 9.x (9.6 tested and worked)
+2. Once you've added that apt repository and done with the apt update, run this to install PostgreSQL and the
+   relevant support packages.
+
+``apt-get install postgresql-9.6 postgresql-client-9.6 postgresql-contrib-9.6 libpq-dev postgresql-server-dev-9.6 postgresql-9.6-postgis-2.3``
+
+3. Now go ahead and run ``pip install -r requirements.txt`` in the mfl_api virtualenv
+
+.. _PosgreSQL Downloads page: https://www.postgresql.org/download/linux/debian/
+
+
 
 Credits
 --------
-Developed and maintained by `Savannah Informatics Limited`_ | info@savannahinformatics.com
+Developed by `Savannah Informatics Limited`_ | info@savannahinformatics.com
 
 .. _Savannah Informatics Limited: http://savannahinformatics.com/
+
+
+Maintained by `HealthIT | UoN`_ | swaweru@healthit.uonbi.ac.ke
+
+.. _HealthIT | UoN: http://healthit.uonbi.ac.ke/

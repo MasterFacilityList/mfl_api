@@ -9,7 +9,7 @@ from fabfile import backup_mfl_db
 
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour='*/1')),
+    run_every=(crontab(minute="*/60")),
     name="backup_db",
     ignore_result=True)
 def backup_db():

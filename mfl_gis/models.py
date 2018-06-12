@@ -21,16 +21,18 @@ class CoordinatesValidatorMixin(object):
         try:
             boundary = WorldBorder.objects.get(code='KEN')
             if not boundary.mpoly.contains(self.coordinates):
+                pass
                 # This validation was relaxed ( temporarily? )
                 # The Kenyan boundaries that we have loaded have low fidelity
                 # at the edges, so that facilities that are, say, 100 meters
                 # from the border are reported as not in Kenya
                 # If higher fidelity map data is obtained, this validation
                 # can be brought back
-                LOGGER.error(
-                    '{0} is not within the Kenyan boundaries that we have'
-                    .format(self.coordinates)
-                )
+                # TODO: Uncomment this after tests (Below. The LOGGER stuff)
+                # LOGGER.error(
+                #     '{0} is not within the Kenyan boundaries that we have'
+                #     .format(self.coordinates)
+                # )
         except WorldBorder.DoesNotExist:
             raise ValidationError('Setup error: Kenyan boundaries not loaded')
 
@@ -181,6 +183,13 @@ class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
                 float('%.2f' % round(self.coordinates[1], 2))
             ]
         }
+    def validate_coordinates_decimal_places_at_least_six(self):
+        if (len(str(self.coordinates[0])) < 7 or
+                len(str(self.coordinates[1])) < 7):
+            raise ValidationError({
+                "coordinates":
+                    ["Please provide at-least 6 decimal places number. "]
+                })
 
     @property
     def json_features(self):
@@ -189,6 +198,7 @@ class FacilityCoordinates(CoordinatesValidatorMixin, GISAbstractBase):
         }
 
     def clean(self):
+        self.validate_coordinates_decimal_places_at_least_six()
         self.validate_long_and_lat_within_kenya()
         self.validate_long_and_lat_within_county(
             self.facility.ward.constituency.county)

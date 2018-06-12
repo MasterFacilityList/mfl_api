@@ -18,7 +18,9 @@ from common.models import (
     Constituency,
     Contact,
     ContactType,
-    UserConstituency)
+    UserConstituency,
+    UserSubCounty,
+    SubCounty)
 
 from ..serializers import (
     OwnerSerializer,
@@ -575,6 +577,75 @@ class TestFacilityView(LoginMixin, TestGroupAndPermissions, APITestCase):
             response.data
         )
 
+    def test_filter_facilities_by_sub_counties(self):
+        county = mommy.make(County)
+        const = mommy.make(Constituency, county=county)
+        sub_county = mommy.make(SubCounty, county=county)
+        ward = mommy.make(Ward, sub_county=sub_county, constituency=const)
+        mommy.make(Facility, ward=ward)
+        mommy.make(Facility, _quantity=5)
+
+        # too lazy to bootstrap the entire facility workflow thus the superuser
+        nat_user = mommy.make(
+            get_user_model(), is_national=True, is_superuser=True)
+        county_user = mommy.make(get_user_model(), is_superuser=True)
+        mommy.make(UserCounty, county=county, user=county_user)
+        const_user = mommy.make(get_user_model(), is_superuser=True)
+        mommy.make(
+            UserConstituency, user=const_user, constituency=const,
+            created_by=county_user, updated_by=county_user
+        )
+        sub_county_user = mommy.make(get_user_model(), is_superuser=True)
+        mommy.make(
+            UserSubCounty, user=sub_county_user, sub_county=sub_county)
+
+        sub_county_const_user = mommy.make(
+            get_user_model(), is_superuser=True)
+        mommy.make(
+            UserConstituency, user=sub_county_const_user, constituency=const,
+            created_by=county_user, updated_by=county_user)
+
+        # nation user should see all facilities
+        self.client.force_authenticate(nat_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(6, response.data.get('count'))
+        self.client.logout()
+
+        # county user should see facilities in county
+        self.client.force_authenticate(county_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # constituencies user should see facilities in constituencies
+        self.client.force_authenticate(county_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # sub-county user should see facilities in sub-counties
+        self.client.force_authenticate(county_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
+        # A user assigned to  both sub-county and constituency should see
+        # facilities in sub-county
+        self.client.force_authenticate(sub_county_const_user)
+        url = reverse("api:facilities:facilities_list")
+        response = self.client.get(url)
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, response.data.get('count'))
+        self.client.logout()
+
 
 class CountyAndNationalFilterBackendTest(APITestCase):
 
@@ -790,7 +861,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
     def test_get_dashboard_national_user(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=county)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)
@@ -866,7 +939,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.user.save()
         constituency = mommy.make(
             Constituency, county=self.user.county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=self.user.county)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)
@@ -905,7 +980,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
             ],
             "constituencies_summary": [
                 {
-                    "name": str(constituency.name),
+                    "name": str(sub_county.name),
                     "count": 1,
                     "chu_count": 0
                 }
@@ -944,7 +1019,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
         self.user.save()
         constituency = mommy.make(
             Constituency, county=self.user.county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=self.user.county)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)
@@ -952,6 +1029,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
         mommy.make(
             UserConstituency, created_by=self.user, updated_by=self.user,
             user=user, constituency=constituency)
+        mommy.make(
+            UserSubCounty, created_by=self.user, updated_by=self.user,
+            user=user, sub_county=sub_county)
         mommy.make(
             Facility,
             ward=ward,
@@ -1110,6 +1190,7 @@ class TestDashBoardView(LoginMixin, APITestCase):
     def test_created_last_one_quarter_param(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
+        mommy.make(SubCounty, county=county)
         ward = mommy.make(Ward, constituency=constituency)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
@@ -1158,7 +1239,9 @@ class TestDashBoardView(LoginMixin, APITestCase):
     def test_fields_response(self):
         county = mommy.make(County)
         constituency = mommy.make(Constituency, county=county)
-        ward = mommy.make(Ward, constituency=constituency)
+        sub_county = mommy.make(SubCounty, county=county)
+        ward = mommy.make(
+            Ward, constituency=constituency, sub_county=sub_county)
         facility_type = mommy.make(FacilityType)
         owner_type = mommy.make(OwnerType)
         owner = mommy.make(Owner, owner_type=owner_type)

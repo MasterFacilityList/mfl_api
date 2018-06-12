@@ -46,10 +46,18 @@ from common.filters.filter_shared import (
     SearchFilter, ListUUIDFilter
 )
 
+from search.filters import SearchFilter
+
 from common.constants import BOOLEAN_CHOICES, TRUTH_NESS
 
 
 class FacilityExportExcelMaterialViewFilter(django_filters.FilterSet):
+
+    def filter_number_beds(self, value):
+        return self.filter(beds__gte=1)
+
+    def filter_number_cots(self, value):
+        return self.filter(cots__gte=1)
 
     search = SearchFilter(name='search')
     county = ListCharFilter(lookup_type='exact')
@@ -58,8 +66,8 @@ class FacilityExportExcelMaterialViewFilter(django_filters.FilterSet):
     ward = ListCharFilter(lookup_type='exact')
     owner = ListCharFilter(lookup_type='exact')
     owner_type = ListCharFilter(lookup_type='exact')
-    number_of_beds = ListIntegerFilter(lookup_type='exact')
-    number_of_cots = ListIntegerFilter(lookup_type='exact')
+    number_of_beds = django_filters.MethodFilter(action=filter_number_beds)
+    number_of_cots = django_filters.MethodFilter(action=filter_number_cots)
     open_whole_day = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)
@@ -77,6 +85,7 @@ class FacilityExportExcelMaterialViewFilter(django_filters.FilterSet):
     operation_status = ListCharFilter(lookup_type='exact')
     service = ListUUIDFilter(lookup_type='exact', name='services')
     service_category = ListUUIDFilter(lookup_type='exact', name='categories')
+    service_name = SearchFilter(name='service_names')
 
     class Meta(object):
         model = FacilityExportExcelMaterialView
@@ -133,12 +142,13 @@ class FacilityServiceRatingFilter(CommonFieldsFilterset):
     service = django_filters.AllValuesFilter(
         name="facility_service__service", lookup_type='exact')
     county = django_filters.AllValuesFilter(
-        name="facility_service__ward__constituency__county",
+        name="facility_service__facility__ward__constituency__county",
         lookup_type='exact')
     constituency = django_filters.AllValuesFilter(
-        name="facility_service__ward__constituency", lookup_type='exact')
+        name="facility_service__facility__ward__constituency",
+        lookup_type='exact')
     ward = django_filters.AllValuesFilter(
-        name="facility_service__ward", lookup_type='exact')
+        name="facility_service__facility__ward", lookup_type='exact')
 
     class Meta(object):
         model = FacilityServiceRating
@@ -281,6 +291,7 @@ class FacilityStatusFilter(CommonFieldsFilterset):
 class FacilityTypeFilter(CommonFieldsFilterset):
     name = django_filters.CharFilter(lookup_type='icontains')
     sub_division = django_filters.CharFilter(lookup_type='icontains')
+    is_parent = NullFilter(name='parent')
 
     class Meta(object):
         model = FacilityType
@@ -346,13 +357,25 @@ class FacilityFilter(CommonFieldsFilterset):
     def facilities_pending_approval(self, value):
         if value in TRUTH_NESS:
             return self.filter(
-                Q(rejected=False),
-                Q(has_edits=True) | Q(approved=False)
+                Q(
+                    Q(rejected=False),
+                    Q(has_edits=True) |
+                    Q(approved=False,rejected=False)
+                ) |
+                Q(
+                    Q(rejected=True),
+                    Q(has_edits=True) | Q(approved=False,rejected=False))
             )
         else:
             return self.filter(
                 Q(rejected=True) |
                 Q(has_edits=False) & Q(approved=True))
+
+    def filter_number_beds(self, value):
+        return self.filter(number_of_beds__gte=1)
+
+    def filter_number_cots(self, value):
+        return self.filter(number_of_cots__gte=1)
 
     id = ListCharFilter(lookup_type='icontains')
     name = django_filters.CharFilter(lookup_type='icontains')
@@ -363,9 +386,9 @@ class FacilityFilter(CommonFieldsFilterset):
     keph_level = ListCharFilter(lookup_type='exact')
     operation_status = ListCharFilter(lookup_type='icontains')
     ward = ListCharFilter(lookup_type='icontains')
-    sub_county = ListCharFilter(lookup_type='exact')
+    sub_county = ListCharFilter(lookup_type='exact', name='ward__sub_county')
     sub_county_code = ListCharFilter(
-        name="sub_county__code", lookup_type='exact')
+        name="ward__sub_county__code", lookup_type='exact')
     ward_code = ListCharFilter(name="ward__code", lookup_type='icontains')
     county_code = ListCharFilter(
         name='ward__constituency__county__code',
@@ -380,8 +403,8 @@ class FacilityFilter(CommonFieldsFilterset):
     owner = ListCharFilter(lookup_type='icontains')
     owner_type = ListCharFilter(name='owner__owner_type', lookup_type='exact')
     officer_in_charge = ListCharFilter(lookup_type='icontains')
-    number_of_beds = ListIntegerFilter(lookup_type='exact')
-    number_of_cots = ListIntegerFilter(lookup_type='exact')
+    number_of_beds = django_filters.MethodFilter(action=filter_number_beds)
+    number_of_cots = django_filters.MethodFilter(action=filter_number_cots)
     open_whole_day = django_filters.TypedChoiceFilter(
         choices=BOOLEAN_CHOICES,
         coerce=strtobool)

@@ -1,0 +1,60 @@
+1. Remove the CHU services from the public home page
+2. Search by services in the home page
+3. Facilities to be shown on the map
+4. Test the system with the regulators API
+5. Change the report's name to facilities report filter
+6. Link the sub-county to ward
+7. Make sub-county a mandatory field
+8. Remove last_quater in county with changes report and dashboard
+9. Admin offices to be created by the CHRIOS
+        1. contacts
+        2. Sub-county
+        3. Job-title
+        4. In-charge Name
+10: Search reset button in the admin reports is not working
+11. Rename service field to service details
+
+12. Make the drop-down more intuitive by having the drop-down caret
+13. Remove the name advanced search page and leave the facility reports
+14. In the users grid add level the user is working on either at the national, county or sub-county
+    also add the group title
+15. Make it possible to transfer SCHRIO users  by the national admins
+16. User_name field should be removed from the users download list.
+17. Show all the facility types in the facility types graph in the dashboard
+18. Remove the facility legend name in the facility types graph in the dashboard
+19. Add user contacts during rating a service
+20. Change the placeholder text in the publics to indicate that the user can leave their contacts
+21. Change dashboard to fetch from sub-counties and not constituencies
+22. Drill-down facilities from the dashboard to the report page(Future)
+23. Remove savannah powered by and move to the partners section
+24. Hide in-charge details in the public and only give the facility contacts
+25. Hide the CHEW contacts and details in the public website
+26. Link the map on the homepage to the geo-locator
+27. Move the downloads to the admin side
+28. KMHFL email ministry for github
+29. Rename the reporting group to managers and remove community units groups
+30. Add community units also in the create group tool tips booleans
+31. Rename report group to system viewer
+32. The CHRIO to create report managers at his level
+33. The SCHRIO will not be able to create users.
+34. Add delete user button
+35. Make the facility fields optional up-to 31st March
+36. Change about to documentation
+37. Download to be taken to the login site.
+38. Use official name for the regulator snyc
+39. Show the details of the facility with a probable match from the synchronize facilities page
+40. Enable printing a facility
+41. Make the matching smarter (match by admin area, official name, )
+42. Show mfl code in the sync facilities table
+43. Change the name of the regulator sync button to validate
+44. mail.health.go.ke the email server
+45. remove view services in service categories in setup
+
+#Issues with conflict
+1. Link a Community Health Units to services
+2. Map facilities at the county
+
+
+##
+ Server integrity error on creating users contacts
+ On patching a user his permissions disappear

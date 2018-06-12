@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(
 
 env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
-    DEBUG=(bool, True),
+    DEBUG=(bool, False),
     FRONTEND_URL=(str, "http://localhost:8062"),
     REALTIME_INDEX=(bool, False),
     HTTPS_ENABLED=(bool, False),
@@ -22,9 +22,7 @@ env = environ.Env(
     STORAGE_BACKEND=(str, ''),
     ADMINS=(str, "admin:admin@example.com,"),
     SERVER_EMAIL=(str, "root@localhost"),
-    ALLOWED_HOSTS=(str, "")
-
-
+    ALLOWED_HOSTS=(str, "localhost")
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -34,17 +32,17 @@ ADMINS = tuple(
 SERVER_EMAIL = env('SERVER_EMAIL')
 
 
-DEBUG = env('DEBUG')
+DEBUG = True
 SECRET_KEY = env('SECRET_KEY')
 ENV_DB = env.db()
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'HOST': ENV_DB['HOST'],
-        'NAME': ENV_DB['NAME'],
-        'PASSWORD': ENV_DB['PASSWORD'],
-        'PORT': ENV_DB['PORT'],
-        'USER': ENV_DB['USER'],
+        'HOST': 'localhost',
+        'NAME': 'mfl',
+        'PASSWORD': 'mfl',
+        'PORT': '5432',
+        'USER': 'mfl',
     }
 }  # Env should have DATABASE_URL
 MIDDLEWARE_CLASSES = (
@@ -69,7 +67,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
+ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',') + ['localhost', '127.0.0.1', '0.0.0.0', '41.89.94.4', 'kmhfl.uonbi.ac.ke']
 
 INSTALLED_APPS = (
     'django.contrib.sites',
@@ -103,6 +101,7 @@ INSTALLED_APPS = (
     'mfl_gis',
     'search',
     'reporting',
+    'admin_offices',
 )
 # LOCAL_APPS is now just a convenience setting for the metadata API
 # It is *NOT* appended to INSTALLED_APPS ( **deliberate** DRY violation )
@@ -118,6 +117,7 @@ LOCAL_APPS = [
     'data',
     'reporting',
     'search',
+    'admin_offices',
 ]
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_ALLOW_ALL = True
@@ -175,13 +175,13 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'exception_handler.handler.custom_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'common.paginator.MflPaginationSerializer',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'PAGINATE_BY': 30,
     'PAGINATE_BY_PARAM': 'page_size',
     # Should be able to opt in to see all wards at once
-    'MAX_PAGINATE_BY': 15000,
+    'MAX_PAGINATE_BY': 150000,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -281,13 +281,7 @@ TEMPLATES = [
 ]
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "COMPRESS_MIN_LEN": 10,
-            "IGNORE_EXCEPTIONS": True,
-        }
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache"
     }
 }
 CACHE_MIDDLEWARE_SECONDS = 15  # Intentionally conservative by default

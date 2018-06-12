@@ -30,12 +30,23 @@ from .views import (
     DocumentUploadListView,
     DocumentUploadDetailView,
     ErrorQueueDetailView,
-    ErrorQueueListView
+    ErrorQueueListView,
+    UserSubCountyDetailView,
+    UserSubCountyListView,
+    NotificationListView,
+    NotificationDetailView
 )
 
 
 urlpatterns = patterns(
     '',
+    url(r'^notifications/$',
+        NotificationListView.as_view(),
+        name='notifications_list'),
+    url(r'^notifications/(?P<pk>[^/]+)/$',
+        NotificationDetailView.as_view(),
+        name='notification_detail'),
+
 
     url(r'^errors/$',
         ErrorQueueListView.as_view(),
@@ -43,6 +54,13 @@ urlpatterns = patterns(
     url(r'^errors/(?P<pk>[^/]+)/$',
         ErrorQueueDetailView.as_view(),
         name='error_queue_detail'),
+
+    url(r'^user_sub_counties/$',
+        UserSubCountyListView.as_view(),
+        name='user_sub_counties_list'),
+    url(r'^user_sub_counties/(?P<pk>[^/]+)/$',
+        UserSubCountyDetailView.as_view(),
+        name='user_sub_county_detail'),
 
     url(r'^sub_counties/$',
         SubCountyListView.as_view(),

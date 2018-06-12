@@ -15,7 +15,9 @@ from ..models import (
     UserConstituency,
     SubCounty,
     DocumentUpload,
-    ErrorQueue
+    ErrorQueue,
+    UserSubCounty,
+    Notification
 )
 from facilities.models import(
     FacilityStatus,
@@ -26,6 +28,7 @@ from facilities.models import(
     Service,
     KephLevel
 )
+from users.models import JobTitle
 from chul import models as chu_models
 from ..serializers import (
     ContactSerializer,
@@ -47,7 +50,9 @@ from ..serializers import (
     UserConstituencySerializer,
     SubCountySerializer,
     DocumentUploadSerializer,
-    ErrorQueueSerializer
+    ErrorQueueSerializer,
+    UserSubCountySerializer,
+    NotificationSerializer
 )
 from ..filters import (
     ContactTypeFilter,
@@ -62,30 +67,61 @@ from ..filters import (
     UserConstituencyFilter,
     SubCountyFilter,
     DocumentUploadFilter,
-    ErrorQueueFilter
+    ErrorQueueFilter,
+    UserSubCountyFilter,
+    NotificationFilter
 )
 from .shared_views import AuditableDetailViewMixin
 from ..utilities import CustomRetrieveUpdateDestroyView
 
 
-class FilterAdminUnitsMixin(object):
+class NotificationListView(generics.ListCreateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    ordering_fields = ('group', 'created', 'title')
+    filter_class = NotificationFilter
 
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
-        if (user.county and hasattr(
-                self.queryset.model, 'county') and not
-                user.is_national and not
-                hasattr(self.queryset.model, 'constituency')):
-            return self.queryset.filter(county=user.county)
-        elif (user.constituency and hasattr(
-                self.queryset.model, 'constituency')and not user.is_national):
-            return self.queryset.filter(constituency=user.constituency)
-        elif (user.county and hasattr(
-                self.queryset.model, 'constituency') and not
-                user.is_national and hasattr(self.queryset.model, 'county')):
-            return self.queryset.filter(constituency__county=user.county)
-        else:
-            return self.queryset
+        if not user.is_national:
+            user_groups = user.groups.all()
+            return self.queryset.filter(group__in=user_groups)
+        return self.queryset
+
+
+class NotificationDetailView(CustomRetrieveUpdateDestroyView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+
+class UserSubCountyListView(generics.ListCreateAPIView):
+
+    """
+    Lists and creates user sub counties
+
+    user  -- The user id of the linked user
+    sub_county --  The id of the sub_county
+    Created ---  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = UserSubCounty.objects.all()
+    serializer_class = UserSubCountySerializer
+    ordering_fields = ('user', 'sub_county',)
+    filter_class = UserSubCountyFilter
+
+
+class UserSubCountyDetailView(
+        AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
+
+    """
+    Retrieves a particular user sub_county
+    """
+    queryset = UserSubCounty.objects.all()
+    serializer_class = UserSubCountySerializer
 
 
 class SubCountyListView(generics.ListCreateAPIView):
@@ -108,12 +144,33 @@ class SubCountyListView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code', 'county')
     filter_class = SubCountyFilter
 
+    def get_queryset(self):
+        if self.request.user.sub_county:
+            county_ids = [
+                user_con.sub_county.county.id for user_con in
+                UserSubCounty.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.constituency:
+            county_ids = [
+                user_con.constituency.county.id for user_con in
+                UserConstituency.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in
+                UserCounty.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        return self.queryset
+
 
 class SubCountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular contact
+    Retrieves a particular sub_county
     """
     queryset = SubCounty.objects.all()
     serializer_class = SubCountySerializer
@@ -142,7 +199,7 @@ class ContactDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular contact
+    Retrieves a particular contact
     """
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
@@ -151,7 +208,7 @@ class ContactDetailView(
 class PhysicalAddressView(generics.ListCreateAPIView):
 
     """
-    Lists and creaates physical addresses
+    Lists and creates physical addresses
 
     Created ---  Date the record was Created
     Updated -- Date the record was Updated
@@ -193,12 +250,37 @@ class CountyView(generics.ListCreateAPIView):
     ordering_fields = ('name', 'code',)
     filter_class = CountyFilter
 
+    def get_queryset(self):
+        if self.request.user.county:
+            county_ids = [
+                user_county.county.id for user_county in
+                UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.constituency:
+            county_ids = [
+                user_con.constituency.county.id for user_con in
+                UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.sub_county:
+            county_ids = [
+                user_sub.sub_county.county.id for user_sub in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        else:
+            return self.queryset
+
 
 class CountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular county including the county boundary
+    Retrieves a particular county including the county boundary
     and its facility coordinates
     """
     queryset = County.objects.all()
@@ -215,7 +297,7 @@ class CountySlimDetailView(
     serializer_class = CountySlimDetailSerializer
 
 
-class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
+class WardView(generics.ListCreateAPIView):
 
     """
     Lists and creates wards
@@ -233,12 +315,45 @@ class WardView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     filter_class = WardFilter
     ordering_fields = ('name', 'code', 'constituency',)
 
+    def get_queryset(self):
+        if self.request.user.constituency and self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_county_id__in=const_ids)
+
+        if self.request.user.constituency:
+            const_ids = [
+                uc.constituency.id for uc in
+                UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency_id__in=const_ids)
+
+        if self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_county_id__in=const_ids)
+
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency__county_id__in=county_ids)
+        return Ward.objects.all()
+
 
 class WardDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular ward details including ward boundaries
+    Retrieves a particular ward details including ward boundaries
     and facility coordinates
     """
     queryset = Ward.objects.all()
@@ -249,13 +364,13 @@ class WardSlimDetailView(
         AuditableDetailViewMixin, generics.RetrieveUpdateDestroyAPIView):
 
     """
-    Retrieves a patricular ward primary details
+    Retrieves a particular ward primary details
     """
     queryset = Ward.objects.all()
     serializer_class = WardSlimDetailSerializer
 
 
-class ConstituencyView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
+class ConstituencyView(generics.ListCreateAPIView):
 
     """
     Lists and creates constituencies
@@ -272,12 +387,37 @@ class ConstituencyView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
     filter_class = ConstituencyFilter
     ordering_fields = ('name', 'code', 'county',)
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.constituency:
+            con_ids = [
+                user_con.constituency.id for user_con in
+                UserConstituency.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(id__in=con_ids)
+
+        if user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(county_id__in=county_ids)
+        if user.sub_county:
+            county_ids = [
+                uc.sub_county.county.id for uc in UserSubCounty.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(county_id__in=county_ids)
+
+        return self.queryset
+
 
 class ConstituencyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a  patricular constituency
+    Retrieves a  particular constituency
     """
     queryset = Constituency.objects.all()
     serializer_class = ConstituencyDetailSerializer
@@ -310,7 +450,7 @@ class ContactTypeDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular contact type
+    Retrieves a particular contact type
     """
     queryset = ContactType.objects.all()
     serializer_class = ContactTypeSerializer
@@ -340,7 +480,7 @@ class UserCountyDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular link between a user and a county
+    Retrieves a particular link between a user and a county
     """
     queryset = UserCounty.objects.all()
     serializer_class = UserCountySerializer
@@ -367,13 +507,13 @@ class UserContactDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular user contact
+    Retrieves a particular user contact
     """
     queryset = UserContact.objects.all()
     serializer_class = UserContactSerializer
 
 
-class TownListView(FilterAdminUnitsMixin, generics.ListCreateAPIView):
+class TownListView(generics.ListCreateAPIView):
 
     """
     Lists and creates towns
@@ -394,7 +534,7 @@ class TownDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 
     """
-    Retrieves a patricular town detail
+    Retrieves a particular town detail
     """
     queryset = Town.objects.all()
     serializer_class = TownSerializer
@@ -407,6 +547,109 @@ class FilteringSummariesView(views.APIView):
     """
     serializer_cls = FilteringSummariesSerializer
 
+    def get_counties(self):
+        if self.request.user.county:
+            county_ids = [
+                user_county.county.id for user_county in
+                UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.constituency:
+            county_ids = [
+                user_con.constituency.county.id for user_con in
+                UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        elif self.request.user.sub_county:
+            county_ids = [
+                user_sub.sub_county.county.id for user_sub in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return County.objects.filter(id__in=county_ids)
+        else:
+            return County.objects.all()
+
+    def get_constituencies(self):
+        user = self.request.user
+        if user.constituency:
+            con_ids = [
+                user_con.constituency.id for user_con in
+                UserConstituency.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(id__in=con_ids)
+
+        if user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(county_id__in=county_ids)
+        if user.sub_county:
+            county_ids = [
+                uc.sub_county.county.id for uc in UserSubCounty.objects.filter(
+                    user=user, active=True)
+            ]
+            return Constituency.objects.filter(county_id__in=county_ids)
+        return Constituency.objects.all()
+
+    def get_sub_counties(self):
+        if self.request.user.sub_county:
+            county_ids = [
+                user_con.sub_county.county.id for user_con in
+                UserSubCounty.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.constituency:
+            county_ids = [
+                user_con.constituency.county.id for user_con in
+                UserConstituency.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in
+                UserCounty.objects.filter(user=self.request.user)
+            ]
+            return SubCounty.objects.filter(county_id__in=county_ids)
+        return SubCounty.objects.all()
+
+    def get_wards(self):
+        if self.request.user.constituency and self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_county_id__in=const_ids)
+
+        if self.request.user.constituency:
+            const_ids = [
+                uc.constituency.id for uc in
+                UserConstituency.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency_id__in=const_ids)
+
+        if self.request.user.sub_county:
+            const_ids = [
+                us.sub_county.id for us in
+                UserSubCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(sub_county_id__in=const_ids)
+
+        if self.request.user.county:
+            county_ids = [
+                uc.county.id for uc in UserCounty.objects.filter(
+                    user=self.request.user, active=True)
+            ]
+            return Ward.objects.filter(constituency__county_id__in=county_ids)
+        return Ward.objects.all()
+
     def get(self, request):
         fields = request.query_params.get('fields', None)
         fields_model_mapping = {
@@ -414,21 +657,36 @@ class FilteringSummariesView(views.APIView):
             'sub_county': (SubCounty, ('id', 'name', 'county', )),
             'facility_type': (FacilityType, ('id', 'name')),
             'constituency': (Constituency, ('id', 'name', 'county', )),
-            'ward': (Ward, ('id', 'name', 'constituency', )),
+            'ward': (Ward, ('id', 'name', 'constituency', 'sub_county')),
             'operation_status': (FacilityStatus, ('id', 'name')),
             'chu_status': (chu_models.Status, ('id', 'name', )),
             'service_category': (ServiceCategory, ('id', 'name')),
             'owner_type': (OwnerType, ('id', 'name')),
             'owner': (Owner, ('id', 'name', 'owner_type')),
             'service': (Service, ('id', 'name', 'category')),
-            'keph_level': (KephLevel, ('id', 'name'))
+            'keph_level': (KephLevel, ('id', 'name')),
+            'job_title': (JobTitle, ('id', 'name'))
         }
         if fields:
             resp = {}
             for key in fields.split(","):
                 if key in fields_model_mapping:
                     model, chosen_fields = fields_model_mapping[key]
-                    resp[key] = model.objects.values(*chosen_fields).distinct()
+                    if model == County:
+                        resp[key] = self.get_counties().values(
+                            *chosen_fields).distinct()
+                    elif model == Constituency:
+                        resp[key] = self.get_constituencies().values(
+                            *chosen_fields).distinct()
+                    elif model == SubCounty:
+                        resp[key] = self.get_sub_counties().values(
+                            *chosen_fields).distinct()
+                    elif model == Ward:
+                        resp[key] = self.get_wards().values(
+                            *chosen_fields).distinct()
+                    else:
+                        resp[key] = model.objects.values(
+                            *chosen_fields).distinct()
             res = self.serializer_cls(data=resp).initial_data
         else:
             res = {}

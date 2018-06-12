@@ -15,5 +15,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for record in FacilityExportExcelMaterialView.objects.all():
-            index_instance(record)
+            index_instance('facilities', 'FacilityExportExcelMaterialView', record.id)
             logger.info("indexed instance {0}".format(record.name))

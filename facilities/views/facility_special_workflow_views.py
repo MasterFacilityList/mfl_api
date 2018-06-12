@@ -102,6 +102,25 @@ class FacilityTypeListView(generics.ListCreateAPIView):
     ordering_fields = ('name', )
 
 
+class FacilityTypeDetailsListView(generics.ListCreateAPIView):
+
+    """
+    Lists and creates facility types
+    name -- Name of a facility type
+    sub_division -- A sub-division in a facility type
+    Created --  Date the record was Created
+    Updated -- Date the record was Updated
+    Created_by -- User who created the record
+    Updated_by -- User who updated the record
+    active  -- Boolean is the record active
+    deleted -- Boolean is the record deleted
+    """
+    queryset = FacilityType.objects.all()
+    serializer_class = FacilityTypeSerializer
+    filter_class = FacilityTypeFilter
+    ordering_fields = ('name', )
+
+
 class FacilityTypeDetailView(
         AuditableDetailViewMixin, CustomRetrieveUpdateDestroyView):
 

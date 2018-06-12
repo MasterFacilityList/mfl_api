@@ -18,14 +18,13 @@ class Command(BaseCommand):
     def _load_group_permissions(self, group_permissions):
         with transaction.atomic():
             for gp in group_permissions:
-
                 g = Group.objects.get(**gp["group"])
                 g.permissions.clear()
                 for perm in gp["permissions"]:
                     g.permissions.add(Permission.objects.get(**perm))
 
     def _annotate_groups_with_booleans(self):
-        file_path = 'data/data/v2_data/0102_group_booleans'
+        file_path = 'data/new_data/v2_data/0102_group_booleans'
         full_file_path = os.path.join(settings.BASE_DIR, file_path)
         with open(full_file_path) as data_file:
             data = data_file.read()
@@ -35,7 +34,7 @@ class Command(BaseCommand):
                 CustomGroup.objects.get_or_create(**record)
 
     def _assign_user_groups(self):
-        file_path = 'data/data/v2_data/users_and_groups/1001_user_groups.json'
+        file_path = 'data/new_data/v2_data/users_and_groups/1001_user_groups.json'
         full_file_path = os.path.join(settings.BASE_DIR, file_path)
         with open(full_file_path) as data_file:
             data = data_file.read()

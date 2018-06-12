@@ -104,6 +104,7 @@ class MflUserManager(BaseUserManager):
                           is_staff=is_staff, is_active=True,
                           is_superuser=False, date_joined=now, **extra_fields)
         user.save(using=self._db)
+        # Skip sending email for testing purposes
         send_email_on_signup(
             user.id, email, first_name, employee_number, password)
         return user
@@ -203,9 +204,11 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
     search = models.CharField(max_length=255, null=True, blank=True)
     deleted = models.BooleanField(default=False)
     created_by = models.ForeignKey(
-        'self', null=True, blank=True, related_name='+')
+        'self', null=True, blank=True, related_name='+',
+        on_delete=models.PROTECT)
     updated_by = models.ForeignKey(
-        'self', null=True, blank=True, related_name='+')
+        'self', null=True, blank=True, related_name='+',
+        on_delete=models.PROTECT)
     updated = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(default=timezone.now)
 
@@ -293,6 +296,13 @@ class MflUser(AbstractBaseUser, PermissionsMixin):
         user_consts = UserConstituency.objects.filter(
             user=self, active=True)
         return user_consts[0].constituency if user_consts else None
+
+    @property
+    def sub_county(self):
+        from common.models import UserSubCounty
+        user_subs = UserSubCounty.objects.filter(
+            user=self, active=True)
+        return user_subs[0].sub_county if user_subs else None
 
     @property
     def regulator(self):

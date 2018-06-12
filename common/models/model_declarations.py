@@ -5,11 +5,12 @@ import json
 from django.db import models
 from django.conf import settings
 from django.utils import encoding, timezone
+from django.contrib.auth.models import Group
 
 from rest_framework.exceptions import ValidationError
 
 from ..fields import SequenceField
-from .base import AbstractBase, SequenceMixin
+from .base import AbstractBase, SequenceMixin, AbstractBaseMapping
 
 LOGGER = logging.getLogger(__file__)
 
@@ -167,6 +168,17 @@ class County(AdministrativeUnitBase):
         verbose_name_plural = 'counties'
 
 
+@reversion.register
+@encoding.python_2_unicode_compatible
+class CountyMapping(AbstractBaseMapping):
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'county_mappings'
+
+
 @reversion.register(follow=['county'])
 @encoding.python_2_unicode_compatible
 class Constituency(AdministrativeUnitBase):
@@ -200,6 +212,49 @@ class Constituency(AdministrativeUnitBase):
         unique_together = ('name', 'county')
 
 
+@reversion.register
+@encoding.python_2_unicode_compatible
+class ConstituencyMapping(AbstractBaseMapping):
+
+    constituency_id = models.CharField(max_length=255, null=True)
+    county_name = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'constituency_mappings'
+
+
+@reversion.register(follow=['county'])
+@encoding.python_2_unicode_compatible
+class SubCounty(AdministrativeUnitBase):
+
+    """
+    A county can be sub divided into sub counties.
+
+    The sub-counties do not necessarily map to constituencies
+    """
+    county = models.ForeignKey(County, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.name
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class SubCountyMapping(AbstractBaseMapping):
+
+    sub_county_id = models.CharField(max_length=255, null=True)
+    county_name = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'sub_county_mappings'
+
+
 @reversion.register(follow=['constituency'])
 @encoding.python_2_unicode_compatible
 class Ward(AdministrativeUnitBase):
@@ -218,6 +273,10 @@ class Ward(AdministrativeUnitBase):
         Constituency,
         help_text="The constituency where the ward is located.",
         on_delete=models.PROTECT)
+    sub_county = models.ForeignKey(
+        SubCounty, null=True, blank=True,
+        help_text='The sub-county where the ward is located',
+        on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -235,20 +294,64 @@ class Ward(AdministrativeUnitBase):
             LOGGER.info('No boundaries found for {}'.format(self))
             return _lookup_facility_coordinates(None)
 
+    def validate_county(self):
+        if self.sub_county:
+            if not self.sub_county.county == self.constituency.county:
+                raise ValidationError(
+                    {
+                        "sub_county": [
+                            "Ensure the sub-county and the constituency "
+                            "are in the same county"
+                        ]
+                    }
+                )
 
-@reversion.register(follow=['county'])
+    def clean(self, *args, **kwargs):
+        super(Ward, self).clean(*args, **kwargs)
+        self.validate_county()
+
+
+@reversion.register
 @encoding.python_2_unicode_compatible
-class SubCounty(AdministrativeUnitBase):
+class WardMapping(AbstractBaseMapping):
 
-    """
-    A county can be sub divided into sub counties.
-
-    The sub-counties do not necessarily map to constituencies
-    """
-    county = models.ForeignKey(County, on_delete=models.PROTECT)
+    ward_id = models.CharField(max_length=255, null=True)
+    sub_county_name = models.CharField(max_length=255, null=True)
 
     def __str__(self):
-        return self.name
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'ward_mappings'
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class FacilityMapping(AbstractBaseMapping):
+
+    facility_id = models.CharField(max_length=255, null=True)
+    ward_name = models.CharField(max_length=255, null=True)
+    test = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'facility_mappings'
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class OrgUnitGroupsMapping(AbstractBaseMapping):
+
+    group_set_ids = models.TextField(null=True, blank=True)
+    group_code = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'org_unit_groups_mappings'
 
 
 @reversion.register(follow=['user', 'county'])
@@ -268,18 +371,7 @@ class UserCounty(UserAdminAreaLinkageMixin, AbstractBase):
     def __str__(self):
         return "{}: {}".format(self.user, self.county)
 
-    def validate_only_one_county_active(self):
-        """
-        A user can be in-charge of only one county at the a time.
-        """
-        counties = self.__class__.objects.filter(
-            user=self.user, active=True, deleted=False)
-        if counties.count() > 0 and not self.deleted and self.active:
-            raise ValidationError(
-                "A user can only be active in one county at a time")
-
     def clean(self, *args, **kwargs):
-        self.validate_only_one_county_active()
         super(UserCounty, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
@@ -301,7 +393,7 @@ class UserContact(AbstractBase):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='user_contacts', on_delete=models.PROTECT)
-    contact = models.ForeignKey(Contact)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT,)
 
     def __str__(self):
         return "{}: ({})".format(self.user, self.contact)
@@ -330,16 +422,23 @@ class UserContact(AbstractBase):
 @encoding.python_2_unicode_compatible
 class UserConstituency(UserAdminAreaLinkageMixin, AbstractBase):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='user_constituencies')
-    constituency = models.ForeignKey(Constituency)
+        settings.AUTH_USER_MODEL, related_name='user_constituencies',
+        on_delete=models.PROTECT,)
+    constituency = models.ForeignKey(Constituency, on_delete=models.PROTECT,)
 
     def validate_constituency_county_in_creator_county(self):
-        error = ("Users created must be in the administrators "
-                 "county or sub county")
+        error = {
+            "constituency": [
+                "Users created must be in the administrators "
+                "county or sub county"
+            ]
+        }
+        nat_user = self.created_by.is_national or self.updated_by.is_national
         if self.created_by.constituency:
             if self.constituency.county != self.created_by.constituency.county:
                 raise ValidationError(error)
-        elif self.constituency.county != self.created_by.county:
+        elif (self.constituency.county != self.created_by.county and not
+                nat_user):
             raise ValidationError(error)
 
     def clean(self, *args, **kwargs):
@@ -407,7 +506,7 @@ class PhysicalAddress(AbstractBase):
 class DocumentUpload(AbstractBase):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    fyl = models.FileField()
+    fyl = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -435,3 +534,52 @@ class ErrorQueue(models.Model):
     def __str__(self):
         return "{} - {} - {}".format(
             self.object_pk, self.app_label, self.model_name)
+
+
+class UserSubCounty(AbstractBase):
+    """
+    Link a user to a sub-county
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='user_sub_counties',
+        on_delete=models.PROTECT,)
+    sub_county = models.ForeignKey(SubCounty, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "{0} - {1}".format(
+            self.user.email, self.sub_county.name)
+
+
+class Notification(AbstractBase):
+    """
+    Send a notification to a particular group of the users in KMHFL
+    """
+    title = models.CharField(max_length=255)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+    def summary(self):
+        return self.message[0:100]
+
+    def simple_groups(self):
+        if self.notification_groups.all():
+            return ", ".join([obj.group.name for obj in self.notification_groups.all()])
+        return "ALL"
+
+    class Meta:
+        ordering = ('-created', )
+
+
+class NoficiationGroup(AbstractBase):
+    """
+    A notification can be sent to more than one group
+    """
+
+    group = models.ForeignKey(Group)
+    notification = models.ForeignKey(Notification, related_name='notification_groups')
+
+    def __str__(self):
+        return self.group.name

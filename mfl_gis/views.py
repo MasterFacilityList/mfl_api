@@ -199,7 +199,7 @@ class FacilityCoordinatesCreationAndListing(
     serializer_class = FacilityCoordinateSimpleSerializer
     filter_class = FacilityCoordinatesFilter
     ordering_fields = (
-        'facility', 'latitude', 'longitude', 'source', 'method',)
+        'facility', 'latitude', 'longitude',)
     pagination_class = GISPageNumberPagination
 
     def create(self, request, *args, **kwargs):
@@ -213,9 +213,8 @@ class FacilityCoordinatesCreationAndListing(
             self.buffer_coordinates(facility, request.data)
         else:
             self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
         return views.Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            serializer.data, status=status.HTTP_201_CREATED)
 
 
 class FacilityCoordinatesCreationAndDetail(

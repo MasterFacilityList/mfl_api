@@ -1,0 +1,779 @@
+[
+    {
+        "county": "Nairobi",
+        "ward": "MWIKI",
+        "facility_code": "20573"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MWIKI",
+        "facility_code": "21188"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MWIKI",
+        "facility_code": "20716"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MWIKI",
+        "facility_code": "21085"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MWIKI",
+        "facility_code": "20190"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "MWIKI",
+        "facility_code": "18507"
+    },
+    {
+        "county": "trans nzoia",
+        "ward": "BIDII",
+        "facility_code": "19743"
+    },
+    {
+        "county": "trans nzoia",
+        "ward": "BIDII",
+        "facility_code": 14981.0
+    },
+    {
+        "county": "HOMA BAY",
+        "ward": "KANYAMWA KOSEWE",
+        "facility_code": "20347"
+    },
+    {
+        "county": "Isiolo",
+        "ward": "SERICHO",
+        "facility_code": "11917"
+    },
+    {
+        "county": "Isiolo",
+        "ward": "BURAT",
+        "facility_code": "21011"
+    },
+    {
+        "county": "Isiolo",
+        "ward": "CHARI",
+        "facility_code": "19912"
+    },
+    {
+        "county": "Kakamega",
+        "ward": "MARAMA WEST",
+        "facility_code": "20674"
+    },
+    {
+        "county": "Kericho",
+        "ward": "CHEBOIN",
+        "facility_code": "14633"
+    },
+    {
+        "county": "Kericho",
+        "ward": "CHEPLANGET",
+        "facility_code": "15201"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "KARAI",
+        "facility_code": "20644"
+    },
+    {
+        "county": "Kiambu",
+        "ward": "MUCHATHA",
+        "facility_code": "20646"
+    },
+    {
+        "county": "kiambu",
+        "ward": "BIBIRIONI",
+        "facility_code": "11032"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "TEZO",
+        "facility_code": 20320.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "KAKUYUNI",
+        "facility_code": "11320"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "KAKUYUNI",
+        "facility_code": "16522"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "KAKUYUNI",
+        "facility_code": "16193"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "KAKUYUNI",
+        "facility_code": "11453"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "KAKUYUNI",
+        "facility_code": "11475"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "TEZO",
+        "facility_code": 16178.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "TEZO",
+        "facility_code": "16178"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "11557"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "17967"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "18302"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "CHASIMBA",
+        "facility_code": 17021.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "CHASIMBA",
+        "facility_code": 19019.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "20036"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "18298"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "11674"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "11698"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "CHASIMBA",
+        "facility_code": 21510.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "CHASIMBA",
+        "facility_code": "20319"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "CHASIMBA",
+        "facility_code": 11912.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "11752"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "16524"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "11823"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "11825"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "DABASO",
+        "facility_code": 11607.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "DABASO",
+        "facility_code": 19028.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "17966"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "KAYAFUNGO",
+        "facility_code": "11859"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "DABASO",
+        "facility_code": 18296.0
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "16529"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "GANDA",
+        "facility_code": "11878"
+    },
+    {
+        "county": "KILIFI",
+        "ward": "DABASO",
+        "facility_code": 11886.0
+    },
+    {
+        "county": "Kirinyaga",
+        "ward": "TEBERE",
+        "facility_code": "18906"
+    },
+    {
+        "county": "Kisii",
+        "ward": "KIOGORO",
+        "facility_code": "20919"
+    },
+    {
+        "county": "Kisii",
+        "ward": "ICHUNI",
+        "facility_code": "20668"
+    },
+    {
+        "county": "Kitui",
+        "ward": "MBITINI",
+        "facility_code": "17146"
+    },
+    {
+        "county": "Kitui",
+        "ward": "MBITINI",
+        "facility_code": "15681"
+    },
+    {
+        "county": "KWALE",
+        "ward": "PUMA",
+        "facility_code": "21258"
+    },
+    {
+        "county": "KWALE",
+        "ward": "PUMA",
+        "facility_code": "21259"
+    },
+    {
+        "county": "KWALE",
+        "ward": "PUMA",
+        "facility_code": "21257"
+    },
+    {
+        "county": "KWALE",
+        "ward": "PUMA",
+        "facility_code": "20492"
+    },
+    {
+        "county": "laikipia",
+        "ward": "NANYUKI",
+        "facility_code": "21275"
+    },
+    {
+        "county": "laikipia",
+        "ward": "NANYUKI",
+        "facility_code": "10909"
+    },
+    {
+        "county": "LAIKIPIA",
+        "ward": "NANYUKI",
+        "facility_code": 20023.0
+    },
+    {
+        "county": "machakos",
+        "ward": "MUMBUNI NORTH",
+        "facility_code": 12052.0
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": 21253.0
+    },
+    {
+        "county": "machakos",
+        "ward": "MUA",
+        "facility_code": 12532.0
+    },
+    {
+        "county": "Makueni",
+        "ward": "THANGE",
+        "facility_code": "18171"
+    },
+    {
+        "county": "Makueni",
+        "ward": "MAKINDU",
+        "facility_code": "12313"
+    },
+    {
+        "county": "MAKUENI",
+        "ward": "NGUU/MASUMBA",
+        "facility_code": "18449"
+    },
+    {
+        "county": "Makueni",
+        "ward": "KILUNGU",
+        "facility_code": "17724"
+    },
+    {
+        "county": "MARSABIT",
+        "ward": "TURBI",
+        "facility_code": "12141"
+    },
+    {
+        "county": "meru",
+        "ward": "IGOJI EAST",
+        "facility_code": 20600.0
+    },
+    {
+        "county": "meru",
+        "ward": "KARAMA",
+        "facility_code": 19328.0
+    },
+    {
+        "county": "meru",
+        "ward": "KARAMA",
+        "facility_code": "18654"
+    },
+    {
+        "county": "meru",
+        "ward": "KARAMA",
+        "facility_code": "18693"
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": 18242.0
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": 19073.0
+    },
+    {
+        "county": "meru",
+        "ward": "KIGUCHWA",
+        "facility_code": "18692"
+    },
+    {
+        "county": "MIGORI",
+        "ward": "KALER",
+        "facility_code": "19928"
+    },
+    {
+        "county": "MIGORI",
+        "ward": "KAKRAO",
+        "facility_code": 13996.0
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHAANI",
+        "facility_code": "18123"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHAANI",
+        "facility_code": "11521"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHAANI",
+        "facility_code": "17760"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHAANI",
+        "facility_code": "17893"
+    },
+    {
+        "county": "Mombasa",
+        "ward": "CHAANI",
+        "facility_code": "17775"
+    },
+    {
+        "county": "Murang'a",
+        "ward": "NGINDA",
+        "facility_code": "10673"
+    },
+    {
+        "county": "Nairobi",
+        "ward": "LINDI",
+        "facility_code": "21083"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20853"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20607"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "10068"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20487"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20463"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20462"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "15217"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "14609"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "15137"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "15198"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "14694"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "14241"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "15785"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "15606"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "15246"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "20132"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "21221"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KABAZI",
+        "facility_code": "20514"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20131"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20353"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "20251"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "18363"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "21421"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "17091"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "17090"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "14474"
+    },
+    {
+        "county": "Nakuru",
+        "ward": "KIAMAINA",
+        "facility_code": "15091"
+    },
+    {
+        "county": "Nyamira",
+        "ward": "MAGOMBO",
+        "facility_code": "20133"
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "CENTRAL",
+        "facility_code": "19704"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "NYAKIO",
+        "facility_code": "20944"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "NYAKIO",
+        "facility_code": "20944"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GITHABAI",
+        "facility_code": "20713"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "WANJOHI",
+        "facility_code": "10245"
+    },
+
+    {
+        "county": "NYANDARUA",
+        "ward": "KIRIITA",
+        "facility_code": "21397"
+    },
+
+    {
+        "county": "NYANDARUA",
+        "ward": "GITHABAI",
+        "facility_code": "20714"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GITHABAI",
+        "facility_code": "18675"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "NYAKIO",
+        "facility_code": "21077"
+    },
+    {
+        "county": "NYANDARUA",
+        "ward": "GITHABAI",
+        "facility_code": "19699"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10031"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10034"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10051"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10052"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10053"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10087"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10115"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "IRIAINI",
+        "facility_code": "10117"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "IRIAINI",
+        "facility_code": "10120"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "IRIAINI",
+        "facility_code": "10129"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "THEGU RIVER",
+        "facility_code": "10131"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "THEGU RIVER",
+        "facility_code": "10132"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "THEGU RIVER",
+        "facility_code": "10136"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "MAHIGA",
+        "facility_code": "10150"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "IRIAINI",
+        "facility_code": "10151"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "IRIAINI",
+        "facility_code": "10181"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RUGI",
+        "facility_code": "10182"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RUGI",
+        "facility_code": "20950"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "20951"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "20630"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10382"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RWARE",
+        "facility_code": "10515"
+    },
+    {
+        "county": "Nyeri",
+        "ward": "RUGURU",
+        "facility_code": "18047"
+    },
+    {
+        "county": "Samburu",
+        "ward": "NDOTO",
+        "facility_code": "10130"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "MWIMBI",
+        "facility_code": "18882"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "MWIMBI",
+        "facility_code": "18886"
+    },
+    {
+        "county": "Tharaka Nithi",
+        "ward": "MWIMBI",
+        "facility_code": "12289"
+    },
+    {
+        "county": "trans nzoia",
+        "ward": "WAITALUK",
+        "facility_code": 15032.0
+    },
+    {
+        "county": "trans nzoia",
+        "ward": "WAITALUK",
+        "facility_code": 15536.0
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "rurii",
+        "facility_code": 17972
+    },
+    {
+        "county": "Nyandarua",
+        "ward": "rurii",
+        "facility_code": 20305
+    }
+]

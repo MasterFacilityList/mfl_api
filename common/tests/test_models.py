@@ -232,6 +232,14 @@ class TestWardModel(BaseTestCase):
         ward = mommy.make(Ward, constituency=constituency)
         self.assertEquals(county, ward.county)
 
+    def test_ward_county(self):
+        # test that the county for the sub-county and the constituency
+        # are the same
+        sub_county = mommy.make(SubCounty)
+        const = mommy.make(Constituency)
+        with self.assertRaises(ValidationError):
+            mommy.make(Ward, constituency=const, sub_county=sub_county)
+
 
 class TestPhysicalAddress(BaseTestCase):
 
@@ -257,20 +265,6 @@ class TestUserCountyModel(BaseTestCase):
         }
         UserCounty.objects.create(**data)
         self.assertEquals(1, UserCounty.objects.count())
-
-    def test_user_is_only_active_in_one_county(self):
-        user = mommy.make(get_user_model())
-        county_1 = mommy.make(County)
-        county_2 = mommy.make(County)
-        UserCounty.objects.create(
-            user=user,
-            county=county_1
-        )
-        with self.assertRaises(ValidationError):
-            UserCounty.objects.create(
-                user=user,
-                county=county_2
-            )
 
     def test_user_linked_to_a_county_once(self):
         user = mommy.make(get_user_model())

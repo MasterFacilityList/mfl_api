@@ -138,7 +138,8 @@ class TestLastLog(TestCase):
 
     def test_oauth2_login(self):
         client = Client()
-        resp = client.post(reverse("token"), self.oauth2_payload)
+        resp = client.post(
+            reverse("oauth2_provider:token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
         self.assertIn("access_token", json.loads(resp.content))
         self.assertIsNotNone(self.user.lastlog)
@@ -146,7 +147,8 @@ class TestLastLog(TestCase):
 
     def test_oauth2_login_then_session_login(self):
         token_client = Client()
-        resp = token_client.post(reverse("token"), self.oauth2_payload)
+        resp = token_client.post(
+            reverse("oauth2_provider:token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
         self.assertIn("access_token", json.loads(resp.content))
 
@@ -160,7 +162,8 @@ class TestLastLog(TestCase):
         self.user.save()
 
         token_client = Client()
-        resp = token_client.post(reverse("token"), self.oauth2_payload)
+        resp = token_client.post(
+            reverse("oauth2_provider:token"), self.oauth2_payload)
         self.assertEqual(resp.status_code, 200)
         self.assertIn("access_token", json.loads(resp.content))
 

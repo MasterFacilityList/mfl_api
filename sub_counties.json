@@ -1,0 +1,1154 @@
+[
+    {
+        "county_code": 39, 
+        "name": "Cheptais"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Webuye East"
+    }, 
+    {
+        "county_code": 10, 
+        "name": "Moyale"
+    }, 
+    {
+        "county_code": 10, 
+        "name": "North Horr"
+    }, 
+    {
+        "county_code": 10, 
+        "name": "Saku"
+    }, 
+    {
+        "county_code": 10, 
+        "name": "Laisamis"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Igembe South"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Igembe Central"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Igembe North"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Tigania West"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Tigania East"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Imenti North"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Imenti Central"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Buuri"
+    }, 
+    {
+        "county_code": 12, 
+        "name": "Imenti South"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Rongo"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Awendo"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Suna East"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Suna West"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Urir"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Nyatike"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Kuria West"
+    }, 
+    {
+        "county_code": 44, 
+        "name": "Kuria East"
+    }, 
+    {
+        "county_code": 1, 
+        "name": "Changamwe"
+    }, 
+    {
+        "county_code": 1, 
+        "name": "Jomvu"
+    }, 
+    {
+        "county_code": 1, 
+        "name": "Kisauni"
+    }, 
+    {
+        "county_code": 1, 
+        "name": "Nyali"
+    }, 
+    {
+        "county_code": 1, 
+        "name": "Likoni"
+    }, 
+    {
+        "county_code": 1, 
+        "name": "Mvita"
+    }, 
+    {
+        "county_code": 21, 
+        "name": "Mathioya"
+    }, 
+    {
+        "county_code": 21, 
+        "name": "Kiharu"
+    }, 
+    {
+        "county_code": 21, 
+        "name": "Kigumo"
+    }, 
+    {
+        "county_code": 21, 
+        "name": "Maragwa"
+    }, 
+    {
+        "county_code": 21, 
+        "name": "Kandara"
+    }, 
+    {
+        "county_code": 21, 
+        "name": "Gatanga"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Westlands"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Dagoretti North"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Dagoretti South"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Langata"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Kibera"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Roysambu"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Kasarani"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Ruaraka"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Embakasi South"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Embakasi North"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Embakasi Central"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Embakasi East"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Embakasi West"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Makadara"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Kamukunji"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Starehe"
+    }, 
+    {
+        "county_code": 47, 
+        "name": "Mathare"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Molo"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Njoro"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Naivasha"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Gilgil"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Kuresoi South"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Kuresoi North"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Subukia"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Rongai"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Nakuru North"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Nakuru West"
+    }, 
+    {
+        "county_code": 32, 
+        "name": "Nakuru East"
+    }, 
+    {
+        "county_code": 29, 
+        "name": "Tinderet"
+    }, 
+    {
+        "county_code": 29, 
+        "name": "Aldai"
+    }, 
+    {
+        "county_code": 29, 
+        "name": "Nandi East"
+    }, 
+    {
+        "county_code": 29, 
+        "name": "Chesumei"
+    }, 
+    {
+        "county_code": 29, 
+        "name": "Emgwen"
+    }, 
+    {
+        "county_code": 29, 
+        "name": "Mosop"
+    }, 
+    {
+        "county_code": 33, 
+        "name": "Transmara West"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Mathira East"
+    }, 
+    {
+        "county_code": 33, 
+        "name": "Transmara East"
+    }, 
+    {
+        "county_code": 33, 
+        "name": "Narok North"
+    }, 
+    {
+        "county_code": 33, 
+        "name": "Narok East"
+    }, 
+    {
+        "county_code": 33, 
+        "name": "Narok South"
+    }, 
+    {
+        "county_code": 33, 
+        "name": "Narok West"
+    }, 
+    {
+        "county_code": 46, 
+        "name": "Manga"
+    }, 
+    {
+        "county_code": 46, 
+        "name": "Masaba North"
+    }, 
+    {
+        "county_code": 46, 
+        "name": "Nyamira"
+    }, 
+    {
+        "county_code": 46, 
+        "name": "Nyamira North"
+    }, 
+    {
+        "county_code": 46, 
+        "name": "Borabu"
+    }, 
+    {
+        "county_code": 18, 
+        "name": "Kinangop"
+    }, 
+    {
+        "county_code": 18, 
+        "name": "Kipipiri"
+    }, 
+    {
+        "county_code": 18, 
+        "name": "Olkalau"
+    }, 
+    {
+        "county_code": 18, 
+        "name": "Oljorok"
+    }, 
+    {
+        "county_code": 18, 
+        "name": "Ndaragwa"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Tetu"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Kieni West"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Kieni East"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Mathira West"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Mathira East"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Nyeri South"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Mukurweini"
+    }, 
+    {
+        "county_code": 9, 
+        "name": "Mandera West"
+    }, 
+    {
+        "county_code": 19, 
+        "name": "Nyeri Central"
+    }, 
+    {
+        "county_code": 9, 
+        "name": "Banisa"
+    }, 
+    {
+        "county_code": 25, 
+        "name": "Samburu Central"
+    }, 
+    {
+        "county_code": 9, 
+        "name": "Mandera North"
+    }, 
+    {
+        "county_code": 25, 
+        "name": "Samburu North"
+    }, 
+    {
+        "county_code": 9, 
+        "name": "Mandera South"
+    }, 
+    {
+        "county_code": 25, 
+        "name": "Samburu East"
+    }, 
+    {
+        "county_code": 9, 
+        "name": "Mandera East"
+    }, 
+    {
+        "county_code": 9, 
+        "name": "Lafey"
+    }, 
+    {
+        "county_code": 41, 
+        "name": "Ugenya"
+    }, 
+    {
+        "county_code": 41, 
+        "name": "Ugunja"
+    }, 
+    {
+        "county_code": 17, 
+        "name": "Mbooni"
+    }, 
+    {
+        "county_code": 41, 
+        "name": "Alego Usonga"
+    }, 
+    {
+        "county_code": 17, 
+        "name": "Kilome"
+    }, 
+    {
+        "county_code": 41, 
+        "name": "Gem"
+    }, 
+    {
+        "county_code": 41, 
+        "name": "Bondo"
+    }, 
+    {
+        "county_code": 17, 
+        "name": "Makueni"
+    }, 
+    {
+        "county_code": 17, 
+        "name": "Kibwezi West"
+    }, 
+    {
+        "county_code": 41, 
+        "name": "Rarieda"
+    }, 
+    {
+        "county_code": 17, 
+        "name": "Kibwezi East"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Masinga"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Yatta"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Kangundo"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Matungulu"
+    }, 
+    {
+        "county_code": 6, 
+        "name": "Taveta"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Kathiani"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Kathiani"
+    }, 
+    {
+        "county_code": 6, 
+        "name": "Wundanyi"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Athi River"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "machakos"
+    }, 
+    {
+        "county_code": 6, 
+        "name": "Mwatate"
+    }, 
+    {
+        "county_code": 6, 
+        "name": "Voi"
+    }, 
+    {
+        "county_code": 16, 
+        "name": "Mwala"
+    }, 
+    {
+        "county_code": 13, 
+        "name": "Maara"
+    }, 
+    {
+        "county_code": 13, 
+        "name": "Chuka/ Igambang'ombe"
+    }, 
+    {
+        "county_code": 13, 
+        "name": "Tharaka"
+    }, 
+    {
+        "county_code": 26, 
+        "name": "Kwanza"
+    }, 
+    {
+        "county_code": 26, 
+        "name": "Endebess"
+    }, 
+    {
+        "county_code": 26, 
+        "name": "Saboti"
+    }, 
+    {
+        "county_code": 26, 
+        "name": "Kiminini"
+    }, 
+    {
+        "county_code": 26, 
+        "name": "Cherengany"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Turkana North"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Turkana North"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Kibish"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Turkana West"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Turkana Central"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Loima"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Turkana South"
+    }, 
+    {
+        "county_code": 23, 
+        "name": "Turkana East"
+    }, 
+    {
+        "county_code": 27, 
+        "name": "Soy"
+    }, 
+    {
+        "county_code": 27, 
+        "name": "Turbo"
+    }, 
+    {
+        "county_code": 27, 
+        "name": "Moiben"
+    }, 
+    {
+        "county_code": 27, 
+        "name": "Ainabkoi"
+    }, 
+    {
+        "county_code": 27, 
+        "name": "Kapseret"
+    }, 
+    {
+        "county_code": 27, 
+        "name": "Kesses"
+    }, 
+    {
+        "county_code": 38, 
+        "name": "Vihiga"
+    }, 
+    {
+        "county_code": 38, 
+        "name": "Sabatia"
+    }, 
+    {
+        "county_code": 38, 
+        "name": "Hamisi"
+    }, 
+    {
+        "county_code": 38, 
+        "name": "Luanda"
+    }, 
+    {
+        "county_code": 38, 
+        "name": "Emuhaya"
+    }, 
+    {
+        "county_code": 8, 
+        "name": "Wajir North"
+    }, 
+    {
+        "county_code": 8, 
+        "name": "Wajir East"
+    }, 
+    {
+        "county_code": 8, 
+        "name": "Tarbaj"
+    }, 
+    {
+        "county_code": 8, 
+        "name": "Wajir West"
+    }, 
+    {
+        "county_code": 8, 
+        "name": "Eldas"
+    }, 
+    {
+        "county_code": 8, 
+        "name": "Wajir South"
+    }, 
+    {
+        "county_code": 42, 
+        "name": "Kisumu East"
+    }, 
+    {
+        "county_code": 42, 
+        "name": "Kisumu West"
+    }, 
+    {
+        "county_code": 42, 
+        "name": "Kisumu Central"
+    }, 
+    {
+        "county_code": 5, 
+        "name": "Lamu West"
+    }, 
+    {
+        "county_code": 42, 
+        "name": "Seme"
+    }, 
+    {
+        "county_code": 42, 
+        "name": "Nyando"
+    }, 
+    {
+        "county_code": 42, 
+        "name": "Muhoroni"
+    }, 
+    {
+        "county_code": 42, 
+        "name": "Nyakach"
+    }, 
+    {
+        "county_code": 5, 
+        "name": "Lamu East"
+    }, 
+    {
+        "county_code": 31, 
+        "name": "Laikipia West"
+    }, 
+    {
+        "county_code": 31, 
+        "name": "Laikipia East"
+    }, 
+    {
+        "county_code": 31, 
+        "name": "Laikipia North"
+    }, 
+    {
+        "county_code": 2, 
+        "name": "Msambweni"
+    }, 
+    {
+        "county_code": 2, 
+        "name": "Lunga Lunga"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Bonchari"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "South Mugirango"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Bomachoge Borabu"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Bobasi"
+    }, 
+    {
+        "county_code": 2, 
+        "name": "Matuga"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Bomachoge Chache"
+    }, 
+    {
+        "county_code": 2, 
+        "name": "Kinango"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Nyaribari Masaba"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Nyaribari Chache"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Kitutu Chache North"
+    }, 
+    {
+        "county_code": 45, 
+        "name": "Kitutu Chache South"
+    }, 
+    {
+        "county_code": 3, 
+        "name": "Kilifi North"
+    }, 
+    {
+        "county_code": 3, 
+        "name": "Kilifi South"
+    }, 
+    {
+        "county_code": 3, 
+        "name": "Kaloleni"
+    }, 
+    {
+        "county_code": 3, 
+        "name": "Rabai"
+    }, 
+    {
+        "county_code": 3, 
+        "name": "Ganze"
+    }, 
+    {
+        "county_code": 3, 
+        "name": "Malindi"
+    }, 
+    {
+        "county_code": 3, 
+        "name": "Magarini"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Gatundu South"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Gatundu North"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Juja"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Thika Town"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Ruiru"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Githunguri"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Kiambu Town"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Kiambaa"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Kabete"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Kikuyu"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Limuru"
+    }, 
+    {
+        "county_code": 22, 
+        "name": "Lari"
+    }, 
+    {
+        "county_code": 35, 
+        "name": "Kipkelion East"
+    }, 
+    {
+        "county_code": 35, 
+        "name": "Kipkelion West"
+    }, 
+    {
+        "county_code": 35, 
+        "name": "Ainamoi"
+    }, 
+    {
+        "county_code": 35, 
+        "name": "Bureti"
+    }, 
+    {
+        "county_code": 35, 
+        "name": "Belgut"
+    }, 
+    {
+        "county_code": 35, 
+        "name": "Sigowet / Soin"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Lugari"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Likuyani"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Malava"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Lurambi"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Navakholo"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Mumias West"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Mumias East"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Matungu"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Butere"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Khwisero"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Shinyalu"
+    }, 
+    {
+        "county_code": 37, 
+        "name": "Ikolomani"
+    }, 
+    {
+        "county_code": 34, 
+        "name": "Kajiado North"
+    }, 
+    {
+        "county_code": 34, 
+        "name": "Kajiado Central"
+    }, 
+    {
+        "county_code": 34, 
+        "name": "Kajiado East"
+    }, 
+    {
+        "county_code": 34, 
+        "name": "Kajiado West"
+    }, 
+    {
+        "county_code": 34, 
+        "name": "Loitokitok"
+    }, 
+    {
+        "county_code": 11, 
+        "name": "Merti"
+    }, 
+    {
+        "county_code": 11, 
+        "name": "Isiolo"
+    }, 
+    {
+        "county_code": 11, 
+        "name": "Garbatulla"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Kasipul"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "Mwingi North"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Kabondo Kasipul"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Karachuonyo"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "Mwingi West"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Rangwe"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Homa Bay Town"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Ndhiwa"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "Mwingi Central"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Mbita"
+    }, 
+    {
+        "county_code": 43, 
+        "name": "Suba"
+    }, 
+    {
+        "county_code": 7, 
+        "name": "Garissa"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "kitui West"
+    }, 
+    {
+        "county_code": 7, 
+        "name": "Balambala"
+    }, 
+    {
+        "county_code": 7, 
+        "name": "Lagdera"
+    }, 
+    {
+        "county_code": 7, 
+        "name": "Dadaab"
+    }, 
+    {
+        "county_code": 7, 
+        "name": "Fafi"
+    }, 
+    {
+        "county_code": 7, 
+        "name": "Hulugho"
+    }, 
+    {
+        "county_code": 7, 
+        "name": "Ijara"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "Kitui Rural"
+    }, 
+    {
+        "county_code": 14, 
+        "name": "Manyatta"
+    }, 
+    {
+        "county_code": 14, 
+        "name": "Runyenjes"
+    }, 
+    {
+        "county_code": 14, 
+        "name": "Mbeere South"
+    }, 
+    {
+        "county_code": 14, 
+        "name": "Mbeere North"
+    }, 
+    {
+        "county_code": 28, 
+        "name": "Marakwet West"
+    }, 
+    {
+        "county_code": 28, 
+        "name": "Marakwet East"
+    }, 
+    {
+        "county_code": 28, 
+        "name": "Keiyo North"
+    }, 
+    {
+        "county_code": 28, 
+        "name": "Keiyo South"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "Kitui Central"
+    }, 
+    {
+        "county_code": 40, 
+        "name": "Teso North"
+    }, 
+    {
+        "county_code": 40, 
+        "name": "Teso South"
+    }, 
+    {
+        "county_code": 40, 
+        "name": "Nambale"
+    }, 
+    {
+        "county_code": 40, 
+        "name": "Matayos"
+    }, 
+    {
+        "county_code": 40, 
+        "name": "Butula"
+    }, 
+    {
+        "county_code": 40, 
+        "name": "Samia"
+    }, 
+    {
+        "county_code": 40, 
+        "name": "Bunyala"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Mt. Elgon"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Sirisia"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Kabuchai"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Bumula"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Kanduyi"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Webuye West"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Kimilili"
+    }, 
+    {
+        "county_code": 39, 
+        "name": "Tongaren"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "KituiCentral"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "Kitui East"
+    }, 
+    {
+        "county_code": 36, 
+        "name": "Sotik"
+    }, 
+    {
+        "county_code": 36, 
+        "name": "Chepalungu"
+    }, 
+    {
+        "county_code": 36, 
+        "name": "Bomet East"
+    }, 
+    {
+        "county_code": 36, 
+        "name": "Bomet Central"
+    }, 
+    {
+        "county_code": 36, 
+        "name": "Konoin"
+    }, 
+    {
+        "county_code": 30, 
+        "name": "Tiaty"
+    }, 
+    {
+        "county_code": 15, 
+        "name": "Kitui South"
+    }, 
+    {
+        "county_code": 30, 
+        "name": "Baringo North"
+    }, 
+    {
+        "county_code": 30, 
+        "name": "Baringo Central"
+    }, 
+    {
+        "county_code": 30, 
+        "name": "Marigat"
+    }, 
+    {
+        "county_code": 30, 
+        "name": "Mogotio"
+    }, 
+    {
+        "county_code": 30, 
+        "name": "Koibatek"
+    }
+]

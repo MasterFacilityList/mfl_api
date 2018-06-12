@@ -6,7 +6,7 @@
   with_items:
     - {src: pg_hba.conf.j2, dest: /etc/postgresql/9.4/main/pg_hba.conf}
     - {src: pg_ident.conf.j2, dest: /etc/postgresql/9.4/main/pg_ident.conf}
-    - {src: postgresql.j2, dest: /etc/postgresql/9.4/main/postgresql.conf}
+    - {src: postgresql.conf.j2, dest: /etc/postgresql/9.4/main/postgresql.conf}
   notify:
     - restart postgresql
 
@@ -15,14 +15,12 @@
 
 - name: Create mfl database
   sudo: yes
-  sudo_user: postgres
   postgresql_db:
     name: '{{ database_name }}'
     state: present
 
 - name: Set up mfl user and grant them access to the DB
   sudo: yes
-  sudo_user: postgres
   postgresql_user:
     name: '{{ database_user }}'
     password: '{{ database_password }}'
@@ -32,7 +30,6 @@
 
 - name: Set up PostGIS
   sudo: yes
-  sudo_user: postgres
   postgresql_ext:
     name: postgis
     db: '{{ database_name }}'

@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models import Q
 
 from rest_framework.views import APIView, Response
-from common.models import County, Constituency, Ward
+from common.models import County, SubCounty, Ward
 from chul.models import CommunityHealthUnit
 
 from ..models import (
@@ -22,11 +22,11 @@ class DashBoard(QuerysetFilterMixin, APIView):
 
     def get_chu_count_in_county_summary(self, county):
         return CommunityHealthUnit.objects.filter(
-            facility__ward__constituency__county=county).count()
+            facility__ward__sub_county__county=county).count()
 
     def get_chu_count_in_constituency_summary(self, const):
         return CommunityHealthUnit.objects.filter(
-            facility__ward__constituency=const).count()
+            facility__ward__sub_county=const).count()
 
     def get_chu_count_in_ward_summary(self, ward):
         return CommunityHealthUnit.objects.filter(
@@ -37,7 +37,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
         facility_county_summary = {}
         for county in counties:
             facility_county_count = self.get_queryset().filter(
-                ward__constituency__county=county).count()
+                ward__sub_county__county=county).count()
             facility_county_summary[str(county.name)] = facility_county_count
 
         top_10_counties = sorted(
@@ -57,14 +57,14 @@ class DashBoard(QuerysetFilterMixin, APIView):
         return top_10_counties_summary if self.request.user.is_national else []
 
     def get_facility_constituency_summary(self):
-        constituencies = Constituency.objects.filter(
+        constituencies = SubCounty.objects.filter(
             county=self.request.user.county)
         constituencies = constituencies if self.request.user.county else []
 
         facility_constituency_summary = {}
         for const in constituencies:
             facility_const_count = self.get_queryset().filter(
-                ward__constituency=const).count()
+                ward__sub_county=const).count()
             facility_constituency_summary[
                 str(const.name)] = facility_const_count
         top_10_consts = sorted(
@@ -72,7 +72,7 @@ class DashBoard(QuerysetFilterMixin, APIView):
             key=lambda x: x[1], reverse=True)[0:20]
         top_10_consts_summary = []
         for item in top_10_consts:
-            const = Constituency.objects.get(name=item[0])
+            const = SubCounty.objects.get(name=item[0])
             chu_count = self.get_chu_count_in_constituency_summary(const)
             top_10_consts_summary.append(
                 {
@@ -84,8 +84,8 @@ class DashBoard(QuerysetFilterMixin, APIView):
 
     def get_facility_ward_summary(self):
         wards = Ward.objects.filter(
-            constituency=self.request.user.constituency) \
-            if self.request.user.constituency else []
+            sub_county=self.request.user.sub_county) \
+            if self.request.user.sub_county else []
         facility_ward_summary = {}
         for ward in wards:
             facility_ward_count = self.get_queryset().filter(
@@ -108,18 +108,31 @@ class DashBoard(QuerysetFilterMixin, APIView):
         return top_10_wards_summary
 
     def get_facility_type_summary(self):
-        facility_types = FacilityType.objects.all()
+        facility_type_parents_names = []
+        for f_type in FacilityType.objects.all():
+            if f_type.sub_division:
+                facility_type_parents_names.append(f_type.sub_division)
+
+        facility_types = FacilityType.objects.filter(
+            sub_division__in=facility_type_parents_names)
+
         facility_type_summary = []
+        summaries = {}
+        for parent in facility_type_parents_names:
+            summaries[parent] = 0
+
         for facility_type in facility_types:
-                facility_type_summary.append(
-                    {
-                        "name": str(facility_type.name),
-                        "count": self.get_queryset().filter(
-                            facility_type=facility_type).count()
-                    })
+            summaries[facility_type.sub_division] = summaries.get(
+                facility_type.sub_division) + self.get_queryset().filter(
+                        facility_type=facility_type).count()
+
+        facility_type_summary =  [
+            {"name": key, "count": value } for key, value in summaries.items()
+        ]
+
         facility_type_summary_sorted = sorted(
             facility_type_summary,
-            key=lambda x: x, reverse=True)[0:5]
+            key=lambda x: x, reverse=True)
 
         return facility_type_summary_sorted
 
@@ -219,6 +232,9 @@ class DashBoard(QuerysetFilterMixin, APIView):
             list(set(list(updated_pending_approval) + list(newly_created)))
         )
 
+    def get_facilities_approved_count(self):
+        return self.queryset.filter(approved=True, rejected=False).count()
+
     def get_chus_pending_approval(self):
         """
         Get the number of CHUs pending approval
@@ -248,9 +264,9 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "county_summary": self.get_facility_county_summary()
             if user.is_national else [],
             "constituencies_summary": self.get_facility_constituency_summary()
-            if user.county else [],
+            if user.county and not user.sub_county else [],
             "wards_summary": self.get_facility_ward_summary()
-            if user.constituency else [],
+            if user.sub_county else [],
             "owners_summary": self.get_facility_owner_summary(),
             "types_summary": self.get_facility_type_summary(),
             "status_summary": self.get_facility_status_summary(),
@@ -263,9 +279,11 @@ class DashBoard(QuerysetFilterMixin, APIView):
             "rejected_chus": self.get_rejected_chus(),
             "chus_pending_approval": self.get_chus_pending_approval(),
             "total_chus": CommunityHealthUnit.objects.filter(
-                facility__in=self.get_queryset()).count()
+                facility__in=self.get_queryset()).count(),
+            "approved_facilities": self.get_facilities_approved_count()
 
         }
+
         fields = self.request.query_params.get("fields", None)
         if fields:
             required = fields.split(",")

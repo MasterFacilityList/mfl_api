@@ -1,4 +1,4 @@
-"""Module holding the configuration of various reports"""
+"""Module holding the configuration of various reports."""
 
 
 REPORTS = {
@@ -9,7 +9,10 @@ REPORTS = {
         "filter_fields": {
             "model": "common.County",
             "filter_field_name": "ward__constituency__county",
-            "return_field": ["county_name", "number_of_facilities"]
+            "return_field": [
+                "county_name", "number_of_facilities",
+                "county"
+            ]
         },
         "top_level_field": "total"
     },
@@ -26,6 +29,23 @@ REPORTS = {
             "county": {
                 "path": "common.County",
                 "filter_field_name": "ward__constituency__county"
+            }
+
+        },
+        "top_level_field": "total"
+    },
+    # facility count by sub_counties
+    "facility_count_by_sub_county": {
+        "type": "simple",
+        "filter_fields": {
+            "model": "common.SubCounty",
+            "filter_field_name": "ward__sub_county",
+            "return_field": ["sub_county_name", "number_of_facilities"]
+        },
+        "extra_filters": {
+            "county": {
+                "path": "common.County",
+                "filter_field_name": "ward__sub_county__county"
             }
 
         },
