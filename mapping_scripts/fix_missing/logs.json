@@ -1,0 +1,49 @@
+{
+    "detailed": {
+        "14933": {
+            "added": false, 
+            "approved": false, 
+            "found": true, 
+            "meta": {}, 
+            "services": []
+        }, 
+        "15725": {
+            "added": false, 
+            "approved": false, 
+            "found": true, 
+            "meta": {}, 
+            "services": []
+        }, 
+        "15735": {
+            "added": false, 
+            "approved": false, 
+            "found": true, 
+            "meta": {}, 
+            "services": []
+        }
+    }, 
+    "summary": {
+        "added_chus": [], 
+        "added_services": [], 
+        "approved_chus": [], 
+        "failed_chus": [
+            "15725", 
+            "15725", 
+            "15735", 
+            "15735", 
+            "14933", 
+            "14933"
+        ], 
+        "not_found": [
+            "15725", 
+            "15735", 
+            "14933"
+        ], 
+        "za_added_chus_count": 0, 
+        "zb_failed_chus_count": 6, 
+        "zc_approved_chus_count": 0, 
+        "zd_added_services_count": 0, 
+        "ze_not_found_count": 3, 
+        "zz_total_count": 3
+    }
+}

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from __future__ import division
 
 import reversion
@@ -21,9 +22,12 @@ from users.models import JobTitle  # NOQA
 from search.search_utils import index_instance
 from common.models import (
     AbstractBase, Ward, Contact, SequenceMixin, SubCounty, County,
-    Town
+    Town, ApiAuthentication
 )
 from common.fields import SequenceField
+
+from django.contrib.sessions.backends.db import SessionStore
+import threading, requests, base64
 
 LOGGER = logging.getLogger(__name__)
 
@@ -1272,6 +1276,262 @@ class Facility(SequenceMixin, AbstractBase):
         )
 
 
+@encoding.python_2_unicode_compatible
+class DhisAuth(ApiAuthentication):
+
+    '''
+    Authenticates to DHIS via OAuth2.
+    Handles All API related functions
+    '''
+
+    oauth2_token_variable_name = models.CharField(max_length=255, default="api_oauth2_token", null=False, blank=False)
+    type = models.CharField(max_length=255, default="DHIS2")
+    session_store = SessionStore(session_key="dhis2_api_12904rs")
+
+    def set_interval(interval, times=-1):
+        # This will be the actual decorator,
+        # with fixed interval and times parameter
+        def outer_wrap(function):
+            # This will be the function to be
+            # called
+            def wrap(*args, **kwargs):
+                stop = threading.Event()
+
+                # This is another function to be executed
+                # in a different thread to simulate setInterval
+                def inner_wrap():
+                    i = 0
+                    while i != times and not stop.isSet():
+                        stop.wait(interval)
+                        function(*args, **kwargs)
+                        i += 1
+
+                t = threading.Timer(0, inner_wrap)
+                t.daemon = True
+                t.start()
+                return stop
+
+            return wrap
+
+        return outer_wrap
+
+    @set_interval(300.0)
+    def refresh_oauth2_token(self):
+        r = requests.post(
+            self.server+"uaa/oauth/token",
+            headers={
+                "Authorization": "Basic " + base64.b64encode(self.client_id + ":" + self.client_secret),
+                "Accept": "application/json"
+            },
+            params={
+                "grant_type": "refresh_token",
+                "refresh_token": json.loads(self.session_store[self.oauth2_token_variable_name].replace("u", "")
+                    .replace("'", '"'))["refresh_token"]
+            },
+            verify=True
+        )
+
+        response = str(r.json())
+        # print("Response @ refresh_oauth2 ", response)
+        self.session_store[self.oauth2_token_variable_name] = response
+        self.session_store.save()
+
+    def get_oauth2_token(self):
+        r = requests.post(
+            self.server+"uaa/oauth/token",
+            headers={
+                "Authorization": "Basic "+base64.b64encode(self.client_id+":"+self.client_secret),
+                "Accept": "application/json"
+            },
+            params={
+                "grant_type": "password",
+                "username": self.username,
+                "password": self.password
+            },
+            verify=True
+        )
+
+        response = str(r.json())
+        # print("Response @ get_oauth2 ", response, r.url, r.status_code)
+        self.session_store[self.oauth2_token_variable_name] = response
+        self.session_store.save()
+        # self.refresh_oauth2_token()
+
+    def get_org_unit_id(self, code):
+        r = requests.get(
+            self.server + "api/organisationUnits.json",
+            headers={
+                # "Authorization": "Bearer " +
+                #                  json.loads(self.session_store[self.oauth2_token_variable_name].replace("u", "")
+                #                             .replace("'", '"'))["access_token"],
+                "Authorization": "Basic " + base64.b64encode(self.username + ":" + self.password),
+                "Accept": "application/json"
+            },
+            params={
+                "filter": "code:eq:"+str(code),
+                "fields": "[id]",
+                "paging": "false"
+            },
+            verify=True
+        )
+        print("Get Org Unit ID Response", r.json(), str(code))
+        if len(r.json()["organisationUnits"]) is 1:
+            return r.json()["organisationUnits"][0]["id"]
+        else:
+            raise ValidationError(
+                {
+                    "Error!": ["Unable to resolve exact organisation unit of the facility to be updated in DHIS2. "
+                               "Most probably, the corresponding MFL code for the facility does not exist in DHIS2"]
+                }
+            )
+
+    def get_org_unit(self, org_unit_id):
+        r = requests.get(
+            self.server + "api/organisationUnits/"+org_unit_id,
+            headers={
+                # "Authorization": "Bearer " +
+                #                  json.loads(self.session_store[self.oauth2_token_variable_name].replace("u", "")
+                #                             .replace("'", '"'))["access_token"],
+                "Authorization": "Basic "+base64.b64encode(self.username+":"+self.password),
+                "Accept": "application/json"
+            },
+            verify=True
+        )
+        print("Get Org Unit Response", r.url, r.status_code)
+        if str(r.status_code) == "200":
+            return r.json()
+        else:
+            raise ValidationError(
+                {
+                    "Error!": ["Unable to get corresponding facility in DHIS2"]
+                }
+            )
+
+    def get_parent_id(self, facility_name):
+        r = requests.get(
+            self.server+"api/organisationUnits.json",
+            headers={
+                # "Authorization": "Bearer " + json.loads(self.session_store[self.oauth2_token_variable_name].replace("u", "")
+                #     .replace("'", '"'))["access_token"],
+                "Authorization": "Basic " + base64.b64encode(self.username + ":" + self.password),
+                "Accept": "application/json"
+            },
+            params={
+                "query": facility_name,
+                "fields": "[id,name]",
+                "filter": "level:in:[4]",
+                "paging": "false"
+            },
+            verify=True
+        )
+        print('@Get Parent ID',r.status_code, r.url)
+        dhis2_facility_name = r.json()["organisationUnits"][0]["name"].lower()
+        facility_name = str(facility_name)+ " Ward"
+        facility_name = facility_name.lower()
+        print("1", dhis2_facility_name, "2", facility_name, len(r.json()["organisationUnits"]))
+
+        if len(r.json()["organisationUnits"]) is 1:
+            if dhis2_facility_name == facility_name:
+                return r.json()["organisationUnits"][0]["id"]
+        else:
+            raise ValidationError(
+                {
+                    "Error!": ["Unable to resolve exact parent of the new facility in DHIS2"]
+                }
+            )
+
+    def push_facility_to_dhis2(self, new_facility_payload):
+        r = requests.post(
+            self.server+"api/organisationUnits",
+            headers={
+                # "Authorization": "Bearer " + json.loads(self.session_store[self.oauth2_token_variable_name].replace("u", "")
+                #                                         .replace("'", '"'))["access_token"],
+                "Authorization": "Basic " + base64.b64encode(self.username + ":" + self.password),
+                "Accept": "application/json"
+            },
+            json=new_facility_payload,
+            verify=True
+        )
+
+        print("Create Facility Response", r.url, r.status_code, r.json())
+
+        if r.json()["status"] != "OK":
+            raise ValidationError(
+                {
+                    "Error!": ["An error occurred while pushing facility to DHIS2. This is may be caused by the "
+                               "existence of an organisation unit with as similar name as to the one you are creating. "
+                               "Or some specific information like geo-coordinates are not unique"]
+                }
+            )
+
+    def push_facility_updates_to_dhis2(self, org_unit_id, facility_updates_payload):
+        r = requests.put(
+            self.server + "api/organisationUnits/"+org_unit_id,
+            headers={
+                # "Authorization": "Bearer " +
+                #                  json.loads(self.session_store[self.oauth2_token_variable_name].replace("u", "")
+                #                             .replace("'", '"'))["access_token"],
+                "Authorization": "Basic " + base64.b64encode(self.username + ":" + self.password),
+                "Accept": "application/json"
+            },
+            json=facility_updates_payload,
+            verify=True
+        )
+
+        print("Update Facility Response", r.url, r.status_code, r.json(), "Status", r.json()["status"])
+
+        if r.json()["status"] != "OK":
+            raise ValidationError(
+                {
+                    "Error!": ["Unable to push facility updates to DHIS2"]
+                }
+            )
+
+    def add_org_unit_to_group(self, org_unit_group_id, org_unit_id):
+
+        r_get_group = requests.get(
+            self.server+"api/organisationUnitGroups/"+org_unit_group_id,
+            headers={
+                "Authorization": "Basic " + base64.b64encode(self.username + ":" + self.password),
+                "Accept": "application/json"
+            },
+            params={
+                "fields": "[*]"
+            },
+            verify=True
+        )
+
+        organisation_group = r_get_group.json()
+        print(organisation_group, r_get_group.url)
+        organisation_group["organisationUnits"].append({"id":org_unit_id})
+
+        r = requests.put(
+            self.server+"api/organisationUnitGroups/"+org_unit_group_id,
+            headers={
+                "Authorization": "Basic " + base64.b64encode(self.username + ":" + self.password),
+                "Accept": "application/json"
+            },
+            json=organisation_group,
+            verify=True
+        )
+
+        if str(r.status_code) != "200":
+            raise ValidationError(
+                {
+                    "Error!": ["Failed to assign organisation group to the facility being processed"]
+                }
+            )
+        else:
+            print ("Successfully Assigned Group")
+
+    def format_coordinates(self, str_coordinates):
+        coordinates_str_list = str_coordinates.split(" ")
+        return str([float(coordinates_str_list[0]), float(coordinates_str_list[1])])
+
+    def __str__(self):
+        return "{}: {}".format("Dhis Auth - ", self.username)
+
+
 @reversion.register(follow=['facility'])
 @encoding.python_2_unicode_compatible
 class FacilityUpdates(AbstractBase):
@@ -1290,6 +1550,8 @@ class FacilityUpdates(AbstractBase):
     units = models.TextField(null=True, blank=True)
     geo_codes = models.TextField(null=True, blank=True)
     is_new = models.BooleanField(default=False)
+
+    dhis2_api_auth = DhisAuth()
 
     def facility_updated_json(self):
         updates = {}
@@ -1358,6 +1620,184 @@ class FacilityUpdates(AbstractBase):
                 setattr(self.facility, field_name, old_value)
         self.facility.save(allow_save=True)
 
+    def push_facility_updates(self):
+        from mfl_gis.models import FacilityCoordinates
+        import re
+        # self.dhis2_api_auth.get_oauth2_token()
+
+        dhis2_parent_id = self.dhis2_api_auth.get_parent_id(self.facility.ward_name)
+        dhis2_org_unit_id = self.dhis2_api_auth.get_org_unit_id(self.facility.code)
+        new_facility_updates_payload = self.dhis2_api_auth.get_org_unit(dhis2_org_unit_id)
+
+        # new_facility_updates_payload = {
+        #     "code": str(self.facility.code),
+        #     "name": str(self.facility.name),
+        #     "shortName": str(self.facility.name),
+        #     "displayName": str(self.facility.official_name),
+        #     "parent": {
+        #         "id": dhis2_parent_id
+        #     },
+        #     "openingDate": self.facility.date_established.strftime("%Y-%m-%d"),
+        #     "coordinates": self.dhis2_api_auth.format_coordinates(
+        #         re.search(r'\((.*?)\)', str(FacilityCoordinates.objects.values('coordinates')
+        #                                     .get(facility_id=self.facility.id)['coordinates'])).group(1))
+        # }
+
+        # try:
+        #     old_facility_type = str(
+        #         FacilityType.objects.values("sub_division").get(id=self.facility.facility_type_id)["sub_division"])
+        #     print("Old Facility Type: " + old_facility_type)
+        # except FacilityType.DoesNotExist:
+        #     old_facility_type = "Stand Alone"
+        #     print("Old Facility Type @ Except: "+old_facility_type)
+        #
+        # try:
+        #     old_facility_type_details = str(
+        #         FacilityType.objects.values("name").get(id=self.facility.facility_type_id)["name"])
+        #     print("Old Facility Type Details: " + old_facility_type_details)
+        # except FacilityType.DoesNotExist:
+        #     old_facility_type_details = "Other"
+        #     print("Old Facility Type Details @ Except: "+old_facility_type_details)
+        #
+        # try:
+        #     old_facility_regulatory_body = str(
+        #         RegulatingBody.objects.values("name").get(id=self.facility.regulatory_body_id)["name"])
+        #     print("Old Facility Regulatory Body: " + old_facility_regulatory_body)
+        # except RegulatingBody.DoesNotExist:
+        #     old_facility_regulatory_body = "Other"
+        #     print("Old Facility Regulatory Body @ Except: "+old_facility_regulatory_body)
+        #
+        # old_facility_owner_details = None
+        #
+        # try:
+        #     old_facility_owner_details = Owner.objects.values("name", "owner_type_id").get(id=self.facility.owner_id)
+        #     old_facility_owner = str(old_facility_owner_details["name"])
+        #     print("Old Facility Owner: " + old_facility_owner)
+        # except Owner.DoesNotExist:
+        #     old_facility_owner = "Other"
+        #     print("Old Facility Owner @ Except: "+old_facility_owner)
+        #
+        # try:
+        #     if old_facility_owner_details is None:
+        #         old_facility_owner_type = "Other"
+        #         print("Old Facility Owner @ Pass: " + old_facility_owner_type)
+        #         pass
+        #     else:
+        #         old_facility_owner_type = str(
+        #             OwnerType.objects.values("name").get(id=old_facility_owner_details["owner_type_id"]))
+        #     print("Old Facility Owner Type: " + old_facility_owner_type)
+        # except OwnerType.DoesNotExist:
+        #     old_facility_owner_type = "Other"
+        #     print("Old Facility Owner @ Except: "+old_facility_owner_type)
+        #
+        # try:
+        #     old_facility_keph_level = "KEPH "+str(
+        #         KephLevel.objects.values("name").get(id=self.facility.keph_level_id)["name"])
+        #     print("Old Facility KEPH Level: " + old_facility_keph_level)
+        # except KephLevel.DoesNotExist:
+        #     old_facility_keph_level = "Other"
+        #     print("Old Facility KEPH Level @ Except: "+old_facility_keph_level)
+        #
+        # '''Not get New Ones
+        # '''
+        #
+        # try:
+        #     facility_type = FacilityType.objects.values("sub_division").get(
+        #         name__exact=str(self.facility.facility_type_name))
+        #     facility_type = str(facility_type["sub_division"])
+        #     print("Facility Type: " + facility_type + "-")
+        # except FacilityType.DoesNotExist:
+        #     facility_type = {"sub_division": "Stand Alone"}
+        #     facility_type = str(facility_type["sub_division"])
+        #     print("Facility Type @ Except: " + facility_type)
+        #
+        # facility_type_details = str(self.facility.facility_type_name)
+        # if facility_type_details is None:
+        #     facility_type_details = "Some New Type"
+        # print("Facility Type Details: "+facility_type_details+"-")
+        #
+        # facility_regulatory_body = str(self.facility.regulatory_body)
+        # if facility_regulatory_body is None:
+        #     facility_regulatory_body = "Other"
+        # print("Facility Regulatory Body: " + facility_regulatory_body+"-")
+        #
+        # facility_owner = str(self.facility.owner_name)
+        # if facility_owner is None:
+        #     facility_owner = "NOT IN LIST"
+        # print("Facility Owner: " + facility_owner+"-")
+        #
+        # facility_owner_type = "Other"
+        # try:
+        #     facility_owner_type_id = str(Owner.objects.values("owner_type_id").get(name__exact=facility_owner))
+        #     facility_owner_type = str(OwnerType.objects.values("name").get(id=facility_owner_type_id))
+        # except Owner.DoesNotExist:
+        #     pass
+        #
+        # facility_keph_level = str(self.facility.keph_level)
+        # print("Facility KEPH Level: "+facility_keph_level)
+        #
+        # from common.models import OrgUnitGroupsMapping
+        # facility_type_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+        #     mfl_name__exact=facility_type)
+        # facility_type_details_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+        #     mfl_name__exact=facility_type_details)
+        # facility_regulatory_body_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+        #     mfl_name__exact=facility_regulatory_body)
+        # facility_owner_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+        #     mfl_name__exact=facility_owner)
+        # facility_owner_type_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+        #     mfl_code__exact=facility_owner_type)
+        #
+        # facility_keph_level_id = None
+        #
+        # if facility_keph_level is not None:
+        #     facility_keph_level_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+        #         mfl_name__exact="KEPH "+facility_keph_level)
+        #
+        # print("Facility Type - "+old_facility_type+" : "+facility_type)
+        # print("Facility Type Details - "+old_facility_type_details + " : " + facility_type_details)
+        # print("Facility Owner - "+old_facility_owner + " : " + facility_owner)
+        # print("Facility Owner Type - "+old_facility_owner_type + " : " + facility_owner_type)
+        # print("Facility Regulatory Body - "+old_facility_regulatory_body + " : " + facility_regulatory_body)
+        # print("Facility KEPH Level - "+old_facility_keph_level + " : " + facility_keph_level)
+
+        # print(facility_type_dhis_id["dhis_id"])
+
+        # org_unit_id = self.dhis2_api_auth.get_org_unit_id(self.facility.code)
+        #
+        # self.dhis2_api_auth.add_org_unit_to_group(facility_type_dhis_id["dhis_id"], org_unit_id)
+        # print("Assigned Group Facility Type")
+        #
+        # self.dhis2_api_auth.add_org_unit_to_group(facility_type_details_dhis_id["dhis_id"], org_unit_id)
+        # print("Assigned Group Facility Type Details")
+        #
+        # self.dhis2_api_auth.add_org_unit_to_group(facility_regulatory_body_dhis_id["dhis_id"], org_unit_id)
+        # print("Assigned Group Facility Regulatory Body")
+        #
+        # self.dhis2_api_auth.add_org_unit_to_group(facility_owner_dhis_id["dhis_id"], org_unit_id)
+        # print("Assigned Group Facility Owner")
+        #
+        # self.dhis2_api_auth.add_org_unit_to_group(facility_owner_type_dhis_id["dhis_id"], org_unit_id)
+        # print("Assigned Group Facility owner Type")
+        #
+        # if facility_keph_level_id is not None:
+        #     self.dhis2_api_auth.add_org_unit_to_group(facility_keph_level_id["dhis_id"], org_unit_id)
+
+        new_facility_updates_payload["code"] = str(self.facility.code)
+        new_facility_updates_payload["name"] = str(self.facility.name)
+        new_facility_updates_payload["shortName"] = str(self.facility.name)
+        new_facility_updates_payload["displayName"] = str(self.facility.official_name)
+        new_facility_updates_payload["parent"]["id"] = dhis2_parent_id
+        new_facility_updates_payload["openingDate"] = str(self.facility.date_established.strftime("%Y-%m-%d"))
+        new_facility_updates_payload["coordinates"] = self.dhis2_api_auth.format_coordinates(
+                re.search(r'\((.*?)\)', str(FacilityCoordinates.objects.values('coordinates')
+                                            .get(facility_id=self.facility.id)['coordinates'])).group(1))
+
+        # print("Names;", "Official Name:", self.facility.official_name, "Name:", self.facility.name)
+
+        print("Facility Updates Push Payload => ", new_facility_updates_payload)
+        self.dhis2_api_auth.push_facility_updates_to_dhis2(dhis2_org_unit_id, new_facility_updates_payload)
+
     def update_facility(self):
         if self.facility_updates:
             data = json.loads(self.facility_updates)
@@ -1370,7 +1810,12 @@ class FacilityUpdates(AbstractBase):
                 else:
                     value = field_changed.get("actual_value")
                 setattr(self.facility, field_name, value)
-            self.facility.save(allow_save=True)
+            # self.facility.save(allow_save=True)
+            print("Hellow! MFL!")
+            self.push_facility_updates()
+            '''TODO
+            Push update to DHIS2
+            '''
 
     def update_facility_services(self):
         from facilities.utils import create_facility_services
@@ -1621,8 +2066,11 @@ class FacilityApproval(AbstractBase):
         default=False, help_text='Cancel a facility approval'
     )
 
+    dhis2_api_auth = DhisAuth()
+
     def validate_rejection_comment(self):
         if self.is_cancelled and not self.comment:
+
             raise ValidationError(
                 {
                     "rejection": ["A reason for the rejection is required"]
@@ -1636,6 +2084,8 @@ class FacilityApproval(AbstractBase):
         else:
             self.facility.rejected = False
             self.facility.approved = True
+            self.push_new_facility()
+            self.assign_org_unit_groups()
             self.facility.is_published = True
         self.facility.save(allow_save=True)
 
@@ -1643,6 +2093,119 @@ class FacilityApproval(AbstractBase):
         self.validate_rejection_comment()
         self.facility.save(allow_save=True)
         self.update_facility_rejection()
+
+    def assign_org_unit_groups(self):
+        # print("Facility Type Details: " + str(self.facility.facility_type))
+        # print("Facility Type Name: " + str(self.facility.facility_type_name))
+        # print("Facility Regulatory Body: " + str(self.facility.regulatory_body))
+        # print("Facility Type ID: " + str(self.facility.facility_type_id))
+        # print("Facility Owner Name: " + str(self.facility.owner_name))
+        # print("Facility Owner: " + str(self.facility.owner))
+
+        try:
+            facility_type = FacilityType.objects.values("sub_division").get(
+                name__exact=str(self.facility.facility_type_name))
+            facility_type = str(facility_type["sub_division"])
+            print("Facility Type: " + facility_type + "-")
+        except FacilityType.DoesNotExist:
+            facility_type = {"sub_division": "Stand Alone"}
+            facility_type = str(facility_type["sub_division"])
+            print("Facility Type @ Except: " + facility_type)
+
+        facility_type_details = str(self.facility.facility_type_name)
+        if facility_type_details is None:
+            facility_type_details = "Some New Type"
+        print("Facility Type Details: "+facility_type_details+"-")
+
+        facility_regulatory_body = str(self.facility.regulatory_body)
+        if facility_regulatory_body is None:
+            facility_regulatory_body = "Other"
+        print("Facility Regulatory Body: " + facility_regulatory_body+"-")
+
+        facility_owner = str(self.facility.owner_name)
+        if facility_owner is None:
+            facility_owner = "NOT IN LIST"
+        print("Facility Owner: " + facility_owner+"-")
+
+        facility_owner_type = "Other"
+        try:
+            facility_owner_type_id = str(Owner.objects.values("owner_type_id").get(name__exact=facility_owner)["owner_type_id"])
+            facility_owner_type = str(OwnerType.objects.values("name").get(id=facility_owner_type_id)["name"])
+        except Owner.DoesNotExist:
+            pass
+        print("Facility Owner Type: " + facility_owner_type + "-")
+
+        facility_keph_level = str(self.facility.keph_level)
+        print("Facility KEPH Level: "+facility_keph_level)
+
+        from common.models import OrgUnitGroupsMapping
+        facility_type_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+            mfl_name__exact=facility_type)
+        facility_type_details_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+            mfl_name__exact=facility_type_details)
+        facility_regulatory_body_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+            mfl_name__exact=facility_regulatory_body)
+        facility_owner_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+            mfl_name__exact=facility_owner)
+        facility_owner_type_dhis_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+            mfl_name__exact=facility_owner_type)
+
+        facility_keph_level_id = None
+
+        if facility_keph_level is not None:
+            facility_keph_level_id = OrgUnitGroupsMapping.objects.values("dhis_id").get(
+                mfl_name__exact="KEPH "+facility_keph_level)
+
+        # print(facility_type_dhis_id["dhis_id"])
+
+        org_unit_id = self.dhis2_api_auth.get_org_unit_id(self.facility.code)
+
+        print("Assigning Group Facility Type")
+        self.dhis2_api_auth.add_org_unit_to_group(facility_type_dhis_id["dhis_id"], org_unit_id)
+        print("Assigned Group Facility Type")
+
+        print("Assigning Group Facility Type Details")
+        self.dhis2_api_auth.add_org_unit_to_group(facility_type_details_dhis_id["dhis_id"], org_unit_id)
+        print("Assigned Group Facility Type Details")
+
+        print("Assigning Group Facility Regulatory Body")
+        self.dhis2_api_auth.add_org_unit_to_group(facility_regulatory_body_dhis_id["dhis_id"], org_unit_id)
+        print("Assigned Group Facility Regulatory Body")
+
+        print("Assigning Group Facility Owner")
+        self.dhis2_api_auth.add_org_unit_to_group(facility_owner_dhis_id["dhis_id"], org_unit_id)
+        print("Assigned Group Facility Owner")
+
+        print("Assigning Group Facility owner Type")
+        self.dhis2_api_auth.add_org_unit_to_group(facility_owner_type_dhis_id["dhis_id"], org_unit_id)
+        print("Assigned Group Facility owner Type")
+
+        if facility_keph_level_id is not None:
+            self.dhis2_api_auth.add_org_unit_to_group(facility_keph_level_id["dhis_id"], org_unit_id)
+
+    def push_new_facility(self):
+        from mfl_gis.models import FacilityCoordinates
+        import re
+        # self.dhis2_api_auth.get_oauth2_token()
+
+        dhis2_parent_id = self.dhis2_api_auth.get_parent_id(self.facility.ward_name)
+
+        new_facility_payload = {
+            "code": str(self.facility.code),
+            "name": str(self.facility.name),
+            "shortName": str(self.facility.name),
+            "displayName": str(self.facility.official_name),
+            "parent": {
+                "id": dhis2_parent_id
+            },
+            "openingDate": self.facility.date_established.strftime("%Y-%m-%d"),
+            "coordinates": self.dhis2_api_auth.format_coordinates(
+                re.search(r'\((.*?)\)', str(FacilityCoordinates.objects.values('coordinates')
+                                            .get(facility_id=self.facility.id)['coordinates'])).group(1))
+        }
+
+        print("New Facility Push Payload => ", new_facility_payload)
+        self.dhis2_api_auth.push_facility_to_dhis2(new_facility_payload)
 
     def __str__(self):
         msg = "rejected" if self.is_cancelled else "approved"

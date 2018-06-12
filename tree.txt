@@ -1,0 +1,997 @@
+.
+├── 09-03-2016-mfl-issues
+├── AUTHORS.rst
+├── CHANGELOG.rst
+├── DEPLOYING.rst
+├── Issues_raised_30_03_3016
+├── LICENSE
+├── MANIFEST.in
+├── NOTICE
+├── README.rst
+├── admin_offices
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── filters.py
+│   ├── filters.pyc
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0001_initial.pyc
+│   │   ├── 0002_auto_20160418_0544.py
+│   │   ├── 0002_auto_20160418_0544.pyc
+│   │   ├── 0003_auto_20160520_0757.py
+│   │   ├── 0003_auto_20160520_0757.pyc
+│   │   ├── 0004_remove_adminoffice_job_title.py
+│   │   ├── 0004_remove_adminoffice_job_title.pyc
+│   │   ├── 0005_auto_20160620_0655.py
+│   │   ├── 0005_auto_20160620_0655.pyc
+│   │   ├── __init__.py
+│   │   └── __init__.pyc
+│   ├── models.py
+│   ├── models.pyc
+│   ├── serializers.py
+│   ├── serializers.pyc
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_models.py
+│   │   └── test_views.py
+│   ├── urls.py
+│   ├── urls.pyc
+│   ├── views.py
+│   └── views.pyc
+├── after_disaster_scripts.py
+├── chul
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── filters.py
+│   ├── filters.pyc
+│   ├── migrations
+│   │   ├── 0001_auto_20160318_0338.py
+│   │   ├── 0001_auto_20160318_0338.pyc
+│   │   ├── 0001_initial.py
+│   │   ├── 0001_initial.pyc
+│   │   ├── 0002_chuservicelink.py
+│   │   ├── 0002_chuservicelink.pyc
+│   │   ├── 0003_auto_20160324_1436.py
+│   │   ├── 0003_auto_20160324_1436.pyc
+│   │   ├── 0004_auto_20160329_0642.py
+│   │   ├── 0004_auto_20160329_0642.pyc
+│   │   ├── 0005_auto_20160520_0947.py
+│   │   ├── 0005_auto_20160520_0947.pyc
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── set_code_sequence.py
+│   │   └── set_code_sequence.pyc
+│   ├── models.py
+│   ├── models.pyc
+│   ├── serializers.py
+│   ├── serializers.pyc
+│   ├── templates
+│   │   └── chu_details.html
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_model_repr.py
+│   │   ├── test_models.py
+│   │   ├── test_updates.py
+│   │   └── test_views.py
+│   ├── urls.py
+│   ├── urls.pyc
+│   ├── views.py
+│   └── views.pyc
+├── circle.yml
+├── common
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── constants.py
+│   ├── constants.pyc
+│   ├── fields.py
+│   ├── fields.pyc
+│   ├── filters
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── filter_declarations.py
+│   │   ├── filter_declarations.pyc
+│   │   ├── filter_shared.py
+│   │   └── filter_shared.pyc
+│   ├── migrations
+│   │   ├── 0001_errorqueue.py
+│   │   ├── 0001_errorqueue.pyc
+│   │   ├── 0001_initial.py
+│   │   ├── 0001_initial.pyc
+│   │   ├── 0002_auto_20151114_1105.py
+│   │   ├── 0002_auto_20151114_1105.pyc
+│   │   ├── 0003_auto_20151114_1147.py
+│   │   ├── 0003_auto_20151114_1147.pyc
+│   │   ├── 0004_auto_20151116_0755.py
+│   │   ├── 0004_auto_20151116_0755.pyc
+│   │   ├── 0005_ward_sub_county.py
+│   │   ├── 0005_ward_sub_county.pyc
+│   │   ├── 0006_usersubcounty.py
+│   │   ├── 0006_usersubcounty.pyc
+│   │   ├── 0007_auto_20160407_1007.py
+│   │   ├── 0007_auto_20160407_1007.pyc
+│   │   ├── 0008_auto_20160517_0934.py
+│   │   ├── 0008_auto_20160517_0934.pyc
+│   │   ├── 0009_notification.py
+│   │   ├── 0009_notification.pyc
+│   │   ├── 0010_notification_title.py
+│   │   ├── 0010_notification_title.pyc
+│   │   ├── 0011_auto_20160520_1033.py
+│   │   ├── 0011_auto_20160520_1033.pyc
+│   │   ├── 0012_auto_20160525_1429.py
+│   │   ├── 0012_auto_20160525_1429.pyc
+│   │   ├── 0013_auto_20170521_2133.py
+│   │   ├── 0013_auto_20170521_2133.pyc
+│   │   ├── 0014_auto_20170905_0408.py
+│   │   ├── 0014_auto_20170905_0408.pyc
+│   │   ├── 0015_apiauthentication.py
+│   │   ├── 0015_apiauthentication.pyc
+│   │   ├── 0016_countymapping.py
+│   │   ├── 0016_countymapping.pyc
+│   │   ├── 0017_delete_countymapping.py
+│   │   ├── 0017_delete_countymapping.pyc
+│   │   ├── 0018_countymapping.py
+│   │   ├── 0018_countymapping.pyc
+│   │   ├── 0019_auto_20170928_1356.py
+│   │   ├── 0019_auto_20170928_1356.pyc
+│   │   ├── 0020_auto_20170928_1358.py
+│   │   ├── 0020_auto_20170928_1358.pyc
+│   │   ├── 0021_auto_20170928_1402.py
+│   │   ├── 0021_auto_20170928_1402.pyc
+│   │   ├── 0022_subcountymapping.py
+│   │   ├── 0022_subcountymapping.pyc
+│   │   ├── 0023_constituencymapping.py
+│   │   ├── 0023_constituencymapping.pyc
+│   │   ├── 0024_wardmapping.py
+│   │   ├── 0024_wardmapping.pyc
+│   │   ├── 0025_auto_20170928_1449.py
+│   │   ├── 0025_auto_20170928_1449.pyc
+│   │   ├── 0026_auto_20171003_1201.py
+│   │   ├── 0026_auto_20171003_1201.pyc
+│   │   ├── 0027_auto_20171005_0611.py
+│   │   ├── 0027_auto_20171005_0611.pyc
+│   │   ├── 0028_facilitymapping.py
+│   │   ├── 0028_facilitymapping.pyc
+│   │   ├── 0029_auto_20171023_1101.py
+│   │   ├── 0029_auto_20171023_1101.pyc
+│   │   ├── 0030_auto_20171123_0850.py
+│   │   ├── 0030_auto_20171123_0850.pyc
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── admin_unit_codes.py
+│   │   └── admin_unit_codes.pyc
+│   ├── models
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── base.py
+│   │   ├── base.pyc
+│   │   ├── model_declarations.py
+│   │   └── model_declarations.pyc
+│   ├── paginator.py
+│   ├── paginator.pyc
+│   ├── renderers
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── csv_renderer.py
+│   │   ├── csv_renderer.pyc
+│   │   ├── excel_renderer.py
+│   │   ├── excel_renderer.pyc
+│   │   ├── pdf_renderer.py
+│   │   ├── pdf_renderer.pyc
+│   │   ├── shared.py
+│   │   └── shared.pyc
+│   ├── serializers
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── serializer_base.py
+│   │   ├── serializer_base.pyc
+│   │   ├── serializer_declarations.py
+│   │   └── serializer_declarations.pyc
+│   ├── static
+│   │   ├── 500.html
+│   │   ├── css
+│   │   │   ├── bootstrap.css
+│   │   │   ├── bootstrap.min.css
+│   │   │   └── custom.css
+│   │   ├── favicon.png
+│   │   └── js
+│   │       ├── ace_editor
+│   │       │   ├── ace.js
+│   │       │   ├── ext-beautify.js
+│   │       │   ├── ext-chromevox.js
+│   │       │   ├── ext-elastic_tabstops_lite.js
+│   │       │   ├── ext-emmet.js
+│   │       │   ├── ext-error_marker.js
+│   │       │   ├── ext-keybinding_menu.js
+│   │       │   ├── ext-language_tools.js
+│   │       │   ├── ext-linking.js
+│   │       │   ├── ext-modelist.js
+│   │       │   ├── ext-old_ie.js
+│   │       │   ├── ext-searchbox.js
+│   │       │   ├── ext-settings_menu.js
+│   │       │   ├── ext-spellcheck.js
+│   │       │   ├── ext-split.js
+│   │       │   ├── ext-static_highlight.js
+│   │       │   ├── ext-statusbar.js
+│   │       │   ├── ext-textarea.js
+│   │       │   ├── ext-themelist.js
+│   │       │   ├── ext-whitespace.js
+│   │       │   ├── keybinding-emacs.js
+│   │       │   ├── keybinding-vim.js
+│   │       │   ├── mode-abap.js
+│   │       │   ├── mode-abc.js
+│   │       │   ├── mode-actionscript.js
+│   │       │   ├── mode-ada.js
+│   │       │   ├── mode-apache_conf.js
+│   │       │   ├── mode-applescript.js
+│   │       │   ├── mode-asciidoc.js
+│   │       │   ├── mode-assembly_x86.js
+│   │       │   ├── mode-autohotkey.js
+│   │       │   ├── mode-batchfile.js
+│   │       │   ├── mode-c9search.js
+│   │       │   ├── mode-c_cpp.js
+│   │       │   ├── mode-cirru.js
+│   │       │   ├── mode-clojure.js
+│   │       │   ├── mode-cobol.js
+│   │       │   ├── mode-coffee.js
+│   │       │   ├── mode-coldfusion.js
+│   │       │   ├── mode-csharp.js
+│   │       │   ├── mode-css.js
+│   │       │   ├── mode-curly.js
+│   │       │   ├── mode-d.js
+│   │       │   ├── mode-dart.js
+│   │       │   ├── mode-diff.js
+│   │       │   ├── mode-django.js
+│   │       │   ├── mode-dockerfile.js
+│   │       │   ├── mode-dot.js
+│   │       │   ├── mode-eiffel.js
+│   │       │   ├── mode-ejs.js
+│   │       │   ├── mode-elixir.js
+│   │       │   ├── mode-elm.js
+│   │       │   ├── mode-erlang.js
+│   │       │   ├── mode-forth.js
+│   │       │   ├── mode-ftl.js
+│   │       │   ├── mode-gcode.js
+│   │       │   ├── mode-gherkin.js
+│   │       │   ├── mode-gitignore.js
+│   │       │   ├── mode-glsl.js
+│   │       │   ├── mode-golang.js
+│   │       │   ├── mode-groovy.js
+│   │       │   ├── mode-haml.js
+│   │       │   ├── mode-handlebars.js
+│   │       │   ├── mode-haskell.js
+│   │       │   ├── mode-haxe.js
+│   │       │   ├── mode-html.js
+│   │       │   ├── mode-html_ruby.js
+│   │       │   ├── mode-ini.js
+│   │       │   ├── mode-io.js
+│   │       │   ├── mode-jack.js
+│   │       │   ├── mode-jade.js
+│   │       │   ├── mode-java.js
+│   │       │   ├── mode-javascript.js
+│   │       │   ├── mode-json.js
+│   │       │   ├── mode-jsoniq.js
+│   │       │   ├── mode-jsp.js
+│   │       │   ├── mode-jsx.js
+│   │       │   ├── mode-julia.js
+│   │       │   ├── mode-latex.js
+│   │       │   ├── mode-lean.js
+│   │       │   ├── mode-less.js
+│   │       │   ├── mode-liquid.js
+│   │       │   ├── mode-lisp.js
+│   │       │   ├── mode-live_script.js
+│   │       │   ├── mode-livescript.js
+│   │       │   ├── mode-logiql.js
+│   │       │   ├── mode-lsl.js
+│   │       │   ├── mode-lua.js
+│   │       │   ├── mode-luapage.js
+│   │       │   ├── mode-lucene.js
+│   │       │   ├── mode-makefile.js
+│   │       │   ├── mode-markdown.js
+│   │       │   ├── mode-mask.js
+│   │       │   ├── mode-matlab.js
+│   │       │   ├── mode-mel.js
+│   │       │   ├── mode-mips_assembler.js
+│   │       │   ├── mode-mipsassembler.js
+│   │       │   ├── mode-mushcode.js
+│   │       │   ├── mode-mysql.js
+│   │       │   ├── mode-nix.js
+│   │       │   ├── mode-objectivec.js
+│   │       │   ├── mode-ocaml.js
+│   │       │   ├── mode-pascal.js
+│   │       │   ├── mode-perl.js
+│   │       │   ├── mode-pgsql.js
+│   │       │   ├── mode-php.js
+│   │       │   ├── mode-plain_text.js
+│   │       │   ├── mode-powershell.js
+│   │       │   ├── mode-praat.js
+│   │       │   ├── mode-prolog.js
+│   │       │   ├── mode-properties.js
+│   │       │   ├── mode-protobuf.js
+│   │       │   ├── mode-python.js
+│   │       │   ├── mode-r.js
+│   │       │   ├── mode-rdoc.js
+│   │       │   ├── mode-rhtml.js
+│   │       │   ├── mode-ruby.js
+│   │       │   ├── mode-rust.js
+│   │       │   ├── mode-sass.js
+│   │       │   ├── mode-scad.js
+│   │       │   ├── mode-scala.js
+│   │       │   ├── mode-scheme.js
+│   │       │   ├── mode-scss.js
+│   │       │   ├── mode-sh.js
+│   │       │   ├── mode-sjs.js
+│   │       │   ├── mode-smarty.js
+│   │       │   ├── mode-snippets.js
+│   │       │   ├── mode-soy_template.js
+│   │       │   ├── mode-space.js
+│   │       │   ├── mode-sql.js
+│   │       │   ├── mode-sqlserver.js
+│   │       │   ├── mode-stylus.js
+│   │       │   ├── mode-svg.js
+│   │       │   ├── mode-tcl.js
+│   │       │   ├── mode-tex.js
+│   │       │   ├── mode-text.js
+│   │       │   ├── mode-textile.js
+│   │       │   ├── mode-toml.js
+│   │       │   ├── mode-twig.js
+│   │       │   ├── mode-typescript.js
+│   │       │   ├── mode-vala.js
+│   │       │   ├── mode-vbscript.js
+│   │       │   ├── mode-velocity.js
+│   │       │   ├── mode-verilog.js
+│   │       │   ├── mode-vhdl.js
+│   │       │   ├── mode-xml.js
+│   │       │   ├── mode-xquery.js
+│   │       │   ├── mode-yaml.js
+│   │       │   ├── snippets
+│   │       │   │   ├── abap.js
+│   │       │   │   ├── abc.js
+│   │       │   │   ├── actionscript.js
+│   │       │   │   ├── ada.js
+│   │       │   │   ├── apache_conf.js
+│   │       │   │   ├── applescript.js
+│   │       │   │   ├── asciidoc.js
+│   │       │   │   ├── assembly_x86.js
+│   │       │   │   ├── autohotkey.js
+│   │       │   │   ├── batchfile.js
+│   │       │   │   ├── c9search.js
+│   │       │   │   ├── c_cpp.js
+│   │       │   │   ├── cirru.js
+│   │       │   │   ├── clojure.js
+│   │       │   │   ├── cobol.js
+│   │       │   │   ├── coffee.js
+│   │       │   │   ├── coldfusion.js
+│   │       │   │   ├── csharp.js
+│   │       │   │   ├── css.js
+│   │       │   │   ├── curly.js
+│   │       │   │   ├── d.js
+│   │       │   │   ├── dart.js
+│   │       │   │   ├── diff.js
+│   │       │   │   ├── django.js
+│   │       │   │   ├── dockerfile.js
+│   │       │   │   ├── dot.js
+│   │       │   │   ├── eiffel.js
+│   │       │   │   ├── ejs.js
+│   │       │   │   ├── elixir.js
+│   │       │   │   ├── elm.js
+│   │       │   │   ├── erlang.js
+│   │       │   │   ├── forth.js
+│   │       │   │   ├── ftl.js
+│   │       │   │   ├── gcode.js
+│   │       │   │   ├── gherkin.js
+│   │       │   │   ├── gitignore.js
+│   │       │   │   ├── glsl.js
+│   │       │   │   ├── golang.js
+│   │       │   │   ├── groovy.js
+│   │       │   │   ├── haml.js
+│   │       │   │   ├── handlebars.js
+│   │       │   │   ├── haskell.js
+│   │       │   │   ├── haxe.js
+│   │       │   │   ├── html.js
+│   │       │   │   ├── html_ruby.js
+│   │       │   │   ├── ini.js
+│   │       │   │   ├── io.js
+│   │       │   │   ├── jack.js
+│   │       │   │   ├── jade.js
+│   │       │   │   ├── java.js
+│   │       │   │   ├── javascript.js
+│   │       │   │   ├── json.js
+│   │       │   │   ├── jsoniq.js
+│   │       │   │   ├── jsp.js
+│   │       │   │   ├── jsx.js
+│   │       │   │   ├── julia.js
+│   │       │   │   ├── latex.js
+│   │       │   │   ├── lean.js
+│   │       │   │   ├── less.js
+│   │       │   │   ├── liquid.js
+│   │       │   │   ├── lisp.js
+│   │       │   │   ├── live_script.js
+│   │       │   │   ├── livescript.js
+│   │       │   │   ├── logiql.js
+│   │       │   │   ├── lsl.js
+│   │       │   │   ├── lua.js
+│   │       │   │   ├── luapage.js
+│   │       │   │   ├── lucene.js
+│   │       │   │   ├── makefile.js
+│   │       │   │   ├── markdown.js
+│   │       │   │   ├── mask.js
+│   │       │   │   ├── matlab.js
+│   │       │   │   ├── mel.js
+│   │       │   │   ├── mips_assembler.js
+│   │       │   │   ├── mipsassembler.js
+│   │       │   │   ├── mushcode.js
+│   │       │   │   ├── mysql.js
+│   │       │   │   ├── nix.js
+│   │       │   │   ├── objectivec.js
+│   │       │   │   ├── ocaml.js
+│   │       │   │   ├── pascal.js
+│   │       │   │   ├── perl.js
+│   │       │   │   ├── pgsql.js
+│   │       │   │   ├── php.js
+│   │       │   │   ├── plain_text.js
+│   │       │   │   ├── powershell.js
+│   │       │   │   ├── praat.js
+│   │       │   │   ├── prolog.js
+│   │       │   │   ├── properties.js
+│   │       │   │   ├── protobuf.js
+│   │       │   │   ├── python.js
+│   │       │   │   ├── r.js
+│   │       │   │   ├── rdoc.js
+│   │       │   │   ├── rhtml.js
+│   │       │   │   ├── ruby.js
+│   │       │   │   ├── rust.js
+│   │       │   │   ├── sass.js
+│   │       │   │   ├── scad.js
+│   │       │   │   ├── scala.js
+│   │       │   │   ├── scheme.js
+│   │       │   │   ├── scss.js
+│   │       │   │   ├── sh.js
+│   │       │   │   ├── sjs.js
+│   │       │   │   ├── smarty.js
+│   │       │   │   ├── snippets.js
+│   │       │   │   ├── soy_template.js
+│   │       │   │   ├── space.js
+│   │       │   │   ├── sql.js
+│   │       │   │   ├── sqlserver.js
+│   │       │   │   ├── stylus.js
+│   │       │   │   ├── svg.js
+│   │       │   │   ├── tcl.js
+│   │       │   │   ├── tex.js
+│   │       │   │   ├── text.js
+│   │       │   │   ├── textile.js
+│   │       │   │   ├── toml.js
+│   │       │   │   ├── twig.js
+│   │       │   │   ├── typescript.js
+│   │       │   │   ├── vala.js
+│   │       │   │   ├── vbscript.js
+│   │       │   │   ├── velocity.js
+│   │       │   │   ├── verilog.js
+│   │       │   │   ├── vhdl.js
+│   │       │   │   ├── xml.js
+│   │       │   │   ├── xquery.js
+│   │       │   │   └── yaml.js
+│   │       │   ├── theme-ambiance.js
+│   │       │   ├── theme-chaos.js
+│   │       │   ├── theme-chrome.js
+│   │       │   ├── theme-clouds.js
+│   │       │   ├── theme-clouds_midnight.js
+│   │       │   ├── theme-cobalt.js
+│   │       │   ├── theme-crimson_editor.js
+│   │       │   ├── theme-dawn.js
+│   │       │   ├── theme-dreamweaver.js
+│   │       │   ├── theme-eclipse.js
+│   │       │   ├── theme-github.js
+│   │       │   ├── theme-idle_fingers.js
+│   │       │   ├── theme-iplastic.js
+│   │       │   ├── theme-katzenmilch.js
+│   │       │   ├── theme-kr_theme.js
+│   │       │   ├── theme-kuroir.js
+│   │       │   ├── theme-merbivore.js
+│   │       │   ├── theme-merbivore_soft.js
+│   │       │   ├── theme-mono_industrial.js
+│   │       │   ├── theme-monokai.js
+│   │       │   ├── theme-pastel_on_dark.js
+│   │       │   ├── theme-solarized_dark.js
+│   │       │   ├── theme-solarized_light.js
+│   │       │   ├── theme-sqlserver.js
+│   │       │   ├── theme-terminal.js
+│   │       │   ├── theme-textmate.js
+│   │       │   ├── theme-tomorrow.js
+│   │       │   ├── theme-tomorrow_night.js
+│   │       │   ├── theme-tomorrow_night_blue.js
+│   │       │   ├── theme-tomorrow_night_bright.js
+│   │       │   ├── theme-tomorrow_night_eighties.js
+│   │       │   ├── theme-twilight.js
+│   │       │   ├── theme-vibrant_ink.js
+│   │       │   ├── theme-xcode.js
+│   │       │   ├── worker-coffee.js
+│   │       │   ├── worker-css.js
+│   │       │   ├── worker-html.js
+│   │       │   ├── worker-javascript.js
+│   │       │   ├── worker-json.js
+│   │       │   ├── worker-lua.js
+│   │       │   ├── worker-php.js
+│   │       │   ├── worker-xml.js
+│   │       │   └── worker-xquery.js
+│   │       ├── bootstrap.min.js
+│   │       ├── custom.js
+│   │       └── jquery-2.1.3.min.js
+│   ├── tasks.py
+│   ├── templates
+│   │   ├── pdf
+│   │   │   └── pdf.html
+│   │   └── rest_framework
+│   │       ├── api.html
+│   │       └── login.html
+│   ├── templatetags
+│   │   ├── __init__.py
+│   │   └── mfl_none_filter.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_audit_view.py
+│   │   ├── test_filters.py
+│   │   ├── test_list_filter.py
+│   │   ├── test_model_repr.py
+│   │   ├── test_models.py
+│   │   ├── test_renderers.py
+│   │   ├── test_sequence_field.py
+│   │   ├── test_tasks.py
+│   │   ├── test_template_filters.py
+│   │   ├── test_throttling.py
+│   │   └── test_views.py
+│   ├── urls.py
+│   ├── urls.pyc
+│   ├── utilities
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── sequence_helper.py
+│   │   ├── sequence_helper.pyc
+│   │   ├── throttling.py
+│   │   ├── throttling.pyc
+│   │   ├── views.py
+│   │   └── views.pyc
+│   └── views
+│       ├── __init__.py
+│       ├── __init__.pyc
+│       ├── app_views.py
+│       ├── app_views.pyc
+│       ├── shared_views.py
+│       └── shared_views.pyc
+├── config
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── settings
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── base.py
+│   │   ├── base.pyc
+│   │   ├── celery.py
+│   │   └── celery.pyc
+│   ├── urls.py
+│   ├── urls.pyc
+│   ├── wsgi.py
+│   └── wsgi.pyc
+├── data
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── data
+│   │   ├── admin_units
+│   │   │   ├── 0001_counties.json
+│   │   │   ├── 0002_constituencies.json
+│   │   │   └── 0009_wards.json
+│   │   └── v2_data
+│   │       ├── 0099_demo_users.json
+│   │       ├── 0100_demo_applications.json
+│   │       ├── 0101_group.json
+│   │       ├── 0102_group_booleans
+│   │       └── users_and_groups
+│   │           ├── 1001_user_groups.json
+│   │           └── 1002_group_permissions.json
+│   ├── management
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   └── commands
+│   │       ├── __init__.py
+│   │       ├── approve_facilities.py
+│   │       ├── dump_groups.py
+│   │       ├── index_material_records.py
+│   │       ├── link_officers_to_facilities.py
+│   │       ├── load_groups.py
+│   │       ├── sample_users.py
+│   │       └── update_hours_of_operation.py
+│   ├── models.py
+│   └── models.pyc
+├── data_bootstrap
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── bootstrap.py
+│   ├── management
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   └── commands
+│   │       ├── __init__.py
+│   │       └── bootstrap.py
+│   ├── models.py
+│   └── models.pyc
+├── dhis_mfl_integration_docs
+│   ├── Organisation Unit Mapping in MFL and DHIS.pdf
+│   ├── assets
+│   │   ├── UoN-Logo.png
+│   │   ├── dhis-mfl.png
+│   │   └── uonafya.png
+│   └── dhis_mfl_integration.md
+├── dump_wards_and_sub_counties.py
+├── exception_handler
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── handler.py
+│   └── handler.pyc
+├── fabfile.py
+├── facilities
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── filters
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── facility_filters.py
+│   │   └── facility_filters.pyc
+│   ├── migrations
+│   │   ├── 0001_auto_20160328_1426.py
+│   │   ├── 0001_auto_20160328_1426.pyc
+│   │   ├── 0001_auto_20160516_1927.py
+│   │   ├── 0001_auto_20160516_1927.pyc
+│   │   ├── 0001_facilityeportexcelmaterialview.py
+│   │   ├── 0001_facilityeportexcelmaterialview.pyc
+│   │   ├── 0001_initial.py
+│   │   ├── 0001_initial.pyc
+│   │   ├── 0002_auto_20151114_1147.py
+│   │   ├── 0002_auto_20151114_1147.pyc
+│   │   ├── 0002_auto_20151116_0921.py
+│   │   ├── 0002_auto_20151116_0921.pyc
+│   │   ├── 0002_auto_20160406_1835.py
+│   │   ├── 0002_auto_20160406_1835.pyc
+│   │   ├── 0002_facility_county.py
+│   │   ├── 0002_facility_county.pyc
+│   │   ├── 0003_auto_20160407_0910.py
+│   │   ├── 0003_auto_20160407_0910.pyc
+│   │   ├── 0003_facilitytype_parent.py
+│   │   ├── 0003_facilitytype_parent.pyc
+│   │   ├── 0003_merge.py
+│   │   ├── 0003_merge.pyc
+│   │   ├── 0004_auto_20160204_0656.py
+│   │   ├── 0004_auto_20160204_0656.pyc
+│   │   ├── 0004_auto_20160411_1030.py
+│   │   ├── 0004_auto_20160411_1030.pyc
+│   │   ├── 0004_auto_20170905_0408.py
+│   │   ├── 0004_auto_20170905_0408.pyc
+│   │   ├── 0005_auto_20160309_1402.py
+│   │   ├── 0005_auto_20160309_1402.pyc
+│   │   ├── 0005_dhisauth.py
+│   │   ├── 0005_dhisauth.pyc
+│   │   ├── 0005_facilityunit_registration_number.py
+│   │   ├── 0005_facilityunit_registration_number.pyc
+│   │   ├── 0006_auto_20160309_1419.py
+│   │   ├── 0006_auto_20160309_1419.pyc
+│   │   ├── 0007_facilitystatus_is_public_visible.py
+│   │   ├── 0007_facilitystatus_is_public_visible.pyc
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── export_facilities_material_view.py
+│   │   ├── export_facilities_material_view.pyc
+│   │   ├── facility_material_view_with_updated.sql
+│   │   ├── mat_view.sql
+│   │   ├── set_facility_code_sequence_min_value.py
+│   │   ├── set_facility_code_sequence_min_value.pyc
+│   │   ├── update_export_facilities_material_view.py
+│   │   ├── update_export_facilities_material_view.pyc
+│   │   ├── update_material_view_with_updated_field.py
+│   │   ├── update_material_view_with_updated_field.pyc
+│   │   └── updated_mat_view.sql
+│   ├── models
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── facility_models.py
+│   │   └── facility_models.pyc
+│   ├── serializers
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── facility_serializers.py
+│   │   └── facility_serializers.pyc
+│   ├── templates
+│   │   ├── correction_template.html
+│   │   ├── cover_report.html
+│   │   ├── facility_details.html
+│   │   └── inspection_report.txt
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_facility_approval_buffering.py
+│   │   ├── test_facility_filtering.py
+│   │   ├── test_facility_models.py
+│   │   ├── test_facility_officer_facade.py
+│   │   ├── test_facility_regulation.py
+│   │   ├── test_facility_views.py
+│   │   ├── test_inlined_views.py
+│   │   ├── test_model_repr.py
+│   │   └── test_service_catalog.py
+│   ├── urls
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── facility_urls.py
+│   │   └── facility_urls.pyc
+│   ├── utils.py
+│   ├── utils.pyc
+│   └── views
+│       ├── __init__.py
+│       ├── __init__.pyc
+│       ├── facility_dashboard.py
+│       ├── facility_dashboard.pyc
+│       ├── facility_setup_views.py
+│       ├── facility_setup_views.pyc
+│       ├── facility_special_workflow_views.py
+│       ├── facility_special_workflow_views.pyc
+│       ├── facility_views.py
+│       ├── facility_views.pyc
+│       ├── service_catalog_views.py
+│       └── service_catalog_views.pyc
+├── faciltiy_with_wards_json.json
+├── facitlities_with_wards.xlsx
+├── load_all_facilities.py
+├── manage.py
+├── mapping_scripts
+│   ├── __init__.py
+│   ├── assign_dhis_groups.py
+│   ├── conn.py
+│   ├── copy_admin_units.py
+│   ├── copy_proposed_org_unit_groups.py
+│   ├── get_org_unit_id.py
+│   ├── get_proposed_org_unit_groups_id.py
+│   ├── ignored.json
+│   ├── ignored_2.json
+│   ├── issues.txt
+│   ├── logs.txt
+│   ├── mfl.xlsx
+│   ├── removing_space.py
+│   ├── selects.sql
+│   └── test_comparison.py
+├── media
+├── mfl.egg-info
+│   ├── PKG-INFO
+│   ├── SOURCES.txt
+│   ├── dependency_links.txt
+│   ├── not-zip-safe
+│   ├── requires.txt
+│   └── top_level.txt
+├── mfl_api.tar.gz
+├── mfl_db_dump_today
+├── mfl_gis
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── data
+│   │   ├── kenya_constituencies.json
+│   │   ├── kenya_counties.json
+│   │   ├── kenya_gis_formatted.json
+│   │   ├── kenya_wards.json
+│   │   └── world
+│   │       ├── TM_WORLD_BORDERS-0.3.dbf
+│   │       ├── TM_WORLD_BORDERS-0.3.prj
+│   │       ├── TM_WORLD_BORDERS-0.3.shp
+│   │       └── TM_WORLD_BORDERS-0.3.shx
+│   ├── filters.py
+│   ├── filters.pyc
+│   ├── generics.py
+│   ├── generics.pyc
+│   ├── management
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   └── commands
+│   │       ├── __init__.py
+│   │       ├── load_kenyan_administrative_boundaries.py
+│   │       ├── load_world_boundaries.py
+│   │       └── shared.py
+│   ├── migrations
+│   │   ├── 0001_drilldownview.py
+│   │   ├── 0001_drilldownview.pyc
+│   │   ├── 0001_initial.py
+│   │   ├── 0001_initial.pyc
+│   │   ├── 0002_auto_20160129_0702.py
+│   │   ├── 0002_auto_20160129_0702.pyc
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   ├── create_drilldown_mat_view.sql
+│   │   ├── drilldown_view.py
+│   │   └── drilldown_view.pyc
+│   ├── models.py
+│   ├── models.pyc
+│   ├── pagination.py
+│   ├── pagination.pyc
+│   ├── serializers.py
+│   ├── serializers.pyc
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── dagoretti_north_constituency_boundary.geojson
+│   │   ├── kenya_boundary.geojson
+│   │   ├── kilimani_ward_boundary.geojson
+│   │   ├── mommy_recipes.py
+│   │   ├── nairobi_county_boundary.geojson
+│   │   ├── test_data_load_management_commands.py
+│   │   ├── test_model_repr.py
+│   │   ├── test_models.py
+│   │   └── test_views.py
+│   ├── urls.py
+│   ├── urls.pyc
+│   ├── views.py
+│   └── views.pyc
+├── misplaced_facilities.json
+├── misplaced_facilities.xlsx
+├── missed_codes_facility_records
+├── missed_codes_facility_records.json
+├── missed_live_codes_facility_records.json
+├── missing_but_in_system
+├── new_missing_facilities.json
+├── new_missing_facilities.xlsx
+├── playbooks
+│   ├── Vagrantfile
+│   ├── ansible.cfg
+│   ├── inventory
+│   ├── roles
+│   │   ├── api
+│   │   │   ├── defaults
+│   │   │   │   └── main.yml
+│   │   │   ├── handlers
+│   │   │   │   └── main.yml
+│   │   │   ├── meta
+│   │   │   │   └── main.yml
+│   │   │   ├── tasks
+│   │   │   │   └── main.yml
+│   │   │   └── templates
+│   │   │       ├── celery_beat.conf
+│   │   │       ├── celery_worker.conf
+│   │   │       ├── mfl_nginx.j2
+│   │   │       └── mfl_supervisor_conf.j2
+│   │   ├── common
+│   │   │   ├── tasks
+│   │   │   │   └── main.yml
+│   │   │   └── templates
+│   │   │       └── user_sudoers.d.j2
+│   │   ├── frontend
+│   │   │   ├── defaults
+│   │   │   │   └── main.yml
+│   │   │   ├── meta
+│   │   │   │   └── main.yml
+│   │   │   ├── tasks
+│   │   │   │   └── main.yml
+│   │   │   ├── templates
+│   │   │   │   ├── frontend.nginx.conf.j2
+│   │   │   │   └── frontend.settings.js.j2
+│   │   │   └── vars
+│   │   │       └── main.yml
+│   │   ├── nginx
+│   │   │   ├── handlers
+│   │   │   │   └── main.yml
+│   │   │   └── tasks
+│   │   │       ├── apt.yml
+│   │   │       ├── main.yml
+│   │   │       └── source.yml
+│   │   ├── postgresql
+│   │   │   ├── handlers
+│   │   │   │   └── main.yml
+│   │   │   ├── meta
+│   │   │   │   └── main.yml
+│   │   │   ├── tasks
+│   │   │   │   └── main.yml
+│   │   │   └── templates
+│   │   │       ├── pg_hba.conf.j2
+│   │   │       ├── pg_ident.conf.j2
+│   │   │       └── postgresql.conf.j2
+│   │   └── ufw
+│   │       ├── handlers
+│   │       │   └── main.yml
+│   │       └── tasks
+│   │           └── main.yml
+│   └── site.yml
+├── pytest.ini
+├── reporting
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── facility_reports.py
+│   ├── facility_reports.pyc
+│   ├── models.py
+│   ├── models.pyc
+│   ├── report_config.py
+│   ├── report_config.pyc
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_chul_reports.py
+│   │   └── test_reports.py
+│   ├── urls.py
+│   └── urls.pyc
+├── requirements.txt
+├── scripts.py
+├── search
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── filters.py
+│   ├── filters.pyc
+│   ├── index_settings.py
+│   ├── index_settings.pyc
+│   ├── management
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   └── commands
+│   │       ├── __init__.py
+│   │       ├── build_index.py
+│   │       ├── remove_index.py
+│   │       ├── retry_indexing.py
+│   │       └── setup_index.py
+│   ├── models.py
+│   ├── models.pyc
+│   ├── search_utils.py
+│   ├── search_utils.pyc
+│   ├── synonyms.txt
+│   ├── tasks.py
+│   └── tests
+│       ├── __init__.py
+│       └── test_search.py
+├── setup.cfg
+├── setup.py
+├── static
+├── sub_counties.json
+├── sub_counties_file
+├── test_e2e.sh
+├── tox.ini
+├── tree.txt
+├── users
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── filters.py
+│   ├── filters.pyc
+│   ├── management
+│   │   ├── __init__.py
+│   │   ├── __init__.pyc
+│   │   └── commands
+│   │       ├── __init__.py
+│   │       └── resend_user_emails.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0001_initial.pyc
+│   │   ├── 0002_auto_20151111_1043.py
+│   │   ├── 0002_auto_20151111_1043.pyc
+│   │   ├── 0003_auto_20151111_1043.py
+│   │   ├── 0003_auto_20151111_1043.pyc
+│   │   ├── 0004_auto_20170905_0408.py
+│   │   ├── 0004_auto_20170905_0408.pyc
+│   │   ├── __init__.py
+│   │   └── __init__.pyc
+│   ├── models.py
+│   ├── models.pyc
+│   ├── permissions.py
+│   ├── permissions.pyc
+│   ├── serializers.py
+│   ├── serializers.pyc
+│   ├── tasks.py
+│   ├── templates
+│   │   └── registration
+│   │       ├── password_reset_email.html
+│   │       ├── password_reset_subject.txt
+│   │       ├── registration_success.html
+│   │       └── registration_success.txt
+│   ├── templatetags
+│   │   ├── __init__.py
+│   │   └── dj_settings.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_model_repr.py
+│   │   ├── test_models.py
+│   │   ├── test_tasks.py
+│   │   ├── test_templatetags.py
+│   │   └── test_views.py
+│   ├── urls.py
+│   ├── urls.pyc
+│   ├── views.py
+│   └── views.pyc
+├── ward_sub_counties.json
+├── ward_sub_counties_file
+├── wards_and_sub_counties.json
+└── wards_and_sub_counties.xlsx
+
+102 directories, 892 files

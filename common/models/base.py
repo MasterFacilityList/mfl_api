@@ -150,6 +150,85 @@ class AbstractBase(models.Model):
         default_permissions = ('add', 'change', 'delete', 'view', )
 
 
+class AbstractBaseMapping(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    mfl_name = models.CharField(max_length=255, null=True, blank=True)
+    mfl_code = models.IntegerField(default=0, null=True, blank=True)
+    dhis_name = models.CharField(max_length=255, null=True, blank=True)
+    dhis_id = models.CharField(max_length=255, null=True, blank=True)
+    dhis_parent_id = models.CharField(max_length=255, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    @property
+    def get_dhis_id(self):
+        return self.dhis_id
+
+    @property
+    def get_dhis_name(self):
+        return self.dhis_name
+
+    @property
+    def get_mfl_name(self):
+        return self.mfl_name
+
+    @property
+    def get_mfl_code(self):
+        return self.mfl_code
+
+    def validate_updated_date_greater_than_created(self):
+        if timezone.is_naive(self.updated):
+            self.updated = get_utc_localized_datetime(self.updated)
+
+        if self.updated < self.created:
+            raise ValidationError(
+                'The updated date cannot be less than the created date')
+
+    def preserve_created(self):
+        """
+        Ensures that in subsequent times created and created_by fields
+        values are not overriden.
+        """
+        try:
+            original = self.__class__.objects.get(pk=self.pk)
+            self.created = original.created
+        except self.__class__.DoesNotExist:
+            LOGGER.info(
+                'preserve_created '
+                'Could not find an instance of {} with pk {} hence treating '
+                'this as a new record.'.format(self.__class__, self.pk))
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.created = timezone.now()
+        self.updated = timezone.now()
+        self.full_clean(exclude=None)
+        self.preserve_created()
+        self.validate_updated_date_greater_than_created()
+        super(AbstractBaseMapping, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        # Mark the field model deleted
+        delete_child_instances(self)
+
+        self.deleted = True
+        self.save()
+
+    def __str__(self):
+        raise NotImplementedError(
+            "child models need to define their representation"
+        )
+
+    def __unicode__(self):
+        return self.__str__()
+
+    class Meta(object):
+        ordering = ('-updated', '-created',)
+        abstract = True
+        default_permissions = ('add', 'change', 'delete', 'view', )
+
+
 class SequenceMixin(object):
 
     """
@@ -165,3 +244,43 @@ class SequenceMixin(object):
             app_label=self._meta.app_label,
             model_name=self._meta.model_name
         ).next()
+
+
+class ApiAuthentication(models.Model):
+    username = models.CharField(max_length=255, default="healthit", null=False, blank=False)
+    password = models.CharField(max_length=255, default="hEALTHIT2017", null=False, blank=False)
+    client_id = models.CharField(max_length=255, default="101", null=False, blank=False)
+    client_secret = models.CharField(max_length=255, default="873079d99-95b4-46f5-8369-9f23a3dd877", null=False,
+                                     blank=False)
+    server = models.CharField(max_length=255, default="https://test.hiskenya.org/dev/", null=False, blank=False)
+    session_key = models.CharField(max_length=255, default="dhis2_api_12904rs", null=False, blank=False)
+
+    @property
+    def get_api_username(self):
+        "Returns the API username."
+        return '%s' % self.username
+
+    @property
+    def get_api_password(self):
+        "Returns the API password."
+        return '%s' % self.password
+
+    @property
+    def get_api_client_id(self):
+        "Returns the API client_id."
+        return '%s' % self.client_id
+
+    @property
+    def get_api_client_secret(self):
+        "Returns the API client_secret."
+        return '%s' % self.client_secret
+
+    @property
+    def get_api_server(self):
+        "Returns the API server."
+        return '%s' % self.server
+
+    @property
+    def get_api_session_key(self):
+        "Returns the API session_key."
+        return '%s' % self.session_key

@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(
 
 env = environ.Env(
     DATABASE_URL=(str, 'postgres://mfl:mfl@localhost:5432/mfl'),
-    DEBUG=(bool, True),
+    DEBUG=(bool, False),
     FRONTEND_URL=(str, "http://localhost:8062"),
     REALTIME_INDEX=(bool, False),
     HTTPS_ENABLED=(bool, False),
@@ -23,8 +23,6 @@ env = environ.Env(
     ADMINS=(str, "admin:admin@example.com,"),
     SERVER_EMAIL=(str, "root@localhost"),
     ALLOWED_HOSTS=(str, "localhost")
-
-
 )
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -34,17 +32,17 @@ ADMINS = tuple(
 SERVER_EMAIL = env('SERVER_EMAIL')
 
 
-DEBUG = env('DEBUG')
+DEBUG = True
 SECRET_KEY = env('SECRET_KEY')
 ENV_DB = env.db()
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'HOST': ENV_DB['HOST'],
-        'NAME': ENV_DB['NAME'],
-        'PASSWORD': ENV_DB['PASSWORD'],
-        'PORT': ENV_DB['PORT'],
-        'USER': ENV_DB['USER'],
+        'HOST': 'localhost',
+        'NAME': 'mfl',
+        'PASSWORD': 'mfl',
+        'PORT': '5432',
+        'USER': 'mfl',
     }
 }  # Env should have DATABASE_URL
 MIDDLEWARE_CLASSES = (
@@ -69,7 +67,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[Master Facility List] '
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',') + ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',') + ['localhost', '127.0.0.1', '0.0.0.0', '41.89.94.4', 'kmhfl.uonbi.ac.ke']
 
 INSTALLED_APPS = (
     'django.contrib.sites',

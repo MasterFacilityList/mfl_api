@@ -10,7 +10,7 @@ from django.contrib.auth.models import Group
 from rest_framework.exceptions import ValidationError
 
 from ..fields import SequenceField
-from .base import AbstractBase, SequenceMixin
+from .base import AbstractBase, SequenceMixin, AbstractBaseMapping
 
 LOGGER = logging.getLogger(__file__)
 
@@ -168,6 +168,17 @@ class County(AdministrativeUnitBase):
         verbose_name_plural = 'counties'
 
 
+@reversion.register
+@encoding.python_2_unicode_compatible
+class CountyMapping(AbstractBaseMapping):
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'county_mappings'
+
+
 @reversion.register(follow=['county'])
 @encoding.python_2_unicode_compatible
 class Constituency(AdministrativeUnitBase):
@@ -201,6 +212,20 @@ class Constituency(AdministrativeUnitBase):
         unique_together = ('name', 'county')
 
 
+@reversion.register
+@encoding.python_2_unicode_compatible
+class ConstituencyMapping(AbstractBaseMapping):
+
+    constituency_id = models.CharField(max_length=255, null=True)
+    county_name = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'constituency_mappings'
+
+
 @reversion.register(follow=['county'])
 @encoding.python_2_unicode_compatible
 class SubCounty(AdministrativeUnitBase):
@@ -214,6 +239,20 @@ class SubCounty(AdministrativeUnitBase):
 
     def __str__(self):
         return self.name
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class SubCountyMapping(AbstractBaseMapping):
+
+    sub_county_id = models.CharField(max_length=255, null=True)
+    county_name = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'sub_county_mappings'
 
 
 @reversion.register(follow=['constituency'])
@@ -270,6 +309,49 @@ class Ward(AdministrativeUnitBase):
     def clean(self, *args, **kwargs):
         super(Ward, self).clean(*args, **kwargs)
         self.validate_county()
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class WardMapping(AbstractBaseMapping):
+
+    ward_id = models.CharField(max_length=255, null=True)
+    sub_county_name = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'ward_mappings'
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class FacilityMapping(AbstractBaseMapping):
+
+    facility_id = models.CharField(max_length=255, null=True)
+    ward_name = models.CharField(max_length=255, null=True)
+    test = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'facility_mappings'
+
+
+@reversion.register
+@encoding.python_2_unicode_compatible
+class OrgUnitGroupsMapping(AbstractBaseMapping):
+
+    group_set_ids = models.TextField(null=True, blank=True)
+    group_code = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.mfl_name
+
+    class Meta(AdministrativeUnitBase.Meta):
+        verbose_name_plural = 'org_unit_groups_mappings'
 
 
 @reversion.register(follow=['user', 'county'])

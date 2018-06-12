@@ -113,7 +113,7 @@ setup(
         "xlsxwriter>=0.7.2,<0.8.0",
         "mock>=1.0.1,<1.1.0",
         "recommonmark>=0.1.1,<0.2.0",
-        "WeasyPrint>=0.23,<0.24.0",
+        "WeasyPrint>=0.29",
         "django-redis>=4.0.0,<4.1.0",
         "django-storages==1.1.8",
         "boto==2.38.0",
